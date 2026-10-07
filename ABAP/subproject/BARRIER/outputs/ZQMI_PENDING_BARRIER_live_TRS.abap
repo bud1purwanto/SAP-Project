@@ -19,6 +19,8 @@
 *& 002| 24-09-2026 | Budi     | Add parameter Batch SR (V_CHARGS)      *
 *& 003| 24-09-2026 | Budi     | Adjust Excel Download & Upload format  *
 *& 004| 25-09-2026 | Budi     | Format Excel template: border, header, text charg *
+*& 005| 02-10-2026 | Budi     | Auto UD P1 on barrier transaction if lot has no UD *
+*& 006| 02-10-2026 | Budi     | Persistent INDX cache for OLD_UD against session close *
 *&---------------------------------------------------------------------*
 
 REPORT ZQMI_PENDING_BARRIER.
@@ -961,6 +963,12 @@ FORM BUILD_FIELDCAT CHANGING PT_FIELDCAT TYPE LVC_T_FCAT.
   LS_FCAT-JUST      = 'C'.
   APPEND LS_FCAT TO PT_FIELDCAT.
   CLEAR LS_FCAT.
+  LS_FCAT-FIELDNAME = 'CHARG'.
+  LS_FCAT-REPTEXT   = 'Batch SR'.
+  LS_FCAT-OUTPUTLEN = 15.
+  LS_FCAT-JUST      = 'C'.
+  APPEND LS_FCAT TO PT_FIELDCAT.
+  CLEAR LS_FCAT.
   LS_FCAT-FIELDNAME = 'TYPE'.
   LS_FCAT-REPTEXT   = 'TYPE'.
   LS_FCAT-OUTPUTLEN = 8.
@@ -1363,6 +1371,15 @@ FORM UPDATE_JUDGEMENT.
                 WA_OUTPUT-OLD_SELECTED_SET)
           FROM QAVE
           WHERE PRUEFLOS = WA_OUTPUT-PRUEFLOS.
+      ELSE.
+        " Cek persistent cache INDX jika lot pernah dicancel di sesi sebelumnya
+        IMPORT OLD_UD           = WA_OUTPUT-OLD_UD
+               OLD_CODEGRP      = WA_OUTPUT-OLD_CODEGRP
+               OLD_SELECTED_SET = WA_OUTPUT-OLD_SELECTED_SET
+          FROM DATABASE INDX(ZM) ID WA_OUTPUT-PRUEFLOS.
+        IF SY-SUBRC = 0 AND WA_OUTPUT-OLD_UD IS NOT INITIAL.
+          WA_OUTPUT-HAS_UD = 'X'.
+        ENDIF.
       ENDIF.
     ENDIF.
     " -----------------------------------------------
@@ -1377,7 +1394,7 @@ FORM UPDATE_JUDGEMENT.
     DATA L_INSPSAMPLE LIKE BAPI2045D4-INSPSAMPLE.
 
     PERFORM PROCESS_DELAYING.
-    PERFORM USAGE_DECISION.
+    PERFORM USAGE_DECISION USING 'U'.
     PERFORM REFRESH.
     PERFORM CHECK_ERROR.
 
@@ -2340,6 +2357,21 @@ FORM CANCEL_UD USING PRUEFLOS CHANGING LS_SUBRC MESS ZSTAT ERR.
   IF UDSTAT NE 'X'.
     LS_SUBRC = 0.
     EXIT.
+  ENDIF.
+  " --- Backup UD lama ke INDX sebelum dicancel QA12 (cegah data hilang jika session close/crash) ---
+  DATA: LV_BCK_UD  TYPE QAVE-VCODE,
+        LV_BCK_GRP TYPE QAVE-VCODEGRP,
+        LV_BCK_SET TYPE QAVE-VAUSWAHLMG.
+  CLEAR: LV_BCK_UD, LV_BCK_GRP, LV_BCK_SET.
+  SELECT SINGLE VCODE VCODEGRP VAUSWAHLMG
+    INTO (LV_BCK_UD, LV_BCK_GRP, LV_BCK_SET)
+    FROM QAVE
+    WHERE PRUEFLOS = PRUEFLOS.
+  IF LV_BCK_UD IS NOT INITIAL.
+    EXPORT OLD_UD           = LV_BCK_UD
+           OLD_CODEGRP      = LV_BCK_GRP
+           OLD_SELECTED_SET = LV_BCK_SET
+      TO DATABASE INDX(ZM) ID PRUEFLOS.
   ENDIF.
   PERFORM BDC_DYNPRO      USING 'SAPMQEVA'          '0100'.
   PERFORM BDC_FIELD       USING 'BDC_CURSOR'        'QALS-PRUEFLOS'.
@@ -3326,7 +3358,7 @@ ENDFORM.                    "RESULT_RECORDING
 *&      Form  USAGE_DECISION
 
 *&---------------------------------------------------------------------*
-FORM USAGE_DECISION.
+FORM USAGE_DECISION USING P_ACTION TYPE C.
   CLEAR: IT_INSPECTION.
   REFRESH: IT_INSPECTION.
   IT_INSPECTION[]  = ITAB[].
@@ -3341,17 +3373,32 @@ FORM USAGE_DECISION.
   " ----------------------------------------------------------------------------
   SORT IT_INSPECTION BY PRUEFLOS.
   DELETE ADJACENT DUPLICATES FROM IT_INSPECTION COMPARING PRUEFLOS.
-  DATA: V_TIMES_WVTR LIKE QASE-PROBENR,
-        V_TIMES_OTR  LIKE QASE-PROBENR.
+  DATA: V_TIMES_WVTR   LIKE QASE-PROBENR,
+        V_TIMES_OTR    LIKE QASE-PROBENR,
+        LV_UD_OK       TYPE C,
+        LV_UD_CLEARED  TYPE C,
+        LV_UD_RESTORED TYPE C,
+        LS_UD_RETURN   TYPE BAPIRETURN1,
+        LV_SEL_SET     TYPE QPAC-AUSWAHLMGE,
+        LV_GRP         TYPE QPAC-CODEGRUPPE,
+        WA_ITAB_UPD    LIKE LINE OF ITAB.
 
   DESCRIBE TABLE IT_INSPECTION LINES V_TFILL.
 
   LOOP AT IT_INSPECTION.
     PERFORM SET_INDICATOR USING SY-TABIX V_TFILL 5 V_PROC_EX 'Usage Decision...'.
 
-    " --- NEW: Skip UD logic if lot didn't have one previously ---
-    IF IT_INSPECTION-HAS_UD NE 'X'.
+    " Mode delete: jangan lakukan auto-UD jika lot sebelumnya belum punya UD
+    IF P_ACTION EQ 'D' AND IT_INSPECTION-HAS_UD NE 'X'.
       CONTINUE.
+    ENDIF.
+
+    " Jika lot belum punya UD tapi ada error pada salah satu baris characteristic-nya, skip auto-UD
+    IF IT_INSPECTION-HAS_UD NE 'X'.
+      READ TABLE ITAB WITH KEY PRUEFLOS = IT_INSPECTION-PRUEFLOS ERR = 'X'.
+      IF SY-SUBRC = 0.
+        CONTINUE.
+      ENDIF.
     ENDIF.
 
     REFRESH: IT_UD[], BAPIRETURN1[].
@@ -3365,13 +3412,39 @@ FORM USAGE_DECISION.
     IF IT_UD-UD_PLANT IS INITIAL.
       SELECT SINGLE WERK INTO IT_UD-UD_PLANT FROM QALS WHERE PRUEFLOS = IT_INSPECTION-PRUEFLOS.
     ENDIF.
-    IF IT_INSPECTION-OLD_SELECTED_SET IS NOT INITIAL.
-      IT_UD-UD_SELECTED_SET = IT_INSPECTION-OLD_SELECTED_SET.
+
+    IF IT_INSPECTION-HAS_UD EQ 'X'.
+      IF IT_INSPECTION-OLD_SELECTED_SET IS NOT INITIAL.
+        IT_UD-UD_SELECTED_SET = IT_INSPECTION-OLD_SELECTED_SET.
+      ELSE.
+        IT_UD-UD_SELECTED_SET = IT_INSPECTION-OLD_CODEGRP.
+      ENDIF.
+      IT_UD-UD_CODE_GROUP       = IT_INSPECTION-OLD_CODEGRP.
+      IT_UD-UD_CODE             = IT_INSPECTION-OLD_UD.
     ELSE.
-      IT_UD-UD_SELECTED_SET = IT_INSPECTION-OLD_CODEGRP.
+      " --- Auto UD ke P1 (PASS) saat transaksi barrier untuk lot tanpa UD ---
+      IT_UD-UD_CODE = 'P1'.
+      CLEAR: LV_SEL_SET, LV_GRP.
+      SELECT SINGLE AUSWAHLMGE CODEGRUPPE
+        INTO (LV_SEL_SET, LV_GRP)
+        FROM QPAC
+        WHERE WERKS      = IT_UD-UD_PLANT
+          AND KATALOGART = '3'
+          AND CODE       = 'P1'.
+      IF SY-SUBRC = 0.
+        IT_UD-UD_SELECTED_SET = LV_SEL_SET.
+        IT_UD-UD_CODE_GROUP   = LV_GRP.
+      ELSE.
+        IF IT_UD-UD_PLANT EQ 'TTE'.
+          IT_UD-UD_SELECTED_SET = 'E-UD-PRD'.
+          IT_UD-UD_CODE_GROUP   = 'E-UD-PRD'.
+        ELSE.
+          IT_UD-UD_SELECTED_SET = '0-UD-PRD'.
+          IT_UD-UD_CODE_GROUP   = '0-UD-PRD'.
+        ENDIF.
+      ENDIF.
     ENDIF.
-    IT_UD-UD_CODE_GROUP       = IT_INSPECTION-OLD_CODEGRP.
-    IT_UD-UD_CODE             = IT_INSPECTION-OLD_UD.
+
     IT_UD-UD_RECORDED_BY_USER = SY-UNAME.
     IT_UD-UD_RECORDED_ON_DATE = SY-DATUM.
     IT_UD-UD_RECORDED_AT_TIME = SY-UZEIT.
@@ -3380,40 +3453,34 @@ FORM USAGE_DECISION.
     IT_UD-UD_STOCK_POSTING    = 'X'.
     APPEND IT_UD.
     "Record Data on Table
-    CLEAR: BAPIRETURN1.
-*  FIX RACE: pastikan cancel UD efektif di DB
-*  sebelum set UD ulang (cegah gagal acak).
-* FIX RACE + RETRY (06/08/26): cancel UD harus
-* efektif dulu, lalu set UD dgn retry maks 3x.
-* Cegah stranding lot saat MVTR & OTR diproses
-* bersamaan (race melebar 2x volume result rec).
-    DATA: LV_UD_OK       TYPE C,
-          LV_UD_CLEARED  TYPE C,
-          LV_UD_RESTORED TYPE C,
-          LS_UD_RETURN   TYPE BAPIRETURN1.
-
-    CLEAR: LV_UD_OK, LV_UD_CLEARED, LV_UD_RESTORED,
+    CLEAR: BAPIRETURN1, LV_UD_OK, LV_UD_CLEARED, LV_UD_RESTORED,
            LS_UD_RETURN.
 
-    " Jika UD lama masih aktif, tidak perlu cancel/set ulang.
-    PERFORM VERIFY_UD_RESTORED
-      USING IT_UD-INSPLOT IT_INSPECTION-OLD_CODEGRP
-            IT_INSPECTION-OLD_UD
-            IT_INSPECTION-OLD_SELECTED_SET
-      CHANGING LV_UD_RESTORED.
-    IF LV_UD_RESTORED EQ 'X'.
-      LV_UD_OK = 'X'.
-    ELSE.
+    IF IT_INSPECTION-HAS_UD EQ 'X'.
+      " Jika UD lama masih aktif, tidak perlu cancel/set ulang.
+      PERFORM VERIFY_UD_RESTORED
+        USING IT_UD-INSPLOT IT_UD-UD_CODE_GROUP
+              IT_UD-UD_CODE
+              IT_UD-UD_SELECTED_SET
+        CHANGING LV_UD_RESTORED.
+      IF LV_UD_RESTORED EQ 'X'.
+        LV_UD_OK = 'X'.
+      ENDIF.
+    ENDIF.
+
+    IF LV_UD_OK NE 'X'.
       DO 3 TIMES.
         CLEAR: BAPIRETURN1, LV_UD_CLEARED, LV_UD_RESTORED.
-        PERFORM WAIT_UD_CLEARED
-          USING IT_UD-INSPLOT
-          CHANGING LV_UD_CLEARED.
-        IF LV_UD_CLEARED NE 'X'.
-          LS_UD_RETURN-TYPE = 'E'.
-          LS_UD_RETURN-MESSAGE =
-            'Cancel UD belum selesai; restore UD dihentikan'.
-          EXIT.
+        IF IT_INSPECTION-HAS_UD EQ 'X'.
+          PERFORM WAIT_UD_CLEARED
+            USING IT_UD-INSPLOT
+            CHANGING LV_UD_CLEARED.
+          IF LV_UD_CLEARED NE 'X'.
+            LS_UD_RETURN-TYPE = 'E'.
+            LS_UD_RETURN-MESSAGE =
+              'Cancel UD belum selesai; restore UD dihentikan'.
+            EXIT.
+          ENDIF.
         ENDIF.
 
         CALL FUNCTION 'BAPI_INSPLOT_SETUSAGEDECISION'
@@ -3430,17 +3497,22 @@ FORM USAGE_DECISION.
         ELSE.
           PERFORM BAPI_COMMIT.
           PERFORM VERIFY_UD_RESTORED
-            USING IT_UD-INSPLOT IT_INSPECTION-OLD_CODEGRP
-                  IT_INSPECTION-OLD_UD
-                  IT_INSPECTION-OLD_SELECTED_SET
+            USING IT_UD-INSPLOT IT_UD-UD_CODE_GROUP
+                  IT_UD-UD_CODE
+                  IT_UD-UD_SELECTED_SET
             CHANGING LV_UD_RESTORED.
           IF LV_UD_RESTORED EQ 'X'.
             LV_UD_OK = 'X'.
             EXIT.
           ENDIF.
           LS_UD_RETURN-TYPE = 'E'.
-          LS_UD_RETURN-MESSAGE =
-            'BAPI selesai tetapi status UD belum kembali'.
+          IF IT_INSPECTION-HAS_UD EQ 'X'.
+            LS_UD_RETURN-MESSAGE =
+              'BAPI selesai tetapi status UD belum kembali'.
+          ELSE.
+            LS_UD_RETURN-MESSAGE =
+              'BAPI selesai tetapi status Auto UD P1 belum aktif'.
+          ENDIF.
           WAIT UP TO 2 SECONDS.
         ENDIF.
       ENDDO.
@@ -3450,11 +3522,30 @@ FORM USAGE_DECISION.
     IF LV_UD_OK NE 'X'.
       BAPIRETURN1 = LS_UD_RETURN.
       APPEND BAPIRETURN1.
-      CONCATENATE 'UD gagal dipulihkan:'
-        LS_UD_RETURN-MESSAGE INTO ITAB-MESS
-        SEPARATED BY SPACE.
+      IF IT_INSPECTION-HAS_UD EQ 'X'.
+        CONCATENATE 'UD gagal dipulihkan:'
+          LS_UD_RETURN-MESSAGE INTO ITAB-MESS
+          SEPARATED BY SPACE.
+      ELSE.
+        CONCATENATE 'Auto UD P1 gagal:'
+          LS_UD_RETURN-MESSAGE INTO ITAB-MESS
+          SEPARATED BY SPACE.
+      ENDIF.
       ITAB-ZSTAT = ERROR.
       ITAB-ERR   = 'X'.
+    ELSE.
+      " UD sukses aktif di DB, bersihkan backup persistent cache di INDX
+      DELETE FROM DATABASE INDX(ZM) ID IT_INSPECTION-PRUEFLOS.
+      IF IT_INSPECTION-HAS_UD NE 'X'.
+        CLEAR WA_ITAB_UPD.
+        WA_ITAB_UPD-HAS_UD           = 'X'.
+        WA_ITAB_UPD-OLD_UD           = 'P1'.
+        WA_ITAB_UPD-OLD_CODEGRP      = IT_UD-UD_CODE_GROUP.
+        WA_ITAB_UPD-OLD_SELECTED_SET = IT_UD-UD_SELECTED_SET.
+        MODIFY ITAB FROM WA_ITAB_UPD
+          TRANSPORTING HAS_UD OLD_UD OLD_CODEGRP OLD_SELECTED_SET
+          WHERE PRUEFLOS EQ IT_INSPECTION-PRUEFLOS.
+      ENDIF.
     ENDIF.
 *   FIX: bila UD gagal, error menempel ke SEMUA
 *   baris lot ini (MVTR & OTR sekaligus), bukan
@@ -3638,12 +3729,32 @@ FORM DOWNLOAD_EXCEL_PENDING .
         LV_V2         TYPE STRING,
         LV_V3         TYPE STRING,
         LV_V4         TYPE STRING,
+        LV_SHOW_V2    TYPE C LENGTH 1,
+        LV_SHOW_V3    TYPE C LENGTH 1,
+        LV_SHOW_V4    TYPE C LENGTH 1,
         OBJFILE       TYPE REF TO CL_GUI_FRONTEND_SERVICES,
         PICKEDFOLDER  TYPE STRING,
         INITIALFOLDER TYPE STRING,
         LV_FILENAME   TYPE STRING.
 
   IF IT_OUTPUT IS NOT INITIAL.
+    LOOP AT IT_OUTPUT INTO WA_OUTPUT.
+      IF WA_OUTPUT-VALUE2 IS NOT INITIAL.
+        LV_SHOW_V2 = 'X'.
+      ENDIF.
+      IF WA_OUTPUT-VALUE3 IS NOT INITIAL.
+        LV_SHOW_V3 = 'X'.
+      ENDIF.
+      IF WA_OUTPUT-VALUE4 IS NOT INITIAL.
+        LV_SHOW_V4 = 'X'.
+      ENDIF.
+    ENDLOOP.
+    IF LV_SHOW_V4 = 'X'.
+      LV_SHOW_V3 = 'X'.
+    ENDIF.
+    IF LV_SHOW_V3 = 'X'.
+      LV_SHOW_V2 = 'X'.
+    ENDIF.
     APPEND '<html xmlns:o="urn:schemas-microsoft-com:office:office"' TO LT_HTML.
     APPEND 'xmlns:x="urn:schemas-microsoft-com:office:excel"' TO LT_HTML.
     APPEND 'xmlns="http://www.w3.org/TR/REC-html40">' TO LT_HTML.
@@ -3671,9 +3782,15 @@ FORM DOWNLOAD_EXCEL_PENDING .
     APPEND '    <th style="background-color:#1F4E78; color:#FFFFFF; font-weight:bold; border:1px solid #000000; text-align:center;">Batch SR</th>' TO LT_HTML.
     APPEND '    <th style="background-color:#1F4E78; color:#FFFFFF; font-weight:bold; border:1px solid #000000; text-align:center;">Inspection Type</th>' TO LT_HTML.
     APPEND '    <th style="background-color:#1F4E78; color:#FFFFFF; font-weight:bold; border:1px solid #000000; text-align:center;">Value 1</th>' TO LT_HTML.
-    APPEND '    <th style="background-color:#1F4E78; color:#FFFFFF; font-weight:bold; border:1px solid #000000; text-align:center;">Value 2</th>' TO LT_HTML.
-    APPEND '    <th style="background-color:#1F4E78; color:#FFFFFF; font-weight:bold; border:1px solid #000000; text-align:center;">Value 3</th>' TO LT_HTML.
-    APPEND '    <th style="background-color:#1F4E78; color:#FFFFFF; font-weight:bold; border:1px solid #000000; text-align:center;">Value 4</th>' TO LT_HTML.
+    IF LV_SHOW_V2 = 'X'.
+      APPEND '    <th style="background-color:#1F4E78; color:#FFFFFF; font-weight:bold; border:1px solid #000000; text-align:center;">Value 2</th>' TO LT_HTML.
+    ENDIF.
+    IF LV_SHOW_V3 = 'X'.
+      APPEND '    <th style="background-color:#1F4E78; color:#FFFFFF; font-weight:bold; border:1px solid #000000; text-align:center;">Value 3</th>' TO LT_HTML.
+    ENDIF.
+    IF LV_SHOW_V4 = 'X'.
+      APPEND '    <th style="background-color:#1F4E78; color:#FFFFFF; font-weight:bold; border:1px solid #000000; text-align:center;">Value 4</th>' TO LT_HTML.
+    ENDIF.
     APPEND '  </tr>' TO LT_HTML.
 
     LOOP AT IT_OUTPUT INTO WA_OUTPUT.
@@ -3706,15 +3823,22 @@ FORM DOWNLOAD_EXCEL_PENDING .
         ENDIF.
       ENDIF.
 
+      CLEAR LV_LINE.
       CONCATENATE '  <tr>'
                   '<td class="txt" style="mso-number-format:''\@''; border:1px solid #000000; text-align:left;">' WA_OUTPUT-CHARG '</td>'
                   '<td class="txt-center" style="mso-number-format:''\@''; border:1px solid #000000; text-align:center;">' WA_OUTPUT-INSPECTION '</td>'
                   '<td class="num" style="mso-number-format:''0\.000''; border:1px solid #000000; text-align:right;">' LV_V1 '</td>'
-                  '<td class="num" style="mso-number-format:''0\.000''; border:1px solid #000000; text-align:right;">' LV_V2 '</td>'
-                  '<td class="num" style="mso-number-format:''0\.000''; border:1px solid #000000; text-align:right;">' LV_V3 '</td>'
-                  '<td class="num" style="mso-number-format:''0\.000''; border:1px solid #000000; text-align:right;">' LV_V4 '</td>'
-                  '</tr>'
         INTO LV_LINE.
+      IF LV_SHOW_V2 = 'X'.
+        CONCATENATE LV_LINE '<td class="num" style="mso-number-format:''0\.000''; border:1px solid #000000; text-align:right;">' LV_V2 '</td>' INTO LV_LINE.
+      ENDIF.
+      IF LV_SHOW_V3 = 'X'.
+        CONCATENATE LV_LINE '<td class="num" style="mso-number-format:''0\.000''; border:1px solid #000000; text-align:right;">' LV_V3 '</td>' INTO LV_LINE.
+      ENDIF.
+      IF LV_SHOW_V4 = 'X'.
+        CONCATENATE LV_LINE '<td class="num" style="mso-number-format:''0\.000''; border:1px solid #000000; text-align:right;">' LV_V4 '</td>' INTO LV_LINE.
+      ENDIF.
+      CONCATENATE LV_LINE '</tr>' INTO LV_LINE.
       APPEND LV_LINE TO LT_HTML.
     ENDLOOP.
 
@@ -3933,6 +4057,15 @@ FORM UPDATE_JUDGEMENT_DELETE.
                 WA_OUTPUT-OLD_SELECTED_SET)
           FROM QAVE
           WHERE PRUEFLOS = WA_OUTPUT-PRUEFLOS.
+      ELSE.
+        " Cek persistent cache INDX jika lot pernah dicancel di sesi sebelumnya
+        IMPORT OLD_UD           = WA_OUTPUT-OLD_UD
+               OLD_CODEGRP      = WA_OUTPUT-OLD_CODEGRP
+               OLD_SELECTED_SET = WA_OUTPUT-OLD_SELECTED_SET
+          FROM DATABASE INDX(ZM) ID WA_OUTPUT-PRUEFLOS.
+        IF SY-SUBRC = 0 AND WA_OUTPUT-OLD_UD IS NOT INITIAL.
+          WA_OUTPUT-HAS_UD = 'X'.
+        ENDIF.
       ENDIF.
     ENDIF.
     " -----------------------------------------------
@@ -3992,7 +4125,7 @@ FORM CONFIRMATION_DELETE.
   READ TABLE ITAB WITH KEY BOX = 'X'.
   IF SY-SUBRC EQ 0.
     PERFORM RESULT_RECORDING_DELETE USING SY-UNAME.
-    PERFORM USAGE_DECISION.
+    PERFORM USAGE_DECISION USING 'D'.
     DELETE ITAB WHERE BOX = 'X' AND ERR NE 'X'.
   ENDIF.
 ENDFORM.                    "CONFIRMATION_DELETE

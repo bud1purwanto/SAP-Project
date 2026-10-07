@@ -1,0 +1,32 @@
+{
+  "captured_at": "2026-10-01",
+  "table": "ZQM_COA_CUST_COL",
+  "filter": "KUNNR LIKE 'DOM%'",
+  "servers": {
+    "dev": {
+      "name": "Development AIX",
+      "sid": "TRD",
+      "rows": [
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"BATCH_NUMBER","FIELD_LABEL":"Batch Number","SEQ_NO":"02","ACTIVE":"","COL_SIZE":"M"},
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"LENGTH","FIELD_LABEL":"length","SEQ_NO":"03","ACTIVE":"X","COL_SIZE":"S"},
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"ROLL_NUMBER","FIELD_LABEL":"Roll Number","SEQ_NO":"01","ACTIVE":"X","COL_SIZE":"L"},
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"TEXT_BARCODE","FIELD_LABEL":"Text Barcode","SEQ_NO":"03","ACTIVE":"","COL_SIZE":"M"},
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"WEIGHT_PER_ROL","FIELD_LABEL":"Weight per rol","SEQ_NO":"04","ACTIVE":"X","COL_SIZE":"S"},
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"WIDTH","FIELD_LABEL":"Width","SEQ_NO":"02","ACTIVE":"X","COL_SIZE":"S"}
+      ]
+    },
+    "sandbox-new": {
+      "name": "Sandbox New Company",
+      "sid": "TRS",
+      "rows": [
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"ROLL_NUMBER","FIELD_LABEL":"Roll Number","SEQ_NO":"01","ACTIVE":"X","COL_SIZE":"L"},
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"BATCH_NUMBER","FIELD_LABEL":"Batch Number","SEQ_NO":"02","ACTIVE":"","COL_SIZE":"M"},
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"TEXT_BARCODE","FIELD_LABEL":"Text Barcode","SEQ_NO":"03","ACTIVE":"","COL_SIZE":"M"},
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"WIDTH","FIELD_LABEL":"Width","SEQ_NO":"02","ACTIVE":"X","COL_SIZE":"S"},
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"LENGTH","FIELD_LABEL":"Length","SEQ_NO":"03","ACTIVE":"X","COL_SIZE":"S"},
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"WEIGHT_PER_ROL","FIELD_LABEL":"Weight per rol","SEQ_NO":"04","ACTIVE":"X","COL_SIZE":"S"},
+        {"KUNNR":"DOM_DEFAUL","FIELD_NAME":"SO_NUMBER","FIELD_LABEL":"Sales Order","SEQ_NO":"05","ACTIVE":"","COL_SIZE":"S"}
+      ]
+    }
+  }
+}

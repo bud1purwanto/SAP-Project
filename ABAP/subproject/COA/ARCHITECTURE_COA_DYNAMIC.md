@@ -21,13 +21,13 @@ Semua kolom pada setiap baris dibagi rata secara presisi memenuhi seluruh lebar 
 * **`ZQMF_COA_BATCH_P2` (2 Kolom):** Sel $9.00, 9.00\text{ cm}$.
 * **`ZQMF_COA_BATCH_P3` (3 Kolom):** Sel $6.00, 6.00, 6.00\text{ cm}$.
 * **`ZQMF_COA_BATCH_P4` (4 Kolom):** Sel $4.50, 4.50, 4.50, 4.50\text{ cm}$.
-* **`ZQMF_COA_BATCH_P5` (5 Kolom):** Sel **$3.60, 3.60, 3.60, 3.60, 3.60\text{ cm}$** $\rightarrow$ **DO `85004908` (`DOM_DEFAUL`)**.
-* **`ZQMF_COA_BATCH_P6` (6 Kolom):** Sel **$3.00, 3.00, 3.00, 3.00, 3.00, 3.00\text{ cm}$**.
+* **`ZQMF_COA_BATCH_P5` (5 Kolom):** Sel **$3.60, 3.60, 3.60, 3.60, 3.60\text{ cm}$**.
+* **`ZQMF_COA_BATCH_P6` (6 Kolom):** Sel **$3.00, 3.00, 3.00, 3.00, 3.00, 3.00\text{ cm}$** $\rightarrow$ **Default DO Type `ZDLF` dan selain `ZELF` (`DOMESTIC`)**.
 * **`ZQMF_COA_BATCH_P7` (7 Kolom):** Sel **$2.57, 2.57, 2.57, 2.57, 2.57, 2.57, 2.58\text{ cm}$** $\rightarrow$ **DO `0084000047` (`SRAABI`)**.
 * **`ZQMF_COA_BATCH_P8` (8 Kolom):** Sel **$2.25, 2.25, 2.25, 2.25, 2.25, 2.25, 2.25, 2.25\text{ cm}$**.
 
 #### **Tier Landscape ($27.00\text{ cm}$ Total) — 9 s/d 14 Kolom:**
-* **`ZQMF_COA_BATCH_L9` (9 Kolom):** Sel $3.00\text{ cm}$ per kolom.
+* **`ZQMF_COA_BATCH_L9` (9 Kolom):** Sel $3.00\text{ cm}$ per kolom $\rightarrow$ **Default DO Type `ZELF` (`EXPORT`)**.
 * **`ZQMF_COA_BATCH_L10` (10 Kolom):** Sel **$2.70\text{ cm}$ per kolom** $\rightarrow$ **DO `0085000140` (`SRACLI`)**.
 * **`ZQMF_COA_BATCH_L11` (11 Kolom):** Sel $2.45\text{ cm}$ per kolom.
 * **`ZQMF_COA_BATCH_L12` (12 Kolom):** Sel $2.25\text{ cm}$ per kolom.

@@ -22,7 +22,7 @@ TYPES: BEGIN OF TY_DISPLAY,
          COL_SIZE     TYPE C LENGTH 10,
          SEQ_NO       TYPE ZQM_COA_CUST_COL-SEQ_NO,
          ACTIVE       TYPE ZQM_COA_CUST_COL-ACTIVE,
-         STATUS_TXT   TYPE C LENGTH 50,
+         STATUS_TXT   TYPE C LENGTH 70,
          LINE_COLOR   TYPE C LENGTH 4,
          CELLTAB      TYPE LVC_T_STYL,
        END OF TY_DISPLAY.
@@ -187,12 +187,14 @@ CLASS LCL_EVENT_RECEIVER IMPLEMENTATION.
       LS_TOOLBAR-TEXT      = 'Delete Row'.
       APPEND LS_TOOLBAR TO E_OBJECT->MT_TOOLBAR.
 
-      CLEAR LS_TOOLBAR.
-      LS_TOOLBAR-FUNCTION  = 'ADD_ROW'.
-      LS_TOOLBAR-ICON      = ICON_INSERT_ROW.
-      LS_TOOLBAR-QUICKINFO = 'Add Row (Tambah Baris)'.
-      LS_TOOLBAR-TEXT      = 'Add Row'.
-      APPEND LS_TOOLBAR TO E_OBJECT->MT_TOOLBAR.
+      IF R_CRT = 'X' OR R_UPL = 'X'.
+        CLEAR LS_TOOLBAR.
+        LS_TOOLBAR-FUNCTION  = 'ADD_ROW'.
+        LS_TOOLBAR-ICON      = ICON_INSERT_ROW.
+        LS_TOOLBAR-QUICKINFO = 'Add Row (Tambah Baris)'.
+        LS_TOOLBAR-TEXT      = 'Add Row'.
+        APPEND LS_TOOLBAR TO E_OBJECT->MT_TOOLBAR.
+      ENDIF.
     ENDIF.
   ENDMETHOD.
 
@@ -233,32 +235,19 @@ FORM INIT_FIELD_DICTIONARY.
   _ADD_F4 'HU_NUMBER'           'HU Number'                  'Handling'     'M'.
   _ADD_F4 'NO_PALET'            'No Palet'                   'Packaging'    'M'.
   _ADD_F4 'TYPE'                'Type'                       'Material'     'S'.
-  _ADD_F4 'THICK'               'Thick'                      'Dimension'    'S'.
   _ADD_F4 'ROLL_NUMBER'         'Roll Number'                'Identifier'   'L'.
   _ADD_F4 'BATCH_NUMBER'        'Batch Number'               'Identifier'   'M'.
-  _ADD_F4 'TEXT_BARCODE'        'Text Barcode'               'Identifier'   'M'.
-  _ADD_F4 'WIDTH'               'Width'                      'Dimension'    'S'.
-  _ADD_F4 'LENGTH'              'Length'                     'Dimension'    'S'.
-  _ADD_F4 'WEIGHT_PER_ROL'      'Weight Per Roll'            'Dimension'    'S'.
+  _ADD_F4 'WIDTH'               'Width'                      'Dimension'    'M'.
+  _ADD_F4 'LENGTH'              'Length'                     'Dimension'    'M'.
+  _ADD_F4 'WEIGHT_PER_ROL'      'Weight Per Roll'            'Dimension'    'M'.
   _ADD_F4 'JOINT'               'Joint'                      'Spec'         'S'.
-  _ADD_F4 'QTY'                 'Qty'                        'Quantity'     'S'.
-  _ADD_F4 'TOTAL_ROLL'          'Total Roll'                 'Quantity'     'S'.
-  _ADD_F4 'TOTAL_WEIGHT_PALET'  'Total Weight Per Pallet'    'Quantity'     'S'.
-  _ADD_F4 'GG_PART_NUMBER'      'GG Part Number (OPR)'       'Customer Mat' 'M'.
+  _ADD_F4 'TOTAL_ROLL'          'Total Roll'                 'Quantity'     'M'.
+  _ADD_F4 'TOTAL_WEIGHT_PALET'  'Total Weight Per Pallet'    'Quantity'     'M'.
+  _ADD_F4 'GG_PART_NUMBER'      'GG Part Number (OPR)'       'Customer Mat' 'L'.
   _ADD_F4 'EXPIRED_DATE'        'Expired Date'               'Date'         'M'.
   _ADD_F4 'PRODUCTION_DATE'     'Production Date'            'Date'         'M'.
-  _ADD_F4 'USED_BEFORE'         'Used Before'                'Date'         'M'.
-  _ADD_F4 'MANUFACTURING_DATE'  'Manufacturing Date'         'Date'         'M'.
-  _ADD_F4 'NUMBER_OF_JOINT'     'Number Of Joint (Splice)'   'Spec'         'S'.
-  _ADD_F4 'LENGTH_OF_SPLICE'    'Length Of Splice'           'Spec'         'S'.
-  _ADD_F4 'LOT_NUMBER'          'Lot Number'                 'Identifier'   'M'.
-  _ADD_F4 'NO_PALET_TRIAS'      'No Palet Trias'             'Packaging'    'M'.
-  _ADD_F4 'BARCODE'             'Barcode'                    'Identifier'   'L'.
-  _ADD_F4 'SO_NUMBER'           'SO Number'                  'Order'        'M'.
-  _ADD_F4 'TREATMENT_IN'        'Treatment IN'               'Spec'         'M'.
-  _ADD_F4 'TREATMENT_OUT'       'Treatment OUT'              'Spec'         'M'.
-  _ADD_F4 'NO'                  'No'                         'Identifier'   'S'.
-  _ADD_F4 'CORE'                'Core'                       'Dimension'    'S'.
+  _ADD_F4 'LENGTH_OF_SPLICE'    'Length Of Splice'           'Spec'         'M'.
+  _ADD_F4 'CORE'                'Core'                       'Dimension'    'M'.
 ENDFORM.                    " INIT_FIELD_DICTIONARY
 
 *&---------------------------------------------------------------------*
@@ -268,7 +257,7 @@ FORM INIT_CREATE_DATA.
   REFRESH GT_DISPLAY.
   DATA: LV_IDX TYPE NUMC2,
         LS_STYLE TYPE LVC_S_STYL.
-  DO 10 TIMES.
+  DO 25 TIMES.
     LV_IDX = SY-INDEX.
     CLEAR GT_DISPLAY.
     GT_DISPLAY-SEQ_NO     = LV_IDX.
@@ -324,8 +313,10 @@ FORM GET_DATABASE_DATA.
     GT_DISPLAY-SEQ_NO       = LT_DB-SEQ_NO.
     GT_DISPLAY-ACTIVE       = LT_DB-ACTIVE.
 
-    IF GT_DISPLAY-KUNNR = 'DOM_DEFAUL'.
+    IF GT_DISPLAY-KUNNR = 'DOMESTIC'.
       GT_DISPLAY-NAME1 = 'STANDARD DOMESTIC BASELINE'.
+    ELSEIF GT_DISPLAY-KUNNR = 'EXPORT'.
+      GT_DISPLAY-NAME1 = 'STANDARD EXPORT BASELINE'.
     ELSE.
       READ TABLE LT_KNA1 WITH KEY KUNNR = GT_DISPLAY-KUNNR.
       IF SY-SUBRC = 0.
@@ -403,7 +394,7 @@ FORM UPLOAD_FILE_DATA.
   CLEAR GT_DISPLAY[].
 
   LOOP AT GT_UPLOAD.
-    IF GT_UPLOAD-KUNNR IS INITIAL AND GT_UPLOAD-FIELD_NAME IS INITIAL.
+    IF GT_UPLOAD-KUNNR IS INITIAL OR GT_UPLOAD-FIELD_NAME IS INITIAL.
       CONTINUE.
     ENDIF.
 
@@ -439,7 +430,9 @@ FORM VALIDATE_UPLOAD_RECORD.
   TRANSLATE GT_DISPLAY-ACTIVE     TO UPPER CASE.
 
   " Format leading zeros untuk customer jika numerik
-  IF GT_DISPLAY-KUNNR IS NOT INITIAL AND GT_DISPLAY-KUNNR <> 'DOM_DEFAUL'.
+  IF GT_DISPLAY-KUNNR IS NOT INITIAL
+     AND GT_DISPLAY-KUNNR <> 'DOMESTIC'
+     AND GT_DISPLAY-KUNNR <> 'EXPORT'.
     IF GT_DISPLAY-KUNNR CO '0123456789 '.
       CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
         EXPORTING
@@ -459,8 +452,10 @@ FORM VALIDATE_UPLOAD_RECORD.
   IF GT_DISPLAY-KUNNR IS INITIAL.
     LV_ERR     = 'X'.
     LV_ERR_MSG = 'Customer Code kosong'.
-  ELSEIF GT_DISPLAY-KUNNR = 'DOM_DEFAUL'.
+  ELSEIF GT_DISPLAY-KUNNR = 'DOMESTIC'.
     GT_DISPLAY-NAME1 = 'STANDARD DOMESTIC BASELINE'.
+  ELSEIF GT_DISPLAY-KUNNR = 'EXPORT'.
+    GT_DISPLAY-NAME1 = 'STANDARD EXPORT BASELINE'.
   ELSE.
     SELECT SINGLE NAME1 FROM KNA1 INTO GT_DISPLAY-NAME1 WHERE KUNNR = GT_DISPLAY-KUNNR.
     IF SY-SUBRC <> 0.
@@ -619,15 +614,18 @@ ENDFORM.                    " CALLER_EXIT
 *&      Form  SET_PF_STATUS
 *&---------------------------------------------------------------------*
 FORM SET_PF_STATUS USING RT_EXTAB TYPE SLIS_T_EXTAB.
+  DATA: LT_EXTAB TYPE SLIS_T_EXTAB.
+  LT_EXTAB = RT_EXTAB.
+  DELETE LT_EXTAB WHERE FCODE = 'ADD_ROW' OR FCODE = 'DELETE' OR FCODE = 'DEL_ROW'.
   IF R_CRT = 'X' OR R_UPL = 'X'.
     SET TITLEBAR 'MAIN101'.
-    SET PF-STATUS 'MAIN101' EXCLUDING RT_EXTAB.
+    SET PF-STATUS 'MAIN101' EXCLUDING LT_EXTAB.
   ELSEIF R_EDT = 'X'.
     SET TITLEBAR 'MAIN102'.
-    SET PF-STATUS 'MAIN102' EXCLUDING RT_EXTAB.
+    SET PF-STATUS 'MAIN102' EXCLUDING LT_EXTAB.
   ELSEIF R_DSP = 'X'.
     SET TITLEBAR 'MAIN103'.
-    SET PF-STATUS 'MAIN103' EXCLUDING RT_EXTAB.
+    SET PF-STATUS 'MAIN103' EXCLUDING LT_EXTAB.
   ENDIF.
 ENDFORM.                    " SET_PF_STATUS
 
@@ -653,8 +651,10 @@ FORM USER_COMMAND USING R_UCOMM LIKE SY-UCOMM
       PERFORM F_CLEAR_DATA.
       RS_SELFIELD-REFRESH = 'X'.
     WHEN 'ADD_ROW' OR 'ADD' OR 'INSERT'.
-      PERFORM ADD_NEW_ROW.
-      RS_SELFIELD-REFRESH = 'X'.
+      IF R_CRT = 'X' OR R_UPL = 'X'.
+        PERFORM ADD_NEW_ROW.
+        RS_SELFIELD-REFRESH = 'X'.
+      ENDIF.
     WHEN 'EXIT' OR 'BACK' OR 'CANCEL' OR '&F03' OR '&F15' OR '&F12'.
       LEAVE TO SCREEN 0.
   ENDCASE.
@@ -692,7 +692,12 @@ FORM BUILD_FIELDCAT.
     _ADD_FCAT 'NAME1'      'Customer Name'    30  ' '         ' '.
   ENDIF.
   _ADD_FCAT 'FIELD_NAME'   'Roll Field (F4)'  20  LV_KEY_EDIT 'X'.
-  _ADD_FCAT 'FIELD_LABEL'  'Header Label'     25  LV_EDIT ' '.
+  _ADD_FCAT 'FIELD_LABEL'  'Header Label'     40  LV_EDIT ' '.
+  READ TABLE GT_FIELDCAT INTO LS_FCAT WITH KEY FIELDNAME = 'FIELD_LABEL'.
+  IF SY-SUBRC = 0.
+    LS_FCAT-LOWERCASE = 'X'.
+    MODIFY GT_FIELDCAT FROM LS_FCAT INDEX SY-TABIX.
+  ENDIF.
   _ADD_FCAT 'COL_SIZE'     'Size (S/M/L)'       8  LV_EDIT ' '.
   READ TABLE GT_FIELDCAT INTO LS_FCAT WITH KEY FIELDNAME = 'COL_SIZE'.
   IF SY-SUBRC = 0.
@@ -701,7 +706,7 @@ FORM BUILD_FIELDCAT.
   ENDIF.
   _ADD_FCAT 'SEQ_NO'       'Seq'              5   LV_EDIT ' '.
   _ADD_FCAT 'ACTIVE'       'Act'              4   LV_EDIT ' '.
-  _ADD_FCAT 'STATUS_TXT'   'Status'           35  ' '     ' '.
+  _ADD_FCAT 'STATUS_TXT'   'Status'           55  ' '     ' '.
 ENDFORM.                    " BUILD_FIELDCAT
 
 *&---------------------------------------------------------------------*
@@ -1013,17 +1018,34 @@ FORM SAVE_DATABASE_CHANGES.
         LS_F4_CHK   TYPE TY_FIELD_F4,
         LV_HAS_ERR  TYPE C VALUE ' '.
 
-  " Re-validasi baris sebelum menyimpan (jika user sudah memperbaiki baris error di ALV)
+  " Propagasi KUNNR & NAME1 jika baris berikutnya memiliki FIELD_NAME tapi KUNNR kosong
+  DATA: LV_LAST_KUNNR TYPE KUNNR,
+        LV_LAST_NAME1 TYPE KNA1-NAME1.
+  CLEAR: LV_LAST_KUNNR, LV_LAST_NAME1.
   LOOP AT GT_DISPLAY.
-    IF GT_DISPLAY-KUNNR IS INITIAL AND GT_DISPLAY-FIELD_NAME IS INITIAL.
+    IF GT_DISPLAY-KUNNR IS NOT INITIAL.
+      LV_LAST_KUNNR = GT_DISPLAY-KUNNR.
+      LV_LAST_NAME1 = GT_DISPLAY-NAME1.
+    ELSEIF GT_DISPLAY-FIELD_NAME IS NOT INITIAL AND LV_LAST_KUNNR IS NOT INITIAL.
+      GT_DISPLAY-KUNNR = LV_LAST_KUNNR.
+      GT_DISPLAY-NAME1 = LV_LAST_NAME1.
+      MODIFY GT_DISPLAY.
+    ENDIF.
+  ENDLOOP.
+
+  " Re-validasi baris sebelum menyimpan (hanya untuk baris yang diisi)
+  LOOP AT GT_DISPLAY.
+    IF GT_DISPLAY-KUNNR IS INITIAL OR GT_DISPLAY-FIELD_NAME IS INITIAL.
       CONTINUE.
     ENDIF.
 
     IF GT_DISPLAY-LINE_COLOR = 'C600'.
       CLEAR LS_F4_CHK.
       IF GT_DISPLAY-KUNNR IS NOT INITIAL AND GT_DISPLAY-FIELD_NAME IS NOT INITIAL.
-        IF GT_DISPLAY-KUNNR = 'DOM_DEFAUL'.
+        IF GT_DISPLAY-KUNNR = 'DOMESTIC'.
           GT_DISPLAY-NAME1 = 'STANDARD DOMESTIC BASELINE'.
+        ELSEIF GT_DISPLAY-KUNNR = 'EXPORT'.
+          GT_DISPLAY-NAME1 = 'STANDARD EXPORT BASELINE'.
         ELSE.
           SELECT SINGLE NAME1 FROM KNA1 INTO GT_DISPLAY-NAME1 WHERE KUNNR = GT_DISPLAY-KUNNR.
         ENDIF.
@@ -1088,7 +1110,10 @@ FORM SAVE_DATABASE_CHANGES.
     IF SY-SUBRC = 0.
       COMMIT WORK AND WAIT.
       DESCRIBE TABLE LT_INS LINES LV_COUNT.
-      MESSAGE 'Data mapping berhasil disimpan ke database.' TYPE 'S'.
+
+      " Hapus baris kosong yang tidak diisi agar tampilan ALV persis sesuai jumlah yang disimpan
+      DELETE GT_DISPLAY WHERE KUNNR IS INITIAL OR FIELD_NAME IS INITIAL.
+
       LOOP AT GT_DISPLAY.
         IF GT_DISPLAY-ACTIVE = 'X'.
           GT_DISPLAY-STATUS_TXT = 'Active in Database'.
@@ -1098,8 +1123,17 @@ FORM SAVE_DATABASE_CHANGES.
           GT_DISPLAY-LINE_COLOR = 'C600'.
         ENDIF.
         GT_DISPLAY-BOX = ' '.
+        MODIFY GT_DISPLAY.
       ENDLOOP.
       GT_ORIGINAL[] = GT_DISPLAY[].
+
+      DATA: LV_CNT_STR  TYPE C LENGTH 10,
+            LV_SAVE_MSG TYPE STRING.
+      LV_CNT_STR = LV_COUNT.
+      CONDENSE LV_CNT_STR.
+      CONCATENATE LV_CNT_STR ' baris mapping berhasil disimpan ke database.'
+        INTO LV_SAVE_MSG.
+      MESSAGE LV_SAVE_MSG TYPE 'S'.
     ELSE.
       ROLLBACK WORK.
       MESSAGE 'Gagal menyimpan ke database!' TYPE 'E'.
