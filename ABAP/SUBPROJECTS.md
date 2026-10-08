@@ -54,6 +54,7 @@ Setiap sub-project memakai subfolder standar:
 | `subproject/SAP_GUI_AUTOMATION/` | SAP GUI for Java + Cua Driver | Display X11 khusus, computer-use transaksi SAP, screenshot verification, dan pemantauan VNC lokal | sap gui, sap logon, computer use, cua-driver, gui automation, monitor transaksi |
 | `subproject/ZPP005N/` | `ZPPR_PENDING_ORDER_ALF` | Report Pending Order (monitoring Sales Order vs Production Order, status Delivery & Stock TTA, kolom SKU Design SubCont CKI, Digital Boardroom) | zpp005n, zpp005, zppr_pending_order_alf, pending order, so pending, order alf |
 | `subproject/ZPP090/` | `ZPPI_CHANGE_JR_NUMBER` | Koreksi dan pemunduran sequence nomor Jumbo Roll (JR), update counter tabel `ZSEQNUM` & log `ZLOG_JRNO`, penanganan multi-step rollback | zpp090, zppi_change_jr_number, change jr, memundurkan no roll, sequence roll jr, zseqnum, zlog_jrno |
+| `subproject/MCP_GATEWAY_TEST/` | MCP Gateway Test | Pengujian konektivitas, handshake, discovery tools, dan health check endpoint MCP SQL/RAG | mcp gateway, mcp-sql, mcp-rag, gateway test, testing mcp |
 
 
 ## Folder Non-Sub-Project

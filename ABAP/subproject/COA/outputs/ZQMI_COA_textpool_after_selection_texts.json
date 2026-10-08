@@ -1,0 +1,134 @@
+{
+  "errorMessage": "",
+  "writes": [
+    {
+      "ZEILE": "LANG EN RC     0"
+    },
+    {
+      "ZEILE": "I|ABC|9|Selection"
+    },
+    {
+      "ZEILE": "R||14|QM Certificate"
+    },
+    {
+      "ZEILE": "S|P_ATWRT|17|        Nomor SR"
+    },
+    {
+      "ZEILE": "S|P_CHARG|16|        Batch"
+    },
+    {
+      "ZEILE": "S|P_MATNR|16|        Material"
+    },
+    {
+      "ZEILE": "S|P_POSNR|12|        Item"
+    },
+    {
+      "ZEILE": "S|P_VBELN|17|        Nomor ODO"
+    },
+    {
+      "ZEILE": "S|P_VCONT|24|        Container Number"
+    },
+    {
+      "ZEILE": "S|P_VCUS|21|        Customer Name"
+    },
+    {
+      "ZEILE": "S|P_VDDAT|21|        Delivery Date"
+    },
+    {
+      "ZEILE": "S|P_VGRM|16|        Grammage"
+    },
+    {
+      "ZEILE": "S|P_VLC|17|        LC Number"
+    },
+    {
+      "ZEILE": "S|P_VLIF|18|        Shelf Life"
+    },
+    {
+      "ZEILE": "S|P_VMFR|20|        Manufacturer"
+    },
+    {
+      "ZEILE": "S|P_VPI|17|        PI Number"
+    },
+    {
+      "ZEILE": "S|P_VPO|17|        PO Number"
+    },
+    {
+      "ZEILE": "S|P_VPRD|15|        Product"
+    },
+    {
+      "ZEILE": "S|P_VPRT|13|        #Part"
+    },
+    {
+      "ZEILE": "S|P_VQTY|16|        Quantity"
+    },
+    {
+      "ZEILE": "S|P_VRAW|25|        Raw Material Code"
+    },
+    {
+      "ZEILE": "S|P_VSHP|26|        Date Goods Shipped"
+    },
+    {
+      "ZEILE": "S|P_VTHK|17|        Thickness"
+    },
+    {
+      "ZEILE": "S|P_VWID|13|        Width"
+    },
+    {
+      "ZEILE": "S|P_WERKS|13|        Plant"
+    },
+    {
+      "ZEILE": "S|P_XCONT|30|        Print Container Number"
+    },
+    {
+      "ZEILE": "S|P_XCUS|27|        Print Customer Name"
+    },
+    {
+      "ZEILE": "S|P_XDDAT|27|        Print Delivery Date"
+    },
+    {
+      "ZEILE": "S|P_XGRM|22|        Print Grammage"
+    },
+    {
+      "ZEILE": "S|P_XLC|23|        Print LC Number"
+    },
+    {
+      "ZEILE": "S|P_XLIF|24|        Print Shelf Life"
+    },
+    {
+      "ZEILE": "S|P_XMFR|26|        Print Manufacturer"
+    },
+    {
+      "ZEILE": "S|P_XPI|23|        Print PI Number"
+    },
+    {
+      "ZEILE": "S|P_XPO|23|        Print PO Number"
+    },
+    {
+      "ZEILE": "S|P_XPRD|21|        Print Product"
+    },
+    {
+      "ZEILE": "S|P_XPRT|19|        Print #Part"
+    },
+    {
+      "ZEILE": "S|P_XQTY|22|        Print Quantity"
+    },
+    {
+      "ZEILE": "S|P_XRAW|31|        Print Raw Material Code"
+    },
+    {
+      "ZEILE": "S|P_XSHP|32|        Print Date Goods Shipped"
+    },
+    {
+      "ZEILE": "S|P_XTHK|23|        Print Thickness"
+    },
+    {
+      "ZEILE": "S|P_XWID|19|        Print Width"
+    },
+    {
+      "ZEILE": "S|S_ERDAT|23|        Delivery Date"
+    },
+    {
+      "ZEILE": "LANG IT RC     4"
+    }
+  ]
+}

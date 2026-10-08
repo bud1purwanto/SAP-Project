@@ -1,0 +1,38 @@
+{
+  "errorMessage": "",
+  "writes": [
+    {
+      "ZEILE": "LANG EN RC     0"
+    },
+    {
+      "ZEILE": "I|ABC|9|Selection"
+    },
+    {
+      "ZEILE": "R||14|QM Certificate"
+    },
+    {
+      "ZEILE": "S|P_ATWRT|17|        Nomor SR"
+    },
+    {
+      "ZEILE": "S|P_CHARG|16|        Batch"
+    },
+    {
+      "ZEILE": "S|P_MATNR|16|        Material"
+    },
+    {
+      "ZEILE": "S|P_POSNR|12|        Item"
+    },
+    {
+      "ZEILE": "S|P_VBELN|17|        Nomor ODO"
+    },
+    {
+      "ZEILE": "S|P_WERKS|13|        Plant"
+    },
+    {
+      "ZEILE": "S|S_ERDAT|23|        Delivery Date"
+    },
+    {
+      "ZEILE": "LANG IT RC     4"
+    }
+  ]
+}
