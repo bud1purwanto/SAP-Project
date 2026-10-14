@@ -473,6 +473,25 @@ FORM F_CREATE_DATA.
       CONTINUE.
     ENDIF.
 
+    CONDENSE: ITAB-LOWER_LIMIT, ITAB-UPPER_LIMIT.
+    IF ITAB-LOWER_LIMIT IS NOT INITIAL
+       AND ( NOT ( ITAB-LOWER_LIMIT CO '0123456789., ' )
+             OR NOT ( ITAB-LOWER_LIMIT CA '0123456789' ) ).
+      ITAB-REMARK     = 'Lower Limit hanya boleh berisi angka, koma, atau titik!'.
+      ITAB-LINE_COLOR = V_ERR.
+      MODIFY ITAB.
+      CONTINUE.
+    ENDIF.
+
+    IF ITAB-UPPER_LIMIT IS NOT INITIAL
+       AND ( NOT ( ITAB-UPPER_LIMIT CO '0123456789., ' )
+             OR NOT ( ITAB-UPPER_LIMIT CA '0123456789' ) ).
+      ITAB-REMARK     = 'Upper Limit hanya boleh berisi angka, koma, atau titik!'.
+      ITAB-LINE_COLOR = V_ERR.
+      MODIFY ITAB.
+      CONTINUE.
+    ENDIF.
+
     "Check data is exist (menghilangkan simbol @)
     SELECT SINGLE MATNR DELETION INTO (ITAB-MATNR, ITAB-DELETION)
       FROM ZMAP_COA
@@ -624,6 +643,25 @@ FORM F_CHANGE_DATA.
        AND ITAB-MAPPING <> 'SR Base Film'
        AND ITAB-MAPPING <> 'SR Converting'.
       ITAB-REMARK     = 'Mapping wajib: JR Base Film / JR Converting / SR Base Film / SR Converting'.
+      ITAB-LINE_COLOR = V_ERR.
+      MODIFY ITAB.
+      CONTINUE.
+    ENDIF.
+
+    CONDENSE: ITAB-LOWER_LIMIT, ITAB-UPPER_LIMIT.
+    IF ITAB-LOWER_LIMIT IS NOT INITIAL
+       AND ( NOT ( ITAB-LOWER_LIMIT CO '0123456789., ' )
+             OR NOT ( ITAB-LOWER_LIMIT CA '0123456789' ) ).
+      ITAB-REMARK     = 'Lower Limit hanya boleh berisi angka, koma, atau titik!'.
+      ITAB-LINE_COLOR = V_ERR.
+      MODIFY ITAB.
+      CONTINUE.
+    ENDIF.
+
+    IF ITAB-UPPER_LIMIT IS NOT INITIAL
+       AND ( NOT ( ITAB-UPPER_LIMIT CO '0123456789., ' )
+             OR NOT ( ITAB-UPPER_LIMIT CA '0123456789' ) ).
+      ITAB-REMARK     = 'Upper Limit hanya boleh berisi angka, koma, atau titik!'.
       ITAB-LINE_COLOR = V_ERR.
       MODIFY ITAB.
       CONTINUE.
@@ -1042,7 +1080,9 @@ FORM PREPARE_FIELD_CATALOG  CHANGING P_FCAT TYPE LVC_T_FCAT .
   M_FIELDCAT-COL_POS    = V_POS + 1.
   M_FIELDCAT-TABNAME    = 'ITAB'.
   M_FIELDCAT-FIELDNAME  = 'MIC_DESC'.
-  M_FIELDCAT-OUTPUTLEN  = 30.
+  M_FIELDCAT-REF_TABLE  = 'ZMAP_COA'.
+  M_FIELDCAT-REF_FIELD  = 'MIC_DESC'.
+  M_FIELDCAT-OUTPUTLEN  = 40.
   M_FIELDCAT-REPTEXT    = 'MIC Description'.
   M_FIELDCAT-COL_OPT    = 'X'.
   M_FIELDCAT-LOWERCASE  = 'X'.
@@ -1524,3 +1564,4 @@ FORM DOWNLOAD_TEMPLATE.
     MESSAGE V_ERROR TYPE 'S' DISPLAY LIKE 'E'.
   ENDIF.
 ENDFORM.                    " DOWNLOAD_TEMPLATE
+

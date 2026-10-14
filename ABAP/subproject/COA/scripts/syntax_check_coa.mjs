@@ -1,6 +1,7 @@
 import { serverManager } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/server-manager.js';
 import { call_function } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/tools/query-tools.js';
 
+const prog = process.argv[2] || 'ZQMI_COA';
 const source = [
   'REPORT ZTMP_COA_SYNTAX_CHECK.',
   'DATA: LT_SOURCE TYPE STANDARD TABLE OF ABAPTXT255,',
@@ -8,11 +9,11 @@ const source = [
   '      LV_INC TYPE SYREPID,',
   '      LV_LINE TYPE SY-TABIX,',
   '      LV_SUBRC TYPE SY-SUBRC.',
-  "READ REPORT 'ZQMI_COA' INTO LT_SOURCE.",
+  `READ REPORT '${prog}' INTO LT_SOURCE.`,
   "CALL FUNCTION 'RS_SYNTAX_CHECK'",
   '  EXPORTING',
-  "    I_PROGRAM = 'ZQMI_COA'",
-  "    I_GLOBAL_PROGRAM = 'ZQMI_COA'",
+  `    I_PROGRAM = '${prog}'`,
+  `    I_GLOBAL_PROGRAM = '${prog}'`,
   "    I_GLOBAL_CHECK = 'X'",
   "    I_WITH_DIALOG = ' '",
   '  IMPORTING',

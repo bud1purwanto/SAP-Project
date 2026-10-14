@@ -5,8 +5,8 @@ import { call_function } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/
 const formName = process.argv[2];
 const candidatePath = process.argv[3];
 const mode = process.argv[4] === '--existing' ? 'MODIFY' : 'INSERT';
-if (formName !== 'ZQMF_COA_EXPORT' || !candidatePath) {
-  throw new Error('Only ZQMF_COA_EXPORT candidate upload is allowed');
+if ((formName !== 'ZQMF_COA_EXPORT' && formName !== 'ZQMF_COA') || !candidatePath) {
+  throw new Error('Only ZQMF_COA_EXPORT and ZQMF_COA candidate upload is allowed');
 }
 const xml = readFileSync(candidatePath, 'utf8');
 if (!xml.includes(`<FORMNAME>${formName}</FORMNAME>`)) {

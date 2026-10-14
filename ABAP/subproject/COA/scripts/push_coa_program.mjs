@@ -4,8 +4,8 @@ import { call_function } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/
 
 const programName = process.argv[2];
 const sourcePath = process.argv[3];
-if (!['ZQMI_COA_TOP', 'ZQMI_COA_F01'].includes(programName) || !sourcePath) {
-  throw new Error('Only COA include candidates are allowed');
+if (!['ZQMI_COA_TOP', 'ZQMI_COA_F01', 'ZQMI_COA_F02', 'ZMAP_COA_MIC'].includes(programName) || !sourcePath) {
+  throw new Error('Only COA candidates are allowed');
 }
 const source = readFileSync(sourcePath, 'utf8').split(/\r?\n/);
 if (source[source.length - 1] === '') source.pop();

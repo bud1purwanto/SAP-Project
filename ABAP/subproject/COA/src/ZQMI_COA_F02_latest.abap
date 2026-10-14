@@ -8,7 +8,7 @@
 *----------------------------------------------------------------------*
 MODULE STATUS_0100 OUTPUT.
   SET PF-STATUS 'PF0100'.
-*  SET TITLEBAR 'xxx'.
+  SET TITLEBAR 'T0100'.
 ENDMODULE.                 " STATUS_0100  OUTPUT
 *&---------------------------------------------------------------------*
 *&      Module  USER_COMMAND_0100  INPUT
@@ -570,7 +570,7 @@ ENDMODULE.                    "TDETAIL_USER_COMMAND INPUT
 *----------------------------------------------------------------------*
 MODULE STATUS_0200 OUTPUT.
   SET PF-STATUS 'PF0200'.
-*  SET TITLEBAR 'xxx'.
+  SET TITLEBAR 'T0100'.
 ENDMODULE.                 " STATUS_0200  OUTPUT
 *&---------------------------------------------------------------------*
 *&      Module  TDETAIL_MODIFY  INPUT
