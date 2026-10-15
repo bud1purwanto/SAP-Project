@@ -1,0 +1,153 @@
+import { readFileSync, writeFileSync } from 'node:fs';
+
+const filePath = '/data/Projects/SAP/ABAP/subproject/COA/outputs/ZQMI_COA_F01_sandbox-new_fresh.abap';
+let source = readFileSync(filePath, 'utf8');
+
+// A. Tambahkan fallback order sibling pada JR Conv
+const oldJrConv = `    IF LOT_JR_CONV IS INITIAL.
+      PERFORM GET_JR_SIBLING_LOT USING L_JR_CONV_BATCH CHANGING LOT_JR_CONV.
+    ENDIF.`;
+const newJrConv = `    IF LOT_JR_CONV IS INITIAL.
+      PERFORM GET_JR_SIBLING_LOT USING L_JR_CONV_BATCH CHANGING LOT_JR_CONV.
+    ENDIF.
+    IF LOT_JR_CONV IS INITIAL.
+      PERFORM GET_JR_SIBLING_BY_ORDER USING L_JR_CONV_BATCH CHANGING LOT_JR_CONV.
+    ENDIF.`;
+
+if (!source.includes(oldJrConv)) throw new Error('oldJrConv not found');
+source = source.replace(oldJrConv, newJrConv);
+
+// B. Tambahkan fallback order sibling pada JR Base
+const oldJrBase = `    IF LOT_JR_BASE IS INITIAL.
+      PERFORM GET_JR_SIBLING_LOT USING L_JR_BASE_BATCH CHANGING LOT_JR_BASE.
+    ENDIF.`;
+const newJrBase = `    IF LOT_JR_BASE IS INITIAL.
+      PERFORM GET_JR_SIBLING_LOT USING L_JR_BASE_BATCH CHANGING LOT_JR_BASE.
+    ENDIF.
+    IF LOT_JR_BASE IS INITIAL.
+      PERFORM GET_JR_SIBLING_BY_ORDER USING L_JR_BASE_BATCH CHANGING LOT_JR_BASE.
+    ENDIF.`;
+
+if (!source.includes(oldJrBase)) throw new Error('oldJrBase not found');
+source = source.replace(oldJrBase, newJrBase);
+
+// C. Bangun GT_STAGE_LOTS via universal loop di akhir GET_TRACED_LOTS
+const oldEndTrace = `  IF GS_TRACE_DATA-LOT_SR_CONV_SIBLING IS INITIAL AND LOT_SR_CONV IS NOT INITIAL.
+    GS_TRACE_DATA-LOT_SR_CONV_SIBLING = LOT_SR_CONV.
+  ENDIF.
+  APPEND GS_TRACE_DATA TO GT_TRACE_DATA.
+ENDFORM.                    "GET_TRACED_LOTS`;
+
+const newEndTrace = `  IF GS_TRACE_DATA-LOT_SR_CONV_SIBLING IS INITIAL AND LOT_SR_CONV IS NOT INITIAL.
+    GS_TRACE_DATA-LOT_SR_CONV_SIBLING = LOT_SR_CONV.
+  ENDIF.
+  APPEND GS_TRACE_DATA TO GT_TRACE_DATA.
+
+* Enhancement Alpaca: Penelusuran Pohon Genealogi Multi-Tier Dinamis (100% Data-Driven)
+  REFRESH GT_STAGE_LOTS.
+  DATA: LV_TREE_CHARG TYPE MCH1-CHARG,
+        LV_TREE_MATNR TYPE MCH1-MATNR,
+        LV_TREE_LICHA TYPE MCH1-LICHA,
+        LV_TREE_JR    TYPE MCH1-CHARG,
+        LV_TREE_LOT   TYPE QALS-PRUEFLOS,
+        LV_TREE_AUFNR TYPE MSEG-AUFNR,
+        LV_TREE_COMP  TYPE MSEG-CHARG,
+        LV_TREE_AZ    TYPE QAMR-ANZWERTG,
+        LV_TREE_LEN   TYPE I,
+        LV_TREE_TMP   TYPE I,
+        LT_TREE_VISITED TYPE TABLE OF MCH1-CHARG WITH HEADER LINE.
+
+  LV_TREE_CHARG = IT_DATA-CHARG.
+  DO 10 TIMES.
+    READ TABLE LT_TREE_VISITED WITH KEY TABLE_LINE = LV_TREE_CHARG.
+    IF SY-SUBRC = 0. EXIT. ENDIF.
+    LT_TREE_VISITED = LV_TREE_CHARG. APPEND LT_TREE_VISITED.
+
+    SELECT SINGLE MATNR LICHA INTO (LV_TREE_MATNR, LV_TREE_LICHA) FROM MCH1
+      WHERE CHARG = LV_TREE_CHARG.
+    IF SY-SUBRC <> 0. EXIT. ENDIF.
+
+    LV_TREE_LEN = STRLEN( LV_TREE_MATNR ).
+    LV_TREE_TMP = LV_TREE_LEN - 1.
+    IF LV_TREE_MATNR(2) = 'SR' AND
+       ( LV_TREE_MATNR+LV_TREE_TMP(1) = 'A' OR LV_TREE_MATNR+LV_TREE_TMP(1) = 'O' ).
+      IF LV_TREE_LICHA IS NOT INITIAL.
+        LV_TREE_CHARG = LV_TREE_LICHA.
+      ENDIF.
+    ENDIF.
+
+    SELECT SINGLE MATNR INTO LV_TREE_MATNR FROM MCH1 WHERE CHARG = LV_TREE_CHARG.
+    IF LV_TREE_MATNR(2) = 'SR'.
+      CLEAR LV_TREE_LOT.
+      SELECT SINGLE PRUEFLOS INTO LV_TREE_LOT FROM QALS
+        WHERE CHARG = LV_TREE_CHARG AND ART = 'Z04'.
+      IF LV_TREE_LOT IS NOT INITIAL.
+        CLEAR GT_STAGE_LOTS.
+        GT_STAGE_LOTS-STAGE_TYPE = 'SR'.
+        GT_STAGE_LOTS-CATEGORY   = 'CONV'.
+        GT_STAGE_LOTS-MATNR      = LV_TREE_MATNR.
+        GT_STAGE_LOTS-CHARG      = LV_TREE_CHARG.
+        GT_STAGE_LOTS-INSLOT     = LV_TREE_LOT.
+        APPEND GT_STAGE_LOTS.
+      ENDIF.
+
+      CLEAR LV_TREE_JR.
+      CALL FUNCTION 'ZQM_GET_BATCH_JR_BY_SR'
+        EXPORTING CHARG_S = LV_TREE_CHARG IMPORTING CHARG_J = LV_TREE_JR.
+      IF LV_TREE_JR IS NOT INITIAL.
+        SELECT SINGLE MATNR INTO LV_TREE_MATNR FROM MCH1 WHERE CHARG = LV_TREE_JR.
+        CLEAR LV_TREE_LOT.
+        SELECT SINGLE PRUEFLOS INTO LV_TREE_LOT FROM QALS
+          WHERE CHARG = LV_TREE_JR AND ( ART = 'Z01' OR ART = 'Z02' OR ART = 'Z03' ).
+        CLEAR LV_TREE_AZ.
+        IF LV_TREE_LOT IS NOT INITIAL.
+          SELECT SINGLE ANZWERTG INTO LV_TREE_AZ FROM QAMR
+            WHERE PRUEFLOS = LV_TREE_LOT AND ANZWERTG > 0.
+        ENDIF.
+        IF LV_TREE_LOT IS INITIAL OR LV_TREE_AZ = 0.
+          PERFORM GET_JR_SIBLING_BY_ORDER USING LV_TREE_JR CHANGING LV_TREE_LOT.
+        ENDIF.
+
+        IF LV_TREE_LOT IS NOT INITIAL.
+          CLEAR GT_STAGE_LOTS.
+          GT_STAGE_LOTS-STAGE_TYPE = 'JR'.
+          IF LV_TREE_MATNR CS 'AH' OR LV_TREE_MATNR CS 'AS' OR LV_TREE_MATNR CS 'BASE'.
+            GT_STAGE_LOTS-CATEGORY = 'BASE'.
+          ELSE.
+            GT_STAGE_LOTS-CATEGORY = 'CONV'.
+          ENDIF.
+          GT_STAGE_LOTS-MATNR  = LV_TREE_MATNR.
+          GT_STAGE_LOTS-CHARG  = LV_TREE_JR.
+          GT_STAGE_LOTS-INSLOT = LV_TREE_LOT.
+          APPEND GT_STAGE_LOTS.
+        ENDIF.
+
+        CLEAR LV_TREE_AUFNR.
+        SELECT SINGLE AUFNR INTO LV_TREE_AUFNR FROM MSEG
+          WHERE BWART = '101' AND CHARG = LV_TREE_JR.
+        IF LV_TREE_AUFNR IS NOT INITIAL.
+          CLEAR LV_TREE_COMP.
+          SELECT SINGLE CHARG INTO LV_TREE_COMP FROM MSEG
+            WHERE BWART = '261' AND AUFNR = LV_TREE_AUFNR AND CHARG <> space.
+          IF LV_TREE_COMP IS NOT INITIAL.
+            LV_TREE_CHARG = LV_TREE_COMP.
+          ELSE.
+            EXIT.
+          ENDIF.
+        ELSE.
+          EXIT.
+        ENDIF.
+      ELSE.
+        EXIT.
+      ENDIF.
+    ELSE.
+      EXIT.
+    ENDIF.
+  ENDDO.
+ENDFORM.                    "GET_TRACED_LOTS`;
+
+if (!source.includes(oldEndTrace)) throw new Error('oldEndTrace not found');
+source = source.replace(oldEndTrace, newEndTrace);
+
+writeFileSync(filePath, source, 'utf8');
+console.log('Tahap 2 sukses: GET_TRACED_LOTS dan traversal genealogi dinamis berhasil diselaraskan.');
