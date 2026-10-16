@@ -60,3 +60,35 @@ Pola normal ZPP001 (user OPPKR_19, order lain, mis. 800000043922 pada 03:37:52�
 | 11:27–11:28 | LOG_09 | VLMOVE 311 lanjutan batch yang sama | 4932905391…412 |
 
 Interpretasi: cancel dilakukan untuk koreksi input (berat/panjang 5 batch dan alokasi SO -> Unrestricted). Run #1–#3 gagal di step confirmation/GI (log hanya popup), user mengulang karena melihat status Failed. Pesan error persis belum diketahui.
+
+## Revisi Kronologi & Titik Gagal (verifikasi lanjutan 2026-10-16)
+
+Koreksi atas bagian sebelumnya: urutan dokumen tetap valid. Yang direvisi adalah interpretasi "user mengulang proses lengkap".
+
+### Fakta tambahan
+- Terminal (USR41): OPPKR_07 = 192.168.7.57 (KR-BOPP6), OPPKR_19 = 192.168.7.236 (KR-BOPP7). Bukan 1 PC. Cancel + 3 run = OPPKR_19 sendiri.
+- JR 0034064873: ZZLENGTH sekarang 360 m; panjang slitting MAX_LENGTH 8.040 m; ZZCONVERSIONMTRKG 0,15652. 8.400 m x 0,15652 = 1.314,77 kg = stok fisik JR (F018 1.145,75 + 2P03 169,05). Jadi sebelum run #1 JR = 8.400 m; run #1 memotong ke 360 m; tidak pernah di-undo.
+- JCDS original order P20000383845: DLV (I0012) aktif 02:35:15, nonaktif 03:41:44 (cancel), **aktif lagi 03:45:15 (run #1)**.
+- CDHDR: run #1 mengubah karakteristik 11 batch SR + JR. Run #2/#3 tidak menghasilkan change document sama sekali.
+- Tidak ada AFRU baru, tidak ada GI 261 baru, tidak ada SNAP, tidak ada VBHDR.
+
+### Dua jalur tombol di ZPP001
+- **COMMIT** (`USER_COMMAND` TOP 1260): CEK_COM_ORDER_STATUS → RETRIEVE_DATA_BOXER (cek original order DLV/PDLV, lock EZGR 'PO'+combine order, baca ulang JR) → CHECKING_DATA_BOXER → CHECK_LENGTH_BOXER → POPUP_CONFIRMATION (cek MAX_LENGTH >= ZZLENGTH JR) → window konfirmasi (PF-STATUS STCONF, tombol YES).
+- **YES** (TOP 1310): hanya CEK_COM_ORDER_STATUS (REL + ucomm YES lolos) → PROCESS_ALL memakai data di memori (IT_MAIN, IT_INBATCH). Tidak ada cek DLV, cek panjang, maupun lock.
+
+### Kesimpulan run #2/#3
+Setelah 03:45:15 original order DLV dan JR 360 m < 8.040 m, sehingga COMMIT pasti diblok ("Order sudah di good receipt" / "Panjang Maksimal >= panjang batch 1"). GR tetap terposting → run #2/#3 berasal dari **tombol YES ditekan lagi** dengan data memori run #1 (JR 8.400 m → hitung 360 m = nilai DB → BAPI_OBJCL_CHANGE tanpa perubahan → tanpa change document). Konsisten 100% dengan CDHDR.
+
+### Titik gagal
+- Ketiga run berhasil: change batch original → GR 101 → 411 → change batch JR, lalu **gagal di step CONFIRMATION** (`BAPI_PROCORDCONF_CREATE_TT`, AFRU tidak terbentuk). Pesan error persis tidak tersimpan.
+- Setelah confirmation gagal: `UNDO_CHANGE_BATCH_INPUTAN` dipanggil, tetapi undo JR juga tidak berhasil (JR tetap 360 m, tanpa change document) → `CANCEL_CONFIRMATION` tidak dipanggil → GR/411 tidak di-cancel.
+- Andai undo berhasil pun, `CANCEL_CONFIRMATION` akan berhenti karena tidak ada AFRU aktif (G1) → GR/411 tetap tidak di-cancel.
+
+### Dampak turunan
+- Karakteristik JR (360 m / 56,35 kg) tidak sesuai stok (1.314,8 kg). 16-10 09:46–09:51 OPPKR_02 melakukan 3x transfer 311 masing-masing 56,35 kg ke 2P03 (MB1B 4932911992/2161/2173), kemungkinan mengikuti nilai karakteristik yang salah — perlu konfirmasi user.
+
+### Perlu replay (QA/sandbox) untuk kepastian
+1. Pesan error BAPI_PROCORDCONF_CREATE_TT setelah cancel → proses ulang.
+2. Penyebab undo karakteristik JR gagal.
+3. Apakah window konfirmasi (YES) tetap aktif setelah popup log ditutup (bukan via BACKL), padahal ada `SET USER-COMMAND 'RW'`.
+Alternatif: Basis cek STAD user OPPKR_19 15-10 03:44–03:48 untuk urutan dialog step.
