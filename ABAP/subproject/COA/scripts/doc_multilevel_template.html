@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Penelusuran Inspection Lot COA — Multi-Level Converting</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 17mm 20mm 17mm;
+    @bottom-left { content: "ZQMI_COA · Penelusuran Inspection Lot Multi-Level Converting"; font: 8pt "Noto Sans", sans-serif; color: #8a94a3; }
+    @bottom-right { content: "Hal. " counter(page) " / " counter(pages); font: 8pt "Noto Sans", sans-serif; color: #8a94a3; }
+  }
+  @page :first { margin: 0; @bottom-left { content: none; } @bottom-right { content: none; } }
+  :root {
+    --ink: #1b2430; --muted: #5b6675; --line: #d9dee5; --soft: #f4f6f9;
+    --navy: #1f3a5f; --sr: #1f7a72; --jr: #2f5d9e; --amber: #b7791f; --amber-bg: #fbf3e4;
+    --green: #2f7d4f; --green-bg: #e7f4ec; --red: #b4423a; --red-bg: #fbeceb;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #fff; }
+  body { font-family: "Noto Sans", "DejaVu Sans", sans-serif; color: var(--ink); font-size: 9.6pt; line-height: 1.55; }
+  .mono, code { font-family: "Noto Sans Mono", "DejaVu Sans Mono", monospace; font-size: 0.92em; }
+  h1, h2, h3 { font-family: "Noto Serif", Georgia, serif; color: var(--navy); line-height: 1.25; margin: 0; }
+  h2 { font-size: 17pt; margin: 0 0 4mm; padding-top: 1mm; }
+  h2 .no { color: var(--amber); margin-right: 3mm; }
+  h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+  p { margin: 0 0 2.6mm; }
+  .lead { font-size: 10.6pt; color: #33404f; }
+  section { break-before: page; }
+  section.nobreak { break-before: auto; margin-top: 8mm; }
+  .keep { break-inside: avoid; }
+
+  /* cover */
+  .cover { height: 297mm; padding: 34mm 22mm 20mm; position: relative; background: linear-gradient(160deg, #1f3a5f 0%, #27486f 55%, #2f5d9e 100%); color: #fff; }
+  .cover .tag { display: inline-block; font-size: 8.5pt; letter-spacing: .14em; text-transform: uppercase; border: 1px solid rgba(255,255,255,.45); padding: 1.2mm 3mm; border-radius: 20px; }
+  .cover h1 { color: #fff; font-size: 30pt; margin: 12mm 0 5mm; max-width: 150mm; }
+  .cover .sub { font-size: 12.5pt; color: #d6e1ef; max-width: 145mm; }
+  .cover .rule { width: 26mm; height: 3px; background: #e2b35c; margin: 10mm 0; }
+  .cover dl { display: grid; grid-template-columns: 38mm 1fr; gap: 2.4mm 4mm; font-size: 10pt; margin: 0; }
+  .cover dt { color: #aebfd6; } .cover dd { margin: 0; }
+  .cover .foot { position: absolute; left: 22mm; right: 22mm; bottom: 18mm; font-size: 8.5pt; color: #aebfd6; border-top: 1px solid rgba(255,255,255,.25); padding-top: 4mm; }
+  .cover .chainmini { margin-top: 18mm; display: flex; gap: 2mm; flex-wrap: wrap; }
+  .cover .chainmini span { font-family: "Noto Sans Mono", monospace; font-size: 8.5pt; padding: 1.3mm 2.4mm; border-radius: 4px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.22); }
+  .cover .chainmini span.hot { background: rgba(226,179,92,.22); border-color: #e2b35c; }
+
+  /* blocks */
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin: 5mm 0 6mm; }
+  .tile { border: 1px solid var(--line); border-radius: 8px; padding: 3.5mm 4mm; background: var(--soft); }
+  .tile .n { font-family: "Noto Serif", serif; font-size: 20pt; color: var(--navy); font-weight: 700; line-height: 1.1; }
+  .tile .l { font-size: 8.3pt; color: var(--muted); margin-top: 1mm; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .card { border: 1px solid var(--line); border-radius: 8px; padding: 3.5mm 4.5mm; }
+  .card h4 { margin: 0 0 1.5mm; font-size: 9.6pt; color: var(--navy); text-transform: uppercase; letter-spacing: .06em; }
+  .card p:last-child { margin-bottom: 0; }
+  .callout { border-left: 4px solid var(--amber); background: var(--amber-bg); padding: 4mm 5mm; border-radius: 0 8px 8px 0; margin: 4mm 0; }
+  .callout.green { border-color: var(--green); background: var(--green-bg); }
+  .callout.navy { border-color: var(--navy); background: #eef1f6; }
+  .callout .q { font-family: "Noto Serif", serif; font-size: 12.5pt; color: var(--navy); font-weight: 700; margin-bottom: 1.5mm; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 8.8pt; margin: 2mm 0 3mm; }
+  th { text-align: left; font-weight: 700; color: var(--muted); font-size: 7.8pt; text-transform: uppercase; letter-spacing: .05em; border-bottom: 1.5px solid var(--navy); padding: 1.8mm 2mm; }
+  td { border-bottom: 1px solid var(--line); padding: 1.6mm 2mm; vertical-align: top; }
+  table.tight td { padding: 1.05mm 2mm; font-size: 8.4pt; }
+  td.num { text-align: right; white-space: nowrap; }
+  tr.hl td { background: var(--amber-bg); }
+  .ok { color: var(--green); font-weight: 600; } .bad { color: var(--red); font-weight: 600; }
+  .pill { display: inline-block; padding: .2mm 2.2mm; border-radius: 10px; font-size: 7.8pt; font-weight: 700; }
+  .pill.ok { background: var(--green-bg); color: var(--green); }
+  .pill.amber { background: var(--amber-bg); color: var(--amber); }
+
+  .scen { display: grid; grid-template-columns: 108mm 1fr; gap: 6mm; align-items: start; }
+  .scen .side h4 { margin: 0 0 1.5mm; font-size: 9pt; color: var(--navy); text-transform: uppercase; letter-spacing: .06em; }
+  .scen .side ul { margin: 0 0 3mm; padding-left: 4.5mm; }
+  .scen .side li { margin-bottom: 1mm; }
+  .verdict { display: inline-block; font-weight: 700; padding: 1mm 3mm; border-radius: 6px; font-size: 9pt; }
+  .verdict.ok { background: var(--green-bg); color: var(--green); }
+  .verdict.amber { background: var(--amber-bg); color: var(--amber); }
+  .legend { display: flex; gap: 5mm; font-size: 8.3pt; color: var(--muted); margin: 1mm 0 3mm; flex-wrap: wrap; }
+  .legend i { display: inline-block; width: 3mm; height: 3mm; border-radius: 2px; margin-right: 1.4mm; vertical-align: -0.3mm; }
+  .steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+  .steps li { counter-increment: s; position: relative; padding-left: 9mm; margin-bottom: 2.4mm; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: .2mm; width: 5.6mm; height: 5.6mm; border-radius: 50%; background: var(--navy); color: #fff; font-size: 8pt; font-weight: 700; text-align: center; line-height: 5.6mm; }
+  .small { font-size: 8.4pt; color: var(--muted); }
+  .twocol-text { columns: 2; column-gap: 7mm; }
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<div class="cover">
+  <span class="tag">Dokumentasi Logika · COA</span>
+  <h1>Penelusuran Inspection Lot pada Skenario Multi-Level Converting</h1>
+  <div class="sub">Bagaimana program COA menemukan sumber nilai uji (MIC) dari roll yang dikirim, dan bagaimana sistem membedakan skenario biasa dengan skenario converting bertingkat.</div>
+  <div class="rule"></div>
+  <dl>
+    <dt>Program</dt><dd>ZQMI_COA · include ZQMI_COA_F01 (ZQM002 / ZQM003)</dd>
+    <dt>Kasus pemicu</dt><dd>DO 0085006278 · material SRGLBI</dd>
+    <dt>Status</dt><dd>Lulus live test di Development AIX · diterapkan di sandbox-new (TRS)</dd>
+    <dt>Tanggal</dt><dd>16 Oktober 2026</dd>
+  </dl>
+  <div class="chainmini">
+    <span>SRGLBI</span><span>JRGLBI</span><span>SRGLAI</span><span class="hot">JRGLAI</span><span>SRGKAI</span><span>JRGKAI</span><span>SRAH8I</span><span>JRAH8I</span>
+  </div>
+  <div class="foot">Untuk: Functional QM/PP dan Leader · Disusun oleh tim ABAP</div>
+</div>
+
+<!-- ============================ 1. RINGKASAN ============================ -->
+<section>
+  <h2><span class="no">01</span>Ringkasan</h2>
+  <p class="lead">Pada skenario converting bertingkat (DO 0085006278), COA hanya menampilkan 1 dari 10 parameter uji. Sembilan parameter lainnya tampil 0 karena program tidak menemukan inspection lot-nya. Penyebabnya, logika penelusuran lama hanya mampu melihat dua tingkat Jumbo Roll ke atas. Perbaikan menambahkan penelusuran penuh yang hanya aktif pada skenario bertingkat, sehingga skenario lain tetap menghasilkan nilai yang sama persis.</p>
+
+  <div class="tiles">
+    <div class="tile"><div class="n">23</div><div class="l">DO diuji dengan data riil Development AIX</div></div>
+    <div class="tile"><div class="n">22</div><div class="l">DO menghasilkan nilai identik dengan sebelum perbaikan</div></div>
+    <div class="tile"><div class="n">9</div><div class="l">MIC pada DO 0085006278 kini terisi sesuai ekspektasi</div></div>
+    <div class="tile"><div class="n">0</div><div class="l">baris logika lama yang diubah atau dihapus</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card"><h4>Masalah</h4><p>Material SRGLBI melewati 8 tahap produksi: Basefilm → Coat 1 → Metallizing → Coat 2. Parameter uji yang dipetakan ke COA berasal dari 4 tahap berbeda, sebagian besar berada lebih dari dua tingkat di atas roll yang dikirim.</p></div>
+    <div class="card"><h4>Penyebab</h4><p>Penelusuran lama selalu berhenti setelah dua Jumbo Roll dan menganggap Jumbo Roll kedua adalah Base Film. Pada kasus ini Jumbo Roll kedua ternyata JR Conv Metz (JRGLAI), sehingga lot yang dicari salah tingkat.</p></div>
+    <div class="card"><h4>Perbaikan</h4><p>Sistem mengecek apakah "JR Base Film" hasil penelusuran lama benar-benar Base Film. Jika ternyata masih punya bahan baku roll, silsilah ditelusuri penuh dan setiap MIC diambil dari lot tahap yang memang mengujinya.</p></div>
+    <div class="card"><h4>Dampak</h4><p>Skenario biasa (QM01–QM10 dan 14 DO tambahan) tidak tersentuh. Pengecekan bertingkat tidak aktif pada skenario tersebut, dan MIC yang sudah ditemukan oleh logika lama tidak pernah diganti.</p></div>
+  </div>
+</section>
+
+<!-- ============================ 2. ISTILAH ============================ -->
+<section>
+  <h2><span class="no">02</span>Konsep dasar</h2>
+  <p>COA menampilkan nilai rata-rata hasil uji laboratorium (MIC) untuk material yang dikirim dalam satu Delivery Order. Nilai uji tidak selalu direkam pada roll yang dikirim; sering kali direkam pada roll induknya di tahap produksi sebelumnya. Karena itu program harus menelusuri silsilah roll ke atas.</p>
+
+  <table class="keep">
+    <tr><th style="width:30mm">Istilah</th><th>Arti dalam konteks COA</th></tr>
+    <tr><td><b>SR</b> (Slit Roll)</td><td>Roll hasil slitting. Roll yang dikirim di DO selalu SR. Inspection lot SR bertipe <span class="mono">Z04</span>.</td></tr>
+    <tr><td><b>JR</b> (Jumbo Roll)</td><td>Roll besar hasil mesin produksi (extrusion, coating, metallizing). Inspection lot JR bertipe <span class="mono">Z02/Z03</span>.</td></tr>
+    <tr><td><b>Base Film</b></td><td>JR pertama hasil extrusion. Bahan bakunya resin, bukan roll. Ini adalah ujung atas silsilah.</td></tr>
+    <tr><td><b>Converting</b></td><td>Tahap yang memproses roll menjadi roll baru (coating, metallizing). Bahan bakunya adalah roll SR atau JR.</td></tr>
+    <tr><td><b>MAPPING</b> (ZMAP_COA)</td><td>Penanda sumber tiap MIC: <i>SR Converting</i>, <i>JR Converting</i>, <i>SR Base Film</i>, atau <i>JR Base Film</i>. Mapping tidak menyebut converting tingkat ke berapa.</td></tr>
+  </table>
+
+  <h3>Cara kerja logika lama: empat slot tetap</h3>
+  <p>Program lama menelusuri dua tingkat Jumbo Roll ke atas dan menyimpan hasilnya di empat slot. Setiap MIC mengambil lot dari slot sesuai MAPPING-nya.</p>
+  <table class="keep">
+    <tr><th>Slot</th><th>Diisi dari</th><th>Dipakai oleh MAPPING</th></tr>
+    <tr><td class="mono">LOT_SR_CONV</td><td>Roll yang dikirim (atau sibling-nya)</td><td>SR Converting</td></tr>
+    <tr><td class="mono">LOT_JR_CONV</td><td>Jumbo Roll induk roll tersebut</td><td>JR Converting</td></tr>
+    <tr><td class="mono">LOT_SR_BASE</td><td>Bahan baku order Jumbo Roll di atas</td><td>SR Base Film</td></tr>
+    <tr><td class="mono">LOT_JR_BASE</td><td>Jumbo Roll induk SR Base tersebut</td><td>JR Base Film</td></tr>
+  </table>
+  <div class="callout navy keep"><p>Empat slot ini cukup untuk silsilah maksimal <b>satu tingkat converting</b> di atas Base Film. Jika ada lebih dari satu tingkat converting, slot ketiga dan keempat terisi roll converting, bukan Base Film, dan penelusuran berhenti sebelum mencapai Base Film yang sebenarnya.</p></div>
+</section>
+
+<!-- ============================ 3. PEMBEDA ============================ -->
+<section>
+  <h2><span class="no">03</span>Cara membedakan skenario biasa dan bertingkat</h2>
+  <div class="callout">
+    <div class="q">Satu pertanyaan pembeda</div>
+    <p>Setelah penelusuran lama selesai, sistem melihat Jumbo Roll di slot <span class="mono">LOT_JR_BASE</span> dan bertanya: <b>apakah production order Jumbo Roll ini masih memakai roll SR/JR sebagai bahan baku (goods issue 261)?</b></p>
+  </div>
+  <div class="grid2">
+    <div class="card" style="border-color:#9cc9ad">
+      <h4 style="color:var(--green)">Tidak → skenario biasa</h4>
+      <p>Bahan bakunya resin. Jumbo Roll itu adalah Base Film asli dan silsilah memang berhenti di sana. Logika lama sudah benar dan dipakai apa adanya.</p>
+    </div>
+    <div class="card" style="border-color:#e2c48f">
+      <h4 style="color:var(--amber)">Ya → skenario bertingkat</h4>
+      <p>Jumbo Roll itu ternyata hasil converting juga. Di atasnya masih ada tahap lain. Sistem menelusuri silsilah penuh sampai menemukan Base Film asli.</p>
+    </div>
+  </div>
+  <p style="margin-top:4mm">Pengecekan ini memakai aturan penelusuran yang sama dengan logika lama: dokumen yang dibatalkan (storno) dibuang, roll hasil change grade dilacak ke batch asalnya, dan bahan baku diambil dari transaksi roll yang sama (teks header dokumen). Hasil pengecekan untuk setiap Jumbo Roll Base Film disimpan sementara, sehingga tambahan beban hanya dua query ringan per Jumbo Roll.</p>
+
+  <h3>Alur keputusan per roll</h3>
+  <div style="width:128mm;margin:2mm auto 0">{{FLOW}}</div>
+</section>
+
+<!-- ============================ 4. SKENARIO A ============================ -->
+<section>
+  <h2><span class="no">04</span>Tiga kondisi dengan data riil</h2>
+  <div class="legend">
+    <span><i style="background:#1f7a72"></i>SR · Slit Roll</span>
+    <span><i style="background:#2f5d9e"></i>JR · Jumbo Roll</span>
+    <span><i style="background:#fbeceb;border:1px solid #b4423a"></i>slot terisi tahap yang salah</span>
+    <span><i style="background:#fbf3e4;border:1px solid #b7791f"></i>di luar jangkauan logika lama</span>
+  </div>
+
+  <h3>Kondisi A · Base Film saja (QM01, DO 0085006234, SRCADI)</h3>
+  <div class="scen keep">
+    <div>{{CHAIN_A}}</div>
+    <div class="side">
+      <h4>Yang terjadi</h4>
+      <ul>
+        <li>Roll dikirim adalah SR Base Film, langsung hasil slitting Jumbo Roll Base Film.</li>
+        <li>Logika lama mengenali tidak ada tahap converting dan memberi label ulang: roll menjadi SR Base, Jumbo Roll menjadi JR Base.</li>
+        <li>Order JRCADI memakai resin.</li>
+      </ul>
+      <span class="verdict ok">Skenario biasa · logika lama</span>
+    </div>
+  </div>
+
+  <h3>Kondisi B · Converting satu tingkat (QM03, DO 0085006240, SRGIDI)</h3>
+  <div class="scen keep">
+    <div>{{CHAIN_B}}</div>
+    <div class="side">
+      <h4>Yang terjadi</h4>
+      <ul>
+        <li>Keempat slot terisi tepat: SR Conv, JR Conv, SR Base, JR Base.</li>
+        <li>Semua MIC ditemukan di slot sesuai MAPPING-nya, termasuk PALZTH00 dari JR Base Film.</li>
+        <li>Order JRALZI memakai resin, jadi pengecekan bertingkat menjawab <b>tidak</b>.</li>
+      </ul>
+      <span class="verdict ok">Skenario biasa · logika lama</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 4. SKENARIO C ============================ -->
+<section>
+  <h3 style="margin-top:0">Kondisi C · Converting bertingkat (DO 0085006278, SRGLBI)</h3>
+  <div class="scen">
+    <div>{{CHAIN_C}}</div>
+    <div class="side">
+      <h4>Yang terjadi pada logika lama</h4>
+      <ul>
+        <li>Slot SR Conv dan JR Conv terisi benar (SRGLBI, JRGLBI). Hanya Optical Density yang ditemukan.</li>
+        <li>Slot <b>SR Base</b> terisi SRGLAI dan slot <b>JR Base</b> terisi JRGLAI. Keduanya sebenarnya tahap converting Metz.</li>
+        <li>Penelusuran berhenti di JRGLAI. Base Film asli (JRAH8I) tidak pernah dicapai.</li>
+        <li>MIC Shrinkage, Gloss, Surface Tension, Tensile, dan Elongation tidak ada di lot slot masing-masing, sehingga tampil 0.</li>
+      </ul>
+      <h4>Yang terjadi setelah perbaikan</h4>
+      <ul>
+        <li>Pengecekan pada JRGLAI menjawab <b>ya</b>: ordernya memakai roll SRGKAI.</li>
+        <li>Silsilah ditelusuri penuh sampai JRAH8I (8 tahap).</li>
+        <li>Setiap MIC yang tidak ada di slot lama dicari pada lot terdekat dengan jenis roll yang sama (SR atau JR) yang memang memiliki MIC tersebut.</li>
+      </ul>
+      <span class="verdict amber">Skenario bertingkat · penelusuran penuh</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 5. MIC ============================ -->
+<section>
+  <h2><span class="no">05</span>Penentuan lot per MIC</h2>
+  <p>MAPPING di ZMAP_COA hanya menyebut jenis roll dan kategori (Converting atau Base Film), tidak menyebut tingkat ke berapa. Karena itu penentunya adalah <b>MIC itu sendiri</b>: setiap MIC hanya terdaftar pada inspection lot tahap yang mengujinya. Sistem memakai dua langkah berurutan.</p>
+  <ol class="steps">
+    <li><b>Lot dari logika lama diperiksa lebih dulu.</b> Jika MIC terdaftar di lot itu, lot tersebut yang dipakai. Inilah yang menjamin hasil lama tidak berubah.</li>
+    <li><b>Jika tidak terdaftar,</b> sistem mencari pada daftar lot silsilah penuh, dimulai dari tahap terdekat dengan roll yang dikirim, dan hanya pada jenis roll yang sama (MAPPING JR → lot JR, MAPPING SR → lot SR). Lot pertama yang memiliki MIC tersebut dipakai.</li>
+  </ol>
+
+  <h3>Hasil DO 0085006278</h3>
+  <table>
+    <tr><th>MIC</th><th>Parameter</th><th>MAPPING</th><th>Sebelum</th><th>Sumber lot</th><th style="text-align:right">Sesudah</th><th style="text-align:right">Ekspektasi</th></tr>
+    {{MIC_ROWS}}
+  </table>
+  <p class="small">* Optical Density tampil 2.38 karena jumlah desimal mengikuti master MIC (QPMK). Nilai rata-ratanya 2.378; ini perilaku lama dan tidak terkait perbaikan ini.</p>
+
+  <div class="callout navy keep">
+    <p><b>Aturan perhitungan nilai tidak berubah.</b> Nilai COA per DO tetap rata-rata dari lot unik seluruh roll di DO. Jumbo Roll yang tidak diinspeksi tetap mengambil nilai sibling bernomor urut lebih kecil dalam order yang sama, atau diabaikan bila tidak ada. Contoh: Shrinkage MD 2.62 berasal dari JR 4–10 JRGLAI; JR 1–3 tidak memiliki hasil uji dan tidak ikut dirata-rata. Surface Tension 42/52 adalah rata-rata 10 roll SRGLAI.</p>
+  </div>
+</section>
+
+<!-- ============================ 6. PENGUJIAN ============================ -->
+<section>
+  <h2><span class="no">06</span>Pengujian anti-regresi</h2>
+  <p>Pengujian dilakukan di Development AIX dengan data riil, <b>tanpa mengubah program di sistem tersebut</b>. Program dijalankan sementara di memori dalam tiga putaran untuk setiap DO, masing-masing pada sesi baru:</p>
+  <div class="grid2" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card"><h4>A · Program asli</h4><p>ZQMI_COA yang aktif di sistem, sebagai acuan.</p></div>
+    <div class="card"><h4>B · Salinan asli</h4><p>Source yang sama dijalankan lewat harness uji. Harus identik dengan A, untuk membuktikan harness tidak mempengaruhi hasil.</p></div>
+    <div class="card"><h4>C · Dengan perbaikan</h4><p>Source yang sama ditambah perbaikan. Dibandingkan dengan A.</p></div>
+  </div>
+  <table class="tight" style="margin-top:4mm">
+    <tr><th>Skenario</th><th>DO</th><th>Material</th><th style="text-align:right">Baris MIC</th><th>Hasil C vs A</th></tr>
+    {{REG_ROWS}}
+  </table>
+  <p class="small">Sumber program dikonfirmasi terbaru sebelum pengujian (fetch ulang dari Development AIX, 16/10/2026). DO 0085000596 sempat menunjukkan selisih kecil satu kali pada program asli tanpa perbaikan; tiga kali pengulangan memberi hasil yang sama dengan versi perbaikan, sehingga selisih tersebut bukan berasal dari perbaikan ini.</p>
+</section>
+
+<!-- ============================ 7. BATASAN ============================ -->
+<section>
+  <h2><span class="no">07</span>Batasan dan langkah berikutnya</h2>
+  <h3>Asumsi yang perlu diketahui functional</h3>
+  <ul>
+    <li><b>Kode MIC unik per tahap.</b> Perbaikan bergantung pada fakta bahwa setiap MIC hanya diuji pada satu tahap. Jika suatu saat MIC yang sama diuji di dua tahap converting, sistem mengambil tahap yang paling dekat dengan roll yang dikirim. Bila functional menginginkan aturan lain, diperlukan informasi tambahan di mapping.</li>
+    <li><b>Skenario JOIN (QM11/QM12).</b> Jika order Jumbo Roll Base Film memakai Jumbo Roll lain sebagai bahan baku, pengecekan bertingkat bisa aktif. Walaupun begitu, MIC yang sudah ditemukan oleh logika lama tetap tidak berubah.</li>
+    <li><b>Batas penelusuran 10 tahap</b> dengan proteksi siklus, agar program tidak berputar bila data silsilah tidak wajar.</li>
+  </ul>
+
+  <h3>Belum teruji</h3>
+  <ul>
+    <li>QM11–QM15: belum ada nomor DO uji.</li>
+    <li>DO acuan arsitektur Smart Form (85004908, 0084000047, 0085000140): tidak menghasilkan data di Development AIX.</li>
+    <li>Sandbox-new (TRS) tidak memiliki data DO uji. Di sana hanya dipastikan program aktif, lolos syntax check, dan berjalan tanpa dump.</li>
+  </ul>
+
+  <h3>Langkah berikutnya</h3>
+  <ol class="steps">
+    <li>Uji cetak ZQM002 untuk DO 0085006278 di sistem yang memiliki datanya, termasuk tampilan Smart Form.</li>
+    <li>Sediakan DO uji untuk QM11–QM15, terutama skenario JOIN.</li>
+    <li>Transport include ZQMI_COA_F01: DEV → QAS → PRD. Tidak ada perubahan DDIC maupun Smart Form.</li>
+  </ol>
+
+  <h3>Ringkasan teknis</h3>
+  <table class="keep">
+    <tr><th>Objek</th><th>Perubahan</th></tr>
+    <tr><td class="mono">ZQMI_COA_F01</td><td>FORM baru <span class="mono">GET_MT_LOTS</span>: pengecekan bertingkat dan penelusuran silsilah penuh.</td></tr>
+    <tr><td class="mono">GET_MIC</td><td>Sisipan: memanggil <span class="mono">GET_MT_LOTS</span>, lalu mencari lot lebih dalam hanya bila MIC tidak ada di lot hasil logika lama.</td></tr>
+    <tr><td class="mono">GET_TRACED_LOTS</td><td>Tidak diubah. Empat slot lama tetap terisi seperti sebelumnya.</td></tr>
+    <tr><td>Rollback</td><td>Backup sebelum perubahan: <span class="mono">ZQMI_COA_F01_sandbox-new_backup_before_multilevel.abap</span></td></tr>
+  </table>
+</section>
+
+</body>
+</html>
