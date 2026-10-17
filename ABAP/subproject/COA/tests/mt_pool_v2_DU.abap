@@ -1,0 +1,7301 @@
+REPORT ZTMP_MT_POOLRUN.
+PARAMETERS: PV TYPE LIPS-VBELN DEFAULT '0085006278'.
+TYPES: TY_L TYPE C LENGTH 255.
+DATA: LT_P TYPE TABLE OF TY_L, LV_L TYPE TY_L,
+      LT_I TYPE TABLE OF TY_L, LV_PROG TYPE PROGNAME,
+      LV_MSG TYPE STRING, LV_LIN TYPE I, LV_WRD TYPE STRING.
+DATA: LV_SB TYPE STRING.
+DATA: BEGIN OF LS_C, N TYPE PROGNAME, T LIKE LT_I, END OF LS_C,
+      LT_C LIKE TABLE OF LS_C.
+FIELD-SYMBOLS: <C> LIKE LS_C.
+DEFINE R.
+  READ TABLE LT_C ASSIGNING <C> WITH KEY N = &1.
+  IF SY-SUBRC <> 0.
+    CLEAR LS_C. LS_C-N = &1. READ REPORT &1 INTO LS_C-T.
+    APPEND LS_C TO LT_C. LV_LIN = LINES( LT_C ).
+    READ TABLE LT_C ASSIGNING <C> INDEX LV_LIN.
+  ENDIF.
+  APPEND LINES OF <C>-T FROM &2 TO &3 TO LT_P.
+END-OF-DEFINITION.
+DEFINE A.
+  APPEND &1 TO LT_P.
+END-OF-DEFINITION.
+DEFINE C.
+  CONCATENATE LV_SB &1 INTO LV_SB RESPECTING BLANKS.
+END-OF-DEFINITION.
+START-OF-SELECTION.
+A 'PROGRAM ZTMP_MT_POOL.'.
+R 'ZQMI_COA_TOP' 1 180.
+A 'DATA: TCERTI TYPE CXTAB_CONTROL,'.
+A '      TDETAIL TYPE CXTAB_CONTROL.'.
+R 'ZQMI_COA_TOP' 183 186.
+A '*'.
+A 'RANGES S_ERDAT FOR LIKP-ERDAT.'.
+A 'RANGES P_WERKS FOR LIPS-WERKS.'.
+A 'RANGES P_CHARG FOR LIPS-CHARG.'.
+A 'RANGES P_ATWRT FOR AUSP-ATWRT.'.
+A 'RANGES P_MATNR FOR LIPS-MATNR.'.
+A 'RANGES P_VBELN FOR LIPS-VBELN.'.
+A 'RANGES P_POSNR FOR LIPS-POSNR.'.
+A '*'.
+A '*'.
+A 'DATA INFO(79).'.
+R 'ZQMI_COA_TOP' 198 198.
+A 'DATA GV_POPT(70).'.
+A '*'.
+CLEAR LV_SB.
+C 'DATA P_XCUS TYPE C VALUE ''X''.'.
+APPEND LV_SB TO LT_P.
+A 'DATA GV_LCUS(25).'.
+A '*'.
+A 'DATA P_VCUS TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+CLEAR LV_SB.
+C 'DATA P_XPO TYPE C VALUE ''X''.'.
+APPEND LV_SB TO LT_P.
+A 'DATA GV_LPO(25).'.
+A '*'.
+A 'DATA P_VPO TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+CLEAR LV_SB.
+C 'DATA P_XPI TYPE C VALUE ''X''.'.
+APPEND LV_SB TO LT_P.
+A 'DATA GV_LPI(25).'.
+A '*'.
+A 'DATA P_VPI TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+CLEAR LV_SB.
+C 'DATA P_XPRD TYPE C VALUE ''X''.'.
+APPEND LV_SB TO LT_P.
+A 'DATA GV_LPRD(25).'.
+A '*'.
+A 'DATA P_VPRD TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+CLEAR LV_SB.
+C 'DATA P_XQTY TYPE C VALUE ''X''.'.
+APPEND LV_SB TO LT_P.
+A 'DATA GV_LQTY(25).'.
+A '*'.
+A 'DATA P_VQTY TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+A 'DATA P_XCONT TYPE C.'.
+A 'DATA GV_LCONT(25).'.
+A '*'.
+A 'DATA P_VCONT TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+A 'DATA P_XDDAT TYPE C.'.
+A 'DATA GV_LDDAT(25).'.
+A '*'.
+A 'DATA P_VDDAT TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+A 'DATA P_XTHK TYPE C.'.
+A 'DATA GV_LTHK(25).'.
+A '*'.
+A 'DATA P_VTHK TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+A 'DATA P_XGRM TYPE C.'.
+A 'DATA GV_LGRM(25).'.
+A '*'.
+A 'DATA P_VGRM TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+A 'DATA P_XRAW TYPE C.'.
+A 'DATA GV_LRAW(25).'.
+A '*'.
+A 'DATA P_VRAW TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+A 'DATA P_XLC TYPE C.'.
+A 'DATA GV_LLC(25).'.
+A '*'.
+A 'DATA P_VLC TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+A 'DATA P_XWID TYPE C.'.
+A 'DATA GV_LWID(25).'.
+A '*'.
+A 'DATA P_VWID TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+A 'DATA P_XSHP TYPE C.'.
+A 'DATA GV_LSHP(25).'.
+A '*'.
+A 'DATA P_VSHP TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+A 'DATA P_XPRT TYPE C.'.
+A 'DATA GV_LPRT(25).'.
+A '*'.
+A 'DATA P_VPRT TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+A 'DATA P_XMFR TYPE C.'.
+A 'DATA GV_LMFR(25).'.
+A '*'.
+A 'DATA P_VMFR TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+A 'DATA P_XLIF TYPE C.'.
+A 'DATA GV_LLIF(25).'.
+A '*'.
+A 'DATA P_VLIF TYPE C LENGTH 60.'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_TOP' 297 381.
+R 'ZQMI_COA_F01' 1 3.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F01' 24 61.
+CLEAR LV_SB.
+C '             REPLOT     TYPE QALS-PRUEFL'.
+C 'OS,  " lot perwakilan grup'.
+APPEND LV_SB TO LT_P.
+R 'ZQMI_COA_F01' 62 76.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F01' 176 881.
+A '    DATA: L_REPLOT TYPE QALS-PRUEFLOS.'.
+R 'ZQMI_COA_F01' 882 882.
+A '      CLEAR: L_ASUM, L_ACNT, L_REPLOT.'.
+R 'ZQMI_COA_F01' 884 887.
+CLEAR LV_SB.
+C '        " Lot perwakilan grup = lot terk'.
+C 'ecil yang punya hasil'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        IF L_REPLOT IS INITIAL OR LT_QAL'.
+C 'L-PRUEFLOS < L_REPLOT.'.
+APPEND LV_SB TO LT_P.
+A '          L_REPLOT = LT_QALL-PRUEFLOS.'.
+R 'ZQMI_COA_F01' 930 930.
+A '      ENDLOOP.'.
+A '      IF L_ACNT > 0.'.
+A '        CLEAR GS_LOT_AVG.'.
+A '        GS_LOT_AVG-INSLOT = LOT_SR_CONV.'.
+A '        GS_LOT_AVG-MERKNR = LT_QU-MERKNR.'.
+A '        GS_LOT_AVG-MITTELWERT = L_ASUM / L_ACNT.'.
+A '        GS_LOT_AVG-ANZWERTG = 1.'.
+A '        GS_LOT_AVG-REPLOT = L_REPLOT.'.
+A '        APPEND GS_LOT_AVG TO GT_LOT_AVG.'.
+CLEAR LV_SB.
+C '        " Fix 17/10/2026 (QM04): lot per'.
+C 'wakilan juga bisa dicari'.
+APPEND LV_SB TO LT_P.
+A '        IF L_REPLOT <> LOT_SR_CONV.'.
+A '          GS_LOT_AVG-INSLOT = L_REPLOT.'.
+A '          APPEND GS_LOT_AVG TO GT_LOT_AVG.'.
+R 'ZQMI_COA_F01' 954 954.
+R 'ZQMI_COA_F01' 993 993.
+A '    ENDLOOP.'.
+R 'ZQMI_COA_F01' 1051 1051.
+R 'ZQMI_COA_F01' 1082 1082.
+A '  LOOP AT IT_ZMAP.'.
+A '    CLEAR INS.'.
+CLEAR LV_SB.
+C '    " Tentukan sumber Inspection Lot ber'.
+C 'dasarkan MAPPING'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    IF IT_ZMAP-MAPPING CS ''SR Base Film'''.
+C '.'.
+APPEND LV_SB TO LT_P.
+A '      INS = LOT_SR_BASE.'.
+CLEAR LV_SB.
+C '    ELSEIF IT_ZMAP-MAPPING CS ''JR Base F'.
+C 'ilm''.'.
+APPEND LV_SB TO LT_P.
+A '      INS = LOT_JR_BASE.'.
+CLEAR LV_SB.
+C '    ELSEIF IT_ZMAP-MAPPING CS ''SR Conver'.
+C 'ting''.'.
+APPEND LV_SB TO LT_P.
+A '      INS = LOT_SR_CONV.'.
+CLEAR LV_SB.
+C '    ELSEIF IT_ZMAP-MAPPING CS ''JR Conver'.
+C 'ting''.'.
+APPEND LV_SB TO LT_P.
+A '      INS = LOT_JR_CONV.'.
+R 'ZQMI_COA_F01' 1360 1360.
+CLEAR LV_SB.
+C '      " Default fallback jika kosong, mu'.
+C 'ngkin ambil dari SR Convert/Base'.
+APPEND LV_SB TO LT_P.
+A '      INS = LOT_SR_CONV.'.
+R 'ZQMI_COA_F01' 1362 1362.
+R 'ZQMI_COA_F01' 1370 1370.
+CLEAR LV_SB.
+C '    " Multi-level converting (16/10/2026'.
+C '): MIC tidak ada di lot hasil'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    " trace 2 tingkat -> cari lot silsil'.
+C 'ah lebih dalam, stage sama.'.
+APPEND LV_SB TO LT_P.
+A '    IF GT_MT_LOT[] IS NOT INITIAL.'.
+A '      CLEAR LV_MT_MK.'.
+A '      IF INS IS NOT INITIAL.'.
+A '        SELECT SINGLE MERKNR INTO LV_MT_MK FROM QAMV'.
+A '          WHERE PRUEFLOS  = INS'.
+A '            AND VERWMERKM = IT_ZMAP-MIC.'.
+R 'ZQMI_COA_F01' 1524 1524.
+A '      IF INS IS INITIAL OR SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '        IF IT_ZMAP-MAPPING CS ''JR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '          LV_MT_STG = ''JR''.'.
+APPEND LV_SB TO LT_P.
+A '        ELSE.'.
+CLEAR LV_SB.
+C '          LV_MT_STG = ''SR''.'.
+APPEND LV_SB TO LT_P.
+A '        ENDIF.'.
+CLEAR LV_SB.
+C '        LOOP AT GT_MT_LOT INTO GS_MT_LOT'.
+C ' WHERE STAGE = LV_MT_STG.'.
+APPEND LV_SB TO LT_P.
+A '          SELECT SINGLE MERKNR INTO LV_MT_MK FROM QAMV'.
+A '            WHERE PRUEFLOS  = GS_MT_LOT-LOT'.
+A '              AND VERWMERKM = IT_ZMAP-MIC.'.
+A '          IF SY-SUBRC = 0.'.
+A '            INS = GS_MT_LOT-LOT.'.
+A '            EXIT.'.
+A '          ENDIF.'.
+A '        ENDLOOP.'.
+R 'ZQMI_COA_F01' 1538 1538.
+R 'ZQMI_COA_F01' 1604 1604.
+R 'ZQMI_COA_F01' 1611 1611.
+A '    IF INS IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '      SELECT SINGLE VERWMERKM KURZTEXT T'.
+C 'OLERANZUN TOLERANZOB MERKNR STELLEN'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        INTO (IT_MIC-MIC,IT_MIC-MICDES,I'.
+C 'T_MIC-MICMIN,IT_MIC-MICMAX,IT_MIC-MERKNR'.
+C ',IT_MIC-STELLEN)'.
+APPEND LV_SB TO LT_P.
+A '        FROM QAMV'.
+A '        WHERE PRUEFLOS = INS'.
+A '          AND VERWMERKM = IT_ZMAP-MIC.'.
+R 'ZQMI_COA_F01' 1699 1699.
+A '      IF SY-SUBRC EQ 0.'.
+A '        PERFORM COPY.'.
+A '        IF IT_ZMAP-MIC_DESC IS NOT INITIAL.'.
+A '          IT_MIC-MICDES = IT_ZMAP-MIC_DESC.'.
+R 'ZQMI_COA_F01' 2078 2078.
+A '        IT_MIC-UOM = IT_ZMAP-UOM.'.
+A '        IT_MIC-SEQ = 1.'.
+A '        IT_MIC-INSLOT = INS.'.
+CLEAR LV_SB.
+C '        " Fix 17/10/2026 (QM04): nilai d'.
+C 'ari rata-rata sibling SR ->'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        " pakai lot perwakilan grup, aga'.
+C 'r 1 JR tidak dihitung 2x'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        " saat rata-rata per DO (mis. lo'.
+C 't sampel barrier terpisah).'.
+APPEND LV_SB TO LT_P.
+A '        IF INS = LOT_SR_CONV.'.
+A '          READ TABLE GT_LOT_AVG INTO GS_LOT_AVG'.
+CLEAR LV_SB.
+C '               WITH KEY INSLOT = INS MER'.
+C 'KNR = IT_MIC-MERKNR.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '          IF SY-SUBRC = 0 AND GS_LOT_AVG'.
+C '-REPLOT IS NOT INITIAL'.
+APPEND LV_SB TO LT_P.
+A '             AND GS_LOT_AVG-REPLOT <> INS.'.
+A '            IT_MIC-INSLOT = GS_LOT_AVG-REPLOT.'.
+R 'ZQMI_COA_F01' 2398 2399.
+A '        APPEND IT_MIC TO IT_MIC2.'.
+R 'ZQMI_COA_F01' 2543 2543.
+CLEAR LV_SB.
+C '        " Pengecualian untuk MVTR/OTR Ba'.
+C 'rrier yang MIC-nya bisa berbeda (seperti'.
+C ' WVTR/O2TR)'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        IF IT_ZMAP-MIC CS ''MVTR'' OR IT_Z'.
+C 'MAP-MIC CS ''OTR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '          SELECT VERWMERKM KURZTEXT TOLE'.
+C 'RANZUN TOLERANZOB MERKNR STELLEN'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '            INTO (IT_MIC-MIC,IT_MIC-MICD'.
+C 'ES,IT_MIC-MICMIN,IT_MIC-MICMAX,IT_MIC-ME'.
+C 'RKNR,IT_MIC-STELLEN)'.
+APPEND LV_SB TO LT_P.
+A '            FROM QAMV'.
+A '            WHERE PRUEFLOS = INS.'.
+CLEAR LV_SB.
+C '            IF IT_MIC-MIC CS ''MVTR'' OR I'.
+C 'T_MIC-MIC CS ''WVTR'' OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '               IT_MIC-MIC CS ''OTR''  OR I'.
+C 'T_MIC-MIC CS ''O2TR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '              IF IT_MIC-MIC CS IT_ZMAP-M'.
+C 'IC OR IT_ZMAP-MIC CS IT_MIC-MIC OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                 ( IT_ZMAP-MIC CS ''MVTR'''.
+C ' AND IT_MIC-MIC CS ''WVTR'' ) OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                 ( IT_ZMAP-MIC CS ''OTR'' '.
+C 'AND IT_MIC-MIC CS ''O2TR'' ).'.
+APPEND LV_SB TO LT_P.
+A '                PERFORM COPY.'.
+A '                IF IT_ZMAP-MIC_DESC IS NOT INITIAL.'.
+A '                  IT_MIC-MICDES = IT_ZMAP-MIC_DESC.'.
+A '                ENDIF.'.
+A '                IT_MIC-UOM = IT_ZMAP-UOM.'.
+A '                IT_MIC-SEQ = 5.'.
+A '                IT_MIC-INSLOT = INS.'.
+CLEAR LV_SB.
+C '                IF IT_MIC-MIC CS ''MVTR'' '.
+C 'OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                   IT_MIC-MIC CS ''WVTR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                  IT_MIC-BARRIER_TYPE = '.
+C '''MVTR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                ELSEIF IT_MIC-MIC CS ''OT'.
+C 'R'' OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                       IT_MIC-MIC CS ''O2'.
+C 'TR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                  IT_MIC-BARRIER_TYPE = '.
+C '''OTR''.'.
+APPEND LV_SB TO LT_P.
+A '                ELSE.'.
+CLEAR LV_SB.
+C '                  IT_MIC-BARRIER_TYPE = '.
+C '''X''.'.
+APPEND LV_SB TO LT_P.
+A '                ENDIF.'.
+CLEAR LV_SB.
+C '                IT_MIC-MIC = IT_ZMAP-MIC'.
+C '. " Timpa agar sesuai dengan Mapping'.
+APPEND LV_SB TO LT_P.
+A '                APPEND IT_MIC TO IT_MIC2.'.
+R 'ZQMI_COA_F01' 2801 2802.
+A '          ENDSELECT.'.
+R 'ZQMI_COA_F01' 2805 2805.
+R 'ZQMI_COA_F01' 2871 2872.
+R 'ZQMI_COA_F01' 3163 3164.
+CLEAR LV_SB.
+C '  " Pastikan semua MIC dari ZMAP_COA tet'.
+C 'ap masuk ke list meskipun tidak ada di I'.
+C 'nspection Lot'.
+APPEND LV_SB TO LT_P.
+A '  SORT IT_MIC2 BY MIC.'.
+A '  LOOP AT IT_ZMAP.'.
+CLEAR LV_SB.
+C '    READ TABLE IT_MIC2 WITH KEY MIC = IT'.
+C '_ZMAP-MIC BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+R 'ZQMI_COA_F01' 3261 3261.
+A '      CLEAR IT_MIC.'.
+CLEAR LV_SB.
+C '      PERFORM COPY. " Fix: isi VBELN/POS'.
+C 'NR/CHARG/MATNR dst agar match balik di G'.
+C 'ET_DATA'.
+APPEND LV_SB TO LT_P.
+A '      IT_MIC-MIC = IT_ZMAP-MIC.'.
+A '      IT_MIC-METHOD = IT_ZMAP-METHOD.'.
+A '      IF IT_ZMAP-MIC_DESC IS NOT INITIAL.'.
+A '        IT_MIC-MICDES = IT_ZMAP-MIC_DESC.'.
+R 'ZQMI_COA_F01' 3521 3521.
+CLEAR LV_SB.
+C '        SELECT SINGLE KURZTEXT INTO IT_M'.
+C 'IC-MICDES FROM QPMT WHERE MKMNR = IT_ZMA'.
+C 'P-MIC AND SPRACHE = ''E''.'.
+APPEND LV_SB TO LT_P.
+A '        IF SY-SUBRC <> 0.'.
+A '          IT_MIC-MICDES = IT_ZMAP-MIC.'.
+R 'ZQMI_COA_F01' 3558 3559.
+A '      IT_MIC-UOM = IT_ZMAP-UOM.'.
+A '      IF IT_MIC-UOM IS INITIAL.'.
+CLEAR LV_SB.
+C '        SELECT SINGLE MASSEINHSW INTO IT'.
+C '_MIC-UOM FROM QPMK WHERE MKMNR = IT_ZMAP'.
+C '-MIC.'.
+APPEND LV_SB TO LT_P.
+R 'ZQMI_COA_F01' 3570 3570.
+CLEAR LV_SB.
+C '      IF IT_ZMAP-LOWER_LIMIT IS INITIAL '.
+C 'OR IT_ZMAP-UPPER_LIMIT IS INITIAL.'.
+APPEND LV_SB TO LT_P.
+A '        CLEAR: LV_MIN, LV_MAX.'.
+A '        SELECT SINGLE TOLERANZUN TOLERANZOB'.
+A '          INTO (LV_MIN, LV_MAX)'.
+A '          FROM QPMK'.
+A '          WHERE MKMNR = IT_ZMAP-MIC'.
+A '            AND WERKS = IT_DATA-WERKS.'.
+A '        IF SY-SUBRC <> 0.'.
+A '          SELECT SINGLE TOLERANZUN TOLERANZOB'.
+A '            INTO (LV_MIN, LV_MAX)'.
+A '            FROM QPMK'.
+A '            WHERE MKMNR = IT_ZMAP-MIC.'.
+R 'ZQMI_COA_F01' 3580 3580.
+A '        IF IT_ZMAP-LOWER_LIMIT IS INITIAL.'.
+A '          IT_MIC-MICMIN = LV_MIN.'.
+R 'ZQMI_COA_F01' 3588 3588.
+A '        IF IT_ZMAP-UPPER_LIMIT IS INITIAL.'.
+A '          IT_MIC-MICMAX = LV_MAX.'.
+R 'ZQMI_COA_F01' 3596 3597.
+CLEAR LV_SB.
+C '      IT_MIC-SEQ = 99. " Penanda tidak a'.
+C 'da di Inspection Lot'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      IT_MIC-INSLOT = ''''.'.
+APPEND LV_SB TO LT_P.
+A '      APPEND IT_MIC TO IT_MIC2.'.
+R 'ZQMI_COA_F01' 3771 3773.
+A '  SORT IT_MIC2 BY MIC ASCENDING.'.
+CLEAR LV_SB.
+C '  DELETE ADJACENT DUPLICATES FROM IT_MIC'.
+C '2 COMPARING MIC.'.
+APPEND LV_SB TO LT_P.
+R 'ZQMI_COA_F01' 3784 3784.
+A '  CLEAR CTR.'.
+A '  CTR = LINES( IT_MIC2 ).'.
+A '  IF CTR NE 0.'.
+A '    APPEND LINES OF IT_MIC2 FROM 1 TO CTR TO IT_MIC1.'.
+R 'ZQMI_COA_F01' 3811 3811.
+A '  CLEAR IT_MIC2. REFRESH IT_MIC2.'.
+A 'ENDFORM.                    " GET_MIC'.
+R 'ZQMI_COA_F01' 3886 3886.
+A '*&      Form  COPY'.
+R 'ZQMI_COA_F01' 3888 3888.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*  -->  p1        text'.
+A '*  <--  p2        text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM COPY .'.
+A '  IT_MIC-VBELN = IT_DATA-VBELN.'.
+A '  IT_MIC-POSNR = IT_DATA-POSNR.'.
+A '  IT_MIC-CHARG = IT_DATA-CHARG.'.
+A '  IT_MIC-NOMSR = IT_DATA-NOMSR.'.
+A '  IT_MIC-ZZTYPE = IT_DATA-ZZTYPE.'.
+A '  IT_MIC-MATNR = IT_DATA-MATNR.'.
+A '  IT_MIC-UECHA = IT_DATA-UECHA.'.
+A '  IT_MIC-WERKS = IT_DATA-WERKS.'.
+A 'ENDFORM.                    " COPY'.
+R 'ZQMI_COA_F01' 3904 3904.
+A '*&      Form  DOWNLOAD'.
+R 'ZQMI_COA_F01' 3906 3906.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*  -->  p1        text'.
+A '*  <--  p2        text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM DOWNLOAD .'.
+A '  TABLES RLGRAP.'.
+R 'ZQMI_COA_F01' 3917 3917.
+A '  DATA:  DEF_PATH LIKE RLGRAP-FILENAME.'.
+A '  DATA: TMP_FILENAME LIKE RLGRAP-FILENAME.'.
+A '  DATA V_FILENAME TYPE STRING.'.
+A '  DATA : BEGIN OF IT_FIELDNAMES OCCURS 0,'.
+A '           FIELD(30),'.
+A '         END OF IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 3925 3925.
+A '  REFRESH IT_FIELDNAMES.'.
+A '  CLEAR IT_FIELDNAMES.'.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Delivery''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 3961 3961.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Item''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 3980 3980.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Material''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 3982 3982.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''MIC''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 3999 3999.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''MIC Description'.
+C '''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 4024 4024.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Unit Of Measure'.
+C '''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 4045 4045.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Testing Method '.
+C '''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 4050 4050.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Lower Limit''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 4059 4059.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Upper Limit''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 4068 4068.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Value''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 4074 4074.
+A '  CLEAR: IT_EXPORT.'.
+A '  REFRESH:IT_EXPORT.'.
+CLEAR LV_SB.
+C '  LOOP AT IT_DATA WHERE CHK EQ ''X''.'.
+APPEND LV_SB TO LT_P.
+A '    CLEAR IT_EXPORT.'.
+A '    IT_EXPORT-VBELN = IT_DATA-VBELN.'.
+A '    IT_EXPORT-UECHA = IT_DATA-UECHA.'.
+A '    IT_EXPORT-MATNR = IT_DATA-MATNR.'.
+A '    IT_EXPORT-MIC = IT_DATA-MIC.'.
+A '    IT_EXPORT-MICDES = IT_DATA-MICDES.'.
+A '    IT_EXPORT-UOM = IT_DATA-UOM.'.
+A '    IT_EXPORT-METHOD = IT_DATA-METHOD.'.
+A '    IT_EXPORT-MICMIN = IT_DATA-MICMIN.'.
+A '    IT_EXPORT-MICMAX = IT_DATA-MICMAX.'.
+A '    IT_EXPORT-CMICMIT = IT_DATA-CMICMIT.'.
+A '*    IT_EXPORT-CHK = IT_DATA-CHK.'.
+A '    APPEND IT_EXPORT.'.
+R 'ZQMI_COA_F01' 4193 4194.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''WS_FILENAME_GET'''.
+APPEND LV_SB TO LT_P.
+R 'ZQMI_COA_F01' 4368 4368.
+A '      DEF_FILENAME     = RLGRAP-FILENAME'.
+A '      DEF_PATH         = DEF_PATH'.
+CLEAR LV_SB.
+C '      MASK             = '',*.xls.'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      MODE             = ''S'''.
+APPEND LV_SB TO LT_P.
+A '      TITLE            = TEXT-011'.
+A '    IMPORTING'.
+A '      FILENAME         = TMP_FILENAME'.
+R 'ZQMI_COA_F01' 4372 4372.
+A '      INV_WINSYS       = 01'.
+A '      NO_BATCH         = 02'.
+A '      SELECTION_CANCEL = 03'.
+A '      SELECTION_ERROR  = 04.'.
+R 'ZQMI_COA_F01' 4374 4374.
+R 'ZQMI_COA_F01' 4697 4697.
+A '    RLGRAP-FILENAME = TMP_FILENAME.'.
+A '  ELSE.'.
+A '    EXIT.'.
+R 'ZQMI_COA_F01' 4699 4699.
+CLEAR LV_SB.
+C '  CONCATENATE RLGRAP-FILENAME ''.XLS'' INT'.
+C 'O V_FILENAME.'.
+APPEND LV_SB TO LT_P.
+A '*  V_FILENAME = RLGRAP-FILENAME.'.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''GUI_DOWNLOAD'''.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING'.
+A '      FILENAME              = V_FILENAME'.
+CLEAR LV_SB.
+C '      FILETYPE              = ''ASC'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      WRITE_FIELD_SEPARATOR = ''X'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      CONFIRM_OVERWRITE     = ''X'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      SHOW_TRANSFER_STATUS  = ''X'''.
+APPEND LV_SB TO LT_P.
+A '    TABLES'.
+A '      DATA_TAB              = IT_EXPORT'.
+A '      FIELDNAMES            = IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 4700 4700.
+A '  IF SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '    MESSAGE I000(0K) WITH ''Download erro'.
+C 'r''.'.
+APPEND LV_SB TO LT_P.
+A '    STOP.'.
+R 'ZQMI_COA_F01' 4707 4707.
+R 'ZQMI_COA_F01' 4712 4712.
+A 'ENDFORM.                    " DOWNLOAD'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  SELALL'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*  -->  p1        text'.
+A '*  <--  p2        text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM SELALL .'.
+CLEAR LV_SB.
+C '  LOOP AT IT_DATA WHERE CHK NE ''X''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    IT_DATA-CHK = ''X''.'.
+APPEND LV_SB TO LT_P.
+A '    MODIFY IT_DATA.'.
+A '  ENDLOOP.'.
+A 'ENDFORM.                    " SELALL'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  DESALL'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*  -->  p1        text'.
+A '*  <--  p2        text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM DESALL .'.
+CLEAR LV_SB.
+C '  LOOP AT IT_DATA WHERE CHK EQ ''X''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    IT_DATA-CHK = ''''.'.
+APPEND LV_SB TO LT_P.
+A '    MODIFY IT_DATA.'.
+A '  ENDLOOP.'.
+A 'ENDFORM.                    " DESALL'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  DOWNLOAD_DETAIL'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*  -->  p1        text'.
+A '*  <--  p2        text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM DOWNLOAD_DETAIL .'.
+A '*  TABLES RLGRAP.'.
+R 'ZQMI_COA_F01' 4748 4748.
+A '  DATA:  DEF_PATH LIKE RLGRAP-FILENAME.'.
+A '  DATA: TMP_FILENAME LIKE RLGRAP-FILENAME.'.
+A '  DATA V_FILENAME TYPE STRING.'.
+A '  DATA : BEGIN OF IT_FIELDNAMES OCCURS 0,'.
+A '           FIELD(30),'.
+A '         END OF IT_FIELDNAMES.'.
+R 'ZQMI_COA_F01' 4761 4761.
+A '  REFRESH IT_FIELDNAMES.'.
+A '  CLEAR IT_FIELDNAMES.'.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Properties''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+A ' '.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Unit of Measure'.
+C '''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+A ' '.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Testing Method'''.
+C '.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+A ' '.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Lower Limit''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+A ' '.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Upper Limit''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+CLEAR LV_SB.
+C '  IT_FIELDNAMES-FIELD = ''Value''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND IT_FIELDNAMES.'.
+A '  REFRESH IT_DETAILD.'.
+CLEAR LV_SB.
+C '  LOOP AT IT_DETAIL WHERE CHK = ''X''.'.
+APPEND LV_SB TO LT_P.
+A '    MOVE-CORRESPONDING IT_DETAIL TO IT_DETAILD.'.
+A '    APPEND IT_DETAILD.'.
+A '  ENDLOOP.'.
+A ' '.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''WS_FILENAME_GET'''.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING'.
+A '      DEF_FILENAME     = RLGRAP-FILENAME'.
+A '      DEF_PATH         = DEF_PATH'.
+CLEAR LV_SB.
+C '      MASK             = '',*.xls.'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      MODE             = ''S'''.
+APPEND LV_SB TO LT_P.
+A '      TITLE            = TEXT-011'.
+A '    IMPORTING'.
+A '      FILENAME         = TMP_FILENAME'.
+A '    EXCEPTIONS'.
+A '      INV_WINSYS       = 01'.
+A '      NO_BATCH         = 02'.
+A '      SELECTION_CANCEL = 03'.
+A '      SELECTION_ERROR  = 04.'.
+A ' '.
+A '  IF SY-SUBRC = 0.'.
+A '    RLGRAP-FILENAME = TMP_FILENAME.'.
+A '  ELSE.'.
+A '    EXIT.'.
+A '  ENDIF.'.
+CLEAR LV_SB.
+C '  CONCATENATE RLGRAP-FILENAME ''.XLS'' INT'.
+C 'O V_FILENAME.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''GUI_DOWNLOAD'''.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING'.
+A '      FILENAME              = V_FILENAME'.
+CLEAR LV_SB.
+C '      FILETYPE              = ''ASC'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      WRITE_FIELD_SEPARATOR = ''X'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      CONFIRM_OVERWRITE     = ''X'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      SHOW_TRANSFER_STATUS  = ''X'''.
+APPEND LV_SB TO LT_P.
+A '    TABLES'.
+A '      DATA_TAB              = IT_DETAILD'.
+A '      FIELDNAMES            = IT_FIELDNAMES.'.
+A ' '.
+A '  IF SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '    MESSAGE I000(0K) WITH ''Download erro'.
+C 'r''.'.
+APPEND LV_SB TO LT_P.
+A '    STOP.'.
+A '  ENDIF.'.
+A ' '.
+A 'ENDFORM.                    " DOWNLOAD_DETAIL'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  DOWNLOAD_BATCH_LIST_XLSX'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM DOWNLOAD_BATCH_LIST_XLSX.'.
+CLEAR LV_SB.
+C '  DATA: LT_CFG TYPE TABLE OF ZQM_COA_CUS'.
+C 'T_COL WITH HEADER LINE,'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        LT_OPTIONS TYPE TABLE OF SPOPLI '.
+C 'WITH HEADER LINE,'.
+APPEND LV_SB TO LT_P.
+A '        LV_VALUE TYPE STRING,'.
+A '        LV_FIELD_NAME TYPE STRING,'.
+A '        LV_DEFAULT_FILENAME TYPE STRING,'.
+A '        LV_FILENAME TYPE STRING,'.
+A '        LV_FILENAME_OLE TYPE C LENGTH 255,'.
+A '        LV_PATH TYPE STRING,'.
+A '        LV_PATH_MEMORY TYPE C LENGTH 255,'.
+A '        LV_KUNNR TYPE KUNNR,'.
+A '        LV_LFART TYPE LIKP-LFART,'.
+A '        LV_VBELN_PAD TYPE LIKP-VBELN,'.
+A '        LV_COL_COUNT TYPE I,'.
+A '        LV_COL_WIDTH TYPE P LENGTH 8 DECIMALS 2,'.
+A '        LV_TOTAL_WIDTH TYPE I,'.
+A '        LV_COLUMN TYPE I,'.
+A '        LV_ROW TYPE I,'.
+A '        LV_OFFSET TYPE I,'.
+A '        LV_LAST_COLUMN TYPE C,'.
+A '        LV_ROW_TEXT TYPE C LENGTH 10,'.
+A '        LV_PRINT_AREA TYPE C LENGTH 30,'.
+A '        LV_INDEX_TEXT TYPE NUMC2,'.
+A '        LV_USER_ACTION TYPE I,'.
+A '        LV_ACTION TYPE C,'.
+A '        LV_ORIENTATION TYPE I,'.
+A '        LV_FILE_EXISTS TYPE ABAP_BOOL,'.
+A '        LO_EXCEL TYPE OLE2_OBJECT,'.
+A '        LO_WORKBOOKS TYPE OLE2_OBJECT,'.
+A '        LO_WORKBOOK TYPE OLE2_OBJECT,'.
+A '        LO_SHEET TYPE OLE2_OBJECT,'.
+A '        LO_CELL TYPE OLE2_OBJECT,'.
+A '        LO_TITLE_START TYPE OLE2_OBJECT,'.
+A '        LO_TITLE_END TYPE OLE2_OBJECT,'.
+A '        LO_TITLE_RANGE TYPE OLE2_OBJECT,'.
+A '        LO_BORDERS TYPE OLE2_OBJECT,'.
+A '        LO_FONT TYPE OLE2_OBJECT,'.
+A '        LO_COLUMNS TYPE OLE2_OBJECT,'.
+A '        LO_HEADER_ROW TYPE OLE2_OBJECT,'.
+A '        LO_PAGE_SETUP TYPE OLE2_OBJECT.'.
+A '  FIELD-SYMBOLS: <FS_VALUE> TYPE ANY.'.
+A ' '.
+A '  PERFORM PREPARE_DYNAMIC_ROLL_COLUMNS USING VBELN.'.
+A '  IF GT_DYN_ROLL[] IS INITIAL.'.
+CLEAR LV_SB.
+C '    MESSAGE ''Batch List tidak memiliki d'.
+C 'ata'' TYPE ''I''.'.
+APPEND LV_SB TO LT_P.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''CONVERSION_EXIT_ALPHA_I'.
+C 'NPUT'''.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING'.
+A '      INPUT  = VBELN'.
+A '    IMPORTING'.
+A '      OUTPUT = LV_VBELN_PAD.'.
+CLEAR LV_SB.
+C '  SELECT SINGLE KUNAG LFART INTO (LV_KUN'.
+C 'NR, LV_LFART) FROM LIKP'.
+APPEND LV_SB TO LT_P.
+A '    WHERE VBELN = LV_VBELN_PAD.'.
+A '  IF LV_KUNNR IS INITIAL.'.
+A '    SELECT SINGLE KUNNR INTO LV_KUNNR FROM LIKP'.
+A '      WHERE VBELN = LV_VBELN_PAD.'.
+A '  ENDIF.'.
+CLEAR LV_SB.
+C '  SELECT KUNNR FIELD_NAME FIELD_LABEL SE'.
+C 'Q_NO COL_SIZE ACTIVE'.
+APPEND LV_SB TO LT_P.
+A '    INTO CORRESPONDING FIELDS OF TABLE LT_CFG'.
+A '    FROM ZQM_COA_CUST_COL'.
+A '    WHERE KUNNR = LV_KUNNR'.
+CLEAR LV_SB.
+C '      AND ACTIVE = ''X'''.
+APPEND LV_SB TO LT_P.
+A '    ORDER BY SEQ_NO ASCENDING.'.
+A '  IF LT_CFG[] IS INITIAL.'.
+CLEAR LV_SB.
+C '    IF LV_LFART = ''ZDLF''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      LV_KUNNR = ''DOMESTIC''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    ELSEIF LV_LFART = ''ZELF''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      LV_KUNNR = ''EXPORT''.'.
+APPEND LV_SB TO LT_P.
+A '    ELSE.'.
+CLEAR LV_SB.
+C '      LV_KUNNR = ''DOMESTIC''.'.
+APPEND LV_SB TO LT_P.
+R 'ZQMI_COA_F01' 4766 4766.
+CLEAR LV_SB.
+C '    SELECT KUNNR FIELD_NAME FIELD_LABEL '.
+C 'SEQ_NO COL_SIZE ACTIVE'.
+APPEND LV_SB TO LT_P.
+A '      INTO CORRESPONDING FIELDS OF TABLE LT_CFG'.
+A '      FROM ZQM_COA_CUST_COL'.
+A '      WHERE KUNNR = LV_KUNNR'.
+CLEAR LV_SB.
+C '        AND ACTIVE = ''X'''.
+APPEND LV_SB TO LT_P.
+A '      ORDER BY SEQ_NO ASCENDING.'.
+A '  ENDIF.'.
+A ' '.
+A '  DESCRIBE TABLE LT_CFG LINES LV_COL_COUNT.'.
+A '  IF LV_COL_COUNT = 0.'.
+CLEAR LV_SB.
+C '    MESSAGE ''Konfigurasi kolom Batch Lis'.
+C 't tidak ditemukan'' TYPE ''I''.'.
+APPEND LV_SB TO LT_P.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+A '  CLEAR LV_TOTAL_WIDTH.'.
+A '  LOOP AT LT_CFG.'.
+A '    CASE LT_CFG-COL_SIZE.'.
+CLEAR LV_SB.
+C '      WHEN ''L''.'.
+APPEND LV_SB TO LT_P.
+A '        LV_TOTAL_WIDTH = LV_TOTAL_WIDTH + 24.'.
+CLEAR LV_SB.
+C '      WHEN ''M''.'.
+APPEND LV_SB TO LT_P.
+A '        LV_TOTAL_WIDTH = LV_TOTAL_WIDTH + 18.'.
+A '      WHEN OTHERS.'.
+A '        LV_TOTAL_WIDTH = LV_TOTAL_WIDTH + 12.'.
+A '    ENDCASE.'.
+A '  ENDLOOP.'.
+A ' '.
+CLEAR LV_SB.
+C '  LT_OPTIONS-VAROPTION = ''Open''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND LT_OPTIONS.'.
+CLEAR LV_SB.
+C '  LT_OPTIONS-VAROPTION = ''Save As''.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND LT_OPTIONS.'.
+CLEAR LV_SB.
+C '  LT_OPTIONS-VAROPTION = ''Open And Save'''.
+C '.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND LT_OPTIONS.'.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''POPUP_TO_DECIDE_LIST'''.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING'.
+CLEAR LV_SB.
+C '      TEXTLINE1 = ''Pilih proses Batch Li'.
+C 'st Excel:'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      TITEL     = ''Batch List'''.
+APPEND LV_SB TO LT_P.
+A '    IMPORTING'.
+A '      ANSWER    = LV_ACTION'.
+A '    TABLES'.
+A '      T_SPOPLI  = LT_OPTIONS'.
+A '    EXCEPTIONS'.
+A '      OTHERS    = 1.'.
+CLEAR LV_SB.
+C '  IF SY-SUBRC <> 0 OR LV_ACTION < ''1'' OR'.
+C ' LV_ACTION > ''3''.'.
+APPEND LV_SB TO LT_P.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  IF LV_ACTION <> ''1''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    CONCATENATE ''COA_BATCH_LIST_'' VBELN '.
+C '''_'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                SY-DATUM ''_'' SY-UZEIT ''.'.
+C 'XLSX'''.
+APPEND LV_SB TO LT_P.
+A '           INTO LV_DEFAULT_FILENAME.'.
+CLEAR LV_SB.
+C '    GET PARAMETER ID ''ZCOA_DIR'' FIELD LV'.
+C '_PATH_MEMORY.'.
+APPEND LV_SB TO LT_P.
+A '    LV_PATH = LV_PATH_MEMORY.'.
+CLEAR LV_SB.
+C '    CALL METHOD CL_GUI_FRONTEND_SERVICES'.
+C '=>FILE_SAVE_DIALOG'.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING'.
+CLEAR LV_SB.
+C '        WINDOW_TITLE         = ''Save COA'.
+C ' Batch List'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        DEFAULT_EXTENSION    = ''XLSX'''.
+APPEND LV_SB TO LT_P.
+A '        DEFAULT_FILE_NAME    = LV_DEFAULT_FILENAME'.
+CLEAR LV_SB.
+C '        FILE_FILTER          = ''Excel Wo'.
+C 'rkbook (*.xlsx)|*.xlsx|'''.
+APPEND LV_SB TO LT_P.
+A '        INITIAL_DIRECTORY    = LV_PATH'.
+A '      CHANGING'.
+A '        FILENAME             = LV_DEFAULT_FILENAME'.
+A '        PATH                 = LV_PATH'.
+A '        FULLPATH             = LV_FILENAME'.
+A '        USER_ACTION          = LV_USER_ACTION'.
+A '      EXCEPTIONS'.
+A '        OTHERS               = 1.'.
+A '    IF SY-SUBRC <> 0 OR'.
+CLEAR LV_SB.
+C '       LV_USER_ACTION = CL_GUI_FRONTEND_'.
+C 'SERVICES=>ACTION_CANCEL.'.
+APPEND LV_SB TO LT_P.
+A '      RETURN.'.
+R 'ZQMI_COA_F01' 4771 4771.
+A '    LV_PATH_MEMORY = LV_PATH.'.
+CLEAR LV_SB.
+C '    SET PARAMETER ID ''ZCOA_DIR'' FIELD LV'.
+C '_PATH_MEMORY.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  CREATE OBJECT LO_EXCEL ''EXCEL.APPLICAT'.
+C 'ION''.'.
+APPEND LV_SB TO LT_P.
+A '  IF SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '    MESSAGE ''Microsoft Excel tidak dapat'.
+C ' dijalankan'' TYPE ''I''.'.
+APPEND LV_SB TO LT_P.
+A '    RETURN.'.
+A '  ENDIF.'.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_EXCEL ''DisplayAlert'.
+C 's'' = 0.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  GET PROPERTY OF LO_EXCEL ''Workbooks'' ='.
+C ' LO_WORKBOOKS.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  CALL METHOD OF LO_WORKBOOKS ''Add'' = LO'.
+C '_WORKBOOK.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  GET PROPERTY OF LO_EXCEL ''ActiveSheet'''.
+C ' = LO_SHEET.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_SHEET ''Name'' = ''Bat'.
+C 'ch List''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+CLEAR LV_SB.
+C '  CALL METHOD OF LO_SHEET ''Cells'' = LO_T'.
+C 'ITLE_START'.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING #1 = 1 #2 = 1.'.
+CLEAR LV_SB.
+C '  CALL METHOD OF LO_SHEET ''Cells'' = LO_T'.
+C 'ITLE_END'.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING #1 = 1 #2 = LV_COL_COUNT.'.
+CLEAR LV_SB.
+C '  CALL METHOD OF LO_SHEET ''Range'' = LO_T'.
+C 'ITLE_RANGE'.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING #1 = LO_TITLE_START #2 = LO_TITLE_END.'.
+CLEAR LV_SB.
+C '  CALL METHOD OF LO_TITLE_RANGE ''Merge''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_TITLE_RANGE ''Value'''.
+C ' = ''Batch List''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_TITLE_RANGE ''Horizo'.
+C 'ntalAlignment'' = -4108.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_TITLE_RANGE ''Vertic'.
+C 'alAlignment'' = -4108.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  GET PROPERTY OF LO_TITLE_RANGE ''Font'' '.
+C '= LO_FONT.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_FONT ''Bold'' = 1.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_FONT ''Size'' = 16.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  LOOP AT LT_CFG.'.
+A '    LV_COLUMN = SY-TABIX.'.
+A '    LV_INDEX_TEXT = LV_COLUMN.'.
+CLEAR LV_SB.
+C '    CONCATENATE ''GS_DYN_HDR-HDR'' LV_INDE'.
+C 'X_TEXT INTO LV_FIELD_NAME.'.
+APPEND LV_SB TO LT_P.
+A '    UNASSIGN <FS_VALUE>.'.
+A '    ASSIGN (LV_FIELD_NAME) TO <FS_VALUE>.'.
+A '    CLEAR LV_VALUE.'.
+A '    IF <FS_VALUE> IS ASSIGNED.'.
+A '      LV_VALUE = <FS_VALUE>.'.
+R 'ZQMI_COA_F01' 4780 4780.
+CLEAR LV_SB.
+C '    CALL METHOD OF LO_SHEET ''Cells'' = LO'.
+C '_CELL'.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING #1 = 3 #2 = LV_COLUMN.'.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_CELL ''Value'' = LV'.
+C '_VALUE.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_CELL ''HorizontalA'.
+C 'lignment'' = -4108.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_CELL ''VerticalAli'.
+C 'gnment'' = -4108.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_CELL ''WrapText'' ='.
+C ' -1.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    GET PROPERTY OF LO_CELL ''Borders'' = '.
+C 'LO_BORDERS.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_BORDERS ''LineStyl'.
+C 'e'' = 1.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_BORDERS ''Weight'' '.
+C '= 2.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    GET PROPERTY OF LO_CELL ''Font'' = LO_'.
+C 'FONT.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_FONT ''Bold'' = 1.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '    CASE LT_CFG-COL_SIZE.'.
+CLEAR LV_SB.
+C '      WHEN ''L''.'.
+APPEND LV_SB TO LT_P.
+A '        LV_COL_WIDTH = 24.'.
+CLEAR LV_SB.
+C '      WHEN ''M''.'.
+APPEND LV_SB TO LT_P.
+A '        LV_COL_WIDTH = 18.'.
+A '      WHEN OTHERS.'.
+A '        LV_COL_WIDTH = 12.'.
+A '    ENDCASE.'.
+A '    IF LV_TOTAL_WIDTH > 120.'.
+CLEAR LV_SB.
+C '      LV_COL_WIDTH = LV_COL_WIDTH * 120 '.
+C '/ LV_TOTAL_WIDTH.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+CLEAR LV_SB.
+C '    CALL METHOD OF LO_SHEET ''Columns'' = '.
+C 'LO_COLUMNS'.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING #1 = LV_COLUMN.'.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_COLUMNS ''ColumnWi'.
+C 'dth'' = LV_COL_WIDTH.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    IF LT_CFG-FIELD_NAME = ''BATCH_NUMBER'.
+C ''' OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '       LT_CFG-FIELD_NAME = ''ROLL_NUMBER'''.
+C '   OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '       LT_CFG-FIELD_NAME = ''DO_NUMBER''  '.
+C '   OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '       LT_CFG-FIELD_NAME = ''PO_NUMBER''  '.
+C '   OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '       LT_CFG-FIELD_NAME = ''HU_NUMBER''  '.
+C '   OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '       LT_CFG-FIELD_NAME = ''NO_PALET''   '.
+C '   OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '       LT_CFG-FIELD_NAME = ''GG_PART_NUMB'.
+C 'ER''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      SET PROPERTY OF LO_COLUMNS ''Number'.
+C 'Format'' = ''@''.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '  ENDLOOP.'.
+CLEAR LV_SB.
+C '  CALL METHOD OF LO_SHEET ''Rows'' = LO_HE'.
+C 'ADER_ROW'.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING #1 = 3.'.
+CLEAR LV_SB.
+C '  CALL METHOD OF LO_HEADER_ROW ''AutoFit'''.
+C '.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  LV_ROW = 3.'.
+A '  LOOP AT GT_DYN_ROLL.'.
+A '    LV_ROW = LV_ROW + 1.'.
+A '    DO LV_COL_COUNT TIMES.'.
+A '      LV_COLUMN = SY-INDEX.'.
+A '      LV_INDEX_TEXT = LV_COLUMN.'.
+CLEAR LV_SB.
+C '      CONCATENATE ''GT_DYN_ROLL-COL'' LV_I'.
+C 'NDEX_TEXT INTO LV_FIELD_NAME.'.
+APPEND LV_SB TO LT_P.
+A '      UNASSIGN <FS_VALUE>.'.
+A '      ASSIGN (LV_FIELD_NAME) TO <FS_VALUE>.'.
+A '      CLEAR LV_VALUE.'.
+A '      IF <FS_VALUE> IS ASSIGNED.'.
+A '        LV_VALUE = <FS_VALUE>.'.
+A '      ENDIF.'.
+CLEAR LV_SB.
+C '      CALL METHOD OF LO_SHEET ''Cells'' = '.
+C 'LO_CELL'.
+APPEND LV_SB TO LT_P.
+A '        EXPORTING #1 = LV_ROW #2 = LV_COLUMN.'.
+A '      READ TABLE LT_CFG INDEX LV_COLUMN.'.
+CLEAR LV_SB.
+C '      IF LT_CFG-FIELD_NAME = ''BATCH_NUMB'.
+C 'ER'' OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '         LT_CFG-FIELD_NAME = ''ROLL_NUMBE'.
+C 'R''   OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '         LT_CFG-FIELD_NAME = ''DO_NUMBER'''.
+C '     OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '         LT_CFG-FIELD_NAME = ''PO_NUMBER'''.
+C '     OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '         LT_CFG-FIELD_NAME = ''HU_NUMBER'''.
+C '     OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '         LT_CFG-FIELD_NAME = ''NO_PALET'' '.
+C '     OR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '         LT_CFG-FIELD_NAME = ''GG_PART_NU'.
+C 'MBER''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        SET PROPERTY OF LO_CELL ''NumberF'.
+C 'ormat'' = ''@''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      ELSEIF LV_VALUE IS NOT INITIAL AND'.
+C ' LV_VALUE(1) = ''0'' AND LV_VALUE CO ''0123'.
+C '456789 ''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        SET PROPERTY OF LO_CELL ''NumberF'.
+C 'ormat'' = ''@''.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+CLEAR LV_SB.
+C '      SET PROPERTY OF LO_CELL ''Value'' = '.
+C 'LV_VALUE.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      SET PROPERTY OF LO_CELL ''Horizonta'.
+C 'lAlignment'' = -4108.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      SET PROPERTY OF LO_CELL ''VerticalA'.
+C 'lignment'' = -4108.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      GET PROPERTY OF LO_CELL ''Borders'' '.
+C '= LO_BORDERS.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      SET PROPERTY OF LO_BORDERS ''LineSt'.
+C 'yle'' = 1.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      SET PROPERTY OF LO_BORDERS ''Weight'.
+C ''' = 2.'.
+APPEND LV_SB TO LT_P.
+A '    ENDDO.'.
+A '  ENDLOOP.'.
+A ' '.
+CLEAR LV_SB.
+C '  GET PROPERTY OF LO_SHEET ''PageSetup'' ='.
+C ' LO_PAGE_SETUP.'.
+APPEND LV_SB TO LT_P.
+A '  IF LV_TOTAL_WIDTH > 80.'.
+A '    LV_ORIENTATION = 2.'.
+A '  ELSE.'.
+A '    LV_ORIENTATION = 1.'.
+A '  ENDIF.'.
+A '  LV_OFFSET = LV_COL_COUNT - 1.'.
+A '  LV_LAST_COLUMN = SY-ABCDE+LV_OFFSET(1).'.
+A '  WRITE LV_ROW TO LV_ROW_TEXT LEFT-JUSTIFIED.'.
+CLEAR LV_SB.
+C '  CONCATENATE ''$A$1:$'' LV_LAST_COLUMN ''$'.
+C ''' LV_ROW_TEXT'.
+APPEND LV_SB TO LT_P.
+A '         INTO LV_PRINT_AREA.'.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''Orienta'.
+C 'tion'' = LV_ORIENTATION.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''PaperSi'.
+C 'ze'' = 9.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''Zoom'' ='.
+C ' 0.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''FitToPa'.
+C 'gesWide'' = 1.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''FitToPa'.
+C 'gesTall'' = 0.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''LeftMar'.
+C 'gin'' = 18.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''RightMa'.
+C 'rgin'' = 18.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''TopMarg'.
+C 'in'' = 36.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''BottomM'.
+C 'argin'' = 36.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''HeaderM'.
+C 'argin'' = 18.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''FooterM'.
+C 'argin'' = 18.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''CenterH'.
+C 'orizontally'' = -1.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SET PROPERTY OF LO_PAGE_SETUP ''PrintAr'.
+C 'ea'' = LV_PRINT_AREA.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+CLEAR LV_SB.
+C '  IF LV_ACTION = ''1''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_EXCEL ''DisplayAle'.
+C 'rts'' = 1.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_EXCEL ''Visible'' ='.
+C ' 1.'.
+APPEND LV_SB TO LT_P.
+A '  ELSE.'.
+A '    LV_FILENAME_OLE = LV_FILENAME.'.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_WORKBOOK ''CheckCo'.
+C 'mpatibility'' = 0.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    CALL METHOD OF LO_WORKBOOK ''SaveAs'''.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING #1 = LV_FILENAME_OLE #2 = 51.'.
+A '    CALL METHOD CL_GUI_FRONTEND_SERVICES=>FILE_EXIST'.
+A '      EXPORTING'.
+A '        FILE                 = LV_FILENAME'.
+A '      RECEIVING'.
+A '        RESULT               = LV_FILE_EXISTS'.
+A '      EXCEPTIONS'.
+A '        CNTL_ERROR           = 1'.
+A '        ERROR_NO_GUI         = 2'.
+A '        WRONG_PARAMETER      = 3'.
+A '        NOT_SUPPORTED_BY_GUI = 4'.
+A '        OTHERS               = 5.'.
+A ' '.
+CLEAR LV_SB.
+C '    SET PROPERTY OF LO_EXCEL ''DisplayAle'.
+C 'rts'' = 1.'.
+APPEND LV_SB TO LT_P.
+A '    IF LV_FILE_EXISTS IS INITIAL.'.
+CLEAR LV_SB.
+C '      SET PROPERTY OF LO_EXCEL ''Visible'''.
+C ' = 1.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      MESSAGE ''XLSX gagal disimpan; work'.
+C 'book tetap dibuka'' TYPE ''I''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    ELSEIF LV_ACTION = ''2''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      CALL METHOD OF LO_WORKBOOK ''Close'''.
+APPEND LV_SB TO LT_P.
+A '        EXPORTING #1 = 0.'.
+CLEAR LV_SB.
+C '      CALL METHOD OF LO_EXCEL ''Quit''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      MESSAGE ''Batch List XLSX berhasil '.
+C 'disimpan'' TYPE ''S''.'.
+APPEND LV_SB TO LT_P.
+A '    ELSE.'.
+CLEAR LV_SB.
+C '      SET PROPERTY OF LO_EXCEL ''Visible'''.
+C ' = 1.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '  ENDIF.'.
+CLEAR LV_SB.
+C '  FREE OBJECT: LO_PAGE_SETUP, LO_HEADER_'.
+C 'ROW, LO_COLUMNS, LO_FONT,'.
+APPEND LV_SB TO LT_P.
+A '               LO_BORDERS, LO_CELL,'.
+CLEAR LV_SB.
+C '               LO_TITLE_RANGE, LO_TITLE_'.
+C 'END, LO_TITLE_START,'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '               LO_SHEET, LO_WORKBOOK, LO'.
+C '_WORKBOOKS, LO_EXCEL.'.
+APPEND LV_SB TO LT_P.
+A 'ENDFORM.                    " DOWNLOAD_BATCH_LIST_XLSX'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  SELMAPPING'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*  -->  p1        text'.
+A '*  <--  p2        text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM SELMAPPING .'.
+A '  LOOP AT IT_DATA.'.
+CLEAR LV_SB.
+C '    IT_DATA-CHK = ''''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    READ TABLE IT_ZMAP WITH KEY MIC = IT'.
+C '_DATA-MIC BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '    IF SY-SUBRC EQ 0.'.
+CLEAR LV_SB.
+C '      IT_DATA-CHK = ''X''.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '    MODIFY IT_DATA.'.
+A '  ENDLOOP.'.
+CLEAR LV_SB.
+C '  SORT IT_DATA BY VBELN MATNR CHK DESCEN'.
+C 'DING NUMMIC NUM ASCENDING MIC ASCENDING.'.
+APPEND LV_SB TO LT_P.
+A 'ENDFORM.                    " SELMAPPING'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  F_PRINT'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*  -->  p1        text'.
+A '*  <--  p2        text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM F_PRINT .'.
+A '  DATA: I_NAST        LIKE NAST,'.
+A '        I_SSFCOMPOP   TYPE SSFCOMPOP,'.
+A '        I_SSFCTRLOP   TYPE SSFCTRLOP,'.
+A '        I_RECIPIENT   TYPE SWOTOBJID,'.
+A '        I_SENDER      TYPE SWOTOBJID,'.
+A '        I_ADDR_KEY    LIKE ADDR_KEY,'.
+CLEAR LV_SB.
+C '        IT_QAMV       TYPE QAMV OCCURS 0'.
+C ' WITH HEADER LINE,'.
+APPEND LV_SB TO LT_P.
+A '        LV_VALUE10(10) TYPE C,'.
+A '        QUANTITY      TYPE CHAR12,'.
+A '        LV_BATCH_FM   TYPE RS38L_FNAM,'.
+A '        LV_LFART      TYPE LIKP-LFART,'.
+A '        LV_FORM_NAME  TYPE TDSFNAME,'.
+A '        LV_CANCEL     TYPE C,'.
+A '        LV_EXP_CUST   TYPE CHAR80,'.
+A '        LV_EXP_PO     TYPE CHAR80,'.
+A '        LV_EXP_PI     TYPE CHAR80,'.
+A '        LV_EXP_PROD   TYPE CHAR80,'.
+A '        LV_EXP_QTY    TYPE CHAR80,'.
+A '        LV_EXP_EXTRA  TYPE STRING,'.
+A '        LV_EXTRA1     TYPE CHAR100,'.
+A '        LV_EXTRA2     TYPE CHAR100,'.
+A '        LV_EXTRA3     TYPE CHAR100,'.
+A '        LV_EXTRA4     TYPE CHAR100,'.
+A '        LV_EXTRA5     TYPE CHAR100,'.
+A '        LV_EXTRA6     TYPE CHAR100,'.
+A '        LV_EXTRA7     TYPE CHAR100,'.
+A '        LV_EXTRA8     TYPE CHAR100,'.
+A '        LV_EXTRA9     TYPE CHAR100,'.
+A '        LV_EXTRA10    TYPE CHAR100,'.
+A '        LV_EXTRA11    TYPE CHAR100,'.
+A '        LV_LABEL1     TYPE CHAR30,'.
+A '        LV_LABEL2     TYPE CHAR30,'.
+A '        LV_LABEL3     TYPE CHAR30,'.
+A '        LV_LABEL4     TYPE CHAR30,'.
+A '        LV_LABEL5     TYPE CHAR30,'.
+A '        LV_LABEL6     TYPE CHAR30,'.
+A '        LV_LABEL7     TYPE CHAR30,'.
+A '        LV_LABEL8     TYPE CHAR30,'.
+A '        LV_LABEL9     TYPE CHAR30,'.
+A '        LV_LABEL10    TYPE CHAR30,'.
+A '        LV_LABEL11    TYPE CHAR30,'.
+A '        LV_XVALUE1    TYPE CHAR80,'.
+A '        LV_XVALUE2    TYPE CHAR80,'.
+A '        LV_XVALUE3    TYPE CHAR80,'.
+A '        LV_XVALUE4    TYPE CHAR80,'.
+A '        LV_XVALUE5    TYPE CHAR80,'.
+A '        LV_XVALUE6    TYPE CHAR80,'.
+A '        LV_XVALUE7    TYPE CHAR80,'.
+A '        LV_XVALUE8    TYPE CHAR80,'.
+A '        LV_XVALUE9    TYPE CHAR80,'.
+A '        LV_XVALUE10   TYPE CHAR80,'.
+A '        LV_XVALUE11   TYPE CHAR80,'.
+A '        LV_H1         TYPE CHAR30,'.
+A '        LV_H2         TYPE CHAR30,'.
+A '        LV_H3         TYPE CHAR30,'.
+A '        LV_H4         TYPE CHAR30,'.
+A '        LV_H5         TYPE CHAR30,'.
+A '        LV_HEADER_PRODUCT TYPE CHAR80,'.
+A '        LV_BATCH_PRODUCT TYPE CHAR80.'.
+A ' '.
+A '  PERFORM GET_COMPANY_NAME.'.
+A ' '.
+A '  WRITE NTGEW TO QUANTITY DECIMALS 2.'.
+A '  CONDENSE QUANTITY.'.
+A '  SORT IT_DETAIL BY NUMMIC NUM ASCENDING MIC ASCENDING.'.
+CLEAR LV_SB.
+C '  LOOP AT IT_DETAIL WHERE CHK EQ ''X''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    CONDENSE: IT_DETAIL-MICMIN, IT_DETAI'.
+C 'L-MICMAX, IT_DETAIL-CMICMIT.'.
+APPEND LV_SB TO LT_P.
+A '    IT_QAMV-KURZTEXT   = IT_DETAIL-MICDES.'.
+A '    IT_QAMV-STEUERKZ   = IT_DETAIL-UOM.'.
+A '    IT_QAMV-DUMMY40    = IT_DETAIL-METHOD.'.
+A '    IT_QAMV-FORMEL1    = IT_DETAIL-MICMIN.'.
+A '    IT_QAMV-FORMEL2    = IT_DETAIL-MICMAX.'.
+A '    IT_QAMV-TOLERANZOB = IT_DETAIL-MICMIN.'.
+A '    IT_QAMV-TOLERANZUN = IT_DETAIL-MICMAX.'.
+A '    CLEAR LV_VALUE10.'.
+A '    WRITE IT_DETAIL-CMICMIT TO LV_VALUE10 CENTERED.'.
+A '    IT_QAMV-DUMMY20 = LV_VALUE10.'.
+A '    APPEND IT_QAMV.'.
+A '  ENDLOOP.'.
+A ' '.
+CLEAR LV_SB.
+C '  DATA: LT_ROLL_LOT LIKE IT_LOT OCCURS 0'.
+C ' WITH HEADER LINE,'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        IT_ROLL     TYPE TABLE OF ZQMSAP'.
+C ' WITH HEADER LINE,'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        LT_ROLL_PORTRAIT TYPE TABLE OF Z'.
+C 'QMSAP WITH HEADER LINE,'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        LT_DYN_PORTRAIT  TYPE TABLE OF Z'.
+C 'QM_COA_DYN_ROLL WITH HEADER LINE,'.
+APPEND LV_SB TO LT_P.
+A '        BEGIN OF LT_LIPS OCCURS 0,'.
+A '          VBELN LIKE LIPS-VBELN,'.
+A '          POSNR LIKE LIPS-POSNR,'.
+A '          CHARG LIKE LIPS-CHARG,'.
+A '          NTGEW LIKE LIPS-NTGEW,'.
+A '        END OF LT_LIPS.'.
+A ' '.
+A '  LT_ROLL_LOT[] = IT_LOT[].'.
+A '  SORT LT_ROLL_LOT BY VBELN POSNR CHARG.'.
+A '  DELETE ADJACENT DUPLICATES FROM LT_ROLL_LOT'.
+A '    COMPARING VBELN POSNR CHARG.'.
+A ' '.
+A '  DATA: LV_VBELN_PAD TYPE LIPS-VBELN.'.
+A '  IF VBELN IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '    CALL FUNCTION ''CONVERSION_EXIT_ALPHA'.
+C '_INPUT'''.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING'.
+A '        INPUT  = VBELN'.
+A '      IMPORTING'.
+A '        OUTPUT = LV_VBELN_PAD.'.
+A '    SELECT SINGLE LFART INTO LV_LFART FROM LIKP'.
+A '      WHERE VBELN = LV_VBELN_PAD.'.
+A '  ENDIF.'.
+A ' '.
+A '  REFRESH LT_LIPS.'.
+A '  IF LV_VBELN_PAD IS NOT INITIAL.'.
+A '    SELECT VBELN POSNR CHARG NTGEW'.
+A '      INTO TABLE LT_LIPS'.
+A '      FROM LIPS'.
+A '      WHERE VBELN = LV_VBELN_PAD.'.
+A '    SORT LT_LIPS BY CHARG.'.
+A '  ENDIF.'.
+A ' '.
+A '  REFRESH IT_ROLL.'.
+A '  LOOP AT LT_ROLL_LOT.'.
+A '    CLEAR IT_ROLL.'.
+A '    IT_ROLL-ZZNOMORROLL = LT_ROLL_LOT-NOMSR.'.
+A '    IT_ROLL-ZZWIDTH     = LT_ROLL_LOT-ZZWIDTH.'.
+A '    IT_ROLL-ZZLENGTH    = LT_ROLL_LOT-ZZLENGTH.'.
+A '    READ TABLE LT_LIPS WITH KEY'.
+A '      CHARG = LT_ROLL_LOT-CHARG'.
+A '      BINARY SEARCH.'.
+A '    IF SY-SUBRC = 0.'.
+A '      IT_ROLL-PVALUE = LT_LIPS-NTGEW.'.
+A '      WRITE LT_LIPS-NTGEW TO IT_ROLL-CVALUE DECIMALS 2.'.
+A '      CONDENSE IT_ROLL-CVALUE.'.
+A '    ENDIF.'.
+A '    APPEND IT_ROLL.'.
+A '  ENDLOOP.'.
+A ' '.
+A '  SORT IT_ROLL BY ZZNOMORROLL ZZWIDTH ZZLENGTH PVALUE.'.
+A '  DELETE ADJACENT DUPLICATES FROM IT_ROLL'.
+A '    COMPARING ZZNOMORROLL ZZWIDTH ZZLENGTH PVALUE.'.
+A ' '.
+CLEAR LV_SB.
+C '  " Prepare dynamic roll columns and ori'.
+C 'entation based on ZQM_COA_CUST_COL'.
+APPEND LV_SB TO LT_P.
+A '  PERFORM PREPARE_DYNAMIC_ROLL_COLUMNS USING VBELN.'.
+A ' '.
+CLEAR LV_SB.
+C '* PRODUCT from EXEC prioritizes ZZALIAS '.
+C 'over ZZCODE-ATWTB.'.
+APPEND LV_SB TO LT_P.
+A '  LV_HEADER_PRODUCT = PRODUCT.'.
+A '  IF LV_HEADER_PRODUCT IS INITIAL.'.
+A '    LOOP AT LT_ROLL_LOT.'.
+A '      CLEAR LV_BATCH_PRODUCT.'.
+A '      PERFORM GET_COA_COL_VALUE'.
+CLEAR LV_SB.
+C '        USING ''TYPE'' LT_ROLL_LOT SY-TABI'.
+C 'X'.
+APPEND LV_SB TO LT_P.
+A '        CHANGING LV_BATCH_PRODUCT.'.
+A '      IF LV_BATCH_PRODUCT IS NOT INITIAL.'.
+A '        LV_HEADER_PRODUCT = LV_BATCH_PRODUCT.'.
+A '        EXIT.'.
+A '      ENDIF.'.
+A '    ENDLOOP.'.
+A '  ENDIF.'.
+A '  PRODUCT = LV_HEADER_PRODUCT.'.
+A ' '.
+A '  CLEAR I_SSFCTRLOP.'.
+A '  CLEAR I_SSFCOMPOP.'.
+CLEAR LV_SB.
+C '  I_SSFCOMPOP-TDDEST    = ''LOCL''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  I_SSFCOMPOP-TDIMMED   = ''X''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  I_SSFCOMPOP-TDNEWID   = ''X''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+CLEAR LV_SB.
+C '  LV_FORM_NAME = ''ZQMF_COA''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  IF LV_LFART = ''ZELF''.'.
+APPEND LV_SB TO LT_P.
+A '    PERFORM PREPARE_EXPORT_HEADER'.
+A '      USING LV_VBELN_PAD QUANTITY LV_HEADER_PRODUCT'.
+CLEAR LV_SB.
+C '      CHANGING LV_CANCEL LV_EXP_CUST LV_'.
+C 'EXP_PO LV_EXP_PI'.
+APPEND LV_SB TO LT_P.
+A '               LV_EXP_PROD LV_EXP_QTY LV_EXP_EXTRA'.
+A '               LV_H1 LV_H2 LV_H3 LV_H4 LV_H5.'.
+CLEAR LV_SB.
+C '    IF LV_CANCEL = ''X''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      MESSAGE ''Pencetakan Export dibatal'.
+C 'kan.'' TYPE ''S''.'.
+APPEND LV_SB TO LT_P.
+A '      EXIT.'.
+A '    ENDIF.'.
+CLEAR LV_SB.
+C '    LV_FORM_NAME = ''ZQMF_COA_EXPORT''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SPLIT LV_EXP_EXTRA AT CL_ABAP_CHAR_U'.
+C 'TILITIES=>NEWLINE'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      INTO LV_EXTRA1 LV_EXTRA2 LV_EXTRA3'.
+C ' LV_EXTRA4 LV_EXTRA5'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '           LV_EXTRA6 LV_EXTRA7 LV_EXTRA8'.
+C ' LV_EXTRA9 LV_EXTRA10'.
+APPEND LV_SB TO LT_P.
+A '           LV_EXTRA11.'.
+CLEAR LV_SB.
+C '    SPLIT LV_EXTRA1 AT CL_ABAP_CHAR_UTIL'.
+C 'ITIES=>HORIZONTAL_TAB'.
+APPEND LV_SB TO LT_P.
+A '      INTO LV_LABEL1 LV_XVALUE1.'.
+CLEAR LV_SB.
+C '    SPLIT LV_EXTRA2 AT CL_ABAP_CHAR_UTIL'.
+C 'ITIES=>HORIZONTAL_TAB'.
+APPEND LV_SB TO LT_P.
+A '      INTO LV_LABEL2 LV_XVALUE2.'.
+CLEAR LV_SB.
+C '    SPLIT LV_EXTRA3 AT CL_ABAP_CHAR_UTIL'.
+C 'ITIES=>HORIZONTAL_TAB'.
+APPEND LV_SB TO LT_P.
+A '      INTO LV_LABEL3 LV_XVALUE3.'.
+CLEAR LV_SB.
+C '    SPLIT LV_EXTRA4 AT CL_ABAP_CHAR_UTIL'.
+C 'ITIES=>HORIZONTAL_TAB'.
+APPEND LV_SB TO LT_P.
+A '      INTO LV_LABEL4 LV_XVALUE4.'.
+CLEAR LV_SB.
+C '    SPLIT LV_EXTRA5 AT CL_ABAP_CHAR_UTIL'.
+C 'ITIES=>HORIZONTAL_TAB'.
+APPEND LV_SB TO LT_P.
+A '      INTO LV_LABEL5 LV_XVALUE5.'.
+CLEAR LV_SB.
+C '    SPLIT LV_EXTRA6 AT CL_ABAP_CHAR_UTIL'.
+C 'ITIES=>HORIZONTAL_TAB'.
+APPEND LV_SB TO LT_P.
+A '      INTO LV_LABEL6 LV_XVALUE6.'.
+CLEAR LV_SB.
+C '    SPLIT LV_EXTRA7 AT CL_ABAP_CHAR_UTIL'.
+C 'ITIES=>HORIZONTAL_TAB'.
+APPEND LV_SB TO LT_P.
+A '      INTO LV_LABEL7 LV_XVALUE7.'.
+CLEAR LV_SB.
+C '    SPLIT LV_EXTRA8 AT CL_ABAP_CHAR_UTIL'.
+C 'ITIES=>HORIZONTAL_TAB'.
+APPEND LV_SB TO LT_P.
+A '      INTO LV_LABEL8 LV_XVALUE8.'.
+CLEAR LV_SB.
+C '    SPLIT LV_EXTRA9 AT CL_ABAP_CHAR_UTIL'.
+C 'ITIES=>HORIZONTAL_TAB'.
+APPEND LV_SB TO LT_P.
+A '      INTO LV_LABEL9 LV_XVALUE9.'.
+CLEAR LV_SB.
+C '    SPLIT LV_EXTRA10 AT CL_ABAP_CHAR_UTI'.
+C 'LITIES=>HORIZONTAL_TAB'.
+APPEND LV_SB TO LT_P.
+A '      INTO LV_LABEL10 LV_XVALUE10.'.
+CLEAR LV_SB.
+C '    SPLIT LV_EXTRA11 AT CL_ABAP_CHAR_UTI'.
+C 'LITIES=>HORIZONTAL_TAB'.
+APPEND LV_SB TO LT_P.
+A '      INTO LV_LABEL11 LV_XVALUE11.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''SSF_FUNCTION_MODULE_NAM'.
+C 'E'''.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING'.
+A '      FORMNAME           = LV_FORM_NAME'.
+A '    IMPORTING'.
+A '      FM_NAME            = LF_FM_NAME'.
+A '    EXCEPTIONS'.
+A '      NO_FORM            = 1'.
+A '      NO_FUNCTION_MODULE = 2'.
+A '      OTHERS             = 3.'.
+A '  IF SY-SUBRC <> 0 OR LF_FM_NAME IS INITIAL.'.
+CLEAR LV_SB.
+C '    MESSAGE ''Smartform ZQMF_COA belum ak'.
+C 'tif'' TYPE ''E''.'.
+APPEND LV_SB TO LT_P.
+A '    EXIT.'.
+A '  ENDIF.'.
+A ' '.
+A '  CLEAR LV_BATCH_FM.'.
+CLEAR LV_SB.
+C '  IF LV_LFART <> ''ZELF'' AND'.
+APPEND LV_SB TO LT_P.
+A '     GV_BATCH_COL_COUNT >= 1 AND'.
+A '     GV_BATCH_COL_COUNT <= 7 AND'.
+A '     GT_DYN_ROLL[] IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '    CALL FUNCTION ''SSF_FUNCTION_MODULE_N'.
+C 'AME'''.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING'.
+CLEAR LV_SB.
+C '        FORMNAME           = ''ZQMF_COA_B'.
+C 'ATCH'''.
+APPEND LV_SB TO LT_P.
+A '      IMPORTING'.
+A '        FM_NAME            = LV_BATCH_FM'.
+A '      EXCEPTIONS'.
+A '        NO_FORM            = 1'.
+A '        NO_FUNCTION_MODULE = 2'.
+A '        OTHERS             = 3.'.
+A '    IF SY-SUBRC <> 0 OR LV_BATCH_FM IS INITIAL.'.
+CLEAR LV_SB.
+C '      MESSAGE ''Smartform ZQMF_COA_BATCH '.
+C 'belum aktif'' TYPE ''E''.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A ' '.
+A '  CONDENSE NAME1.'.
+A '  CONDENSE VBELN.'.
+A '  CONDENSE PRODUCT.'.
+A '  CONDENSE QUANTITY.'.
+A '  CONDENSE WIDTH.'.
+A ' '.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''SSF_OPEN'''.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING'.
+A '      CONTROL_PARAMETERS = I_SSFCTRLOP'.
+A '      OUTPUT_OPTIONS     = I_SSFCOMPOP'.
+CLEAR LV_SB.
+C '      USER_SETTINGS      = '' '''.
+APPEND LV_SB TO LT_P.
+A '    EXCEPTIONS'.
+A '      FORMATTING_ERROR   = 1'.
+A '      INTERNAL_ERROR     = 2'.
+A '      SEND_ERROR         = 3'.
+A '      USER_CANCELED      = 4'.
+A '      OTHERS             = 5.'.
+A '  IF SY-SUBRC = 4.'.
+CLEAR LV_SB.
+C '    MESSAGE ''Pencetakan dibatalkan.'' TYP'.
+C 'E ''S''.'.
+APPEND LV_SB TO LT_P.
+A '    EXIT.'.
+A '  ELSEIF SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '    MESSAGE ''Gagal membuka Smart Forms p'.
+C 'rint job'' TYPE ''E''.'.
+APPEND LV_SB TO LT_P.
+A '    EXIT.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  I_SSFCTRLOP-NO_OPEN   = ''X''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  I_SSFCTRLOP-NO_CLOSE  = ''X''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  I_SSFCTRLOP-NO_DIALOG = ''X''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+CLEAR LV_SB.
+C '  " 1. Cetak sertifikat: form Domestic t'.
+C 'etap, form Export terpisah.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  IF LV_LFART = ''ZELF''.'.
+APPEND LV_SB TO LT_P.
+A '    CALL FUNCTION LF_FM_NAME'.
+A '      EXPORTING'.
+A '        CONTROL_PARAMETERS = I_SSFCTRLOP'.
+A '        OUTPUT_OPTIONS      = I_SSFCOMPOP'.
+CLEAR LV_SB.
+C '        USER_SETTINGS       = '' '''.
+APPEND LV_SB TO LT_P.
+A '        CUSTOMER            = LV_EXP_CUST'.
+A '        DELIVERY            = LV_EXP_PO'.
+A '        PRODUCT             = LV_EXP_PI'.
+A '        QUANTITY            = LV_EXP_PROD'.
+A '        WIDTH               = LV_EXP_QTY'.
+A '        COMPANYTXT          = COMPANYTXT'.
+A '        GS_DYN_HDR          = GS_DYN_HDR'.
+A '        H_LABEL1            = LV_H1'.
+A '        H_LABEL2            = LV_H2'.
+A '        H_LABEL3            = LV_H3'.
+A '        H_LABEL4            = LV_H4'.
+A '        H_LABEL5            = LV_H5'.
+A '        EXTRA_LABEL1        = LV_LABEL1'.
+A '        EXTRA_LABEL2        = LV_LABEL2'.
+A '        EXTRA_LABEL3        = LV_LABEL3'.
+A '        EXTRA_LABEL4        = LV_LABEL4'.
+A '        EXTRA_LABEL5        = LV_LABEL5'.
+A '        EXTRA_LABEL6        = LV_LABEL6'.
+A '        EXTRA_LABEL7        = LV_LABEL7'.
+A '        EXTRA_LABEL8        = LV_LABEL8'.
+A '        EXTRA_LABEL9        = LV_LABEL9'.
+A '        EXTRA_LABEL10       = LV_LABEL10'.
+A '        EXTRA_LABEL11       = LV_LABEL11'.
+A '        EXTRA_VALUE1        = LV_XVALUE1'.
+A '        EXTRA_VALUE2        = LV_XVALUE2'.
+A '        EXTRA_VALUE3        = LV_XVALUE3'.
+A '        EXTRA_VALUE4        = LV_XVALUE4'.
+A '        EXTRA_VALUE5        = LV_XVALUE5'.
+A '        EXTRA_VALUE6        = LV_XVALUE6'.
+A '        EXTRA_VALUE7        = LV_XVALUE7'.
+A '        EXTRA_VALUE8        = LV_XVALUE8'.
+A '        EXTRA_VALUE9        = LV_XVALUE9'.
+A '        EXTRA_VALUE10       = LV_XVALUE10'.
+A '        EXTRA_VALUE11       = LV_XVALUE11'.
+A '      TABLES'.
+A '        IT_QAMV             = IT_QAMV'.
+A '        IT_ROLL             = IT_ROLL'.
+A '        GT_DYN_ROLL         = GT_DYN_ROLL'.
+A '      EXCEPTIONS'.
+A '        FORMATTING_ERROR    = 1'.
+A '        INTERNAL_ERROR      = 2'.
+A '        SEND_ERROR          = 3'.
+A '        USER_CANCELED       = 4'.
+A '        OTHERS              = 5.'.
+A '  ELSE.'.
+A '    CALL FUNCTION LF_FM_NAME'.
+A '      EXPORTING'.
+A '        CONTROL_PARAMETERS = I_SSFCTRLOP'.
+A '        OUTPUT_OPTIONS      = I_SSFCOMPOP'.
+CLEAR LV_SB.
+C '        USER_SETTINGS       = '' '''.
+APPEND LV_SB TO LT_P.
+A '        CUSTOMER            = NAME1'.
+A '        DELIVERY            = VBELN'.
+A '        PRODUCT             = PRODUCT'.
+A '        QUANTITY            = QUANTITY'.
+A '        WIDTH               = WIDTH'.
+A '        COMPANYTXT          = COMPANYTXT'.
+A '        GS_DYN_HDR          = GS_DYN_HDR'.
+A '      TABLES'.
+A '        IT_QAMV             = IT_QAMV'.
+A '        IT_ROLL             = IT_ROLL'.
+A '        GT_DYN_ROLL         = GT_DYN_ROLL'.
+A '      EXCEPTIONS'.
+A '        FORMATTING_ERROR    = 1'.
+A '        INTERNAL_ERROR      = 2'.
+A '        SEND_ERROR          = 3'.
+A '        USER_CANCELED       = 4'.
+A '        OTHERS              = 5.'.
+A '  ENDIF.'.
+A '  IF SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '    CALL FUNCTION ''SSF_CLOSE''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    MESSAGE ''Gagal mencetak halaman utam'.
+C 'a COA'' TYPE ''E''.'.
+APPEND LV_SB TO LT_P.
+A '    EXIT.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  " 2. Cetak Batch List 1-7 kolom dalam '.
+C 'print job COA yang sama.'.
+APPEND LV_SB TO LT_P.
+A '  IF LV_BATCH_FM IS NOT INITIAL.'.
+A '    CALL FUNCTION LV_BATCH_FM'.
+A '      EXPORTING'.
+A '        CONTROL_PARAMETERS = I_SSFCTRLOP'.
+A '        OUTPUT_OPTIONS      = I_SSFCOMPOP'.
+CLEAR LV_SB.
+C '        USER_SETTINGS       = '' '''.
+APPEND LV_SB TO LT_P.
+A '        CUSTOMER            = NAME1'.
+A '        DELIVERY            = VBELN'.
+A '        PRODUCT             = PRODUCT'.
+A '        QUANTITY            = QUANTITY'.
+A '        WIDTH               = WIDTH'.
+A '        COMPANYTXT          = COMPANYTXT'.
+A '        GS_DYN_HDR          = GS_DYN_HDR'.
+A '        IV_COL_COUNT        = GV_BATCH_COL_COUNT'.
+A '      TABLES'.
+A '        IT_QAMV             = IT_QAMV'.
+A '        IT_ROLL             = IT_ROLL'.
+A '        GT_DYN_ROLL         = GT_DYN_ROLL'.
+A '      EXCEPTIONS'.
+A '        FORMATTING_ERROR    = 1'.
+A '        INTERNAL_ERROR      = 2'.
+A '        SEND_ERROR          = 3'.
+A '        USER_CANCELED       = 4'.
+A '        OTHERS              = 5.'.
+A '    IF SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '      CALL FUNCTION ''SSF_CLOSE''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      MESSAGE ''Gagal mencetak lampiran B'.
+C 'atch List'' TYPE ''E''.'.
+APPEND LV_SB TO LT_P.
+A '      EXIT.'.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''SSF_CLOSE'''.
+APPEND LV_SB TO LT_P.
+A '    EXCEPTIONS'.
+A '      FORMATTING_ERROR = 1'.
+A '      INTERNAL_ERROR   = 2'.
+A '      SEND_ERROR       = 3'.
+A '      OTHERS           = 4.'.
+A '  IF SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '    MESSAGE ''Gagal menutup Smart Forms p'.
+C 'rint job'' TYPE ''E''.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+A 'ENDFORM.                    " F_PRINT'.
+A ' '.
+A 'FORM PREPARE_EXPORT_HEADER'.
+A '  USING P_DELIVERY TYPE LIKP-VBELN'.
+A '        P_QUANTITY TYPE CHAR12'.
+A '        P_DEFAULT_PRODUCT TYPE CHAR80'.
+A '  CHANGING P_CANCEL TYPE C'.
+A '           P_CUST TYPE CHAR80'.
+A '           P_PO TYPE CHAR80'.
+A '           P_PI TYPE CHAR80'.
+A '           P_PROD TYPE CHAR80'.
+A '           P_QTY TYPE CHAR80'.
+A '           P_EXTRA TYPE STRING'.
+A '           P_L1 TYPE CHAR30'.
+A '           P_L2 TYPE CHAR30'.
+A '           P_L3 TYPE CHAR30'.
+A '           P_L4 TYPE CHAR30'.
+A '           P_L5 TYPE CHAR30.'.
+A '  DATA: LV_SO TYPE VBAK-VBELN,'.
+A '        LV_POS TYPE VBAP-POSNR,'.
+A '        LV_TDNAME TYPE THEAD-TDNAME,'.
+A '        LV_BSTNK TYPE VBAK-BSTNK,'.
+A '        LV_LFDAT TYPE LIKP-LFDAT,'.
+A '        LT_TEXT TYPE STANDARD TABLE OF TLINE,'.
+A '        LS_TEXT TYPE TLINE,'.
+A '        LV_THICK TYPE AUSP-ATFLV,'.
+A '        LV_GRAMMAGE TYPE AUSP-ATFLV,'.
+A '        LV_THICK_MIX TYPE C,'.
+A '        LV_GRAMMAGE_MIX TYPE C,'.
+A '        LV_THICK_NUM TYPE P DECIMALS 1,'.
+A '        LV_THICK_TEXT TYPE STRING,'.
+A '        LV_GRAMMAGE_NUM TYPE P DECIMALS 2.'.
+A ' '.
+A '  CLEAR: P_CANCEL, P_CUST, P_PO, P_PI, P_PROD, P_QTY,'.
+A '         P_EXTRA, P_L1, P_L2, P_L3, P_L4, P_L5.'.
+CLEAR LV_SB.
+C '* Preserve selection variant; fill field'.
+C 's only when still empty.'.
+APPEND LV_SB TO LT_P.
+A '  IF P_VCUS IS INITIAL. P_VCUS = NAME1. ENDIF.'.
+CLEAR LV_SB.
+C '  IF P_VPRD IS INITIAL. P_VPRD = P_DEFAU'.
+C 'LT_PRODUCT. ENDIF.'.
+APPEND LV_SB TO LT_P.
+A '  IF P_VQTY IS INITIAL. P_VQTY = P_QUANTITY. ENDIF.'.
+A '  IF P_VWID IS INITIAL. P_VWID = WIDTH. ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '* Use batch characteristics only when ev'.
+C 'ery populated batch agrees.'.
+APPEND LV_SB TO LT_P.
+A '  LOOP AT GT_CHAR_CACHE INTO GS_CHAR_CACHE.'.
+A '    IF GS_CHAR_CACHE-ATFLV <= 0.'.
+A '      CONTINUE.'.
+A '    ENDIF.'.
+A '    CASE GS_CHAR_CACHE-ATINN.'.
+A '      WHEN GV_ATINN_THICK.'.
+A '        IF LV_THICK IS INITIAL.'.
+A '          LV_THICK = GS_CHAR_CACHE-ATFLV.'.
+A '        ELSEIF LV_THICK <> GS_CHAR_CACHE-ATFLV.'.
+CLEAR LV_SB.
+C '          LV_THICK_MIX = ''X''.'.
+APPEND LV_SB TO LT_P.
+A '        ENDIF.'.
+A '      WHEN GV_ATINN_GRAMMAGE.'.
+A '        IF LV_GRAMMAGE IS INITIAL.'.
+A '          LV_GRAMMAGE = GS_CHAR_CACHE-ATFLV.'.
+A '        ELSEIF LV_GRAMMAGE <> GS_CHAR_CACHE-ATFLV.'.
+CLEAR LV_SB.
+C '          LV_GRAMMAGE_MIX = ''X''.'.
+APPEND LV_SB TO LT_P.
+A '        ENDIF.'.
+A '    ENDCASE.'.
+A '  ENDLOOP.'.
+CLEAR LV_SB.
+C '  IF P_VTHK IS INITIAL AND LV_THICK > 0 '.
+C 'AND LV_THICK_MIX IS INITIAL.'.
+APPEND LV_SB TO LT_P.
+A '    LV_THICK_NUM = LV_THICK.'.
+A '    WRITE LV_THICK_NUM TO P_VTHK NO-GROUPING.'.
+A '    CONDENSE P_VTHK.'.
+A '    LV_THICK_TEXT = P_VTHK.'.
+CLEAR LV_SB.
+C '    REPLACE REGEX ''[.,]0$'' IN LV_THICK_T'.
+C 'EXT WITH ''''.'.
+APPEND LV_SB TO LT_P.
+A '    P_VTHK = LV_THICK_TEXT.'.
+A '  ENDIF.'.
+A '  IF P_VGRM IS INITIAL AND LV_GRAMMAGE > 0'.
+A '     AND LV_GRAMMAGE_MIX IS INITIAL.'.
+A '    LV_GRAMMAGE_NUM = LV_GRAMMAGE.'.
+A '    WRITE LV_GRAMMAGE_NUM TO P_VGRM NO-GROUPING.'.
+A '    CONDENSE P_VGRM.'.
+A '  ENDIF.'.
+CLEAR LV_SB.
+C '* Use the first batch Expired Date from '.
+C 'the Batch List cache.'.
+APPEND LV_SB TO LT_P.
+A '  IF P_VLIF IS INITIAL.'.
+A '    LOOP AT GT_DATE_CACHE INTO GS_DATE_CACHE.'.
+A '      IF GS_DATE_CACHE-EXP_DATE IS NOT INITIAL.'.
+A '        P_VLIF = GS_DATE_CACHE-EXP_DATE.'.
+A '        EXIT.'.
+A '      ENDIF.'.
+A '    ENDLOOP.'.
+A '  ENDIF.'.
+A '  IF P_VMFR IS INITIAL.'.
+CLEAR LV_SB.
+C '    P_VMFR = ''PT. Trias Sentosa Tbk''.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '* Resolve Sales Order from delivery; ver'.
+C 'ify in VBAK before reading SO text.'.
+APPEND LV_SB TO LT_P.
+A '  SELECT SINGLE VGBEL VGPOS INTO (LV_SO, LV_POS)'.
+A '    FROM LIPS WHERE VBELN = P_DELIVERY.'.
+A '  IF LV_SO IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '    SELECT SINGLE BSTNK INTO LV_BSTNK FR'.
+C 'OM VBAK WHERE VBELN = LV_SO.'.
+APPEND LV_SB TO LT_P.
+A '    IF SY-SUBRC <> 0.'.
+A '      CLEAR: LV_SO, LV_POS.'.
+A '    ELSEIF P_VPO IS INITIAL.'.
+A '      P_VPO = LV_BSTNK.'.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A '  IF LV_SO IS INITIAL.'.
+A '    SELECT SINGLE VBELV INTO LV_SO FROM VBFA'.
+CLEAR LV_SB.
+C '      WHERE VBELN = P_DELIVERY AND VBTYP'.
+C '_V = ''C''.'.
+APPEND LV_SB TO LT_P.
+A '    IF SY-SUBRC = 0.'.
+CLEAR LV_SB.
+C '      SELECT SINGLE BSTNK INTO LV_BSTNK '.
+C 'FROM VBAK WHERE VBELN = LV_SO.'.
+APPEND LV_SB TO LT_P.
+A '      IF SY-SUBRC = 0 AND P_VPO IS INITIAL.'.
+A '        P_VPO = LV_BSTNK.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A '  IF LV_SO IS NOT INITIAL.'.
+A '    IF P_VPO IS INITIAL AND LV_POS IS NOT INITIAL.'.
+A '      SELECT SINGLE BSTKD INTO P_VPO FROM VBKD'.
+A '        WHERE VBELN = LV_SO AND POSNR = LV_POS.'.
+A '    ENDIF.'.
+A '    IF P_VPO IS INITIAL.'.
+A '      SELECT SINGLE BSTKD INTO P_VPO FROM VBKD'.
+CLEAR LV_SB.
+C '        WHERE VBELN = LV_SO AND POSNR = '.
+C '''000000''.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '* ZSD028 source: PI is the first line of'.
+C ' SO header text Z101/VBBK.'.
+APPEND LV_SB TO LT_P.
+A '    IF P_VPI IS INITIAL.'.
+A '      LV_TDNAME = LV_SO.'.
+A '      REFRESH LT_TEXT.'.
+CLEAR LV_SB.
+C '      CALL FUNCTION ''READ_TEXT'''.
+APPEND LV_SB TO LT_P.
+A '        EXPORTING'.
+CLEAR LV_SB.
+C '          ID       = ''Z101'''.
+APPEND LV_SB TO LT_P.
+A '          LANGUAGE = SY-LANGU'.
+A '          NAME     = LV_TDNAME'.
+CLEAR LV_SB.
+C '          OBJECT   = ''VBBK'''.
+APPEND LV_SB TO LT_P.
+A '        TABLES'.
+A '          LINES    = LT_TEXT'.
+A '        EXCEPTIONS'.
+A '          OTHERS   = 8.'.
+A '      IF SY-SUBRC = 0.'.
+A '        READ TABLE LT_TEXT INDEX 1 INTO LS_TEXT.'.
+A '        IF SY-SUBRC = 0.'.
+A '          P_VPI = LS_TEXT-TDLINE.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A ' '.
+A '  SELECT SINGLE LFDAT INTO LV_LFDAT'.
+A '    FROM LIKP WHERE VBELN = P_DELIVERY.'.
+A '  IF SY-SUBRC = 0.'.
+A '    IF LV_LFDAT IS NOT INITIAL AND P_VDDAT IS INITIAL.'.
+A '      WRITE LV_LFDAT TO P_VDDAT DD/MM/YYYY.'.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A ' '.
+A '*'.
+A '  IF SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '    P_CANCEL = ''X''.'.
+APPEND LV_SB TO LT_P.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  IF P_XCUS = ''X''. P_L1 = GV_LCUS. P_CUS'.
+C 'T = P_VCUS. ENDIF.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  IF P_XPO = ''X''. P_L2 = GV_LPO. P_PO = '.
+C 'P_VPO. ENDIF.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  IF P_XPI = ''X''. P_L3 = GV_LPI. P_PI = '.
+C 'P_VPI. ENDIF.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  IF P_XPRD = ''X''. P_L4 = GV_LPRD. P_PRO'.
+C 'D = P_VPRD. ENDIF.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  IF P_XQTY = ''X''. P_L5 = GV_LQTY. P_QTY'.
+C ' = P_VQTY. ENDIF.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+CLEAR LV_SB.
+C '  PERFORM APPEND_EXPORT_INFO USING P_XCO'.
+C 'NT GV_LCONT P_VCONT'.
+APPEND LV_SB TO LT_P.
+A '    CHANGING P_EXTRA.'.
+CLEAR LV_SB.
+C '  PERFORM APPEND_EXPORT_INFO USING P_XDD'.
+C 'AT GV_LDDAT P_VDDAT'.
+APPEND LV_SB TO LT_P.
+A '    CHANGING P_EXTRA.'.
+CLEAR LV_SB.
+C '  PERFORM APPEND_EXPORT_INFO USING P_XTH'.
+C 'K GV_LTHK P_VTHK'.
+APPEND LV_SB TO LT_P.
+A '    CHANGING P_EXTRA.'.
+CLEAR LV_SB.
+C '  PERFORM APPEND_EXPORT_INFO USING P_XGR'.
+C 'M GV_LGRM P_VGRM'.
+APPEND LV_SB TO LT_P.
+A '    CHANGING P_EXTRA.'.
+CLEAR LV_SB.
+C '  PERFORM APPEND_EXPORT_INFO USING P_XRA'.
+C 'W GV_LRAW P_VRAW'.
+APPEND LV_SB TO LT_P.
+A '    CHANGING P_EXTRA.'.
+A '  PERFORM APPEND_EXPORT_INFO USING P_XLC GV_LLC P_VLC'.
+A '    CHANGING P_EXTRA.'.
+CLEAR LV_SB.
+C '  PERFORM APPEND_EXPORT_INFO USING P_XWI'.
+C 'D GV_LWID P_VWID'.
+APPEND LV_SB TO LT_P.
+A '    CHANGING P_EXTRA.'.
+CLEAR LV_SB.
+C '  PERFORM APPEND_EXPORT_INFO USING P_XSH'.
+C 'P GV_LSHP P_VSHP'.
+APPEND LV_SB TO LT_P.
+A '    CHANGING P_EXTRA.'.
+CLEAR LV_SB.
+C '  PERFORM APPEND_EXPORT_INFO USING P_XPR'.
+C 'T GV_LPRT P_VPRT'.
+APPEND LV_SB TO LT_P.
+A '    CHANGING P_EXTRA.'.
+CLEAR LV_SB.
+C '  PERFORM APPEND_EXPORT_INFO USING P_XMF'.
+C 'R GV_LMFR P_VMFR'.
+APPEND LV_SB TO LT_P.
+A '    CHANGING P_EXTRA.'.
+CLEAR LV_SB.
+C '  PERFORM APPEND_EXPORT_INFO USING P_XLI'.
+C 'F GV_LLIF P_VLIF'.
+APPEND LV_SB TO LT_P.
+A '    CHANGING P_EXTRA.'.
+A 'ENDFORM.'.
+A ' '.
+A 'FORM APPEND_EXPORT_INFO'.
+A '  USING P_FLAG P_LABEL P_VALUE'.
+A '  CHANGING P_INFO TYPE STRING.'.
+A '  DATA LV_LINE TYPE STRING.'.
+CLEAR LV_SB.
+C '  CHECK P_FLAG = ''X''.'.
+APPEND LV_SB TO LT_P.
+A '  CONCATENATE P_LABEL P_VALUE INTO LV_LINE'.
+CLEAR LV_SB.
+C '    SEPARATED BY CL_ABAP_CHAR_UTILITIES='.
+C '>HORIZONTAL_TAB.'.
+APPEND LV_SB TO LT_P.
+A '  IF P_INFO IS INITIAL.'.
+A '    P_INFO = LV_LINE.'.
+A '  ELSE.'.
+CLEAR LV_SB.
+C '    CONCATENATE P_INFO CL_ABAP_CHAR_UTIL'.
+C 'ITIES=>NEWLINE LV_LINE'.
+APPEND LV_SB TO LT_P.
+A '      INTO P_INFO.'.
+A '  ENDIF.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_COMPANY_NAME'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM GET_COMPANY_NAME. "ADD NEW COMPANY 19/09/2018'.
+A ' '.
+A '  DATA:ZWERKS LIKE LIPS-WERKS,'.
+A '       ZVBELN LIKE LIPS-VBELN.'.
+A ' '.
+A '  IF VBELN IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '    CALL FUNCTION ''CONVERSION_EXIT_ALPHA'.
+C '_INPUT'''.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING'.
+A '        INPUT  = VBELN'.
+A '      IMPORTING'.
+A '        OUTPUT = ZVBELN.'.
+CLEAR LV_SB.
+C '    SELECT SINGLE WERKS FROM LIPS INTO Z'.
+C 'WERKS WHERE VBELN EQ ZVBELN.'.
+APPEND LV_SB TO LT_P.
+A '  ELSE.'.
+CLEAR LV_SB.
+C '    MESSAGE ''Nomor ODO tidak ada!'' TYPE '.
+C '''I''.'.
+APPEND LV_SB TO LT_P.
+A '    STOP.'.
+A '  ENDIF.'.
+A ' '.
+A '  SELECT SINGLE T001~BUTXT FROM T001'.
+CLEAR LV_SB.
+C '    JOIN T001K ON T001~BUKRS EQ T001K~BU'.
+C 'KRS INTO COMPANYTXT'.
+APPEND LV_SB TO LT_P.
+A '    WHERE T001K~BWKEY EQ ZWERKS.'.
+A ' '.
+A 'ENDFORM.                    "GET_COMPANY_NAME'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_TRACED_LOTS'.
+A ' '.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'TYPES: BEGIN OF TY_TRACE_DATA,'.
+A '         MOTHER_ROLL         TYPE C LENGTH 50,'.
+A '         LOT_JR_CONV         TYPE QALS-PRUEFLOS,'.
+A '         LOT_SR_BASE         TYPE QALS-PRUEFLOS,'.
+A '         LOT_JR_BASE         TYPE QALS-PRUEFLOS,'.
+A '         L_JR_CONV_BATCH     TYPE MCH1-CHARG,'.
+A '         L_SR_BASE_BATCH     TYPE MCH1-CHARG,'.
+A '         L_JR_BASE_BATCH     TYPE MCH1-CHARG,'.
+A '         LOT_SR_CONV_SIBLING TYPE QALS-PRUEFLOS,'.
+A '         LOT_SR_CONV_SIBLING2 TYPE QALS-PRUEFLOS,'.
+A '       END OF TY_TRACE_DATA.'.
+A 'DATA: GT_TRACE_DATA TYPE TABLE OF TY_TRACE_DATA,'.
+A '      GS_TRACE_DATA TYPE TY_TRACE_DATA.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_TRACED_LOTS'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM GET_TRACED_LOTS.'.
+A '  DATA: L_AUFNR LIKE AFPO-AUFNR,'.
+A '        L_MBLNR LIKE MSEG-MBLNR,'.
+A '        L_MATNR LIKE MSEG-MATNR,'.
+A '        L_CHARG LIKE MSEG-CHARG,'.
+A '        L_LICHA LIKE MCH1-LICHA,'.
+A '        L_LEN TYPE I,'.
+A '        L_TEMP TYPE I.'.
+A '  DATA: L_JR_CONV_BATCH LIKE MCH1-CHARG,'.
+A '        L_SR_BASE_BATCH LIKE MCH1-CHARG,'.
+A '        L_JR_BASE_BATCH LIKE MCH1-CHARG,'.
+CLEAR LV_SB.
+C '        LT_SR TYPE TABLE OF ZQM_GET_BATC'.
+C 'H_SR WITH HEADER LINE.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  DATA: V_LINE  TYPE C LENGTH 20,'.
+A '        V_CODE  TYPE C LENGTH 20,'.
+A '        V_MOYE  TYPE C LENGTH 20,'.
+A '        V_SEQ   TYPE C LENGTH 20,'.
+A '        V_DUMMY TYPE C LENGTH 50,'.
+A '        L_MOTHER_ROLL TYPE C LENGTH 50.'.
+A ' '.
+A '  DATA: LV_SEARCH_SR TYPE CHARG_D,'.
+A '        LV_LATEST_SR TYPE CHARG_D.'.
+A ' '.
+A '  DATA: LV_FALLBACK_AUFNR_1 LIKE MSEG-AUFNR,'.
+A '        LV_FALLBACK_PARENT_1 LIKE MSEG-CHARG,'.
+A '        LV_FALLBACK_AUFNR_2 LIKE MSEG-AUFNR,'.
+A '        LV_FALLBACK_PARENT_2 LIKE MSEG-CHARG.'.
+A ' '.
+CLEAR LV_SB.
+C '  CLEAR: LOT_SR_CONV, LOT_SR_CONV2, LOT_'.
+C 'JR_CONV, LOT_SR_BASE, LOT_JR_BASE,'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '         L_JR_CONV_BATCH, L_SR_BASE_BATC'.
+C 'H, L_JR_BASE_BATCH,'.
+APPEND LV_SB TO LT_P.
+A '         GS_TRACE_DATA.'.
+A ' '.
+CLEAR LV_SB.
+C '  " Edited by J. Budi (Antigravity) on 2'.
+C '9.06.2026 - Inspection Lot Tracing via S'.
+C 'ibling SR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  SPLIT IT_DATA-NOMSR AT SPACE INTO V_LI'.
+C 'NE V_CODE V_MOYE V_SEQ V_DUMMY.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  CONCATENATE V_LINE V_CODE V_MOYE V_SEQ'.
+C ' INTO L_MOTHER_ROLL SEPARATED BY SPACE.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  " 1. SR Converting Lot'.
+CLEAR LV_SB.
+C '  SELECT SINGLE PRUEFLOS INTO LOT_SR_CON'.
+C 'V FROM QALS WHERE CHARG = IT_DATA-CHARG '.
+C 'AND ART = ''Z04''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  " Fallback jika terkena Change Grade ZQM0016'.
+A '  IF LOT_SR_CONV IS INITIAL.'.
+CLEAR LV_SB.
+C '    PERFORM GET_ORIGINAL_BATCH USING IT_'.
+C 'DATA-CHARG CHANGING LV_SEARCH_SR.'.
+APPEND LV_SB TO LT_P.
+A '    IF LV_SEARCH_SR NE IT_DATA-CHARG.'.
+CLEAR LV_SB.
+C '      SELECT SINGLE PRUEFLOS INTO LOT_SR'.
+C '_CONV FROM QALS WHERE CHARG = LV_SEARCH_'.
+C 'SR AND ART = ''Z04''.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A ' '.
+A ' '.
+A '  SORT GT_TRACE_DATA BY MOTHER_ROLL.'.
+CLEAR LV_SB.
+C '  READ TABLE GT_TRACE_DATA INTO GS_TRACE'.
+C '_DATA WITH KEY MOTHER_ROLL = L_MOTHER_RO'.
+C 'LL BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '  IF SY-SUBRC = 0.'.
+A '    L_JR_CONV_BATCH = GS_TRACE_DATA-L_JR_CONV_BATCH.'.
+A '    LOT_JR_CONV     = GS_TRACE_DATA-LOT_JR_CONV.'.
+A '    L_SR_BASE_BATCH = GS_TRACE_DATA-L_SR_BASE_BATCH.'.
+A '    LOT_SR_BASE     = GS_TRACE_DATA-LOT_SR_BASE.'.
+A '    L_JR_BASE_BATCH = GS_TRACE_DATA-L_JR_BASE_BATCH.'.
+A '    LOT_JR_BASE     = GS_TRACE_DATA-LOT_JR_BASE.'.
+A '    IF LOT_SR_CONV IS INITIAL.'.
+A '      LOT_SR_CONV = GS_TRACE_DATA-LOT_SR_CONV_SIBLING.'.
+A '    ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    IF GS_TRACE_DATA-LOT_SR_CONV_SIBLING'.
+C ' IS NOT INITIAL AND GS_TRACE_DATA-LOT_SR'.
+C '_CONV_SIBLING NE LOT_SR_CONV.'.
+APPEND LV_SB TO LT_P.
+A '      LOT_SR_CONV2 = GS_TRACE_DATA-LOT_SR_CONV_SIBLING.'.
+A '    ENDIF.'.
+CLEAR LV_SB.
+C '    IF GS_TRACE_DATA-LOT_SR_CONV_SIBLING'.
+C '2 IS NOT INITIAL AND GS_TRACE_DATA-LOT_S'.
+C 'R_CONV_SIBLING2 NE LOT_SR_CONV.'.
+APPEND LV_SB TO LT_P.
+A '      IF LOT_SR_CONV2 IS INITIAL.'.
+CLEAR LV_SB.
+C '        LOT_SR_CONV2 = GS_TRACE_DATA-LOT'.
+C '_SR_CONV_SIBLING2.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A ' '.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+A '  IF LOT_SR_CONV IS INITIAL.'.
+CLEAR LV_SB.
+C '    PERFORM GET_ORIGINAL_BATCH USING IT_'.
+C 'DATA-CHARG CHANGING LV_SEARCH_SR.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    CALL FUNCTION ''ZQM_GET_BATCH_JR_BY_S'.
+C 'R'''.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING'.
+A '        CHARG_S = LV_SEARCH_SR'.
+A '      IMPORTING'.
+A '        CHARG_J = L_JR_CONV_BATCH.'.
+A '    " --- BEGIN FALLBACK WRAPPER ---'.
+CLEAR LV_SB.
+C '    " Jika JR gagal ditemukan, mungkin t'.
+C 'erputus oleh Change Grade (309) di tenga'.
+C 'h hierarki'.
+APPEND LV_SB TO LT_P.
+A '    IF L_JR_CONV_BATCH IS INITIAL.'.
+A ' '.
+CLEAR LV_SB.
+C '      PERFORM GET_VALID_ORDER_FROM_MSEG '.
+C 'USING LV_SEARCH_SR CHANGING LV_FALLBACK_'.
+C 'AUFNR_1.'.
+APPEND LV_SB TO LT_P.
+A '      IF LV_FALLBACK_AUFNR_1 IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '        PERFORM GET_VALID_COMPONENT_FROM'.
+C '_MSEG USING LV_FALLBACK_AUFNR_1 CHANGING'.
+C ' LV_FALLBACK_PARENT_1.'.
+APPEND LV_SB TO LT_P.
+A '        IF LV_FALLBACK_PARENT_1 IS NOT INITIAL.'.
+A '          " Bypass change grade parent'.
+CLEAR LV_SB.
+C '          PERFORM GET_ORIGINAL_BATCH USI'.
+C 'NG LV_FALLBACK_PARENT_1 CHANGING LV_SEAR'.
+C 'CH_SR.'.
+APPEND LV_SB TO LT_P.
+A '          " Coba panggil lagi'.
+CLEAR LV_SB.
+C '          CALL FUNCTION ''ZQM_GET_BATCH_J'.
+C 'R_BY_SR'''.
+APPEND LV_SB TO LT_P.
+A '            EXPORTING'.
+A '              CHARG_S = LV_SEARCH_SR'.
+A '            IMPORTING'.
+A '              CHARG_J = L_JR_CONV_BATCH.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '    " --- END FALLBACK WRAPPER ---'.
+A ' '.
+A '    IF L_JR_CONV_BATCH IS NOT INITIAL.'.
+A '      REFRESH LT_SR.'.
+CLEAR LV_SB.
+C '      CALL FUNCTION ''ZQM_GET_BATCH_SR_BY'.
+C '_JR'''.
+APPEND LV_SB TO LT_P.
+A '        EXPORTING'.
+A '          CHARGJR = L_JR_CONV_BATCH'.
+A '        TABLES'.
+A '          T_SR    = LT_SR.'.
+A ' '.
+A '      LOOP AT LT_SR.'.
+CLEAR LV_SB.
+C '        PERFORM GET_NEWEST_BATCH USING L'.
+C 'T_SR-CHARG CHANGING LV_LATEST_SR.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '        DATA: LV_TMP_LOT TYPE QALS-PRUEFLOS.'.
+A '        CLEAR LV_TMP_LOT.'.
+CLEAR LV_SB.
+C '        SELECT SINGLE PRUEFLOS INTO LV_T'.
+C 'MP_LOT FROM QALS WHERE CHARG = LV_LATEST'.
+C '_SR AND ART = ''Z04''.'.
+APPEND LV_SB TO LT_P.
+A '        IF LV_TMP_LOT IS INITIAL.'.
+A '          " Fallback change grade pada sibling'.
+CLEAR LV_SB.
+C '          PERFORM GET_ORIGINAL_BATCH USI'.
+C 'NG LV_LATEST_SR CHANGING LV_SEARCH_SR.'.
+APPEND LV_SB TO LT_P.
+A '          IF LV_SEARCH_SR NE LV_LATEST_SR.'.
+CLEAR LV_SB.
+C '            SELECT SINGLE PRUEFLOS INTO '.
+C 'LV_TMP_LOT FROM QALS WHERE CHARG = LV_SE'.
+C 'ARCH_SR AND ART = ''Z04''.'.
+APPEND LV_SB TO LT_P.
+A '          ENDIF.'.
+A '        ENDIF.'.
+A ' '.
+A '        IF LV_TMP_LOT IS NOT INITIAL.'.
+A '          IF LOT_SR_CONV IS INITIAL.'.
+A '            LOT_SR_CONV = LV_TMP_LOT.'.
+CLEAR LV_SB.
+C '            GS_TRACE_DATA-LOT_SR_CONV_SI'.
+C 'BLING = LV_TMP_LOT.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '          ELSEIF LV_TMP_LOT NE LOT_SR_CO'.
+C 'NV AND LOT_SR_CONV2 IS INITIAL.'.
+APPEND LV_SB TO LT_P.
+A '            LOT_SR_CONV2 = LV_TMP_LOT.'.
+CLEAR LV_SB.
+C '            GS_TRACE_DATA-LOT_SR_CONV_SI'.
+C 'BLING2 = LV_TMP_LOT.'.
+APPEND LV_SB TO LT_P.
+A '          ENDIF.'.
+A '        ENDIF.'.
+A ' '.
+A '      ENDLOOP.'.
+A '    ENDIF.'.
+A '  ELSE.'.
+CLEAR LV_SB.
+C '    " Jika LOT_SR_CONV langsung ketemu, '.
+C 'kita tetap butuh JR_CONV_BATCH untuk men'.
+C 'cari LOT_JR_CONV dan SR_BASE_BATCH'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    PERFORM GET_ORIGINAL_BATCH USING IT_'.
+C 'DATA-CHARG CHANGING LV_SEARCH_SR.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    CALL FUNCTION ''ZQM_GET_BATCH_JR_BY_S'.
+C 'R'''.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING'.
+A '        CHARG_S = LV_SEARCH_SR'.
+A '      IMPORTING'.
+A '        CHARG_J = L_JR_CONV_BATCH.'.
+A '    " --- BEGIN FALLBACK WRAPPER ---'.
+CLEAR LV_SB.
+C '    " Jika JR gagal ditemukan, mungkin t'.
+C 'erputus oleh Change Grade (309) di tenga'.
+C 'h hierarki'.
+APPEND LV_SB TO LT_P.
+A '    IF L_JR_CONV_BATCH IS INITIAL.'.
+A ' '.
+CLEAR LV_SB.
+C '      PERFORM GET_VALID_ORDER_FROM_MSEG '.
+C 'USING LV_SEARCH_SR CHANGING LV_FALLBACK_'.
+C 'AUFNR_1.'.
+APPEND LV_SB TO LT_P.
+A '      IF LV_FALLBACK_AUFNR_1 IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '        PERFORM GET_VALID_COMPONENT_FROM'.
+C '_MSEG USING LV_FALLBACK_AUFNR_1 CHANGING'.
+C ' LV_FALLBACK_PARENT_1.'.
+APPEND LV_SB TO LT_P.
+A '        IF LV_FALLBACK_PARENT_1 IS NOT INITIAL.'.
+A '          " Bypass change grade parent'.
+CLEAR LV_SB.
+C '          PERFORM GET_ORIGINAL_BATCH USI'.
+C 'NG LV_FALLBACK_PARENT_1 CHANGING LV_SEAR'.
+C 'CH_SR.'.
+APPEND LV_SB TO LT_P.
+A '          " Coba panggil lagi'.
+CLEAR LV_SB.
+C '          CALL FUNCTION ''ZQM_GET_BATCH_J'.
+C 'R_BY_SR'''.
+APPEND LV_SB TO LT_P.
+A '            EXPORTING'.
+A '              CHARG_S = LV_SEARCH_SR'.
+A '            IMPORTING'.
+A '              CHARG_J = L_JR_CONV_BATCH.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '    " --- END FALLBACK WRAPPER ---'.
+A '  ENDIF.'.
+A ' '.
+A '  " 2. JR Converting Lot'.
+A '  IF L_JR_CONV_BATCH IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '    SELECT SINGLE PRUEFLOS INTO LOT_JR_C'.
+C 'ONV FROM QALS WHERE CHARG = L_JR_CONV_BA'.
+C 'TCH AND ( ART = ''Z02'' OR ART = ''Z03'' ).'.
+APPEND LV_SB TO LT_P.
+A '    IF LOT_JR_CONV IS INITIAL.'.
+CLEAR LV_SB.
+C '      PERFORM GET_JR_SIBLING_LOT USING L'.
+C '_JR_CONV_BATCH CHANGING LOT_JR_CONV.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A ' '.
+A '  " 3. Cari SR Base Film Batch'.
+A '  IF L_JR_CONV_BATCH IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '    PERFORM GET_VALID_ORDER_FROM_MSEG US'.
+C 'ING L_JR_CONV_BATCH CHANGING L_AUFNR.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '    IF L_AUFNR IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '      PERFORM GET_VALID_COMPONENT_FROM_M'.
+C 'SEG USING L_AUFNR CHANGING L_CHARG.'.
+APPEND LV_SB TO LT_P.
+A '      IF L_CHARG IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '        SELECT SINGLE MATNR INTO L_MATNR'.
+C ' FROM MCH1 WHERE CHARG = L_CHARG.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A ' '.
+A '      IF L_CHARG IS NOT INITIAL.'.
+A '        L_LEN = STRLEN( L_MATNR ).'.
+A '        L_TEMP = L_LEN - 1.'.
+CLEAR LV_SB.
+C '        IF L_MATNR(2) = ''SR'' AND ( L_MAT'.
+C 'NR+L_TEMP(1) = ''A'' OR L_MATNR+L_TEMP(1) '.
+C '= ''O'' ).'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '          SELECT SINGLE LICHA INTO L_LIC'.
+C 'HA FROM MCH1 WHERE MATNR = L_MATNR AND C'.
+C 'HARG = L_CHARG.'.
+APPEND LV_SB TO LT_P.
+A '          IF L_LICHA IS NOT INITIAL.'.
+A '            L_SR_BASE_BATCH = L_LICHA.'.
+A '          ELSE.'.
+A '            L_SR_BASE_BATCH = L_CHARG.'.
+A '          ENDIF.'.
+A '        ELSE.'.
+A '          L_SR_BASE_BATCH = L_CHARG.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '  ELSE.'.
+CLEAR LV_SB.
+C '    " Jika tidak ada JR Conv, mungkin in'.
+C 'putnya langsung SR Base?'.
+APPEND LV_SB TO LT_P.
+A '    L_SR_BASE_BATCH = IT_DATA-CHARG.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  " Fix dinamis (permintaan user 15/07/2'.
+C '026): JR yang ditemukan di atas (L_JR_CO'.
+C 'NV_BATCH)'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  " ternyata tidak punya turunan SR Base'.
+C ' Film (tidak dikonsumsi order manapun se'.
+C 'bagai'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  " komponen SR/JR). Artinya JR tsb sebe'.
+C 'narnya JR Base Film (terminal, bukan JR '.
+C 'Converting),'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  " dan batch DO ini sendiri sudah SR Ba'.
+C 'se Film - bukan SR Converting. Re-label '.
+C 'supaya'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  " tracing lanjut dengan benar ke JR Ba'.
+C 'se Film, bukan berhenti/salah label.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  IF L_JR_CONV_BATCH IS NOT INITIAL AND '.
+C 'L_SR_BASE_BATCH IS INITIAL.'.
+APPEND LV_SB TO LT_P.
+A '    L_JR_BASE_BATCH = L_JR_CONV_BATCH.'.
+A '    LOT_JR_BASE = LOT_JR_CONV.'.
+A '    L_SR_BASE_BATCH = IT_DATA-CHARG.'.
+A '    LOT_SR_BASE = LOT_SR_CONV.'.
+A '    CLEAR: L_JR_CONV_BATCH, LOT_JR_CONV, LOT_SR_CONV.'.
+A '  ENDIF.'.
+A ' '.
+A '  " 3. SR Base Film Lot'.
+CLEAR LV_SB.
+C '  IF L_SR_BASE_BATCH IS NOT INITIAL AND '.
+C 'LOT_SR_BASE IS INITIAL.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SELECT SINGLE PRUEFLOS INTO LOT_SR_B'.
+C 'ASE FROM QALS WHERE CHARG = L_SR_BASE_BA'.
+C 'TCH AND ART = ''Z04''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+CLEAR LV_SB.
+C '    IF L_JR_BASE_BATCH IS INITIAL. " Ski'.
+C 'p re-search kalau JR Base sudah ketemu d'.
+C 'ari re-labeling di atas'.
+APPEND LV_SB TO LT_P.
+A '      IF LOT_SR_BASE IS INITIAL.'.
+CLEAR LV_SB.
+C '        PERFORM GET_ORIGINAL_BATCH USING'.
+C ' L_SR_BASE_BATCH CHANGING LV_SEARCH_SR.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        CALL FUNCTION ''ZQM_GET_BATCH_JR_'.
+C 'BY_SR'''.
+APPEND LV_SB TO LT_P.
+A '          EXPORTING'.
+A '            CHARG_S = LV_SEARCH_SR'.
+A '          IMPORTING'.
+A '            CHARG_J = L_JR_BASE_BATCH.'.
+A '        " --- BEGIN FALLBACK WRAPPER ---'.
+CLEAR LV_SB.
+C '        " Jika JR gagal ditemukan, mungk'.
+C 'in terputus oleh Change Grade (309) di t'.
+C 'engah hierarki'.
+APPEND LV_SB TO LT_P.
+A '        IF L_JR_BASE_BATCH IS INITIAL.'.
+A ' '.
+CLEAR LV_SB.
+C '          PERFORM GET_VALID_ORDER_FROM_M'.
+C 'SEG USING LV_SEARCH_SR CHANGING LV_FALLB'.
+C 'ACK_AUFNR_2.'.
+APPEND LV_SB TO LT_P.
+A '          IF LV_FALLBACK_AUFNR_2 IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '            PERFORM GET_VALID_COMPONENT_'.
+C 'FROM_MSEG USING LV_FALLBACK_AUFNR_2 CHAN'.
+C 'GING LV_FALLBACK_PARENT_2.'.
+APPEND LV_SB TO LT_P.
+A '            IF LV_FALLBACK_PARENT_2 IS NOT INITIAL.'.
+A '              " Bypass change grade parent'.
+CLEAR LV_SB.
+C '              PERFORM GET_ORIGINAL_BATCH'.
+C ' USING LV_FALLBACK_PARENT_2 CHANGING LV_'.
+C 'SEARCH_SR.'.
+APPEND LV_SB TO LT_P.
+A '              " Coba panggil lagi'.
+CLEAR LV_SB.
+C '              CALL FUNCTION ''ZQM_GET_BAT'.
+C 'CH_JR_BY_SR'''.
+APPEND LV_SB TO LT_P.
+A '                EXPORTING'.
+A '                  CHARG_S = LV_SEARCH_SR'.
+A '                IMPORTING'.
+A '                  CHARG_J = L_JR_BASE_BATCH.'.
+A '            ENDIF.'.
+A '          ENDIF.'.
+A '        ENDIF.'.
+A '        " --- END FALLBACK WRAPPER ---'.
+A ' '.
+A '        IF L_JR_BASE_BATCH IS NOT INITIAL.'.
+A '          REFRESH LT_SR.'.
+CLEAR LV_SB.
+C '          CALL FUNCTION ''ZQM_GET_BATCH_S'.
+C 'R_BY_JR'''.
+APPEND LV_SB TO LT_P.
+A '            EXPORTING'.
+A '              CHARGJR = L_JR_BASE_BATCH'.
+A '            TABLES'.
+A '              T_SR    = LT_SR.'.
+A ' '.
+A '          LOOP AT LT_SR.'.
+CLEAR LV_SB.
+C '            PERFORM GET_NEWEST_BATCH USI'.
+C 'NG LT_SR-CHARG CHANGING LV_LATEST_SR.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '            SELECT SINGLE PRUEFLOS INTO '.
+C 'LOT_SR_BASE FROM QALS WHERE CHARG = LV_L'.
+C 'ATEST_SR AND ART = ''Z04''.'.
+APPEND LV_SB TO LT_P.
+A '            IF LOT_SR_BASE IS NOT INITIAL.'.
+A '              EXIT.'.
+A '            ENDIF.'.
+A '          ENDLOOP.'.
+A '        ENDIF.'.
+A '      ELSE.'.
+A '        " Cari JR_BASE_BATCH untuk mencari LOT_JR_BASE'.
+CLEAR LV_SB.
+C '        PERFORM GET_ORIGINAL_BATCH USING'.
+C ' L_SR_BASE_BATCH CHANGING LV_SEARCH_SR.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        CALL FUNCTION ''ZQM_GET_BATCH_JR_'.
+C 'BY_SR'''.
+APPEND LV_SB TO LT_P.
+A '          EXPORTING'.
+A '            CHARG_S = LV_SEARCH_SR'.
+A '          IMPORTING'.
+A '            CHARG_J = L_JR_BASE_BATCH.'.
+A '        " --- BEGIN FALLBACK WRAPPER ---'.
+CLEAR LV_SB.
+C '        " Jika JR gagal ditemukan, mungk'.
+C 'in terputus oleh Change Grade (309) di t'.
+C 'engah hierarki'.
+APPEND LV_SB TO LT_P.
+A '        IF L_JR_BASE_BATCH IS INITIAL.'.
+A ' '.
+CLEAR LV_SB.
+C '          PERFORM GET_VALID_ORDER_FROM_M'.
+C 'SEG USING LV_SEARCH_SR CHANGING LV_FALLB'.
+C 'ACK_AUFNR_2.'.
+APPEND LV_SB TO LT_P.
+A '          IF LV_FALLBACK_AUFNR_2 IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '            PERFORM GET_VALID_COMPONENT_'.
+C 'FROM_MSEG USING LV_FALLBACK_AUFNR_2 CHAN'.
+C 'GING LV_FALLBACK_PARENT_2.'.
+APPEND LV_SB TO LT_P.
+A '            IF LV_FALLBACK_PARENT_2 IS NOT INITIAL.'.
+A '              " Bypass change grade parent'.
+CLEAR LV_SB.
+C '              PERFORM GET_ORIGINAL_BATCH'.
+C ' USING LV_FALLBACK_PARENT_2 CHANGING LV_'.
+C 'SEARCH_SR.'.
+APPEND LV_SB TO LT_P.
+A '              " Coba panggil lagi'.
+CLEAR LV_SB.
+C '              CALL FUNCTION ''ZQM_GET_BAT'.
+C 'CH_JR_BY_SR'''.
+APPEND LV_SB TO LT_P.
+A '                EXPORTING'.
+A '                  CHARG_S = LV_SEARCH_SR'.
+A '                IMPORTING'.
+A '                  CHARG_J = L_JR_BASE_BATCH.'.
+A '            ENDIF.'.
+A '          ENDIF.'.
+A '        ENDIF.'.
+A '        " --- END FALLBACK WRAPPER ---'.
+A '      ENDIF.'.
+A '    ENDIF. " penutup guard L_JR_BASE_BATCH IS INITIAL'.
+A '  ENDIF.'.
+A ' '.
+A '  " 4. JR Base Film Lot'.
+CLEAR LV_SB.
+C '  IF L_JR_BASE_BATCH IS NOT INITIAL AND '.
+C 'LOT_JR_BASE IS INITIAL.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SELECT SINGLE PRUEFLOS INTO LOT_JR_B'.
+C 'ASE FROM QALS WHERE CHARG = L_JR_BASE_BA'.
+C 'TCH AND ( ART = ''Z02'' OR ART = ''Z03'' ).'.
+APPEND LV_SB TO LT_P.
+A '    IF LOT_JR_BASE IS INITIAL.'.
+CLEAR LV_SB.
+C '      PERFORM GET_JR_SIBLING_LOT USING L'.
+C '_JR_BASE_BATCH CHANGING LOT_JR_BASE.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A ' '.
+A '  " Setelah selesai mencari semuanya, simpan ke cache'.
+A '  GS_TRACE_DATA-MOTHER_ROLL = L_MOTHER_ROLL.'.
+A '  GS_TRACE_DATA-L_JR_CONV_BATCH = L_JR_CONV_BATCH.'.
+A '  GS_TRACE_DATA-LOT_JR_CONV = LOT_JR_CONV.'.
+A '  GS_TRACE_DATA-L_SR_BASE_BATCH = L_SR_BASE_BATCH.'.
+A '  GS_TRACE_DATA-LOT_SR_BASE = LOT_SR_BASE.'.
+A '  GS_TRACE_DATA-L_JR_BASE_BATCH = L_JR_BASE_BATCH.'.
+A '  GS_TRACE_DATA-LOT_JR_BASE = LOT_JR_BASE.'.
+CLEAR LV_SB.
+C '  IF GS_TRACE_DATA-LOT_SR_CONV_SIBLING I'.
+C 'S INITIAL AND LOT_SR_CONV IS NOT INITIAL'.
+C '.'.
+APPEND LV_SB TO LT_P.
+A '    GS_TRACE_DATA-LOT_SR_CONV_SIBLING = LOT_SR_CONV.'.
+A '  ENDIF.'.
+A '  APPEND GS_TRACE_DATA TO GT_TRACE_DATA.'.
+A 'ENDFORM.                    "GET_TRACED_LOTS'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_ORIGINAL_BATCH'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM GET_ORIGINAL_BATCH USING P_BATCH CH'.
+C 'ANGING P_ORIGINAL_BATCH.'.
+APPEND LV_SB TO LT_P.
+A '  DATA: LV_OLD_BATCH TYPE CHARG_D.'.
+A '  P_ORIGINAL_BATCH = P_BATCH.'.
+A '  DO.'.
+A '    CLEAR LV_OLD_BATCH.'.
+A '    SELECT CHARG INTO LV_OLD_BATCH FROM ZBATCHISTORY'.
+A '      UP TO 1 ROWS'.
+A '      WHERE NCHARG = P_ORIGINAL_BATCH'.
+A '      ORDER BY BUDAT DESCENDING UZEIT DESCENDING.'.
+A '    ENDSELECT.'.
+A '    IF SY-SUBRC = 0 AND LV_OLD_BATCH IS NOT INITIAL.'.
+A '      P_ORIGINAL_BATCH = LV_OLD_BATCH.'.
+A '    ELSE.'.
+A '      EXIT.'.
+A '    ENDIF.'.
+R 'ZQMI_COA_F01' 4782 4782.
+A 'ENDFORM.                    "GET_ORIGINAL_BATCH'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_NEWEST_BATCH'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM GET_NEWEST_BATCH USING P_BATCH CHAN'.
+C 'GING P_NEWEST_BATCH.'.
+APPEND LV_SB TO LT_P.
+A '  DATA: LV_NEW_BATCH TYPE CHARG_D.'.
+A '  P_NEWEST_BATCH = P_BATCH.'.
+A '  DO.'.
+A '    CLEAR LV_NEW_BATCH.'.
+A '    SELECT NCHARG INTO LV_NEW_BATCH FROM ZBATCHISTORY'.
+A '      UP TO 1 ROWS'.
+A '      WHERE CHARG = P_NEWEST_BATCH'.
+A '      ORDER BY BUDAT DESCENDING UZEIT DESCENDING.'.
+A '    ENDSELECT.'.
+A '    IF SY-SUBRC = 0 AND LV_NEW_BATCH IS NOT INITIAL.'.
+A '      P_NEWEST_BATCH = LV_NEW_BATCH.'.
+A '    ELSE.'.
+A '      EXIT.'.
+A '    ENDIF.'.
+A '  ENDDO.'.
+A 'ENDFORM.                    "GET_NEWEST_BATCH'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_JR_SIBLING_LOT'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM GET_JR_SIBLING_LOT USING P_BATCH TYPE CHARG_D'.
+CLEAR LV_SB.
+C '                        CHANGING P_LOT T'.
+C 'YPE QALS-PRUEFLOS.'.
+APPEND LV_SB TO LT_P.
+A '  DATA: LV_CUOBJ_BM TYPE MCH1-CUOBJ_BM,'.
+A '        LV_OBJEK TYPE AUSP-OBJEK,'.
+A '        LV_ROLL_STR TYPE AUSP-ATWRT.'.
+A ' '.
+A '  DATA: BEGIN OF LT_PARTS OCCURS 0,'.
+A '          PART(50) TYPE C,'.
+A '        END OF LT_PARTS.'.
+A '  DATA: LV_PART(50) TYPE C,'.
+A '        LV_PREFIX(50) TYPE C,'.
+A '        LV_SEQ_STR(10) TYPE C,'.
+A '        LV_SEQ_NUM TYPE I,'.
+A '        LV_LINES TYPE I.'.
+A ' '.
+A '  DATA: LV_IDX TYPE I,'.
+A '        LV_START TYPE I,'.
+A '        LV_END TYPE I,'.
+A '        LV_SEQ_NEW_STR TYPE C LENGTH 3,'.
+A '        LV_BATCH_NEW TYPE CHARG_D,'.
+A '        LV_ROLL_NEW TYPE AUSP-ATWRT.'.
+A ' '.
+A '  DATA: BEGIN OF LT_SIBLING_ROLLS OCCURS 0,'.
+A '          ATWRT TYPE AUSP-ATWRT,'.
+A '        END OF LT_SIBLING_ROLLS.'.
+A ' '.
+A '  DATA: BEGIN OF LT_CUOBJ OCCURS 0,'.
+A '          OBJEK TYPE AUSP-OBJEK,'.
+A '        END OF LT_CUOBJ.'.
+A ' '.
+A '  DATA: BEGIN OF LT_CUOBJ_BM OCCURS 0,'.
+A '          CUOBJ_BM TYPE MCH1-CUOBJ_BM,'.
+A '        END OF LT_CUOBJ_BM.'.
+A ' '.
+A '  DATA: BEGIN OF LT_BATCHES OCCURS 0,'.
+A '          CHARG TYPE MCH1-CHARG,'.
+A '        END OF LT_BATCHES.'.
+A ' '.
+A '  DATA: BEGIN OF LT_LOTS OCCURS 0,'.
+A '          PRUEFLOS TYPE QALS-PRUEFLOS,'.
+A '          CHARG TYPE QALS-CHARG,'.
+A '        END OF LT_LOTS.'.
+A ' '.
+A '  CLEAR P_LOT.'.
+A '  IF P_BATCH IS INITIAL.'.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+A ' '.
+A ' '.
+CLEAR LV_SB.
+C '  " 2. Dapatkan CUOBJ_BM (Internal Objec'.
+C 't Number) dari tabel MCH1 untuk P_BATCH'.
+APPEND LV_SB TO LT_P.
+A '  SELECT SINGLE CUOBJ_BM INTO LV_CUOBJ_BM'.
+A '    FROM MCH1'.
+A '    WHERE CHARG = P_BATCH.'.
+A ' '.
+A '  IF SY-SUBRC <> 0 OR LV_CUOBJ_BM IS INITIAL.'.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+A '  LV_OBJEK = LV_CUOBJ_BM.'.
+A ' '.
+A '  " 3. Dapatkan teks Nomor Roll dari AUSP'.
+A '  SELECT SINGLE ATWRT INTO LV_ROLL_STR'.
+A '    FROM AUSP'.
+A '    WHERE OBJEK = LV_OBJEK'.
+A '      AND ATINN = ATINN_ROLL'.
+CLEAR LV_SB.
+C '      AND KLART = ''023'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      AND MAFID = ''O''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  IF SY-SUBRC <> 0 OR LV_ROLL_STR IS INITIAL.'.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  " 4. Ekstrak prefix dan sequence dari '.
+C 'Nomor Roll (misal: "W CGA 108 001")'.
+APPEND LV_SB TO LT_P.
+A '  SPLIT LV_ROLL_STR AT SPACE INTO TABLE LT_PARTS.'.
+A '  DESCRIBE TABLE LT_PARTS LINES LV_LINES.'.
+A ' '.
+A '  IF LV_LINES >= 2.'.
+A '    READ TABLE LT_PARTS INDEX LV_LINES.'.
+A '    LV_SEQ_STR = LT_PARTS-PART.'.
+A ' '.
+A '    " Reconstruct prefix'.
+A '    DATA: LV_IDX_PREFIX TYPE I.'.
+A '    LV_IDX_PREFIX = 1.'.
+A '    CLEAR LV_PREFIX.'.
+A '    WHILE LV_IDX_PREFIX < LV_LINES.'.
+A '      READ TABLE LT_PARTS INDEX LV_IDX_PREFIX.'.
+A '      LV_PART = LT_PARTS-PART.'.
+A '      IF LV_PREFIX IS INITIAL.'.
+A '        LV_PREFIX = LV_PART.'.
+A '      ELSE.'.
+CLEAR LV_SB.
+C '        CONCATENATE LV_PREFIX LV_PART IN'.
+C 'TO LV_PREFIX SEPARATED BY SPACE.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A '      LV_IDX_PREFIX = LV_IDX_PREFIX + 1.'.
+A '    ENDWHILE.'.
+A ' '.
+CLEAR LV_SB.
+C '    " Pastikan karakter terakhir (sequen'.
+C 'ce) adalah angka'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    IF LV_SEQ_STR CO ''0123456789 ''.'.
+APPEND LV_SB TO LT_P.
+A '      LV_SEQ_NUM = LV_SEQ_STR.'.
+A ' '.
+A '* Update sibling search (info Aisyah, 06/08/26):'.
+A '* - Kunci: Kode Film + Month-Year (di LV_PREFIX).'.
+A '* - Line ikut otomatis (bagian token prefix).'.
+A '* - Cari NAIK saja, terdekat duluan, maks +20.'.
+A '* - Ketemu 1 lot valid -> langsung STOP.'.
+A '*   (bukan average / ambil semua sibling).'.
+A '      LV_START = LV_SEQ_NUM + 1.'.
+A '      LV_END = LV_SEQ_NUM + 20.'.
+A ' '.
+A '      CLEAR P_LOT.'.
+A '      LV_IDX = LV_START.'.
+A ' '.
+A '      WHILE LV_IDX <= LV_END'.
+A '        AND P_LOT IS INITIAL.'.
+A '        CLEAR: LV_SEQ_NEW_STR, LV_ROLL_NEW,'.
+A '               LV_OBJEK, LV_CUOBJ_BM,'.
+A '               LV_BATCH_NEW.'.
+A '        REFRESH LT_LOTS.'.
+A ' '.
+A '        " Roll kandidat sequence terdekat'.
+A '        UNPACK LV_IDX TO LV_SEQ_NEW_STR.'.
+A '        CONCATENATE LV_PREFIX LV_SEQ_NEW_STR'.
+A '          INTO LV_ROLL_NEW SEPARATED BY SPACE.'.
+A ' '.
+A '        " 5. Cek Nomor Roll kandidat di AUSP'.
+A '        SELECT SINGLE OBJEK INTO LV_OBJEK'.
+A '          FROM AUSP'.
+A '          WHERE ATINN = ATINN_ROLL'.
+A '            AND ATWRT = LV_ROLL_NEW'.
+CLEAR LV_SB.
+C '            AND KLART = ''023'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '            AND MAFID = ''O''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '        IF SY-SUBRC = 0'.
+A '          AND LV_OBJEK IS NOT INITIAL.'.
+A '          LV_CUOBJ_BM = LV_OBJEK.'.
+A ' '.
+A '          " 6. CHARG dari MCH1 kandidat ini'.
+A '          SELECT SINGLE CHARG INTO LV_BATCH_NEW'.
+A '            FROM MCH1'.
+A '            WHERE CUOBJ_BM = LV_CUOBJ_BM.'.
+A ' '.
+A '          IF SY-SUBRC = 0'.
+A '            AND LV_BATCH_NEW IS NOT INITIAL.'.
+A ' '.
+A '            " 7. Lot Inspeksi (QALS) kandidat ini'.
+A '            SELECT PRUEFLOS CHARG'.
+A '              INTO TABLE LT_LOTS'.
+A '              FROM QALS'.
+A '              WHERE CHARG = LV_BATCH_NEW'.
+CLEAR LV_SB.
+C '                AND ( ART = ''Z02'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                   OR ART = ''Z03'' ).'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '            IF SY-SUBRC = 0.'.
+A '              SORT LT_LOTS BY PRUEFLOS'.
+A '                DESCENDING.'.
+A '              READ TABLE LT_LOTS INDEX 1.'.
+A '              IF SY-SUBRC = 0.'.
+A '                P_LOT = LT_LOTS-PRUEFLOS.'.
+A '                " Ketemu -> stop'.
+A '              ENDIF.'.
+A '            ENDIF.'.
+A ' '.
+A '          ENDIF.'.
+A '        ENDIF.'.
+A ' '.
+A '        LV_IDX = LV_IDX + 1.'.
+A '      ENDWHILE.'.
+A ' '.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A 'ENDFORM.                    "GET_JR_SIBLING_LOT'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_VALID_ORDER_FROM_MSEG'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* BKTXT dokumen GR (101) yang sedang di-'.
+C 'trace. Di-set oleh GET_VALID_ORDER_FROM_'.
+C 'MSEG,'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* dibaca GET_VALID_COMPONENT_FROM_MSEG. '.
+C 'BKTXT = identitas transaksi / nomor roll'.
+C ', dan'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* merupakan penghubung yang benar antara'.
+C ' posting 101 dan 261 dalam SATU producti'.
+C 'on order.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_VALID_ORDER_FROM_MSEG'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*      -->P_CHARG    text'.
+A '*      -->P_AUFNR    text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM GET_VALID_ORDER_FROM_MSEG USING P_C'.
+C 'HARG CHANGING P_AUFNR.'.
+APPEND LV_SB TO LT_P.
+A '  DATA: LT_MSEG TYPE TABLE OF MSEG WITH HEADER LINE,'.
+A '        LT_CANC TYPE TABLE OF MSEG WITH HEADER LINE.'.
+A '  DATA: LV_COMBINE LIKE AFPO-AUFNR.'.
+A '  CLEAR P_AUFNR.'.
+CLEAR LV_SB.
+C '  SELECT AUFNR MBLNR MJAHR ZEILE SMBLN S'.
+C 'JAHR SMBLP BWART CHARG'.
+APPEND LV_SB TO LT_P.
+A '    INTO CORRESPONDING FIELDS OF TABLE LT_MSEG'.
+A '    FROM MSEG'.
+CLEAR LV_SB.
+C '    WHERE CHARG = P_CHARG AND BWART IN ('.
+C '''101'', ''102'')'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    %_HINTS ORACLE ''INDEX("MSEG" "MSEG~Z'.
+C '07")''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  IF SY-SUBRC = 0.'.
+A '    LT_CANC[] = LT_MSEG[].'.
+A '    DELETE LT_CANC WHERE SMBLN IS INITIAL.'.
+A '    LOOP AT LT_CANC.'.
+CLEAR LV_SB.
+C '      DELETE LT_MSEG WHERE MBLNR = LT_CA'.
+C 'NC-SMBLN AND MJAHR = LT_CANC-SJAHR AND Z'.
+C 'EILE = LT_CANC-SMBLP.'.
+APPEND LV_SB TO LT_P.
+A '    ENDLOOP.'.
+CLEAR LV_SB.
+C '    DELETE LT_MSEG WHERE SMBLN IS NOT IN'.
+C 'ITIAL OR BWART = ''102''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '    SORT LT_MSEG BY MBLNR DESCENDING ZEILE DESCENDING.'.
+A '    READ TABLE LT_MSEG INDEX 1.'.
+A '    IF SY-SUBRC = 0.'.
+A '      P_AUFNR = LT_MSEG-AUFNR.'.
+A ' '.
+CLEAR LV_SB.
+C '      " Fix A (user 18/07/2026): ambil B'.
+C 'KTXT dokumen GR (101) ini, dipakai'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      " GET_VALID_COMPONENT_FROM_MSEG un'.
+C 'tuk memilih komponen 261 pasangan roll i'.
+C 'ni.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      " Bukti: order 100000072887 punya '.
+C '8 posting 261 / 4 batch berbeda, dibedak'.
+C 'an'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      " HANYA oleh BKTXT. Logic lama amb'.
+C 'il MBLNR terbesar - salah roll tanpa gej'.
+C 'ala.'.
+APPEND LV_SB TO LT_P.
+A '      SELECT SINGLE BKTXT INTO GV_TRACE_BKTXT'.
+A '        FROM MKPF'.
+A '        WHERE MBLNR = LT_MSEG-MBLNR'.
+A '          AND MJAHR = LT_MSEG-MJAHR.'.
+A ' '.
+CLEAR LV_SB.
+C '      " Fix B (user 18/07/2026): resolve'.
+C ' COLLECTIVE ORDER. AUFNR dari MSEG 101 b'.
+C 'isa'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      " order referensi (mis. A290000025'.
+C '40) yang TIDAK punya komponen 261 sama s'.
+C 'ekali;'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      " order asli dicari via AFPO-MILL_'.
+C 'OC_AUFNR_U. Tanpa ini tracing MATI di ho'.
+C 'p'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      " pertama sehingga MIC level Base '.
+C 'Film (mis. PALZTH00) selalu kosong.'.
+APPEND LV_SB TO LT_P.
+A '      CLEAR LV_COMBINE.'.
+A '      SELECT SINGLE AUFNR INTO LV_COMBINE'.
+A '        FROM AFPO'.
+A '        WHERE MILL_OC_AUFNR_U = P_AUFNR.'.
+A '      IF SY-SUBRC = 0 AND LV_COMBINE IS NOT INITIAL.'.
+A '        P_AUFNR = LV_COMBINE.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A 'ENDFORM.                    "GET_VALID_ORDER_FROM_MSEG'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_VALID_COMPONENT_FROM_MSEG'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM GET_VALID_COMPONENT_FROM_MSEG USING'.
+C ' P_AUFNR CHANGING P_CHARG.'.
+APPEND LV_SB TO LT_P.
+A '  DATA: BEGIN OF LT_MKPF OCCURS 0,'.
+A '          MBLNR LIKE MKPF-MBLNR,'.
+A '          MJAHR LIKE MKPF-MJAHR,'.
+A '          BKTXT LIKE MKPF-BKTXT,'.
+A '        END OF LT_MKPF.'.
+A '  DATA: LT_MSEG TYPE TABLE OF MSEG WITH HEADER LINE,'.
+A '        LT_CANC TYPE TABLE OF MSEG WITH HEADER LINE.'.
+A '  CLEAR P_CHARG.'.
+CLEAR LV_SB.
+C '  SELECT AUFNR MBLNR MJAHR ZEILE SMBLN S'.
+C 'JAHR SMBLP BWART CHARG MATNR'.
+APPEND LV_SB TO LT_P.
+A '    INTO CORRESPONDING FIELDS OF TABLE LT_MSEG'.
+A '    FROM MSEG'.
+CLEAR LV_SB.
+C '    WHERE AUFNR = P_AUFNR AND BWART IN ('.
+C '''261'', ''262'', ''901'', ''902'') AND CHARG <>'.
+C ' ''''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  IF SY-SUBRC = 0.'.
+A '    LT_CANC[] = LT_MSEG[].'.
+A '    DELETE LT_CANC WHERE SMBLN IS INITIAL.'.
+A '    LOOP AT LT_CANC.'.
+CLEAR LV_SB.
+C '      DELETE LT_MSEG WHERE MBLNR = LT_CA'.
+C 'NC-SMBLN AND MJAHR = LT_CANC-SJAHR AND Z'.
+C 'EILE = LT_CANC-SMBLP.'.
+APPEND LV_SB TO LT_P.
+A '    ENDLOOP.'.
+CLEAR LV_SB.
+C '    DELETE LT_MSEG WHERE SMBLN IS NOT IN'.
+C 'ITIAL OR BWART = ''262'' OR BWART = ''902''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+CLEAR LV_SB.
+C '    " Fix BKTXT (user 18/07/2026): buang'.
+C ' komponen yang BUKAN milik transaksi/rol'.
+C 'l yang'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    " sama dengan dokumen 101-nya. Satu '.
+C 'order bisa punya banyak roll, dan BKTXT '.
+C 'adalah'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    " satu-satunya pembeda. Kalau BKTXT '.
+C '101 kosong (data lama), filter dilewati.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    IF GV_TRACE_BKTXT IS NOT INITIAL AND'.
+C ' LT_MSEG[] IS NOT INITIAL.'.
+APPEND LV_SB TO LT_P.
+A '      CLEAR LT_MKPF. REFRESH LT_MKPF.'.
+A '      SELECT MBLNR MJAHR BKTXT INTO TABLE LT_MKPF'.
+A '        FROM MKPF'.
+A '        FOR ALL ENTRIES IN LT_MSEG'.
+A '        WHERE MBLNR = LT_MSEG-MBLNR'.
+A '          AND MJAHR = LT_MSEG-MJAHR.'.
+A '      SORT LT_MKPF BY MBLNR MJAHR.'.
+A '      LOOP AT LT_MSEG.'.
+A '        CLEAR LT_MKPF.'.
+CLEAR LV_SB.
+C '        READ TABLE LT_MKPF WITH KEY MBLN'.
+C 'R = LT_MSEG-MBLNR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                                    MJAH'.
+C 'R = LT_MSEG-MJAHR BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        IF SY-SUBRC <> 0 OR LT_MKPF-BKTX'.
+C 'T <> GV_TRACE_BKTXT.'.
+APPEND LV_SB TO LT_P.
+A '          DELETE LT_MSEG.'.
+A '        ENDIF.'.
+A '      ENDLOOP.'.
+A '    ENDIF.'.
+A ' '.
+A '    SORT LT_MSEG BY MBLNR DESCENDING ZEILE DESCENDING.'.
+A '    LOOP AT LT_MSEG.'.
+CLEAR LV_SB.
+C '      " Pastikan yang diambil adalah mat'.
+C 'erial Base Film (SR/JR), bukan komponen '.
+C 'pelengkap'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      IF LT_MSEG-MATNR(2) = ''SR'' OR LT_M'.
+C 'SEG-MATNR(2) = ''JR''.'.
+APPEND LV_SB TO LT_P.
+A '        P_CHARG = LT_MSEG-CHARG.'.
+A '        EXIT.'.
+A '      ENDIF.'.
+A '    ENDLOOP.'.
+A '  ENDIF.'.
+CLEAR LV_SB.
+C 'ENDFORM.                    "GET_VALID_C'.
+C 'OMPONENT_FROM_MSEG'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  MICFMT'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* Fix (user 18/07/2026): sebelumnya semu'.
+C 'a WRITE meng-hardcode DECIMALS 3,'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* sehingga value tidak mengikuti master '.
+C 'MIC (mis. SEWESTMZ STELLEN=0'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* seharusnya tampil 55, bukan 54.842). F'.
+C 'orm ini mengambil STELLEN + unit'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* dari QPMK per MIC dan per plant, hasil'.
+C 'nya di-cache di GT_MICFMT.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_JR_AVG'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* Enhancement (user 18/07/2026): untuk M'.
+C 'IC ber-mapping JR (Converting /'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* Base Film), nilai = RATA-RATA across s'.
+C 'emua sibling roll JR dalam 1'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* mother roll (mis. E EWE 076 001..004),'.
+C ' bukan hanya 1 roll yang di-slit'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* ke SR-nya. Sebab QC merekam inspeksi J'.
+C 'R sekali per order/jumbo di satu'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* roll perwakilan; roll lain lot-nya kos'.
+C 'ong. Hanya lot dengan ANZWERTG>0'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* yang ikut rata-rata (skip kosong). P_I'.
+C 'SJR=''X'' bila INSLOT adalah lot JR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* (QALS ART Z02/Z03); bila bukan, caller'.
+C ' pakai logika lama (SR tak berubah).'.
+APPEND LV_SB TO LT_P.
+A 'FORM GET_JR_AVG USING P_VBELN P_INSLOT P_MIC'.
+A '         CHANGING P_ISJR'.
+A '                  P_VAL TYPE QAMR-MITTELWERT'.
+A '                  P_CNT TYPE I.'.
+A '  DATA: L_ART TYPE QALS-ART.'.
+A '  DATA: L_ICHARG TYPE QALS-CHARG.'.
+A '  DATA: L_AUFNR TYPE MSEG-AUFNR.'.
+A '  DATA: L_MK TYPE QAMV-MERKNR.'.
+CLEAR LV_SB.
+C '  DATA: L_MW TYPE QAMR-MITTELWERT, L_AZ '.
+C 'TYPE QAMR-ANZWERTG.'.
+APPEND LV_SB TO LT_P.
+A '  DATA: L_SUM TYPE QAMR-MITTELWERT.'.
+A '  DATA: BEGIN OF LT_BCH OCCURS 0,'.
+A '          CHARG TYPE MSEG-CHARG,'.
+A '        END OF LT_BCH.'.
+A '  DATA: BEGIN OF LT_JLOT OCCURS 0,'.
+A '          LOT TYPE QALS-PRUEFLOS,'.
+A '        END OF LT_JLOT.'.
+A ' '.
+A '  CLEAR: P_ISJR, P_VAL, P_CNT, L_SUM.'.
+A '  SORT GT_JRAVG BY INSLOT MIC.'.
+A '  READ TABLE GT_JRAVG INTO GS_JRAVG'.
+CLEAR LV_SB.
+C '       WITH KEY INSLOT = P_INSLOT MIC = '.
+C 'P_MIC BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '  IF SY-SUBRC = 0.'.
+A '    P_ISJR = GS_JRAVG-ISJR.'.
+A '    P_VAL = GS_JRAVG-VAL.'.
+A '    P_CNT = GS_JRAVG-CNT.'.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+A '  IF P_INSLOT IS NOT INITIAL.'.
+A '    CLEAR: L_ART, L_ICHARG.'.
+CLEAR LV_SB.
+C '    SELECT SINGLE ART CHARG INTO (L_ART,'.
+C ' L_ICHARG) FROM QALS'.
+APPEND LV_SB TO LT_P.
+A '      WHERE PRUEFLOS = P_INSLOT.'.
+CLEAR LV_SB.
+C '    IF SY-SUBRC = 0 AND ( L_ART = ''Z02'' '.
+C 'OR L_ART = ''Z03'' ).'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      P_ISJR = ''X''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '      " 1) Langsung: nilai lot INSLOT sendiri (yg sudah'.
+CLEAR LV_SB.
+C '      "    ditentukan report per mapping'.
+C ' base/converting).'.
+APPEND LV_SB TO LT_P.
+A '      CLEAR L_MK.'.
+A '      SELECT SINGLE MERKNR INTO L_MK FROM QAMV'.
+CLEAR LV_SB.
+C '        WHERE PRUEFLOS = P_INSLOT AND VE'.
+C 'RWMERKM = P_MIC.'.
+APPEND LV_SB TO LT_P.
+A '      IF L_MK IS NOT INITIAL.'.
+A '        CLEAR: L_MW, L_AZ.'.
+A '        SELECT SINGLE MITTELWERT ANZWERTG'.
+A '          INTO (L_MW, L_AZ) FROM QAMR'.
+A '          WHERE PRUEFLOS = P_INSLOT AND MERKNR = L_MK.'.
+A '        IF L_AZ > 0.'.
+A '          P_VAL = L_MW.'.
+A '          P_CNT = 1.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '      " 2) Fallback: INSLOT kosong (insp'.
+C 'eksi JR direkam di'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      "    roll representatif lain dlm 1'.
+C ' production order'.
+APPEND LV_SB TO LT_P.
+A '      "    yg sama). Rata2 lot JR non-empty se-order.'.
+A '* FIX 08/08/26 (aturan functional COA):'.
+A '*  Roll JR tak diinspeksi -> ambil sibling'.
+A '*  SEQUENCE LEBIH KECIL (lebih lama) TERDEKAT,'.
+A '*  prefix sama, SE-PRODUCTION-ORDER, yg bernilai.'.
+A '*  Kosong bila tak ada.'.
+CLEAR LV_SB.
+C '* Fix 17/10/2026 (data testing QM07): bi'.
+C 'la TIDAK ada sibling'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '*  turun yg bernilai, ambil sibling NAIK'.
+C ' terdekat (maks +20).'.
+APPEND LV_SB TO LT_P.
+A '      IF P_CNT = 0 AND L_ICHARG IS NOT INITIAL.'.
+A '        DATA: LV_ATR TYPE AUSP-ATINN.'.
+A '        DATA: LV_PF TYPE STRING, LV_PF2 TYPE STRING.'.
+A '        DATA: LV_SQ TYPE I, LV_SQ2 TYPE I.'.
+A '        DATA: LV_BEST TYPE I.'.
+A '        DATA: LV_LOT TYPE QALS-PRUEFLOS.'.
+A '        DATA: LV_MK2 TYPE QAMV-MERKNR.'.
+A '        DATA: LV_MW2 TYPE QAMR-MITTELWERT.'.
+A '        DATA: LV_AZ2 TYPE QAMR-ANZWERTG.'.
+CLEAR LV_SB.
+C '        DATA: LV_UP TYPE I, LV_UPVAL TYP'.
+C 'E QAMR-MITTELWERT.'.
+APPEND LV_SB TO LT_P.
+A '        CLEAR: LV_ATR, LV_UP, LV_UPVAL.'.
+A '        SELECT SINGLE ATINN INTO LV_ATR FROM CABN'.
+CLEAR LV_SB.
+C '          WHERE ATNAM = ''ZZNOMORROLL''.'.
+APPEND LV_SB TO LT_P.
+A '        PERFORM SPLIT_ROLL USING L_ICHARG LV_ATR'.
+A '          CHANGING LV_PF LV_SQ.'.
+A '        IF LV_SQ > 0 AND LV_ATR IS NOT INITIAL.'.
+A '          CLEAR L_AUFNR.'.
+A '          SELECT SINGLE AUFNR INTO L_AUFNR FROM MSEG'.
+CLEAR LV_SB.
+C '         WHERE CHARG = L_ICHARG AND BWAR'.
+C 'T = ''101''.'.
+APPEND LV_SB TO LT_P.
+A '          IF L_AUFNR IS NOT INITIAL.'.
+A '            REFRESH LT_BCH.'.
+A '            SELECT CHARG INTO TABLE LT_BCH FROM MSEG'.
+CLEAR LV_SB.
+C '          WHERE AUFNR = L_AUFNR AND BWAR'.
+C 'T = ''101''.'.
+APPEND LV_SB TO LT_P.
+A '            SORT LT_BCH BY CHARG.'.
+A '            DELETE ADJACENT DUPLICATES FROM LT_BCH.'.
+A '            LV_BEST = 0.'.
+A '            LOOP AT LT_BCH.'.
+A '              PERFORM SPLIT_ROLL USING LT_BCH-CHARG'.
+A '                  LV_ATR CHANGING LV_PF2 LV_SQ2.'.
+A '              IF LV_PF2 <> LV_PF. CONTINUE. ENDIF.'.
+A '              IF LV_SQ2 = LV_SQ. CONTINUE. ENDIF.'.
+A '              IF LV_SQ2 > LV_SQ + 20. CONTINUE. ENDIF.'.
+A '              IF LV_SQ2 > LV_SQ AND LV_UP > 0'.
+A '                 AND LV_SQ2 >= LV_UP. CONTINUE. ENDIF.'.
+CLEAR LV_SB.
+C '              IF LV_SQ2 < LV_SQ AND LV_S'.
+C 'Q2 <= LV_BEST. CONTINUE. ENDIF.'.
+APPEND LV_SB TO LT_P.
+A '              CLEAR LV_LOT.'.
+A '              SELECT SINGLE PRUEFLOS INTO LV_LOT'.
+A '                FROM QALS'.
+A '                WHERE CHARG = LT_BCH-CHARG'.
+CLEAR LV_SB.
+C '          AND ( ART = ''Z02'' OR ART = ''Z0'.
+C '3'' ).'.
+APPEND LV_SB TO LT_P.
+A '              IF LV_LOT IS INITIAL. CONTINUE. ENDIF.'.
+A '              CLEAR LV_MK2.'.
+A '              SELECT SINGLE MERKNR INTO LV_MK2'.
+A '                FROM QAMV'.
+A '                WHERE PRUEFLOS = LV_LOT'.
+A '                  AND VERWMERKM = P_MIC.'.
+A '              IF LV_MK2 IS INITIAL. CONTINUE. ENDIF.'.
+A '              CLEAR: LV_MW2, LV_AZ2.'.
+A '              SELECT SINGLE MITTELWERT ANZWERTG'.
+A '                INTO (LV_MW2, LV_AZ2) FROM QAMR'.
+A '                WHERE PRUEFLOS = LV_LOT'.
+A '                  AND MERKNR = LV_MK2.'.
+A '              IF LV_AZ2 > 0.'.
+A '                IF LV_SQ2 > LV_SQ.'.
+A '                  LV_UP = LV_SQ2.'.
+A '                  LV_UPVAL = LV_MW2.'.
+A '                ELSE.'.
+A '                  LV_BEST = LV_SQ2.'.
+A '                  P_VAL = LV_MW2.'.
+A '                  P_CNT = 1.'.
+A '                ENDIF.'.
+A '              ENDIF.'.
+A '            ENDLOOP.'.
+A '            IF P_CNT = 0 AND LV_UP > 0.'.
+A '              P_VAL = LV_UPVAL.'.
+A '              P_CNT = 1.'.
+A '            ENDIF.'.
+A '          ENDIF.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A ' '.
+A '  CLEAR GS_JRAVG.'.
+A '  GS_JRAVG-INSLOT = P_INSLOT.'.
+A '  GS_JRAVG-MIC = P_MIC.'.
+A '  GS_JRAVG-ISJR = P_ISJR.'.
+A '  GS_JRAVG-VAL = P_VAL.'.
+A '  GS_JRAVG-CNT = P_CNT.'.
+A '  APPEND GS_JRAVG TO GT_JRAVG.'.
+A 'ENDFORM.                    "GET_JR_AVG'.
+A '*&--- Form SPLIT_ROLL ---'.
+A 'FORM SPLIT_ROLL USING P_BATCH P_ATR'.
+A '             CHANGING P_PREF P_SEQ.'.
+A '  DATA: L_CU TYPE MCH1-CUOBJ_BM.'.
+A '  DATA: L_OB TYPE AUSP-OBJEK.'.
+A '  DATA: L_RS TYPE AUSP-ATWRT.'.
+A '  DATA: L_SEQ(10), L_PART(50), L_PREF(50).'.
+A '  DATA: L_LN TYPE I, L_IX TYPE I.'.
+A '  DATA: BEGIN OF L_LP OCCURS 0,'.
+A '          PART(50),'.
+A '        END OF L_LP.'.
+A '  CLEAR: P_PREF, P_SEQ.'.
+A '  IF P_ATR IS INITIAL. RETURN. ENDIF.'.
+A '  CLEAR L_CU.'.
+A '  SELECT SINGLE CUOBJ_BM INTO L_CU FROM MCH1'.
+A '    WHERE CHARG = P_BATCH.'.
+A '  IF L_CU IS INITIAL. RETURN. ENDIF.'.
+A '  L_OB = L_CU. CLEAR L_RS.'.
+A '  SELECT SINGLE ATWRT INTO L_RS FROM AUSP'.
+A '    WHERE OBJEK = L_OB AND ATINN = P_ATR'.
+CLEAR LV_SB.
+C '      AND KLART = ''023'' AND MAFID = ''O''.'.
+APPEND LV_SB TO LT_P.
+A '  IF L_RS IS INITIAL. RETURN. ENDIF.'.
+A '  REFRESH L_LP.'.
+A '  SPLIT L_RS AT SPACE INTO TABLE L_LP.'.
+A '  DESCRIBE TABLE L_LP LINES L_LN.'.
+A '  IF L_LN < 2. RETURN. ENDIF.'.
+A '  READ TABLE L_LP INDEX L_LN.'.
+A '  L_SEQ = L_LP-PART.'.
+A '  CLEAR L_PREF. L_IX = 1.'.
+A '  WHILE L_IX < L_LN.'.
+A '    READ TABLE L_LP INDEX L_IX.'.
+A '    L_PART = L_LP-PART.'.
+A '    IF L_PREF IS INITIAL.'.
+A '      L_PREF = L_PART.'.
+A '    ELSE.'.
+A '      CONCATENATE L_PREF L_PART INTO L_PREF'.
+A '        SEPARATED BY SPACE.'.
+A '    ENDIF.'.
+A '    L_IX = L_IX + 1.'.
+A '  ENDWHILE.'.
+A '  P_PREF = L_PREF.'.
+CLEAR LV_SB.
+C '  IF L_SEQ CO ''0123456789 ''.'.
+APPEND LV_SB TO LT_P.
+A '    P_SEQ = L_SEQ.'.
+A '  ENDIF.'.
+A 'ENDFORM.                    "SPLIT_ROLL'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_BAR_AVG'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*      -->P_VBELN    text'.
+A '*      -->P_MIC      text'.
+A '*      -->P_VAL      text'.
+A '*      -->P_CNT      text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM GET_BAR_AVG USING P_VBELN P_MIC'.
+A '         CHANGING P_VAL TYPE QAMR-MITTELWERT'.
+A '                  P_CNT TYPE I.'.
+CLEAR LV_SB.
+C '  DATA: L_NEWEST TYPE CHARG_D, L_LOT TYP'.
+C 'E QALS-PRUEFLOS.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  DATA: L_MK TYPE QAMV-MERKNR, L_ALT TYP'.
+C 'E QAMV-VERWMERKM.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  DATA: L_MW TYPE QASE-MESSWERT, L_SUM T'.
+C 'YPE QAMR-MITTELWERT.'.
+APPEND LV_SB TO LT_P.
+A '  DATA: BEGIN OF LT_CH OCCURS 0,'.
+A '          CHARG TYPE LIPS-CHARG,'.
+A '        END OF LT_CH.'.
+A '  DATA: BEGIN OF LT_LOT OCCURS 0,'.
+A '          LOT TYPE QALS-PRUEFLOS,'.
+A '        END OF LT_LOT.'.
+A ' '.
+A '  CLEAR: P_VAL, P_CNT, L_SUM.'.
+A '  SORT GT_BARAVG BY VBELN MIC.'.
+A '  READ TABLE GT_BARAVG INTO GS_BARAVG'.
+CLEAR LV_SB.
+C '       WITH KEY VBELN = P_VBELN MIC = P_'.
+C 'MIC BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '  IF SY-SUBRC = 0.'.
+A '    P_VAL = GS_BARAVG-VAL.'.
+A '    P_CNT = GS_BARAVG-CNT.'.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+A '  REFRESH LT_CH.'.
+A '  LOOP AT IT_LOT WHERE VBELN = P_VBELN.'.
+A '    IF IT_LOT-CHARG IS NOT INITIAL.'.
+A '      LT_CH-CHARG = IT_LOT-CHARG.'.
+A '      COLLECT LT_CH.'.
+A '    ENDIF.'.
+A '  ENDLOOP.'.
+A ' '.
+A '  REFRESH LT_LOT.'.
+A '  LOOP AT LT_CH.'.
+A '    CLEAR L_NEWEST.'.
+A '    PERFORM GET_NEWEST_BATCH USING LT_CH-CHARG'.
+A '                             CHANGING L_NEWEST.'.
+A '    IF L_NEWEST IS INITIAL.'.
+A '      L_NEWEST = LT_CH-CHARG.'.
+A '    ENDIF.'.
+A '    CLEAR L_LOT.'.
+A '    SELECT SINGLE PRUEFLOS INTO L_LOT FROM QALS'.
+CLEAR LV_SB.
+C '      WHERE CHARG = L_NEWEST AND ART = '''.
+C 'Z04''.'.
+APPEND LV_SB TO LT_P.
+A '    IF SY-SUBRC = 0 AND L_LOT IS NOT INITIAL.'.
+A '      LT_LOT-LOT = L_LOT.'.
+A '      COLLECT LT_LOT.'.
+A '    ENDIF.'.
+A '  ENDLOOP.'.
+A ' '.
+A '  LOOP AT LT_LOT.'.
+A '    CLEAR L_MK.'.
+A '    SELECT SINGLE MERKNR INTO L_MK FROM QAMV'.
+CLEAR LV_SB.
+C '      WHERE PRUEFLOS = LT_LOT-LOT AND VE'.
+C 'RWMERKM = P_MIC.'.
+APPEND LV_SB TO LT_P.
+A '    IF SY-SUBRC <> 0 OR L_MK IS INITIAL.'.
+A '      L_ALT = P_MIC.'.
+CLEAR LV_SB.
+C '      IF P_MIC CS ''MVTR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        REPLACE FIRST OCCURRENCE OF ''MVT'.
+C 'R'' IN L_ALT'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                WITH ''WVTR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      ELSEIF P_MIC CS ''WVTR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        REPLACE FIRST OCCURRENCE OF ''WVT'.
+C 'R'' IN L_ALT'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                WITH ''MVTR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      ELSEIF P_MIC CS ''O2TR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        REPLACE FIRST OCCURRENCE OF ''O2T'.
+C 'R'' IN L_ALT'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                WITH ''OTR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      ELSEIF P_MIC CS ''OTR''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        REPLACE FIRST OCCURRENCE OF ''OTR'.
+C ''' IN L_ALT'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                WITH ''O2TR''.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A '      IF L_ALT <> P_MIC.'.
+A '        SELECT SINGLE MERKNR INTO L_MK FROM QAMV'.
+CLEAR LV_SB.
+C '          WHERE PRUEFLOS = LT_LOT-LOT AN'.
+C 'D VERWMERKM = L_ALT.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '    IF L_MK IS NOT INITIAL.'.
+A '      CLEAR L_MW.'.
+A '      SELECT MESSWERT INTO L_MW FROM QASE'.
+A '        UP TO 1 ROWS'.
+A '        WHERE PRUEFLOS = LT_LOT-LOT AND MERKNR = L_MK'.
+CLEAR LV_SB.
+C '          AND ATTRIBUT = '''''.
+APPEND LV_SB TO LT_P.
+A '        ORDER BY DETAILERG DESCENDING.'.
+A '      ENDSELECT.'.
+A '      IF SY-SUBRC = 0.'.
+A '        L_SUM = L_SUM + L_MW.'.
+A '        P_CNT = P_CNT + 1.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '  ENDLOOP.'.
+A ' '.
+A '  IF P_CNT > 0.'.
+A '    P_VAL = L_SUM / P_CNT.'.
+A '  ENDIF.'.
+A ' '.
+A '  CLEAR GS_BARAVG.'.
+A '  GS_BARAVG-VBELN = P_VBELN.'.
+A '  GS_BARAVG-MIC = P_MIC.'.
+A '  GS_BARAVG-VAL = P_VAL.'.
+A '  GS_BARAVG-CNT = P_CNT.'.
+A '  APPEND GS_BARAVG TO GT_BARAVG.'.
+A 'ENDFORM.                    "GET_BAR_AVG'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  MICFMT'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*       text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*      -->P_MIC      text'.
+A '*      -->P_WRK      text'.
+A '*      -->P_DEC      text'.
+A '*      -->P_UOM      text'.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM MICFMT USING P_MIC P_WRK'.
+A '         CHANGING P_DEC TYPE I'.
+A '                  P_UOM.'.
+A '  CLEAR: P_DEC, P_UOM.'.
+A '  IF P_MIC IS INITIAL.'.
+A '    RETURN.'.
+A '  ENDIF.'.
+A '  READ TABLE GT_MICFMT INTO GS_MICFMT'.
+A '    WITH KEY MKMNR = P_MIC WERKS = P_WRK.'.
+A '  IF SY-SUBRC <> 0.'.
+A '    CLEAR GS_MICFMT.'.
+A '    GS_MICFMT-MKMNR = P_MIC.'.
+A '    GS_MICFMT-WERKS = P_WRK.'.
+A '    SELECT SINGLE STELLEN MASSEINHSW'.
+A '      INTO (GS_MICFMT-STELLEN, GS_MICFMT-UOM)'.
+A '      FROM QPMK'.
+A '      WHERE MKMNR = P_MIC'.
+A '        AND WERKS = P_WRK.'.
+A '    IF SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '      " Master belum ada di plant ini - '.
+C 'pakai baris manapun sebagai cadangan'.
+APPEND LV_SB TO LT_P.
+A '      SELECT SINGLE STELLEN MASSEINHSW'.
+A '        INTO (GS_MICFMT-STELLEN, GS_MICFMT-UOM)'.
+A '        FROM QPMK'.
+A '        WHERE MKMNR = P_MIC.'.
+A '    ENDIF.'.
+A '    APPEND GS_MICFMT TO GT_MICFMT.'.
+A '  ENDIF.'.
+A '  P_DEC = GS_MICFMT-STELLEN.'.
+A '  P_UOM = GS_MICFMT-UOM.'.
+A 'ENDFORM.                    "MICFMT'.
+A ' '.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  PREPARE_DYNAMIC_ROLL_COLUMNS'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM PREPARE_DYNAMIC_ROLL_COLUMNS USING '.
+C 'IV_VBELN TYPE LIPS-VBELN.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  DATA: LT_CFG TYPE TABLE OF ZQM_COA_CUS'.
+C 'T_COL WITH HEADER LINE,'.
+APPEND LV_SB TO LT_P.
+A '        LS_ROLL_LINE TYPE ZQM_COA_DYN_ROLL,'.
+A '        LV_KUNNR TYPE KUNNR,'.
+A '        LV_LFART TYPE LIKP-LFART,'.
+A '        LV_CNT TYPE I,'.
+A '        LV_SEQ_NUM TYPE NUMC2,'.
+A '        LV_SLOT TYPE I,'.
+A '        LV_FNAME TYPE STRING,'.
+A '        LV_RAW_VAL TYPE CHAR50,'.
+A '        LV_VBELN_PAD TYPE LIKP-VBELN.'.
+CLEAR LV_SB.
+C '  FIELD-SYMBOLS: <F_HDR> TYPE ANY, <F_CO'.
+C 'L> TYPE ANY, <F_DATA> TYPE ANY.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  REFRESH: GT_DYN_ROLL.'.
+A '  CLEAR: GS_DYN_HDR, GV_BATCH_COL_COUNT.'.
+A ' '.
+A '  " 1. Cari Customer KUNNR dari Delivery (LIKP)'.
+A '  CLEAR LV_VBELN_PAD.'.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''CONVERSION_EXIT_ALPHA_I'.
+C 'NPUT'''.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING'.
+A '      INPUT  = IV_VBELN'.
+A '    IMPORTING'.
+A '      OUTPUT = LV_VBELN_PAD.'.
+A ' '.
+CLEAR LV_SB.
+C '  SELECT SINGLE KUNAG LFART INTO (LV_KUN'.
+C 'NR, LV_LFART) FROM LIKP'.
+APPEND LV_SB TO LT_P.
+A '    WHERE VBELN = LV_VBELN_PAD.'.
+A '  IF LV_KUNNR IS INITIAL.'.
+CLEAR LV_SB.
+C '    SELECT SINGLE KUNNR INTO LV_KUNNR FR'.
+C 'OM LIKP WHERE VBELN = LV_VBELN_PAD.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+A '  " 2. Baca Konfigurasi Kolom dari ZQM_COA_CUST_COL'.
+A '  SELECT * FROM ZQM_COA_CUST_COL'.
+A '    INTO TABLE LT_CFG'.
+A '    WHERE KUNNR = LV_KUNNR'.
+CLEAR LV_SB.
+C '      AND ACTIVE = ''X'''.
+APPEND LV_SB TO LT_P.
+A '    ORDER BY SEQ_NO ASCENDING.'.
+A ' '.
+A '  IF LT_CFG[] IS INITIAL.'.
+CLEAR LV_SB.
+C '    IF LV_LFART = ''ZDLF''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      LV_KUNNR = ''DOMESTIC''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    ELSEIF LV_LFART = ''ZELF''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      LV_KUNNR = ''EXPORT''.'.
+APPEND LV_SB TO LT_P.
+A '    ELSE.'.
+CLEAR LV_SB.
+C '      LV_KUNNR = ''DOMESTIC''.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '    SELECT * FROM ZQM_COA_CUST_COL'.
+A '      INTO TABLE LT_CFG'.
+A '      WHERE KUNNR = LV_KUNNR'.
+CLEAR LV_SB.
+C '        AND ACTIVE = ''X'''.
+APPEND LV_SB TO LT_P.
+A '      ORDER BY SEQ_NO ASCENDING.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  " Jumlah kolom mapping dipakai SmartFo'.
+C 'rm Batch List hingga 14 kolom.'.
+APPEND LV_SB TO LT_P.
+A '  DESCRIBE TABLE LT_CFG LINES LV_CNT.'.
+A '  IF LV_CNT > 14.'.
+CLEAR LV_SB.
+C '    MESSAGE ''Konfigurasi kolom COA maksi'.
+C 'mum 14 kolom'' TYPE ''E''.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+A '  GV_BATCH_COL_COUNT = LV_CNT.'.
+A ' '.
+A '  " 3. Bangun Header Dinamis GS_DYN_HDR'.
+A '  CLEAR GS_DYN_HDR.'.
+A '  LOOP AT LT_CFG.'.
+A '    LV_SLOT = SY-TABIX.'.
+A '    LV_SEQ_NUM = LV_SLOT.'.
+CLEAR LV_SB.
+C '    CONCATENATE ''GS_DYN_HDR-HDR'' LV_SEQ_'.
+C 'NUM INTO LV_FNAME.'.
+APPEND LV_SB TO LT_P.
+A '    ASSIGN (LV_FNAME) TO <F_HDR>.'.
+A '    IF <F_HDR> IS ASSIGNED.'.
+A '      <F_HDR> = LT_CFG-FIELD_LABEL.'.
+A '    ENDIF.'.
+A '  ENDLOOP.'.
+A ' '.
+A '  " 4. Siapkan Batch Data'.
+CLEAR LV_SB.
+C '  DATA: LT_BATCHES LIKE TABLE OF IT_DATA'.
+C ' WITH HEADER LINE.'.
+APPEND LV_SB TO LT_P.
+A '  IF IT_LOT[] IS NOT INITIAL.'.
+A '    LT_BATCHES[] = IT_LOT[].'.
+A '  ELSE.'.
+A '    LT_BATCHES[] = IT_DATA[].'.
+A '  ENDIF.'.
+A '  SORT LT_BATCHES BY CHARG.'.
+CLEAR LV_SB.
+C '  DELETE ADJACENT DUPLICATES FROM LT_BAT'.
+C 'CHES COMPARING CHARG.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  " 5. Bangun Baris Data GT_DYN_ROLL per Batch/Roll'.
+A '  PERFORM PREPARE_HU_CACHE USING IV_VBELN.'.
+A '  PERFORM PREPARE_CHAR_CACHE TABLES LT_BATCHES.'.
+A '  PERFORM PREPARE_DATE_CACHE TABLES LT_BATCHES.'.
+A '  REFRESH GT_DYN_ROLL.'.
+A '  DATA: LV_BATCH_TABIX TYPE I.'.
+A '  LOOP AT LT_BATCHES.'.
+A '    LV_BATCH_TABIX = SY-TABIX.'.
+A '    CLEAR: LS_ROLL_LINE.'.
+A '    LOOP AT LT_CFG.'.
+A '      LV_SLOT = SY-TABIX.'.
+A '      LV_SEQ_NUM = LV_SLOT.'.
+A '      CLEAR: LV_RAW_VAL.'.
+A ' '.
+A '      PERFORM GET_COA_COL_VALUE USING LT_CFG-FIELD_NAME'.
+A '                                      LT_BATCHES'.
+A '                                      LV_BATCH_TABIX'.
+A '                             CHANGING LV_RAW_VAL.'.
+A ' '.
+CLEAR LV_SB.
+C '      CONCATENATE ''LS_ROLL_LINE-COL'' LV_'.
+C 'SEQ_NUM INTO LV_FNAME.'.
+APPEND LV_SB TO LT_P.
+A '      ASSIGN (LV_FNAME) TO <F_DATA>.'.
+A '      IF <F_DATA> IS ASSIGNED.'.
+A '        <F_DATA> = LV_RAW_VAL.'.
+A '      ENDIF.'.
+A '    ENDLOOP.'.
+A '    APPEND LS_ROLL_LINE TO GT_DYN_ROLL.'.
+A '  ENDLOOP.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_COA_COL_VALUE'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM GET_COA_COL_VALUE USING P_FIELD_NAME TYPE ANY'.
+CLEAR LV_SB.
+C '                             P_BATCH    '.
+C '  STRUCTURE IT_DATA'.
+APPEND LV_SB TO LT_P.
+A '                             P_ROW_NO     TYPE I'.
+A '                    CHANGING P_RAW_VAL    TYPE ANY.'.
+A '  DATA: LV_FLD        TYPE STRING,'.
+A '        LV_SO_NUM     TYPE LIPS-VGBEL,'.
+A '        LV_SO_POS     TYPE LIPS-VGPOS,'.
+A '        LV_BSTNK_V    TYPE VBAK-BSTNK,'.
+A '        LV_HPAL       TYPE C LENGTH 20,'.
+A '        LV_HROL       TYPE C LENGTH 10,'.
+A '        LV_HWGT       TYPE C LENGTH 20,'.
+A '        LV_THICK_TXT  TYPE CHAR20,'.
+A '        LV_THICK_STR  TYPE STRING,'.
+A '        LV_TYPE_NAME  TYPE STRING,'.
+A '        LV_ROLL_STR   TYPE STRING,'.
+A '        LV_NTGEW_V    TYPE LIPS-NTGEW,'.
+A '        LV_TH_P       TYPE P DECIMALS 1,'.
+A '        LV_CORE_P     TYPE P DECIMALS 0,'.
+A '        LV_JNT_CNT    TYPE I,'.
+A '        LV_SPL_SUM    TYPE P DECIMALS 0,'.
+A '        LV_KDMAT      TYPE VBAP-KDMAT,'.
+A '        LV_KUNNR_V    TYPE LIKP-KUNAG.'.
+A ' '.
+A '  LV_FLD = P_FIELD_NAME.'.
+A '  TRANSLATE LV_FLD TO UPPER CASE.'.
+A '  CONDENSE LV_FLD.'.
+A '  CLEAR P_RAW_VAL.'.
+A ' '.
+A '  CASE LV_FLD.'.
+CLEAR LV_SB.
+C '    WHEN ''DO_NUMBER''.'.
+APPEND LV_SB TO LT_P.
+A '      P_RAW_VAL = P_BATCH-VBELN.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''PO_NUMBER''.'.
+APPEND LV_SB TO LT_P.
+A '      CLEAR: LV_SO_NUM, LV_SO_POS, LV_BSTNK_V.'.
+CLEAR LV_SB.
+C '      SELECT SINGLE VGBEL VGPOS INTO (LV'.
+C '_SO_NUM, LV_SO_POS) FROM LIPS'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        WHERE VBELN = P_BATCH-VBELN AND '.
+C 'CHARG = P_BATCH-CHARG.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      IF LV_SO_NUM IS INITIAL AND P_BATC'.
+C 'H-UECHA IS NOT INITIAL.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        SELECT SINGLE VGBEL VGPOS INTO ('.
+C 'LV_SO_NUM, LV_SO_POS) FROM LIPS'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '          WHERE VBELN = P_BATCH-VBELN AN'.
+C 'D POSNR = P_BATCH-UECHA.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A '      IF LV_SO_NUM IS INITIAL.'.
+CLEAR LV_SB.
+C '        SELECT SINGLE VGBEL VGPOS INTO ('.
+C 'LV_SO_NUM, LV_SO_POS) FROM LIPS'.
+APPEND LV_SB TO LT_P.
+A '          WHERE VBELN = P_BATCH-VBELN.'.
+A '      ENDIF.'.
+A '      IF LV_SO_NUM IS INITIAL.'.
+CLEAR LV_SB.
+C '        SELECT SINGLE VBELN POSNR INTO ('.
+C 'LV_SO_NUM, LV_SO_POS) FROM MSKA'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '          WHERE MATNR = P_BATCH-MATNR AN'.
+C 'D CHARG = P_BATCH-CHARG.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A '      IF LV_SO_NUM IS INITIAL.'.
+A '        SELECT SINGLE VBELV INTO LV_SO_NUM FROM VBFA'.
+CLEAR LV_SB.
+C '          WHERE VBELN = P_BATCH-VBELN AN'.
+C 'D VBTYP_V = ''C''.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A ' '.
+A '      IF LV_SO_NUM IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '        SELECT SINGLE BSTNK INTO LV_BSTN'.
+C 'K_V FROM VBAK WHERE VBELN = LV_SO_NUM.'.
+APPEND LV_SB TO LT_P.
+A '        IF LV_BSTNK_V IS INITIAL.'.
+A '          IF LV_SO_POS IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '            SELECT SINGLE BSTKD INTO LV_'.
+C 'BSTNK_V FROM VBKD'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '              WHERE VBELN = LV_SO_NUM AN'.
+C 'D POSNR = LV_SO_POS.'.
+APPEND LV_SB TO LT_P.
+A '          ENDIF.'.
+A '          IF LV_BSTNK_V IS INITIAL.'.
+CLEAR LV_SB.
+C '            SELECT SINGLE BSTKD INTO LV_'.
+C 'BSTNK_V FROM VBKD'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '              WHERE VBELN = LV_SO_NUM AN'.
+C 'D POSNR = ''000000''.'.
+APPEND LV_SB TO LT_P.
+A '          ENDIF.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '      P_RAW_VAL = LV_BSTNK_V.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''NO_PALET''.'.
+APPEND LV_SB TO LT_P.
+A '      CLEAR P_RAW_VAL.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''HU_NUMBER''.'.
+APPEND LV_SB TO LT_P.
+A '      CLEAR LV_HPAL.'.
+CLEAR LV_SB.
+C '      PERFORM GET_HU_BOX_INFO USING P_BA'.
+C 'TCH-VBELN P_BATCH-CHARG'.
+APPEND LV_SB TO LT_P.
+A '                           CHANGING LV_HPAL.'.
+A '      P_RAW_VAL = LV_HPAL.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''TYPE''.'.
+APPEND LV_SB TO LT_P.
+A '      CLEAR: LV_THICK_TXT, LV_THICK_STR, LV_TYPE_NAME.'.
+A '      " 1. Jika ada ALIAS, utamakan ambil nilai ZZALIAS'.
+A '      IF GV_ATINN_ALIAS IS NOT INITIAL.'.
+A '        READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE'.
+CLEAR LV_SB.
+C '          WITH KEY CHARG = P_BATCH-CHARG'.
+C ' ATINN = GV_ATINN_ALIAS'.
+APPEND LV_SB TO LT_P.
+A '          BINARY SEARCH.'.
+CLEAR LV_SB.
+C '        IF SY-SUBRC = 0 AND GS_CHAR_CACH'.
+C 'E-ATWRT IS NOT INITIAL.'.
+APPEND LV_SB TO LT_P.
+A '          P_RAW_VAL = GS_CHAR_CACHE-ATWRT.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '      " 2. Jika tidak ada ALIAS, ambil T'.
+C 'ype Film sendiri (as is): ZZTYPE + Thick'.
+C 'ness'.
+APPEND LV_SB TO LT_P.
+A '      IF P_RAW_VAL IS INITIAL.'.
+A '        IF GV_ATINN_TYPE IS NOT INITIAL.'.
+A '          READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE'.
+CLEAR LV_SB.
+C '            WITH KEY CHARG = P_BATCH-CHA'.
+C 'RG ATINN = GV_ATINN_TYPE'.
+APPEND LV_SB TO LT_P.
+A '            BINARY SEARCH.'.
+CLEAR LV_SB.
+C '          IF SY-SUBRC = 0 AND GS_CHAR_CA'.
+C 'CHE-ATWRT IS NOT INITIAL.'.
+APPEND LV_SB TO LT_P.
+A '            LV_TYPE_NAME = GS_CHAR_CACHE-ATWRT.'.
+A '          ENDIF.'.
+A '        ENDIF.'.
+A '        IF LV_TYPE_NAME IS INITIAL.'.
+A '          LV_TYPE_NAME = P_BATCH-ZZTYPE.'.
+A '        ENDIF.'.
+A ' '.
+A '        IF GV_ATINN_THICK IS NOT INITIAL.'.
+A '          READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE'.
+CLEAR LV_SB.
+C '            WITH KEY CHARG = P_BATCH-CHA'.
+C 'RG ATINN = GV_ATINN_THICK'.
+APPEND LV_SB TO LT_P.
+A '            BINARY SEARCH.'.
+A '          IF SY-SUBRC = 0 AND GS_CHAR_CACHE-ATFLV > 0.'.
+A '            LV_TH_P = GS_CHAR_CACHE-ATFLV.'.
+A '            WRITE LV_TH_P TO LV_THICK_TXT NO-GROUPING.'.
+A '            CONDENSE LV_THICK_TXT.'.
+A '            LV_THICK_STR = LV_THICK_TXT.'.
+CLEAR LV_SB.
+C '            REPLACE REGEX ''[.,]0$'' IN LV'.
+C '_THICK_STR WITH ''''.'.
+APPEND LV_SB TO LT_P.
+A '            LV_THICK_TXT = LV_THICK_STR.'.
+A '          ENDIF.'.
+A '        ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '        IF LV_THICK_TXT IS NOT INITIAL A'.
+C 'ND LV_TYPE_NAME IS NOT INITIAL.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '          CONCATENATE LV_TYPE_NAME LV_TH'.
+C 'ICK_TXT INTO P_RAW_VAL'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '            SEPARATED BY ''-''.'.
+APPEND LV_SB TO LT_P.
+A '        ELSEIF LV_TYPE_NAME IS NOT INITIAL.'.
+A '          P_RAW_VAL = LV_TYPE_NAME.'.
+A '        ELSEIF LV_THICK_TXT IS NOT INITIAL.'.
+A '          P_RAW_VAL = LV_THICK_TXT.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''ROLL_NUMBER''.'.
+APPEND LV_SB TO LT_P.
+A '      CLEAR LV_ROLL_STR.'.
+A '      IF P_BATCH-NOMSR IS NOT INITIAL.'.
+A '        LV_ROLL_STR = P_BATCH-NOMSR.'.
+A '      ELSE.'.
+A '        LV_ROLL_STR = P_BATCH-CHARG.'.
+A '      ENDIF.'.
+A '      CONDENSE LV_ROLL_STR.'.
+A '      P_RAW_VAL = LV_ROLL_STR.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''BATCH_NUMBER''.'.
+APPEND LV_SB TO LT_P.
+A '      P_RAW_VAL = P_BATCH-CHARG.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''WIDTH''.'.
+APPEND LV_SB TO LT_P.
+A '      IF P_BATCH-ZZWIDTH IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '        WRITE P_BATCH-ZZWIDTH TO P_RAW_V'.
+C 'AL NO-GROUPING DECIMALS 0.'.
+APPEND LV_SB TO LT_P.
+A '      ELSE.'.
+A '        P_RAW_VAL = WIDTH.'.
+A '      ENDIF.'.
+A '      CONDENSE P_RAW_VAL.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''LENGTH''.'.
+APPEND LV_SB TO LT_P.
+A '      IF P_BATCH-ZZLENGTH IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '        WRITE P_BATCH-ZZLENGTH TO P_RAW_'.
+C 'VAL NO-GROUPING DECIMALS 0.'.
+APPEND LV_SB TO LT_P.
+A '      ELSE.'.
+A '        P_RAW_VAL = CLENG.'.
+A '      ENDIF.'.
+A '      CONDENSE P_RAW_VAL.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''CORE''.'.
+APPEND LV_SB TO LT_P.
+A '      IF GV_ATINN_CORE IS NOT INITIAL.'.
+A '        READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE'.
+CLEAR LV_SB.
+C '          WITH KEY CHARG = P_BATCH-CHARG'.
+C ' ATINN = GV_ATINN_CORE BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '        IF SY-SUBRC = 0.'.
+A '          IF GS_CHAR_CACHE-ATWRT IS NOT INITIAL.'.
+A '            P_RAW_VAL = GS_CHAR_CACHE-ATWRT.'.
+A '          ELSEIF GS_CHAR_CACHE-ATFLV > 0.'.
+A '            LV_CORE_P = GS_CHAR_CACHE-ATFLV.'.
+A '            WRITE LV_CORE_P TO P_RAW_VAL NO-GROUPING.'.
+A '            CONDENSE P_RAW_VAL.'.
+A '          ENDIF.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''WEIGHT_PER_ROL''.'.
+APPEND LV_SB TO LT_P.
+A '      CLEAR LV_NTGEW_V.'.
+A '      SELECT SINGLE NTGEW INTO LV_NTGEW_V FROM LIPS'.
+CLEAR LV_SB.
+C '        WHERE VBELN = P_BATCH-VBELN AND '.
+C 'CHARG = P_BATCH-CHARG.'.
+APPEND LV_SB TO LT_P.
+A '      IF SY-SUBRC = 0 AND LV_NTGEW_V > 0.'.
+A '        WRITE LV_NTGEW_V TO P_RAW_VAL DECIMALS 2.'.
+A '        CONDENSE P_RAW_VAL.'.
+A '      ELSE.'.
+A '        P_RAW_VAL = QUANT.'.
+A '      ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''JOINT''.'.
+APPEND LV_SB TO LT_P.
+A '      LV_JNT_CNT = 0.'.
+A '      IF GV_ATINN_SPLICE1 IS NOT INITIAL.'.
+A '        READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE'.
+A '          WITH KEY CHARG = P_BATCH-CHARG'.
+CLEAR LV_SB.
+C '                   ATINN = GV_ATINN_SPLI'.
+C 'CE1 BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '        IF SY-SUBRC = 0 AND GS_CHAR_CACHE-ATFLV > 0.'.
+A '          ADD 1 TO LV_JNT_CNT.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '      IF GV_ATINN_SPLICE2 IS NOT INITIAL.'.
+A '        READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE'.
+A '          WITH KEY CHARG = P_BATCH-CHARG'.
+CLEAR LV_SB.
+C '                   ATINN = GV_ATINN_SPLI'.
+C 'CE2 BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '        IF SY-SUBRC = 0 AND GS_CHAR_CACHE-ATFLV > 0.'.
+A '          ADD 1 TO LV_JNT_CNT.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '      IF GV_ATINN_SPLICE3 IS NOT INITIAL.'.
+A '        READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE'.
+A '          WITH KEY CHARG = P_BATCH-CHARG'.
+CLEAR LV_SB.
+C '                   ATINN = GV_ATINN_SPLI'.
+C 'CE3 BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '        IF SY-SUBRC = 0 AND GS_CHAR_CACHE-ATFLV > 0.'.
+A '          ADD 1 TO LV_JNT_CNT.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '      IF LV_JNT_CNT > 0.'.
+CLEAR LV_SB.
+C '        P_RAW_VAL = ''JN''.'.
+APPEND LV_SB TO LT_P.
+A '      ELSE.'.
+CLEAR LV_SB.
+C '        P_RAW_VAL = ''-''.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''LENGTH_OF_SPLICE''.'.
+APPEND LV_SB TO LT_P.
+A '      LV_SPL_SUM = 0.'.
+A '      IF GV_ATINN_SPLICE1 IS NOT INITIAL.'.
+A '        READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE'.
+CLEAR LV_SB.
+C '          WITH KEY CHARG = P_BATCH-CHARG'.
+C ' ATINN = GV_ATINN_SPLICE1 BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '        IF SY-SUBRC = 0 AND GS_CHAR_CACHE-ATFLV > 0.'.
+CLEAR LV_SB.
+C '          LV_SPL_SUM = LV_SPL_SUM + GS_C'.
+C 'HAR_CACHE-ATFLV.'.
+APPEND LV_SB TO LT_P.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '      IF GV_ATINN_SPLICE2 IS NOT INITIAL.'.
+A '        READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE'.
+CLEAR LV_SB.
+C '          WITH KEY CHARG = P_BATCH-CHARG'.
+C ' ATINN = GV_ATINN_SPLICE2 BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '        IF SY-SUBRC = 0 AND GS_CHAR_CACHE-ATFLV > 0.'.
+CLEAR LV_SB.
+C '          LV_SPL_SUM = LV_SPL_SUM + GS_C'.
+C 'HAR_CACHE-ATFLV.'.
+APPEND LV_SB TO LT_P.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '      IF GV_ATINN_SPLICE3 IS NOT INITIAL.'.
+A '        READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE'.
+CLEAR LV_SB.
+C '          WITH KEY CHARG = P_BATCH-CHARG'.
+C ' ATINN = GV_ATINN_SPLICE3 BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '        IF SY-SUBRC = 0 AND GS_CHAR_CACHE-ATFLV > 0.'.
+CLEAR LV_SB.
+C '          LV_SPL_SUM = LV_SPL_SUM + GS_C'.
+C 'HAR_CACHE-ATFLV.'.
+APPEND LV_SB TO LT_P.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '      IF LV_SPL_SUM > 0.'.
+A '        WRITE LV_SPL_SUM TO P_RAW_VAL NO-GROUPING.'.
+A '        CONDENSE P_RAW_VAL.'.
+A '      ELSE.'.
+CLEAR LV_SB.
+C '        P_RAW_VAL = ''''.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''TOTAL_ROLL''.'.
+APPEND LV_SB TO LT_P.
+A '      CLEAR: LV_HPAL, LV_HROL, LV_HWGT.'.
+CLEAR LV_SB.
+C '      PERFORM GET_HU_PALLET_INFO USING P'.
+C '_BATCH-VBELN P_BATCH-CHARG'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                              CHANGING L'.
+C 'V_HPAL LV_HROL LV_HWGT.'.
+APPEND LV_SB TO LT_P.
+A '      P_RAW_VAL = LV_HROL.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''TOTAL_WEIGHT_PALET''.'.
+APPEND LV_SB TO LT_P.
+A '      CLEAR: LV_HPAL, LV_HROL, LV_HWGT.'.
+CLEAR LV_SB.
+C '      PERFORM GET_HU_PALLET_INFO USING P'.
+C '_BATCH-VBELN P_BATCH-CHARG'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                              CHANGING L'.
+C 'V_HPAL LV_HROL LV_HWGT.'.
+APPEND LV_SB TO LT_P.
+A '      P_RAW_VAL = LV_HWGT.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''EXPIRED_DATE''.'.
+APPEND LV_SB TO LT_P.
+A '      READ TABLE GT_DATE_CACHE INTO GS_DATE_CACHE'.
+A '        WITH KEY CHARG = P_BATCH-CHARG BINARY SEARCH.'.
+A '      IF SY-SUBRC = 0.'.
+A '        P_RAW_VAL = GS_DATE_CACHE-EXP_DATE.'.
+A '      ELSE.'.
+CLEAR LV_SB.
+C '        P_RAW_VAL = ''''.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''PRODUCTION_DATE''.'.
+APPEND LV_SB TO LT_P.
+A '      READ TABLE GT_DATE_CACHE INTO GS_DATE_CACHE'.
+A '        WITH KEY CHARG = P_BATCH-CHARG BINARY SEARCH.'.
+A '      IF SY-SUBRC = 0.'.
+A '        P_RAW_VAL = GS_DATE_CACHE-PROD_DATE.'.
+A '      ELSE.'.
+CLEAR LV_SB.
+C '        P_RAW_VAL = ''''.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    WHEN ''GG_PART_NUMBER''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      CLEAR: LV_SO_NUM, LV_SO_POS, LV_KD'.
+C 'MAT, LV_KUNNR_V.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      SELECT SINGLE VGBEL VGPOS INTO (LV'.
+C '_SO_NUM, LV_SO_POS) FROM LIPS'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        WHERE VBELN = P_BATCH-VBELN AND '.
+C 'CHARG = P_BATCH-CHARG.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      IF LV_SO_NUM IS INITIAL AND P_BATC'.
+C 'H-UECHA IS NOT INITIAL.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        SELECT SINGLE VGBEL VGPOS INTO ('.
+C 'LV_SO_NUM, LV_SO_POS) FROM LIPS'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '          WHERE VBELN = P_BATCH-VBELN AN'.
+C 'D POSNR = P_BATCH-UECHA.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A '      IF LV_SO_NUM IS INITIAL.'.
+CLEAR LV_SB.
+C '        SELECT SINGLE VGBEL VGPOS INTO ('.
+C 'LV_SO_NUM, LV_SO_POS) FROM LIPS'.
+APPEND LV_SB TO LT_P.
+A '          WHERE VBELN = P_BATCH-VBELN.'.
+A '      ENDIF.'.
+A '      IF LV_SO_NUM IS INITIAL.'.
+CLEAR LV_SB.
+C '        SELECT SINGLE VBELN POSNR INTO ('.
+C 'LV_SO_NUM, LV_SO_POS) FROM MSKA'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '          WHERE MATNR = P_BATCH-MATNR AN'.
+C 'D CHARG = P_BATCH-CHARG.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A '      IF LV_SO_NUM IS INITIAL.'.
+A '        SELECT SINGLE VBELV INTO LV_SO_NUM FROM VBFA'.
+CLEAR LV_SB.
+C '          WHERE VBELN = P_BATCH-VBELN AN'.
+C 'D VBTYP_V = ''C''.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A ' '.
+A '      IF LV_SO_NUM IS NOT INITIAL.'.
+A '        IF LV_SO_POS IS NOT INITIAL.'.
+A '          SELECT SINGLE KDMAT INTO LV_KDMAT FROM VBAP'.
+CLEAR LV_SB.
+C '            WHERE VBELN = LV_SO_NUM AND '.
+C 'POSNR = LV_SO_POS.'.
+APPEND LV_SB TO LT_P.
+A '        ENDIF.'.
+A '        IF LV_KDMAT IS INITIAL.'.
+A '          SELECT SINGLE KDMAT INTO LV_KDMAT FROM VBAP'.
+CLEAR LV_SB.
+C '            WHERE VBELN = LV_SO_NUM AND '.
+C 'MATNR = P_BATCH-MATNR.'.
+APPEND LV_SB TO LT_P.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A ' '.
+A '      IF LV_KDMAT IS INITIAL.'.
+A '        SELECT SINGLE KDMAT INTO LV_KDMAT FROM LIPS'.
+CLEAR LV_SB.
+C '          WHERE VBELN = P_BATCH-VBELN AN'.
+C 'D CHARG = P_BATCH-CHARG.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        IF LV_KDMAT IS INITIAL AND P_BAT'.
+C 'CH-UECHA IS NOT INITIAL.'.
+APPEND LV_SB TO LT_P.
+A '          SELECT SINGLE KDMAT INTO LV_KDMAT FROM LIPS'.
+CLEAR LV_SB.
+C '            WHERE VBELN = P_BATCH-VBELN '.
+C 'AND POSNR = P_BATCH-UECHA.'.
+APPEND LV_SB TO LT_P.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A ' '.
+A '      IF LV_KDMAT IS INITIAL.'.
+A '        SELECT SINGLE KUNAG INTO LV_KUNNR_V FROM LIKP'.
+A '          WHERE VBELN = P_BATCH-VBELN.'.
+A '        IF LV_KUNNR_V IS NOT INITIAL.'.
+A '          SELECT SINGLE KDMAT INTO LV_KDMAT FROM KNMT'.
+CLEAR LV_SB.
+C '            WHERE KUNNR = LV_KUNNR_V AND'.
+C ' MATNR = P_BATCH-MATNR.'.
+APPEND LV_SB TO LT_P.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A ' '.
+A '      IF LV_KDMAT IS NOT INITIAL.'.
+A '        CONDENSE LV_KDMAT.'.
+A '        P_RAW_VAL = LV_KDMAT.'.
+A '      ELSE.'.
+CLEAR LV_SB.
+C '        P_RAW_VAL = ''''.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A ' '.
+A '    WHEN OTHERS.'.
+CLEAR LV_SB.
+C '      P_RAW_VAL = ''''.'.
+APPEND LV_SB TO LT_P.
+A '  ENDCASE.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  PREPARE_HU_CACHE'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM PREPARE_HU_CACHE USING P_VBELN TYPE LIPS-VBELN.'.
+A '  REFRESH GT_HU_CACHE.'.
+A '  CHECK P_VBELN IS NOT INITIAL.'.
+A ' '.
+A '  DATA: LV_VBELN_PAD TYPE LIPS-VBELN.'.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''CONVERSION_EXIT_ALPHA_I'.
+C 'NPUT'''.
+APPEND LV_SB TO LT_P.
+A '    EXPORTING INPUT  = P_VBELN'.
+A '    IMPORTING OUTPUT = LV_VBELN_PAD.'.
+A ' '.
+A '  DATA: BEGIN OF LT_DELV_BATCH OCCURS 0,'.
+A '          CHARG TYPE LIPS-CHARG,'.
+A '        END OF LT_DELV_BATCH.'.
+A '  SELECT CHARG FROM LIPS INTO TABLE LT_DELV_BATCH'.
+CLEAR LV_SB.
+C '    WHERE VBELN = LV_VBELN_PAD AND CHARG'.
+C ' <> ''''.'.
+APPEND LV_SB TO LT_P.
+A '  IF LT_DELV_BATCH[] IS INITIAL.'.
+A '    SELECT CHARG FROM LIPS INTO TABLE LT_DELV_BATCH'.
+CLEAR LV_SB.
+C '      WHERE VBELN = P_VBELN AND CHARG <>'.
+C ' ''''.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+A ' '.
+A '  DATA: BEGIN OF LT_VEPO OCCURS 0,'.
+A '          VENUM TYPE VEPO-VENUM,'.
+A '          CHARG TYPE VEPO-CHARG,'.
+A '          VEMNG TYPE VEPO-VEMNG,'.
+A '        END OF LT_VEPO.'.
+A ' '.
+A '  " 1. Bulk Select from VEPO using Index Z04 (VBELN)'.
+A '  SELECT VENUM CHARG VEMNG FROM VEPO INTO TABLE LT_VEPO'.
+A '    WHERE VBELN = LV_VBELN_PAD.'.
+A '  IF LT_VEPO[] IS INITIAL AND P_VBELN IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '    SELECT VENUM CHARG VEMNG FROM VEPO I'.
+C 'NTO TABLE LT_VEPO'.
+APPEND LV_SB TO LT_P.
+A '      WHERE VBELN = P_VBELN.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  " 2. Check for missing batches and fal'.
+C 'lback to CHARG (Index Z01)'.
+APPEND LV_SB TO LT_P.
+A '  DATA: BEGIN OF LT_MISSING_BATCH OCCURS 0,'.
+A '          CHARG TYPE LIPS-CHARG,'.
+A '        END OF LT_MISSING_BATCH.'.
+A '  LOOP AT LT_DELV_BATCH.'.
+CLEAR LV_SB.
+C '    READ TABLE LT_VEPO WITH KEY CHARG = '.
+C 'LT_DELV_BATCH-CHARG.'.
+APPEND LV_SB TO LT_P.
+A '    IF SY-SUBRC <> 0.'.
+A '      LT_MISSING_BATCH-CHARG = LT_DELV_BATCH-CHARG.'.
+A '      APPEND LT_MISSING_BATCH.'.
+A '    ENDIF.'.
+A '  ENDLOOP.'.
+A ' '.
+A '  IF LT_MISSING_BATCH[] IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '    DATA: LT_VEPO_CHG LIKE LT_VEPO OCCUR'.
+C 'S 0 WITH HEADER LINE.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SELECT VENUM CHARG VEMNG FROM VEPO I'.
+C 'NTO TABLE LT_VEPO_CHG'.
+APPEND LV_SB TO LT_P.
+A '      FOR ALL ENTRIES IN LT_MISSING_BATCH'.
+A '      WHERE CHARG = LT_MISSING_BATCH-CHARG.'.
+A '    LOOP AT LT_VEPO_CHG.'.
+A '      APPEND LT_VEPO_CHG TO LT_VEPO.'.
+A '    ENDLOOP.'.
+A '  ENDIF.'.
+A '  CHECK LT_VEPO[] IS NOT INITIAL.'.
+A ' '.
+A '  DATA: BEGIN OF LT_VKEYS OCCURS 0,'.
+A '          VENUM TYPE VEKP-VENUM,'.
+A '        END OF LT_VKEYS.'.
+A '  LOOP AT LT_VEPO.'.
+A '    LT_VKEYS-VENUM = LT_VEPO-VENUM.'.
+A '    APPEND LT_VKEYS.'.
+A '  ENDLOOP.'.
+A '  SORT LT_VKEYS BY VENUM.'.
+A '  DELETE ADJACENT DUPLICATES FROM LT_VKEYS.'.
+A ' '.
+A '  DATA: BEGIN OF LT_BOX_VEKP OCCURS 0,'.
+A '          VENUM TYPE VEKP-VENUM,'.
+A '          EXIDV TYPE VEKP-EXIDV,'.
+A '          UEVEL TYPE VEKP-UEVEL,'.
+A '          NTGEW TYPE VEKP-NTGEW,'.
+A '        END OF LT_BOX_VEKP,'.
+A '        BEGIN OF LT_PAL_KEYS OCCURS 0,'.
+A '          VENUM TYPE VEKP-VENUM,'.
+A '        END OF LT_PAL_KEYS,'.
+CLEAR LV_SB.
+C '        LT_PAL_VEKP LIKE LT_BOX_VEKP OCC'.
+C 'URS 0 WITH HEADER LINE.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+CLEAR LV_SB.
+C '  " 3. Bulk Select Box HUs from VEKP usi'.
+C 'ng Primary Key (VENUM)'.
+APPEND LV_SB TO LT_P.
+A '  IF LT_VKEYS[] IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '    SELECT VENUM EXIDV UEVEL NTGEW FROM '.
+C 'VEKP INTO TABLE LT_BOX_VEKP'.
+APPEND LV_SB TO LT_P.
+A '      FOR ALL ENTRIES IN LT_VKEYS'.
+A '      WHERE VENUM = LT_VKEYS-VENUM.'.
+A '  ENDIF.'.
+A ' '.
+A '  LOOP AT LT_BOX_VEKP WHERE UEVEL IS NOT INITIAL.'.
+A '    LT_PAL_KEYS-VENUM = LT_BOX_VEKP-UEVEL.'.
+A '    APPEND LT_PAL_KEYS.'.
+A '  ENDLOOP.'.
+A '  SORT LT_PAL_KEYS BY VENUM.'.
+A '  DELETE ADJACENT DUPLICATES FROM LT_PAL_KEYS.'.
+A ' '.
+CLEAR LV_SB.
+C '  " 4. Bulk Select Pallet HUs from VEKP '.
+C 'using Primary Key (VENUM)'.
+APPEND LV_SB TO LT_P.
+A '  IF LT_PAL_KEYS[] IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '    SELECT VENUM EXIDV UEVEL NTGEW FROM '.
+C 'VEKP INTO TABLE LT_PAL_VEKP'.
+APPEND LV_SB TO LT_P.
+A '      FOR ALL ENTRIES IN LT_PAL_KEYS'.
+A '      WHERE VENUM = LT_PAL_KEYS-VENUM.'.
+A '  ENDIF.'.
+A ' '.
+A '  " 5. Calculate total rolls per Pallet in-memory'.
+A '  DATA: BEGIN OF LT_PAL_CNT OCCURS 0,'.
+A '          PAL_VENUM TYPE VEKP-VENUM,'.
+A '          COUNT     TYPE I,'.
+A '        END OF LT_PAL_CNT.'.
+A '  LOOP AT LT_VEPO.'.
+CLEAR LV_SB.
+C '    READ TABLE LT_BOX_VEKP WITH KEY VENU'.
+C 'M = LT_VEPO-VENUM.'.
+APPEND LV_SB TO LT_P.
+A '    IF SY-SUBRC = 0.'.
+A '      IF LT_BOX_VEKP-UEVEL IS NOT INITIAL.'.
+A '        LT_PAL_CNT-PAL_VENUM = LT_BOX_VEKP-UEVEL.'.
+A '      ELSE.'.
+A '        LT_PAL_CNT-PAL_VENUM = LT_BOX_VEKP-VENUM.'.
+A '      ENDIF.'.
+A '      LT_PAL_CNT-COUNT = 1.'.
+A '      COLLECT LT_PAL_CNT.'.
+A '    ENDIF.'.
+A '  ENDLOOP.'.
+A ' '.
+CLEAR LV_SB.
+C '  " 6. Build final In-Memory GT_HU_CACHE'.
+C ' for instant O(log N) lookup'.
+APPEND LV_SB TO LT_P.
+A '  LOOP AT LT_VEPO.'.
+A '    CLEAR GS_HU_CACHE.'.
+A '    GS_HU_CACHE-CHARG = LT_VEPO-CHARG.'.
+CLEAR LV_SB.
+C '    READ TABLE LT_BOX_VEKP WITH KEY VENU'.
+C 'M = LT_VEPO-VENUM.'.
+APPEND LV_SB TO LT_P.
+A '    IF SY-SUBRC = 0.'.
+A '      IF LT_BOX_VEKP-UEVEL IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '        SHIFT LT_BOX_VEKP-EXIDV LEFT DEL'.
+C 'ETING LEADING ''0''.'.
+APPEND LV_SB TO LT_P.
+A '        GS_HU_CACHE-HU_NUMBER = LT_BOX_VEKP-EXIDV.'.
+A ' '.
+CLEAR LV_SB.
+C '        READ TABLE LT_PAL_VEKP WITH KEY '.
+C 'VENUM = LT_BOX_VEKP-UEVEL.'.
+APPEND LV_SB TO LT_P.
+A '        IF SY-SUBRC = 0.'.
+CLEAR LV_SB.
+C '          SHIFT LT_PAL_VEKP-EXIDV LEFT D'.
+C 'ELETING LEADING ''0''.'.
+APPEND LV_SB TO LT_P.
+A '          GS_HU_CACHE-NO_PALET = LT_PAL_VEKP-EXIDV.'.
+CLEAR LV_SB.
+C '          WRITE LT_PAL_VEKP-NTGEW TO GS_'.
+C 'HU_CACHE-TOT_WEIGHT DECIMALS 2.'.
+APPEND LV_SB TO LT_P.
+A '          CONDENSE GS_HU_CACHE-TOT_WEIGHT.'.
+CLEAR LV_SB.
+C '          READ TABLE LT_PAL_CNT WITH KEY'.
+C ' PAL_VENUM = LT_BOX_VEKP-UEVEL.'.
+APPEND LV_SB TO LT_P.
+A '          IF SY-SUBRC = 0.'.
+CLEAR LV_SB.
+C '            WRITE LT_PAL_CNT-COUNT TO GS'.
+C '_HU_CACHE-TOT_ROLL NO-GROUPING.'.
+APPEND LV_SB TO LT_P.
+A '            CONDENSE GS_HU_CACHE-TOT_ROLL.'.
+A '          ENDIF.'.
+A ' '.
+A '        ENDIF.'.
+A '      ELSE.'.
+CLEAR LV_SB.
+C '        SHIFT LT_BOX_VEKP-EXIDV LEFT DEL'.
+C 'ETING LEADING ''0''.'.
+APPEND LV_SB TO LT_P.
+A '        GS_HU_CACHE-HU_NUMBER = LT_BOX_VEKP-EXIDV.'.
+CLEAR LV_SB.
+C '        WRITE LT_BOX_VEKP-NTGEW TO GS_HU'.
+C '_CACHE-TOT_WEIGHT DECIMALS 2.'.
+APPEND LV_SB TO LT_P.
+A '        CONDENSE GS_HU_CACHE-TOT_WEIGHT.'.
+CLEAR LV_SB.
+C '        READ TABLE LT_PAL_CNT WITH KEY P'.
+C 'AL_VENUM = LT_BOX_VEKP-VENUM.'.
+APPEND LV_SB TO LT_P.
+A '        IF SY-SUBRC = 0.'.
+CLEAR LV_SB.
+C '          WRITE LT_PAL_CNT-COUNT TO GS_H'.
+C 'U_CACHE-TOT_ROLL NO-GROUPING.'.
+APPEND LV_SB TO LT_P.
+A '          CONDENSE GS_HU_CACHE-TOT_ROLL.'.
+A '        ENDIF.'.
+A ' '.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '    APPEND GS_HU_CACHE TO GT_HU_CACHE.'.
+A '  ENDLOOP.'.
+A '  SORT GT_HU_CACHE BY CHARG.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_HU_PALLET_INFO'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM GET_HU_PALLET_INFO USING    P_VBELN'.
+C '      TYPE LIPS-VBELN'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                                 P_CHARG'.
+C '      TYPE LIPS-CHARG'.
+APPEND LV_SB TO LT_P.
+A '                        CHANGING P_NO_PALET   TYPE ANY'.
+A '                                 P_TOT_ROLL   TYPE ANY'.
+A '                                 P_TOT_WEIGHT TYPE ANY.'.
+A '  CLEAR: P_NO_PALET, P_TOT_ROLL, P_TOT_WEIGHT.'.
+A '  READ TABLE GT_HU_CACHE INTO GS_HU_CACHE'.
+A '    WITH KEY CHARG = P_CHARG BINARY SEARCH.'.
+A '  IF SY-SUBRC = 0.'.
+A '    P_NO_PALET   = GS_HU_CACHE-NO_PALET.'.
+A '    P_TOT_ROLL   = GS_HU_CACHE-TOT_ROLL.'.
+A '    P_TOT_WEIGHT = GS_HU_CACHE-TOT_WEIGHT.'.
+A '  ENDIF.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_HU_BOX_INFO'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM GET_HU_BOX_INFO USING    P_VBELN  TYPE LIPS-VBELN'.
+A '                              P_CHARG  TYPE LIPS-CHARG'.
+A '                     CHANGING P_HU_NUM TYPE ANY.'.
+A '  CLEAR P_HU_NUM.'.
+A '  READ TABLE GT_HU_CACHE INTO GS_HU_CACHE'.
+A '    WITH KEY CHARG = P_CHARG BINARY SEARCH.'.
+A '  IF SY-SUBRC = 0.'.
+A '    P_HU_NUM = GS_HU_CACHE-HU_NUMBER.'.
+A '  ENDIF.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_HU_PALLET_TRIAS_INFO'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM GET_HU_PALLET_TRIAS_INFO USING    P'.
+C '_VBELN TYPE LIPS-VBELN'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                                       P'.
+C '_CHARG TYPE LIPS-CHARG'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                              CHANGING P'.
+C '_PALID TYPE ANY.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  DATA: LT_FB_PALID TYPE TABLE OF ZPALLE'.
+C 'TR-PALID WITH HEADER LINE.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  CLEAR P_PALID.'.
+A '  READ TABLE GT_HU_CACHE INTO GS_HU_CACHE'.
+A '    WITH KEY CHARG = P_CHARG BINARY SEARCH.'.
+A '  IF SY-SUBRC = 0.'.
+A '    P_PALID = GS_HU_CACHE-NO_PALET_TRIAS.'.
+A '  ENDIF.'.
+A '  IF P_PALID IS INITIAL.'.
+A '    DATA: LV_FALLBACK_EXIDV TYPE ZPALLETR-EXIDV.'.
+A '    IF GS_HU_CACHE-NO_PALET IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '      CALL FUNCTION ''CONVERSION_EXIT_ALP'.
+C 'HA_INPUT'''.
+APPEND LV_SB TO LT_P.
+A '        EXPORTING INPUT  = GS_HU_CACHE-NO_PALET'.
+A '        IMPORTING OUTPUT = LV_FALLBACK_EXIDV.'.
+A '      CLEAR LT_FB_PALID[].'.
+A '      SELECT PALID INTO TABLE LT_FB_PALID FROM ZPALLETR'.
+A '        UP TO 1 ROWS'.
+A '        WHERE EXIDV = LV_FALLBACK_EXIDV'.
+CLEAR LV_SB.
+C '          AND STATUS IN (''C'', ''E'', ''P'', '.
+C '''L'')'.
+APPEND LV_SB TO LT_P.
+A '        ORDER BY DOCNO DESCENDING.'.
+A '      IF LT_FB_PALID[] IS NOT INITIAL.'.
+A '        READ TABLE LT_FB_PALID INDEX 1.'.
+A '        P_PALID = LT_FB_PALID.'.
+A '      ELSE.'.
+A '        CLEAR LT_FB_PALID[].'.
+A '        SELECT PALID INTO TABLE LT_FB_PALID FROM ZHMS'.
+A '          UP TO 1 ROWS'.
+A '          WHERE EXIDV = LV_FALLBACK_EXIDV'.
+A '          ORDER BY PALID DESCENDING.'.
+A '        IF LT_FB_PALID[] IS NOT INITIAL.'.
+A '          READ TABLE LT_FB_PALID INDEX 1.'.
+A '          P_PALID = LT_FB_PALID.'.
+A '        ENDIF.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_LOT_NUMBER'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM GET_LOT_NUMBER USING    P_BATCH   S'.
+C 'TRUCTURE IT_DATA'.
+APPEND LV_SB TO LT_P.
+A '                    CHANGING P_LOT_VAL TYPE ANY.'.
+A '  DATA: LV_KUNNR_V    TYPE LIKP-KUNAG,'.
+A '        LV_KDMAT      TYPE VBAP-KDMAT,'.
+A '        LV_SO_NUM     TYPE LIPS-VGBEL,'.
+A '        LV_SO_POS     TYPE LIPS-VGPOS,'.
+A '        LV_PRTNO(25)  TYPE C,'.
+A '        LV_EDATE_TXT  TYPE CHAR6,'.
+A '        LV_PDATE_TXT  TYPE CHAR6,'.
+A '        LV_PAD_EXIDV  TYPE VEKP-EXIDV,'.
+A '        LV_ZHMS_PALID TYPE ZHMS-PALID,'.
+A '        LV_STD_QTY    TYPE P DECIMALS 0,'.
+A '        LV_STD(1)     TYPE C,'.
+A '        LV_TOT_ROLL_N TYPE P DECIMALS 0,'.
+CLEAR LV_SB.
+C '        LT_ZHMS_PALID TYPE TABLE OF ZHMS'.
+C '-PALID WITH HEADER LINE.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  CLEAR P_LOT_VAL.'.
+A ' '.
+A '  " 1. Dapatkan Customer Material Number (KDMAT)'.
+A '  CLEAR: LV_SO_NUM, LV_SO_POS, LV_KDMAT.'.
+CLEAR LV_SB.
+C '  SELECT SINGLE VGBEL VGPOS INTO (LV_SO_'.
+C 'NUM, LV_SO_POS) FROM LIPS'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHERE VBELN = P_BATCH-VBELN AND CHAR'.
+C 'G = P_BATCH-CHARG.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  IF LV_SO_NUM IS INITIAL AND P_BATCH-UE'.
+C 'CHA IS NOT INITIAL.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    SELECT SINGLE VGBEL VGPOS INTO (LV_S'.
+C 'O_NUM, LV_SO_POS) FROM LIPS'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      WHERE VBELN = P_BATCH-VBELN AND PO'.
+C 'SNR = P_BATCH-UECHA.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+A '  IF LV_SO_NUM IS INITIAL.'.
+CLEAR LV_SB.
+C '    SELECT SINGLE VGBEL VGPOS INTO (LV_S'.
+C 'O_NUM, LV_SO_POS) FROM LIPS'.
+APPEND LV_SB TO LT_P.
+A '      WHERE VBELN = P_BATCH-VBELN.'.
+A '  ENDIF.'.
+A '  IF LV_SO_NUM IS INITIAL.'.
+A '    SELECT SINGLE VBELV INTO LV_SO_NUM FROM VBFA'.
+CLEAR LV_SB.
+C '      WHERE VBELN = P_BATCH-VBELN AND VB'.
+C 'TYP_V = ''C''.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+A ' '.
+A '  IF LV_SO_NUM IS NOT INITIAL.'.
+A '    IF LV_SO_POS IS NOT INITIAL.'.
+A '      SELECT SINGLE KDMAT INTO LV_KDMAT FROM VBAP'.
+A '        WHERE VBELN = LV_SO_NUM AND POSNR = LV_SO_POS.'.
+A '    ENDIF.'.
+A '    IF LV_KDMAT IS INITIAL.'.
+A '      SELECT SINGLE KDMAT INTO LV_KDMAT FROM VBAP'.
+CLEAR LV_SB.
+C '        WHERE VBELN = LV_SO_NUM AND MATN'.
+C 'R = P_BATCH-MATNR.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A '  IF LV_KDMAT IS INITIAL.'.
+A '    SELECT SINGLE KDMAT INTO LV_KDMAT FROM LIPS'.
+CLEAR LV_SB.
+C '      WHERE VBELN = P_BATCH-VBELN AND CH'.
+C 'ARG = P_BATCH-CHARG.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+A '  IF LV_KDMAT IS INITIAL.'.
+CLEAR LV_SB.
+C '    SELECT SINGLE KUNAG INTO LV_KUNNR_V '.
+C 'FROM LIKP WHERE VBELN = P_BATCH-VBELN.'.
+APPEND LV_SB TO LT_P.
+A '    IF LV_KUNNR_V IS INITIAL.'.
+CLEAR LV_SB.
+C '      SELECT SINGLE KUNNR INTO LV_KUNNR_'.
+C 'V FROM LIKP WHERE VBELN = P_BATCH-VBELN.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '    IF LV_KUNNR_V IS NOT INITIAL.'.
+A '      SELECT SINGLE KDMAT INTO LV_KDMAT FROM KNMT'.
+CLEAR LV_SB.
+C '        WHERE KUNNR = LV_KUNNR_V AND MAT'.
+C 'NR = P_BATCH-MATNR.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  " 2. Jika ada Customer Material (KDMAT'.
+C '), gunakan format Lot sesuai ZSD024A'.
+APPEND LV_SB TO LT_P.
+A '  IF LV_KDMAT IS NOT INITIAL.'.
+CLEAR LV_SB.
+C '    " a. Ambil Pallet EXIDV & Sequence P'.
+C 'allet ID dari ZHMS'.
+APPEND LV_SB TO LT_P.
+A '    CLEAR: LV_PAD_EXIDV, LV_ZHMS_PALID.'.
+A '    READ TABLE GT_HU_CACHE INTO GS_HU_CACHE'.
+A '      WITH KEY CHARG = P_BATCH-CHARG BINARY SEARCH.'.
+CLEAR LV_SB.
+C '    IF SY-SUBRC = 0 AND GS_HU_CACHE-NO_P'.
+C 'ALET IS NOT INITIAL.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      CALL FUNCTION ''CONVERSION_EXIT_ALP'.
+C 'HA_INPUT'''.
+APPEND LV_SB TO LT_P.
+A '        EXPORTING INPUT  = GS_HU_CACHE-NO_PALET'.
+A '        IMPORTING OUTPUT = LV_PAD_EXIDV.'.
+A '      CLEAR LT_ZHMS_PALID[].'.
+A '      SELECT PALID INTO TABLE LT_ZHMS_PALID FROM ZHMS'.
+A '        UP TO 1 ROWS'.
+A '        WHERE EXIDV = LV_PAD_EXIDV'.
+A '        ORDER BY PALID DESCENDING.'.
+A '      IF LT_ZHMS_PALID[] IS NOT INITIAL.'.
+A '        READ TABLE LT_ZHMS_PALID INDEX 1.'.
+A '        LV_ZHMS_PALID = LT_ZHMS_PALID.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A ' '.
+A '    IF LV_ZHMS_PALID IS INITIAL.'.
+CLEAR LV_SB.
+C '      P_LOT_VAL = ''Label A4 belum di cet'.
+C 'ak''.'.
+APPEND LV_SB TO LT_P.
+A '      RETURN.'.
+A '    ENDIF.'.
+A ' '.
+A '    " b. Validasi Master Part Gudang Garam di ZHMS'.
+A '    CLEAR LV_STD_QTY.'.
+A '    SELECT SINGLE PALID INTO LV_STD_QTY FROM ZHMS'.
+CLEAR LV_SB.
+C '      WHERE NOCOA = ''MASTER PART GUDANG '.
+C 'GARAM'' AND EXIDV = LV_KDMAT.'.
+APPEND LV_SB TO LT_P.
+A '    IF SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '      CONCATENATE ''Master Part'' LV_KDMAT'.
+C ' ''tidak ada'' INTO P_LOT_VAL SEPARATED BY'.
+C ' SPACE.'.
+APPEND LV_SB TO LT_P.
+A '      RETURN.'.
+A '    ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    " c. Indikator Standar Kemasan (1 = '.
+C 'sama dgn master part, 0 = beda)'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    LV_STD = ''0''.'.
+APPEND LV_SB TO LT_P.
+A '    IF GS_HU_CACHE-TOT_ROLL IS NOT INITIAL.'.
+A '      LV_TOT_ROLL_N = GS_HU_CACHE-TOT_ROLL.'.
+A '      IF LV_STD_QTY = LV_TOT_ROLL_N.'.
+CLEAR LV_SB.
+C '        LV_STD = ''1''.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    " d. Format Part Number: 25 char, ri'.
+C 'ght-aligned, leading zero'.
+APPEND LV_SB TO LT_P.
+A '    LV_PRTNO = LV_KDMAT.'.
+A '    CONDENSE LV_PRTNO NO-GAPS.'.
+A '    SHIFT LV_PRTNO RIGHT DELETING TRAILING SPACE.'.
+CLEAR LV_SB.
+C '    TRANSLATE LV_PRTNO USING '' 0''.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+CLEAR LV_SB.
+C '    " e. Tanggal Kedaluwarsa (DDMMYY) & '.
+C 'Tanggal Produksi (DDMMYY)'.
+APPEND LV_SB TO LT_P.
+A '    CLEAR: LV_EDATE_TXT, LV_PDATE_TXT.'.
+A '    READ TABLE GT_DATE_CACHE INTO GS_DATE_CACHE'.
+A '      WITH KEY CHARG = P_BATCH-CHARG BINARY SEARCH.'.
+A '    IF SY-SUBRC = 0.'.
+A '      IF GS_DATE_CACHE-EXP_DATE IS NOT INITIAL.'.
+A '        CONCATENATE GS_DATE_CACHE-EXP_DATE(2)'.
+A '                    GS_DATE_CACHE-EXP_DATE+3(2)'.
+A '                    GS_DATE_CACHE-EXP_DATE+8(2)'.
+A '               INTO LV_EDATE_TXT.'.
+A '      ENDIF.'.
+A '      IF GS_DATE_CACHE-PROD_DATE IS NOT INITIAL.'.
+A '        CONCATENATE GS_DATE_CACHE-PROD_DATE(2)'.
+A '                    GS_DATE_CACHE-PROD_DATE+3(2)'.
+A '                    GS_DATE_CACHE-PROD_DATE+8(2)'.
+A '               INTO LV_PDATE_TXT.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A ' '.
+A '    " Fallback jika GT_DATE_CACHE belum terisi'.
+CLEAR LV_SB.
+C '    IF LV_PDATE_TXT IS INITIAL OR LV_EDA'.
+C 'TE_TXT IS INITIAL.'.
+APPEND LV_SB TO LT_P.
+A '      DATA: LV_PD_RAW TYPE SY-DATUM,'.
+A '            LV_ED_RAW TYPE SY-DATUM.'.
+CLEAR LV_SB.
+C '      CALL FUNCTION ''Z_GET_PRODUCTION_DA'.
+C 'TE'''.
+APPEND LV_SB TO LT_P.
+A '        EXPORTING'.
+A '          MATNR = P_BATCH-MATNR'.
+A '          CHARG = P_BATCH-CHARG'.
+A '        IMPORTING'.
+A '          PDATE = LV_PD_RAW.'.
+CLEAR LV_SB.
+C '      IF LV_PD_RAW IS INITIAL OR LV_PD_R'.
+C 'AW = ''00000000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        SELECT SINGLE HSDAT INTO LV_PD_R'.
+C 'AW FROM MCH1 WHERE CHARG = P_BATCH-CHARG'.
+C '.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+CLEAR LV_SB.
+C '      IF LV_PD_RAW IS NOT INITIAL AND LV'.
+C '_PD_RAW <> ''00000000'' AND LV_PDATE_TXT I'.
+C 'S INITIAL.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        CONCATENATE LV_PD_RAW+6(2) LV_PD'.
+C '_RAW+4(2) LV_PD_RAW+2(2) INTO LV_PDATE_T'.
+C 'XT.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '      SELECT SINGLE VFDAT INTO LV_ED_RAW'.
+C ' FROM MCH1 WHERE CHARG = P_BATCH-CHARG.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      IF LV_ED_RAW IS NOT INITIAL AND LV'.
+C '_ED_RAW <> ''00000000'' AND LV_EDATE_TXT I'.
+C 'S INITIAL.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        CONCATENATE LV_ED_RAW+6(2) LV_ED'.
+C '_RAW+4(2) LV_ED_RAW+2(2) INTO LV_EDATE_T'.
+C 'XT.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    " f. Susun string Lot Gudang Garam p'.
+C 'ersis rumus ZSD024A'.
+APPEND LV_SB TO LT_P.
+A '    CONCATENATE LV_PRTNO'.
+A '                LV_EDATE_TXT'.
+A '                LV_PDATE_TXT'.
+A '                LV_ZHMS_PALID'.
+A '                LV_STD'.
+A '           INTO P_LOT_VAL.'.
+A '  ELSE.'.
+CLEAR LV_SB.
+C '    " --- CUSTOMER NON-GG: AMBIL INSPECT'.
+C 'ION LOT (QALS-PRUEFLOS) ---'.
+APPEND LV_SB TO LT_P.
+A '    P_LOT_VAL = P_BATCH-INSLOT.'.
+CLEAR LV_SB.
+C '    IF P_LOT_VAL IS INITIAL AND P_BATCH-'.
+C 'CHARG IS NOT INITIAL.'.
+APPEND LV_SB TO LT_P.
+A '      SELECT SINGLE PRUEFLOS INTO P_LOT_VAL FROM QALS'.
+CLEAR LV_SB.
+C '        WHERE CHARG = P_BATCH-CHARG AND '.
+C 'ART = ''Z04''.'.
+APPEND LV_SB TO LT_P.
+A '      IF P_LOT_VAL IS INITIAL.'.
+A '        SELECT SINGLE PRUEFLOS INTO P_LOT_VAL FROM QALS'.
+A '          WHERE CHARG = P_BATCH-CHARG.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  PREPARE_DATE_CACHE'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM PREPARE_DATE_CACHE TABLES PT_BATCHE'.
+C 'S STRUCTURE IT_DATA.'.
+APPEND LV_SB TO LT_P.
+A '  DATA: LV_MATNR TYPE MCH1-MATNR,'.
+A '        LV_PDATE TYPE SY-DATUM,'.
+A '        LV_EXPD  TYPE SY-DATUM,'.
+A '        LV_DAYS  TYPE I.'.
+A ' '.
+A '  REFRESH GT_DATE_CACHE.'.
+A '  CHECK PT_BATCHES[] IS NOT INITIAL.'.
+A ' '.
+A '  LOOP AT PT_BATCHES.'.
+CLEAR LV_SB.
+C '    CLEAR: GS_DATE_CACHE, LV_MATNR, LV_P'.
+C 'DATE, LV_EXPD, LV_DAYS.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '    GS_DATE_CACHE-CHARG = PT_BATCHES-CHARG.'.
+A '    LV_MATNR = PT_BATCHES-MATNR.'.
+A '    IF LV_MATNR IS INITIAL.'.
+A '      SELECT SINGLE MATNR INTO LV_MATNR FROM MCH1'.
+A '        WHERE CHARG = PT_BATCHES-CHARG.'.
+A '    ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    " 1. Ambil Production Date sekali sa'.
+C 'ja via Z_GET_PRODUCTION_DATE'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    CALL FUNCTION ''Z_GET_PRODUCTION_DATE'.
+C ''''.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING'.
+A '        MATNR = LV_MATNR'.
+A '        CHARG = PT_BATCHES-CHARG'.
+A '      IMPORTING'.
+A '        PDATE = LV_PDATE.'.
+A ' '.
+CLEAR LV_SB.
+C '    IF LV_PDATE IS NOT INITIAL AND LV_PD'.
+C 'ATE <> ''00000000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      CONCATENATE LV_PDATE+6(2) ''.'' LV_P'.
+C 'DATE+4(2) ''.'' LV_PDATE(4)'.
+APPEND LV_SB TO LT_P.
+A '             INTO GS_DATE_CACHE-PROD_DATE.'.
+A '    ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    " 2. Dapatkan Shelf Life (ZZEXPIREDL'.
+C 'IVE) dari GT_CHAR_CACHE'.
+APPEND LV_SB TO LT_P.
+A '    IF GV_ATINN_LIVE IS NOT INITIAL.'.
+A '      READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE'.
+CLEAR LV_SB.
+C '        WITH KEY CHARG = PT_BATCHES-CHAR'.
+C 'G ATINN = GV_ATINN_LIVE BINARY SEARCH.'.
+APPEND LV_SB TO LT_P.
+A '      IF SY-SUBRC = 0 AND GS_CHAR_CACHE-ATFLV > 0.'.
+A '        LV_DAYS = GS_CHAR_CACHE-ATFLV.'.
+A '      ENDIF.'.
+A '    ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    " 3. Hitung Expired Date = PROD_DATE'.
+C ' + ZZEXPIREDLIVE'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    IF LV_PDATE IS NOT INITIAL AND LV_PD'.
+C 'ATE <> ''00000000'' AND LV_DAYS > 0.'.
+APPEND LV_SB TO LT_P.
+A '      LV_EXPD = LV_PDATE + LV_DAYS.'.
+A '    ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '    IF LV_EXPD IS NOT INITIAL AND LV_EXP'.
+C 'D <> ''00000000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      CONCATENATE LV_EXPD+6(2) ''.'' LV_EX'.
+C 'PD+4(2) ''.'' LV_EXPD(4)'.
+APPEND LV_SB TO LT_P.
+A '             INTO GS_DATE_CACHE-EXP_DATE.'.
+A '    ENDIF.'.
+A ' '.
+A '    APPEND GS_DATE_CACHE TO GT_DATE_CACHE.'.
+A '  ENDLOOP.'.
+A ' '.
+A '  SORT GT_DATE_CACHE BY CHARG.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  PREPARE_CHAR_CACHE'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM PREPARE_CHAR_CACHE TABLES PT_BATCHE'.
+C 'S STRUCTURE IT_DATA.'.
+APPEND LV_SB TO LT_P.
+A '  DATA: LT_CABN TYPE TABLE OF CABN WITH HEADER LINE,'.
+CLEAR LV_SB.
+C '        R_ATINN TYPE RANGE OF CABN-ATINN'.
+C ' WITH HEADER LINE.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  REFRESH: GT_CHAR_CACHE, R_ATINN.'.
+A '  CHECK PT_BATCHES[] IS NOT INITIAL.'.
+A ' '.
+A '  " 1. Ambil ATINN diawal via CABN sekali saja'.
+A '  IF GV_ATINN_CODE IS INITIAL.'.
+A '    SELECT * FROM CABN INTO TABLE LT_CABN'.
+CLEAR LV_SB.
+C '      WHERE ATNAM IN (''ZZCODE'', ''ZZALIAS'.
+C ''', ''ZZTYPE'', ''ZZTHICKNESS'','.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                      ''ZZGRAMMAGE'', ''ZZC'.
+C 'ORE'','.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                      ''ZZSPLICE-1'', ''ZZS'.
+C 'PLICE-2'', ''ZZSPLICE-3'','.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                      ''ZZEXPIREDLIVE'').'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '    DEFINE _SET_ATINN.'.
+A '      READ TABLE LT_CABN WITH KEY ATNAM = &1.'.
+A '      IF SY-SUBRC = 0.'.
+A '        &2 = LT_CABN-ATINN.'.
+A '        CLEAR R_ATINN.'.
+CLEAR LV_SB.
+C '        R_ATINN-SIGN = ''I''. R_ATINN-OPTI'.
+C 'ON = ''EQ''. R_ATINN-LOW = &2.'.
+APPEND LV_SB TO LT_P.
+A '        APPEND R_ATINN.'.
+A '      ENDIF.'.
+A '    END-OF-DEFINITION.'.
+A ' '.
+CLEAR LV_SB.
+C '    _SET_ATINN ''ZZALIAS''        GV_ATINN'.
+C '_ALIAS.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    _SET_ATINN ''ZZCODE''         GV_ATINN'.
+C '_CODE.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    _SET_ATINN ''ZZTYPE''         GV_ATINN'.
+C '_TYPE.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    _SET_ATINN ''ZZTHICKNESS''    GV_ATINN'.
+C '_THICK.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    _SET_ATINN ''ZZGRAMMAGE''     GV_ATINN'.
+C '_GRAMMAGE.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    _SET_ATINN ''ZZCORE''         GV_ATINN'.
+C '_CORE.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    _SET_ATINN ''ZZSPLICE-1''     GV_ATINN'.
+C '_SPLICE1.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    _SET_ATINN ''ZZSPLICE-2''     GV_ATINN'.
+C '_SPLICE2.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    _SET_ATINN ''ZZSPLICE-3''     GV_ATINN'.
+C '_SPLICE3.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    _SET_ATINN ''ZZEXPIREDLIVE''  GV_ATINN'.
+C '_LIVE.'.
+APPEND LV_SB TO LT_P.
+A '  ELSE.'.
+A '    DEFINE _FILL_R_ATINN.'.
+A '      IF &1 IS NOT INITIAL.'.
+A '        CLEAR R_ATINN.'.
+CLEAR LV_SB.
+C '        R_ATINN-SIGN = ''I''. R_ATINN-OPTI'.
+C 'ON = ''EQ''. R_ATINN-LOW = &1.'.
+APPEND LV_SB TO LT_P.
+A '        APPEND R_ATINN.'.
+A '      ENDIF.'.
+A '    END-OF-DEFINITION.'.
+A '    _FILL_R_ATINN GV_ATINN_ALIAS.'.
+A '    _FILL_R_ATINN GV_ATINN_CODE.'.
+A '    _FILL_R_ATINN GV_ATINN_TYPE.'.
+A '    _FILL_R_ATINN GV_ATINN_THICK.'.
+A '    _FILL_R_ATINN GV_ATINN_GRAMMAGE.'.
+A '    _FILL_R_ATINN GV_ATINN_CORE.'.
+A '    _FILL_R_ATINN GV_ATINN_SPLICE1.'.
+A '    _FILL_R_ATINN GV_ATINN_SPLICE2.'.
+A '    _FILL_R_ATINN GV_ATINN_SPLICE3.'.
+A '    _FILL_R_ATINN GV_ATINN_LIVE.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  " 2. Bulk SELECT MCH1 JOIN AUSP persis'.
+C ' ZQMI_BARRIER_PASS_FAIL'.
+APPEND LV_SB TO LT_P.
+A '  IF R_ATINN[] IS NOT INITIAL.'.
+A '    SELECT MCH1~CHARG AUSP~ATINN AUSP~ATWRT AUSP~ATFLV'.
+A '      INTO TABLE GT_CHAR_CACHE'.
+A '      FROM MCH1'.
+A '      JOIN AUSP ON AUSP~OBJEK = MCH1~CUOBJ_BM'.
+A '      FOR ALL ENTRIES IN PT_BATCHES'.
+A '      WHERE MCH1~CHARG = PT_BATCHES-CHARG'.
+CLEAR LV_SB.
+C '        AND AUSP~KLART = ''023'''.
+APPEND LV_SB TO LT_P.
+A '        AND AUSP~ATINN IN R_ATINN.'.
+A '  ENDIF.'.
+A ' '.
+A '  SORT GT_CHAR_CACHE BY CHARG ATINN.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_CHAR_DESC'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM GET_CHAR_DESC USING    IV_ATINN TYPE CABN-ATINN'.
+A '                            IV_ATWRT TYPE AUSP-ATWRT'.
+A '                   CHANGING CV_DESC  TYPE ANY.'.
+A '  TYPES: BEGIN OF TY_CDESC,'.
+A '           ATINN TYPE CABN-ATINN,'.
+A '           ATWRT TYPE AUSP-ATWRT,'.
+A '           ATWTB TYPE CAWNT-ATWTB,'.
+A '         END OF TY_CDESC.'.
+A '  STATICS: ST_CDESC TYPE HASHED TABLE OF TY_CDESC'.
+A '                     WITH UNIQUE KEY ATINN ATWRT.'.
+A '  DATA: LS_CDESC TYPE TY_CDESC,'.
+A '        LV_ATZHL TYPE CAWN-ATZHL,'.
+A '        LV_ATWTB TYPE CAWNT-ATWTB.'.
+A ' '.
+A '  CLEAR CV_DESC.'.
+CLEAR LV_SB.
+C '  CHECK IV_ATINN IS NOT INITIAL AND IV_A'.
+C 'TWRT IS NOT INITIAL.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  READ TABLE ST_CDESC INTO LS_CDESC'.
+A '    WITH TABLE KEY ATINN = IV_ATINN ATWRT = IV_ATWRT.'.
+A '  IF SY-SUBRC = 0.'.
+A '    CV_DESC = LS_CDESC-ATWTB.'.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+A '  LS_CDESC-ATINN = IV_ATINN.'.
+A '  LS_CDESC-ATWRT = IV_ATWRT.'.
+A ' '.
+A '  SELECT SINGLE ATZHL INTO LV_ATZHL FROM CAWN'.
+A '    WHERE ATINN = IV_ATINN AND ATWRT = IV_ATWRT.'.
+A '  IF SY-SUBRC = 0 AND LV_ATZHL IS NOT INITIAL.'.
+A '    SELECT SINGLE ATWTB INTO LV_ATWTB FROM CAWNT'.
+CLEAR LV_SB.
+C '      WHERE ATINN = IV_ATINN AND ATZHL ='.
+C ' LV_ATZHL AND SPRAS = SY-LANGU.'.
+APPEND LV_SB TO LT_P.
+A '    IF LV_ATWTB IS INITIAL.'.
+A '      SELECT SINGLE ATWTB INTO LV_ATWTB FROM CAWNT'.
+CLEAR LV_SB.
+C '        WHERE ATINN = IV_ATINN AND ATZHL'.
+C ' = LV_ATZHL AND SPRAS = ''E''.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '    IF LV_ATWTB IS INITIAL.'.
+A '      SELECT SINGLE ATWTB INTO LV_ATWTB FROM CAWNT'.
+A '        WHERE ATINN = IV_ATINN AND ATZHL = LV_ATZHL.'.
+A '    ENDIF.'.
+A '    LS_CDESC-ATWTB = LV_ATWTB.'.
+A '  ENDIF.'.
+A ' '.
+A '  INSERT LS_CDESC INTO TABLE ST_CDESC.'.
+A '  CV_DESC = LS_CDESC-ATWTB.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  INSERT_EXCEL_BARCODE_IMAGE'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM INSERT_EXCEL_BARCODE_IMAGE USING P_'.
+C 'SHEET TYPE OLE2_OBJECT'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '                                      P_'.
+C 'CELL  TYPE OLE2_OBJECT'.
+APPEND LV_SB TO LT_P.
+A '                                      P_TEXT  TYPE ANY.'.
+A '  DATA: LV_RAW_TEXT    TYPE STRING,'.
+A '        LV_TEMP_DIR    TYPE STRING,'.
+A '        LV_FULL_PATH   TYPE STRING,'.
+A '        LV_BMP_XSTR    TYPE XSTRING,'.
+A '        LV_WIDTH_PX    TYPE I,'.
+A '        LV_FILE_SIZE   TYPE I,'.
+CLEAR LV_SB.
+C '        LT_BIN_TAB     TYPE TABLE OF RAW'.
+C '255 WITH HEADER LINE,'.
+APPEND LV_SB TO LT_P.
+A '        LV_FILE_EXISTS TYPE ABAP_BOOL,'.
+A '        LV_C_LEFT      TYPE F,'.
+A '        LV_C_TOP       TYPE F,'.
+A '        LV_C_WIDTH     TYPE F,'.
+A '        LV_C_HEIGHT    TYPE F,'.
+A '        LO_SHAPES      TYPE OLE2_OBJECT,'.
+A '        LO_SHAPE       TYPE OLE2_OBJECT,'.
+A '        LO_PICS        TYPE OLE2_OBJECT,'.
+A '        LO_PIC         TYPE OLE2_OBJECT.'.
+A ' '.
+A '  LV_RAW_TEXT = P_TEXT.'.
+A '  CONDENSE LV_RAW_TEXT.'.
+A '  CHECK LV_RAW_TEXT IS NOT INITIAL.'.
+A ' '.
+A '  " 1. Dapatkan direktori temp PC user via SAP GUI'.
+CLEAR LV_SB.
+C '  CALL METHOD CL_GUI_FRONTEND_SERVICES=>'.
+C 'GET_TEMP_DIRECTORY'.
+APPEND LV_SB TO LT_P.
+A '    CHANGING'.
+A '      TEMP_DIR             = LV_TEMP_DIR'.
+A '    EXCEPTIONS'.
+A '      CNTL_ERROR           = 1'.
+A '      ERROR_NO_GUI         = 2'.
+A '      NOT_SUPPORTED_BY_GUI = 3'.
+A '      OTHERS               = 4.'.
+A '  IF SY-SUBRC <> 0 OR LV_TEMP_DIR IS INITIAL.'.
+CLEAR LV_SB.
+C '    LV_TEMP_DIR = ''C:\TEMP\''.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+CLEAR LV_SB.
+C '  IF LV_TEMP_DIR NA ''\'' AND LV_TEMP_DIR '.
+C 'NA ''/''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    CONCATENATE LV_TEMP_DIR ''\'' INTO LV_'.
+C 'TEMP_DIR.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  CONCATENATE LV_TEMP_DIR ''BC_'' LV_RAW_T'.
+C 'EXT ''.BMP'' INTO LV_FULL_PATH.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  " 2. Generate file BMP jika belum ada di temp PC'.
+A '  CALL METHOD CL_GUI_FRONTEND_SERVICES=>FILE_EXIST'.
+A '    EXPORTING'.
+A '      FILE                 = LV_FULL_PATH'.
+A '    RECEIVING'.
+A '      RESULT               = LV_FILE_EXISTS'.
+A '    EXCEPTIONS'.
+A '      OTHERS               = 1.'.
+A ' '.
+A '  IF LV_FILE_EXISTS = ABAP_FALSE.'.
+A '    PERFORM BUILD_CODE39_BMP USING LV_RAW_TEXT 35'.
+CLEAR LV_SB.
+C '                          CHANGING LV_BM'.
+C 'P_XSTR LV_WIDTH_PX.'.
+APPEND LV_SB TO LT_P.
+A '    CHECK LV_BMP_XSTR IS NOT INITIAL.'.
+A ' '.
+A '    LV_FILE_SIZE = XSTRLEN( LV_BMP_XSTR ).'.
+CLEAR LV_SB.
+C '    CALL FUNCTION ''SCMS_XSTRING_TO_BINAR'.
+C 'Y'''.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING'.
+A '        BUFFER     = LV_BMP_XSTR'.
+A '      TABLES'.
+A '        BINARY_TAB = LT_BIN_TAB.'.
+A ' '.
+A '    CALL METHOD CL_GUI_FRONTEND_SERVICES=>GUI_DOWNLOAD'.
+A '      EXPORTING'.
+A '        BIN_FILESIZE = LV_FILE_SIZE'.
+A '        FILENAME     = LV_FULL_PATH'.
+CLEAR LV_SB.
+C '        FILETYPE     = ''BIN'''.
+APPEND LV_SB TO LT_P.
+A '      CHANGING'.
+A '        DATA_TAB     = LT_BIN_TAB[]'.
+A '      EXCEPTIONS'.
+A '        OTHERS       = 1.'.
+A '    IF SY-SUBRC <> 0.'.
+A '      RETURN.'.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A ' '.
+A '  " 3. Baca koordinat sel Excel via OLE'.
+CLEAR LV_SB.
+C '  GET PROPERTY OF P_CELL ''Left''   = LV_C'.
+C '_LEFT.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  GET PROPERTY OF P_CELL ''Top''    = LV_C'.
+C '_TOP.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  GET PROPERTY OF P_CELL ''Width''  = LV_C'.
+C '_WIDTH.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  GET PROPERTY OF P_CELL ''Height'' = LV_C'.
+C '_HEIGHT.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  LV_C_LEFT   = LV_C_LEFT + 2.'.
+A '  LV_C_TOP    = LV_C_TOP + 2.'.
+A '  LV_C_WIDTH  = LV_C_WIDTH - 4.'.
+A '  LV_C_HEIGHT = LV_C_HEIGHT - 4.'.
+A '  IF LV_C_WIDTH <= 0. LV_C_WIDTH = 50. ENDIF.'.
+A '  IF LV_C_HEIGHT <= 0. LV_C_HEIGHT = 20. ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  " 4. Sisipkan Picture via Shapes.AddPi'.
+C 'cture (LinkToFile = 0, SaveWithDocument '.
+C '= 1)'.
+APPEND LV_SB TO LT_P.
+A '  CLEAR: LO_SHAPES, LO_SHAPE.'.
+CLEAR LV_SB.
+C '  GET PROPERTY OF P_SHEET ''Shapes'' = LO_'.
+C 'SHAPES.'.
+APPEND LV_SB TO LT_P.
+A '  IF SY-SUBRC = 0 AND LO_SHAPES-HANDLE <> 0.'.
+CLEAR LV_SB.
+C '    CALL METHOD OF LO_SHAPES ''AddPicture'.
+C ''' = LO_SHAPE'.
+APPEND LV_SB TO LT_P.
+A '      EXPORTING'.
+A '        #1 = LV_FULL_PATH'.
+A '        #2 = 0   " LinkToFile = msoFalse'.
+A '        #3 = 1   " SaveWithDocument = msoTrue'.
+A '        #4 = LV_C_LEFT'.
+A '        #5 = LV_C_TOP'.
+A '        #6 = LV_C_WIDTH'.
+A '        #7 = LV_C_HEIGHT.'.
+A '    IF SY-SUBRC = 0 AND LO_SHAPE-HANDLE <> 0.'.
+CLEAR LV_SB.
+C '      SET PROPERTY OF LO_SHAPE ''Placemen'.
+C 't'' = 1. " xlMoveAndSize'.
+APPEND LV_SB TO LT_P.
+A '      FREE OBJECT LO_SHAPE.'.
+A '    ENDIF.'.
+A '    FREE OBJECT LO_SHAPES.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  " Fallback jika AddPicture tidak diduk'.
+C 'ung di versi Excel tertentu'.
+APPEND LV_SB TO LT_P.
+A '  IF SY-SUBRC <> 0 OR LO_SHAPE-HANDLE = 0.'.
+A '    CLEAR: LO_PICS, LO_PIC.'.
+CLEAR LV_SB.
+C '    GET PROPERTY OF P_SHEET ''Pictures'' ='.
+C ' LO_PICS.'.
+APPEND LV_SB TO LT_P.
+A '    IF SY-SUBRC = 0 AND LO_PICS-HANDLE <> 0.'.
+CLEAR LV_SB.
+C '      CALL METHOD OF LO_PICS ''Insert'' = '.
+C 'LO_PIC'.
+APPEND LV_SB TO LT_P.
+A '        EXPORTING'.
+A '          #1 = LV_FULL_PATH.'.
+A '      IF SY-SUBRC = 0 AND LO_PIC-HANDLE <> 0.'.
+CLEAR LV_SB.
+C '        SET PROPERTY OF LO_PIC ''Left''   '.
+C '   = LV_C_LEFT.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        SET PROPERTY OF LO_PIC ''Top''    '.
+C '   = LV_C_TOP.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        SET PROPERTY OF LO_PIC ''Width''  '.
+C '   = LV_C_WIDTH.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        SET PROPERTY OF LO_PIC ''Height'' '.
+C '   = LV_C_HEIGHT.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '        SET PROPERTY OF LO_PIC ''Placemen'.
+C 't'' = 1.'.
+APPEND LV_SB TO LT_P.
+A '        FREE OBJECT LO_PIC.'.
+A '      ENDIF.'.
+A '      FREE OBJECT LO_PICS.'.
+A '    ENDIF.'.
+A '  ENDIF.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  BUILD_CODE39_BMP'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM BUILD_CODE39_BMP USING    IV_TEXT      TYPE STRING'.
+A '                               IV_HEIGHT    TYPE I'.
+CLEAR LV_SB.
+C '                      CHANGING EV_BMP_BY'.
+C 'TES TYPE XSTRING'.
+APPEND LV_SB TO LT_P.
+A '                               EV_WIDTH     TYPE I.'.
+CLEAR LV_SB.
+C '  CONSTANTS: C_BLK TYPE X LENGTH 3 VALUE'.
+C ' ''000000'','.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '             C_WHT TYPE X LENGTH 3 VALUE'.
+C ' ''FFFFFF'','.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '             C_PAD TYPE X LENGTH 1 VALUE'.
+C ' ''00'','.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '             C_BM  TYPE X LENGTH 2 VALUE'.
+C ' ''424D'','.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '             C_DIB TYPE X LENGTH 4 VALUE'.
+C ' ''28000000'','.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '             C_OFF TYPE X LENGTH 4 VALUE'.
+C ' ''36000000'','.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '             C_RES TYPE X LENGTH 4 VALUE'.
+C ' ''00000000'','.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '             C_PLN TYPE X LENGTH 4 VALUE'.
+C ' ''01001800'','.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '             C_DPI TYPE X LENGTH 4 VALUE'.
+C ' ''130B0000''.'.
+APPEND LV_SB TO LT_P.
+A '  DATA: LV_TXT       TYPE STRING,'.
+A '        LV_LEN       TYPE I,'.
+A '        LV_POS       TYPE I,'.
+A '        LV_CH        TYPE C,'.
+A '        LV_PAT       TYPE CHAR9,'.
+A '        LV_IDX       TYPE I,'.
+A '        LV_OFF       TYPE I,'.
+A '        LV_BIT       TYPE C,'.
+A '        LV_REP       TYPE I,'.
+A '        LV_W         TYPE I VALUE 0,'.
+A '        LV_ROW       TYPE XSTRING,'.
+A '        LV_BMP       TYPE XSTRING,'.
+A '        LV_PAD_LEN   TYPE I,'.
+A '        LV_H         TYPE I,'.
+A '        LV_STRIDE    TYPE I,'.
+A '        LV_IMG_SIZE  TYPE I,'.
+A '        LV_FILE_SIZE TYPE I,'.
+A '        LV_HDR       TYPE XSTRING,'.
+A '        LV_X4        TYPE XSTRING.'.
+A ' '.
+A '  CLEAR: EV_BMP_BYTES, EV_WIDTH.'.
+A '  CHECK IV_TEXT IS NOT INITIAL.'.
+A ' '.
+A '  LV_H = IV_HEIGHT.'.
+A '  IF LV_H <= 0. LV_H = 35. ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  CONCATENATE ''*'' IV_TEXT ''*'' INTO LV_TX'.
+C 'T.'.
+APPEND LV_SB TO LT_P.
+A '  TRANSLATE LV_TXT TO UPPER CASE.'.
+A '  LV_LEN = STRLEN( LV_TXT ).'.
+A ' '.
+A '  " Quiet zone kiri 10px white'.
+A '  DO 10 TIMES.'.
+A '    CONCATENATE LV_ROW C_WHT INTO LV_ROW IN BYTE MODE.'.
+A '  ENDDO.'.
+A '  LV_W = 10.'.
+A ' '.
+A '  " Loop setiap karakter Code 39'.
+A '  LV_POS = 0.'.
+A '  WHILE LV_POS < LV_LEN.'.
+A '    LV_CH = LV_TXT+LV_POS(1).'.
+A '    PERFORM GET_C39_PAT USING LV_CH CHANGING LV_PAT.'.
+A '    DO 9 TIMES.'.
+A '      LV_IDX = SY-INDEX.'.
+A '      LV_OFF = LV_IDX - 1.'.
+A '      LV_BIT = LV_PAT+LV_OFF(1).'.
+CLEAR LV_SB.
+C '      IF LV_BIT = ''1''.'.
+APPEND LV_SB TO LT_P.
+A '        LV_REP = 4. " Wide bar / space'.
+A '      ELSE.'.
+A '        LV_REP = 2. " Narrow bar / space'.
+A '      ENDIF.'.
+A '      IF LV_IDX = 1 OR LV_IDX = 3 OR LV_IDX = 5 OR'.
+A '         LV_IDX = 7 OR LV_IDX = 9.'.
+A '        DO LV_REP TIMES.'.
+CLEAR LV_SB.
+C '          CONCATENATE LV_ROW C_BLK INTO '.
+C 'LV_ROW IN BYTE MODE.'.
+APPEND LV_SB TO LT_P.
+A '        ENDDO.'.
+A '      ELSE.'.
+A '        DO LV_REP TIMES.'.
+CLEAR LV_SB.
+C '          CONCATENATE LV_ROW C_WHT INTO '.
+C 'LV_ROW IN BYTE MODE.'.
+APPEND LV_SB TO LT_P.
+A '        ENDDO.'.
+A '      ENDIF.'.
+A '      LV_W = LV_W + LV_REP.'.
+A '    ENDDO.'.
+A '    " Inter-character gap 2px white'.
+A '    DO 2 TIMES.'.
+CLEAR LV_SB.
+C '      CONCATENATE LV_ROW C_WHT INTO LV_R'.
+C 'OW IN BYTE MODE.'.
+APPEND LV_SB TO LT_P.
+A '    ENDDO.'.
+A '    LV_W = LV_W + 2.'.
+A '    LV_POS = LV_POS + 1.'.
+A '  ENDWHILE.'.
+A ' '.
+A '  " Quiet zone kanan 10px white'.
+A '  DO 10 TIMES.'.
+A '    CONCATENATE LV_ROW C_WHT INTO LV_ROW IN BYTE MODE.'.
+A '  ENDDO.'.
+A '  LV_W = LV_W + 10.'.
+A ' '.
+A '  " Padding baris BMP ke kelipatan 4 bytes'.
+A '  LV_STRIDE = LV_W * 3.'.
+A '  LV_PAD_LEN = ( 4 - ( LV_STRIDE MOD 4 ) ) MOD 4.'.
+A '  IF LV_PAD_LEN > 0.'.
+A '    DO LV_PAD_LEN TIMES.'.
+CLEAR LV_SB.
+C '      CONCATENATE LV_ROW C_PAD INTO LV_R'.
+C 'OW IN BYTE MODE.'.
+APPEND LV_SB TO LT_P.
+A '    ENDDO.'.
+A '  ENDIF.'.
+A '  LV_STRIDE = LV_STRIDE + LV_PAD_LEN.'.
+A '  LV_IMG_SIZE = LV_STRIDE * LV_H.'.
+A '  LV_FILE_SIZE = 54 + LV_IMG_SIZE.'.
+A ' '.
+A '  " Susun Header BMP 54 Bytes'.
+A '  LV_HDR = C_BM.'.
+CLEAR LV_SB.
+C '  PERFORM INT_TO_4BYTES_LE USING LV_FILE'.
+C '_SIZE CHANGING LV_X4.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  CONCATENATE LV_HDR LV_X4 C_RES C_OFF I'.
+C 'NTO LV_HDR IN BYTE MODE.'.
+APPEND LV_SB TO LT_P.
+A '  CONCATENATE LV_HDR C_DIB INTO LV_HDR IN BYTE MODE.'.
+A '  PERFORM INT_TO_4BYTES_LE USING LV_W CHANGING LV_X4.'.
+A '  CONCATENATE LV_HDR LV_X4 INTO LV_HDR IN BYTE MODE.'.
+A '  PERFORM INT_TO_4BYTES_LE USING LV_H CHANGING LV_X4.'.
+A '  CONCATENATE LV_HDR LV_X4 INTO LV_HDR IN BYTE MODE.'.
+CLEAR LV_SB.
+C '  CONCATENATE LV_HDR C_PLN C_RES INTO LV'.
+C '_HDR IN BYTE MODE.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  PERFORM INT_TO_4BYTES_LE USING LV_IMG_'.
+C 'SIZE CHANGING LV_X4.'.
+APPEND LV_SB TO LT_P.
+A '  CONCATENATE LV_HDR LV_X4 INTO LV_HDR IN BYTE MODE.'.
+CLEAR LV_SB.
+C '  CONCATENATE LV_HDR C_DPI C_DPI C_RES C'.
+C '_RES INTO LV_HDR IN BYTE MODE.'.
+APPEND LV_SB TO LT_P.
+A ' '.
+A '  " Gabungkan Header dan baris piksel'.
+A '  LV_BMP = LV_HDR.'.
+A '  DO LV_H TIMES.'.
+A '    CONCATENATE LV_BMP LV_ROW INTO LV_BMP IN BYTE MODE.'.
+A '  ENDDO.'.
+A ' '.
+A '  EV_BMP_BYTES = LV_BMP.'.
+A '  EV_WIDTH = LV_W.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  INT_TO_4BYTES_LE'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM INT_TO_4BYTES_LE USING    IV_VAL TYPE I'.
+A '                      CHANGING EV_X   TYPE XSTRING.'.
+A '  DATA: LV_V  TYPE I,'.
+A '        LV_B1 TYPE X LENGTH 1,'.
+A '        LV_B2 TYPE X LENGTH 1,'.
+A '        LV_B3 TYPE X LENGTH 1,'.
+A '        LV_B4 TYPE X LENGTH 1.'.
+A '  LV_V = IV_VAL.'.
+A '  LV_B1 = LV_V MOD 256. LV_V = LV_V / 256.'.
+A '  LV_B2 = LV_V MOD 256. LV_V = LV_V / 256.'.
+A '  LV_B3 = LV_V MOD 256. LV_V = LV_V / 256.'.
+A '  LV_B4 = LV_V MOD 256.'.
+CLEAR LV_SB.
+C '  CONCATENATE LV_B1 LV_B2 LV_B3 LV_B4 IN'.
+C 'TO EV_X IN BYTE MODE.'.
+APPEND LV_SB TO LT_P.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_C39_PAT'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM GET_C39_PAT USING    IV_C TYPE C'.
+A '                 CHANGING EV_P TYPE CHAR9.'.
+A '  CASE IV_C.'.
+CLEAR LV_SB.
+C '    WHEN ''0''. EV_P = ''000110100''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''1''. EV_P = ''100100001''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''2''. EV_P = ''001100001''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''3''. EV_P = ''101100000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''4''. EV_P = ''000110001''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''5''. EV_P = ''100110000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''6''. EV_P = ''001110000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''7''. EV_P = ''000100101''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''8''. EV_P = ''100100100''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''9''. EV_P = ''001100100''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''A''. EV_P = ''100001001''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''B''. EV_P = ''001001001''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''C''. EV_P = ''101001000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''D''. EV_P = ''000011001''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''E''. EV_P = ''100011000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''F''. EV_P = ''001011000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''G''. EV_P = ''000001101''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''H''. EV_P = ''100001100''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''I''. EV_P = ''001001100''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''J''. EV_P = ''000011100''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''K''. EV_P = ''100000011''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''L''. EV_P = ''001000011''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''M''. EV_P = ''101000010''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''N''. EV_P = ''000010011''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''O''. EV_P = ''100010010''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''P''. EV_P = ''001010010''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''Q''. EV_P = ''000000111''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''R''. EV_P = ''100000110''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''S''. EV_P = ''001000110''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''T''. EV_P = ''000010110''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''U''. EV_P = ''110000001''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''V''. EV_P = ''011000001''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''W''. EV_P = ''111000000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''X''. EV_P = ''010010001''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''Y''. EV_P = ''110010000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''Z''. EV_P = ''011010000''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''-''. EV_P = ''010000101''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''.''. EV_P = ''110000100''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN '' ''. EV_P = ''011000100''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN ''*''. EV_P = ''010010100''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    WHEN OTHERS. EV_P = ''000110100''.'.
+APPEND LV_SB TO LT_P.
+A '  ENDCASE.'.
+A 'ENDFORM.'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  PARSE_LIMIT_TO_RAW'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C 'FORM PARSE_LIMIT_TO_RAW USING PV_STR TYP'.
+C 'E ANY CHANGING CV_RAW TYPE F.'.
+APPEND LV_SB TO LT_P.
+A '  DATA: LV_TMP TYPE STRING.'.
+A '  LV_TMP = PV_STR.'.
+A '  CONDENSE LV_TMP.'.
+CLEAR LV_SB.
+C '  REPLACE ALL OCCURRENCES OF '','' IN LV_T'.
+C 'MP WITH ''.''.'.
+APPEND LV_SB TO LT_P.
+A '  TRY.'.
+A '      CV_RAW = LV_TMP.'.
+A '    CATCH CX_ROOT.'.
+A '      CLEAR CV_RAW.'.
+A '  ENDTRY.'.
+A 'ENDFORM.                    " PARSE_LIMIT_TO_RAW'.
+A ' '.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '*&      Form  GET_MT_LOTS'.
+CLEAR LV_SB.
+C '*&--------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A '* Multi-level converting (16/10/2026, DO 0085006278):'.
+CLEAR LV_SB.
+C '* GET_TRACED_LOTS hanya menelusur 2 ting'.
+C 'kat JR (Conv & Base). Bila JR'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* Base hasil trace masih punya komponen '.
+C 'SR/JR, silsilah > 2 tingkat'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* (mis. SRGLBI-JRGLBI-SRGLAI-JRGLAI-SRGK'.
+C 'AI-JRGKAI-SRAH8I-JRAH8I).'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* Form ini menelusur penuh dari roll DO '.
+C 'dan mengisi GT_MT_LOT (urutan'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '* terdekat dulu). Bukan multi-level -> G'.
+C 'T_MT_LOT kosong, logika lama.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '*---------------------------------------'.
+C '-------------------------------*'.
+APPEND LV_SB TO LT_P.
+A 'FORM GET_MT_LOTS.'.
+A '  DATA: LV_JRB   TYPE CHARG_D,'.
+A '        LV_SR    TYPE CHARG_D,'.
+A '        LV_ORG   TYPE CHARG_D,'.
+A '        LV_JR    TYPE CHARG_D,'.
+A '        LV_AUF   TYPE AUFNR,'.
+A '        LV_CMP   TYPE CHARG_D,'.
+A '        LV_MAT   TYPE MCH1-MATNR,'.
+A '        LV_LICHA TYPE MCH1-LICHA,'.
+A '        LV_LOT   TYPE QALS-PRUEFLOS,'.
+A '        LV_LEN   TYPE I.'.
+A '  DATA: LT_VIS   TYPE SORTED TABLE OF CHARG_D'.
+A '          WITH UNIQUE KEY TABLE_LINE.'.
+A ' '.
+A '  REFRESH GT_MT_LOT.'.
+A '  LV_JRB = GS_TRACE_DATA-L_JR_BASE_BATCH.'.
+A '  IF LV_JRB IS INITIAL.'.
+A '    RETURN.'.
+A '  ENDIF.'.
+CLEAR LV_SB.
+C '  READ TABLE GT_MT_SNGL WITH TABLE KEY T'.
+C 'ABLE_LINE = LV_JRB'.
+APPEND LV_SB TO LT_P.
+A '    TRANSPORTING NO FIELDS.'.
+A '  IF SY-SUBRC = 0.'.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  " Gate: JR Base masih punya komponen S'.
+C 'R/JR -> multi-level'.
+APPEND LV_SB TO LT_P.
+A '  CLEAR: LV_AUF, LV_CMP.'.
+CLEAR LV_SB.
+C '  PERFORM GET_VALID_ORDER_FROM_MSEG USIN'.
+C 'G LV_JRB CHANGING LV_AUF.'.
+APPEND LV_SB TO LT_P.
+A '  IF LV_AUF IS NOT INITIAL.'.
+A '    PERFORM GET_VALID_COMPONENT_FROM_MSEG USING LV_AUF'.
+CLEAR LV_SB.
+C '                                        '.
+C '  CHANGING LV_CMP.'.
+APPEND LV_SB TO LT_P.
+A '  ENDIF.'.
+A '  IF LV_CMP IS INITIAL.'.
+A '    INSERT LV_JRB INTO TABLE GT_MT_SNGL.'.
+A '    RETURN.'.
+A '  ENDIF.'.
+A ' '.
+CLEAR LV_SB.
+C '  " Telusur penuh: SR -> JR -> komponen '.
+C '(SR/JR) -> ... (maks 10 hop)'.
+APPEND LV_SB TO LT_P.
+A '  LV_SR = IT_DATA-CHARG.'.
+A '  DO 10 TIMES.'.
+A '    INSERT LV_SR INTO TABLE LT_VIS.'.
+A '    IF SY-SUBRC <> 0.'.
+CLEAR LV_SB.
+C '      EXIT.                             '.
+C '     " proteksi siklus'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '    CLEAR: LV_MAT, LV_JR.'.
+CLEAR LV_SB.
+C '    SELECT SINGLE MATNR INTO LV_MAT FROM'.
+C ' MCH1 WHERE CHARG = LV_SR.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    IF LV_MAT(2) = ''JR''.'.
+APPEND LV_SB TO LT_P.
+A '      LV_JR = LV_SR.'.
+A '    ELSE.'.
+A '      CLEAR LV_LOT.'.
+A '      SELECT SINGLE PRUEFLOS INTO LV_LOT FROM QALS'.
+CLEAR LV_SB.
+C '        WHERE CHARG = LV_SR AND ART = ''Z'.
+C '04''.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '      PERFORM GET_ORIGINAL_BATCH USING L'.
+C 'V_SR CHANGING LV_ORG.'.
+APPEND LV_SB TO LT_P.
+A '      IF LV_LOT IS INITIAL AND LV_ORG NE LV_SR.'.
+A '        SELECT SINGLE PRUEFLOS INTO LV_LOT FROM QALS'.
+CLEAR LV_SB.
+C '          WHERE CHARG = LV_ORG AND ART ='.
+C ' ''Z04''.'.
+APPEND LV_SB TO LT_P.
+A '      ENDIF.'.
+A '      IF LV_LOT IS NOT INITIAL.'.
+A '        CLEAR GS_MT_LOT.'.
+CLEAR LV_SB.
+C '        GS_MT_LOT-STAGE = ''SR''.'.
+APPEND LV_SB TO LT_P.
+A '        GS_MT_LOT-LOT   = LV_LOT.'.
+A '        APPEND GS_MT_LOT TO GT_MT_LOT.'.
+A '      ENDIF.'.
+CLEAR LV_SB.
+C '      CALL FUNCTION ''ZQM_GET_BATCH_JR_BY'.
+C '_SR'''.
+APPEND LV_SB TO LT_P.
+A '        EXPORTING'.
+A '          CHARG_S = LV_ORG'.
+A '        IMPORTING'.
+A '          CHARG_J = LV_JR.'.
+A '    ENDIF.'.
+A '    IF LV_JR IS INITIAL.'.
+A '      EXIT.'.
+A '    ENDIF.'.
+A ' '.
+A '    CLEAR LV_LOT.'.
+A '    SELECT SINGLE PRUEFLOS INTO LV_LOT FROM QALS'.
+CLEAR LV_SB.
+C '      WHERE CHARG = LV_JR AND ( ART = ''Z'.
+C '02'' OR ART = ''Z03'' ).'.
+APPEND LV_SB TO LT_P.
+A '    IF LV_LOT IS INITIAL.'.
+CLEAR LV_SB.
+C '      PERFORM GET_JR_SIBLING_LOT USING L'.
+C 'V_JR CHANGING LV_LOT.'.
+APPEND LV_SB TO LT_P.
+A '    ENDIF.'.
+A '    IF LV_LOT IS NOT INITIAL.'.
+A '      CLEAR GS_MT_LOT.'.
+CLEAR LV_SB.
+C '      GS_MT_LOT-STAGE = ''JR''.'.
+APPEND LV_SB TO LT_P.
+A '      GS_MT_LOT-LOT   = LV_LOT.'.
+A '      APPEND GS_MT_LOT TO GT_MT_LOT.'.
+A '    ENDIF.'.
+A ' '.
+A '    CLEAR: LV_AUF, LV_CMP.'.
+CLEAR LV_SB.
+C '    PERFORM GET_VALID_ORDER_FROM_MSEG US'.
+C 'ING LV_JR CHANGING LV_AUF.'.
+APPEND LV_SB TO LT_P.
+A '    IF LV_AUF IS INITIAL.'.
+A '      EXIT.'.
+A '    ENDIF.'.
+A '    PERFORM GET_VALID_COMPONENT_FROM_MSEG USING LV_AUF'.
+CLEAR LV_SB.
+C '                                        '.
+C '  CHANGING LV_CMP.'.
+APPEND LV_SB TO LT_P.
+A '    IF LV_CMP IS INITIAL.'.
+A '      EXIT.'.
+A '    ENDIF.'.
+CLEAR LV_SB.
+C '    " SR hasil change grade (akhiran A/O'.
+C '): pakai batch asal (LICHA)'.
+APPEND LV_SB TO LT_P.
+A '    CLEAR: LV_MAT, LV_LICHA.'.
+CLEAR LV_SB.
+C '    SELECT SINGLE MATNR LICHA INTO (LV_M'.
+C 'AT, LV_LICHA) FROM MCH1'.
+APPEND LV_SB TO LT_P.
+A '      WHERE CHARG = LV_CMP.'.
+A '    LV_LEN = STRLEN( LV_MAT ) - 1.'.
+CLEAR LV_SB.
+C '    IF LV_MAT(2) = ''SR'' AND LV_LEN >= 0 '.
+C 'AND LV_LICHA IS NOT INITIAL'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '       AND ( LV_MAT+LV_LEN(1) = ''A'' OR L'.
+C 'V_MAT+LV_LEN(1) = ''O'' ).'.
+APPEND LV_SB TO LT_P.
+A '      LV_CMP = LV_LICHA.'.
+A '    ENDIF.'.
+A '    LV_SR = LV_CMP.'.
+A '  ENDDO.'.
+R 'ZQMI_COA_F01' 4783 4783.
+R 'ZQMI_COA_F02' 1 8.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F02' 14 18.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F02' 300 361.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F02' 365 367.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F02' 371 373.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F02' 382 695.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F02' 707 709.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F02' 713 715.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F02' 719 721.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F02' 787 791.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F02' 797 801.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+A '*'.
+R 'ZQMI_COA_F02' 812 1118.
+R 'ZQMI_COA_ALV' 1 401.
+A 'FORM ZZ_MT_RUN USING PV TYPE LIPS-VBELN.'.
+A '  DATA: LV_S TYPE STRING, LV_N TYPE STRING.'.
+A '  FIELD-SYMBOLS: <V> TYPE ANY.'.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''CONVERSION_EXIT_ATINN_I'.
+C 'NPUT'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    EXPORTING INPUT = ''ZZNOMORROLL'' IMPO'.
+C 'RTING OUTPUT = ATINN_ROLL.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''CONVERSION_EXIT_ATINN_I'.
+C 'NPUT'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    EXPORTING INPUT = ''ZZCODE'' IMPORTING'.
+C ' OUTPUT = ATINN_CODE.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''CONVERSION_EXIT_ATINN_I'.
+C 'NPUT'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    EXPORTING INPUT = ''ZZWIDTH'' IMPORTIN'.
+C 'G OUTPUT = ATINN_WIDTH.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  CALL FUNCTION ''CONVERSION_EXIT_ATINN_I'.
+C 'NPUT'''.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '    EXPORTING INPUT = ''ZZLENGTH'' IMPORTI'.
+C 'NG OUTPUT = ATINN_LENGTH.'.
+APPEND LV_SB TO LT_P.
+CLEAR LV_SB.
+C '  P_VBELN-SIGN = ''I''. P_VBELN-OPTION = '''.
+C 'EQ''. P_VBELN-LOW = PV.'.
+APPEND LV_SB TO LT_P.
+A '  APPEND P_VBELN.'.
+A '  PERFORM GET_DATA.'.
+A '  LOOP AT IT_DATA.'.
+A '    CLEAR LV_S.'.
+A '    DO 7 TIMES.'.
+A '      CASE SY-INDEX.'.
+A '        WHEN 1. ASSIGN IT_DATA-VBELN TO <V>.'.
+A '        WHEN 2. ASSIGN IT_DATA-MATNR TO <V>.'.
+A '        WHEN 3. ASSIGN IT_DATA-CHK TO <V>.'.
+A '        WHEN 4. ASSIGN IT_DATA-NUM TO <V>.'.
+A '        WHEN 5. ASSIGN IT_DATA-MIC TO <V>.'.
+A '        WHEN 6. ASSIGN IT_DATA-CMICMIT TO <V>.'.
+A '        WHEN 7. ASSIGN IT_DATA-INSLOT TO <V>.'.
+A '      ENDCASE.'.
+A '      LV_N = <V>. CONDENSE LV_N.'.
+CLEAR LV_SB.
+C '      CONCATENATE LV_S LV_N INTO LV_S SE'.
+C 'PARATED BY ''|''.'.
+APPEND LV_SB TO LT_P.
+A '    ENDDO.'.
+A '    WRITE: / LV_S.'.
+A '  ENDLOOP.'.
+A 'ENDFORM.'.
+A ' '.
+GENERATE SUBROUTINE POOL LT_P NAME LV_PROG MESSAGE LV_MSG
+  LINE LV_LIN WORD LV_WRD.
+IF SY-SUBRC <> 0.
+  WRITE: / 'GENERR', SY-SUBRC, LV_LIN, LV_WRD.
+  WRITE: / LV_MSG.
+  READ TABLE LT_P INTO LV_L INDEX LV_LIN. WRITE: / LV_L(120).
+  EXIT.
+ENDIF.
+PERFORM ZZ_MT_RUN IN PROGRAM (LV_PROG) USING PV.

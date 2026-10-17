@@ -92,3 +92,50 @@ Setelah 03:45:15 original order DLV dan JR 360 m < 8.040 m, sehingga COMMIT past
 2. Penyebab undo karakteristik JR gagal.
 3. Apakah window konfirmasi (YES) tetap aktif setelah popup log ditutup (bukan via BACKL), padahal ada `SET USER-COMMAND 'RW'`.
 Alternatif: Basis cek STAD user OPPKR_19 15-10 03:44–03:48 untuk urutan dialog step.
+
+## Update 2026-10-17 — Hasil Test Baginda & Mekanisme GR 3x
+
+- Test Baginda (confirmation gagal + JR gagal → GR tidak ter-cancel) mengkonfirmasi G1/G2.
+- Saat transaksi ulang via **1. Execute (COMMIT)** muncul "Order sudah di good receipt" (RETRIEVE_DATA_BOXER cek DLV) → jalur COMMIT memang memblok. Konsisten dengan kesimpulan: GR #2/#3 tidak lewat Execute.
+- Mekanisme dugaan kuat: setelah PROCESS_ALL gagal, popup log (ALV3) ditutup selain via BACKL → kembali ke **window konfirmasi STCONF yang masih terbuka** (tombol YES masih aktif). `SET USER-COMMAND 'RW'` di WHEN 'YES' tidak efektif menutup window (RW tidak ditangani di CASE AT USER-COMMAND). Klik YES lagi → PROCESS_ALL dengan data memori, tanpa cek DLV/panjang JR/lock EZGR (lock sudah dilepas di akhir PROCESS_ALL).
+- Jalur sukses tidak terdampak karena masuk CALL SCREEN 3000.
+- Uji replay (sandbox/QA): skenario gagal confirmation → tutup popup log dengan ✓/X → cek window konfirmasi masih ada → klik YES → harus muncul GR kedua.
+
+## Update 2026-10-17 (2) — Test Baginda: YES ulang tidak bisa; hipotesis multi-session
+
+- Baginda: setelah gagal, YES tidak bisa ditekan ulang (hipotesis window YES tetap terbuka TIDAK terbukti).
+- Dev test 100000073337: GR 5000077582/584 + 102 583/585, tanpa AFRU, original P29000003278 tidak pernah TECO → Execute ulang pasti diblok DLV. Kondisi beda dengan PRD (run awal 02:35 sukses penuh + TECO).
+- `GET_ORDER_STATUS` cek TECO dulu lalu EXIT → order TECO+DLV dianggap 'TECO' (lolos cek DLV).
+- PRD cancel 03:41:41 me-revoke TECO combine order + 5 original (865/885/905/925/945), **tidak** untuk 845 (item 0001). Jadi pada 03:45:15+ original 865 dst = DLV → Execute ulang tetap diblok di PRD.
+- 03:56:49–52 OPPKR_07 men-TECO ulang combine order + 5 original (setelah run #3).
+- Hipotesis utama baru: lebih dari satu session ZPP001. Lock EZGR (`ENQUEUE_EZGR`, default _SCOPE 2) diduga lepas pada COMMIT WORK pertama run #1 (03:45:05). Session lain yang menekan Execute pada 03:45:05–03:45:14 lolos semua cek (order belum DLV, JR masih 8.400 m), lalu YES di session tsb → GR #2/#3. Konsisten dengan CDHDR (tanpa change doc run #2/#3).
+- Rencana bukti live (tanpa ubah ZPP001, tanpa GUI): temp program via RFC_ABAP_INSTALL_AND_RUN di Development AIX — ENQUEUE_EZGR argumen dummy 'POZZLOCKTEST' → ENQUEUE_READ → COMMIT WORK AND WAIT → ENQUEUE_READ → DEQUEUE. Menunggu izin Baginda.
+
+## Update 2026-10-17 (3) — Hasil test YES ulang Baginda & skenario simulasi
+
+- Pesan "Order sudah di good receipt" (tanpa tanda hubung) berasal dari RETRIEVE_DATA_BOXER (jalur Execute). Jalur YES memakai "Order sudah di-good receipt". Jadi pada test Baginda window YES sudah tertutup (jalur gagal normal: popup log ALV3 → SET USER-COMMAND 'RW').
+- Program tidak punya MESSAGE tipe E/A sendiri; tidak ada CMOD CONFPP aktif; BAdI WORKORDER_CONFIRM hanya implementasi standar.
+- Dua kandidat tersisa: (A) event YES run #1 terhenti abnormal (pesan E dari FM/BAPI di step confirmation) sehingga window tetap terbuka — juga menjelaskan kenapa undo JR & cancel GR tidak jalan; (B) multi-session (lock EZGR lepas saat COMMIT pertama).
+- Input run #1–#3 identik (qty & marking 411 sama) → lebih condong ke (A) satu session, data memori sama.
+- Skenario simulasi Dev harus meniru urutan PRD: proses sukses penuh → cancel via ZPP001 → proses ulang dengan input diubah (marking Free Stock/411 + panjang) → amati jenis kegagalan (popup log vs status bar) dan apakah window YES tetap tampil.
+
+## Update 2026-10-17 (4) — Eliminasi jalur & kesimpulan multi-session
+
+Dieliminasi (dengan bukti):
+- Execute ulang setelah 03:45:15: diblok DLV (865/885/905/925/945 DLV tanpa TECO; ZBOXER berisi 6 order, LICHA batch valid).
+- YES ulang di window yang sama: window ditutup `SET USER-COMMAND 'RW'` (test Baginda). STCONF hanya punya NO/RW/YES/BACK (F1/F7/F8/F9), tidak ada COMMIT → window tidak bisa bertumpuk.
+- TCODE lain: OPPKR_19 punya ZPP001/ZPP001N/ZPP001L/ZTYB02; ZPP001N (ZPPI_SR_PROCESS_BC) memiliki cek identik.
+- Jalur Execute tidak memiliki COMMIT/ROLLBACK/DEQUEUE → lock EZGR bertahan sampai COMMIT pertama run #1 (CHANGE_BATCH_ORIGINAL_ORDER, 03:45:05).
+- STAD 15-10 03:35–03:50 sudah tidak tersedia (retensi).
+
+Satu-satunya jalur yang konsisten dengan kode + data: **lebih dari satu session ZPP001** untuk combine order yang sama. Session B/C menekan Execute pada 03:45:05–03:45:14 (lock sudah lepas, order belum DLV, JR masih 8.400 m) → window YES → Ya. Kontensi lock antar-session juga menjelaskan confirmation gagal di ketiga run (order sedang dikunci session lain; BAPI gagal tanpa ROLLBACK menahan lock) dan undo JR gagal.
+
+## Update 2026-10-17 (5) — Hipotesis multi-session GUGUR; bukti BALHDR & status buffer
+
+- Test Baginda 2 session: validasi lock jalan → multi-session gugur.
+- Sidik jari dokumen: GR 495/496/499 ABLAD `8040/TH/R`, 411 SGTXT `UNREST` → ketiga run dari ZPPI_SR_PROCESS (PROCESS_ALL), input identik.
+- **BALHDR (PPORDER/HEADER, ext 100007232823, ALTCODE ZPP001, ALPROG SAPLCOAPPLLOG)** dari BAPI_PROCORD_RELEASE (langkah pertama PROCESS_ALL): 03:45:05 (run #1), 03:45:27 (run #2), 03:47:07 (run #3). Run #2 dimulai 10 detik setelah JR diubah run #1 (03:45:17) → satu session, Ya ditekan ulang.
+- Window Ya tetap terbuka karena event YES run #1 **terhenti mendadak di step confirmation** (pesan E dari dalam BAPI standar): undo JR tidak jalan (JR tetap 360 m, tanpa change doc), popup log tidak muncul, `SET USER-COMMAND 'RW'` tidak tereksekusi. Test Baginda melewati jalur gagal normal (popup log + RW) sehingga window tertutup.
+- Anomali 845: saat cancel 03:41:41 TECO 5 original dicabut, 845 tidak. Status 845 & 865 identik. Penyebab: READ_ORDER baris 290 membaca status original order pertama (845) saat list dibuat → buffer status session (STATUS_READ). PROCESS_CANCEL memakai GET_STATUS → AIP9_STATUS_READ (buffer) → 845 terbaca tanpa TECO (list dibuat sebelum OPPKR_07 TECO 02:35:19) → revoke dilewati.
+- Kesimpulan kronologi: list ZPP001 OPPKR_19 sudah terbuka sejak sebelum 02:35 (tidak di-refresh); OPPKR_07 memproses sukses di PC lain 02:35; OPPKR_19 cancel dari list basi 03:41 (845 tetap TECO); Execute 03:44 lolos; Ya 03:45:05 → GR + 411 + JR → confirmation abort → window Ya tetap → Ya 03:45:27 → Ya 03:47:07; OPPKR_07 TECO ulang 03:56.
+- Belum terbukti: teks pesan error confirmation (hipotesis: terkait original 845 TECO / buffer status basi). Bukti dengan replay Dev sesuai urutan di atas.
