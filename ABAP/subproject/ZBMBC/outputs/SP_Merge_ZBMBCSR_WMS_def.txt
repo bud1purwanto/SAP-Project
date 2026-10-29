@@ -1,0 +1,20 @@
+  -- =============================================  -- Author	  :	Rasyid Febriansah  -- Create date: 28.10.2026  -- Description:	Merge Y_ZBMBCSR into ZBMBSRC_WMS  -- ==================================
+===========  CREATE PROCEDURE [dbo].[SP_Merge_ZBMBCSR_WMS]  	-- Add the parameters for the stored procedure here  	  AS  BEGIN  	-- SET NOCOUNT ON added to prevent extra result sets from  	-- interfer
+ing with SELECT statements.  	SET NOCOUNT ON;  	SET XACT_ABORT ON;       CREATE TABLE #ZTEMP_ZBMBC_WMS     (  		[Plant]				NVARCHAR (4),  		[Material No]		NVARCHAR (30),  		[Type]				NVARCHAR (50),
+	[Thick]				FLOAT,  		[Batch]				NVARCHAR (15),  		[Width]				INT,  		[Length]			INT,  		[TipeAlias]			NVARCHAR (50),  		[CriteriaGrade]		NVARCHAR (50),  		[Sloc]				NVARCHAR (10),  		[Storage Bin]		N
+VARCHAR (15),  		[SO No]				NVARCHAR (15),  		[SO Item]			NVARCHAR (15),  		[Sales Doc Type]	NVARCHAR (10),  		[HU Box]			NVARCHAR (15),  		[HU Pallet]			NVARCHAR (15),  		[Customer Name]		NVARCHAR (1
+00),  		[DownloadTime]		DATETIME    	)      	BEGIN TRY          BEGIN TRANSACTION;    		INSERT INTO #ZTEMP_ZBMBC_WMS  		(  		    [Plant]             ,[Material No]             ,[Type]             ,[Th
+ick]             ,[Batch]             ,[Width]             ,[Length]             ,[TipeAlias]             ,[CriteriaGrade]             ,[Sloc]             ,[Storage Bin]             ,[SO No]
+   ,[SO Item]             ,[Sales Doc Type]             ,[HU Box]             ,[HU Pallet]             ,[Customer Name]             ,[DownloadTime]  		)  		SELECT [Plant]  			,[Material No]  			,[Type
+]  			,[Thick]  			,[Batch]  			,[Width]  			,[Length]  			,[TipeAlias]  			,[CriteriaGrade]  			,[Sloc]  			,[Storage Bin]  			,[SO No]  			,[SO Item]  			,[Sales Doc Type]  			,[HU Box]  			,[HU Pal
+let]  			,[Customer Name]  			,GETDATE()  		FROM [dbo].[Y_ZBMBCSR]  		    		-- MERGE  		MERGE INTO [dbo].[ZBMBCSR_WMS] T1  			USING #ZTEMP_ZBMBC_WMS T2  				ON T1.[Batch] = T2.[Batch]  		WHEN MATCHED
+THEN  			UPDATE   				SET	T1.[Plant]			= T2.[Plant],  					T1.[Material No]	= T2.[Material No],  					T1.[Type]			= T2.[Type],  					T1.[Thick]			= T2.[Thick],  					T1.[Width]			= T2.[Width],  					T
+1.[Length]			= T2.[Length],  					T1.[TipeAlias]		= T2.[TipeAlias],  					T1.[CriteriaGrade]	= T2.[CriteriaGrade],  					T1.[Sloc]			= T2.[Sloc],  					T1.[Storage Bin]	= T2.[Storage Bin],  					T1.[S
+O No]			= T2.[SO No],  					T1.[SO Item]		= T2.[SO Item],  					T1.[Sales Doc Type]	= T2.[Sales Doc Type],  					T1.[HU Box]			= T2.[HU Box],  					T1.[HU Pallet]		= T2.[HU Pallet],  					T1.[Customer
+ Name]	= T2.[Customer Name],  					T1.[DownloadTime]	= T2.[DownloadTime]  		WHEN NOT MATCHED THEN  			INSERT (  					[Plant]  				   ,[Material No]  				   ,[Type]  				   ,[Thick]  				   ,[Batch]
+			   ,[Width]  				   ,[Length]  				   ,[TipeAlias]  				   ,[CriteriaGrade]  				   ,[Sloc]  				   ,[Storage Bin]  				   ,[SO No]  				   ,[SO Item]  				   ,[Sales Doc Type]  				   ,[HU Box]
+			   ,[HU Pallet]  				   ,[Customer Name]  				   ,[DownloadTime]  				   )  			VALUES (  					T2.[Plant]  				   ,T2.[Material No]  				   ,T2.[Type]  				   ,T2.[Thick]  				   ,T2.[Batch]
+ ,T2.[Width]  				   ,T2.[Length]  				   ,T2.[TipeAlias]  				   ,T2.[CriteriaGrade]  				   ,T2.[Sloc]  				   ,T2.[Storage Bin]  				   ,T2.[SO No]  				   ,T2.[SO Item]  				   ,T2.[Sales Doc Type
+]  				   ,T2.[HU Box]  				   ,T2.[HU Pallet]  				   ,T2.[Customer Name]  				   ,T2.[DownloadTime]  					);  		  		DROP TABLE #ZTEMP_ZBMBC_WMS    	COMMIT TRANSACTION;    	SELECT 'SUCCESS' AS Status
+;  	  	END TRY  		  	BEGIN CATCH  		-- Rollback any active or uncommittable transactions before  		-- inserting information in the ErrorLog  		--IF @@TRANCOUNT > 0  		--BEGIN  		--	ROLLBACK TRANSACTIO
+N;  		--END    		IF @@TRANCOUNT > 0         ROLLBACK TRANSACTION;  		THROW;  		--EXECUTE [dbo].[SP_LogError];  	END CATCH;    END

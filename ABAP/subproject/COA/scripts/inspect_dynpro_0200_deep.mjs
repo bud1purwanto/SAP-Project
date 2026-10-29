@@ -1,0 +1,45 @@
+import { serverManager } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/server-manager.js';
+import { call_function } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/tools/query-tools.js';
+
+async function main() {
+  await serverManager.loadConfig();
+  await serverManager.setActiveServer('sandbox-new');
+  
+  const prog = [
+    'REPORT ZDYNPRO_DETAIL.',
+    'DATA: D020S_REC TYPE D020S,',
+    '      D021S_TAB TYPE TABLE OF D021S WITH HEADER LINE,',
+    '      D022S_TAB TYPE TABLE OF D022S WITH HEADER LINE.',
+    'DATA: LV_X1 TYPE X, LV_HEX1(4) TYPE C,',
+    '      LV_X2 TYPE X, LV_HEX2(4) TYPE C.',
+    'CALL FUNCTION \'RS_IMPORT_DYNPRO\'',
+    '  EXPORTING',
+    '    DYNAME = \'ZQMI_COA\'',
+    '    DYNUMB = \'0200\'',
+    '  IMPORTING',
+    '    HEADER = D020S_REC',
+    '  TABLES',
+    '    FTAB   = D021S_TAB',
+    '    PLTAB  = D022S_TAB',
+    '  EXCEPTIONS',
+    '    OTHERS = 1.',
+    'LOOP AT D021S_TAB.',
+    '  LV_X1 = D021S_TAB-FLG1. LV_HEX1 = LV_X1.',
+    '  LV_X2 = D021S_TAB-FLG2. LV_HEX2 = LV_X2.',
+    '  WRITE: / D021S_TAB-FNAM, \'FIL:\', D021S_TAB-FILL,',
+    '           \'FLG1:\', LV_HEX1, \'FLG2:\', LV_HEX2,',
+    '           \'LENG:\', D021S_TAB-LENG, \'LINE:\', D021S_TAB-LINE.',
+    'ENDLOOP.'
+  ];
+
+  const res = await call_function({
+    function_name: 'RFC_ABAP_INSTALL_AND_RUN',
+    parameters: {
+      PROGRAM: prog.map(l => ({ LINE: l }))
+    }
+  });
+  for (const row of res.result?.WRITES || []) {
+    console.log(row.ZEILE);
+  }
+}
+main().catch(console.error);

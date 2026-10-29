@@ -27,17 +27,17 @@
 | 3 | 0085006240 | SRGIDI | Gambar 3 (image_63d95d.png) | 9 | 9 | 0 | 8 | 1 |
 | 4 | 0085006241 | SREWEI | Gambar 4 (image_63d998.png) | 13 | 13 | 0 | 11 | 2 |
 | 5 | 0085006242 | SRVC2I | Gambar 5 (image_63d9bb.png) | 13 | 13 | 0 | 9 | 4 |
-| 6 | 0085006243 | SREASI | Gambar 6 & 7 (Duplikat) | 10 | 10 | 0 | 5 | 5 |
+| 6 | 0085006243 | SREASI | Gambar 6 & 7 (Duplikat) | 10 | 9 | 1 | 4 | 5 |
 | 7 | 0085006244 | SRAABI | Gambar 8 (image_63dcfd.png) | 10 | 10 | 0 | 8 | 2 |
-| 8 | 0085006245 | SRGJBI | Gambar 9 (image_63f3c4.png) | 9 | 9 | 0 | 5 | 4 |
+| 8 | 0085006245 | SRGJBI | Gambar 9 (image_63f3c4.png) | 9 | 9 | 0 | 4 | 5 |
 | 9 | 0085006270 | SRAABI | Gambar 10 (image_63f41a.png) | 12 | 12 | 0 | 10 | 2 |
 | 10 | 0085006271 | SRAABI | Gambar 11 (image_6dfc0b.png) | 13 | 13 | 0 | 12 | 1 |
 | 11 | 0085006272 | SREASI | Gambar 12 (image_6e4d8a.png) | 10 | 10 | 0 | 4 | 6 |
-| **Total** | **11 ODO** | **7 Material** | **12 Gambar (11 Unik)** | **119** | **115** | **4** | **86** | **29** |
+| **Total** | **11 ODO** | **7 Material** | **12 Gambar (11 Unik)** | **119** | **114** | **5** | **84** | **30** |
 
 ## 3. Daftar Parameter Out of Spec & Belum Diisi (Anomali Kualitas)
 
-### 3.1 Parameter Out of Spec (29 Baris)
+### 3.1 Parameter Out of Spec (30 Baris)
 
 | No Baris | NO ODO | Item | Batch | Nomor SR | Material | MIC | MIC Description | UoM | Lower Limit | Upper Limit | Value | Deviasi |
 | :---: | :---: | :---: | :---: | :--- | :---: | :---: | :--- | :---: | :---: | :---: | :---: | :--- |
@@ -57,6 +57,7 @@
 | 64 | 0085006243 | 10 | 0000405922 | G EAS 076 003 9K 08 | SREASI | PAH8ELMD | Elongation MD | % | 150 | 220 | **1** | <150 (Selisih -149) |
 | 66 | 0085006244 | 10 | 0000405819 | 4 AAB 076 011 9K 01 | SRAABI | PAABFDNT | COF Untreated Side Dyn | - | 0.300 | 0.500 | **0.265** | <0.300 (Selisih -0.035) |
 | 71 | 0085006244 | 10 | 0000405827 | 4 AAB 076 011 9K 05 | SRAABI | SAABSTTR | Surface Tension Treated Side | DCM | 38 | 42 | **37** | <38 (Selisih -1) |
+| 77 | 0085006245 | 10 | 0000405705 | F GJB 076 005 9P 04 | SRGJBI | PAH8SHMD | Shrinkage MD | % | 3.00 | 5.00 | **0.58** | <3.00 (Selisih -2.42) |
 | 80 | 0085006245 | 20 | 0000405707 | F GJB 076 005 9P 05 | SRGJBI | PAH8TSMD | Tensile Strength MD | KMM | 12.00 | 18.00 | **3.27** | <12.00 (Selisih -8.73) |
 | 81 | 0085006245 | 20 | 0000405709 | F GJB 076 005 9P 06 | SRGJBI | PAH8ELTD | Elongation TD | % | 50 | 80 | **92** | >80 (Selisih +12) |
 | 82 | 0085006245 | 30 | 0000405936 | F GJB 076 005 9P 05 | SRGJBI | PAH8TSTD | Tensile Strength TD | KMM | 25.00 | 32.00 | **0.36** | <25.00 (Selisih -24.64) |
@@ -71,7 +72,7 @@
 | 118 | 0085006272 | 20 | 0000406155 | V EAS 086 002 9K 05 | SREASI | PAH8SHTD | Shrinkage TD | % | 0.50 | 1.50 | **0.37** | <0.50 (Selisih -0.13) |
 | 119 | 0085006272 | 20 | 0000406156 | V EAS 086 002 9K 05 | SREASI | PAH8TSMD | Tensile Strength MD | KMM | 12.00 | 18.00 | **3.27** | <12.00 (Selisih -8.73) |
 
-### 3.2 Parameter Belum Diisi / Kosong (4 Baris)
+### 3.2 Parameter Belum Diisi / Kosong (5 Baris)
 
 | No Baris | NO ODO | Item | Batch | Nomor SR | Material | MIC | MIC Description | UoM | Method | Lower Limit | Upper Limit | Value |
 | :---: | :---: | :---: | :---: | :--- | :---: | :---: | :--- | :---: | :--- | :---: | :---: | :---: |
@@ -79,6 +80,7 @@
 | 3 | 0085006234 | 10 | 0000405755 | Z CAD 076 001 9K 02 | SRCADI | PCADELTD | Elongation TD | % | ASTM D 882 | 60.00 | 120.00 | `-` |
 | 8 | 0085006234 | 20 | 0000405761 | Z CAD 076 001 9K 04 | SRCADI | PCADTSTD | Tensile Strength TD | KMM | ASTM D 882 | 18.00 | 30.00 | `-` |
 | 9 | 0085006234 | 20 | 0000405762 | Z CAD 076 001 9K 04 | SRCADI | PCADELMD | Elongation MD | % | ASTM D 882 | 70.00 | 150.00 | `-` |
+| 57 | 0085006243 | 10 | 0000405916 | G EAS 076 003 9K 04 | SREASI | PEASFDUZ | COF Unmetz Side Dyn | - | ASTM 1894 | 0.400 | 0.700 | `-` |
 
 ## 4. Tabel Master Gabungan (119 Baris Unik)
 
@@ -140,7 +142,7 @@
 | 54 | 0085006242 | 20 | 0000405865 | P1 VC2 076 001 9P 02 | SRVC2I | PVC2TH00 | Thickness | - | ASTM D 374 | 24.25 | 25.75 | 25.07 | In Spec | Gambar 5 (image_63d9bb.png) |
 | 55 | 0085006242 | 20 | 0000405865 | P1 VC2 076 001 9P 02 | SRVC2I | PVC2TSMD | Tensile Strength MD | KMM | ASTM D 882 | 5.53 | 6.11 | 6.48 | Out of Spec | Gambar 5 (image_63d9bb.png) |
 | 56 | 0085006243 | 10 | 0000405619 | G EAS 076 003 9K 01 | SREASI | PAH8TSTD | Tensile Strength TD | KMM | ASTM D 882 | 25.00 | 32.00 | 0.36 | Out of Spec | Gambar 6 & 7 (image_63d9f1.png) |
-| 57 | 0085006243 | 10 | 0000405916 | G EAS 076 003 9K 04 | SREASI | PEASFDUZ | COF Unmetz Side Dyn | - | ASTM 1894 | 0.400 | 0.700 | 0.543 | In Spec | Gambar 6 & 7 (image_63d9f1.png) |
+| 57 | 0085006243 | 10 | 0000405916 | G EAS 076 003 9K 04 | SREASI | PEASFDUZ | COF Unmetz Side Dyn | - | ASTM 1894 | 0.400 | 0.700 | - | Belum Diisi (-) | Gambar 6 & 7 (image_63d9f1.png) |
 | 58 | 0085006243 | 10 | 0000405916 | G EAS 076 003 9K 04 | SREASI | SEASODMZ | Optical Density | - | - | 2.20 | 2.70 | 2.65 | In Spec | Gambar 6 & 7 (image_63d9f1.png) |
 | 59 | 0085006243 | 10 | 0000405916 | G EAS 076 003 9K 04 | SREASI | SEASSTUZ | Surface Tension Unmetz Side | DCM | ASTM D 2578 | 38 | 44 | 38 | In Spec | Gambar 6 & 7 (image_63d9f1.png) |
 | 60 | 0085006243 | 10 | 0000405917 | G EAS 076 003 9K 05 | SREASI | PAH8TSMD | Tensile Strength MD | KMM | ASTM D 882 | 12.00 | 18.00 | 3.27 | Out of Spec | Gambar 6 & 7 (image_63d9f1.png) |
@@ -160,9 +162,9 @@
 | 74 | 0085006244 | 20 | 0000405931 | 4 AAB 076 011 9K 02 | SRAABI | PAABTSTD | Tensile Strength TD | KMM | ASTM D 882 | 22.00 | 35.00 | 27.71 | In Spec | Gambar 8 (image_63dcfd.png) |
 | 75 | 0085006244 | 20 | 0000405932 | 4 AAB 076 011 9K 03 | SRAABI | PAABSHMD | Shrinkage MD | % | ASTM D1204 | 3.00 | 5.00 | 4.33 | In Spec | Gambar 8 (image_63dcfd.png) |
 | 76 | 0085006245 | 10 | 0000405704 | F GJB 076 005 9P 03 | SRGJBI | SGJBSTNC | Surface Tension Uncoated Side | DCM | ASTM D 2578 | 38 | 44 | 42 | In Spec | Gambar 9 (image_63f3c4.png) |
-| 77 | 0085006245 | 10 | 0000405705 | F GJB 076 005 9P 04 | SRGJBI | PAH8SHMD | Shrinkage MD | % | ASTM D1204 | 3.00 | 5.00 | 3.22 | In Spec | Gambar 9 (image_63f3c4.png) |
-| 78 | 0085006245 | 10 | 0000405705 | F GJB 076 005 9P 04 | SRGJBI | PAH8SHTD | Shrinkage TD | % | ASTM D1204 | 0.00 | 0.00 | 0 | In Spec | Gambar 9 (image_63f3c4.png) |
-| 79 | 0085006245 | 10 | 0000405706 | F GJB 076 005 9P 04 | SRGJBI | PAH8TH00 | Thickness | MIM | ASTM D 374 | 48.50 | 51.50 | 50.19 | In Spec | Gambar 9 (image_63f3c4.png) |
+| 77 | 0085006245 | 10 | 0000405705 | F GJB 076 005 9P 04 | SRGJBI | PAH8SHMD | Shrinkage MD | % | ASTM D1204 | 3.00 | 5.00 | 0.58 | Out of Spec | Gambar 9 (image_63f3c4.png) |
+| 78 | 0085006245 | 10 | 0000405705 | F GJB 076 005 9P 04 | SRGJBI | PAH8SHTD | Shrinkage TD | % | ASTM D1204 | 0.50 | 1.50 | 0.59 | In Spec | Gambar 9 (image_63f3c4.png) |
+| 79 | 0085006245 | 10 | 0000405706 | F GJB 076 005 9P 04 | SRGJBI | PAH8TH00 | Thickness | MIM | ASTM D 374 | 48.50 | 51.50 | 50.09 | In Spec | Gambar 9 (image_63f3c4.png) |
 | 80 | 0085006245 | 20 | 0000405707 | F GJB 076 005 9P 05 | SRGJBI | PAH8TSMD | Tensile Strength MD | KMM | ASTM D 882 | 12.00 | 18.00 | 3.27 | Out of Spec | Gambar 9 (image_63f3c4.png) |
 | 81 | 0085006245 | 20 | 0000405709 | F GJB 076 005 9P 06 | SRGJBI | PAH8ELTD | Elongation TD | % | ASTM D 882 | 50 | 80 | 92 | Out of Spec | Gambar 9 (image_63f3c4.png) |
 | 82 | 0085006245 | 30 | 0000405936 | F GJB 076 005 9P 05 | SRGJBI | PAH8TSTD | Tensile Strength TD | KMM | ASTM D 882 | 25.00 | 32.00 | 0.36 | Out of Spec | Gambar 9 (image_63f3c4.png) |

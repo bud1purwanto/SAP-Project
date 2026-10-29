@@ -1353,7 +1353,7 @@ ENDFORM.                    " DOWNLOAD
 FORM SELALL .
   LOOP AT IT_DATA WHERE CHK NE 'X'.
     IT_DATA-CHK = 'X'.
-    MODIFY IT_DATA.
+    MODIFY IT_DATA TRANSPORTING CHK.
   ENDLOOP.
 ENDFORM.                    " SELALL
 *&---------------------------------------------------------------------*
@@ -1367,7 +1367,7 @@ ENDFORM.                    " SELALL
 FORM DESALL .
   LOOP AT IT_DATA WHERE CHK EQ 'X'.
     IT_DATA-CHK = ''.
-    MODIFY IT_DATA.
+    MODIFY IT_DATA TRANSPORTING CHK.
   ENDLOOP.
 ENDFORM.                    " DESALL
 *&---------------------------------------------------------------------*
@@ -1790,7 +1790,7 @@ FORM SELMAPPING .
     IF SY-SUBRC EQ 0.
       IT_DATA-CHK = 'X'.
     ENDIF.
-    MODIFY IT_DATA.
+    MODIFY IT_DATA TRANSPORTING CHK.
   ENDLOOP.
   SORT IT_DATA BY VBELN MATNR CHK DESCENDING NUMMIC NUM ASCENDING MIC ASCENDING.
 ENDFORM.                    " SELMAPPING

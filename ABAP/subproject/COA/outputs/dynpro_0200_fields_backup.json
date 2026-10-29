@@ -1,0 +1,209 @@
+[
+  {
+    "ZEILE": "%#AUTOTEXT001"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | B"
+  },
+  {
+    "ZEILE": "HEADER"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 1"
+  },
+  {
+    "ZEILE": "CUSTOMER"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 1"
+  },
+  {
+    "ZEILE": "NAME1"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 0 | 2"
+  },
+  {
+    "ZEILE": "DELIVERY"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 1"
+  },
+  {
+    "ZEILE": "VBELN"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 0 | 2"
+  },
+  {
+    "ZEILE": "PRODUCT"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 1"
+  },
+  {
+    "ZEILE": "PRODUCT"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 0 | 2"
+  },
+  {
+    "ZEILE": "QUNTITY"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 1"
+  },
+  {
+    "ZEILE": "NTGEW"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 3 | 2"
+  },
+  {
+    "ZEILE": "KG"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "WIDTH"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 1"
+  },
+  {
+    "ZEILE": "WIDTH"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 3 | 2"
+  },
+  {
+    "ZEILE": "MM"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "TDETAIL"
+  },
+  {
+    "ZEILE": "| F | F | 0 | 0 | B"
+  },
+  {
+    "ZEILE": "IT_DETAIL-MICDES"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-RANGE_FLAG"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-UOM"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-METHOD"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-MICMIN"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-MICMAX"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-CMICMIT"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-CHK"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 0 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-MICDES"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 0 | 3"
+  },
+  {
+    "ZEILE": "IT_DETAIL-RANGE_FLAG"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 3 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-UOM"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 3 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-METHOD"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 3 | 3"
+  },
+  {
+    "ZEILE": "IT_DETAIL-MICMIN"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 3 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-MICMAX"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 3 | 0"
+  },
+  {
+    "ZEILE": "IT_DETAIL-CMICMIT"
+  },
+  {
+    "ZEILE": "| 8 | 0 | 8 | 0 | 0"
+  },
+  {
+    "ZEILE": "TDETAIL_TOP"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "TDETAIL_PREVIOUS"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "TDETAIL_NEXT"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "TDETAIL_BOTTOM"
+  },
+  {
+    "ZEILE": "| 0 | 0 | 0 | 3 | 0"
+  },
+  {
+    "ZEILE": "| 8 | 1 | 8 | 0 | 0"
+  }
+]
