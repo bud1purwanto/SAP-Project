@@ -56,6 +56,7 @@ Setiap sub-project memakai subfolder standar:
 | `subproject/ZPP090/` | `ZPPI_CHANGE_JR_NUMBER` | Koreksi dan pemunduran sequence nomor Jumbo Roll (JR), update counter tabel `ZSEQNUM` & log `ZLOG_JRNO`, penanganan multi-step rollback | zpp090, zppi_change_jr_number, change jr, memundurkan no roll, sequence roll jr, zseqnum, zlog_jrno |
 | `subproject/ZMM061/` | `ZMMR_RETURN_PALLET_STOCK` | Report Returnable Pallet Stock (RTP Pallet/Core/Sideboard), status siklus pallet dari log `ZPALLETR`, mapping Terminal `ZMAP_TYPE` per TCODE, dokumen WRICEF/FS | zmm061, zmmr_return_pallet_stock, returnable pallet, rtp pallet, zpalletr, pallet stock, terminal pallet |
 | `subproject/ZBMBC/` | T-Code `ZBMBC` (program TBD) | Report Stock Overview with Characteristic; execution type Screen/OLAP/WMS, feed data HU ke WMS gudang FGS (pengganti alur ZBMBCSR → OLAP → WMS) | zbmbc, zbmbcsr, stock overview characteristic, wms, hu pallet, hu box, execution type |
+| `subproject/ZMMI_WMS/` | `ZMMI_WMS` | Program baru feed WMS gudang berbasis HU: VEKP (Created On + MAGRV) -> HU Box/Pallet -> batch -> stok MCHB/MSKA -> karakteristik; output ALV / WMS (staging `Y_ZBMBCSR` + `SP_Merge_ZBMBCSR_WMS`), mass select di awal | zmmi_wms, hu wms, vekp, vepo, magrv, hu created on, wms hu |
 | `subproject/MCP_GATEWAY_TEST/` | MCP Gateway Test | Pengujian konektivitas, handshake, discovery tools, dan health check endpoint MCP SQL/RAG | mcp gateway, mcp-sql, mcp-rag, gateway test, testing mcp |
 
 
