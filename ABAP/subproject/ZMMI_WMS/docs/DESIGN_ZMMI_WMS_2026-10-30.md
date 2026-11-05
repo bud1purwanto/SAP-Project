@@ -42,3 +42,10 @@ Tanggal: 30.10.2026 · Server kerja: sandbox-new (TRS) · Package `$TMP`
 - Boleh barengan (AND). HU Number terisi -> index `VEKP~C` (MANDT EXIDV), ERDAT jadi filter tambahan; HU kosong -> `VEKP~Z02`.
 - Catatan: default Created On = hari ini; cari HU lama -> kosongkan Created On.
 - Test TRS: HU saja (2 HU) 4 baris; HU + tanggal cocok 3 baris; HU + tanggal tidak cocok 0 baris; keduanya kosong -> pesan validasi.
+
+## Unique batch sebelum insert SQL (03.11.2026, permintaan Rasyid)
+- Hanya mode WMS. Mode Screen tetap semua baris.
+- Key unik: CHARG (sesuai SP MERGE ON [Batch]).
+- Aturan: 1) Sloc stok = Sloc isi HU (`VEPO-LGORT`); 2) masih double -> tanggal stok terbaru (MCHB `LAEDA`, kosong -> `ERSDA`; MSKA `ERSDA`); 3) masih sama -> baris pertama (urutan output, HU nomor terkecil).
+- Form baru: `GT_HU_SLOC` (dari GT_VEPO, di akhir GT_HU), `GT_STOCK_DATE` (setelah GT_STOCK), `GT_UNIQUE_BATCH` (sebelum INSERT_SQL_WMS). Tambah field VEPO-LGORT, MCHB-ERSDA/LAEDA, MSKA-ERSDA ke SELECT yang sudah ada (tanpa SELECT baru).
+- Test TRS (copy `ZMMI_WMS_TEST`, WMS -> ALV tanpa insert SQL), Created On 2000-2099, MAGRV BOX/PLT/TRS: Screen 50.885 baris (51 batch double) -> WMS 50.821 baris, 1 baris per batch. Baris batch tidak double identik 100%. Pilihan 51 batch double diverifikasi independen ke VEPO/MCHB/MSKA: 51/51 sesuai (`tests/verify_unique_batch_TRS.txt`).

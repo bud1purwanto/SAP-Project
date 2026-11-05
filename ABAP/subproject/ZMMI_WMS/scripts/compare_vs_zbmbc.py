@@ -65,7 +65,7 @@ with open(out, 'w') as f:
     f.write('# Compare ZMMI_WMS vs ZBMBC baseline (17 kolom WMS)\n\n')
     f.write(f'- Sistem: Development AIX (TRD)\n- ZMMI_WMS parameter: {params}\n')
     f.write(f'- ZMMI_WMS runtime SUBMIT: {rt} s; baris ALV: {tot}; baris material SR*: {len(zm_sr)}\n')
-    f.write(f'- Baseline ZBMBC: {base_md.split("/")[-1]} ({len(base)} baris, SR*, capture 28.10.2026)\n')
+    f.write(f'- Baseline ZBMBC: {base_md.split("/")[-1]} ({len(base)} baris, SR*)\n')
     f.write(f'- Key match: WERKS MATNR CHARG LGORT VBELN POSNR\n\n')
     f.write('## Ringkasan\n\n')
     f.write(f'- Baris ZMMI_WMS (SR*) ketemu key di ZBMBC: {matched}\n')

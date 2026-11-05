@@ -31,9 +31,20 @@ for _ in $(seq 1 30); do
   sleep 0.2
 done
 DISPLAY="${DISPLAY}" xdpyinfo >/dev/null
+DISPLAY="${DISPLAY}" xsetroot -solid "#1e293b" 2>/dev/null || true
 
 start_if_missing openbox "openbox --replace" \
   env DISPLAY="${DISPLAY}" XDG_SESSION_TYPE=x11 dbus-run-session -- openbox --replace
+
+# Sinkronisasi clipboard dua arah (X11 CLIPBOARD, PRIMARY, CUTBUFFER0)
+if which autocutsel >/dev/null 2>&1; then
+  if ! pgrep -u "$(id -u)" -f "autocutsel -fork" >/dev/null; then
+    DISPLAY="${DISPLAY}" autocutsel -fork
+  fi
+  if ! pgrep -u "$(id -u)" -f "autocutsel -selection PRIMARY -fork" >/dev/null; then
+    DISPLAY="${DISPLAY}" autocutsel -selection PRIMARY -fork
+  fi
+fi
 
 start_if_missing sap-gui "com.sap.platin.Gui" \
   env DISPLAY="${DISPLAY}" XDG_SESSION_TYPE=x11 \

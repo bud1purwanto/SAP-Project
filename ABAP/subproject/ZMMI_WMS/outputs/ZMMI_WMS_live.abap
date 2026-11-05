@@ -15,6 +15,7 @@
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*
 * Ref | Date       | abaper | Description                             *
 * 001 | 30.10.2026 | Budi   | Initial version (generate by AI)        *
+* 002 | 03.11.2026 | Budi   | WMS unique batch before insert (gen AI) *
 *----------------------------------------------------------------------*
 REPORT ZMMI_WMS.
 
@@ -39,6 +40,7 @@ TYPES : BEGIN OF TY_HU,
           MATNR TYPE VEPO-MATNR,
           CHARG TYPE VEPO-CHARG,
           WERKS TYPE VEPO-WERKS,
+          LGORT TYPE VEPO-LGORT,
         END OF TY_VEPO,
         BEGIN OF TY_CONT,
           MATNR TYPE MCHB-MATNR,
@@ -64,6 +66,8 @@ TYPES : BEGIN OF TY_HU,
           CINSM TYPE MCHB-CINSM,
           CEINM TYPE MCHB-CEINM,
           CSPEM TYPE MCHB-CSPEM,
+          ERSDA TYPE MCHB-ERSDA,
+          LAEDA TYPE MCHB-LAEDA,
         END OF TY_MCHB,
         BEGIN OF TY_MSKA,
           MATNR TYPE MSKA-MATNR,
@@ -77,6 +81,7 @@ TYPES : BEGIN OF TY_HU,
           KAINS TYPE MSKA-KAINS,
           KAEIN TYPE MSKA-KAEIN,
           KASPE TYPE MSKA-KASPE,
+          ERSDA TYPE MSKA-ERSDA,
         END OF TY_MSKA,
         BEGIN OF TY_VBELN,
           VBELN TYPE VBAK-VBELN,
@@ -169,7 +174,28 @@ TYPES : BEGIN OF TY_HU,
           INSME       TYPE MCHB-CINSM,
           EINME       TYPE MCHB-CEINM,
           SPEME       TYPE MCHB-CSPEM,
-        END OF TY_OUT.
+        END OF TY_OUT,
+        BEGIN OF TY_HULOC,
+          MATNR TYPE VEPO-MATNR,
+          WERKS TYPE VEPO-WERKS,
+          CHARG TYPE VEPO-CHARG,
+          LGORT TYPE VEPO-LGORT,
+        END OF TY_HULOC,
+        BEGIN OF TY_STKDT,
+          MATNR TYPE MCHB-MATNR,
+          WERKS TYPE MCHB-WERKS,
+          LGORT TYPE MCHB-LGORT,
+          CHARG TYPE MCHB-CHARG,
+          VBELN TYPE MSKA-VBELN,
+          POSNR TYPE MSKA-POSNR,
+          DATUM TYPE SY-DATUM,
+        END OF TY_STKDT,
+        BEGIN OF TY_RANK,
+          CHARG TYPE MCHB-CHARG,
+          PRIO  TYPE I,
+          DATUM TYPE SY-DATUM,
+          TABIX TYPE SY-TABIX,
+        END OF TY_RANK.
 
 CONSTANTS : GC_BOX     TYPE VEKP-MAGRV  VALUE 'BOX',
             GC_PLT     TYPE VEKP-MAGRV  VALUE 'PLT',
@@ -192,6 +218,8 @@ DATA : GT_HU    TYPE STANDARD TABLE OF TY_HU,
        GT_AUSP  TYPE STANDARD TABLE OF TY_AUSP,
        GT_DESC  TYPE STANDARD TABLE OF TY_DESC,
        GT_OUT   TYPE STANDARD TABLE OF TY_OUT,
+       GT_HULOC TYPE STANDARD TABLE OF TY_HULOC,
+       GT_STKDT TYPE STANDARD TABLE OF TY_STKDT,
        GS_OUT   TYPE TY_OUT.
 
 DATA : V_ZZTYPE      TYPE CABN-ATINN,
@@ -246,7 +274,7 @@ INITIALIZATION.
   TXT1   = 'Created On'.
   TXT2   = 'Matl Grp Pckmat'.
   TXT3   = 'Plant'.
-  TXT4   = 'ALV'.
+  TXT4   = 'Screen'.
   TXT5   = 'WMS'.
   TXT6   = 'DBCO Name'.
   TXT7   = 'HU Number'.
@@ -301,6 +329,7 @@ START-OF-SELECTION.
 
   PERFORM GT_HU.
   PERFORM GT_STOCK.
+  PERFORM GT_STOCK_DATE.
   PERFORM GT_OUTPUT.
 
   IF GT_OUT[] IS INITIAL.
@@ -313,6 +342,7 @@ START-OF-SELECTION.
   PERFORM GT_FREE.
 
   IF P_WMS = 'X'.
+    PERFORM GT_UNIQUE_BATCH.
     PERFORM INSERT_SQL_WMS.
   ELSE.
     PERFORM SET_ALV.
@@ -452,6 +482,8 @@ FORM GT_HU.
   SORT GT_CONT BY MATNR WERKS CHARG HUBOX HUPLT.
   DELETE ADJACENT DUPLICATES FROM GT_CONT COMPARING ALL FIELDS.
 
+  PERFORM GT_HU_SLOC.
+
   FREE : GT_HU, GT_VEPO.
 ENDFORM.                    "GT_HU
 
@@ -464,7 +496,7 @@ FORM READ_VEPO USING UT_VENUM TYPE TY_T_VENUM.
   DATA : LT_VEPO TYPE STANDARD TABLE OF TY_VEPO.
 
   CHECK UT_VENUM[] IS NOT INITIAL.
-  SELECT VENUM VEPOS VELIN UNVEL MATNR CHARG WERKS
+  SELECT VENUM VEPOS VELIN UNVEL MATNR CHARG WERKS LGORT
     INTO TABLE LT_VEPO
     FROM VEPO
      FOR ALL ENTRIES IN UT_VENUM
@@ -553,7 +585,7 @@ FORM GT_STOCK.
   CHECK LT_KEY[] IS NOT INITIAL.
 
   " Free stock (MCHB~Z05: MANDT MATNR WERKS CHARG LGORT)
-  SELECT MATNR WERKS LGORT CHARG CLABS CINSM CEINM CSPEM
+  SELECT MATNR WERKS LGORT CHARG CLABS CINSM CEINM CSPEM ERSDA LAEDA
     INTO TABLE GT_MCHB
     FROM MCHB
      FOR ALL ENTRIES IN LT_KEY
@@ -566,6 +598,7 @@ FORM GT_STOCK.
 
   " Sales order stock (MSKA~Z02: MANDT MATNR CHARG WERKS LGORT)
   SELECT MATNR WERKS LGORT CHARG SOBKZ VBELN POSNR KALAB KAINS KAEIN KASPE
+         ERSDA
     INTO TABLE GT_MSKA
     FROM MSKA
      FOR ALL ENTRIES IN LT_KEY
@@ -578,6 +611,143 @@ FORM GT_STOCK.
 
   FREE LT_KEY.
 ENDFORM.                    "GT_STOCK
+
+*&---------------------------------------------------------------------*
+*&      Form  GT_HU_SLOC
+*&---------------------------------------------------------------------*
+*       WMS: Sloc isi HU per batch (VEPO-LGORT) untuk unique batch
+*----------------------------------------------------------------------*
+FORM GT_HU_SLOC.
+  DATA : LS_VEPO  TYPE TY_VEPO,
+         LS_HULOC TYPE TY_HULOC.
+
+  REFRESH GT_HULOC.
+  CHECK P_WMS = 'X'.
+
+  LOOP AT GT_VEPO INTO LS_VEPO WHERE VELIN = GC_VELIN_M.
+    IF LS_VEPO-CHARG IS INITIAL OR LS_VEPO-LGORT IS INITIAL.
+      CONTINUE.
+    ENDIF.
+    " Only HU still selected (status Deleted already removed)
+    READ TABLE GT_HU TRANSPORTING NO FIELDS
+         WITH KEY VENUM = LS_VEPO-VENUM BINARY SEARCH.
+    IF SY-SUBRC <> 0.
+      CONTINUE.
+    ENDIF.
+    CLEAR LS_HULOC.
+    LS_HULOC-MATNR = LS_VEPO-MATNR.
+    LS_HULOC-WERKS = LS_VEPO-WERKS.
+    LS_HULOC-CHARG = LS_VEPO-CHARG.
+    LS_HULOC-LGORT = LS_VEPO-LGORT.
+    APPEND LS_HULOC TO GT_HULOC.
+  ENDLOOP.
+
+  SORT GT_HULOC BY MATNR WERKS CHARG LGORT.
+  DELETE ADJACENT DUPLICATES FROM GT_HULOC COMPARING ALL FIELDS.
+ENDFORM.                    "GT_HU_SLOC
+
+*&---------------------------------------------------------------------*
+*&      Form  GT_STOCK_DATE
+*&---------------------------------------------------------------------*
+*       WMS: tanggal stok per stock line (MCHB LAEDA / ERSDA, MSKA ERSDA)
+*----------------------------------------------------------------------*
+FORM GT_STOCK_DATE.
+  DATA : LS_MCHB  TYPE TY_MCHB,
+         LS_MSKA  TYPE TY_MSKA,
+         LS_STKDT TYPE TY_STKDT.
+
+  REFRESH GT_STKDT.
+  CHECK P_WMS = 'X'.
+
+  LOOP AT GT_MCHB INTO LS_MCHB.
+    CLEAR LS_STKDT.
+    LS_STKDT-MATNR = LS_MCHB-MATNR.
+    LS_STKDT-WERKS = LS_MCHB-WERKS.
+    LS_STKDT-LGORT = LS_MCHB-LGORT.
+    LS_STKDT-CHARG = LS_MCHB-CHARG.
+    IF LS_MCHB-LAEDA IS NOT INITIAL.
+      LS_STKDT-DATUM = LS_MCHB-LAEDA.
+    ELSE.
+      LS_STKDT-DATUM = LS_MCHB-ERSDA.
+    ENDIF.
+    APPEND LS_STKDT TO GT_STKDT.
+  ENDLOOP.
+
+  LOOP AT GT_MSKA INTO LS_MSKA.
+    CLEAR LS_STKDT.
+    LS_STKDT-MATNR = LS_MSKA-MATNR.
+    LS_STKDT-WERKS = LS_MSKA-WERKS.
+    LS_STKDT-LGORT = LS_MSKA-LGORT.
+    LS_STKDT-CHARG = LS_MSKA-CHARG.
+    LS_STKDT-VBELN = LS_MSKA-VBELN.
+    LS_STKDT-POSNR = LS_MSKA-POSNR.
+    LS_STKDT-DATUM = LS_MSKA-ERSDA.
+    APPEND LS_STKDT TO GT_STKDT.
+  ENDLOOP.
+
+  SORT GT_STKDT BY MATNR WERKS LGORT CHARG VBELN POSNR.
+ENDFORM.                    "GT_STOCK_DATE
+
+*&---------------------------------------------------------------------*
+*&      Form  GT_UNIQUE_BATCH
+*&---------------------------------------------------------------------*
+*       WMS: 1 baris per batch sebelum insert SQL (SP MERGE ON Batch)
+*       1. Sloc stok = Sloc isi HU (VEPO-LGORT)
+*       2. Masih double -> tanggal stok terbaru
+*----------------------------------------------------------------------*
+FORM GT_UNIQUE_BATCH.
+  DATA : LT_RANK  TYPE STANDARD TABLE OF TY_RANK,
+         LS_RANK  TYPE TY_RANK,
+         LT_KEEP  TYPE STANDARD TABLE OF TY_OUT,
+         LS_OUT   TYPE TY_OUT,
+         LS_STKDT TYPE TY_STKDT.
+  FIELD-SYMBOLS : <LS_OUT> TYPE TY_OUT.
+
+  LOOP AT GT_OUT ASSIGNING <LS_OUT>.
+    CLEAR LS_RANK.
+    LS_RANK-CHARG = <LS_OUT>-CHARG.
+    LS_RANK-TABIX = SY-TABIX.
+
+    " 1. Sloc stok sama dengan Sloc isi HU
+    READ TABLE GT_HULOC TRANSPORTING NO FIELDS
+         WITH KEY MATNR = <LS_OUT>-MATNR WERKS = <LS_OUT>-WERKS
+                  CHARG = <LS_OUT>-CHARG LGORT = <LS_OUT>-LGORT
+         BINARY SEARCH.
+    IF SY-SUBRC = 0.
+      LS_RANK-PRIO = 1.
+    ELSE.
+      LS_RANK-PRIO = 2.
+    ENDIF.
+
+    " 2. Tanggal stok terbaru
+    CLEAR LS_STKDT.
+    READ TABLE GT_STKDT INTO LS_STKDT
+         WITH KEY MATNR = <LS_OUT>-MATNR WERKS = <LS_OUT>-WERKS
+                  LGORT = <LS_OUT>-LGORT CHARG = <LS_OUT>-CHARG
+                  VBELN = <LS_OUT>-VBELN POSNR = <LS_OUT>-POSNR
+         BINARY SEARCH.
+    IF SY-SUBRC = 0.
+      LS_RANK-DATUM = LS_STKDT-DATUM.
+    ENDIF.
+    APPEND LS_RANK TO LT_RANK.
+  ENDLOOP.
+
+  SORT LT_RANK BY CHARG ASCENDING PRIO ASCENDING
+                  DATUM DESCENDING TABIX ASCENDING.
+  DELETE ADJACENT DUPLICATES FROM LT_RANK COMPARING CHARG.
+  SORT LT_RANK BY TABIX.
+
+  LOOP AT LT_RANK INTO LS_RANK.
+    CLEAR LS_OUT.
+    READ TABLE GT_OUT INTO LS_OUT INDEX LS_RANK-TABIX.
+    IF SY-SUBRC = 0.
+      APPEND LS_OUT TO LT_KEEP.
+    ENDIF.
+  ENDLOOP.
+  GT_OUT[] = LT_KEEP[].
+
+  FREE : LT_RANK, LT_KEEP, GT_HULOC, GT_STKDT.
+ENDFORM.                    "GT_UNIQUE_BATCH
 
 *&---------------------------------------------------------------------*
 *&      Form  GT_OUTPUT

@@ -6,7 +6,7 @@ const programName = process.argv[2];
 const sourcePath = process.argv[3];
 const targetServer = process.argv[4] || 'Development AIX';
 
-if (!['ZQMI_COA_TOP', 'ZQMI_COA_F01', 'ZQMI_COA_F02', 'ZMAP_COA_MIC'].includes(programName) || !sourcePath) {
+if (!['ZQMI_COA_TOP', 'ZQMI_COA_F01', 'ZQMI_COA_F02', 'ZQMI_COA_ALV', 'ZMAP_COA_MIC'].includes(programName) || !sourcePath) {
   throw new Error('Only COA candidates are allowed');
 }
 const source = readFileSync(sourcePath, 'utf8').split(/\r?\n/);

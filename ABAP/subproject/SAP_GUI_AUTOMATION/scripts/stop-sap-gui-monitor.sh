@@ -10,3 +10,4 @@ for name in websockify-6083 websockify-6081 websockify-6080 x11vnc-writable x11v
     rm -f "${pid_file}"
   fi
 done
+pkill -u "$(id -u)" -f autocutsel 2>/dev/null || true

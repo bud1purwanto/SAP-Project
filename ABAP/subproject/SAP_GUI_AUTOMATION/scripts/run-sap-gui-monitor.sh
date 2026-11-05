@@ -48,5 +48,16 @@ done
 # Satu kegagalan komponen kritis memicu restart atomik seluruh virtual stack.
 while true; do
   components_ready || exit 21
+
+  # Pastikan jendela SAP GUI tidak terminimalisir dan selalu terbentang penuh (1440x900)
+  for wid in $(DISPLAY="${DISPLAY}" xdotool search --class "java" 2>/dev/null); do
+    wname="$(DISPLAY="${DISPLAY}" xdotool getwindowname "${wid}" 2>/dev/null || true)"
+    if [[ -n "${wname}" && "${wname}" != "FocusProxy" && "${wname}" != "com-sap-platin-Gui" ]]; then
+      DISPLAY="${DISPLAY}" xdotool windowmap "${wid}" 2>/dev/null || true
+      DISPLAY="${DISPLAY}" xdotool windowsize "${wid}" 1440 900 2>/dev/null || true
+      DISPLAY="${DISPLAY}" xdotool windowmove "${wid}" 0 0 2>/dev/null || true
+    fi
+  done
+
   sleep 5
 done
