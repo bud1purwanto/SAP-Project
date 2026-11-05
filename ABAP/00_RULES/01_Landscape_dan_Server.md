@@ -1,7 +1,7 @@
 # 01 — Role, Landscape Server & Tools
 
 > Role agent, environment SAP, tool MCP SAP/RAG, aturan GUI VNC, etika.
-> Sumber: dipecah dari `AGENTS.md` (backup: `_backup/AGENTS_20261105.md`). Kembali ke [AGENTS.md](../AGENTS.md).
+> Kembali ke [AGENTS.md](../AGENTS.md). Backup versi lama: `_backup/rules_20261105_optimasi/`.
 
 ## Role
 
@@ -13,20 +13,34 @@ Bertindak sebagai **SAP ABAP Senior Developer / Consultant** yang membantu devel
 
 | Field | Value |
 |---|---|
-| System ID | TRD |
 | SAP ERP | ECC 6.0 EHP6 (SAP_APPL 606 / SP Level 0003) |
 | NetWeaver | 7.31 (SAP_BASIS 731 / SP Level 0004) |
 | ABAP Release | **7.31** |
 | Database | ORACLE |
-| OS | Linux |
-| SAP Host | eccdevlinux (192.168.6.243) |
+
+## Daftar Server SAP
+
+Sumber: `config/sap-servers.json` MCP SAP (`/var/www/MCP/MCP SAP/sap-leader-mcp/`). Nama = alias untuk `set_active_server`.
+
+| Nama (alias) | SID | Client | Host | Environment | Read | Write program |
+|---|---|---|---|---|---|---|
+| `dev` (dev-aix) | TRD | 130 | 192.168.2.8 | development | ✅ | ❌ |
+| `dev-win` | TRD | 130 | 192.168.2.253 (inst 01) | development | ✅ | ❌ |
+| `qa` | TRQ | 320 | 192.168.2.7 | qa | ✅ | ❌ |
+| `prod` (prd, prod-aix) | PRT | 999 | 192.168.1.151 | production | ⚠️ konfirmasi Baginda dulu | ❌ |
+| `prod-win` (prp) | TRP | 999 | 192.168.1.251 | production | ⚠️ konfirmasi Baginda dulu | ❌ |
+| `sandbox` (sandbox-build) | TRD | 140 | 192.168.88.199 | sandbox | ✅ | ❌ |
+| **`sandbox-new`** (new-company) | **TRS** | 130 | 192.168.6.243 | sandbox | ✅ | ✅ **satu-satunya target write** |
+
+Aturan write: [03](03_Push_Program_dan_SmartForm.md#aturan-target-write--tidak-ada-pengecualian). Daftar berubah → cek ulang config, update tabel ini.
 
 ---
 
 ## Tool Assistance — WAJIB Digunakan
 
-### MCP SAP (`mcp__sap-leader__*`)
-Gunakan untuk mengambil data/objek **langsung dari sistem SAP TRD**:
+### MCP SAP
+Nama prefix tool berbeda per mesin/klien (mis. `mcp__sap-leader__*`, `mcp__SAP_MCP__*`, atau nama server "SAP MCP"). Cari berdasarkan **nama tool** di bawah, bukan prefix.
+Gunakan untuk mengambil data/objek **langsung dari sistem SAP** (server sesuai [Daftar Server](#daftar-server-sap)):
 
 | Tool | Setara | Kegunaan |
 |---|---|---|
@@ -37,7 +51,7 @@ Gunakan untuk mengambil data/objek **langsung dari sistem SAP TRD**:
 | `read_class` | SE24 | Membaca source code Class ABAP |
 | `search_programs` | SE80 | Mencari program/objek ABAP |
 | `get_where_used` | — | Mencari where-used object |
-| `call_function` | — | Memanggil Function Module di sistem |
+| `call_function` | — | Memanggil Function Module di sistem (push program: `Z_RFC_PROGRAM_UPDATE`) |
 | `list_servers` / `set_active_server` | — | Info & pilih server aktif |
 
 > **Kapan digunakan:** Selalu gunakan MCP SAP saat perlu tahu struktur tabel aktual, source code program di sistem, atau data yang ada di SAP TRD. **Jangan berasumsi — ambil data nyata dari sistem.**
@@ -47,10 +61,12 @@ Gunakan untuk mengambil data/objek **langsung dari sistem SAP TRD**:
 - **GPT/Codex berjalan lokal di desktop:** gunakan MCP SAP yang terdaftar di `config.toml` lokal.
 - **Claude berjalan lokal di desktop:** gunakan MCP SAP lokal yang dikonfigurasi untuk Claude.
 - Jangan memakai path MCP Windows dari environment Linux. Bila koneksi RFC diblokir sandbox runtime, minta izin network hanya untuk operasi SAP yang diminta user.
+- **MCP gagal connect** (mis. `Executable not found in $PATH: cmd` = config Windows terbawa ke Linux): beri tahu Baginda server mana yang gagal. Jalur alternatif read-only di Linux: script Node yang import langsung `/var/www/MCP/MCP SAP/sap-leader-mcp/src/` (contoh `subproject/BARRIER/scripts/fetch_trs.mjs`). Write tetap patuh [03](03_Push_Program_dan_SmartForm.md).
 
 ---
 
-### RAG SAP (`mcp__rag-sap__*`)
+### RAG SAP
+Prefix tool berbeda per mesin (mis. `mcp__rag-sap__*`, server "RAG MCP" / "RAG Lokal").
 Gunakan untuk mencari **knowledge, dokumentasi, dan referensi SAP**:
 
 | Tool | Kegunaan |

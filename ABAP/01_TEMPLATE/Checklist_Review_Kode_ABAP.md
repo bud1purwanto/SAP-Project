@@ -3,10 +3,9 @@
 Pakai sebelum push ke `sandbox-new`. Detail aturan: [02_Sintaks_ABAP_731.md](../00_RULES/02_Sintaks_ABAP_731.md), [04_Grounding_dan_Review_Kode.md](../00_RULES/04_Grounding_dan_Review_Kode.md).
 
 ## Sintaks
-- [ ] Tidak ada `DATA(...)` / `FIELD-SYMBOL(...)` inline
-- [ ] Tidak ada string template `|...|`
-- [ ] Tidak ada `NEW` / `VALUE` / `REDUCE` / `CORRESPONDING` / `FILTER`
-- [ ] Open SQL tanpa `@`, field list dipisah spasi
+- [ ] Tidak ada fitur 7.40+ (inline decl, constructor operator, table expression `itab[ ]`, `@`, CDS) — daftar lengkap [02](../00_RULES/02_Sintaks_ABAP_731.md)
+- [ ] Konvensi tim: tidak ada string template `|...|` / `&&`, tidak ada `WITH HEADER LINE` di kode baru
+- [ ] Open SQL klasik: tanpa `@`, field list dipisah spasi
 
 ## Database
 - [ ] Tidak ada `SELECT *` (kecuali tabel konfigurasi kecil, beri alasan)
@@ -32,7 +31,9 @@ Pakai sebelum push ke `sandbox-new`. Detail aturan: [02_Sintaks_ABAP_731.md](../
 - [ ] AUTHORITY-CHECK untuk proses sensitif
 
 ## Push & Diff
-- [ ] Backup source lama di `outputs/` sebelum push
+- [ ] Source **terbaru di-pull dari `sandbox-new` tepat sebelum push** (bukan `src/*.abap` lama), backup di `outputs/`
+- [ ] Diff hasil pull vs base lokal dicek; ada perubahan manual → STOP, lapor Baginda
+- [ ] Baginda konfirmasi write
 - [ ] Target `sandbox-new` (`set_active_server`)
 - [ ] Diff minimal (tidak reformat, tidak hapus komentar/blank line)
 - [ ] `EV_SUCCESS = 'X'` dan jumlah baris cocok setelah push

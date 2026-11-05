@@ -1,18 +1,15 @@
 # 04 — Grounding Rules & Minimal Diff
 
 > Self-check wajib sebelum mengeluarkan kode ABAP.
-> Sumber: dipecah dari `AGENTS.md` (backup: `_backup/AGENTS_20261105.md`). Kembali ke [AGENTS.md](../AGENTS.md).
+> Kembali ke [AGENTS.md](../AGENTS.md). Backup versi lama: `_backup/rules_20261105_optimasi/`.
 
 ## Grounding Rules — Kode ABAP (WAJIB Self-Check Sebelum Output)
 
-### 1. Batasan Sintaks Keras (Syntax Guardrails)
-- **Dilarang Inline Declaration:** Jangan gunakan `DATA(...)` atau `FIELD-SYMBOL(...)`. Semua variabel wajib dideklarasikan eksplisit di blok `DATA:` / `TYPES:`.
-- **Dilarang New Constructor Operators:** Jangan gunakan `NEW`, `VALUE`, `REDUCE`, `CORRESPONDING`, `FILTER`. Gunakan cara klasik: `CLEAR`, `MOVE-CORRESPONDING`, `APPEND`, `INSERT`.
-- **Open SQL Klasik:** Tanpa `@` untuk host variables. Gunakan spasi (bukan koma) sebagai pemisah field pada `SELECT`.
-- **String Manipulation Klasik:** Gunakan `CONCATENATE`, `SPLIT`, `REPLACE`, `CONDENSE`. Dilarang string template `|...|`.
+### 1. Batasan Sintaks
+Ikuti [02_Sintaks_ABAP_731.md](02_Sintaks_ABAP_731.md) (satu-satunya sumber daftar larangan & pengganti 7.31).
 
 ### 2. Fase Analisis RAG & Kesesuaian Bisnis
-- **Validasi Proses Bisnis:** Baca RAG Business Process (FS) terlebih dahulu. Petakan ke struktur tabel standar ECC (seperti `MARA`, `VBAK`, `EKKO`).
+- **Validasi Proses Bisnis (wajib untuk development/enhancement; tidak wajib untuk contoh kode singkat di chat):** Baca FS di `docs/` sub-project atau RAG lebih dulu. Petakan ke struktur tabel standar ECC (seperti `MARA`, `VBAK`, `EKKO`).
 - **Verifikasi DDIC:** Pastikan tipe data yang dideklarasikan sesuai dengan Data Element standar SAP untuk mencegah *type mismatch*.
 
 ### 3. Optimasi Performa Database (Oracle & Open SQL 7.31)
@@ -46,7 +43,7 @@
 1. **Fokus Murni Sesuai Permintaan (Zero Scope Creep):** HANYA ubah bagian kode, logika, atau baris yang secara eksplisit diminta oleh user.
 2. **Dilarang Menghapus/Mengubah Formatting Tanpa Izin:** Dilarang menghapus baris kosong (blank lines), mengubah indentasi, whitespace, atau komentar di luar area yang diminta.
 3. **No Unsolicited Logic / Refactoring:** Dilarang menambahkan fitur baru, validasi baru, atau merombak struktur kode yang tidak diminta.
-4. **Verifikasi Diff Bersih:** Selalu verifikasi `git diff` sebelum push ke SAP TRS dan sebelum memberikan jawaban akhir ke user. Diff harus minimal, bersih, dan 100% tepat sasaran.
+4. **Verifikasi Diff Bersih:** Sebelum push ke SAP TRS dan sebelum jawaban akhir, bandingkan patch dengan source **hasil pull terbaru dari server** (bukan file lokal lama — lihat [03 Wajib pull](03_Push_Program_dan_SmartForm.md#wajib-pull-source-terbaru-sebelum-push)). Diff harus minimal, bersih, dan 100% tepat sasaran.
 
 ---
 

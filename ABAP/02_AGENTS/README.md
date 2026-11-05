@@ -37,7 +37,7 @@ Batasan "read-only" pada agent di atas adalah **aturan prompt**, bukan penghalan
 | `abap_where_used` | `get_where_used` | Tersedia |
 | `abap_object_structure` (DDIC) | `read_table_structure` | Tersedia |
 | `abap_table_contents` / `abap_run_sql` (SELECT) | `read_table` (RFC_READ_TABLE, filter + rowcount) | Tersedia |
-| `abap_set_source` + `abap_activate` + lock | `write_program` / `call_function` `Z_RFC_PROGRAM_UPDATE` | Tersedia (lihat [03](../00_RULES/03_Push_Program_dan_SmartForm.md)) |
+| `abap_set_source` + `abap_activate` + lock | **Prioritas** `call_function` `Z_RFC_PROGRAM_UPDATE`; `write_program` hanya fallback bila FM error | Tersedia (lihat [03](../00_RULES/03_Push_Program_dan_SmartForm.md)) — wajib pull terbaru sebelum push |
 | Smart Form | `write_smartform_xml`, `write_smartstyle_xml`, `import_smartform_artifact` | Tersedia |
 | `abap_inactive_objects` | `read_table` `DWINACTIV` | **Terverifikasi** di sandbox-new |
 | `abap_dumps` | `read_table` `SNAP` (header: DATUM, UZEIT, UNAME, AHOST) + ST22 via GUI untuk detail | Header **terverifikasi**; detail dump via GUI |

@@ -1,16 +1,10 @@
-# 06 — Aturan Khusus per Sub-Project
+# 06 — Aturan Khusus per Sub-Project (indeks)
 
-> Aturan yang hanya berlaku untuk sub-project tertentu.
-> Sumber: dipecah dari `AGENTS.md` (backup: `_backup/AGENTS_20261105.md`). Kembali ke [AGENTS.md](../AGENTS.md).
+> Aturan khusus sub-project disimpan di `README.md` sub-project itu (bagian "Catatan / Aturan Khusus"), supaya hanya dibaca saat kerja di sub-project tersebut.
+> File ini hanya indeks. Kembali ke [AGENTS.md](../AGENTS.md). Isi lama: `_backup/rules_20261105_optimasi/06_Aturan_Khusus_Subproject.md`.
 
-## COA Dynamic Table & Smart Forms Architecture Rule
+| Sub-project | Aturan khusus | Lokasi |
+|---|---|---|
+| COA | Arsitektur COA Dynamic Table & Smart Forms (ZQMF_COA / BATCH_POTRAIT / BATCH_LANDSCAPE, `ZQM_COA_CUST_COL`, DO uji) | [subproject/COA/README.md §4](../subproject/COA/README.md) + [ARCHITECTURE_COA_DYNAMIC.md](../subproject/COA/ARCHITECTURE_COA_DYNAMIC.md) |
 
-Pastikan selalu membaca dan mematuhi arsitektur pada `subproject/COA/ARCHITECTURE_COA_DYNAMIC.md` saat mengembangkan atau memperbaiki COA:
-1. `ZQMF_COA` murni hanya untuk Page 1 (Sertifikat / MIC Inspection Characteristics).
-2. `ZQMF_COA_BATCH_POTRAIT` khusus untuk Lampiran Batch List (Portrait <= 8 kolom).
-3. `ZQMF_COA_BATCH_LANDSCAPE` khusus untuk Lampiran Batch List (Landscape > 8 kolom).
-4. Mapping dan ukuran kolom dinamis sesuai tabel `ZQM_COA_CUST_COL`.
-5. Contoh verifikasi data uji:
-   - DO `85004908` (6 Kolom - DOM_DEFAUL) -> ZQMF_COA + ZQMF_COA_BATCH_POTRAIT (2 Hal Portrait)
-   - DO `0084000047` (7 Kolom - SRAABI) -> ZQMF_COA + ZQMF_COA_BATCH_POTRAIT (2 Hal Portrait)
-   - DO `0085000140` (10 Kolom - SRACLI) -> ZQMF_COA + ZQMF_COA_BATCH_LANDSCAPE (Page 1 Port + Page 2 Land)
+Tambah aturan khusus baru → tulis di README sub-project, lalu tambah 1 baris di tabel ini.

@@ -1,0 +1,11 @@
+[Unit]
+Description=ADT proxy sandbox-new TRS (inject X-Requested-With) 127.0.0.1:8100 -> 192.168.6.243:8000
+After=network-online.target
+
+[Service]
+ExecStart=/home/abap/.local/bin/node /data/Projects/SAP/ABAP/subproject/ADT_VSCODE/scripts/adt_proxy.mjs 8100 http://192.168.6.243:8000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

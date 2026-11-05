@@ -1,0 +1,79 @@
+{
+  "mode": "apply",
+  "before": {
+    "sid": "TRS",
+    "icm_services": [
+      {
+        "PROTOCOL": 1,
+        "SERVICE": "0",
+        "ACTIVE": "X",
+        "KEEPALIVE": 60,
+        "PROC_TIMEOUT": 60
+      },
+      {
+        "PROTOCOL": 4,
+        "SERVICE": "0",
+        "ACTIVE": "X",
+        "KEEPALIVE": 120,
+        "PROC_TIMEOUT": 120
+      }
+    ],
+    "icf_adt": [
+      {
+        "ICF_NAME": "ADT",
+        "ICFACTIVE": ""
+      }
+    ]
+  },
+  "icf": {
+    "mode": "LIVE",
+    "active_server": "Sandbox New Company",
+    "sid": "TRS",
+    "tool": "call_function",
+    "function_name": "HTTP_ACTIVATE_NODE",
+    "result": {
+      "EXPAND": "X",
+      "HOSTNAME": "",
+      "NODEGUID": "",
+      "URL": "/sap/bc/adt/"
+    }
+  },
+  "icm": {
+    "errormessage": "",
+    "writes": [
+      "ICM_SUBRC     0"
+    ]
+  },
+  "after": {
+    "sid": "TRS",
+    "icm_services": [
+      {
+        "PROTOCOL": 1,
+        "SERVICE": "0",
+        "ACTIVE": "X",
+        "KEEPALIVE": 60,
+        "PROC_TIMEOUT": 60
+      },
+      {
+        "PROTOCOL": 4,
+        "SERVICE": "0",
+        "ACTIVE": "X",
+        "KEEPALIVE": 120,
+        "PROC_TIMEOUT": 120
+      },
+      {
+        "PROTOCOL": 1,
+        "SERVICE": "8000",
+        "ACTIVE": "X",
+        "KEEPALIVE": 60,
+        "PROC_TIMEOUT": 60
+      }
+    ],
+    "icf_adt": [
+      {
+        "ICF_NAME": "ADT",
+        "ICFACTIVE": "X"
+      }
+    ]
+  }
+}

@@ -28,6 +28,8 @@ Program feed WMS berbasis HU: VEKP → HU Box/Pallet → batch → stok MCHB/MSK
 | Dokumen | Isi |
 |---|---|
 | [docs/DESIGN_ZMMI_WMS_2026-10-30.md](docs/DESIGN_ZMMI_WMS_2026-10-30.md) | Desain & keputusan Baginda |
+| [docs/Functional Specification HU Stock for WMS ZMMI_WMS (v1).docx](<docs/Functional Specification HU Stock for WMS ZMMI_WMS (v1).docx>) | WRICEF/FS v1 (05.11.2026) |
+| [docs/2026-11-05_REVIEW_ZMMI_WMS.md](docs/2026-11-05_REVIEW_ZMMI_WMS.md) | Code review 05.11.2026 |
 | [outputs/COMPARE_SUMMARY_20261103.md](outputs/COMPARE_SUMMARY_20261103.md) | Ringkasan compare vs ZBMBC |
 
 ## 4. Catatan / Aturan Khusus

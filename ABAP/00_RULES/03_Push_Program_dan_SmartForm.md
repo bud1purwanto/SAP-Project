@@ -1,63 +1,69 @@
 # 03 — Push Program & Smart Form (sandbox-new)
 
-> Aturan write hanya ke sandbox-new, mekanisme RFC push program, enhancement, dan Smart Form.
-> Sumber: dipecah dari `AGENTS.md` (backup: `_backup/AGENTS_20261105.md`). Kembali ke [AGENTS.md](../AGENTS.md).
+> Aturan write hanya ke sandbox-new, wajib pull terbaru sebelum push, mekanisme RFC push program, Smart Form, start gate, delete rule.
+> Kembali ke [AGENTS.md](../AGENTS.md). Daftar server: [01 §Server](01_Landscape_dan_Server.md#daftar-server-sap). Backup versi lama: `_backup/rules_20261105_optimasi/`.
 
-#### Update Program ABAP — ATURAN WAJIB
-- Update/save source code program ke SAP **HANYA boleh di server `sandbox-new`** (Sandbox New Company, SID: TRS, Host: 192.168.6.243)
-- **DILARANG** melakukan update program di server lain (dev, dev-win, qa, prod, prod-win, sandbox)
-- Sebelum update, selalu `set_active_server` ke `sandbox-new` terlebih dahulu
-- **PRIORITAS UTAMA push/update program: SELALU gunakan `Z_RFC_PROGRAM_UPDATE` via `call_function`** — sudah verified berfungsi di sistem TRS. Jangan gunakan mekanisme lain kecuali ada error spesifik dari FM ini.
+## Aturan target write — TIDAK ADA PENGECUALIAN
 
-#### Mekanisme Push/Update Program ABAP — STATUS RFC (PENTING!)
+- **Analisa boleh di server mana saja** (dev, qa, prod, sandbox, dll) sesuai kebutuhan investigasi. Prod tetap butuh konfirmasi Baginda sebelum query.
+- **Setiap write** (update program, include, FM, Smart Form) — termasuk enhancement, bug fix, tambah fitur — **hanya ke `sandbox-new`** (SID TRS, client 130). Dilarang write ke dev, dev-win, qa, prod, prod-win, sandbox.
+- Baginda menyebut server lain untuk write → tetap `sandbox-new`, beri tahu alasannya.
+- Permintaan perubahan tanpa sebut server → target otomatis `sandbox-new`, **tetapi tetap konfirmasi ke Baginda sebelum write** (sebut objek, server, ringkasan perubahan). Pilihan server otomatis ≠ izin write; izin write tetap lewat [Start gate](#start-gate-wajib-sebelum-write-apa-pun).
+- Sebelum setiap `call_function` write: `set_active_server` → `sandbox-new`.
+- Alur enhancement: baca source di server asal (dev) untuk analisa → kembangkan → write di `sandbox-new`. Jangan pernah enhancement langsung di dev/qa/prod.
+
+## Wajib pull source terbaru sebelum push
+
+File lokal `src/*.abap` **bukan sumber kebenaran**. Baginda bisa mengubah program manual di SE38/SE80 kapan saja, jadi file lokal bisa sudah basi. Push dari file basi = menimpa perubahan Baginda.
+
+1. **Tepat sebelum edit dan lagi tepat sebelum push**: pull source terbaru dari `sandbox-new` (`read_program` / `RPY_PROGRAM_READ`, semua include yang akan diubah). Simpan sebagai backup `outputs/<PROGRAM>_sandbox_new_TRS_before_<perubahan>_<YYYYMMDD>.abap`.
+2. Bandingkan hasil pull dengan base yang dipakai untuk edit lokal (`diff`):
+   - **Sama** → lanjut push.
+   - **Beda** (ada perubahan manual / sesi lain) → **STOP**. Laporkan baris yang berubah ke Baginda. Terapkan ulang patch di atas source hasil pull terbaru, jangan timpa. Push hanya setelah Baginda konfirmasi.
+3. Patch selalu dibangun di atas hasil pull terbaru, lalu disalin ke `src/<PROGRAM>.abap` (salinan kerja untuk `git diff` & cek panjang baris).
+4. `git diff` / `diff` patch vs hasil pull harus hanya berisi baris yang diminta (lihat [04 Minimal Diff](04_Grounding_dan_Review_Kode.md#strict-scope--minimal-diff-rule--wajib-dipatuhi)).
+5. Setelah push: pull ulang, bandingkan jumlah baris & isi dengan file yang dikirim. Beda → laporkan, jangan klaim sukses.
+6. Script push (`scripts/push*.mjs/js`) yang membaca `src/*.abap` langsung tanpa langkah 1–2 **tidak boleh** dipakai apa adanya; jalankan pull + diff dulu.
+
+Alur ringkas:
+```
+pull TRS -> backup outputs/ -> edit -> pull TRS lagi -> diff (beda? STOP) -> konfirmasi Baginda -> push -> pull ulang -> bandingkan
+```
+
+## Mekanisme push program — status RFC
+
+**Prioritas: `Z_RFC_PROGRAM_UPDATE` via `call_function`** (verified di TRS). Tool MCP `write_program` atau mekanisme lain hanya jika FM ini error, dan laporkan error-nya dulu.
 
 | RFC / FM | Status | Keterangan |
 |---|---|---|
-| `Z_RFC_PROGRAM_UPDATE` | ✅ **GUNAKAN INI — CARA PALING MUDAH** | Custom FM, kirim full source langsung. Parameter: `IV_PROGRAM_NAME`, `IV_PACKAGE`, `IV_CORRNUMBER` (optional), `IT_SOURCE` (ABAPTXT255) |
-| `READ_REPORT` | ❌ **Tidak tersedia** | Function module not found / not RFC-enabled di sistem ini |
-| `RFC_ABAP_INSTALL_AND_RUN` | ✅ Berfungsi | Bootstrap: kirim temp ABAP program sebagai text, SAP compile & execute. Gunakan jika perlu patch logic kompleks |
+| `Z_RFC_PROGRAM_UPDATE` | ✅ **Prioritas** | Custom FM, kirim full source. Parameter: `IV_PROGRAM_NAME`, `IV_PACKAGE`, `IV_CORRNUMBER` (optional), `IT_SOURCE` (ABAPTXT255, max 255 char/line). Cek `EV_SUCCESS = 'X'` + `EV_MESSAGE` |
 | `RPY_PROGRAM_READ` | ✅ Berfungsi | Baca source via TABLES `SOURCE_EXTENDED` (TYPE C LENGTH 255) |
-| `RPY_PROGRAM_UPDATE` | ✅ Berfungsi | Simpan source — parameter wajib: `TRANSPORT_NUMBER = ' '`, `DEVELOPMENT_CLASS = '$TMP'` |
+| `RFC_ABAP_INSTALL_AND_RUN` | ✅ Berfungsi | Bootstrap: kirim temp program sebagai text, compile & execute. Untuk patch kompleks |
+| `RPY_PROGRAM_UPDATE` | ✅ Berfungsi | Parameter wajib: `TRANSPORT_NUMBER = ' '`, `DEVELOPMENT_CLASS = '$TMP'` |
+| `READ_REPORT` | ❌ Tidak tersedia | Not found / not RFC-enabled |
 
-**Alur paling mudah — pakai `Z_RFC_PROGRAM_UPDATE` langsung:**
+**Alur utama — `Z_RFC_PROGRAM_UPDATE`:**
 1. `set_active_server` → `sandbox-new`
-2. Baca source program (via `read_program` atau `RPY_PROGRAM_READ`)
-3. Modifikasi source di sisi client (array of lines)
-4. Panggil `Z_RFC_PROGRAM_UPDATE`:
+2. Pull terbaru + backup + diff (bagian di atas)
+3. Panggil:
    ```
    IV_PROGRAM_NAME = 'ZNAMA_PROGRAM'
    IV_PACKAGE      = '$TMP'
    IV_CORRNUMBER   = ' '   (optional, isi space)
-   IT_SOURCE       = [ {LINE: '...'}, ... ]   (ABAPTXT255, max 255 char/line)
+   IT_SOURCE       = [ {LINE: '...'}, ... ]
    ```
-5. Cek `EV_SUCCESS = 'X'` dan `EV_MESSAGE` untuk konfirmasi
+4. Cek `EV_SUCCESS = 'X'` dan `EV_MESSAGE`, lalu pull ulang & bandingkan.
 
-**Alur alternatif — Bootstrap via `RFC_ABAP_INSTALL_AND_RUN`** (untuk patch kompleks):
+**Alur alternatif — bootstrap `RFC_ABAP_INSTALL_AND_RUN`** (patch kompleks):
 1. `set_active_server` → `sandbox-new`
-2. Buat patch ABAP program yang di dalamnya: baca via `RPY_PROGRAM_READ` → loop & patch → simpan via `RPY_PROGRAM_UPDATE`
-3. Kirim via `call_function` FM = `RFC_ABAP_INSTALL_AND_RUN`, PROGRAM = array of {LINE} (max **72 char/line**)
+2. Temp program: baca via `RPY_PROGRAM_READ` → loop & patch → simpan via `RPY_PROGRAM_UPDATE`
+3. Kirim via `call_function` FM = `RFC_ABAP_INSTALL_AND_RUN`, PROGRAM = array of {LINE}
 
-#### Batasan Teknis PROGTAB (Hanya untuk RFC_ABAP_INSTALL_AND_RUN)
-- Setiap LINE dalam tabel PROGRAM maksimal **72 karakter**
-- **REPLACE syntax** — WAJIB gunakan NEW syntax:
-  - ✅ `REPLACE FIRST OCCURRENCE OF 'X' IN field WITH 'Y'.`
-  - ❌ `REPLACE 'X' WITH 'Y' IN field.` → error "Specification WITH ... is not expected"
-
-#### Enhancement Program — ATURAN WAJIB
-- Setiap permintaan **enhancement program** (modifikasi, tambah fitur, perbaikan bug, dll) **WAJIB menggunakan server `sandbox-new`** (Sandbox New Company, SID: TRS)
-- Alur wajib: baca source dari server asal (dev) → kembangkan/edit kode → set server ke `sandbox-new` → simpan hasil enhancement
-- Jangan pernah langsung enhancement di server dev, qa, atau prod
-- **Default server: Jika user meminta perubahan/modifikasi program tanpa menyebutkan server secara eksplisit → otomatis gunakan `sandbox-new` sebagai target. Tidak perlu konfirmasi, langsung set ke `sandbox-new`.**
-
-#### Aturan Universal Perubahan Program — TIDAK ADA PENGECUALIAN
-- **Analisis boleh di server mana saja** (dev, qa, prod, sandbox, dll) sesuai kebutuhan investigasi.
-- **Namun SETIAP perubahan / modifikasi / update program — tanpa terkecuali — WAJIB dilakukan di `sandbox-new`.**
-- Tidak peduli server mana yang sedang dianalisis, tidak peduli user menyebut server lain: **target save/push program selalu `sandbox-new`**.
-- Sebelum setiap `call_function` yang bersifat write (update program), wajib `set_active_server` ke `sandbox-new` terlebih dahulu.
+Batasan PROGTAB (hanya `RFC_ABAP_INSTALL_AND_RUN`): setiap LINE maksimal **72 karakter**; `REPLACE` wajib bentuk `REPLACE FIRST OCCURRENCE OF ... IN ... WITH ...`.
 
 ---
 
-### Panduan Push Smart Form via RFC — TERVERIFIKASI TRS
+## Push Smart Form via RFC — TERVERIFIKASI TRS
 
 Untuk update Smart Form, target write hanya `sandbox-new` (TRS client 130).
 Gunakan `RFC_ABAP_INSTALL_AND_RUN` sebagai bootstrap ABAP. Setiap baris `PROGRAM`
@@ -118,10 +124,11 @@ form bisa sudah tersimpan. Cek `SMARTFORMS`, `ST22`, dan `SM21`. Simpan hasil
 Sebelum push/update pertama, semua harus terpenuhi. Jika tidak, berhenti dan sebutkan yang kurang:
 1. Ada Design Brief berstatus `AGREED` (atau, untuk bug fix kecil, instruksi Baginda yang eksplisit di chat).
 2. Target server = `sandbox-new` (`set_active_server`), objek yang akan diubah ada di daftar objek brief.
-3. Source lama sudah dibaca dan **backup** disimpan di `subproject/<NAMA>/outputs/`.
-4. Bangun hanya yang ada di brief. Butuh objek lain / desain tidak cocok dengan kenyataan → berhenti, kembali ke brainstorm. Tidak ada penyimpangan diam-diam.
-5. Objek di luar daftar brief (FM shared, include milik program lain, tabel Z, objek SAP standar): minta persetujuan Baginda **per objek** dengan info: jenis + nama, alasan, perubahan (diff), dampak (`get_where_used`). Persetujuan umum ("kerjakan saja semua") tidak berlaku.
-6. Write ditolak / gagal (`EV_SUCCESS <> 'X'`) → laporkan pesan apa adanya. Jangan cari jalan pintas (server lain, mekanisme lain) tanpa izin.
+3. Source **terbaru** sudah di-pull dari `sandbox-new` tepat sebelum push, **backup** disimpan di `subproject/<NAMA>/outputs/`, dan diff vs base lokal sudah dicek ([Wajib pull](#wajib-pull-source-terbaru-sebelum-push)). Beda → berhenti, lapor Baginda.
+4. Baginda sudah konfirmasi write (objek + server + ringkasan perubahan).
+5. Bangun hanya yang ada di brief. Butuh objek lain / desain tidak cocok dengan kenyataan → berhenti, kembali ke brainstorm. Tidak ada penyimpangan diam-diam.
+6. Objek di luar daftar brief (FM shared, include milik program lain, tabel Z, objek SAP standar): minta persetujuan Baginda **per objek** dengan info: jenis + nama, alasan, perubahan (diff), dampak (`get_where_used`). Persetujuan umum ("kerjakan saja semua") tidak berlaku.
+7. Write ditolak / gagal (`EV_SUCCESS <> 'X'`) → laporkan pesan apa adanya. Jangan cari jalan pintas (server lain, mekanisme lain) tanpa izin.
 
 ## Delete rule: hapus hanya dengan perintah eksplisit
 

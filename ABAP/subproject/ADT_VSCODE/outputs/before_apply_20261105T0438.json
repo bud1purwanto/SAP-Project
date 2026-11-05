@@ -1,0 +1,25 @@
+{
+  "sid": "TRS",
+  "icm_services": [
+    {
+      "PROTOCOL": 1,
+      "SERVICE": "0",
+      "ACTIVE": "X",
+      "KEEPALIVE": 60,
+      "PROC_TIMEOUT": 60
+    },
+    {
+      "PROTOCOL": 4,
+      "SERVICE": "0",
+      "ACTIVE": "X",
+      "KEEPALIVE": 120,
+      "PROC_TIMEOUT": 120
+    }
+  ],
+  "icf_adt": [
+    {
+      "ICF_NAME": "ADT",
+      "ICFACTIVE": ""
+    }
+  ]
+}

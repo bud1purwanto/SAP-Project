@@ -37,5 +37,13 @@ Certificate of Analysis mode print & ALV via cabang SY-TCODE, batch list dinamis
 
 ## 4. Catatan / Aturan Khusus
 
-- Wajib patuhi arsitektur di [ARCHITECTURE_COA_DYNAMIC.md](ARCHITECTURE_COA_DYNAMIC.md) dan [00_RULES/06](../../00_RULES/06_Aturan_Khusus_Subproject.md).
+- Wajib patuhi arsitektur di [ARCHITECTURE_COA_DYNAMIC.md](ARCHITECTURE_COA_DYNAMIC.md) saat mengembangkan/memperbaiki COA (dipindah dari `00_RULES/06`, 2026-11-05):
+  1. `ZQMF_COA` murni hanya untuk Page 1 (Sertifikat / MIC Inspection Characteristics).
+  2. `ZQMF_COA_BATCH_POTRAIT` khusus Lampiran Batch List (Portrait <= 8 kolom).
+  3. `ZQMF_COA_BATCH_LANDSCAPE` khusus Lampiran Batch List (Landscape > 8 kolom).
+  4. Mapping dan ukuran kolom dinamis sesuai tabel `ZQM_COA_CUST_COL`.
+  5. Contoh verifikasi data uji:
+     - DO `85004908` (6 kolom - DOM_DEFAUL) → ZQMF_COA + ZQMF_COA_BATCH_POTRAIT (2 hal Portrait)
+     - DO `0084000047` (7 kolom - SRAABI) → ZQMF_COA + ZQMF_COA_BATCH_POTRAIT (2 hal Portrait)
+     - DO `0085000140` (10 kolom - SRACLI) → ZQMF_COA + ZQMF_COA_BATCH_LANDSCAPE (Page 1 Port + Page 2 Land)
 - `package.json` di root folder ini dipakai script Node; jangan dipindah.

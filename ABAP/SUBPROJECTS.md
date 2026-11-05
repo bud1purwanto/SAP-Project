@@ -24,8 +24,6 @@ SAP ABAP Consultant/
 │   ├── PLANNING_SLITROLL/    ├── ZMM061/
 │   ├── ZMMI_WMS/             ├── ZPP005N/
 │   └── ZPP090/
-├── _SHARED/                <- helper generik lintas program
-└── _REVIEW_IMAGES/         <- screenshot lama belum teridentifikasi
 ```
 ## Struktur Umum Tiap Sub-Project
 
@@ -33,7 +31,7 @@ Setiap sub-project memakai subfolder standar:
 
 - `README.md` — ringkasan sub-project (atribut, tujuan, isi folder, dokumen kunci). Template: `01_TEMPLATE/Template_README_Subproject.md`
 
-- `src/` — source code ABAP (`.abap`)
+- `src/` — salinan kerja source ABAP (`.abap`); **bukan sumber kebenaran**, pull dari `sandbox-new` dulu sebelum push ([03](00_RULES/03_Push_Program_dan_SmartForm.md#wajib-pull-source-terbaru-sebelum-push))
 - `scripts/` — script otomasi (`.mjs`, `.js`, `.py`, `.ps1`) untuk push/fetch/patch/audit via MCP SAP
 - `docs/` — dokumen FS/TS, spesifikasi, diagram, deck, xlsx timeframe/test-scenario, gambar
 - `tests/` — script test (`.ps1`, `test_*`)
@@ -61,6 +59,7 @@ Setiap sub-project memakai subfolder standar:
 | `subproject/ZMMI_WMS/` | `ZMMI_WMS` | Program baru feed WMS gudang berbasis HU: VEKP (Created On + MAGRV) -> HU Box/Pallet -> batch -> stok MCHB/MSKA -> karakteristik; output ALV / WMS (staging `Y_ZBMBCSR` + `SP_Merge_ZBMBCSR_WMS`), mass select di awal | zmmi_wms, hu wms, vekp, vepo, magrv, hu created on, wms hu |
 | `subproject/PROCESS_ORDER_RFC/` | `ABAP4_CALL_TRANSACTION` → COR1 | Create process order JR (1 ROL, base qty KG) dari luar SAP via RFC, zero transport, background | cor1, create process order, bapi_procord_create, abap4_call_transaction, process order rfc, base quantity |
 | `subproject/MCP_GATEWAY_TEST/` *(folder belum ada)* | MCP Gateway Test | Pengujian konektivitas, handshake, discovery tools, dan health check endpoint MCP SQL/RAG | mcp gateway, mcp-sql, mcp-rag, gateway test, testing mcp |
+| `subproject/ADT_VSCODE/` | ICF `/sap/bc/adt` + ICM 8000 + proxy | Buka/edit program SAP langsung di VSCode via ADT (ext ABAP remote FS), setup sandbox-new, proxy header `X-Requested-With` untuk SAP_BASIS 731 SP4 | adt, vscode, abap remote fs, abapfs, sicf adt, smicm, icm port, eclipse adt |
 
 
 ## Routing Cepat (dipindah dari AGENTS.md)
@@ -81,8 +80,7 @@ Setiap sub-project memakai subfolder standar:
 
 ## Folder Non-Sub-Project
 
-- `_SHARED/` — helper generik lintas program: `list_sap_servers.mjs`, `sap-mcp-direct.mjs`, `generate_fs.py`, log, dsb. Boleh dipakai sub-project mana pun.
-- `_REVIEW_IMAGES/` — screenshot lama tak teridentifikasi (`a-1.jpg`, `b-1.jpg`, dst). Perlu review manual Budi untuk dipindah ke sub-project yang benar atau dibuang.
+- `_SHARED/` dan `_REVIEW_IMAGES/` dihapus 2026-11-05 atas perintah Baginda. Arsip: `00_RULES/_backup/arsip_hapus_20261105/` (+ riwayat git commit `d4aafc5`). Helper lintas program baru → taruh di sub-project yang memakainya.
 
 ## Aturan Kerja Dengan Sub-Project
 
