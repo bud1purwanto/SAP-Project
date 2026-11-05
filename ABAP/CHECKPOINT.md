@@ -10,7 +10,7 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 | AI / device | Claude (desktop app) |
 | Sub-project | ZMMI_WMS, COA, PO_EMAIL, PO_AUTO_RELEASE, MCP_GATEWAY_TEST + `SUBPROJECTS.md` |
 | Pekerjaan | Rapikan mapping & isi: **ZBMBC digabung ke ZMMI_WMS** (script ZBMBC → `ZMMI_WMS/scripts/zbmbc/`, path hardcode diperbarui); keyword bentrok dirapikan (MES ≠ TECO, `zppr`/`zppi` dihapus, `wms`→ZMMI_WMS), aturan routing "nama persis menang", "Routing Cepat" dihapus; 97 snapshot `src/` → `outputs/src_snapshot/` (COA/PO_EMAIL/PO_AUTO_RELEASE); 244 script adhoc COA → `scripts/_adhoc/`; kolom jumlah file README dihapus; README MCP_GATEWAY_TEST dibuat |
-| Status | Selesai, commit (lihat `git log` branch ini) di branch `housekeeping/subproject-mapping-20261105` (belum merge ke `main`, belum push). Tidak ada file dihapus, hanya dipindah |
+| Status | Selesai, commit `dcc3a2a` sudah di `main` (fast-forward dari branch `housekeeping/subproject-mapping-20261105`), di-push ke `origin/main`. Tidak ada file dihapus, hanya dipindah |
 | Next step | Kandidat hapus A–D masih menunggu; COA `src/` masih 15 file (3 diubah hari ini & 2 dipakai script, sengaja tidak dipindah) |
 | Backup | `00_RULES/_backup/rules_20261105_optimasi/SUBPROJECTS_before_mapping.md` |
 
@@ -18,6 +18,8 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
+| 2026-11-05 14:15 | Claude / desktop | — | Push `main` ke `origin` (GitHub) | Selesai | — |
+| 2026-11-05 14:14 | Claude / desktop | — | Merge fast-forward `housekeeping/subproject-mapping-20261105` → `main` (`dcc3a2a`) | Selesai | — |
 | 2026-11-05 14:13 | Claude / desktop | — | Commit housekeeping di branch `housekeeping/subproject-mapping-20261105` | Selesai | Merge ke main / push |
 | 2026-11-05 14:07 | Claude / desktop | ZMMI_WMS/COA/PO_EMAIL/PO_AUTO_RELEASE | Gabung ZBMBC→ZMMI_WMS, rapikan keyword SUBPROJECTS, snapshot src→outputs/src_snapshot, script adhoc COA→scripts/_adhoc | Selesai | Kandidat hapus A–D |
 | 2026-11-05 11:54 | Claude / desktop | — | Review isi & mapping sub-project (read-only), daftar optimasi | Menunggu Baginda | AGREED → rapikan mapping + src |
