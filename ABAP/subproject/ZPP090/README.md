@@ -15,11 +15,11 @@ Koreksi dan pemunduran sequence nomor JR, update counter ZSEQNUM & log ZLOG_JRNO
 
 ## 2. Isi Folder
 
-| Folder | Jumlah file | Isi |
-|---|---|---|
-| `src/` | 1 | Source ABAP aktif |
-| `docs/` | 1 | FS/TS, analisa, diagram |
-| `outputs/` | 1 | Backup source, dump, hasil compare |
+| Folder | Isi |
+|---|---|
+| `src/` | Salinan kerja source, 1 file per objek (pull server dulu sebelum push) |
+| `docs/` | FS/TS, analisa, diagram |
+| `outputs/` | Backup source, dump, hasil compare |
 
 ## 3. Dokumen Kunci (baca dulu)
 

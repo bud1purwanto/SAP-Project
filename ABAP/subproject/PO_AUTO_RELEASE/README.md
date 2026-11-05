@@ -15,10 +15,11 @@ Auto-release PO di bawah ambang (< USD 500), pilot org TPOL/9999, exception flag
 
 ## 2. Isi Folder
 
-| Folder | Jumlah file | Isi |
-|---|---|---|
-| `src/` | 7 | Source ABAP aktif |
-| `docs/` | 18 | FS/TS, analisa, diagram |
+| Folder | Isi |
+|---|---|
+| `src/` | Salinan kerja source, 1 file per objek (pull server dulu sebelum push) |
+| `outputs/src_snapshot/` | Versi lama dari `src/` (dipindah 2026-11-05) |
+| `docs/` | FS/TS, analisa, diagram |
 
 ## 3. Dokumen Kunci (baca dulu)
 

@@ -15,13 +15,13 @@ Observasi closing PP: exception GI Jumbo Roll terhadap GR (tanpa 261, GI < GR, s
 
 ## 2. Isi Folder
 
-| Folder | Jumlah file | Isi |
-|---|---|---|
-| `src/` | 1 | Source ABAP aktif |
-| `scripts/` | 16 | Script push/fetch/patch/audit |
-| `docs/` | 2 | FS/TS, analisa, diagram |
-| `tests/` | 1 | Script/harness test |
-| `outputs/` | 7 | Backup source, dump, hasil compare |
+| Folder | Isi |
+|---|---|
+| `src/` | Salinan kerja source, 1 file per objek (pull server dulu sebelum push) |
+| `scripts/` | Script push/fetch/patch/audit |
+| `docs/` | FS/TS, analisa, diagram |
+| `tests/` | Script/harness test |
+| `outputs/` | Backup source, dump, hasil compare |
 
 ## 3. Dokumen Kunci (baca dulu)
 

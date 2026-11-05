@@ -15,13 +15,13 @@ Certificate of Analysis mode print & ALV via cabang SY-TCODE, batch list dinamis
 
 ## 2. Isi Folder
 
-| Folder | Jumlah file | Isi |
-|---|---|---|
-| `src/` | 76 | Source ABAP aktif |
-| `scripts/` | 324 | Script push/fetch/patch/audit |
-| `docs/` | 36 | FS/TS, analisa, diagram |
-| `tests/` | 18 | Script/harness test |
-| `outputs/` | 229 | Backup source, dump, hasil compare |
+| Folder | Isi |
+|---|---|
+| `src/` | Salinan kerja source, 1 file per objek (pull server dulu sebelum push) |
+| `scripts/` | Script push/fetch/patch/audit; `scripts/_adhoc/` = 244 script check/inspect/sim sekali pakai |
+| `docs/` | FS/TS, analisa, diagram |
+| `tests/` | Script/harness test |
+| `outputs/` | Backup source, dump, hasil compare; `outputs/src_snapshot/` = versi/kandidat lama dari `src/` |
 
 ## 3. Dokumen Kunci (baca dulu)
 

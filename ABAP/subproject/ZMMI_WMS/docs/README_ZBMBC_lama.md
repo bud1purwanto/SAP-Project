@@ -1,3 +1,5 @@
+> Arsip README lama sub-project ZBMBC (digabung ke ZMMI_WMS 2026-11-05). README aktif: [../README.md](../README.md).
+
 # ZBMBC — Stock Overview with Characteristic (WMS)
 
 | Atribut | Isi |
@@ -6,7 +8,7 @@
 | TCODE | ZBMBC |
 | Modul | MM / WM |
 | Server write | `sandbox-new` (TRS) |
-| Dokumen status | belum ada — buat dari [Template_Checkpoint](../../01_TEMPLATE/Template_Checkpoint.md) |
+| Dokumen status | belum ada — buat dari [Template_Checkpoint](../../../01_TEMPLATE/Template_Checkpoint.md) |
 | README dibuat | 2026-11-05 |
 
 ## 1. Tujuan
@@ -26,8 +28,8 @@ Report stock overview dengan karakteristik; execution type Screen/OLAP/WMS, feed
 
 | Dokumen | Isi |
 |---|---|
-| [docs/ANALISIS_WMS_MODE_2026-10-28.md](docs/ANALISIS_WMS_MODE_2026-10-28.md) | Analisa mode WMS |
-| [docs/ANALISIS_WMS_MODE_2026-10-29_ADBC.md](docs/ANALISIS_WMS_MODE_2026-10-29_ADBC.md) | ADBC multi-row INSERT |
+| [docs/ANALISIS_WMS_MODE_2026-10-28.md](ANALISIS_WMS_MODE_2026-10-28.md) | Analisa mode WMS |
+| [docs/ANALISIS_WMS_MODE_2026-10-29_ADBC.md](ANALISIS_WMS_MODE_2026-10-29_ADBC.md) | ADBC multi-row INSERT |
 
 ## 4. Catatan / Aturan Khusus
 

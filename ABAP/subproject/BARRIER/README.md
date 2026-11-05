@@ -6,7 +6,7 @@
 | TCODE | ZQM004 |
 | Modul | QM |
 | Server write | `sandbox-new` (TRS) |
-| Dokumen status | belum ada — buat dari [Template_Checkpoint](../../01_TEMPLATE/Template_Checkpoint.md) |
+| Dokumen status | [CHECKPOINT.md](CHECKPOINT.md) |
 | README dibuat | 2026-11-05 |
 
 ## 1. Tujuan
@@ -15,11 +15,11 @@ Barrier Inspection List & Upload, Result Recording dan Usage Decision untuk kara
 
 ## 2. Isi Folder
 
-| Folder | Jumlah file | Isi |
-|---|---|---|
-| `src/` | 3 | Source ABAP aktif |
-| `scripts/` | 1 | Script push/fetch/patch/audit |
-| `outputs/` | 5 | Backup source, dump, hasil compare |
+| Folder | Isi |
+|---|---|
+| `src/` | Salinan kerja source, 1 file per objek (pull server dulu sebelum push) |
+| `scripts/` | Script push/fetch/patch/audit |
+| `outputs/` | Backup source, dump, hasil compare |
 
 ## 3. Dokumen Kunci (baca dulu)
 

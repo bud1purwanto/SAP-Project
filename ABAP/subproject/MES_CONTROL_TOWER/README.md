@@ -15,10 +15,10 @@ Download master data MAST, MKAL, STPO/STKO untuk MES dengan default date 1900010
 
 ## 2. Isi Folder
 
-| Folder | Jumlah file | Isi |
-|---|---|---|
-| `src/` | 1 | Source ABAP aktif |
-| `docs/` | 1 | FS/TS, analisa, diagram |
+| Folder | Isi |
+|---|---|
+| `src/` | Salinan kerja source, 1 file per objek (pull server dulu sebelum push) |
+| `docs/` | FS/TS, analisa, diagram |
 
 ## 3. Dokumen Kunci (baca dulu)
 

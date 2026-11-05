@@ -15,9 +15,9 @@ Triage email SAP/ABAP 24 jam, deteksi task development pending, dan checkpoint h
 
 ## 2. Isi Folder
 
-| Folder | Jumlah file | Isi |
-|---|---|---|
-| `docs/` | 22 | FS/TS, analisa, diagram |
+| Folder | Isi |
+|---|---|
+| `docs/` | FS/TS, analisa, diagram |
 
 ## 3. Dokumen Kunci (baca dulu)
 

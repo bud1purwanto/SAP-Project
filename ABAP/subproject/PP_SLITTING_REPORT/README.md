@@ -15,11 +15,11 @@ Rekap slitting harian, perbandingan ZPP016 vs ZPP016N, traceability batch/final 
 
 ## 2. Isi Folder
 
-| Folder | Jumlah file | Isi |
-|---|---|---|
-| `src/` | 8 | Source ABAP aktif |
-| `scripts/` | 1 | Script push/fetch/patch/audit |
-| `docs/` | 2 | FS/TS, analisa, diagram |
+| Folder | Isi |
+|---|---|
+| `src/` | Salinan kerja source, 1 file per objek (pull server dulu sebelum push) |
+| `scripts/` | Script push/fetch/patch/audit |
+| `docs/` | FS/TS, analisa, diagram |
 
 ## 3. Dokumen Kunci (baca dulu)
 

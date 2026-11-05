@@ -6,7 +6,7 @@ import { HANDLERS } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/tool-
 await serverManager.loadConfig();
 await serverManager.setActiveServer('sandbox-new');
 for (const p of process.argv.slice(2)) {
-  const lines = readFileSync(`/data/Projects/SAP/ABAP/subproject/ZBMBC/src/${p}.abap`, 'utf8').split('\n');
+  const lines = readFileSync(`/data/Projects/SAP/ABAP/subproject/ZMMI_WMS/src/${p}.abap`, 'utf8').split('\n');
   const res = await HANDLERS.call_function({ function_name: 'Z_RFC_PROGRAM_UPDATE', parameters: {
     IV_PROGRAM_NAME: p, IV_PACKAGE: '$TMP', IV_CORRNUMBER: ' ',
     IT_SOURCE: lines.map(LINE => ({ LINE })) } });

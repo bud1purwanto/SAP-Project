@@ -108,7 +108,7 @@ Alternatif: jadwalkan job ZBMBC-WMS dan ZMMI_WMS di slot berbeda (organisatoris)
 
 - Source live di server (MCP SAP down) — asumsi `src/` = versi terakhir di TRS.
 - Syntax check / aktivasi via RFC, runtime PRD, volume PRD.
-- Isi tabel `ZBMBCSR_WMS` / perilaku SP di MSSQL selain definisi `ZBMBC/outputs/SP_Merge_ZBMBCSR_WMS_def.txt`.
+- Isi tabel `ZBMBCSR_WMS` / perilaku SP di MSSQL selain definisi `outputs/SP_Merge_ZBMBCSR_WMS_def.txt`.
 - Konfigurasi batch level (unique per client vs per material) — relevan untuk key unik CHARG saja.
 - Authorization object `Z_OLAP` / `Z_WERKS` di role user.
 

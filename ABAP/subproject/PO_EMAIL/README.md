@@ -15,12 +15,12 @@ Routing approver berjenjang, notifikasi email PO (HTML + Excel), mapping ZMAP_TY
 
 ## 2. Isi Folder
 
-| Folder | Jumlah file | Isi |
-|---|---|---|
-| `src/` | 36 | Source ABAP aktif |
-| `scripts/` | 5 | Script push/fetch/patch/audit |
-| `docs/` | 12 | FS/TS, analisa, diagram |
-| `outputs/` | 9 | Backup source, dump, hasil compare |
+| Folder | Isi |
+|---|---|
+| `src/` | Salinan kerja source, 1 file per objek (pull server dulu sebelum push) |
+| `scripts/` | Script push/fetch/patch/audit |
+| `docs/` | FS/TS, analisa, diagram |
+| `outputs/` | Backup source, dump, hasil compare; `outputs/src_snapshot/` = versi lama dari `src/` |
 
 ## 3. Dokumen Kunci (baca dulu)
 

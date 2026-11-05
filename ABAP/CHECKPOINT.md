@@ -6,18 +6,21 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 
 | Atribut | Isi |
 |---|---|
-| Waktu | 2026-11-05 11:51 |
+| Waktu | 2026-11-05 14:07 |
 | AI / device | Claude (desktop app) |
-| Sub-project | — (global, housekeeping) |
-| Pekerjaan | Hapus folder `_REVIEW_IMAGES/` (13 jpg) dan `_SHARED/` (4 script helper) atas perintah Baginda; referensi di `AGENTS.md`, `SUBPROJECTS.md`, `00_RULES/08` disesuaikan (arsip log checkpoint → `00_RULES/_backup/checkpoint_arsip/`) |
-| Status | Selesai (belum commit) |
-| Next step | Kandidat hapus lain masih menunggu: (A) log RFC + `__pycache__`, (B) 8 dump `.md` ZBMBC ~150 MB, (C) raw json duplikat ZMMI_WMS, (D) backup COA identik |
-| Backup | `00_RULES/_backup/arsip_hapus_20261105/_REVIEW_IMAGES_20261105.tar.gz`, `_SHARED_20261105.tar.gz` + git `d4aafc5` |
+| Sub-project | ZMMI_WMS, COA, PO_EMAIL, PO_AUTO_RELEASE, MCP_GATEWAY_TEST + `SUBPROJECTS.md` |
+| Pekerjaan | Rapikan mapping & isi: **ZBMBC digabung ke ZMMI_WMS** (script ZBMBC → `ZMMI_WMS/scripts/zbmbc/`, path hardcode diperbarui); keyword bentrok dirapikan (MES ≠ TECO, `zppr`/`zppi` dihapus, `wms`→ZMMI_WMS), aturan routing "nama persis menang", "Routing Cepat" dihapus; 97 snapshot `src/` → `outputs/src_snapshot/` (COA/PO_EMAIL/PO_AUTO_RELEASE); 244 script adhoc COA → `scripts/_adhoc/`; kolom jumlah file README dihapus; README MCP_GATEWAY_TEST dibuat |
+| Status | Selesai, commit (lihat `git log` branch ini) di branch `housekeeping/subproject-mapping-20261105` (belum merge ke `main`, belum push). Tidak ada file dihapus, hanya dipindah |
+| Next step | Kandidat hapus A–D masih menunggu; COA `src/` masih 15 file (3 diubah hari ini & 2 dipakai script, sengaja tidak dipindah) |
+| Backup | `00_RULES/_backup/rules_20261105_optimasi/SUBPROJECTS_before_mapping.md` |
 
 ## Log (terbaru di atas)
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
+| 2026-11-05 14:13 | Claude / desktop | — | Commit housekeeping di branch `housekeeping/subproject-mapping-20261105` | Selesai | Merge ke main / push |
+| 2026-11-05 14:07 | Claude / desktop | ZMMI_WMS/COA/PO_EMAIL/PO_AUTO_RELEASE | Gabung ZBMBC→ZMMI_WMS, rapikan keyword SUBPROJECTS, snapshot src→outputs/src_snapshot, script adhoc COA→scripts/_adhoc | Selesai | Kandidat hapus A–D |
+| 2026-11-05 11:54 | Claude / desktop | — | Review isi & mapping sub-project (read-only), daftar optimasi | Menunggu Baginda | AGREED → rapikan mapping + src |
 | 2026-11-05 11:51 | Claude / desktop | — | Hapus `_REVIEW_IMAGES/` + `_SHARED/` (arsip di `00_RULES/_backup/arsip_hapus_20261105/`), update referensi | Selesai | Kandidat A–D masih menunggu |
 | 2026-11-05 11:46 | Claude / desktop | — | Survei file tidak terpakai (kandidat A–D), belum hapus | Menunggu Baginda | Pilih kategori + opsi arsip |
 | 2026-11-05 | Claude / VSCode remote | ADT_VSCODE | Setup ADT sandbox-new (ICF + ICM 8000 + proxy + ext VSCode) | Menunggu Baginda | Enable proxy systemd, RZ10 port permanen |

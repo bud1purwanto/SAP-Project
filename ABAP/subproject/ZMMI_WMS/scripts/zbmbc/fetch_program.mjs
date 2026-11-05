@@ -10,7 +10,7 @@ for (const p of progs) {
   const res = await call_function({ function_name: 'RPY_PROGRAM_READ', parameters: { PROGRAM_NAME: p, WITH_LOWERCASE: 'X' } });
   const rows = res.result?.SOURCE_EXTENDED || res.result?.SOURCE || [];
   const lines = rows.map(r => (typeof r === 'string' ? r : r.LINE));
-  const out = `/data/Projects/SAP/ABAP/subproject/ZBMBC/outputs/${p}_${tag}.abap`;
+  const out = `/data/Projects/SAP/ABAP/subproject/ZMMI_WMS/outputs/${p}_${tag}.abap`;
   writeFileSync(out, lines.join('\n'), 'utf8');
   console.log(`${p} @ ${server}: ${lines.length} lines -> ${out}`);
 }

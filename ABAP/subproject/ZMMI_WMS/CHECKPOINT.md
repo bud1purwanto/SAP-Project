@@ -11,6 +11,7 @@
 ## Log Sesi (terbaru di atas, wajib — lihat [08](../../00_RULES/08_Checkpoint_Wajib.md))
 | Waktu | AI / device | Pekerjaan | Status | Next step |
 |---|---|---|---|---|
+| 2026-11-05 14:07 | Claude / desktop | Gabung sub-project ZBMBC ke sini (src/docs/outputs flat, scripts → `scripts/zbmbc/`, log → `outputs/zbmbc_logs/`, README lama → `docs/README_ZBMBC_lama.md`) | Selesai | — |
 | 2026-11-05 | Claude / desktop | Draft email update ZMMI_WMS (program baru, index VEKP, testing Aldi, path dokumentasi) | Selesai (draft, belum dikirim) | Baginda kirim email |
 | 2026-11-05 | Claude / desktop | Rapikan Compare_ZBMBC.xlsx (upload Baginda) → `docs/Compare ZBMBC vs ZMMI_WMS.xlsx` (Ringkasan + Screenshot SAT + Data ZBMBC Awal 71.296 baris); script `scripts/build_compare_xlsx.py` | Selesai | — |
 | 2026-11-05 | Claude / desktop | Konversi hasil SAT ZMMI_WMS TRD (1,29 detik) → `outputs/2026-11-05_SAT_ZMMI_WMS_TRD.md` | Selesai | — |

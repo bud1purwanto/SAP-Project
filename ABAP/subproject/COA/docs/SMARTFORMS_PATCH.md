@@ -92,7 +92,7 @@ CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
   2. Mengembalikan pengiriman parameter pada cabang `ELSE` (Domestic `ZQMF_COA`) menjadi `PRODUCT = PRODUCT` (`CHAR30`), konsisten dengan pemanggilan `ZQMF_COA_BATCH`.
 - **Artefak & Verifikasi**:
   - Backup sebelum fix: `outputs/ZQMI_COA_F01_sandbox-new_before_domestic_product_fix.abap`
-  - Source kandidat: `src/ZQMI_COA_F01_export_candidate.abap`
+  - Source kandidat: `outputs/src_snapshot/ZQMI_COA_F01_export_candidate.abap`
   - Snapshot setelah push ke `sandbox-new`: `outputs/ZQMI_COA_F01_sandbox-new_after_domestic_product_fix.abap`
   - Verifikasi `RS_SYNTAX_CHECK` pada `ZQMI_COA`: `SYNTAX_RC = 0`
   - Smoke test `ZQMF_COA` (`/1BCDWB/SF00000394`) dengan `PRODUCT = 'SRE - ASI'`: `FORM_RC = 0`, `OTF_LINES = 126`.
@@ -106,7 +106,7 @@ CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
 - **Solusi di `sandbox-new`**:
   1. **`ZMAP_COA_MIC` (`src/ZMAP_COA_MIC.abap`)**:
      - Sesuai arahan Baginda, struktur `IT_UPLOAD`, `FORM F_UPLOAD_DATA`, dan validasi material dikembalikan ke baseline asli (`outputs/ZMAP_COA_MIC_sandbox-new_before_upload_limit_fix.abap`), dan hanya ditambahkan **validasi karakter `LOWER_LIMIT` & `UPPER_LIMIT`** di `FORM F_CREATE_DATA` dan `FORM F_CHANGE_DATA` (`CO '0123456789., '` serta `CA '0123456789'`), sehingga hanya mengizinkan angka, koma, dan titik.
-  2. **`ZQMI_COA_F01` (`src/ZQMI_COA_F01_export_candidate.abap`)**:
+  2. **`ZQMI_COA_F01` (`outputs/src_snapshot/ZQMI_COA_F01_export_candidate.abap`)**:
      - Di-rollback kembali ke versi fix Domestic Product (`outputs/ZQMI_COA_F01_sandbox-new_after_domestic_product_fix.abap`, `4.556` baris) karena selama data mapping di `ZMAP_COA` benar (`LOWER_LIMIT`/`UPPER_LIMIT` kosong atau berisi angka valid dan `UOM` terisi di kolom `UOM`), `ZQMI_COA` sudah menampilkan nilai `Lower Limit` dan `Upper Limit` dari `QAMV` / `ZMAP_COA` dengan benar.
 - **Artefak & Verifikasi**:
   - Backup sebelum fix: `outputs/ZMAP_COA_MIC_sandbox-new_before_upload_limit_fix.abap`
@@ -123,7 +123,7 @@ CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
   1. Menambahkan satu kali pembacaan `SELECT SINGLE TOLERANZUN TOLERANZOB INTO (LV_MIN, LV_MAX) FROM QPMK` ketika `IT_ZMAP-LOWER_LIMIT IS INITIAL OR IT_ZMAP-UPPER_LIMIT IS INITIAL` (dengan prioritas `WERKS = IT_DATA-WERKS` lalu fallback lintas plant) pada blok `SEQ = 99` di `FORM GET_MIC`, lalu mengisi `IT_MIC-MICMIN = LV_MIN` **hanya jika `IT_ZMAP-LOWER_LIMIT IS INITIAL`** dan `IT_MIC-MICMAX = LV_MAX` **hanya jika `IT_ZMAP-UPPER_LIMIT IS INITIAL`**.
   2. Menyempurnakan pengurutan sebelum deduplikasi menjadi `SORT IT_DATA_UNIQUE BY VBELN MATNR MIC MICMIT INSLOT DESCENDING` agar baris yang memiliki Inspection Lot selalu diprioritaskan di atas baris tanpa Inspection Lot.
 - **Artefak & Verifikasi**:
-  - Source kandidat: `src/ZQMI_COA_F01_export_candidate.abap` (`4.578` baris)
+  - Source kandidat: `outputs/src_snapshot/ZQMI_COA_F01_export_candidate.abap` (`4.578` baris)
   - Snapshot setelah push ke `sandbox-new`: `outputs/ZQMI_COA_F01_sandbox-new_after_qpmk_limit_fallback.abap`
   - Verifikasi `RS_SYNTAX_CHECK` pada `ZQMI_COA`: `SYNTAX_RC = 0`
   - Uji live pembacaan `QPMK` di `sandbox-new` untuk ke-7 MIC `SACB*`: `SACBSIOT` (`102`–`108`), `SACBHZ00` (`1.50`–`2.50`), `SACBSIIN` (`102`–`108`), `SACBFDIN` (`0.200`–`0.400`), `SACBSHMD` (`6.00`–`8.00`), `SACBG400` (`85`–`100`), `SACBSHTD` (`7.00`–`9.00`).
@@ -140,7 +140,7 @@ CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
   2. Menyertakan `INSLOT DESCENDING CHARG ASCENDING` pada `SORT IT_DATA_UNIQUE` (baris `609` dan `616`) agar baris perwakilan yang masuk ke `IT_DATA_AVG` selalu memakai `CHARG` dan `NOMSR` dari item pertama yang konsisten (`0000406885`), tidak lagi acak antar-baris.
   3. Menyertakan `MATNR CHK DESCENDING NUMMIC NUM ASCENDING MIC ASCENDING` pada `SORT IT_DATA` di akhir `FORM GET_DATA` (baris `763`) dan `FORM SELMAPPING` (baris `1575`).
 - **Artefak & Verifikasi**:
-  - Source kandidat: `src/ZQMI_COA_F01_export_candidate.abap` (`4.578` baris)
+  - Source kandidat: `outputs/src_snapshot/ZQMI_COA_F01_export_candidate.abap` (`4.578` baris)
   - Snapshot setelah push ke `sandbox-new`: `outputs/ZQMI_COA_F01_sandbox-new_after_sequence_sort_fix.abap`
   - Verifikasi `RS_SYNTAX_CHECK` pada `ZQMI_COA`: `SYNTAX_RC = 0`.
 
@@ -237,6 +237,6 @@ CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
        - **Solusi**: Di event `AT SELECTION-SCREEN OUTPUT` (`ZQMI_COA_F01`), menambahkan pengkondisian saat `SY-DYNNR = '9000'` untuk mengecualikan fungsi `NONE`, `SPOS`, `GET `, `VDEL`, `VSHO`, `PRIN`, dan `SJOB` menggunakan `RS_SET_SELSCREEN_STATUS` dengan GUI status `%_CSP`.
        - **Hasil**: Toolbar bawah dialog popup kini 100% bersih dan rapi hanya menyisakan tombol Continue (`✔`) dan Cancel (`✖`). Push ke `sandbox-new` sukses dan lulus `RS_SYNTAX_CHECK` (`SYNTAX_RC = 0`).
 - **Artefak & Verifikasi**:
-  - Source kandidat: `src/ZQMI_COA_TOP_export_candidate.abap` (`380` baris), `src/ZQMI_COA_F01_export_candidate.abap` (`4.602` baris), `src/ZQMI_COA_F02_export_candidate.abap` (`1.106` baris), `src/ZMAP_COA_MIC.abap` (`1.567` baris)
+  - Source kandidat: `src/ZQMI_COA_TOP_export_candidate.abap` (`380` baris), `outputs/src_snapshot/ZQMI_COA_F01_export_candidate.abap` (`4.602` baris), `outputs/src_snapshot/ZQMI_COA_F02_export_candidate.abap` (`1.106` baris), `src/ZMAP_COA_MIC.abap` (`1.567` baris)
   - Snapshot setelah push ke `sandbox-new`: `outputs/ZQMI_COA_TOP_sandbox-new_after_screen0100_rev.abap`, `outputs/ZQMI_COA_F01_sandbox-new_after_batch_type_alias_fix.abap`, `outputs/ZQMI_COA_F02_sandbox-new_after_screen0100_rev.abap`, `outputs/ZMAP_COA_MIC_sandbox-new_after_mic_desc_len_fix.abap`
   - Verifikasi `RS_SYNTAX_CHECK` pada `ZQMI_COA` & `ZMAP_COA_MIC`: `SYNTAX_RC = 0`.

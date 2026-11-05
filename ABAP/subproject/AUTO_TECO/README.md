@@ -15,13 +15,13 @@ Auto TECO Production Order (interface MES) dengan validasi status order dan emai
 
 ## 2. Isi Folder
 
-| Folder | Jumlah file | Isi |
-|---|---|---|
-| `src/` | 2 | Source ABAP aktif |
-| `scripts/` | 5 | Script push/fetch/patch/audit |
-| `docs/` | 10 | FS/TS, analisa, diagram |
-| `tests/` | 3 | Script/harness test |
-| `outputs/` | 5 | Backup source, dump, hasil compare |
+| Folder | Isi |
+|---|---|
+| `src/` | Salinan kerja source, 1 file per objek (pull server dulu sebelum push) |
+| `scripts/` | Script push/fetch/patch/audit |
+| `docs/` | FS/TS, analisa, diagram |
+| `tests/` | Script/harness test |
+| `outputs/` | Backup source, dump, hasil compare |
 
 ## 3. Dokumen Kunci (baca dulu)
 
