@@ -8,28 +8,30 @@ Semua sub-project berada di dalam folder induk `subproject/`.
 
 ```
 SAP ABAP Consultant/
-├── AGENTS.md
+├── AGENTS.md               <- entry point semua AI (konteks + aturan emas)
 ├── SUBPROJECTS.md          <- file ini (peta routing)
+├── CHECKPOINT.md           <- terakhir mengerjakan apa (baca pertama)
+├── 00_RULES/               <- aturan detail per topik
+├── 01_TEMPLATE/            <- template README, Design Brief, FS, analisa, RCA, checkpoint
+├── 02_AGENTS/              <- agent per peran (brainstormer, developer, syntax, test, QA, reviewer)
 ├── subproject/
-│   ├── PO_AUTO_RELEASE/
-│   ├── PO_EMAIL/
-│   ├── AUTO_TECO/
-│   ├── COA/
-│   ├── BARRIER/
-│   ├── GI_JR_CLOSING/
-│   ├── MES_CONTROL_TOWER/
-│   ├── PP_SLITTING_REPORT/
-│   ├── PLANNING_SLITROLL/
-│   ├── DAILY_ABAP_BRIEFING/
-│   ├── SAP_GUI_AUTOMATION/
-│   └── ZPP005N/
+│   ├── AUTO_TECO/            ├── PO_AUTO_RELEASE/
+│   ├── BARRIER/              ├── PO_EMAIL/
+│   ├── COA/                  ├── PP_SLITTING_REPORT/
+│   ├── DAILY_ABAP_BRIEFING/  ├── PROCESS_ORDER_RFC/
+│   ├── GI_JR_CLOSING/        ├── SAP_GUI_AUTOMATION/
+│   ├── MES_CONTROL_TOWER/    ├── ZBMBC/
+│   ├── PLANNING_SLITROLL/    ├── ZMM061/
+│   ├── ZMMI_WMS/             ├── ZPP005N/
+│   └── ZPP090/
 ├── _SHARED/                <- helper generik lintas program
 └── _REVIEW_IMAGES/         <- screenshot lama belum teridentifikasi
 ```
-
 ## Struktur Umum Tiap Sub-Project
 
 Setiap sub-project memakai subfolder standar:
+
+- `README.md` — ringkasan sub-project (atribut, tujuan, isi folder, dokumen kunci). Template: `01_TEMPLATE/Template_README_Subproject.md`
 
 - `src/` — source code ABAP (`.abap`)
 - `scripts/` — script otomasi (`.mjs`, `.js`, `.py`, `.ps1`) untuk push/fetch/patch/audit via MCP SAP
@@ -55,10 +57,27 @@ Setiap sub-project memakai subfolder standar:
 | `subproject/ZPP005N/` | `ZPPR_PENDING_ORDER_ALF` | Report Pending Order (monitoring Sales Order vs Production Order, status Delivery & Stock TTA, kolom SKU Design SubCont CKI, Digital Boardroom) | zpp005n, zpp005, zppr_pending_order_alf, pending order, so pending, order alf |
 | `subproject/ZPP090/` | `ZPPI_CHANGE_JR_NUMBER` | Koreksi dan pemunduran sequence nomor Jumbo Roll (JR), update counter tabel `ZSEQNUM` & log `ZLOG_JRNO`, penanganan multi-step rollback | zpp090, zppi_change_jr_number, change jr, memundurkan no roll, sequence roll jr, zseqnum, zlog_jrno |
 | `subproject/ZMM061/` | `ZMMR_RETURN_PALLET_STOCK` | Report Returnable Pallet Stock (RTP Pallet/Core/Sideboard), status siklus pallet dari log `ZPALLETR`, mapping Terminal `ZMAP_TYPE` per TCODE, dokumen WRICEF/FS | zmm061, zmmr_return_pallet_stock, returnable pallet, rtp pallet, zpalletr, pallet stock, terminal pallet |
-| `subproject/ZBMBC/` | T-Code `ZBMBC` (program TBD) | Report Stock Overview with Characteristic; execution type Screen/OLAP/WMS, feed data HU ke WMS gudang FGS (pengganti alur ZBMBCSR → OLAP → WMS) | zbmbc, zbmbcsr, stock overview characteristic, wms, hu pallet, hu box, execution type |
+| `subproject/ZBMBC/` | T-Code `ZBMBC`, program `ZBAP_STOCK_BY_CHAR1` | Report Stock Overview with Characteristic; execution type Screen/OLAP/WMS, feed data HU ke WMS gudang FGS (pengganti alur ZBMBCSR → OLAP → WMS) | zbmbc, zbmbcsr, stock overview characteristic, wms, hu pallet, hu box, execution type |
 | `subproject/ZMMI_WMS/` | `ZMMI_WMS` | Program baru feed WMS gudang berbasis HU: VEKP (Created On + MAGRV) -> HU Box/Pallet -> batch -> stok MCHB/MSKA -> karakteristik; output ALV / WMS (staging `Y_ZBMBCSR` + `SP_Merge_ZBMBCSR_WMS`), mass select di awal | zmmi_wms, hu wms, vekp, vepo, magrv, hu created on, wms hu |
-| `subproject/MCP_GATEWAY_TEST/` | MCP Gateway Test | Pengujian konektivitas, handshake, discovery tools, dan health check endpoint MCP SQL/RAG | mcp gateway, mcp-sql, mcp-rag, gateway test, testing mcp |
+| `subproject/PROCESS_ORDER_RFC/` | `ABAP4_CALL_TRANSACTION` → COR1 | Create process order JR (1 ROL, base qty KG) dari luar SAP via RFC, zero transport, background | cor1, create process order, bapi_procord_create, abap4_call_transaction, process order rfc, base quantity |
+| `subproject/MCP_GATEWAY_TEST/` *(folder belum ada)* | MCP Gateway Test | Pengujian konektivitas, handshake, discovery tools, dan health check endpoint MCP SQL/RAG | mcp gateway, mcp-sql, mcp-rag, gateway test, testing mcp |
 
+
+## Routing Cepat (dipindah dari AGENTS.md)
+
+- `Auto TECO`, `TECO`, `COHVPI`, `ZPPI`, `ZPP001`, `ZPPR`, `production order` -> `subproject/AUTO_TECO/`; program utama `ZPPI_COHVPI`.
+- `PO auto release`, `autorelease`, `ZPO_AUTO_RELEASE`, `ZMMI_PO_RELEASE` -> `subproject/PO_AUTO_RELEASE/`.
+- `PO email`, `ZMMI_PO_EMAIL`, `approver`, `SMTP`, `SOST` -> `subproject/PO_EMAIL/`.
+- `COA`, `ZQMI_COA`, `ZQMR_COA`, `ZQM002`, `ZQM003`, `certificate`, `MIC`, `QPMK` -> `subproject/COA/`.
+- `barrier`, `ZQMI_PENDING_BARRIER`, `ZQM004`, `WVTR`, `OTR`, `MVTR`, `O2TR` -> `subproject/BARRIER/`.
+- `pending order`, `ZPP005N`, `ZPP005`, `ZPPR_PENDING_ORDER_ALF` -> `subproject/ZPP005N/`; program utama `ZPPR_PENDING_ORDER_ALF`.
+- `gi jr closing`, `zppr_gi_jr_closing`, `jumbo roll`, `gi jr`, `closing pp`, `gi vs gr`, `zzprodline`, `zznomorroll` -> `subproject/GI_JR_CLOSING/`.
+- `zpp016`, `zpp016n`, `zpp106`, `rekap slitting harian`, `slitting report`, `final batch`, `zbatchistory` -> `subproject/PP_SLITTING_REPORT/`.
+- `planning slit roll`, `hasil planning sr`, `zppr_planning_slitroll`, `original order`, `combine order`, `vendor batch` -> `subproject/PLANNING_SLITROLL/`.
+- `daily briefing abap`, `briefing sap`, `email abap pending`, `cron abap` -> `subproject/DAILY_ABAP_BRIEFING/`.
+- `sap gui`, `sap logon`, `computer use`, `cua-driver`, `gui automation`, `monitor transaksi` -> `subproject/SAP_GUI_AUTOMATION/`.
+- `mes control tower`, `mes`, `zpp_md_dl`, `mast`, `mkal`, `stpo`, `stko`, `stas` -> `subproject/MES_CONTROL_TOWER/`.
+- `zpp090`, `zppi_change_jr_number`, `change jr`, `memundurkan no roll`, `sequence roll jr`, `zseqnum` -> `subproject/ZPP090/`; program utama `ZPPI_CHANGE_JR_NUMBER`.
 
 ## Folder Non-Sub-Project
 
@@ -78,15 +97,18 @@ Setiap sub-project memakai subfolder standar:
 Ketika muncul program/permintaan yang **tidak cocok** dengan sub-project mana pun di tabel:
 
 1. Buat folder baru di dalam `subproject/` dengan nama singkat huruf besar, mis. `subproject/NAMA_BARU/`.
-2. Buat subfolder standar di dalamnya: `src/ scripts/ docs/ tests/ outputs/`.
+2. Buat subfolder standar di dalamnya: `src/ scripts/ docs/ tests/ outputs/` + `README.md` dari `01_TEMPLATE/Template_README_Subproject.md`.
 3. **Tambahkan satu baris ke tabel "Peta Sub-Project" di atas**: folder, program utama, cakupan, dan kata kunci routing. Tanpa langkah ini sub-project baru tidak akan ter-route otomatis.
 4. Taruh semua file terkait ke subfolder yang sesuai berdasarkan ekstensi:
    `.abap`→`src/`, `.mjs/.js/.py/.ps1`→`scripts/` (test→`tests/`), dokumen/gambar→`docs/`, `.json/.log/.txt` dump/backup→`outputs/`.
-5. Jika satu file relevan ke >1 sub-project, taruh di sub-project utama dan sebut di kolom cakupan sub-project lain.
+5. Buat `CHECKPOINT.md` dari `01_TEMPLATE/Template_Checkpoint.md` dan catat di root `CHECKPOINT.md`.
+6. Jika satu file relevan ke >1 sub-project, taruh di sub-project utama dan sebut di kolom cakupan sub-project lain.
 
 Ringkas: **setiap sub-project baru = 1 folder di `subproject/` + 1 baris di tabel peta ini.** Update tabel selalu, agar routing tetap otomatis.
 
 ## Catatan Housekeeping
+
+- 2026-11-05: restrukturisasi — `AGENTS.md` dipecah ke `00_RULES/`, ditambah `01_TEMPLATE/` dan `README.md` di setiap sub-project. `Claude outputs/Solusi_COR1_via_RFC.md` dipindah ke `subproject/PROCESS_ORDER_RFC/docs/`. Backup: `00_RULES/_backup/`.
 
 - Root folder telah dirapikan: file spesifikasi PO Notification dan output Last Price telah dipindahkan ke `subproject/PO_EMAIL/`.
 - File source `ZPPR_PENDING_ORDER_ALF.abap` telah dipindahkan ke `subproject/ZPP005N/src/`.

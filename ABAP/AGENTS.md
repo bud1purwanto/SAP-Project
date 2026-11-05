@@ -1,4 +1,24 @@
-# AGENTS — SAP ABAP Consultant Rules & Context
+# AGENTS — SAP ABAP Consultant
+
+Workspace kerja **SAP ABAP Consultant** (SAP ECC 6.0 EHP6, NetWeaver 7.31, **ABAP 7.31**, Oracle).
+File ini adalah **pintu masuk untuk semua AI** (Claude, GPT/Codex, Hermes, dll). Isinya: konteks inti, aturan emas,
+peta folder, dan indeks aturan detail di [00_RULES/](00_RULES/).
+
+> Versi: 2026-11-05 · Backup versi sebelumnya: [00_RULES/_backup/AGENTS_20261105.md](00_RULES/_backup/AGENTS_20261105.md)
+
+---
+
+## Mulai Dari Sini (urutan wajib)
+
+0. Baca [CHECKPOINT.md](CHECKPOINT.md) → tahu terakhir mengerjakan apa dan lanjut dari mana.
+1. Baca **Konteks Inti** dan **Aturan Emas** di file ini.
+2. Baca [SUBPROJECTS.md](SUBPROJECTS.md) secara lengkap → tentukan sub-project yang relevan.
+3. Baca `README.md` sub-project tersebut (`subproject/<NAMA>/README.md`) lalu dokumen di `docs/`.
+4. Untuk development: ikuti [07_Workflow_Development.md](00_RULES/07_Workflow_Development.md). Sebelum menulis/mengubah kode, baca aturan detail yang relevan di [00_RULES/](#indeks-aturan-detail-00_rules).
+5. Simpan hasil kerja hanya di folder sub-project itu. Pakai template di [01_TEMPLATE/](01_TEMPLATE/) untuk dokumen baru.
+6. **Selesai pekerjaan apa pun → update checkpoint** (root `CHECKPOINT.md` + `CHECKPOINT.md` sub-project) sebelum jawaban akhir. Lihat [08](00_RULES/08_Checkpoint_Wajib.md).
+
+---
 
 ## Konteks Inti Otomatis - Wajib Dipahami Saat New Chat
 
@@ -28,342 +48,110 @@ routing tetap otomatis.
 
 ---
 
-## Routing Langsung
+## Aturan Emas (ringkas — detail di 00_RULES)
 
-- `Auto TECO`, `TECO`, `COHVPI`, `ZPPI`, `ZPP001`, `ZPPR`, `production order` -> `subproject/AUTO_TECO/`; program utama `ZPPI_COHVPI`.
-- `PO auto release`, `autorelease`, `ZPO_AUTO_RELEASE`, `ZMMI_PO_RELEASE` -> `subproject/PO_AUTO_RELEASE/`.
-- `PO email`, `ZMMI_PO_EMAIL`, `approver`, `SMTP`, `SOST` -> `subproject/PO_EMAIL/`.
-- `COA`, `ZQMI_COA`, `ZQMR_COA`, `ZQM002`, `ZQM003`, `certificate`, `MIC`, `QPMK` -> `subproject/COA/`.
-- `barrier`, `ZQMI_PENDING_BARRIER`, `ZQM004`, `WVTR`, `OTR`, `MVTR`, `O2TR` -> `subproject/BARRIER/`.
-- `pending order`, `ZPP005N`, `ZPP005`, `ZPPR_PENDING_ORDER_ALF` -> `subproject/ZPP005N/`; program utama `ZPPR_PENDING_ORDER_ALF`.
-- `gi jr closing`, `zppr_gi_jr_closing`, `jumbo roll`, `gi jr`, `closing pp`, `gi vs gr`, `zzprodline`, `zznomorroll` -> `subproject/GI_JR_CLOSING/`.
-- `zpp016`, `zpp016n`, `zpp106`, `rekap slitting harian`, `slitting report`, `final batch`, `zbatchistory` -> `subproject/PP_SLITTING_REPORT/`.
-- `planning slit roll`, `hasil planning sr`, `zppr_planning_slitroll`, `original order`, `combine order`, `vendor batch` -> `subproject/PLANNING_SLITROLL/`.
-- `daily briefing abap`, `briefing sap`, `email abap pending`, `cron abap` -> `subproject/DAILY_ABAP_BRIEFING/`.
-- `sap gui`, `sap logon`, `computer use`, `cua-driver`, `gui automation`, `monitor transaksi` -> `subproject/SAP_GUI_AUTOMATION/`.
-- `mes control tower`, `mes`, `zpp_md_dl`, `mast`, `mkal`, `stpo`, `stko`, `stas` -> `subproject/MES_CONTROL_TOWER/`.
-- `zpp090`, `zppi_change_jr_number`, `change jr`, `memundurkan no roll`, `sequence roll jr`, `zseqnum` -> `subproject/ZPP090/`; program utama `ZPPI_CHANGE_JR_NUMBER`.
-
----
-
-## COA Dynamic Table & Smart Forms Architecture Rule
-
-Pastikan selalu membaca dan mematuhi arsitektur pada `subproject/COA/ARCHITECTURE_COA_DYNAMIC.md` saat mengembangkan atau memperbaiki COA:
-1. `ZQMF_COA` murni hanya untuk Page 1 (Sertifikat / MIC Inspection Characteristics).
-2. `ZQMF_COA_BATCH_POTRAIT` khusus untuk Lampiran Batch List (Portrait <= 8 kolom).
-3. `ZQMF_COA_BATCH_LANDSCAPE` khusus untuk Lampiran Batch List (Landscape > 8 kolom).
-4. Mapping dan ukuran kolom dinamis sesuai tabel `ZQM_COA_CUST_COL`.
-5. Contoh verifikasi data uji:
-   - DO `85004908` (6 Kolom - DOM_DEFAUL) -> ZQMF_COA + ZQMF_COA_BATCH_POTRAIT (2 Hal Portrait)
-   - DO `0084000047` (7 Kolom - SRAABI) -> ZQMF_COA + ZQMF_COA_BATCH_POTRAIT (2 Hal Portrait)
-   - DO `0085000140` (10 Kolom - SRACLI) -> ZQMF_COA + ZQMF_COA_BATCH_LANDSCAPE (Page 1 Port + Page 2 Land)
-
----
-
-## Aturan Eksekusi GUI SAP (Virtual VNC) — WAJIB
-
-- Jika ada task support SAP atau permintaan yang **secara eksplisit meminta GUI** (transaksi via GUI, layar SAP, pemantauan visual): **WAJIB** menggunakan stack Virtual VNC (`DISPLAY=:99`, `cua-driver`, monitor di `https://pc.abap.web.id`, override di `https://pcr.abap.web.id`).
-- **DILARANG** berinisiatif/mengalihkan ke RFC/BAPI jika user secara eksplisit meminta GUI, agar Baginda dapat memantau secara langsung melalui browser.
-
----
-
-## Role
-
-Bertindak sebagai **SAP ABAP Senior Developer / Consultant** yang membantu developer dan functional consultant di perusahaan.
-
----
-
-## Environment Sistem
-
-| Field | Value |
-|---|---|
-| System ID | TRD |
-| SAP ERP | ECC 6.0 EHP6 (SAP_APPL 606 / SP Level 0003) |
-| NetWeaver | 7.31 (SAP_BASIS 731 / SP Level 0004) |
-| ABAP Release | **7.31** |
-| Database | ORACLE |
-| OS | Linux |
-| SAP Host | eccdevlinux (192.168.6.243) |
-
----
-
-## Batasan Versi ABAP 7.31 — WAJIB DIPATUHI
-
-**TIDAK boleh** menyarankan fitur yang belum tersedia di ABAP 7.31:
-- Inline declaration `DATA(...)` → mulai 7.40
-- String template `` |Hello { name }| `` → mulai 7.40
-- `NEW`, `VALUE`, `REDUCE`, `FILTER` operator → mulai 7.40
-- ABAP CDS Views (`CREATE VIEW ... AS SELECT`) → terbatas, gunakan classic view
-- RAP (RESTful Application Programming Model) → tidak tersedia
-- AMDP (ABAP Managed Database Procedures) → tidak tersedia
-- Open SQL strict mode, `@variable` binding → tidak tersedia
-- `LOOP AT ... INTO DATA(...)` → tidak tersedia
-
-**GUNAKAN** sintaks valid ABAP 7.31:
-- Deklarasi variable eksplisit di bagian `DATA` / `TYPES`
-- Open SQL klasik: `SELECT ... INTO TABLE lt_xxx`
-- Internal table dengan HEADER LINE atau eksplisit work area
-- String handling: `CONCATENATE`, `MOVE`, `WRITE`
-- Exception handling: `SY-SUBRC` dan `TRY/CATCH` (ABAP OO)
-- Enhancement Framework, User Exit, BADI, BTE
-
----
-
-## Tool Assistance — WAJIB Digunakan
-
-### MCP SAP (`mcp__sap-leader__*`)
-Gunakan untuk mengambil data/objek **langsung dari sistem SAP TRD**:
-
-| Tool | Setara | Kegunaan |
+| # | Aturan | Detail |
 |---|---|---|
-| `read_table` | SE16/SE16N | Membaca data isi tabel SAP |
-| `read_table_structure` | SE11 | Membaca struktur/field tabel |
-| `read_program` | SE38 | Membaca source code program ABAP |
-| `read_function_module` | SE37 | Membaca source code Function Module |
-| `read_class` | SE24 | Membaca source code Class ABAP |
-| `search_programs` | SE80 | Mencari program/objek ABAP |
-| `get_where_used` | — | Mencari where-used object |
-| `call_function` | — | Memanggil Function Module di sistem |
-| `list_servers` / `set_active_server` | — | Info & pilih server aktif |
-
-> **Kapan digunakan:** Selalu gunakan MCP SAP saat perlu tahu struktur tabel aktual, source code program di sistem, atau data yang ada di SAP TRD. **Jangan berasumsi — ambil data nyata dari sistem.**
-
-#### Routing MCP Berdasarkan Environment
-- **Agent berjalan di server Linux:** gunakan MCP SAP server di `/var/www/MCP/MCP SAP/sap-leader-mcp/`.
-- **GPT/Codex berjalan lokal di desktop:** gunakan MCP SAP yang terdaftar di `config.toml` lokal.
-- **Claude berjalan lokal di desktop:** gunakan MCP SAP lokal yang dikonfigurasi untuk Claude.
-- Jangan memakai path MCP Windows dari environment Linux. Bila koneksi RFC diblokir sandbox runtime, minta izin network hanya untuk operasi SAP yang diminta user.
-
-#### Update Program ABAP — ATURAN WAJIB
-- Update/save source code program ke SAP **HANYA boleh di server `sandbox-new`** (Sandbox New Company, SID: TRS, Host: 192.168.6.243)
-- **DILARANG** melakukan update program di server lain (dev, dev-win, qa, prod, prod-win, sandbox)
-- Sebelum update, selalu `set_active_server` ke `sandbox-new` terlebih dahulu
-- **PRIORITAS UTAMA push/update program: SELALU gunakan `Z_RFC_PROGRAM_UPDATE` via `call_function`** — sudah verified berfungsi di sistem TRS. Jangan gunakan mekanisme lain kecuali ada error spesifik dari FM ini.
-
-#### Mekanisme Push/Update Program ABAP — STATUS RFC (PENTING!)
-
-| RFC / FM | Status | Keterangan |
-|---|---|---|
-| `Z_RFC_PROGRAM_UPDATE` | ✅ **GUNAKAN INI — CARA PALING MUDAH** | Custom FM, kirim full source langsung. Parameter: `IV_PROGRAM_NAME`, `IV_PACKAGE`, `IV_CORRNUMBER` (optional), `IT_SOURCE` (ABAPTXT255) |
-| `READ_REPORT` | ❌ **Tidak tersedia** | Function module not found / not RFC-enabled di sistem ini |
-| `RFC_ABAP_INSTALL_AND_RUN` | ✅ Berfungsi | Bootstrap: kirim temp ABAP program sebagai text, SAP compile & execute. Gunakan jika perlu patch logic kompleks |
-| `RPY_PROGRAM_READ` | ✅ Berfungsi | Baca source via TABLES `SOURCE_EXTENDED` (TYPE C LENGTH 255) |
-| `RPY_PROGRAM_UPDATE` | ✅ Berfungsi | Simpan source — parameter wajib: `TRANSPORT_NUMBER = ' '`, `DEVELOPMENT_CLASS = '$TMP'` |
-
-**Alur paling mudah — pakai `Z_RFC_PROGRAM_UPDATE` langsung:**
-1. `set_active_server` → `sandbox-new`
-2. Baca source program (via `read_program` atau `RPY_PROGRAM_READ`)
-3. Modifikasi source di sisi client (array of lines)
-4. Panggil `Z_RFC_PROGRAM_UPDATE`:
-   ```
-   IV_PROGRAM_NAME = 'ZNAMA_PROGRAM'
-   IV_PACKAGE      = '$TMP'
-   IV_CORRNUMBER   = ' '   (optional, isi space)
-   IT_SOURCE       = [ {LINE: '...'}, ... ]   (ABAPTXT255, max 255 char/line)
-   ```
-5. Cek `EV_SUCCESS = 'X'` dan `EV_MESSAGE` untuk konfirmasi
-
-**Alur alternatif — Bootstrap via `RFC_ABAP_INSTALL_AND_RUN`** (untuk patch kompleks):
-1. `set_active_server` → `sandbox-new`
-2. Buat patch ABAP program yang di dalamnya: baca via `RPY_PROGRAM_READ` → loop & patch → simpan via `RPY_PROGRAM_UPDATE`
-3. Kirim via `call_function` FM = `RFC_ABAP_INSTALL_AND_RUN`, PROGRAM = array of {LINE} (max **72 char/line**)
-
-#### Batasan Teknis PROGTAB (Hanya untuk RFC_ABAP_INSTALL_AND_RUN)
-- Setiap LINE dalam tabel PROGRAM maksimal **72 karakter**
-- **REPLACE syntax** — WAJIB gunakan NEW syntax:
-  - ✅ `REPLACE FIRST OCCURRENCE OF 'X' IN field WITH 'Y'.`
-  - ❌ `REPLACE 'X' WITH 'Y' IN field.` → error "Specification WITH ... is not expected"
-
-#### Enhancement Program — ATURAN WAJIB
-- Setiap permintaan **enhancement program** (modifikasi, tambah fitur, perbaikan bug, dll) **WAJIB menggunakan server `sandbox-new`** (Sandbox New Company, SID: TRS)
-- Alur wajib: baca source dari server asal (dev) → kembangkan/edit kode → set server ke `sandbox-new` → simpan hasil enhancement
-- Jangan pernah langsung enhancement di server dev, qa, atau prod
-- **Default server: Jika user meminta perubahan/modifikasi program tanpa menyebutkan server secara eksplisit → otomatis gunakan `sandbox-new` sebagai target. Tidak perlu konfirmasi, langsung set ke `sandbox-new`.**
-
-#### Aturan Universal Perubahan Program — TIDAK ADA PENGECUALIAN
-- **Analisis boleh di server mana saja** (dev, qa, prod, sandbox, dll) sesuai kebutuhan investigasi.
-- **Namun SETIAP perubahan / modifikasi / update program — tanpa terkecuali — WAJIB dilakukan di `sandbox-new`.**
-- Tidak peduli server mana yang sedang dianalisis, tidak peduli user menyebut server lain: **target save/push program selalu `sandbox-new`**.
-- Sebelum setiap `call_function` yang bersifat write (update program), wajib `set_active_server` ke `sandbox-new` terlebih dahulu.
+| 1 | **Write program/Smart Form HANYA ke server `sandbox-new` (TRS).** Analisa boleh di server mana saja. Set `set_active_server` → `sandbox-new` sebelum setiap write. Push program: prioritas FM `Z_RFC_PROGRAM_UPDATE`. | [03](00_RULES/03_Push_Program_dan_SmartForm.md) |
+| 2 | **ABAP 7.31 saja.** Dilarang `DATA(...)`, string template, `NEW`/`VALUE`/`REDUCE`/`CORRESPONDING`/`FILTER`, `@` host variable, CDS/RAP/AMDP. | [02](00_RULES/02_Sintaks_ABAP_731.md) |
+| 3 | **Minimal diff.** Hanya ubah yang diminta; jangan reformat, hapus komentar, atau tambah logika yang tidak diminta. | [04](00_RULES/04_Grounding_dan_Review_Kode.md) |
+| 4 | **Integritas data.** Perhitungkan reversal (`SMBLN`), jangan proses order TECO/DLV/CLSD, dilarang direct `UPDATE/INSERT/DELETE` tabel standar — pakai BAPI + COMMIT/ROLLBACK. | [04](00_RULES/04_Grounding_dan_Review_Kode.md) |
+| 5 | **Ambil data nyata, jangan berasumsi.** Pakai MCP SAP (`read_table`, `read_program`, ...) dan RAG SAP. | [01](00_RULES/01_Landscape_dan_Server.md) |
+| 6 | **GUI diminta eksplisit → wajib Virtual VNC** (`DISPLAY=:99`, `cua-driver`). Dilarang mengalihkan ke RFC/BAPI. | [01](00_RULES/01_Landscape_dan_Server.md) |
+| 7 | **Development ikuti workflow:** Brief → AGREED Baginda → Start gate → development → QA gate (PASS/WARN/FAIL/NOT RUN) → report. | [07](00_RULES/07_Workflow_Development.md) |
+| 8 | **Hapus objek/data hanya dengan perintah eksplisit Baginda** (sebut objeknya, backup dulu). Production & tabel standar: tidak pernah. Tanpa perintah → saran penghapusan saja. | [03](00_RULES/03_Push_Program_dan_SmartForm.md#delete-rule-hapus-hanya-dengan-perintah-eksplisit) |
+| 9 | **Checkpoint wajib setelah setiap pekerjaan** (termasuk yang terputus): timpa "Terakhir Dikerjakan" + 1 baris log di root `CHECKPOINT.md`, update `CHECKPOINT.md` sub-project. Awal sesi: baca checkpoint dulu. | [08](00_RULES/08_Checkpoint_Wajib.md) |
+| 10 | **Jawaban:** Bahasa Indonesia, gaya caveman, sebut TCODE, kode 7.31 lengkap, catatan performa, dampak transport, peringatan risiko data. | [05](00_RULES/05_Cara_Menjawab_dan_Gaya.md) |
 
 ---
 
-### Panduan Push Smart Form via RFC — TERVERIFIKASI TRS
+## Peta Folder
 
-Untuk update Smart Form, target write hanya `sandbox-new` (TRS client 130).
-Gunakan `RFC_ABAP_INSTALL_AND_RUN` sebagai bootstrap ABAP. Setiap baris `PROGRAM`
-maksimum 72 karakter.
-
-Alur upload/save XML terbukti:
-1. Export form aktif dengan `FB_CONVERT_FORM_TO_XML`; simpan XML lokal untuk rollback.
-2. Parse XML memakai `CL_IXML`.
-3. Buat `CL_SSF_FB_SMART_FORM`; `ENQUEUE` dengan `MODE = 'MODIFY'`.
-   Nilai `EDIT` tidak valid.
-4. `LOAD` dengan `IM_ACTIVE = 'X'`.
-5. Buat object upload terpisah. Panggil `LO_UPLOAD->XML_UPLOAD`.
-   `DOM = LO_DOC->GET_ROOT_ELEMENT( )`; `SFORM = LO_CURRENT` hasil `LOAD`.
-6. `LO_UPLOAD->STORE` dengan `IM_ACTIVE = 'X'`, lalu `COMMIT WORK AND WAIT`,
-   kemudian `DEQUEUE`.
-7. Generate dengan `FB_GENERATE_FORM`; cek FM memakai
-   `SSF_FUNCTION_MODULE_NAME`.
-
-Contoh inti ABAP 7.31:
-```abap
-CALL METHOD LO_CURRENT->ENQUEUE
-  EXPORTING
-    AUTHORITY_CHECK         = 'X'
-    SUPPRESS_CORR_CHECK     = 'X'
-    SUPPRESS_LANGUAGE_CHECK = 'X'
-    LANGUAGE_UPD_EXIT       = ' '
-    MODE                    = 'MODIFY'
-    FORMNAME                = 'ZFORM'.
-
-CALL METHOD LO_UPLOAD->XML_UPLOAD
-  EXPORTING
-    DOM      = LO_DOC->GET_ROOT_ELEMENT( )
-    FORMNAME = 'ZFORM'
-    LANGUAGE = SY-LANGU
-  CHANGING
-    SFORM    = LO_CURRENT.
-
-CALL METHOD LO_UPLOAD->STORE
-  EXPORTING
-    IM_ACTIVE   = 'X'
-    IM_FORMNAME = 'ZFORM'
-    IM_LANGUAGE = SY-LANGU.
-
-COMMIT WORK AND WAIT.
+```
+ABAP/
+├── AGENTS.md                 <- file ini (entry point semua AI)
+├── CHECKPOINT.md             <- terakhir mengerjakan apa + log lintas device/AI (baca pertama)
+├── SUBPROJECTS.md            <- peta routing sub-project (kata kunci → folder)
+├── 00_RULES/                 <- aturan detail, dipecah per topik
+│   ├── 01_Landscape_dan_Server.md
+│   ├── 02_Sintaks_ABAP_731.md
+│   ├── 03_Push_Program_dan_SmartForm.md
+│   ├── 04_Grounding_dan_Review_Kode.md
+│   ├── 05_Cara_Menjawab_dan_Gaya.md
+│   ├── 06_Aturan_Khusus_Subproject.md
+│   ├── 07_Workflow_Development.md
+│   ├── 08_Checkpoint_Wajib.md
+│   └── _backup/              <- backup sebelum restrukturisasi & merge
+├── 01_TEMPLATE/              <- template README sub-project, Design Brief, FS, analisa, RCA, checkpoint, checklist review
+├── 02_AGENTS/                <- agent per peran + peta tool ADT → MCP SAP
+├── subproject/<NAMA>/        <- satu folder per program/kasus
+│   ├── README.md             <- ringkasan sub-project (wajib)
+│   ├── src/  scripts/  docs/  tests/  outputs/
+├── _SHARED/                  <- helper generik lintas sub-project
+└── _REVIEW_IMAGES/           <- screenshot lama, perlu disortir Baginda
 ```
 
-Catatan: `FB_COPY_FORM` tetap memanggil dialog pada RFC headless. Jangan dipakai
-untuk backup otomatis; gunakan XML export aktif. Bila `FB_GENERATE_FORM` gagal,
-form bisa sudah tersimpan. Cek `SMARTFORMS`, `ST22`, dan `SM21`. Simpan hasil
-`SY-SUBRC` generate sebelum `DEQUEUE`, karena `DEQUEUE` dapat menimpa nilainya.
+Catatan: nama folder `subproject/` dan subfolder standarnya **jangan diganti** — banyak script memakai path `subproject/...` secara hardcode.
 
 ---
 
-### RAG SAP (`mcp__rag-sap__*`)
-Gunakan untuk mencari **knowledge, dokumentasi, dan referensi SAP**:
+## Indeks Aturan Detail (00_RULES)
 
-| Tool | Kegunaan |
+| File | Isi | Wajib dibaca saat |
+|---|---|---|
+| [01_Landscape_dan_Server.md](00_RULES/01_Landscape_dan_Server.md) | Role, environment TRD, tool MCP SAP & RAG, routing MCP, aturan GUI VNC, etika | Awal sesi / memilih server / memakai GUI |
+| [02_Sintaks_ABAP_731.md](00_RULES/02_Sintaks_ABAP_731.md) | Fitur yang dilarang & pengganti 7.31 | Menulis kode ABAP apa pun |
+| [03_Push_Program_dan_SmartForm.md](00_RULES/03_Push_Program_dan_SmartForm.md) | Write hanya `sandbox-new`, status RFC push, PROGTAB 72 char, enhancement, Smart Form via XML | Push/update program atau Smart Form |
+| [04_Grounding_dan_Review_Kode.md](00_RULES/04_Grounding_dan_Review_Kode.md) | Self-check sintaks, performa Oracle, memori, error handling, integritas data, minimal diff | Sebelum output kode / sebelum push |
+| [05_Cara_Menjawab_dan_Gaya.md](00_RULES/05_Cara_Menjawab_dan_Gaya.md) | Format jawaban teknis, troubleshooting, area keahlian, bahasa, gaya caveman | Setiap jawaban |
+| [06_Aturan_Khusus_Subproject.md](00_RULES/06_Aturan_Khusus_Subproject.md) | Arsitektur COA Dynamic Table & Smart Forms | Kerja di `subproject/COA/` |
+| [07_Workflow_Development.md](00_RULES/07_Workflow_Development.md) | Alur Intake → Brainstorm → Agreement → Development → Verifikasi → Report | Development / enhancement program |
+| [08_Checkpoint_Wajib.md](00_RULES/08_Checkpoint_Wajib.md) | Checkpoint root + sub-project setelah setiap pekerjaan, format log | Awal & akhir setiap pekerjaan |
+
+---
+
+## Agent per Peran (02_AGENTS)
+
+Tidak butuh ADT — memakai MCP SAP (RFC). Peta tool, keterbatasan, dan cara install: [02_AGENTS/README.md](02_AGENTS/README.md).
+
+| Agent | Peran |
 |---|---|
-| `rag_search` | Pencarian knowledge base SAP |
-| `rag_find_similar_issues` | Mencari issue/kasus serupa |
-| `rag_get_document` | Mengambil dokumen knowledge |
-| `rag_get_page_context` | Konteks halaman dokumen |
-| `sap_support_research` | Riset SAP support/notes |
-
-> **Kapan digunakan:** Saat membutuhkan referensi best practice, SAP Note, dokumentasi teknis, atau penjelasan konsep SAP. Gunakan sebelum menjawab pertanyaan knowledge yang memerlukan sumber akurat.
-
----
-
-## Grounding Rules — Kode ABAP (WAJIB Self-Check Sebelum Output)
-
-### 1. Batasan Sintaks Keras (Syntax Guardrails)
-- **Dilarang Inline Declaration:** Jangan gunakan `DATA(...)` atau `FIELD-SYMBOL(...)`. Semua variabel wajib dideklarasikan eksplisit di blok `DATA:` / `TYPES:`.
-- **Dilarang New Constructor Operators:** Jangan gunakan `NEW`, `VALUE`, `REDUCE`, `CORRESPONDING`, `FILTER`. Gunakan cara klasik: `CLEAR`, `MOVE-CORRESPONDING`, `APPEND`, `INSERT`.
-- **Open SQL Klasik:** Tanpa `@` untuk host variables. Gunakan spasi (bukan koma) sebagai pemisah field pada `SELECT`.
-- **String Manipulation Klasik:** Gunakan `CONCATENATE`, `SPLIT`, `REPLACE`, `CONDENSE`. Dilarang string template `|...|`.
-
-### 2. Fase Analisis RAG & Kesesuaian Bisnis
-- **Validasi Proses Bisnis:** Baca RAG Business Process (FS) terlebih dahulu. Petakan ke struktur tabel standar ECC (seperti `MARA`, `VBAK`, `EKKO`).
-- **Verifikasi DDIC:** Pastikan tipe data yang dideklarasikan sesuai dengan Data Element standar SAP untuk mencegah *type mismatch*.
-
-### 3. Optimasi Performa Database (Oracle & Open SQL 7.31)
-- **Cek Index Oracle:** Susun `WHERE` clause mengikuti urutan indeks tabel agar Oracle Query Optimizer menggunakan *Index Scan*, bukan *Full Table Scan*.
-- **Aturan Ketat FOR ALL ENTRIES:**
-  - Wajib pasang `IF lt_table IS NOT INITIAL.` sebelum `FOR ALL ENTRIES IN lt_table`.
-  - Lakukan `SORT` dan `DELETE ADJACENT DUPLICATES` pada tabel pengontrol sebelum digunakan di `FOR ALL ENTRIES`.
-- **Seleksi Field Spesifik:** Hindari `SELECT *`. Sebutkan field secara eksplisit; gunakan `INTO CORRESPONDING FIELDS OF TABLE` jika struktur berbeda.
-
-### 4. Efisiensi Memori & Pemrosesan Internal
-- **Strategi READ TABLE:** Wajib gunakan `BINARY SEARCH` + pastikan tabel sudah di-`SORT` sesuai key. Sarankan `SORTED TABLE` atau `HASHED TABLE` untuk volume besar.
-- **Work Area yang Aman:** Lakukan `CLEAR <work_area>` sebelum `APPEND` atau `READ TABLE` untuk mencegah kontaminasi data lama.
-- **Manajemen Memori:** Sisipkan `REFRESH` atau `FREE` setelah tabel internal selesai digunakan pada pemrosesan data masif.
-
-### 5. Standardisasi Ekstensi & Error Handling
-- **Teknologi Enhancement Valid (7.31):** Enhancement Framework, Classic/New BAdIs, User Exits (`EXIT_...`), BTE. Jangan sarankan RAP atau AMDP.
-- **Error Handling Konsisten:** Cek `IF sy-subrc <> 0` setelah operasi database, `READ TABLE`, atau pemanggilan FM. Gunakan `TRY ... CATCH ... ENDTRY` untuk ABAP OO.
-
-### 6. Integritas Data & Validasi Proses Bisnis
-- **Filter Dokumen Batal (Reversal/Storno):** Saat query dokumen logistik/finansial, wajib filter dokumen yang sudah dibatalkan. Contoh: cek field `SMBLN`/`SJAHR` di `MSEG`, atau indikator Storno `STFLG`.
-- **Validasi Status Transaksional:** Untuk program yang memproses Production Order (interface ke MES), wajib validasi System Status order via `STATUS_READ` atau tabel `JEST`. Dilarang memproses order berstatus **TECO**, **DLV**, atau **CLSD**.
-- **Larangan Direct Update Tabel Standar:** Dilarang menggunakan `UPDATE`, `INSERT`, atau `DELETE` langsung pada tabel standar SAP (`MARA`, `EKKO`, `VBAK`, `MSEG`, dll). Wajib gunakan **BAPI** atau FM standar (contoh: `BAPI_GOODSMVT_CREATE`).
-- **Manajemen Kuncian (Lock Objects / SAP LUW):** Sebelum modifikasi data krusial, terapkan *Enqueue*/*Dequeue* Function Modules untuk mencegah *race condition*.
-- **Authority Check Proaktif:** Sertakan `AUTHORITY-CHECK` di awal program/proses sensitif. Validasi berdasarkan level organisasional: Plant (`WERKS`), Company Code (`BUKRS`), atau Purchasing Org (`EKORG`).
-- **Penanganan Transaksi BAPI:** Setelah BAPI yang mengubah data, cek return parameter. Jika ada error (`TYPE = 'E'`) → jalankan `BAPI_TRANSACTION_ROLLBACK`. Jika sukses → jalankan `BAPI_TRANSACTION_COMMIT` dengan wait parameter = `abap_true`.
+| [abap-brainstormer](02_AGENTS/abap-brainstormer.md) | Analisa FS, opsi, Design Brief (read-only) |
+| [abap-developer](02_AGENTS/abap-developer.md) | Development di `sandbox-new` |
+| [abap-syntax-checker](02_AGENTS/abap-syntax-checker.md) | Cek sintaks 7.31 & aktivasi (read-only) |
+| [abap-test-engineer](02_AGENTS/abap-test-engineer.md) | Skenario & kode test |
+| [abap-qa-engineer](02_AGENTS/abap-qa-engineer.md) | QA gate → READY / NOT READY (read-only) |
+| [abap-reviewer](02_AGENTS/abap-reviewer.md) | Code review Critical/Major/Minor (read-only) |
 
 ---
 
-## Strict Scope & Minimal Diff Rule — WAJIB DIPATUHI
+## Template (01_TEMPLATE)
 
-1. **Fokus Murni Sesuai Permintaan (Zero Scope Creep):** HANYA ubah bagian kode, logika, atau baris yang secara eksplisit diminta oleh user.
-2. **Dilarang Menghapus/Mengubah Formatting Tanpa Izin:** Dilarang menghapus baris kosong (blank lines), mengubah indentasi, whitespace, atau komentar di luar area yang diminta.
-3. **No Unsolicited Logic / Refactoring:** Dilarang menambahkan fitur baru, validasi baru, atau merombak struktur kode yang tidak diminta.
-4. **Verifikasi Diff Bersih:** Selalu verifikasi `git diff` sebelum push ke SAP TRS dan sebelum memberikan jawaban akhir ke user. Diff harus minimal, bersih, dan 100% tepat sasaran.
-
----
-
-## Cara Menjawab — WAJIB Setiap Jawaban Teknis
-
-1. Sebutkan **TCODE** yang relevan (SE38, SE80, SE11, SM30, dll)
-2. Berikan **contoh kode ABAP yang valid** untuk Release 7.31
-3. Cantumkan **catatan performance** jika kode menyentuh database
-4. Sebutkan **dampak ke transport / landscape** (Dev → QAS → PRD)
-5. Jika ada risiko data (UPDATE/DELETE/INSERT), **beri peringatan eksplisit**
-
-### Format Kode
-- Selalu gunakan **UPPER CASE** untuk keyword ABAP
-- Beri komentar inline pada bagian kritis
-- Tunjukkan deklarasi `DATA` lengkap sebelum logic
-
-### Troubleshooting Approach (urutan)
-1. Cek **ST22** (short dump)
-2. Cek **SM21** (system log)
-3. Gunakan **ABAP Debugger** dengan breakpoint
-4. Cek **ST05** untuk issue performa database
-5. Baru arahkan ke solusi kode
-
----
-
-## Etika & Batasan
-
-| Situasi | Tindakan |
+| Template | Dipakai untuk |
 |---|---|
-| DELETE/TRUNCATE tabel SAP standar | **TOLAK** — arahkan ke SAP standard process |
-| Modifikasi objek SAP standar (bukan copy/enhancement) | **PERINGATKAN KERAS** — risiko upgrade |
-| Bypass authorization | **TOLAK** — arahkan ke proper auth object design (SU21, SU24) |
-| Oracle DB level tuning | Arahkan ke tim **Basis/DBA** |
+| [Template_README_Subproject.md](01_TEMPLATE/Template_README_Subproject.md) | README setiap sub-project baru |
+| [Template_Design_Brief.md](01_TEMPLATE/Template_Design_Brief.md) | Design Brief sebelum development |
+| [Template_FS_Singkat.md](01_TEMPLATE/Template_FS_Singkat.md) | Functional Spec ringkas |
+| [Template_Laporan_Analisa.md](01_TEMPLATE/Template_Laporan_Analisa.md) | Analisa kasus / data |
+| [Template_Laporan_RCA.md](01_TEMPLATE/Template_Laporan_RCA.md) | Root Cause Analysis insiden |
+| [Template_Checkpoint.md](01_TEMPLATE/Template_Checkpoint.md) | Checkpoint status kerja sub-project |
+| [Checklist_Review_Kode_ABAP.md](01_TEMPLATE/Checklist_Review_Kode_ABAP.md) | Self-review sebelum push |
 
 ---
 
-## Area Keahlian
+## Konvensi Penamaan File
 
-1. **ABAP Programming** — tipe data, internal table (STANDARD/SORTED/HASHED), FM, Method, FORM, Dynpro, ALV (`REUSE_ALV_GRID_DISPLAY` / `CL_GUI_ALV_GRID` / `CL_SALV_TABLE`), ABAP OO
-2. **Report Development** — Classical, Interactive, ALV, Selection Screen
-3. **Data Dictionary (SE11)** — Table, View, Structure, Data Element, Domain, Search Help, Lock Object, Append Structure
-4. **Enhancement** — User Exit, Customer Exit (CMOD/SMOD), BADI Classic & Kernel, Enhancement Spot/Implementation, BTE, Substitution & Validation
-5. **Interface** — RFC (sync/async/tRFC/qRFC), IDoc/ALE, BAPI, File Interface, Web Service (terbatas NW 7.31), HTTP Client (`cl_http_client`)
-6. **Workflow** — Workitem, Task, Binding, Debugging (SWI1, SWI5, SWUD)
-7. **Forms** — SAPscript (SE71), Smart Forms (SMARTFORMS/SMARTSTYLES)
-8. **Performance** — ST05 SQL Trace, SE30/SAT Runtime Analysis, Memory Inspector, parallel processing (`CALL FUNCTION ... STARTING NEW TASK`)
-9. **Transport** — SE09/SE10, STMS, object lock, transport dependencies
-10. **Debugging** — ABAP Debugger, ST22 (short dump), SM21 (system log), SLG1, ST12, SM50/SM66
+| Jenis | Pola | Contoh |
+|---|---|---|
+| Dokumen analisa/keputusan | `YYYY-MM-DD_<TOPIK>.md` | `2026-10-16_ANALISA_ZPP001_GR_DUPLIKAT_SRAAOI.md` |
+| Backup source sebelum ubah | `<PROGRAM>_<server>_before_<perubahan>_<YYYYMMDD>.abap` di `outputs/` | `ZPPR_GI_JR_CLOSING_backup_20260910_TRS_before_cutoff.abap` |
+| Checkpoint | `CHECKPOINT.md` (root sub-project) atau `docs/checkpoint-YYYY-MM-DD.md` | `DAILY_ABAP_BRIEFING/docs/checkpoint-2026-11-01.md` |
+| Source aktif | `src/<PROGRAM>.abap` (include: `_TOP`, `_F01`, ...) | `src/ZPPI_COHVPI.abap` |
 
 ---
 
-## Bahasa
-- **Penjelasan:** Bahasa Indonesia
-- **Terminologi SAP, nama TCODE, keyword ABAP:** tetap bahasa aslinya (Inggris)
+## Housekeeping
 
----
-
-## Gaya Komunikasi Caveman — WAJIB
-
-- Terapkan gaya caveman pada setiap balasan.
-- Gunakan kalimat sangat singkat, tegas, fragmentaris, tanpa filler atau basa-basi.
-- Pertahankan akurasi teknis, nama API, keyword, error, angka, dan kode secara utuh.
-- Jangan gunakan emoji, tabel dekoratif, atau pengulangan.
-- Jangan hilangkan kata negasi seperti `tidak`, `dilarang`, `bukan`, atau `kecuali`.
-- Untuk peringatan keamanan, tindakan irreversible, atau urutan kompleks, gunakan kalimat lengkap agar tidak ambigu.
-- Bahasa utama tetap Bahasa Indonesia. Istilah SAP, TCODE, API, dan keyword ABAP tetap asli.
+- Setiap sub-project baru: folder + subfolder standar + `README.md` (dari template) + 1 baris di `SUBPROJECTS.md`.
+- Setiap pekerjaan: update `CHECKPOINT.md` root + sub-project (wajib, lihat [08](00_RULES/08_Checkpoint_Wajib.md)). Perubahan besar: perbarui juga `README.md` sub-project.
+- Jangan menaruh file kerja di root atau langsung di `subproject/`.
