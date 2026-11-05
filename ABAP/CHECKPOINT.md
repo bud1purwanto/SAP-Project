@@ -18,6 +18,7 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
+| 2026-11-05 14:16 | Claude / desktop | — | Remote `origin` diganti ke `git@github.com:bud1purwanto/SAP-Project.git` (repo di-rename GitHub), `ls-remote` OK | Selesai | — |
 | 2026-11-05 14:15 | Claude / desktop | — | Push `main` ke `origin` (GitHub) | Selesai | — |
 | 2026-11-05 14:14 | Claude / desktop | — | Merge fast-forward `housekeeping/subproject-mapping-20261105` → `main` (`dcc3a2a`) | Selesai | — |
 | 2026-11-05 14:13 | Claude / desktop | — | Commit housekeeping di branch `housekeeping/subproject-mapping-20261105` | Selesai | Merge ke main / push |
