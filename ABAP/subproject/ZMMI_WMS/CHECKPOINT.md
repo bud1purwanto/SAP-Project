@@ -11,6 +11,7 @@
 ## Log Sesi (terbaru di atas, wajib — lihat [08](../../00_RULES/08_Checkpoint_Wajib.md))
 | Waktu | AI / device | Pekerjaan | Status | Next step |
 |---|---|---|---|---|
+| 2026-11-06 | Claude / desktop | Variant TODAY ZMMI_WMS dibuat di sandbox-new (TRS) via `scripts/create_variant_today.mjs`: S_ERDAT dinamis RS_VARI_V_TODAY, S_MAGRV PLT/BOX, P_WMS X, P_CONN WMS. Terverifikasi RS_VARIANT_CONTENTS_RFC. DBCO WMS TIDAK ada di TRS (hanya DEV) — Baginda pilih tetap buat di TRS | Selesai | Variant di DEV dibuat Baginda via SE38 bila perlu (DBCO WMS ada di DEV) |
 | 2026-11-05 14:07 | Claude / desktop | Gabung sub-project ZBMBC ke sini (src/docs/outputs flat, scripts → `scripts/zbmbc/`, log → `outputs/zbmbc_logs/`, README lama → `docs/README_ZBMBC_lama.md`) | Selesai | — |
 | 2026-11-05 | Claude / desktop | Draft email update ZMMI_WMS (program baru, index VEKP, testing Aldi, path dokumentasi) | Selesai (draft, belum dikirim) | Baginda kirim email |
 | 2026-11-05 | Claude / desktop | Rapikan Compare_ZBMBC.xlsx (upload Baginda) → `docs/Compare ZBMBC vs ZMMI_WMS.xlsx` (Ringkasan + Screenshot SAT + Data ZBMBC Awal 71.296 baris); script `scripts/build_compare_xlsx.py` | Selesai | — |

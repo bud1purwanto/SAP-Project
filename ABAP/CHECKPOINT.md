@@ -6,18 +6,19 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 
 | Atribut | Isi |
 |---|---|
-| Waktu | 2026-11-05 14:07 |
+| Waktu | 2026-11-06 |
 | AI / device | Claude (desktop app) |
-| Sub-project | ZMMI_WMS, COA, PO_EMAIL, PO_AUTO_RELEASE, MCP_GATEWAY_TEST + `SUBPROJECTS.md` |
-| Pekerjaan | Rapikan mapping & isi: **ZBMBC digabung ke ZMMI_WMS** (script ZBMBC → `ZMMI_WMS/scripts/zbmbc/`, path hardcode diperbarui); keyword bentrok dirapikan (MES ≠ TECO, `zppr`/`zppi` dihapus, `wms`→ZMMI_WMS), aturan routing "nama persis menang", "Routing Cepat" dihapus; 97 snapshot `src/` → `outputs/src_snapshot/` (COA/PO_EMAIL/PO_AUTO_RELEASE); 244 script adhoc COA → `scripts/_adhoc/`; kolom jumlah file README dihapus; README MCP_GATEWAY_TEST dibuat |
-| Status | Selesai, commit `dcc3a2a` sudah di `main` (fast-forward dari branch `housekeeping/subproject-mapping-20261105`), di-push ke `origin/main`. Tidak ada file dihapus, hanya dipindah |
-| Next step | Kandidat hapus A–D masih menunggu; COA `src/` masih 15 file (3 diubah hari ini & 2 dipakai script, sengaja tidak dipindah) |
-| Backup | `00_RULES/_backup/rules_20261105_optimasi/SUBPROJECTS_before_mapping.md` |
+| Sub-project | ZMMI_WMS |
+| Pekerjaan | Buat variant TODAY ZMMI_WMS di sandbox-new (Created On = hari ini dinamis, MAGRV PLT/BOX, WMS, DBCO WMS) |
+| Status | Selesai, terverifikasi. Catatan: DBCO WMS tidak ada di TRS → run WMS di TRS akan gagal koneksi |
+| Next step | Bila perlu di DEV: buat variant via SE38 (write DEV tidak diizinkan untuk agent) |
+| Backup | — (objek baru; variant TODAY belum ada sebelumnya) |
 
 ## Log (terbaru di atas)
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
+| 2026-11-06 | Claude / desktop | ZMMI_WMS | Variant TODAY di sandbox-new (dinamis hari ini, PLT/BOX, WMS/DBCO WMS) | Selesai | Variant DEV via SE38 bila perlu |
 | 2026-11-05 14:16 | Claude / desktop | — | Remote `origin` diganti ke `git@github.com:bud1purwanto/SAP-Project.git` (repo di-rename GitHub), `ls-remote` OK | Selesai | — |
 | 2026-11-05 14:15 | Claude / desktop | — | Push `main` ke `origin` (GitHub) | Selesai | — |
 | 2026-11-05 14:14 | Claude / desktop | — | Merge fast-forward `housekeeping/subproject-mapping-20261105` → `main` (`dcc3a2a`) | Selesai | — |
