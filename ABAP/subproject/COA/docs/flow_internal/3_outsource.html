@@ -1,0 +1,31 @@
+<html><head><link rel="stylesheet" href="style.css"></head><body><div class="wrap">
+<h1>COA — Alur Outsource (Base Film dari Luar)</h1>
+<div class="sub">Contoh: DO <b>0085006279</b> (SREC7I) · Data: DEV</div>
+<div class="grid">
+<div></div><div class="hdr">Alur</div><div class="hdr">Contoh data DEV</div>
+
+<div><div class="no">0</div></div>
+<div class="box"><div class="t">Ambil batch DO &amp; mapping parameter</div><div class="d">Sama dengan flow produksi.</div><div class="src"><b>Sumber:</b> Delivery (LIPS) · Mapping COA (ZMAP_COA)</div></div>
+<div class="ex">Batch <b>0000407199</b> (SREC7I)<br>Mapping: SR Converting, JR Converting, SR Base Film. Tidak ada JR Base Film.</div>
+
+<div><div class="no">1</div></div>
+<div class="box"><div class="t">SR Converting</div><div class="d">Batch DO tidak punya lot sendiri, jadi pakai lot SR lain dari JR yang sama.</div><div class="src"><b>Sumber:</b> Inspection lot type Z04</div></div>
+<div class="ex">Lot dari SR saudara (satu JR induk)</div>
+
+<div><div class="no">2</div></div>
+<div class="box"><div class="t">JR Converting</div><div class="d">Cari JR induk, lalu ambil lot JR-nya.</div><div class="src"><b>Sumber:</b> Relasi SR → JR · Inspection lot type Z02/Z03</div></div>
+<div class="ex">JR <b>0000407183</b> (JREC7I), lot 040000021124</div>
+
+<div><div class="no">3</div></div>
+<div class="box"><div class="t">SR Base Film outsource</div><div class="d">Dari production order JR terlihat SR Base Film yang dipakai, yaitu material outsource <b>SR*X</b> (bisa juga <b>SR*O</b>). Ambil lot inspeksinya.</div><div class="src"><b>Sumber:</b> Goods issue 261 order (MSEG) · Inspection lot type Z04</div></div>
+<div class="ex">SRVLCX 0000407171 – 0000407174<br>Lot <b>050000014330</b></div>
+
+<div><div class="no">4</div></div>
+<div class="box dec"><div class="t">Penelusuran berhenti</div><div class="d">Base film outsource datang dari vendor, jadi tidak ada JR Base Film di SAP. Penelusuran selesai di tahap ini.</div></div>
+<div class="ex">JR Base Film: tidak ada (sesuai mapping)</div>
+
+<div><div class="no">5</div></div>
+<div class="box out"><div class="t">Ambil nilai &amp; rata-rata</div><div class="d">Sama dengan flow produksi. Parameter Base Film (tensile, elongation, shrinkage) diambil dari lot base film outsource.</div></div>
+<div class="ex">Product Name: <b>MZUBD-18</b> (Type + Thickness, tidak ada Alias)</div>
+</div>
+</div></body></html>

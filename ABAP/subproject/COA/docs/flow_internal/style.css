@@ -1,0 +1,34 @@
+body{margin:0;background:#fff;font-family:"Liberation Sans",Arial,sans-serif;color:#1d2433;width:1500px}
+.wrap{padding:28px 36px}
+h1{font-size:28px;margin:0 0 4px}
+.sub{color:#5b6475;font-size:16px;margin-bottom:22px}
+.grid{display:grid;grid-template-columns:60px 1fr 470px;gap:0 18px;align-items:center}
+.no{background:#1f4e79;color:#fff;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px;margin-top:10px}
+.box{border:2px solid #1f4e79;border-radius:10px;padding:10px 14px;margin-bottom:10px;background:#f4f8fc}
+.box.dec{border-color:#c47f00;background:#fff8e8}
+.box.out{border-color:#2e7d32;background:#eef8ef}
+.box.alt{border-style:dashed;border-color:#8a94a6;background:#fafafa}
+.t{font-weight:bold;font-size:18px;margin-bottom:4px}
+.d{font-size:15px;line-height:1.45}
+code{background:#e3e9f2;padding:1px 5px;border-radius:4px;font-size:14px}
+.ex{border-radius:6px;border-left:4px solid #2e7d32;background:#f7fbf7;padding:10px 14px;margin-bottom:10px;font-size:14.5px;line-height:1.45}
+.ex b{color:#2e7d32}
+.arrow{grid-column:2;text-align:center;color:#1f4e79;font-size:20px;line-height:18px;margin:-4px 0 4px}
+.note{margin-top:14px;font-size:14px;color:#3d4556;border-top:1px solid #d5dbe5;padding-top:10px;line-height:1.5}
+.hdr{font-weight:bold;color:#5b6475;font-size:14px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+table{border-collapse:collapse;font-size:14px;width:100%}
+td,th{border:1px solid #c9d2e0;padding:5px 8px;text-align:left}
+th{background:#1f4e79;color:#fff}
+.src{margin-top:6px;font-size:13px;color:#6b7385}
+.src b{color:#3d4556}
+.chain{display:flex;align-items:stretch;gap:10px;margin:6px 0 22px}
+.stg{flex:1;border:2px solid #1f4e79;border-radius:10px;overflow:hidden;background:#fff}
+.stg .h{background:#1f4e79;color:#fff;font-weight:bold;padding:7px 10px;font-size:15px}
+.stg .r{padding:7px 10px;font-size:13.5px;border-top:1px solid #d5dbe5;line-height:1.4}
+.stg .r b{font-size:14.5px}
+.stg .cg{background:#fff8e8;color:#7a5200}
+.stg.fin{border-color:#2e7d32}.stg.fin .h{background:#2e7d32}
+.arr{display:flex;align-items:center;font-size:26px;color:#1f4e79}
+.lbl{font-size:12px;color:#6b7385}
+h2{font-size:19px;margin:18px 0 8px}
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:10px}

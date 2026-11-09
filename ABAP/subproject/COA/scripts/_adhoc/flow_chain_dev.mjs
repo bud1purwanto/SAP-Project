@@ -1,0 +1,59 @@
+import { serverManager } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/server-manager.js';
+import { call_function } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/tools/query-tools.js';
+const prog = `REPORT ZFLOWCH.
+DATA: LV_B TYPE CHARG_D, LV_J TYPE CHARG_D, LV_MAT TYPE MCH1-MATNR,
+      LV_LOT TYPE QALS-PRUEFLOS, LV_ART TYPE QALS-ART,
+      LV_AUF TYPE AUFNR, LV_C TYPE AUFNR, LV_O TYPE CHARG_D.
+DATA: LT_M TYPE TABLE OF MSEG WITH HEADER LINE.
+DATA: LT_B TYPE TABLE OF CHARG_D WITH HEADER LINE.
+APPEND '0000406885' TO LT_B. APPEND '0000406897' TO LT_B.
+APPEND '0000406850' TO LT_B. APPEND '0000407199' TO LT_B.
+LOOP AT LT_B.
+ LV_B = LT_B. WRITE: / '=== START', LV_B.
+ DO 12 TIMES.
+  CLEAR: LV_MAT, LV_LOT, LV_ART, LV_J, LV_AUF, LV_C, LV_O.
+  SELECT SINGLE MATNR INTO LV_MAT FROM MCH1 WHERE CHARG = LV_B.
+  SELECT SINGLE CHARG INTO LV_O FROM ZBATCHISTORY
+   WHERE NCHARG = LV_B.
+  SELECT SINGLE PRUEFLOS ART INTO (LV_LOT, LV_ART) FROM QALS
+   WHERE CHARG = LV_B AND ART IN ('Z02','Z03','Z04').
+  WRITE: / LV_B, LV_MAT, 'LOT', LV_LOT, LV_ART, 'ORG', LV_O.
+  REFRESH LT_M.
+  SELECT * FROM MSEG INTO TABLE LT_M WHERE CHARG = LV_B
+   AND BWART = '101' AND SMBLN = ''.
+  LOOP AT LT_M. WRITE: / '  101 AUF', LT_M-AUFNR, 'PO', LT_M-EBELN,
+   'VEN', LT_M-LIFNR. LV_AUF = LT_M-AUFNR. ENDLOOP.
+  IF LV_MAT(2) = 'SR'.
+   CALL FUNCTION 'ZQM_GET_BATCH_JR_BY_SR'
+    EXPORTING CHARG_S = LV_B IMPORTING CHARG_J = LV_J.
+   WRITE: / '  FM JR_BY_SR ->', LV_J.
+   IF LV_J IS INITIAL. EXIT. ENDIF.
+   LV_B = LV_J. CONTINUE.
+  ENDIF.
+  IF LV_AUF IS INITIAL. EXIT. ENDIF.
+  SELECT SINGLE AUFNR INTO LV_C FROM AFPO
+   WHERE MILL_OC_AUFNR_U = LV_AUF.
+  IF SY-SUBRC = 0. WRITE: / '  COLLECTIVE ->', LV_C. LV_AUF = LV_C.
+  ENDIF.
+  REFRESH LT_M.
+  SELECT * FROM MSEG INTO TABLE LT_M WHERE AUFNR = LV_AUF
+   AND BWART IN ('261','901') AND CHARG <> '' AND SMBLN = ''.
+  SORT LT_M BY CHARG. DELETE ADJACENT DUPLICATES FROM LT_M
+   COMPARING CHARG.
+  CLEAR LV_J.
+  LOOP AT LT_M. WRITE: / '  261', LT_M-CHARG, LT_M-MATNR.
+   IF LV_J IS INITIAL AND ( LT_M-MATNR(2) = 'SR'
+    OR LT_M-MATNR(2) = 'JR' ). LV_J = LT_M-CHARG. ENDIF.
+  ENDLOOP.
+  IF LV_J IS INITIAL. EXIT. ENDIF.
+  LV_B = LV_J.
+ ENDDO.
+ENDLOOP.`.split('\n');
+for (const l of prog) if (l.length > 72) throw new Error('long: '+l);
+await serverManager.loadConfig();
+await serverManager.setActiveServer('Development AIX');
+const res = await call_function({ function_name: 'RFC_ABAP_INSTALL_AND_RUN',
+  parameters: { PROGRAM: prog.map(l => ({ LINE: l })) } });
+console.log(JSON.stringify(res.result?.ERRORMESSAGE||''));
+for (const w of res.result?.WRITES||[]) console.log(w.ZEILE);
+process.exit(0);

@@ -1,0 +1,27 @@
+<html><head><link rel="stylesheet" href="style.css"></head><body><div class="wrap">
+<h1>COA — Alur Product Name (Alias)</h1>
+<div class="sub">Contoh: DO <b>0085006276</b> (1 alias) · DO <b>0085006277</b> (lebih dari 1 alias) · DO <b>0085006278</b> (tanpa alias) · Data: DEV</div>
+<div class="grid">
+<div></div><div class="hdr">Alur</div><div class="hdr">Contoh data DEV</div>
+
+<div><div class="no">1</div></div>
+<div class="box"><div class="t">Ambil batch dari DO</div><div class="d">Sistem membaca semua batch yang ada di Delivery Order.</div><div class="src"><b>Sumber:</b> Delivery item (LIPS)</div></div>
+<div class="ex">DO 0085006276 → batch <b>0000406885</b> (SRACBI)<br>DO 0085006278 → batch <b>0000406850</b> (SRGLBI)</div>
+
+<div><div class="no">2</div></div>
+<div class="box"><div class="t">Baca karakteristik batch</div><div class="d">Sistem membaca karakteristik batch (seperti di MSC3N tab Classification): <b>Alias</b>, <b>Type</b>, dan <b>Thickness</b>.</div><div class="src"><b>Sumber:</b> Klasifikasi batch, class type 023 (MCH1, INOB, CABN, AUSP)</div></div>
+<div class="ex"><table><tr><th>Karakteristik</th><th>DO 0085006276</th><th>DO 0085006278</th></tr>
+<tr><td>Alias (ZZALIAS)</td><td><b>HSB-18</b></td><td>(kosong)</td></tr>
+<tr><td>Type (ZZTYPE)</td><td>HSB4</td><td>MB51</td></tr>
+<tr><td>Thickness (ZZTHICKNESS)</td><td>18</td><td>50</td></tr></table></div>
+
+<div><div class="no">3</div></div>
+<div class="box dec"><div class="t">Alias terisi?</div><div class="d"><b>YA</b> → Product Name = Alias<br><b>TIDAK</b> → Product Name = Type + "-" + Thickness</div></div>
+<div class="ex">DO 0085006276 → <b>HSB-18</b> (dari Alias)<br>DO 0085006278 → <b>MB51-50</b> (Type + Thickness)</div>
+
+<div><div class="no">4</div></div>
+<div class="box out"><div class="t">Tampil di COA</div><div class="d">• Product Name di header sertifikat (Domestic &amp; Export)<br>• Kolom Type di Batch List</div></div>
+<div class="ex">DO 0085006276 = <b>HSB-18</b><br>DO 0085006277 = batch list per batch: <b>HSS-18</b> (12 roll) &amp; <b>HSP-18</b> (6 roll)<br>DO 0085006278 = <b>MB51-50</b></div>
+</div>
+<div class="note"><b>DO dengan lebih dari 1 alias</b> (contoh DO 0085006277): Batch List menampilkan alias per batch. Header sertifikat memakai alias batch pertama yang terisi; untuk Export, Product Name bisa diubah di pop-up header saat print.</div>
+</div></body></html>

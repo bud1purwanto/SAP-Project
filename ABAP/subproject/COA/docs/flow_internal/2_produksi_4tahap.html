@@ -1,0 +1,47 @@
+<html><head><link rel="stylesheet" href="style.css"></head><body><div class="wrap">
+<h1>COA — Alur Produksi 4 Tahap (BF → Coat → Metz → Coat)</h1>
+<div class="sub">Contoh: DO <b>0085006278</b> · material SRGLBI · 10 roll · Data: DEV</div>
+
+<h2>1. Silsilah produksi (ditelusuri mundur dari batch DO)</h2>
+<div class="chain">
+ <div class="stg"><div class="h">Tahap 1 · Base Film</div>
+  <div class="r">JR <b>JRAH8I</b> 0000406687<br><span class="lbl">lot</span> 040000021013</div>
+  <div class="r">SR <b>SRAH8I</b> 0000406719<br><span class="lbl">tidak ada lot sendiri → pakai lot SR saudara</span></div>
+  <div class="r cg">→ jadi material <b>SRGKAA</b> 0000406742<br><span class="lbl">Vendor Batch = 0000406719</span></div></div>
+ <div class="arr">→</div>
+ <div class="stg"><div class="h">Tahap 2 · Coat</div>
+  <div class="r">JR <b>JRGKAI</b> 0000406735<br><span class="lbl">lot</span> 040000021022</div>
+  <div class="r">SR <b>SRGKAI</b> 0000406760<br><span class="lbl">lot</span> 050000014280</div>
+  <div class="r cg">→ jadi material <b>SRGLAA</b> 0000406788<br><span class="lbl">Vendor Batch = 0000406760</span></div></div>
+ <div class="arr">→</div>
+ <div class="stg"><div class="h">Tahap 3 · Metz</div>
+  <div class="r">JR <b>JRGLAI</b> 0000406781<br><span class="lbl">lot</span> 040000021033</div>
+  <div class="r">SR <b>SRGLAI</b> 0000406810<br><span class="lbl">lot</span> 050000014288</div>
+  <div class="r cg">→ jadi material <b>SRGLBA</b> 0000406820<br><span class="lbl">Vendor Batch = 0000406810</span></div></div>
+ <div class="arr">→</div>
+ <div class="stg fin"><div class="h">Tahap 4 · Coat (dikirim)</div>
+  <div class="r">JR <b>JRGLBI</b> 0000406821<br><span class="lbl">lot</span> 040000021043</div>
+  <div class="r">SR <b>SRGLBI</b> 0000406850<br><span class="lbl">lot</span> 050000014314</div>
+  <div class="r" style="background:#eef8ef">= batch di DO 0085006278</div></div>
+</div>
+
+<h2>2. Cara sistem menelusuri</h2>
+<div class="steps">
+<div class="box"><div class="t">A. Dari SR ke JR induk</div><div class="d">SR berasal dari JR mana (hasil slitting).</div><div class="src"><b>Sumber:</b> FM ZQM_GET_BATCH_JR_BY_SR</div></div>
+<div class="box"><div class="t">B. Dari JR ke SR tahap sebelumnya</div><div class="d">Lihat production order JR: SR apa yang dipakai (goods issue), dicocokkan per roll lewat header text dokumen.</div><div class="src"><b>Sumber:</b> MSEG 101 / 261, MKPF-BKTXT, AFPO</div></div>
+<div class="box"><div class="t">C. Dari material SR*A ke SR asli</div><div class="d">Sebelum masuk tahap berikutnya, SR diproses jadi material <b>SR*A</b> (atau <b>SR*O</b>) lewat order M (SR asli 261 → SR*A 531). Nomor SR asli tersimpan di Vendor Batch, jadi sistem kembali ke SR itu untuk ambil lot-nya. <b>SR*X</b> (outsource) dipakai langsung.</div><div class="src"><b>Sumber:</b> MCH1-LICHA</div></div>
+<div class="box"><div class="t">D. Ulangi sampai Base Film</div><div class="d">Ulangi A → B → C sampai JR tidak lagi memakai SR (hanya bahan baku/resin), maksimal 10 tahap. Lot inspeksi di tiap tahap dikumpulkan.</div><div class="src"><b>Sumber:</b> Inspection lot Z04 (SR), Z02/Z03 (JR)</div></div>
+</div>
+
+<h2>3. Parameter COA diambil dari tahap mana</h2>
+<div class="d" style="margin-bottom:8px">Mapping COA hanya menyebut jenisnya (<b>SR</b> atau <b>JR</b>). Sistem mencari parameter itu di semua tahap, lalu memakai lot tahap yang memang punya parameter tersebut.</div>
+<table>
+<tr><th>Parameter (MIC)</th><th>Mapping</th><th>Ketemu di tahap</th><th>Lot</th><th>Nilai (rata-rata)</th></tr>
+<tr><td>Tensile Strength MD/TD, Elongation MD/TD (PAH8*)</td><td>JR Base Film</td><td>1 · JRAH8I</td><td>040000021013</td><td>0.00 / 0</td></tr>
+<tr><td>Shrinkage MD/TD (PGLASHMD/TD)</td><td>JR Converting</td><td>3 · JRGLAI</td><td>040000021033</td><td>2.62 / 0.34</td></tr>
+<tr><td>Gloss 60° Coated Side (PGLAG6CD)</td><td>JR Converting</td><td>3 · JRGLAI</td><td>040000021033</td><td>636</td></tr>
+<tr><td>Surface Tension Coated / Metz (SGLASTCD/MZ)</td><td>SR Converting</td><td>3 · SRGLAI</td><td>050000014288</td><td>42 / 52</td></tr>
+<tr><td>Optical Density (PGLBOD00)</td><td>JR Converting</td><td>4 · JRGLBI</td><td>040000021043</td><td>2.378</td></tr>
+</table>
+<div class="note">Nilai = rata-rata hasil inspeksi (mean value) semua roll di DO, dari tahap yang sama. Tahap 2 (Coat pertama) tidak punya parameter di mapping, jadi tidak tampil di COA. Kolom nilai diambil dari dokumen skenario.<br><b>Sumber nilai:</b> QAMV / QAMR (hasil inspeksi) · Mapping: ZMAP_COA · Desimal: master MIC (QPMK)</div>
+</div></body></html>
