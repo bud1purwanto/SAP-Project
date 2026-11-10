@@ -8,6 +8,7 @@ const C = pres.SchemeColor;
 pres.defineSlideMaster({ title: 'TITLE_ONLY', background: { color: 'FFFFFF' }, objects: [
   { placeholder: { options: { name: 'title', type: 'title', x: 0.5, y: 0.3, w: 12.3, h: 0.6, fontSize: 26, bold: true, color: C.text1, valign: 'top', margin: 0 }, text: '' } },
   { placeholder: { options: { name: 'sub', type: 'body', x: 0.5, y: 0.9, w: 12.3, h: 0.35, fontSize: 13, color: C.accent4, margin: 0 }, text: '' } } ] });
+const keySlide = require('./keys.js')(pres, C);
 const KIND = { n: [C.accent1, C.background2], d: [C.accent3, C.accent5], o: [C.accent2, C.accent6] };
 function runs(arr, base) { return arr.map((r, i) => ({ text: typeof r === 'string' ? r : r.t,
   options: Object.assign({}, base, typeof r === 'string' ? {} : r.o, i < arr.length - 1 && (typeof r === 'string' ? false : r.br) ? { breakLine: true } : {}) })); }
@@ -50,6 +51,13 @@ stepRow(s, 5.5, 1.0, 4, 'o', 'Tampil di COA', [T('• Product Name di header ser
 s.addText([{ text: 'DO lebih dari 1 alias: ', options: { bold: true } }, { text: 'Batch List menampilkan alias per batch. Header sertifikat memakai alias batch pertama yang terisi; untuk Export, Product Name bisa diubah di pop-up header saat print.' }],
   { x: 0.5, y: 6.7, w: 12.3, h: 0.5, isTextBox: true, fontSize: 11, color: C.text1, margin: 0, valign: 'top' });
 
+keySlide('COA — Tabel & Key: Product Name (Alias)', 'Contoh: DO 0085006276 · batch 0000406885 · material SRACBI', [
+ ['1','Batch dari DO','LIPS','VBELN = no. DO; CHARG <> kosong','CHARG, MATNR, WERKS','0000406885 / SRACBI'],
+ ['2','Objek klasifikasi batch','MCH1','MATNR + CHARG','CUOBJ_BM','CUOBJ batch'],
+ ['3','ID karakteristik','CABN','ATNAM IN (ZZALIAS, ZZTYPE, ZZTHICKNESS)','ATINN','ID internal karakteristik'],
+ ['4','Nilai karakteristik','AUSP','OBJEK = CUOBJ_BM; KLART = 023; ATINN dari CABN','ATWRT (Alias, Type), ATFLV (Thickness)','HSB-18 / HSB4 / 18'],
+ ['5','Product Name','(logic)','Alias terisi → Alias; kosong → Type + "-" + Thickness','—','HSB-18 (DO …6278: MB51-50)'],
+]);
 // ---------- Slide 2: 4 tahap
 s = pres.addSlide({ masterName: 'TITLE_ONLY' });
 s.addText('COA — Alur Produksi 4 Tahap (BF → Coat → Metz → Coat)', { placeholder: 'title' });
@@ -91,6 +99,24 @@ s.addTable([[H('Parameter (MIC)'), H('Mapping'), H('Ketemu di tahap'), H('Lot'),
   ['Optical Density (PGLBOD00)', 'JR Converting', '4 · JRGLBI', '040000021043', '2.378']],
   { x: 0.5, y: 5.95, w: 12.3, colW: [4.3, 2.0, 2.0, 2.0, 2.0], rowH: 0.27, fontSize: 10.5, color: C.text1, border: { type: 'solid', pt: 0.75, color: 'C9D2E0' }, fill: { color: C.background1 }, margin: [1, 6, 1, 6], objectName: 'tblParam' });
 
+keySlide('COA — Tabel & Key: Produksi 4 Tahap', 'Contoh: DO 0085006278 · batch 0000406850 · material SRGLBI · customer 1141000131', [
+ ['0','Batch dari DO','LIPS','VBELN = no. DO; CHARG <> kosong','CHARG, MATNR','0000406850 / SRGLBI'],
+ ['0','Customer DO','LIKP','VBELN = no. DO','KUNAG, LFART','1141000131 / ZDLF'],
+ ['0','Mapping parameter','ZMAP_COA','MATNR = material DO; KUNNR = kosong (umum) + KUNNR = KUNAG (khusus, menimpa umum)','MIC, MAPPING, METHOD, UOM, MIC_DESC, LOWER/UPPER_LIMIT, SEQ_NO','PGLASHMD → JR Converting'],
+ ['1','Lot SR','QALS','CHARG = batch SR; ART = Z04','PRUEFLOS','050000014314'],
+ ['1','Batch sebelum ganti grade','ZBATCHISTORY','NCHARG = batch (terbaru)','CHARG (batch lama)','—'],
+ ['A','SR → JR induk','FM ZQM_GET_BATCH_JR_BY_SR','CHARG_S = batch SR','CHARG_J','0000406821 (JRGLBI)'],
+ ['1','SR saudara (jika SR tanpa lot)','FM ZQM_GET_BATCH_SR_BY_JR','CHARGJR = batch JR','T_SR (list SR)','—'],
+ ['2','Lot JR','QALS','CHARG = batch JR; ART IN (Z02, Z03)','PRUEFLOS','040000021043'],
+ ['B','Order JR','MSEG','CHARG = batch JR; BWART = 101; tidak di-reverse','AUFNR, MBLNR, MJAHR','100000073400'],
+ ['B','Header text GR (roll)','MKPF','MBLNR + MJAHR dari 101','BKTXT','P GLB 106 016'],
+ ['B','Order kolektif','AFPO','MILL_OC_AUFNR_U = AUFNR','AUFNR (order asli)','—'],
+ ['B','Komponen SR yang dipakai','MSEG + MKPF','AUFNR; BWART IN (261, 901); CHARG <> kosong; BKTXT sama','CHARG, MATNR','0000406820 / SRGLBA'],
+ ['C','SR asli dari material SR*A/O','MCH1','CHARG = batch SR*A / SR*O','LICHA (Vendor Batch)','0000406810 (SRGLAI)'],
+ ['6','Karakteristik di lot','QAMV','PRUEFLOS = lot; VERWMERKM = MIC','MERKNR, KURZTEXT, TOLERANZUN/OB, STELLEN','PGLASHMD di lot JRGLAI'],
+ ['6','Hasil inspeksi','QAMR','PRUEFLOS + MERKNR','MITTELWERT, ANZWERTG','2.62'],
+ ['6','Master MIC','QPMK / QPMT','MKMNR = MIC (QPMT: SPRACHE = E)','MASSEINHSW (UoM), KURZTEXT','—'],
+]);
 // ---------- Slide 3: Outsource
 s = pres.addSlide({ masterName: 'TITLE_ONLY' });
 s.addText('COA — Alur Outsource (Base Film dari Luar)', { placeholder: 'title' });
@@ -110,4 +136,16 @@ stepRow(s, y, h3, 4, 'd', 'Penelusuran berhenti', ['Base film datang dari vendor
 stepRow(s, y, h3, 5, 'o', 'Ambil nilai & rata-rata', ['Sama dengan flow produksi. Parameter Base Film (tensile, elongation, shrinkage) dari lot base film outsource.'], null,
   ex([T('Product Name: '), G('MZUBD-18'), T(' (Type + Thickness)')]));
 
+keySlide('COA — Tabel & Key: Outsource', 'Contoh: DO 0085006279 · batch 0000407199 · material SREC7I', [
+ ['0','Batch & mapping','LIPS / ZMAP_COA','Sama dengan produksi','CHARG, MATNR / MIC, MAPPING','0000407199 / SREC7I'],
+ ['1','Lot SR (via SR saudara)','QALS + FM SR_BY_JR','CHARG = SR; ART = Z04','PRUEFLOS','lot SR saudara'],
+ ['2','JR induk','FM ZQM_GET_BATCH_JR_BY_SR','CHARG_S = batch SR','CHARG_J','0000407183 (JREC7I)'],
+ ['2','Lot JR','QALS','CHARG = JR; ART IN (Z02, Z03)','PRUEFLOS','040000021124'],
+ ['3','Order JR','MSEG (+AFPO)','CHARG = JR; BWART = 101','AUFNR','100000073492'],
+ ['3','Base film outsource','MSEG','AUFNR; BWART IN (261, 901)','CHARG, MATNR','0000407171 / SRVLCX'],
+ ['3','Lot base film','QALS','CHARG = SR*X; ART = Z04','PRUEFLOS','050000014330'],
+ ['4','Cek JR Base Film','FM ZQM_GET_BATCH_JR_BY_SR','CHARG_S = SR*X','CHARG_J','kosong → berhenti'],
+ ['5','Nilai parameter','QAMV / QAMR','PRUEFLOS + MIC / MERKNR','MITTELWERT','SVLC* dari lot SRVLCX'],
+]);
+require('./master.js')(pres, C)();
 (async () => { await pres.writeFile({ fileName: 'COA_Alur_Internal.pptx' }); await applyTheme('COA_Alur_Internal.pptx', THEME); })();

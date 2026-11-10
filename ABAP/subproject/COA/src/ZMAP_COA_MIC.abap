@@ -416,7 +416,12 @@ FORM F_CREATE_DATA.
       CLEAR LV_MIC.
 
       " 2a. Cek apakah MIC valid di Master Data (QPMK)
-      SELECT SINGLE MKMNR INTO LV_MIC FROM QPMK WHERE MKMNR EQ ITAB-MIC.
+      " MIC harus ada di plant yang sama dengan material (MARC) & status released (LOEKZ = 2)
+      SELECT SINGLE Q~MKMNR INTO LV_MIC
+        FROM QPMK AS Q INNER JOIN MARC AS M ON M~WERKS EQ Q~ZAEHLER
+        WHERE Q~MKMNR EQ ITAB-MIC
+          AND Q~LOEKZ EQ '2'
+          AND M~MATNR EQ ITAB-MATNR.
       IF SY-SUBRC NE 0.
         CONCATENATE 'MIC: ' ITAB-MIC 'is not valid in master data!' INTO V_MSG SEPARATED BY SPACE.
         ITAB-REMARK     = V_MSG.

@@ -172,3 +172,21 @@ Status: proof-of-concept terverifikasi pada server Linux.
 - Temuan teknis penting pada SAP GUI Java: `cua-driver call type_text` dalam `delivery_mode="foreground"` memotong karakter pertama apabila field belum mendeteksi fokus internal penuh atau sedang dalam kondisi ter-highlight penuh setelah error login; pengetikan dengan duplikasi karakter awal saat field terblok menghasilkan input utuh.
 - Login ke `TRP` Client `999` (`eccprodkr`) dengan user `TRSTDEV` berhasil diverifikasi masuk ke layar `SAP Easy Access` (`TRP (1) (999)`).
 - Artefak bukti: `/home/abap/.hermes/cache/scratch/sap-screen.png`.
+
+## 2026-11-10 — Perbaikan ABAP Dump RAISE_EXCEPTION GUI_TYPE_NOT_SUPPORTED (Opsi 1)
+
+- Permintaan: Memperbaiki error short dump ST22 pada ABAP Editor dengan exception condition `GUI_TYPE_NOT_SUPPORTED` di `CL_GUI_ABAPEDIT` / `CL_GUI_SOURCEEDIT`.
+- Target: SAP GUI for Java 8.10 rev 6 pada virtual session `:99`, SID `TRD`, server `trsteccdev`.
+- Analisis: Crash terjadi karena pengaturan editor aktif adalah `Front-End Editor (New)` yang membutuhkan kontrol Windows OCX/Scintilla, tidak kompatibel dengan klien SAP GUI for Java pada Linux.
+- Eksekusi Perbaikan (Opsi 1):
+  1. Masuk ke transaksi `SE38` (ABAP Editor: Initial Screen).
+  2. Membuka menu `Utilities` -> `Settings...` -> Tab `ABAP Editor` -> Sub-tab `Editor`.
+  3. Mengubah radio button dari `Front-End Editor (New)` menjadi `Front-End Editor (Old)`.
+  4. Konfirmasi dan simpan preferensi dengan tombol centang hijau.
+- Verifikasi Live:
+  - Membuka report `ZBUDI` pada SE38 via Display (F7).
+  - Layar `ABAP Editor: Display Report ZBUDI` berhasil terbuka sempurna tanpa short dump, menampilkan baris kode program secara lancar.
+- Artefak bukti:
+  - `/home/abap/.hermes/cache/scratch/screen_after_click_180_32.png` (dialog Settings terbuka)
+  - `/home/abap/.hermes/cache/scratch/screen_after_space.png` (radio button Front-End Editor (Old) terpilih)
+  - `/home/abap/.hermes/cache/scratch/screen_after_f7.png` (editor SE38 sukses menampilkan kode ZBUDI)

@@ -6,18 +6,20 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 
 | Atribut | Isi |
 |---|---|
-| Waktu | 2026-11-06 |
+| Waktu | 2026-11-10 |
 | AI / device | Claude (desktop app) |
 | Sub-project | ZMMI_WMS |
-| Pekerjaan | Buat variant TODAY ZMMI_WMS di sandbox-new (Created On = hari ini dinamis, MAGRV PLT/BOX, WMS, DBCO WMS) |
-| Status | Selesai, terverifikasi. Catatan: DBCO WMS tidak ada di TRS → run WMS di TRS akan gagal koneksi |
-| Next step | Bila perlu di DEV: buat variant via SE38 (write DEV tidak diizinkan untuk agent) |
-| Backup | — (objek baru; variant TODAY belum ada sebelumnya) |
+| Pekerjaan | Analisa temuan QA Aldi ZMMI_WMS: 0003860400 duplikat (HU dipasang ke Sloc 2310 tanpa HU), 0003879068 HU tampil padahal ZBMBC kosong (VEPO-SOBKZ E vs stok bebas) → `subproject/ZMMI_WMS/docs/2026-11-10_ANALISA_QA_TEMUAN_ALDI.md` |
+| Status | Menunggu Baginda (read-only QA, tanpa perubahan kode) |
+| Next step | Baginda pilih aturan HU (A: cek Sloc saja / B: Sloc+SOBKZ seperti ZBMBC / C: as-is) → patch & push sandbox-new |
+| Backup | — (tidak ada perubahan kode) |
 
 ## Log (terbaru di atas)
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
+| 2026-11-10 | Claude / desktop | ZMMI_WMS | Analisa temuan QA Aldi (duplikat & HU beda vs ZBMBC), akar M4 | Menunggu Baginda | Pilih opsi aturan HU |
+| 2026-11-10 | Claude / desktop | COA | ZMAP_COA_MIC cek MIC per plant material + released, push sandbox-new | Selesai | Push DEV oleh Baginda; koreksi data PIBJ* SRIBJI |
 | 2026-11-06 | Claude / desktop | ZMMI_WMS | Variant TODAY di sandbox-new (dinamis hari ini, PLT/BOX, WMS/DBCO WMS) | Selesai | Variant DEV via SE38 bila perlu |
 | 2026-11-05 14:16 | Claude / desktop | — | Remote `origin` diganti ke `git@github.com:bud1purwanto/SAP-Project.git` (repo di-rename GitHub), `ls-remote` OK | Selesai | — |
 | 2026-11-05 14:15 | Claude / desktop | — | Push `main` ke `origin` (GitHub) | Selesai | — |
