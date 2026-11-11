@@ -1,0 +1,611 @@
+{
+ "SRIBRI": {
+  "makt": [
+   {
+    "MAKTX": "SLITT ROLL LCAT-24"
+   }
+  ],
+  "zmap": null,
+  "n_lots": 2000,
+  "last_lot": {
+   "PRUEFLOS": "050000737368",
+   "ART": "Z04",
+   "CHARG": "0015833848",
+   "ENSTEHDAT": "20200407"
+  },
+  "qamv": [
+   {
+    "VERWMERKM": "SIBRSTTH",
+    "KURZTEXT": "Surface Tension Thermal Side",
+    "TOLERANZUN": "3.800000000E+01",
+    "TOLERANZOB": "4.400000000E+01"
+   },
+   {
+    "VERWMERKM": "SIBRSTNE",
+    "KURZTEXT": "Surface Tension Non Thermal Side",
+    "TOLERANZUN": "3.800000000E+01",
+    "TOLERANZOB": "4.000000000E+01"
+   },
+   {
+    "VERWMERKM": "DLAMNATE",
+    "KURZTEXT": "Delaminated",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "SIBRSPTH",
+    "KURZTEXT": "Seal to Paper",
+    "TOLERANZUN": "3.500000000E+02",
+    "TOLERANZOB": "6.500000000E+02"
+   },
+   {
+    "VERWMERKM": "THERMALS",
+    "KURZTEXT": "Thermal Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "DATBERAT",
+    "KURZTEXT": "Actual Berat Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "HARDNESS",
+    "KURZTEXT": "Actual Hardness Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICUW",
+    "KURZTEXT": "Static Unwind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICRW",
+    "KURZTEXT": "Static Rewind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICSP",
+    "KURZTEXT": "Static Stop",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   }
+  ]
+ },
+ "SRIARI": {
+  "makt": [
+   {
+    "MAKTX": "SLITT ROLL LC01-22"
+   }
+  ],
+  "zmap": null,
+  "n_lots": 2000,
+  "last_lot": {
+   "PRUEFLOS": "050000199010",
+   "ART": "Z04",
+   "CHARG": "0004701760",
+   "ENSTEHDAT": "20150217"
+  },
+  "qamv": [
+   {
+    "VERWMERKM": "SIARSTTH",
+    "KURZTEXT": "Surface Tension Thermal Side",
+    "TOLERANZUN": "3.800000000E+01",
+    "TOLERANZOB": "4.400000000E+01"
+   },
+   {
+    "VERWMERKM": "SIARSTNE",
+    "KURZTEXT": "Surface Tension Non Thermal Side",
+    "TOLERANZUN": "3.800000000E+01",
+    "TOLERANZOB": "4.000000000E+01"
+   },
+   {
+    "VERWMERKM": "DLAMNATE",
+    "KURZTEXT": "Delaminated",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "SIARSPTH",
+    "KURZTEXT": "Seal to Paper",
+    "TOLERANZUN": "3.000000000E+02",
+    "TOLERANZOB": "5.500000000E+02"
+   },
+   {
+    "VERWMERKM": "THERMALS",
+    "KURZTEXT": "Thermal Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "DATBERAT",
+    "KURZTEXT": "Actual Berat Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "HARDNESS",
+    "KURZTEXT": "Actual Hardness Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICUW",
+    "KURZTEXT": "Static Unwind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICRW",
+    "KURZTEXT": "Static Rewind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICSP",
+    "KURZTEXT": "Static Stop",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   }
+  ]
+ },
+ "SRIASI": {
+  "makt": [
+   {
+    "MAKTX": "SLITT ROLL LC02-20"
+   }
+  ],
+  "zmap": null,
+  "n_lots": 2000,
+  "last_lot": {
+   "PRUEFLOS": "050000419250",
+   "ART": "Z04",
+   "CHARG": "0009496507",
+   "ENSTEHDAT": "20170509"
+  },
+  "qamv": [
+   {
+    "VERWMERKM": "SIASSTTH",
+    "KURZTEXT": "Surface Tension Thermal Side",
+    "TOLERANZUN": "3.800000000E+01",
+    "TOLERANZOB": "4.400000000E+01"
+   },
+   {
+    "VERWMERKM": "SIASSTNE",
+    "KURZTEXT": "Surface Tension Non Thermal Side",
+    "TOLERANZUN": "3.800000000E+01",
+    "TOLERANZOB": "4.000000000E+01"
+   },
+   {
+    "VERWMERKM": "DLAMNATE",
+    "KURZTEXT": "Delaminated",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "SIASSPTH",
+    "KURZTEXT": "Seal to Paper",
+    "TOLERANZUN": "3.000000000E+02",
+    "TOLERANZOB": "5.500000000E+02"
+   },
+   {
+    "VERWMERKM": "THERMALS",
+    "KURZTEXT": "Thermal Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "DATBERAT",
+    "KURZTEXT": "Actual Berat Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "HARDNESS",
+    "KURZTEXT": "Actual Hardness Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICUW",
+    "KURZTEXT": "Static Unwind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICRW",
+    "KURZTEXT": "Static Rewind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICSP",
+    "KURZTEXT": "Static Stop",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   }
+  ]
+ },
+ "SRKYGI": {
+  "makt": [
+   {
+    "MAKTX": "SLITT ROLL TLF01-25"
+   }
+  ],
+  "zmap": null,
+  "n_lots": 5,
+  "last_lot": {
+   "PRUEFLOS": "050000601192",
+   "ART": "Z04",
+   "CHARG": "0012859587",
+   "ENSTEHDAT": "20190119"
+  },
+  "qamv": [
+   {
+    "VERWMERKM": "SKYGSTNE",
+    "KURZTEXT": "Surface Tension Non Thermal Side",
+    "TOLERANZUN": "4.300000000E+01",
+    "TOLERANZOB": "4.600000000E+01"
+   },
+   {
+    "VERWMERKM": "SKYGSTTH",
+    "KURZTEXT": "Surface Tension Thermal Side",
+    "TOLERANZUN": "3.800000000E+01",
+    "TOLERANZOB": "4.300000000E+01"
+   },
+   {
+    "VERWMERKM": "DLAMNATE",
+    "KURZTEXT": "Delaminated",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "SKYGSPTH",
+    "KURZTEXT": "Seal to Paper",
+    "TOLERANZUN": "3.000000000E+02",
+    "TOLERANZOB": "5.500000000E+02"
+   },
+   {
+    "VERWMERKM": "THERMALS",
+    "KURZTEXT": "Thermal Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "DATBERAT",
+    "KURZTEXT": "Actual Berat Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "HARDNESS",
+    "KURZTEXT": "Actual Hardness Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICUW",
+    "KURZTEXT": "Static Unwind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICRW",
+    "KURZTEXT": "Static Rewind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICSP",
+    "KURZTEXT": "Static Stop",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   }
+  ]
+ },
+ "SRICRI": {
+  "makt": [
+   {
+    "MAKTX": "SLITT ROLL LF01-25"
+   }
+  ],
+  "zmap": null,
+  "n_lots": 2000,
+  "last_lot": {
+   "PRUEFLOS": "050000273035",
+   "ART": "Z04",
+   "CHARG": "0006426000",
+   "ENSTEHDAT": "20151125"
+  },
+  "qamv": [
+   {
+    "VERWMERKM": "SICRSTNE",
+    "KURZTEXT": "Surface Tension Non Thermal Side",
+    "TOLERANZUN": "4.300000000E+01",
+    "TOLERANZOB": "4.600000000E+01"
+   },
+   {
+    "VERWMERKM": "SICRSTTH",
+    "KURZTEXT": "Surface Tension Thermal Side",
+    "TOLERANZUN": "3.800000000E+01",
+    "TOLERANZOB": "4.300000000E+01"
+   },
+   {
+    "VERWMERKM": "DLAMNATE",
+    "KURZTEXT": "Delaminated",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "SICRSPTH",
+    "KURZTEXT": "Seal to Paper",
+    "TOLERANZUN": "3.000000000E+02",
+    "TOLERANZOB": "5.500000000E+02"
+   },
+   {
+    "VERWMERKM": "THERMALS",
+    "KURZTEXT": "Thermal Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "DATBERAT",
+    "KURZTEXT": "Actual Berat Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "HARDNESS",
+    "KURZTEXT": "Actual Hardness Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICUW",
+    "KURZTEXT": "Static Unwind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICRW",
+    "KURZTEXT": "Static Rewind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICSP",
+    "KURZTEXT": "Static Stop",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   }
+  ]
+ },
+ "SRKPKI": {
+  "makt": [
+   {
+    "MAKTX": "SLITT ROLL TZMB-9"
+   }
+  ],
+  "zmap": null,
+  "n_lots": 93,
+  "last_lot": {
+   "PRUEFLOS": "050001529634",
+   "ART": "Z04",
+   "CHARG": "0033467888",
+   "ENSTEHDAT": "20260805"
+  },
+  "qamv": [
+   {
+    "VERWMERKM": "SKPKSTMZ",
+    "KURZTEXT": "Surface Tension Metz Side",
+    "TOLERANZUN": "5.000000000E+01",
+    "TOLERANZOB": "5.800000000E+01"
+   },
+   {
+    "VERWMERKM": "SKPKSTUZ",
+    "KURZTEXT": "Surface Tension Unmetz Side",
+    "TOLERANZUN": "5.500000000E+01",
+    "TOLERANZOB": "5.800000000E+01"
+   },
+   {
+    "VERWMERKM": "SKPKODMZ",
+    "KURZTEXT": "Optical Density",
+    "TOLERANZUN": "3.000000000E+00",
+    "TOLERANZOB": "3.500000000E+00"
+   },
+   {
+    "VERWMERKM": "SKPKBRMZ",
+    "KURZTEXT": "EAA Pos R",
+    "TOLERANZUN": "3.000000000E+02",
+    "TOLERANZOB": "8.000000000E+02"
+   },
+   {
+    "VERWMERKM": "SKPKBCMZ",
+    "KURZTEXT": "EAA Pos C",
+    "TOLERANZUN": "3.000000000E+02",
+    "TOLERANZOB": "8.000000000E+02"
+   },
+   {
+    "VERWMERKM": "SKPKBLMZ",
+    "KURZTEXT": "EAA Pos L",
+    "TOLERANZUN": "3.000000000E+02",
+    "TOLERANZOB": "8.000000000E+02"
+   },
+   {
+    "VERWMERKM": "SKPKMVTR",
+    "KURZTEXT": "MVTR",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "5.000000000E-01"
+   },
+   {
+    "VERWMERKM": "SKPKO2TR",
+    "KURZTEXT": "O2TR",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "4.000000000E-01"
+   },
+   {
+    "VERWMERKM": "BONDING",
+    "KURZTEXT": "Bonding",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "METZSIDE",
+    "KURZTEXT": "Metz Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "DATBERAT",
+    "KURZTEXT": "Actual Berat Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "HARDNESS",
+    "KURZTEXT": "Actual Hardness Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICUW",
+    "KURZTEXT": "Static Unwind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICRW",
+    "KURZTEXT": "Static Rewind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICSP",
+    "KURZTEXT": "Static Stop",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   }
+  ]
+ },
+ "SREUAI": {
+  "makt": [
+   {
+    "MAKTX": "SLITT ROLL ZB-9"
+   }
+  ],
+  "zmap": null,
+  "n_lots": 0,
+  "last_lot": null
+ },
+ "SREWCI": {
+  "makt": [
+   {
+    "MAKTX": "SLITT ROLL ZMB-9"
+   }
+  ],
+  "zmap": null,
+  "n_lots": 2000,
+  "last_lot": {
+   "PRUEFLOS": "050000856352",
+   "ART": "Z04",
+   "CHARG": "0018297713",
+   "ENSTEHDAT": "20210305"
+  },
+  "qamv": [
+   {
+    "VERWMERKM": "SEWCSTMZ",
+    "KURZTEXT": "Surface Tension Metz Side",
+    "TOLERANZUN": "5.000000000E+01",
+    "TOLERANZOB": "5.800000000E+01"
+   },
+   {
+    "VERWMERKM": "SEWCSTUZ",
+    "KURZTEXT": "Surface Tension Unmetz Side",
+    "TOLERANZUN": "5.500000000E+01",
+    "TOLERANZOB": "5.800000000E+01"
+   },
+   {
+    "VERWMERKM": "SEWCODMZ",
+    "KURZTEXT": "Optical Density",
+    "TOLERANZUN": "2.700000000E+00",
+    "TOLERANZOB": "3.300000000E+00"
+   },
+   {
+    "VERWMERKM": "SEWCBRMZ",
+    "KURZTEXT": "EAA Pos R",
+    "TOLERANZUN": "3.000000000E+02",
+    "TOLERANZOB": "8.000000000E+02"
+   },
+   {
+    "VERWMERKM": "SEWCBCMZ",
+    "KURZTEXT": "EAA Pos C",
+    "TOLERANZUN": "3.000000000E+02",
+    "TOLERANZOB": "8.000000000E+02"
+   },
+   {
+    "VERWMERKM": "SEWCBLMZ",
+    "KURZTEXT": "EAA Pos L",
+    "TOLERANZUN": "3.000000000E+02",
+    "TOLERANZOB": "8.000000000E+02"
+   },
+   {
+    "VERWMERKM": "SEWCMVTR",
+    "KURZTEXT": "MVTR",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "5.000000000E-01"
+   },
+   {
+    "VERWMERKM": "SEWCO2TR",
+    "KURZTEXT": "O2TR",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "4.000000000E-01"
+   },
+   {
+    "VERWMERKM": "BONDING",
+    "KURZTEXT": "Bonding",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "METZSIDE",
+    "KURZTEXT": "Metz Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "DATBERAT",
+    "KURZTEXT": "Actual Berat Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "HARDNESS",
+    "KURZTEXT": "Actual Hardness Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICUW",
+    "KURZTEXT": "Static Unwind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICRW",
+    "KURZTEXT": "Static Rewind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICSP",
+    "KURZTEXT": "Static Stop",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   }
+  ]
+ }
+}

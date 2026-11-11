@@ -6,18 +6,22 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 
 | Atribut | Isi |
 |---|---|
-| Waktu | 2026-11-10 |
+| Waktu | 2026-11-11 21:10 |
 | AI / device | Claude (desktop app) |
-| Sub-project | ZMMI_WMS |
-| Pekerjaan | Analisa temuan QA Aldi ZMMI_WMS: 0003860400 duplikat (HU dipasang ke Sloc 2310 tanpa HU), 0003879068 HU tampil padahal ZBMBC kosong (VEPO-SOBKZ E vs stok bebas) → `subproject/ZMMI_WMS/docs/2026-11-10_ANALISA_QA_TEMUAN_ALDI.md` |
-| Status | Menunggu Baginda (read-only QA, tanpa perubahan kode) |
-| Next step | Baginda pilih aturan HU (A: cek Sloc saja / B: Sloc+SOBKZ seperti ZBMBC / C: as-is) → patch & push sandbox-new |
-| Backup | — (tidak ada perubahan kode) |
+| Sub-project | COA |
+| Pekerjaan | Desain mapping ZMAP_COA berbasis alias untuk ZQM002 (rencana saja) + data PRD alias sama/material beda + deck QA |
+| Status | Menunggu Baginda — belum ada perubahan program |
+| Next step | Konfirmasi QA (5 pertanyaan di `subproject/COA/docs/CHECKPOINT_ALIAS_MAPPING_ZQM002.md` §6), lalu tunggu perintah execute |
+| Backup | Bukti data: `subproject/COA/outputs/alias_mapping_20261111/` |
 
 ## Log (terbaru di atas)
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
+| 2026-11-11 21:10 | Claude / desktop | COA | Desain mapping berbasis alias ZQM002 + deck QA (rencana) | Menunggu Baginda | Konfirmasi QA, belum execute |
+| 2026-11-11 | Claude / desktop | ZMMI_WMS | Testing setelah deploy DEV Ref 003 (READY) | Selesai | Transport QA + retest Aldi |
+| 2026-11-11 | Claude / desktop | ZMMI_WMS | Uji before/after DEV 2 batch Aldi (after = ZBMBC) | Selesai | Naik ke DEV + retest |
+| 2026-11-11 | Claude / desktop | ZMMI_WMS | Patch Ref 003 opsi B (aturan HU = ZBMBC) push sandbox-new + compare TRS | Selesai (READY WITH WARNINGS) | Transport + retest QA |
 | 2026-11-10 | Claude / desktop | ZMMI_WMS | Analisa temuan QA Aldi (duplikat & HU beda vs ZBMBC), akar M4 | Menunggu Baginda | Pilih opsi aturan HU |
 | 2026-11-10 | Claude / desktop | COA | ZMAP_COA_MIC cek MIC per plant material + released, push sandbox-new | Selesai | Push DEV oleh Baginda; koreksi data PIBJ* SRIBJI |
 | 2026-11-06 | Claude / desktop | ZMMI_WMS | Variant TODAY di sandbox-new (dinamis hari ini, PLT/BOX, WMS/DBCO WMS) | Selesai | Variant DEV via SE38 bila perlu |

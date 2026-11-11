@@ -16,6 +16,7 @@
 * Ref | Date       | abaper | Description                             *
 * 001 | 30.10.2026 | Budi   | Initial version (generate by AI)        *
 * 002 | 03.11.2026 | Budi   | WMS unique batch before insert (gen AI) *
+* 003 | 11.11.2026 | Budi   | HU match Sloc & Spec.Stock = ZBMBC (AI)  *
 *----------------------------------------------------------------------*
 REPORT ZMMI_WMS_TEST.
 
@@ -41,6 +42,7 @@ TYPES : BEGIN OF TY_HU,
           CHARG TYPE VEPO-CHARG,
           WERKS TYPE VEPO-WERKS,
           LGORT TYPE VEPO-LGORT,
+          SOBKZ TYPE VEPO-SOBKZ,
         END OF TY_VEPO,
         BEGIN OF TY_CONT,
           MATNR TYPE MCHB-MATNR,
@@ -48,6 +50,8 @@ TYPES : BEGIN OF TY_HU,
           CHARG TYPE MCHB-CHARG,
           HUBOX TYPE VEKP-EXIDV,
           HUPLT TYPE VEKP-EXIDV,
+          LGORT TYPE VEPO-LGORT,
+          SOBKZ TYPE VEPO-SOBKZ,
         END OF TY_CONT,
         BEGIN OF TY_KEY,
           MATNR TYPE MCHB-MATNR,
@@ -458,6 +462,8 @@ FORM GT_HU.
     LS_CONT-MATNR = LS_VEPO-MATNR.
     LS_CONT-WERKS = LS_VEPO-WERKS.
     LS_CONT-CHARG = LS_VEPO-CHARG.
+    LS_CONT-LGORT = LS_VEPO-LGORT.
+    LS_CONT-SOBKZ = LS_VEPO-SOBKZ.
     IF LS_HU-MAGRV = GC_BOX.
       LS_CONT-HUBOX = LS_HU-EXIDV.
       IF LS_HU-UEVEL IS NOT INITIAL.
@@ -496,7 +502,7 @@ FORM READ_VEPO USING UT_VENUM TYPE TY_T_VENUM.
   DATA : LT_VEPO TYPE STANDARD TABLE OF TY_VEPO.
 
   CHECK UT_VENUM[] IS NOT INITIAL.
-  SELECT VENUM VEPOS VELIN UNVEL MATNR CHARG WERKS LGORT
+  SELECT VENUM VEPOS VELIN UNVEL MATNR CHARG WERKS LGORT SOBKZ
     INTO TABLE LT_VEPO
     FROM VEPO
      FOR ALL ENTRIES IN UT_VENUM
@@ -801,6 +807,7 @@ ENDFORM.                    "GT_OUTPUT
 FORM ADD_OUT USING US_STK TYPE TY_OUT.
   DATA : LS_CONT  TYPE TY_CONT,
          LS_OUT   TYPE TY_OUT,
+         LT_HUOUT TYPE STANDARD TABLE OF TY_OUT,
          LV_TABIX TYPE SY-TABIX.
 
   READ TABLE GT_CONT TRANSPORTING NO FIELDS
@@ -814,11 +821,33 @@ FORM ADD_OUT USING US_STK TYPE TY_OUT.
        OR LS_CONT-CHARG <> US_STK-CHARG.
       EXIT.
     ENDIF.
+    " Same as ZBMBC: HU content Sloc = stock Sloc
+    IF LS_CONT-LGORT <> US_STK-LGORT.
+      CONTINUE.
+    ENDIF.
     LS_OUT       = US_STK.
-    LS_OUT-HUBOX = LS_CONT-HUBOX.
-    LS_OUT-HUPLT = LS_CONT-HUPLT.
-    APPEND LS_OUT TO GT_OUT.
+    IF LS_CONT-SOBKZ = US_STK-SOBKZ.
+      LS_OUT-HUBOX = LS_CONT-HUBOX.
+      LS_OUT-HUPLT = LS_CONT-HUPLT.
+    ELSEIF LS_CONT-HUBOX IS NOT INITIAL.
+      " Spec. stock differs: no HU Box, Pallet via Box (ZBMBC)
+      LS_OUT-HUPLT = LS_CONT-HUPLT.
+    ENDIF.
+    IF LS_OUT-HUBOX IS INITIAL AND LS_OUT-HUPLT IS INITIAL.
+      CONTINUE.
+    ENDIF.
+    APPEND LS_OUT TO LT_HUOUT.
   ENDLOOP.
+
+  " Stock line without matching HU stays with HU blank (ZBMBC)
+  IF LT_HUOUT[] IS INITIAL.
+    APPEND US_STK TO GT_OUT.
+  ELSE.
+    SORT LT_HUOUT BY HUBOX HUPLT.
+    DELETE ADJACENT DUPLICATES FROM LT_HUOUT COMPARING HUBOX HUPLT.
+    APPEND LINES OF LT_HUOUT TO GT_OUT.
+  ENDIF.
+  FREE LT_HUOUT.
 ENDFORM.                    "ADD_OUT
 
 *&---------------------------------------------------------------------*

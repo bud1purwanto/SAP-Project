@@ -190,3 +190,22 @@ Status: proof-of-concept terverifikasi pada server Linux.
   - `/home/abap/.hermes/cache/scratch/screen_after_click_180_32.png` (dialog Settings terbuka)
   - `/home/abap/.hermes/cache/scratch/screen_after_space.png` (radio button Front-End Editor (Old) terpilih)
   - `/home/abap/.hermes/cache/scratch/screen_after_f7.png` (editor SE38 sukses menampilkan kode ZBUDI)
+
+## 2026-11-10 — Uji SMARTFORMS & Pengembalian Tampilan ABAP Editor SE38 ke Front-End Editor (New)
+
+- Permintaan:
+  1. Menguji pembukaan transaksi `SMARTFORMS` pada SAP GUI for Java `:99` dengan menonaktifkan opsi `Graphical Form Painter` dan `Graphical PC editor`.
+  2. Mengembalikan tampilan ABAP Editor (`SE38`) ke pengaturan semula (`Front-End Editor (New)`).
+- Target: SAP GUI for Java 8.10 rev 6 pada virtual session `:99`, SID `TRD` Client `130`, server `trsteccdev`.
+- Hasil Uji SMARTFORMS:
+  - Setelah `Graphical Form Painter` dan `Graphical PC editor` dipastikan nonaktif melalui `SE71 -> Settings -> Form Painter...`, pembukaan form `ZMMR_LABELROL_TYB_WIN` di `SMARTFORMS` tetap memunculkan pesan error `Current computer architecture is not supported` (`SMARTFORMS 102`).
+  - Dikonfirmasi berdasarkan SAP Note `2503256` & `3024322` bahwa Smart Forms Form Builder membutuhkan kontrol ActiveX Windows dan tidak didukung pada SAP GUI for Java.
+- Hasil Pengembalian SE38:
+  1. Membuka `SE38` -> `Utilities` -> `Settings...` -> `ABAP Editor` -> `Editor`.
+  2. Mengembalikan radio button dari `Front-End Editor (Old)` ke `Front-End Editor (New)` dan menyimpan dengan tombol centang hijau.
+  3. Verifikasi ulang dengan membuka kembali dialog `Settings...` dan memastikan opsi `Front-End Editor (New)` tetap tersimpan aktif, lalu menutup dialog kembali ke layar bersih `ABAP Editor: Initial Screen`.
+  - Catatan: Dengan mode `Front-End Editor (New)` aktif, tampilan modern SE38 kembali normal untuk penggunaan di SAP GUI for Windows; namun pembukaan source code di SAP GUI for Java (`:99`) akan memicu `GUI_TYPE_NOT_SUPPORTED` kecuali dipindah kembali ke `Front-End Editor (Old)`.
+- Artefak bukti:
+  - `/home/abap/.hermes/cache/scratch/screen_sf_after_test.png` (uji SMARTFORMS `SMARTFORMS 102`)
+  - `/home/abap/.hermes/cache/scratch/screen_verify_persisted.png` (verifikasi `Front-End Editor (New)` tersimpan)
+  - `/home/abap/.hermes/cache/scratch/screen_clean_se38.png` (layar akhir SE38 bersih)

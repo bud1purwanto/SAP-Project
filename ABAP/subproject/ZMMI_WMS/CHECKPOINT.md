@@ -11,6 +11,9 @@
 ## Log Sesi (terbaru di atas, wajib — lihat [08](../../00_RULES/08_Checkpoint_Wajib.md))
 | Waktu | AI / device | Pekerjaan | Status | Next step |
 |---|---|---|---|---|
+| 2026-11-11 | Claude / desktop | Uji setelah deploy Ref 003 ke DEV: 2 batch Aldi = ZBMBC, WMS harness OK, regresi DEV 52.734/52.745 identik (sisa = batch di 2 HU) | Selesai (READY) | Transport ke QA, Aldi retest |
+| 2026-11-11 | Claude / desktop | Uji before/after DEV (read-only, subroutine pool) batch 0003860400 & 0003879068: before = program DEV asli (bermasalah), after = ZBMBC 3/3 identik | Selesai | Baginda naikkan program ke DEV, Aldi retest |
+| 2026-11-11 | Claude / desktop | Patch Ref 003 opsi B (HU cocok Sloc + SOBKZ = ZBMBC) push sandbox-new, SYNTAX OK; compare TRS Screen 50.872/50.876 & WMS 50.820/50.821 identik ZBMBC, 0 duplikat | Selesai (READY WITH WARNINGS) | Transport ke DEV/QA, Aldi retest batch 0003860400 & 0003879068 |
 | 2026-11-10 | Claude / desktop | Analisa temuan QA Aldi (batch 0003860400 duplikat, 0003879068 HU beda vs ZBMBC) → `docs/2026-11-10_ANALISA_QA_TEMUAN_ALDI.md`; akar = M4 (HU tanpa cek Sloc/SOBKZ) | Menunggu Baginda | Pilih opsi A/B/C aturan HU → patch sandbox-new |
 | 2026-11-06 | Claude / desktop | Variant TODAY ZMMI_WMS dibuat di sandbox-new (TRS) via `scripts/create_variant_today.mjs`: S_ERDAT dinamis RS_VARI_V_TODAY, S_MAGRV PLT/BOX, P_WMS X, P_CONN WMS. Terverifikasi RS_VARIANT_CONTENTS_RFC. DBCO WMS TIDAK ada di TRS (hanya DEV) — Baginda pilih tetap buat di TRS | Selesai | Variant di DEV dibuat Baginda via SE38 bila perlu (DBCO WMS ada di DEV) |
 | 2026-11-05 14:07 | Claude / desktop | Gabung sub-project ZBMBC ke sini (src/docs/outputs flat, scripts → `scripts/zbmbc/`, log → `outputs/zbmbc_logs/`, README lama → `docs/README_ZBMBC_lama.md`) | Selesai | — |
