@@ -1,0 +1,915 @@
+{
+ "HSS-18": {
+  "batch_mats": [
+   "SRAC2I"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRACJI",
+  "code": "ACJ",
+  "batch_makt": {
+   "SRAC2I": "SLITT ROLL HSS4-18"
+  },
+  "amat_makt": "SLITT ROLL HSS-18",
+  "per_mat": {
+   "SRAC2I": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "HLS-18": {
+  "batch_mats": [
+   "SRANEI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRACAI",
+  "code": "ACA",
+  "batch_makt": {
+   "SRANEI": "SLITT ROLL HLS4-18"
+  },
+  "amat_makt": "SLITT ROLL HLS-18",
+  "per_mat": {
+   "SRANEI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "HSL-21": {
+  "batch_mats": [
+   "SRACVI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRACGI",
+  "code": "ACG",
+  "batch_makt": {
+   "SRACVI": "SLITT ROLL HSL4-21"
+  },
+  "amat_makt": "SLITT ROLL HSL-21",
+  "per_mat": {
+   "SRACVI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "E5102": {
+  "batch_mats": [
+   "SRSI4I",
+   "SRSIPI",
+   "SRSI8I"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRSI4I": "SLITT ROLL NE5100-12",
+   "SRSIPI": "SLITT ROLL KE5100-12",
+   "SRSI8I": "SLITT ROLL NE5100-25"
+  },
+  "per_mat": {
+   "SRSI4I": "NOCONV",
+   "SRSIPI": "NOCONV",
+   "SRSI8I": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "HSS-20": {
+  "batch_mats": [
+   "SRAC7I"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRACLI",
+  "code": "ACL",
+  "batch_makt": {
+   "SRAC7I": "SLITT ROLL HSS4-20"
+  },
+  "amat_makt": "SLITT ROLL HSS-20",
+  "per_mat": {
+   "SRAC7I": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PLE-20": {
+  "batch_mats": [
+   "SRAPHI",
+   "SRAAOI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRAABI",
+  "code": "AAB",
+  "batch_makt": {
+   "SRAPHI": "SLITT ROLL PLE7.-20",
+   "SRAAOI": "SLITT ROLL PLE6-20"
+  },
+  "amat_makt": "SLITT ROLL PLE-20",
+  "per_mat": {
+   "SRAPHI": "DIFF",
+   "SRAAOI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PSL-15": {
+  "batch_mats": [
+   "SRAUAI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRADHI",
+  "code": "ADH",
+  "batch_makt": {
+   "SRAUAI": "SLITT ROLL PSL7-15"
+  },
+  "amat_makt": "SLITT ROLL PSL-15",
+  "per_mat": {
+   "SRAUAI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PLE-18": {
+  "batch_mats": [
+   "SRAPAI",
+   "SRAANI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRAAAI",
+  "code": "AAA",
+  "batch_makt": {
+   "SRAPAI": "SLITT ROLL PLE7-18",
+   "SRAANI": "SLITT ROLL PLE6-18"
+  },
+  "amat_makt": "SLITT ROLL PLE-18",
+  "per_mat": {
+   "SRAPAI": "DIFF",
+   "SRAANI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "EP-12": {
+  "batch_mats": [
+   "SRSF9I",
+   "SRCBUO",
+   "SRCBUX",
+   "SRCMBI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRCADI",
+  "code": "CAD",
+  "batch_makt": {
+   "SRSF9I": "SLITT ROLL 5_EP-12",
+   "SRCBUO": "Polyester Film 12",
+   "SRCBUX": "SLITT ROLL EPX-12",
+   "SRCMBI": "SLITT ROLL EP2-12"
+  },
+  "amat_makt": "SLITT ROLL EP-12",
+  "per_mat": {
+   "SRSF9I": "DIFF",
+   "SRCBUO": "DIFF",
+   "SRCBUX": "DIFF",
+   "SRCMBI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "MFB-13": {
+  "batch_mats": [
+   "SRAOII"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRAFII",
+  "code": "AFI",
+  "batch_makt": {
+   "SRAOII": "SLITT ROLL EMFB.-13"
+  },
+  "amat_makt": "SLITT ROLL MFB-13",
+  "per_mat": {
+   "SRAOII": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "HSB-17.6": {
+  "batch_mats": [
+   "SRACWI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRACOI",
+  "code": "ACO",
+  "batch_makt": {
+   "SRACWI": "SLITT ROLL HSB4-17.6"
+  },
+  "amat_makt": "SLITT ROLL HSB-17.6",
+  "per_mat": {
+   "SRACWI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "E5202": {
+  "batch_mats": [
+   "SRSI5I",
+   "SRSI9I",
+   "SRSIQI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRSI5I": "SLITT ROLL NE5200-12",
+   "SRSI9I": "SLITT ROLL NE5200-25",
+   "SRSIQI": "SLITT ROLL KE5200-12"
+  },
+  "per_mat": {
+   "SRSI5I": "NOCONV",
+   "SRSI9I": "NOCONV",
+   "SRSIQI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "LAH01-22": {
+  "batch_mats": [
+   "SRIBQI",
+   "SRXICI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRIBFI",
+  "code": "IBF",
+  "batch_makt": {
+   "SRIBQI": "SLITT ROLL LAH01*-22",
+   "SRXICI": "SLITT ROLL 5LAH01-22"
+  },
+  "amat_makt": "SLITT ROLL LAH01-22",
+  "per_mat": {
+   "SRIBQI": "DIFF",
+   "SRXICI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "GLOSS-18": {
+  "batch_mats": [
+   "SRIA5I"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRIA5I": "SLITT ROLL LC03*-18"
+  },
+  "per_mat": {
+   "SRIA5I": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "MF-20": {
+  "batch_mats": [
+   "SRAODI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRAFAI",
+  "code": "AFA",
+  "batch_makt": {
+   "SRAODI": "SLITT ROLL EMF6-20"
+  },
+  "amat_makt": "SLITT ROLL MF-20",
+  "per_mat": {
+   "SRAODI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PLE-25": {
+  "batch_mats": [
+   "SRAPOI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRAADI",
+  "code": "AAD",
+  "batch_makt": {
+   "SRAPOI": "SLITT ROLL PLE6-25"
+  },
+  "amat_makt": "SLITT ROLL PLE-25",
+  "per_mat": {
+   "SRAPOI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "SCSH-30": {
+  "batch_mats": [
+   "SRVCDI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRVCDI": "SLITT ROLL SCS-30"
+  },
+  "per_mat": {
+   "SRVCDI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "E5104": {
+  "batch_mats": [
+   "SRSI4I",
+   "SRSIPI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRSI4I": "SLITT ROLL NE5100-12",
+   "SRSIPI": "SLITT ROLL KE5100-12"
+  },
+  "per_mat": {
+   "SRSI4I": "NOCONV",
+   "SRSIPI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "PLE-30": {
+  "batch_mats": [
+   "SRAPDI",
+   "SRATCI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRAAEI",
+  "code": "AAE",
+  "batch_makt": {
+   "SRAPDI": "SLITT ROLL PLE7-30",
+   "SRATCI": "SLITT ROLL PL7-30"
+  },
+  "amat_makt": "SLITT ROLL PLE-30",
+  "per_mat": {
+   "SRAPDI": "DIFF",
+   "SRATCI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PSL-20": {
+  "batch_mats": [
+   "SRAUCI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRADBI",
+  "code": "ADB",
+  "batch_makt": {
+   "SRAUCI": "SLITT ROLL PSL7-20"
+  },
+  "amat_makt": "SLITT ROLL PSL-20",
+  "per_mat": {
+   "SRAUCI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PLB-12": {
+  "batch_mats": [
+   "SRAB4I",
+   "SRABWI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRABRI",
+  "code": "ABR",
+  "batch_makt": {
+   "SRAB4I": "SLITT ROLL PLHB7-12",
+   "SRABWI": "SLITT ROLL PLHB-12"
+  },
+  "amat_makt": "SLITT ROLL PLB-12",
+  "per_mat": {
+   "SRAB4I": "DIFF",
+   "SRABWI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "HSC-18": {
+  "batch_mats": [
+   "SRANSI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRANSI": "SLITT ROLL HSC4-18"
+  },
+  "per_mat": {
+   "SRANSI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "PFO01-35": {
+  "batch_mats": [
+   "SRASFI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRASFI": "SLITT ROLL PFO.7-35"
+  },
+  "per_mat": {
+   "SRASFI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "PHL-25": {
+  "batch_mats": [
+   "SRADXI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRADTI",
+  "code": "ADT",
+  "batch_makt": {
+   "SRADXI": "SLITT ROLL PHL7-25"
+  },
+  "amat_makt": "SLITT ROLL PHL-25",
+  "per_mat": {
+   "SRADXI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "MATTE": {
+  "batch_mats": [
+   "SRIDFI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRIDFI": "SLITT ROLL ELF02-21"
+  },
+  "per_mat": {
+   "SRIDFI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "EB512": {
+  "batch_mats": [
+   "SRSFMI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRSFMI": "SLITT ROLL AEB512-12"
+  },
+  "per_mat": {
+   "SRSFMI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "PFL-38": {
+  "batch_mats": [
+   "SRASGI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRAGII",
+  "code": "AGI",
+  "batch_makt": {
+   "SRASGI": "SLITT ROLL PFL7-38"
+  },
+  "amat_makt": "SLITT ROLL PFL-38",
+  "per_mat": {
+   "SRASGI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PHL-18": {
+  "batch_mats": [
+   "SRAUWI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRAUWI": "SLITT ROLL PHL7-18"
+  },
+  "per_mat": {
+   "SRAUWI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "DOFF-18": {
+  "batch_mats": [
+   "SRXHNI",
+   "SRIBNI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRXHNI": "SLITT ROLL 5LF03-18",
+   "SRIBNI": "SLITT ROLL ELF03-18"
+  },
+  "per_mat": {
+   "SRXHNI": "NOCONV",
+   "SRIBNI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "ESC-15": {
+  "batch_mats": [
+   "SRSF6I",
+   "SRCCVO",
+   "SRCCVX"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRCCRI",
+  "code": "CCR",
+  "batch_makt": {
+   "SRSF6I": "SLITT ROLL A_ESC-15",
+   "SRCCVO": "SLITT ROLL ESCX-15",
+   "SRCCVX": "SLITT ROLL ESCX-15 (X)"
+  },
+  "amat_makt": "SLITT ROLL ESC-15",
+  "per_mat": {
+   "SRSF6I": "DIFF",
+   "SRCCVO": "DIFF",
+   "SRCCVX": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "HLS-20": {
+  "batch_mats": [
+   "SRANOI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRANOI": "SLITT ROLL HLS4-20"
+  },
+  "per_mat": {
+   "SRANOI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "EZB-12": {
+  "batch_mats": [
+   "SRETXI",
+   "SRETZI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRETRI",
+  "code": "ETR",
+  "batch_makt": {
+   "SRETXI": "SLITT ROLL EZB02-12",
+   "SRETZI": "SLITT ROLL EZB04-12"
+  },
+  "amat_makt": "SLITT ROLL EZB-12",
+  "per_mat": {
+   "SRETXI": "DIFF",
+   "SRETZI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PLE-40": {
+  "batch_mats": [
+   "SRABOI",
+   "SRATGI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRAAGI",
+  "code": "AAG",
+  "batch_makt": {
+   "SRABOI": "SLITT ROLL PLE7-40",
+   "SRATGI": "SLITT ROLL PL7-40"
+  },
+  "amat_makt": "SLITT ROLL PLE-40",
+  "per_mat": {
+   "SRABOI": "DIFF",
+   "SRATGI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "HSL-18": {
+  "batch_mats": [
+   "SRAC4I"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRACFI",
+  "code": "ACF",
+  "batch_makt": {
+   "SRAC4I": "SLITT ROLL HSL4-18"
+  },
+  "amat_makt": "SLITT ROLL HSL-18",
+  "per_mat": {
+   "SRAC4I": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "EP-9": {
+  "batch_mats": [
+   "SRCBZX",
+   "SRSEKI",
+   "SRCBZO"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRCABX",
+  "code": "CAB",
+  "batch_makt": {
+   "SRCBZX": "SLITT ROLL EPX-9",
+   "SRSEKI": "SLITT ROLL A_EP-9",
+   "SRCBZO": "Polyester Film 9"
+  },
+  "amat_makt": "SLITT ROLL EP-9 (X)",
+  "per_mat": {
+   "SRCBZX": "DIFF",
+   "SRSEKI": "DIFF",
+   "SRCBZO": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "KTM.": {
+  "batch_mats": [
+   "SRCMDI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRCMDI": "SLITT ROLL EPN2-12"
+  },
+  "per_mat": {
+   "SRCMDI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "OL-W-20": {
+  "batch_mats": [
+   "SRABNI",
+   "SRATBI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRABNI": "SLITT ROLL PLC7-20",
+   "SRATBI": "SLITT ROLL PL7-20"
+  },
+  "per_mat": {
+   "SRABNI": "NOCONV",
+   "SRATBI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "GLOSS.": {
+  "batch_mats": [
+   "SRIAWI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRIAWI": "SLITT ROLL LC02*-20"
+  },
+  "per_mat": {
+   "SRIAWI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "LC03-18": {
+  "batch_mats": [
+   "SRXIHI",
+   "SRIA5I"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRIAYI",
+  "code": "IAY",
+  "batch_makt": {
+   "SRXIHI": "SLITT ROLL 5LC03-18",
+   "SRIA5I": "SLITT ROLL LC03*-18"
+  },
+  "amat_makt": "SLITT ROLL LC03-18",
+  "per_mat": {
+   "SRXIHI": "DIFF",
+   "SRIA5I": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "HSL-25": {
+  "batch_mats": [
+   "SRAC3I"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRACHI",
+  "code": "ACH",
+  "batch_makt": {
+   "SRAC3I": "SLITT ROLL HSL4-25"
+  },
+  "amat_makt": "SLITT ROLL HSL-25",
+  "per_mat": {
+   "SRAC3I": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "GLOSS-12": {
+  "batch_mats": [
+   "SRAB4I",
+   "SRABWI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRAB4I": "SLITT ROLL PLHB7-12",
+   "SRABWI": "SLITT ROLL PLHB-12"
+  },
+  "per_mat": {
+   "SRAB4I": "NOCONV",
+   "SRABWI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "PL-20": {
+  "batch_mats": [
+   "SRATBI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRABDI",
+  "code": "ABD",
+  "batch_makt": {
+   "SRATBI": "SLITT ROLL PL7-20"
+  },
+  "amat_makt": "SLITT ROLL PL-20",
+  "per_mat": {
+   "SRATBI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "LCAH-24": {
+  "batch_mats": [
+   "SRXIJI",
+   "SRIBOI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRIBEI",
+  "code": "IBE",
+  "batch_makt": {
+   "SRXIJI": "SLITT ROLL 5LCAH-24",
+   "SRIBOI": "SLITT ROLL LCAH*-24"
+  },
+  "amat_makt": "SLITT ROLL LCAH-24",
+  "per_mat": {
+   "SRXIJI": "DIFF",
+   "SRIBOI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PSL-17": {
+  "batch_mats": [
+   "SRAUBI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRADAI",
+  "code": "ADA",
+  "batch_makt": {
+   "SRAUBI": "SLITT ROLL PSL7-17"
+  },
+  "amat_makt": "SLITT ROLL PSL-17",
+  "per_mat": {
+   "SRAUBI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "LC01-22": {
+  "batch_mats": [
+   "SRIAVI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRIARI",
+  "code": "IAR",
+  "batch_makt": {
+   "SRIAVI": "SLITT ROLL LC01*-22"
+  },
+  "amat_makt": "SLITT ROLL LC01-22",
+  "per_mat": {
+   "SRIAVI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "KMM": {
+  "batch_mats": [
+   "SRESAI",
+   "SRESEI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRESAI": "SLITT ROLL EZL-12",
+   "SRESEI": "SLITT ROLL EZL01-12"
+  },
+  "per_mat": {
+   "SRESAI": "NOCONV",
+   "SRESEI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "OL-20": {
+  "batch_mats": [
+   "SRABNI",
+   "SRATBI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRABNI": "SLITT ROLL PLC7-20",
+   "SRATBI": "SLITT ROLL PL7-20"
+  },
+  "per_mat": {
+   "SRABNI": "NOCONV",
+   "SRATBI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "MA91-50": {
+  "batch_mats": [
+   "SRGLAI",
+   "SRKLHI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRECVI",
+  "code": "ECV",
+  "batch_makt": {
+   "SRGLAI": "SLITT ROLL MA51-50",
+   "SRKLHI": "SLITT ROLL TMA91-50"
+  },
+  "amat_makt": "SLITT ROLL MA91-50",
+  "per_mat": {
+   "SRGLAI": "DIFF",
+   "SRKLHI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PSL-30": {
+  "batch_mats": [
+   "SRADLI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRADDI",
+  "code": "ADD",
+  "batch_makt": {
+   "SRADLI": "SLITT ROLL PSL7-30"
+  },
+  "amat_makt": "SLITT ROLL PSL-30",
+  "per_mat": {
+   "SRADLI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PSL-25": {
+  "batch_mats": [
+   "SRADKI",
+   "SRAUFI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRADCI",
+  "code": "ADC",
+  "batch_makt": {
+   "SRADKI": "SLITT ROLL PSL7-25",
+   "SRAUFI": "SLITT ROLL PSL4-25"
+  },
+  "amat_makt": "SLITT ROLL PSL-25",
+  "per_mat": {
+   "SRADKI": "DIFF",
+   "SRAUFI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "SPO-13": {
+  "batch_mats": [
+   "SRG1SI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRG1BI",
+  "code": "G1B",
+  "batch_makt": {
+   "SRG1SI": "SLITT ROLL SPOX-13"
+  },
+  "amat_makt": "SLITT ROLL SPO-13",
+  "per_mat": {
+   "SRG1SI": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "PLB-15": {
+  "batch_mats": [
+   "SRAB5I"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRABSI",
+  "code": "ABS",
+  "batch_makt": {
+   "SRAB5I": "SLITT ROLL PLHB7-15"
+  },
+  "amat_makt": "SLITT ROLL PLB-15",
+  "per_mat": {
+   "SRAB5I": "DIFF"
+  },
+  "status": "DIFF"
+ },
+ "DOFF-20": {
+  "batch_mats": [
+   "SRAFDI",
+   "SRIBMI"
+  ],
+  "via": "",
+  "amat": "",
+  "batch_makt": {
+   "SRAFDI": "SLITT ROLL MFB-20",
+   "SRIBMI": "SLITT ROLL LF03-20"
+  },
+  "per_mat": {
+   "SRAFDI": "NOCONV",
+   "SRIBMI": "NOCONV"
+  },
+  "status": "NOCONV"
+ },
+ "STHC.-30": {
+  "batch_mats": [
+   "SRAQMI"
+  ],
+  "via": "ZZCODE",
+  "amat": "SRAQKI",
+  "code": "AQK",
+  "batch_makt": {
+   "SRAQMI": "SLITT ROLL STHC.6-30"
+  },
+  "amat_makt": "SLITT ROLL STHC.-30",
+  "per_mat": {
+   "SRAQMI": "DIFF"
+  },
+  "status": "DIFF"
+ }
+}

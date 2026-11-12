@@ -197,6 +197,51 @@ Catatan: dibandingkan golden Oktober, DO 34/35/44/45/71/72 punya selisih di prog
 2. Pola kode MIC hanya menutup properti yang namanya sama. Properti sisi berbeda antar keluarga film perlu **tabel padanan properti** dari QA, atau print diblokir.
 3. Dalam 1 COA, semua roll harus memakai 1 mapping yang sama. Kalau ada roll yang alias-nya gagal dikonversi atau mapping-nya berbeda, print harus ditolak (mirip "Tipe film tidak boleh berbeda").
 
+## 9. Simulasi data PRD (12 Nov 2026) — read-only, tanpa transaksi
+
+Program tidak dijalankan di PRD. Logic yang sama dengan live test DEV disimulasikan di luar SAP dengan membaca tabel PRD (CAWNT/CAWN, MARA, MAKT, MAPL/PLMK, QALS, QAMV, QAMR, ZMAP_COA). Script: `scripts/_adhoc/alias_prd_sim/`. Bukti: `outputs/alias_live_20261112/prd_sim_*.json`.
+
+**1. Konversi alias → material** (45 alias teratas, mewakili 49.544 dari 50.000 sampel batch beralias):
+
+| Status | Alias | Porsi batch |
+|---|---|---|
+| Tidak bisa dikonversi (NOCONV) | 38, contoh KTM-12, PFP-12, KTM, GLOSS, LC01, MATTE, GP/FDW | **80,9%** |
+| Material alias berbeda (DIFF) | 6: KZMB-12, KZHMB-12, AZC-12, VMPET-9, LCA-24, KZMB-9 | 19,0% |
+| Material sama (SAME) | SCRIM 4X4 | 0,1% |
+
+Alias yang bisa dikonversi semuanya lewat ZZCODE dan punya material SKU sendiri (misalnya `SLITT ROLL KZMB-12` = SREWBI, sedangkan batch-nya SREWAI `ZMB-12`). Mayoritas alias adalah nama dagang atau nama customer, bukan FTYPE, jadi untuk ±81% batch beralias, model "alias → material" otomatis kembali ke mapping material DO.
+
+**2. Terjemahan MIC** (mapping alias disimulasikan dari MIC lot Z04 terakhir material alias, atau dari plan SR kalau lot tidak ada):
+- KZMB-12, KZHMB-12, AZC-12, LCA-24, KZMB-9: **100% MIC terjemah** (RULE/EXACT).
+- VMPET-9: 8/9. `SEQBOD00` (Optical Density) ↔ `SKPKODMZ`/`SEUAODMZ`: akhirannya beda, dan deskripsi "Optical Density" muncul lebih dari 1 kali di plan (level S dan P), jadi ambigu. **Perbaikan:** pencocokan deskripsi harus dibatasi ke level yang sama (huruf pertama).
+- MIC hasil terjemahan ada di lot Z04 batch asli: KZMB-12 15/15, KZHMB-12 15/15, KZMB-9→SREWCI 19/19, AZC-12 15/16 (`SKKTO2TR` barrier tidak ada di lot SR, ditangani logic MVTR/OTR khusus).
+- Sebagian MIC tidak bernilai di lot SR karena nilainya dari lot JR hasil trace (sesuai kolom MAPPING), bukan karena terjemahan gagal.
+- Beberapa sampel batch tidak punya lot Z04 langsung (kemungkinan change grade), jadi trace-nya tidak bisa diuji lewat baca tabel biasa.
+
+**3. Limit spec:** untuk KZMB-12, KZHMB-12, AZC-12, limit material alias = limit batch asli (0 beda).
+
+**Kesimpulan simulasi PRD:**
+- Mekanisme (konversi lewat ZZCODE + terjemahan MIC lewat plan + nilai dari lot batch) **berjalan baik untuk alias yang memang punya material**.
+- Masalah utamanya ada di cakupan: **±81% alias di PRD tidak punya material**. Kalau tujuan QA "alias sama = 1 mapping" juga berlaku untuk alias seperti KTM-12, GLOSS, PFP-12, perlu **master alias → material acuan** (tabel Z), bukan konversi otomatis.
+
+## 10. Analisa ulang PRD — batch 1 tahun terakhir (12 Nov 2026)
+
+Sampel di bagian 9 ternyata **data lama**: 50.000 baris AUSP pertama, CUOBJ kecil, sebagian besar batch tahun-tahun awal. Analisa diulang hanya untuk batch yang dibuat **11 Nov 2025 – 12 Nov 2026** (CUOBJ ≥ `000000000051282577`), dengan sampel sistematis 20% → 317.061 nilai alias, 221 alias unik. 54 alias teratas (95% batch) dianalisa. Excel: `docs/Analisa_Alias_PRD_1Tahun.xlsx`. Bukti: `outputs/alias_recent_20261112/`. Script: `scripts/_adhoc/alias_recent/`.
+
+**Hasilnya berbalik dari data lama:**
+- **81,8% batch beralias bisa dikonversi** (35 alias). Hampir semua alias terbaru berformat FTYPE-ketebalan, dan masing-masing punya material "induk" sendiri, misalnya alias HSS-18 → SRACJI "SLITT ROLL HSS-18", dengan batch produksi SRAC2I "HSS4-18".
+- 18,2% tidak bisa dikonversi (19 alias): E5102, E5202, E5104, EB512, GLOSS-18/-12/., MATTE, DOFF-18/-20, HSC-18, HLS-20, PHL-18, OL-20, OL-W-20, KTM., KMM, SCSH-30, PFO01-35.
+
+**Simulasi tracing MIC** (53 pasangan material alias → material batch, 637 MIC):
+- 572/637 MIC (89,8%) berhasil diterjemahkan. 25 pasangan kategori **Aman**.
+- Lot Z04 contoh batch ditemukan di 18 pasangan. **254/259 MIC hasil terjemahan memang ada di lot batch** → trace aman.
+- Masalah yang ditemukan:
+  1. `SRFCUNTR` (MIC umum Surface Tension Untreated) di material alias keluarga PLE/PSL/PHL tidak ada di plan batch (12 pasangan). Solusi: pencocokan deskripsi **dibatasi per level**.
+  2. 5 material batch **tanpa inspection plan** (SRCBUO "Polyester Film 12", SRCBUX, SRXICI/SRXIHI/SRXIJI awalan "5…"): MIC tidak bisa diterjemahkan, termasuk MIC umum.
+  3. Penamaan properti beda (MF-20 → EMF6-20 memakai NM/MT, sedangkan alias memakai pola lain; MA91-50 `SW3YFEP*`) → perlu padanan dari QA.
+  4. **Limit spec beda di 6 pasangan**, misalnya PSL-17: 5 MIC (COF, Haze); SPO-13: SIT 120–135 vs 105–120; HSB-17.6: SIT 100–108 vs 102–108.
+  5. EP-9: material alias SRCABX tidak punya lot maupun plan SR, jadi tidak bisa disimulasikan.
+
 ## 6. Pertanyaan Konfirmasi ke QA
 
 1. Alias sama tetapi limit spec material asli berbeda (GLOSS, KZMB-9): COA mencetak **limit mapping alias** atau **limit material asli batch**?

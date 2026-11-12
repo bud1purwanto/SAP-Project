@@ -1,0 +1,1149 @@
+{
+ "KZMB-12|SREWBI->SREWAI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000142987",
+  "batch_lot": "050000032738",
+  "plan_alias": 35,
+  "plan_batch": 34,
+  "rows": [
+   [
+    "SEWBSTMZ",
+    "SEWASTMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWBSTUZ",
+    "SEWASTUZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWBODMZ",
+    "SEWAODMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWBBRMZ",
+    "SEWABRMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWBBCMZ",
+    "SEWABCMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWBBLMZ",
+    "SEWABLMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWBMVTR",
+    "SEWAMVTR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SEWBO2TR",
+    "SEWAO2TR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "BONDING",
+    "BONDING",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "METZSIDE",
+    "METZSIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SEWBSTMZ": "Surface Tension Metz Side",
+   "SEWBSTUZ": "Surface Tension Unmetz Side",
+   "SEWBODMZ": "Optical Density",
+   "SEWBBRMZ": "EAA Pos R",
+   "SEWBBCMZ": "EAA Pos C",
+   "SEWBBLMZ": "EAA Pos L",
+   "SEWBMVTR": "MVTR",
+   "SEWBO2TR": "O2TR",
+   "BONDING": "Bonding",
+   "METZSIDE": "Metz Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "KZHMB-12|SREWSI->SREWRI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000113771",
+  "batch_lot": "050000032487",
+  "plan_alias": 28,
+  "plan_batch": 29,
+  "rows": [
+   [
+    "SEWSSTUZ",
+    "SEWRSTUZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWSSTMZ",
+    "SEWRSTMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWSODMZ",
+    "SEWRODMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWSBRMZ",
+    "SEWRBRMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWSBCMZ",
+    "SEWRBCMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWSBLMZ",
+    "SEWRBLMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWSMVTR",
+    "SEWRMVTR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SEWSO2TR",
+    "SEWRO2TR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "BONDING",
+    "BONDING",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "METZSIDE",
+    "METZSIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SEWSSTUZ": "Surface Tension Unmetz Side",
+   "SEWSSTMZ": "Surface Tension Metz Side",
+   "SEWSODMZ": "Optical Density",
+   "SEWSBRMZ": "EAA Pos R",
+   "SEWSBCMZ": "EAA Pos C",
+   "SEWSBLMZ": "EAA Pos L",
+   "SEWSMVTR": "MVTR",
+   "SEWSO2TR": "O2TR",
+   "BONDING": "Bonding",
+   "METZSIDE": "Metz Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "AZC-12|SRG1EI->SRKKTI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000413370",
+  "batch_lot": "050000010243",
+  "plan_alias": 47,
+  "plan_batch": 32,
+  "rows": [
+   [
+    "SG1ESTCD",
+    "SKKTSTCD",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SG1ESTPT",
+    "SKKTSTPT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SG1EHZ00",
+    "SKKTHZ00",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SG1ETR00",
+    "SKKTTR00",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SG1EG4CD",
+    "SKKTG4CD",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SG1EG4PT",
+    "SKKTG4PT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SG1EBECD",
+    "SKKTBECD",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SG1EBTCD",
+    "SKKTBTCD",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SG1EMVTR",
+    "SKKTMVTR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SG1EO2TR",
+    "SKKTO2TR",
+    "RULE",
+    false,
+    null
+   ],
+   [
+    "COATSIDE",
+    "COATSIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SG1ESTCD": "Surface Tension Coated Side",
+   "SG1ESTPT": "Surface Tension PET Side",
+   "SG1EHZ00": "Haze",
+   "SG1ETR00": "Transmittance",
+   "SG1EG4CD": "Gloss 45\u00b0 Coated Side",
+   "SG1EG4PT": "Gloss 45\u00b0 PET Side",
+   "SG1EBECD": "Bonding strength with EAA",
+   "SG1EBTCD": "Bonding strength with Scott Test",
+   "SG1EMVTR": "MVTR",
+   "SG1EO2TR": "O2TR",
+   "COATSIDE": "Coated Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "VMPET-9|SREQBI->SRKPKI": {
+  "mapsrc": "PLAN-S",
+  "alias_lot": null,
+  "batch_lot": null,
+  "plan_alias": 24,
+  "plan_batch": 26,
+  "rows": [
+   [
+    "SEQBSTMZ",
+    "SKPKSTMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEQBSTUZ",
+    "SKPKSTUZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEQBOD00",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SEQBBRMZ",
+    "SKPKBRMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEQBBCMZ",
+    "SKPKBCMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEQBBLMZ",
+    "SKPKBLMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SEQBSTMZ": "Surface Tension Metz Side",
+   "SEQBSTUZ": "Surface Tension Unmetz Side",
+   "SEQBOD00": "Optical Density",
+   "SEQBBRMZ": "EAA Pos R",
+   "SEQBBCMZ": "EAA Pos C",
+   "SEQBBLMZ": "EAA Pos L",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "VMPET-9|SREQBI->SREUAI": {
+  "mapsrc": "PLAN-S",
+  "alias_lot": null,
+  "batch_lot": null,
+  "plan_alias": 24,
+  "plan_batch": 26,
+  "rows": [
+   [
+    "SEQBSTMZ",
+    "SEUASTMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEQBSTUZ",
+    "SEUASTUZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEQBOD00",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SEQBBRMZ",
+    "SEUABRMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEQBBCMZ",
+    "SEUABCMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEQBBLMZ",
+    "SEUABLMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SEQBSTMZ": "Surface Tension Metz Side",
+   "SEQBSTUZ": "Surface Tension Unmetz Side",
+   "SEQBOD00": "Optical Density",
+   "SEQBBRMZ": "EAA Pos R",
+   "SEQBBCMZ": "EAA Pos C",
+   "SEQBBLMZ": "EAA Pos L",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "LCA-24|SRIBAI->SRKYCI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000170607",
+  "batch_lot": null,
+  "plan_alias": 32,
+  "plan_batch": 30,
+  "rows": [
+   [
+    "SIBASTTH",
+    "SKYCSTTH",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SIBASTNE",
+    "SKYCSTNE",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "DLAMNATE",
+    "DLAMNATE",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SIBASPTH",
+    "SKYCSPTH",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "THERMALS",
+    "THERMALS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SIBASTTH": "Surface Tension Thermal Side",
+   "SIBASTNE": "Surface Tension Non Thermal Side",
+   "DLAMNATE": "Delaminated",
+   "SIBASPTH": "Seal to Paper",
+   "THERMALS": "Thermal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "KZMB-9|SREWDI->SREUAI": {
+  "mapsrc": "PLAN-S",
+  "alias_lot": null,
+  "batch_lot": null,
+  "plan_alias": 52,
+  "plan_batch": 26,
+  "rows": [
+   [
+    "SEWDSTMZ",
+    "SEUASTMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDSTUZ",
+    "SEUASTUZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDODMZ",
+    "SEUAODMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDBRMZ",
+    "SEUABRMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDBCMZ",
+    "SEUABCMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDBLMZ",
+    "SEUABLMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDMVTR",
+    "SEUAMVTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDO2TR",
+    "SEUAO2TR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SEWOSTMZ",
+    "SEUASTMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOSTUZ",
+    "SEUASTUZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOODMZ",
+    "SEUAODMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOBRMZ",
+    "SEUABRMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOBCMZ",
+    "SEUABCMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOBLMZ",
+    "SEUABLMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOMVTR",
+    "SEUAMVTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOO2TR",
+    "SEUAO2TR",
+    "RULE",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SEWDSTMZ": "Surface Tension Metz Side",
+   "SEWDSTUZ": "Surface Tension Unmetz Side",
+   "SEWDODMZ": "Optical Density",
+   "SEWDBRMZ": "EAA Pos R",
+   "SEWDBCMZ": "EAA Pos C",
+   "SEWDBLMZ": "EAA Pos L",
+   "SEWDMVTR": "MVTR",
+   "SEWDO2TR": "O2TR",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SEWOSTMZ": "Surface Tension Metz Side",
+   "SEWOSTUZ": "Surface Tension Unmetz Side",
+   "SEWOODMZ": "Optical Density",
+   "SEWOBRMZ": "EAA Pos R",
+   "SEWOBCMZ": "EAA Pos C",
+   "SEWOBLMZ": "EAA Pos L",
+   "SEWOMVTR": "MVTR",
+   "SEWOO2TR": "O2TR"
+  }
+ },
+ "KZMB-9|SREWDI->SRKPKI": {
+  "mapsrc": "PLAN-S",
+  "alias_lot": null,
+  "batch_lot": null,
+  "plan_alias": 52,
+  "plan_batch": 26,
+  "rows": [
+   [
+    "SEWDSTMZ",
+    "SKPKSTMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDSTUZ",
+    "SKPKSTUZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDODMZ",
+    "SKPKODMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDBRMZ",
+    "SKPKBRMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDBCMZ",
+    "SKPKBCMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDBLMZ",
+    "SKPKBLMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDMVTR",
+    "SKPKMVTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWDO2TR",
+    "SKPKO2TR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SEWOSTMZ",
+    "SKPKSTMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOSTUZ",
+    "SKPKSTUZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOODMZ",
+    "SKPKODMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOBRMZ",
+    "SKPKBRMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOBCMZ",
+    "SKPKBCMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOBLMZ",
+    "SKPKBLMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOMVTR",
+    "SKPKMVTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SEWOO2TR",
+    "SKPKO2TR",
+    "RULE",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SEWDSTMZ": "Surface Tension Metz Side",
+   "SEWDSTUZ": "Surface Tension Unmetz Side",
+   "SEWDODMZ": "Optical Density",
+   "SEWDBRMZ": "EAA Pos R",
+   "SEWDBCMZ": "EAA Pos C",
+   "SEWDBLMZ": "EAA Pos L",
+   "SEWDMVTR": "MVTR",
+   "SEWDO2TR": "O2TR",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SEWOSTMZ": "Surface Tension Metz Side",
+   "SEWOSTUZ": "Surface Tension Unmetz Side",
+   "SEWOODMZ": "Optical Density",
+   "SEWOBRMZ": "EAA Pos R",
+   "SEWOBCMZ": "EAA Pos C",
+   "SEWOBLMZ": "EAA Pos L",
+   "SEWOMVTR": "MVTR",
+   "SEWOO2TR": "O2TR"
+  }
+ },
+ "KZMB-9|SREWDI->SREWCI": {
+  "mapsrc": "PLAN-S",
+  "alias_lot": null,
+  "batch_lot": "050000042931",
+  "plan_alias": 52,
+  "plan_batch": 50,
+  "rows": [
+   [
+    "SEWDSTMZ",
+    "SEWCSTMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWDSTUZ",
+    "SEWCSTUZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWDODMZ",
+    "SEWCODMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWDBRMZ",
+    "SEWCBRMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWDBCMZ",
+    "SEWCBCMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWDBLMZ",
+    "SEWCBLMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWDMVTR",
+    "SEWCMVTR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SEWDO2TR",
+    "SEWCO2TR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SEWOSTMZ",
+    "SEWCSTMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWOSTUZ",
+    "SEWCSTUZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWOODMZ",
+    "SEWCODMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWOBRMZ",
+    "SEWCBRMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWOBCMZ",
+    "SEWCBCMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWOBLMZ",
+    "SEWCBLMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SEWOMVTR",
+    "SEWCMVTR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SEWOO2TR",
+    "SEWCO2TR",
+    "RULE",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SEWDSTMZ": "Surface Tension Metz Side",
+   "SEWDSTUZ": "Surface Tension Unmetz Side",
+   "SEWDODMZ": "Optical Density",
+   "SEWDBRMZ": "EAA Pos R",
+   "SEWDBCMZ": "EAA Pos C",
+   "SEWDBLMZ": "EAA Pos L",
+   "SEWDMVTR": "MVTR",
+   "SEWDO2TR": "O2TR",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SEWOSTMZ": "Surface Tension Metz Side",
+   "SEWOSTUZ": "Surface Tension Unmetz Side",
+   "SEWOODMZ": "Optical Density",
+   "SEWOBRMZ": "EAA Pos R",
+   "SEWOBCMZ": "EAA Pos C",
+   "SEWOBLMZ": "EAA Pos L",
+   "SEWOMVTR": "MVTR",
+   "SEWOO2TR": "O2TR"
+  }
+ }
+}

@@ -1,0 +1,182 @@
+{
+ "HSL-21|SRACGI->SRACVI": [],
+ "MFB-13|SRAFII->SRAOII": [
+  [
+   "SAFITH00",
+   "SAOITH00",
+   "Thickness",
+   [
+    12.61,
+    14.55
+   ],
+   [
+    12.61,
+    13.39
+   ]
+  ]
+ ],
+ "HSB-17.6|SRACOI->SRACWI": [
+  [
+   "SACOSIIN",
+   "SACWSIIN",
+   "SIT Inside",
+   [
+    100.0,
+    108.0
+   ],
+   [
+    102.0,
+    108.0
+   ]
+  ],
+  [
+   "SACOSIOT",
+   "SACWSIOT",
+   "SIT Outside",
+   [
+    100.0,
+    108.0
+   ],
+   [
+    102.0,
+    108.0
+   ]
+  ]
+ ],
+ "LAH01-22|SRIBFI->SRIBQI": [],
+ "MF-20|SRAFAI->SRAODI": [],
+ "PLB-12|SRABRI->SRAB4I": [],
+ "PFL-38|SRAGII->SRASGI": [
+  [
+   "SAGITR00",
+   "SASGTR00",
+   "Transmittance",
+   [
+    30.0,
+    37.0
+   ],
+   [
+    30.0,
+    35.0
+   ]
+  ]
+ ],
+ "EZB-12|SRETRI->SRETXI": [],
+ "LC03-18|SRIAYI->SRIA5I": [],
+ "HSL-25|SRACHI->SRAC3I": [],
+ "PL-20|SRABDI->SRATBI": [],
+ "LCAH-24|SRIBEI->SRIBOI": [],
+ "PSL-17|SRADAI->SRAUBI": [
+  [
+   "SADAFDNT",
+   "SAUBFDNT",
+   "COF Untreated Side Dyn",
+   [
+    0.15,
+    0.3
+   ],
+   [
+    0.15,
+    0.4
+   ]
+  ],
+  [
+   "SADAFSNT",
+   "SAUBFSNT",
+   "COF Untreated Side Stat",
+   [
+    0.3,
+    0.6
+   ],
+   [
+    0.15,
+    0.5
+   ]
+  ],
+  [
+   "SADAFDTR",
+   "SAUBFDTR",
+   "COF Treated Side Dyn",
+   [
+    0.2,
+    0.35
+   ],
+   [
+    0.1,
+    0.4
+   ]
+  ],
+  [
+   "SADAFSTR",
+   "SAUBFSTR",
+   "COF Treated Side Stat",
+   [
+    0.3,
+    0.6
+   ],
+   [
+    0.1,
+    0.45
+   ]
+  ],
+  [
+   "SADAHZ00",
+   "SAUBHZ00",
+   "Haze",
+   [
+    1.2,
+    2.0
+   ],
+   [
+    1.5,
+    2.5
+   ]
+  ]
+ ],
+ "LC01-22|SRIARI->SRIAVI": [],
+ "MA91-50|SRECVI->SRGLAI": [
+  [
+   "SW3YSTCD",
+   "SGLASTCD",
+   "Surface Tension Coated Side",
+   [
+    40.0,
+    44.0
+   ],
+   [
+    38.0,
+    44.0
+   ]
+  ]
+ ],
+ "MA91-50|SRECVI->SRKLHI": [],
+ "SPO-13|SRG1BI->SRG1SI": [
+  [
+   "SG1BSICD",
+   "SG1SSICD",
+   "SIT Coated Side",
+   [
+    120.0,
+    135.0
+   ],
+   [
+    105.0,
+    120.0
+   ]
+  ],
+  [
+   "SG1BSRCD",
+   "SG1SSRCD",
+   "Seal Strength Coated Side",
+   [
+    150.0,
+    250.0
+   ],
+   [
+    150.0,
+    300.0
+   ]
+  ]
+ ],
+ "STHC.-30|SRAQKI->SRAQMI": []
+}

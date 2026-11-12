@@ -1,0 +1,5675 @@
+{
+ "HSS-18|SRACJI->SRAC2I": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000090085",
+  "batch_lot": null,
+  "plan_alias": 53,
+  "plan_batch": 53,
+  "rows": [
+   [
+    "SACJSHMD",
+    "SAC2SHMD",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACJSHTD",
+    "SAC2SHTD",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACJFDNT",
+    "SAC2FDNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACJFSNT",
+    "SAC2FSNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACJFDTR",
+    "SAC2FDTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACJFSTR",
+    "SAC2FSTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACJHZ00",
+    "SAC2HZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACJG400",
+    "SAC2G400",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACJSINT",
+    "SAC2SINT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACJSITR",
+    "SAC2SITR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SACJSHMD": "Shrinkage MD",
+   "SACJSHTD": "Shrinkage TD",
+   "SACJFDNT": "COF Untreated Side Dyn",
+   "SACJFSNT": "COF Untreated Side Stat",
+   "SACJFDTR": "COF Treated Side Dyn",
+   "SACJFSTR": "COF Treated Side Stat",
+   "SACJHZ00": "Haze",
+   "SACJG400": "Gloss 45\u00b0",
+   "SACJSINT": "SIT Untreated Side",
+   "SACJSITR": "SIT Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "HLS-18|SRACAI->SRANEI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000189959",
+  "batch_lot": null,
+  "plan_alias": 56,
+  "plan_batch": 56,
+  "rows": [
+   [
+    "SACADTTR",
+    "SANEDTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACASHMD",
+    "SANESHMD",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACASHTD",
+    "SANESHTD",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACAHZ00",
+    "SANEHZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACAG400",
+    "SANEG400",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACASINT",
+    "SANESINT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACASITR",
+    "SANESITR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACAFDTR",
+    "SANEFDTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACAFSTR",
+    "SANEFSTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACAFDNT",
+    "SANEFDNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACAFSNT",
+    "SANEFSNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLIN125",
+    "SLIN125",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLOT125",
+    "SLOT125",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SACADTTR": "Decay Time Treated Side",
+   "SACASHMD": "Shrinkage MD",
+   "SACASHTD": "Shrinkage TD",
+   "SACAHZ00": "Haze",
+   "SACAG400": "Gloss 45\u00b0",
+   "SACASINT": "SIT Untreated Side",
+   "SACASITR": "SIT Treated Side",
+   "SACAFDTR": "COF Treated Side Dyn",
+   "SACAFSTR": "COF Treated Side Stat",
+   "SACAFDNT": "COF Untreated Side Dyn",
+   "SACAFSNT": "COF Untreated Side Stat",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "TREATED": "Treatment Side",
+   "SLIN125": "Sealing at 125 \u00baC ( INSIDE )",
+   "SLOT125": "Sealing at 125 \u00baC ( OUTSIDE )"
+  }
+ },
+ "HSL-21|SRACGI->SRACVI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000143093",
+  "batch_lot": "050001429287",
+  "plan_alias": 52,
+  "plan_batch": 52,
+  "rows": [
+   [
+    "SACGDTIN",
+    "SACVDTIN",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SACGDTOT",
+    "SACVDTOT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SACGFDIN",
+    "SACVFDIN",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SACGFSIN",
+    "SACVFSIN",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SACGFDOT",
+    "SACVFDOT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SACGFSOT",
+    "SACVFSOT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SACGHZ00",
+    "SACVHZ00",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACGSIIN",
+    "SACVSIIN",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACGSIOT",
+    "SACVSIOT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SLIN125",
+    "SLIN125",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SLOT125",
+    "SLOT125",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SACGDTIN": "Decay Time Inside",
+   "SACGDTOT": "Decay Time Outside",
+   "SACGFDIN": "COF Inside Dyn",
+   "SACGFSIN": "COF Inside Stat",
+   "SACGFDOT": "COF Outside Dyn",
+   "SACGFSOT": "COF Outside Stat",
+   "SACGHZ00": "Haze",
+   "SACGSIIN": "SIT Inside",
+   "SACGSIOT": "SIT Outside",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SLIN125": "Sealing at 125 \u00baC ( INSIDE )",
+   "SLOT125": "Sealing at 125 \u00baC ( OUTSIDE )"
+  }
+ },
+ "HSS-20|SRACLI->SRAC7I": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000231302",
+  "batch_lot": null,
+  "plan_alias": 55,
+  "plan_batch": 55,
+  "rows": [
+   [
+    "SACLSHMD",
+    "SAC7SHMD",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACLSHTD",
+    "SAC7SHTD",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACLFDNT",
+    "SAC7FDNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACLFSNT",
+    "SAC7FSNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACLFDTR",
+    "SAC7FDTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACLFSTR",
+    "SAC7FSTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACLHZ00",
+    "SAC7HZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACLG400",
+    "SAC7G400",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACLSINT",
+    "SAC7SINT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACLSITR",
+    "SAC7SITR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLIN125",
+    "SLIN125",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLOT125",
+    "SLOT125",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SACLSHMD": "Shrinkage MD",
+   "SACLSHTD": "Shrinkage TD",
+   "SACLFDNT": "COF Untreated Side Dyn",
+   "SACLFSNT": "COF Untreated Side Stat",
+   "SACLFDTR": "COF Treated Side Dyn",
+   "SACLFSTR": "COF Treated Side Stat",
+   "SACLHZ00": "Haze",
+   "SACLG400": "Gloss 45\u00b0",
+   "SACLSINT": "SIT Untreated Side",
+   "SACLSITR": "SIT Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SLIN125": "Sealing at 125 \u00baC ( INSIDE )",
+   "SLOT125": "Sealing at 125 \u00baC ( OUTSIDE )"
+  }
+ },
+ "PLE-20|SRAABI->SRAPHI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001069667",
+  "batch_lot": null,
+  "plan_alias": 35,
+  "plan_batch": 35,
+  "rows": [
+   [
+    "SAABDTTR",
+    "SAPHDTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAABSTTR",
+    "SAPHSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SAABDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SAABSTTR": "Surface Tension Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PLE-20|SRAABI->SRAAOI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001069667",
+  "batch_lot": null,
+  "plan_alias": 35,
+  "plan_batch": 35,
+  "rows": [
+   [
+    "SAABDTTR",
+    "SAAODTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    "SRFCUNTR",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SAABSTTR",
+    "SAAOSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SAABDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SAABSTTR": "Surface Tension Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PSL-15|SRADHI->SRAUAI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001086045",
+  "batch_lot": null,
+  "plan_alias": 56,
+  "plan_batch": 56,
+  "rows": [
+   [
+    "SADHDTTR",
+    "SAUADTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    "SRFCUNTR",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SADHSTTR",
+    "SAUASTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADHFDNT",
+    "SAUAFDNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADHFSNT",
+    "SAUAFSNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADHFDTR",
+    "SAUAFDTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADHFSTR",
+    "SAUAFSTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADHHZ00",
+    "SAUAHZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADHSINT",
+    "SAUASINT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADHSITR",
+    "SAUASITR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "LOWSEAL",
+    "LOWSEAL",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLTR125",
+    "SLTR125",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLNT125",
+    "SLNT125",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SADHDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SADHSTTR": "Surface Tension Treated Side",
+   "SADHFDNT": "COF Untreated Side Dyn",
+   "SADHFSNT": "COF Untreated Side Stat",
+   "SADHFDTR": "COF Treated Side Dyn",
+   "SADHFSTR": "COF Treated Side Stat",
+   "SADHHZ00": "Haze",
+   "SADHSINT": "SIT Untreated Side",
+   "SADHSITR": "SIT Treated Side",
+   "TREATED": "Treatment Side",
+   "LOWSEAL": "Low Seal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SLTR125": "Sealing at 125 \u00baC ( TREATED )",
+   "SLNT125": "Sealing at 125 \u00baC ( NON TREATED )"
+  }
+ },
+ "PLE-18|SRAAAI->SRAPAI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000617846",
+  "batch_lot": null,
+  "plan_alias": 35,
+  "plan_batch": 35,
+  "rows": [
+   [
+    "SAAADTTR",
+    "SAPADTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAAASTTR",
+    "SAPASTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SAAADTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SAAASTTR": "Surface Tension Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PLE-18|SRAAAI->SRAANI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000617846",
+  "batch_lot": null,
+  "plan_alias": 35,
+  "plan_batch": 35,
+  "rows": [
+   [
+    "SAAADTTR",
+    "SAANDTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    "SRFCUNTR",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SAAASTTR",
+    "SAANSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SAAADTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SAAASTTR": "Surface Tension Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "EP-12|SRCADI->SRSF9I": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000059353",
+  "batch_lot": null,
+  "plan_alias": 26,
+  "plan_batch": 6,
+  "rows": [
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "EP-12|SRCADI->SRCBUO": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000059353",
+  "batch_lot": null,
+  "plan_alias": 26,
+  "plan_batch": 20,
+  "rows": [
+   [
+    "DATBERAT",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    null,
+    "NONE",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "EP-12|SRCADI->SRCBUX": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000059353",
+  "batch_lot": null,
+  "plan_alias": 26,
+  "plan_batch": 20,
+  "rows": [
+   [
+    "DATBERAT",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    null,
+    "NONE",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "EP-12|SRCADI->SRCMBI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000059353",
+  "batch_lot": null,
+  "plan_alias": 26,
+  "plan_batch": 26,
+  "rows": [
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "MFB-13|SRAFII->SRAOII": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001102356",
+  "batch_lot": "050001463870",
+  "plan_alias": 104,
+  "plan_batch": 92,
+  "rows": [
+   [
+    "SAFITH00",
+    "SAOITH00",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAFIDTNM",
+    "SAOIDTNM",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAFIDTMT",
+    "SAOIDTMT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAFISTNM",
+    "SAOISTNM",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAFISTMT",
+    "SAOISTMT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAFIFDNM",
+    "SAOIFDNM",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAFIFSNM",
+    "SAOIFSNM",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAFIFDMT",
+    "SAOIFDMT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAFIFSMT",
+    "SAOIFSMT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAFISINM",
+    "SAOISINM",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SAFISIMT",
+    "SAOISIMT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "MATESIDE",
+    "MATESIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SAFITH00": "Thickness",
+   "SAFIDTNM": "Decay Time Unmatte Side",
+   "SAFIDTMT": "Decay Time Matte Side",
+   "SAFISTNM": "Surface Tension Unmatte Side",
+   "SAFISTMT": "Surface Tension Matte Side",
+   "SAFIFDNM": "COF Unmatte Side Dyn",
+   "SAFIFSNM": "COF Unmatte Side Stat",
+   "SAFIFDMT": "COF Matte Side Dyn",
+   "SAFIFSMT": "COF Matte Side Stat",
+   "SAFISINM": "SIT Unmatte Side",
+   "SAFISIMT": "SIT Matte Side",
+   "MATESIDE": "Matte Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "HSB-17.6|SRACOI->SRACWI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001319248",
+  "batch_lot": "050001460240",
+  "plan_alias": 52,
+  "plan_batch": 52,
+  "rows": [
+   [
+    "SACOSHMD",
+    "SACWSHMD",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SACOSHTD",
+    "SACWSHTD",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SACOHZ00",
+    "SACWHZ00",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACOG400",
+    "SACWG400",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACOSIIN",
+    "SACWSIIN",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACOSIOT",
+    "SACWSIOT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACOFDIN",
+    "SACWFDIN",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACOFSIN",
+    "SACWFSIN",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACOFDOT",
+    "SACWFDOT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACOFSOT",
+    "SACWFSOT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SLIN125",
+    "SLIN125",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SLOT125",
+    "SLOT125",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SACOSHMD": "Shrinkage MD",
+   "SACOSHTD": "Shrinkage TD",
+   "SACOHZ00": "Haze",
+   "SACOG400": "Gloss 45\u00b0",
+   "SACOSIIN": "SIT Inside",
+   "SACOSIOT": "SIT Outside",
+   "SACOFDIN": "COF Inside Dyn",
+   "SACOFSIN": "COF Inside Stat",
+   "SACOFDOT": "COF Outside Dyn",
+   "SACOFSOT": "COF Outside Stat",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SLIN125": "Sealing at 125 \u00baC ( INSIDE )",
+   "SLOT125": "Sealing at 125 \u00baC ( OUTSIDE )"
+  }
+ },
+ "LAH01-22|SRIBFI->SRIBQI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001182411",
+  "batch_lot": "050001455803",
+  "plan_alias": 31,
+  "plan_batch": 29,
+  "rows": [
+   [
+    "SIBFSTTH",
+    "SIBQSTTH",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SIBFSTNE",
+    "SIBQSTNE",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "DLAMNATE",
+    "DLAMNATE",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SIBFSPTH",
+    "SIBQSPTH",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "THERMALS",
+    "THERMALS",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SIBFSTTH": "Surface Tension Thermal Side",
+   "SIBFSTNE": "Surface Tension Non Thermal Side",
+   "DLAMNATE": "Delaminated",
+   "SIBFSPTH": "Seal to Paper",
+   "THERMALS": "Thermal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "LAH01-22|SRIBFI->SRXICI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001182411",
+  "batch_lot": null,
+  "plan_alias": 31,
+  "plan_batch": 1,
+  "rows": [
+   [
+    "SIBFSTTH",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SIBFSTNE",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "DLAMNATE",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SIBFSPTH",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "THERMALS",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    null,
+    "NONE",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SIBFSTTH": "Surface Tension Thermal Side",
+   "SIBFSTNE": "Surface Tension Non Thermal Side",
+   "DLAMNATE": "Delaminated",
+   "SIBFSPTH": "Seal to Paper",
+   "THERMALS": "Thermal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "MF-20|SRAFAI->SRAODI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001123111",
+  "batch_lot": "050001550121",
+  "plan_alias": 54,
+  "plan_batch": 44,
+  "rows": [
+   [
+    "SAFATH00",
+    "SAODTH00",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SAFADTNM",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STMTSNC",
+    "STMTSNC",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "SAFASTNM",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAFAFDNM",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAFAFSNM",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAFAFDMT",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAFAFSMT",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAFASINM",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAFASIMT",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    false,
+    null
+   ],
+   [
+    "MATESIDE",
+    "MATESIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SAFATH00": "Thickness",
+   "SAFADTNM": "Decay Time Unmatte Side",
+   "STMTSNC": "Surface Tension Matte Side",
+   "SAFASTNM": "Surface Tension Unmatte Side",
+   "SAFAFDNM": "COF Unmatte Side Dyn",
+   "SAFAFSNM": "COF Unmatte Side Stat",
+   "SAFAFDMT": "COF Matte Side Dyn",
+   "SAFAFSMT": "COF Matte Side Stat",
+   "SAFASINM": "SIT Unmatte Side",
+   "SAFASIMT": "SIT Matte Side",
+   "TREATED": "Treatment Side",
+   "MATESIDE": "Matte Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PLE-25|SRAADI->SRAPOI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001528126",
+  "batch_lot": null,
+  "plan_alias": 35,
+  "plan_batch": 35,
+  "rows": [
+   [
+    "SAADDTTR",
+    "SAPODTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAADSTTR",
+    "SAPOSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SAADDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SAADSTTR": "Surface Tension Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PLE-30|SRAAEI->SRAPDI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001365108",
+  "batch_lot": null,
+  "plan_alias": 35,
+  "plan_batch": 35,
+  "rows": [
+   [
+    "SAAEDTTR",
+    "SAPDDTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    "SRFCUNTR",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SAAESTTR",
+    "SAPDSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SAAEDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SAAESTTR": "Surface Tension Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PLE-30|SRAAEI->SRATCI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001365108",
+  "batch_lot": null,
+  "plan_alias": 35,
+  "plan_batch": 34,
+  "rows": [
+   [
+    "SAAEDTTR",
+    "SATCDTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAAESTTR",
+    "SATCSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SAAEDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SAAESTTR": "Surface Tension Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PSL-20|SRADBI->SRAUCI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001382503",
+  "batch_lot": null,
+  "plan_alias": 56,
+  "plan_batch": 56,
+  "rows": [
+   [
+    "SADBDTTR",
+    "SAUCDTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    "SRFCUNTR",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SADBSTTR",
+    "SAUCSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADBFDNT",
+    "SAUCFDNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADBFSNT",
+    "SAUCFSNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADBFDTR",
+    "SAUCFDTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADBFSTR",
+    "SAUCFSTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADBHZ00",
+    "SAUCHZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADBSINT",
+    "SAUCSINT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADBSITR",
+    "SAUCSITR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "LOWSEAL",
+    "LOWSEAL",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLTR125",
+    "SLTR125",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLNT125",
+    "SLNT125",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SADBDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SADBSTTR": "Surface Tension Treated Side",
+   "SADBFDNT": "COF Untreated Side Dyn",
+   "SADBFSNT": "COF Untreated Side Stat",
+   "SADBFDTR": "COF Treated Side Dyn",
+   "SADBFSTR": "COF Treated Side Stat",
+   "SADBHZ00": "Haze",
+   "SADBSINT": "SIT Untreated Side",
+   "SADBSITR": "SIT Treated Side",
+   "TREATED": "Treatment Side",
+   "LOWSEAL": "Low Seal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SLTR125": "Sealing at 125 \u00baC ( TREATED )",
+   "SLNT125": "Sealing at 125 \u00baC ( NON TREATED )"
+  }
+ },
+ "PLB-12|SRABRI->SRAB4I": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001461031",
+  "batch_lot": "050001431312",
+  "plan_alias": 46,
+  "plan_batch": 79,
+  "rows": [
+   [
+    "SABRDTIN",
+    "SAB4DTIN",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SABRDTOT",
+    "SAB4DTOT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SABRSTIN",
+    "SAB4STIN",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SABRSTOT",
+    "SAB4STOT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SABRHZ00",
+    "SAB4HZ00",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SABRFDIN",
+    "SAB4FDIN",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SABRFSIN",
+    "SAB4FSIN",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SABRFDOT",
+    "SAB4FDOT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SABRFSOT",
+    "SAB4FSOT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SABRDTIN": "Decay Time Inside",
+   "SABRDTOT": "Decay Time Outside",
+   "SABRSTIN": "Surface Tension Inside",
+   "SABRSTOT": "Surface Tension Outside",
+   "SABRHZ00": "Haze",
+   "SABRFDIN": "COF Inside Dyn",
+   "SABRFSIN": "COF Inside Stat",
+   "SABRFDOT": "COF Outside Dyn",
+   "SABRFSOT": "COF Outside Stat",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PLB-12|SRABRI->SRABWI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001461031",
+  "batch_lot": null,
+  "plan_alias": 46,
+  "plan_batch": 48,
+  "rows": [
+   [
+    "SABRDTIN",
+    "SABWDTIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABRDTOT",
+    "SABWDTOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABRSTIN",
+    "SABWSTIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABRSTOT",
+    "SABWSTOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABRHZ00",
+    "SABWHZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABRFDIN",
+    "SABWFDIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABRFSIN",
+    "SABWFSIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABRFDOT",
+    "SABWFDOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABRFSOT",
+    "SABWFSOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SABRDTIN": "Decay Time Inside",
+   "SABRDTOT": "Decay Time Outside",
+   "SABRSTIN": "Surface Tension Inside",
+   "SABRSTOT": "Surface Tension Outside",
+   "SABRHZ00": "Haze",
+   "SABRFDIN": "COF Inside Dyn",
+   "SABRFSIN": "COF Inside Stat",
+   "SABRFDOT": "COF Outside Dyn",
+   "SABRFSOT": "COF Outside Stat",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PHL-25|SRADTI->SRADXI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001070868",
+  "batch_lot": null,
+  "plan_alias": 54,
+  "plan_batch": 55,
+  "rows": [
+   [
+    "SADTDTTR",
+    "SADXDTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SADTSTTR",
+    "SADXSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADTFDNT",
+    "SADXFDNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADTFSNT",
+    "SADXFSNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADTFDTR",
+    "SADXFDTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADTFSTR",
+    "SADXFSTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADTHZ00",
+    "SADXHZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADTSINT",
+    "SADXSINT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADTSITR",
+    "SADXSITR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "LOWSEAL",
+    "LOWSEAL",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SADTDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SADTSTTR": "Surface Tension Treated Side",
+   "SADTFDNT": "COF Untreated Side Dyn",
+   "SADTFSNT": "COF Untreated Side Stat",
+   "SADTFDTR": "COF Treated Side Dyn",
+   "SADTFSTR": "COF Treated Side Stat",
+   "SADTHZ00": "Haze",
+   "SADTSINT": "SIT Untreated Side",
+   "SADTSITR": "SIT Treated Side",
+   "TREATED": "Treatment Side",
+   "LOWSEAL": "Low Seal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PFL-38|SRAGII->SRASGI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001223960",
+  "batch_lot": "050001469309",
+  "plan_alias": 50,
+  "plan_batch": 52,
+  "rows": [
+   [
+    "SAGITH00",
+    "SASGTH00",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SRFCUNTR",
+    "SRFCUNTR",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "SAGISTTR",
+    "SASGSTTR",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAGIDTTR",
+    "SASGDTTR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SAGISINT",
+    "SASGSINT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SAGITR00",
+    "SASGTR00",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "SEALSIDE",
+    "SEALSIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SLNT125",
+    "SLNT125",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SAGITH00": "Thickness",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SAGISTTR": "Surface Tension Treated Side",
+   "SAGIDTTR": "Decay Time Treated Side",
+   "SAGISINT": "SIT Untreated Side",
+   "SAGITR00": "Transmittance",
+   "TREATED": "Treatment Side",
+   "SEALSIDE": "Seal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SLNT125": "Sealing at 125 \u00baC ( NON TREATED )"
+  }
+ },
+ "ESC-15|SRCCRI->SRSF6I": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000600218",
+  "batch_lot": null,
+  "plan_alias": 29,
+  "plan_batch": 29,
+  "rows": [
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "ESC-15|SRCCRI->SRCCVO": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000600218",
+  "batch_lot": null,
+  "plan_alias": 29,
+  "plan_batch": 6,
+  "rows": [
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "ESC-15|SRCCRI->SRCCVX": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000600218",
+  "batch_lot": null,
+  "plan_alias": 29,
+  "plan_batch": 6,
+  "rows": [
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "EZB-12|SRETRI->SRETXI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000138883",
+  "batch_lot": "050001424963",
+  "plan_alias": 23,
+  "plan_batch": 14,
+  "rows": [
+   [
+    "SETRSTUZ",
+    "SETXSTUZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SETRSTMZ",
+    "SETXSTMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SETRODMZ",
+    "SETXODMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SETRMVTR",
+    "SETXMVTR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SETRO2TR",
+    "SETXO2TR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "BONDING",
+    "BONDING",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "METZSIDE",
+    "METZSIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SETRSTUZ": "Surface Tension Unmetz Side",
+   "SETRSTMZ": "Surface Tension Metz Side",
+   "SETRODMZ": "Optical Density",
+   "SETRMVTR": "MVTR",
+   "SETRO2TR": "O2TR",
+   "BONDING": "Bonding",
+   "METZSIDE": "Metz Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "EZB-12|SRETRI->SRETZI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000138883",
+  "batch_lot": null,
+  "plan_alias": 23,
+  "plan_batch": 14,
+  "rows": [
+   [
+    "SETRSTUZ",
+    "SETZSTUZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SETRSTMZ",
+    "SETZSTMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SETRODMZ",
+    "SETZODMZ",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SETRMVTR",
+    "SETZMVTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SETRO2TR",
+    "SETZO2TR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "BONDING",
+    "BONDING",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "METZSIDE",
+    "METZSIDE",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SETRSTUZ": "Surface Tension Unmetz Side",
+   "SETRSTMZ": "Surface Tension Metz Side",
+   "SETRODMZ": "Optical Density",
+   "SETRMVTR": "MVTR",
+   "SETRO2TR": "O2TR",
+   "BONDING": "Bonding",
+   "METZSIDE": "Metz Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PLE-40|SRAAGI->SRABOI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000613132",
+  "batch_lot": null,
+  "plan_alias": 35,
+  "plan_batch": 35,
+  "rows": [
+   [
+    "SAAGDTTR",
+    "SW4ODTTR",
+    "SUFFIX",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAAGSTTR",
+    "SW4OSTTR",
+    "SUFFIX",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SAAGDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SAAGSTTR": "Surface Tension Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PLE-40|SRAAGI->SRATGI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000613132",
+  "batch_lot": null,
+  "plan_alias": 35,
+  "plan_batch": 35,
+  "rows": [
+   [
+    "SAAGDTTR",
+    "SATGDTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SAAGSTTR",
+    "SATGSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SAAGDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SAAGSTTR": "Surface Tension Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "HSL-18|SRACFI->SRAC4I": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001153544",
+  "batch_lot": null,
+  "plan_alias": 50,
+  "plan_batch": 50,
+  "rows": [
+   [
+    "SACFDTIN",
+    "SAC4DTIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACFDTOT",
+    "SAC4DTOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACFFDIN",
+    "SAC4FDIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACFFSIN",
+    "SAC4FSIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACFFDOT",
+    "SAC4FDOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACFFSOT",
+    "SAC4FSOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACFHZ00",
+    "SAC4HZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACFSIIN",
+    "SAC4SIIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SACFSIOT",
+    "SAC4SIOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SACFDTIN": "Decay Time Inside",
+   "SACFDTOT": "Decay Time Outside",
+   "SACFFDIN": "COF Inside Dyn",
+   "SACFFSIN": "COF Inside Stat",
+   "SACFFDOT": "COF Outside Dyn",
+   "SACFFSOT": "COF Outside Stat",
+   "SACFHZ00": "Haze",
+   "SACFSIIN": "SIT Inside",
+   "SACFSIOT": "SIT Outside",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "EP-9|SRCABX->SRCBZX": {
+  "mapsrc": "PLAN-S",
+  "alias_lot": null,
+  "batch_lot": null,
+  "plan_alias": 1,
+  "plan_batch": 20,
+  "rows": [],
+  "desc": {}
+ },
+ "EP-9|SRCABX->SRSEKI": {
+  "mapsrc": "PLAN-S",
+  "alias_lot": null,
+  "batch_lot": null,
+  "plan_alias": 1,
+  "plan_batch": 25,
+  "rows": [],
+  "desc": {}
+ },
+ "EP-9|SRCABX->SRCBZO": {
+  "mapsrc": "PLAN-S",
+  "alias_lot": null,
+  "batch_lot": null,
+  "plan_alias": 1,
+  "plan_batch": 20,
+  "rows": [],
+  "desc": {}
+ },
+ "LC03-18|SRIAYI->SRXIHI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000880067",
+  "batch_lot": null,
+  "plan_alias": 33,
+  "plan_batch": 1,
+  "rows": [
+   [
+    "SIAYSTTH",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SIAYSTNE",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "DLAMNATE",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SIAYSPTH",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "THERMALS",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    null,
+    "NONE",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SIAYSTTH": "Surface Tension Thermal Side",
+   "SIAYSTNE": "Surface Tension Non Thermal Side",
+   "DLAMNATE": "Delaminated",
+   "SIAYSPTH": "Seal to Paper",
+   "THERMALS": "Thermal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "LC03-18|SRIAYI->SRIA5I": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000880067",
+  "batch_lot": "050001462812",
+  "plan_alias": 33,
+  "plan_batch": 31,
+  "rows": [
+   [
+    "SIAYSTTH",
+    "SIA5STTH",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SIAYSTNE",
+    "SIA5STNE",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "DLAMNATE",
+    "DLAMNATE",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SIAYSPTH",
+    "SIA5SPTH",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "THERMALS",
+    "THERMALS",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SIAYSTTH": "Surface Tension Thermal Side",
+   "SIAYSTNE": "Surface Tension Non Thermal Side",
+   "DLAMNATE": "Delaminated",
+   "SIAYSPTH": "Seal to Paper",
+   "THERMALS": "Thermal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "HSL-25|SRACHI->SRAC3I": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001109976",
+  "batch_lot": "050001501371",
+  "plan_alias": 53,
+  "plan_batch": 52,
+  "rows": [
+   [
+    "SACHDTIN",
+    "SAC3DTIN",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACHDTOT",
+    "SAC3DTOT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACHFDIN",
+    "SAC3FDIN",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACHFSIN",
+    "SAC3FSIN",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACHFDOT",
+    "SAC3FDOT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACHFSOT",
+    "SAC3FSOT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACHHZ00",
+    "SAC3HZ00",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACHSIIN",
+    "SAC3SIIN",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SACHSIOT",
+    "SAC3SIOT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SLIN125",
+    "SLIN125",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SLOT125",
+    "SLOT125",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SACHDTIN": "Decay Time Inside",
+   "SACHDTOT": "Decay Time Outside",
+   "SACHFDIN": "COF Inside Dyn",
+   "SACHFSIN": "COF Inside Stat",
+   "SACHFDOT": "COF Outside Dyn",
+   "SACHFSOT": "COF Outside Stat",
+   "SACHHZ00": "Haze",
+   "SACHSIIN": "SIT Inside",
+   "SACHSIOT": "SIT Outside",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SLIN125": "Sealing at 125 \u00baC ( INSIDE )",
+   "SLOT125": "Sealing at 125 \u00baC ( OUTSIDE )"
+  }
+ },
+ "PL-20|SRABDI->SRATBI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000500227",
+  "batch_lot": "050001478607",
+  "plan_alias": 35,
+  "plan_batch": 35,
+  "rows": [
+   [
+    "SABDDTTR",
+    "SATBDTTR",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SABDSTTR",
+    "SATBSTTR",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SABDDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SABDSTTR": "Surface Tension Treated Side",
+   "TREATED": "Treatment Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "LCAH-24|SRIBEI->SRXIJI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000777919",
+  "batch_lot": null,
+  "plan_alias": 33,
+  "plan_batch": 1,
+  "rows": [
+   [
+    "SIBESTTH",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SIBESTTN",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "DLAMNATE",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SIBESPTH",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "THERMALS",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    null,
+    "NONE",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SIBESTTH": "Surface Tension Thermal Side",
+   "SIBESTTN": "Surface Tension Non Thermal Side",
+   "DLAMNATE": "Delaminated",
+   "SIBESPTH": "Seal to Paper",
+   "THERMALS": "Thermal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "LCAH-24|SRIBEI->SRIBOI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000777919",
+  "batch_lot": "050001449379",
+  "plan_alias": 33,
+  "plan_batch": 29,
+  "rows": [
+   [
+    "SIBESTTH",
+    "SIBOSTTH",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SIBESTTN",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "DLAMNATE",
+    "DLAMNATE",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SIBESPTH",
+    "SIBOSPTH",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "THERMALS",
+    "THERMALS",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SIBESTTH": "Surface Tension Thermal Side",
+   "SIBESTTN": "Surface Tension Non Thermal Side",
+   "DLAMNATE": "Delaminated",
+   "SIBESPTH": "Seal to Paper",
+   "THERMALS": "Thermal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PSL-17|SRADAI->SRAUBI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001317431",
+  "batch_lot": "050001434263",
+  "plan_alias": 56,
+  "plan_batch": 99,
+  "rows": [
+   [
+    "SADADTTR",
+    "SAUBDTTR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SADASTTR",
+    "SAUBSTTR",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SADAFDNT",
+    "SAUBFDNT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SADAFSNT",
+    "SAUBFSNT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SADAFDTR",
+    "SAUBFDTR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SADAFSTR",
+    "SAUBFSTR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SADAHZ00",
+    "SAUBHZ00",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SADASINT",
+    "SAUBSINT",
+    "RULE",
+    false,
+    null
+   ],
+   [
+    "SADASITR",
+    "SAUBSITR",
+    "RULE",
+    false,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "LOWSEAL",
+    "LOWSEAL",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SLTR125",
+    "SLTR125",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SLNT125",
+    "SLNT125",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SADADTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SADASTTR": "Surface Tension Treated Side",
+   "SADAFDNT": "COF Untreated Side Dyn",
+   "SADAFSNT": "COF Untreated Side Stat",
+   "SADAFDTR": "COF Treated Side Dyn",
+   "SADAFSTR": "COF Treated Side Stat",
+   "SADAHZ00": "Haze",
+   "SADASINT": "SIT Untreated Side",
+   "SADASITR": "SIT Treated Side",
+   "TREATED": "Treatment Side",
+   "LOWSEAL": "Low Seal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SLTR125": "Sealing at 125 \u00baC ( TREATED )",
+   "SLNT125": "Sealing at 125 \u00baC ( NON TREATED )"
+  }
+ },
+ "LC01-22|SRIARI->SRIAVI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000314647",
+  "batch_lot": "050001500546",
+  "plan_alias": 32,
+  "plan_batch": 29,
+  "rows": [
+   [
+    "SIARSTTH",
+    "SIAVSTTH",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SIARSTNE",
+    "SIAVSTNE",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "DLAMNATE",
+    "DLAMNATE",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "SIARSPTH",
+    "SIAVSPTH",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "THERMALS",
+    "THERMALS",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SIARSTTH": "Surface Tension Thermal Side",
+   "SIARSTNE": "Surface Tension Non Thermal Side",
+   "DLAMNATE": "Delaminated",
+   "SIARSPTH": "Seal to Paper",
+   "THERMALS": "Thermal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "MA91-50|SRECVI->SRGLAI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001540247",
+  "batch_lot": "050001437205",
+  "plan_alias": 38,
+  "plan_batch": 47,
+  "rows": [
+   [
+    "SW3YSTCD",
+    "SGLASTCD",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SW3YSTMZ",
+    "SGLASTMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SW3YFEP5",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SW3YFEP4",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SW3YSP03",
+    "SGLASP03",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SW3YSP04",
+    "SGLASP04",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SW3YSP05",
+    "SGLASP05",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "PRINTYL4",
+    "PRINTYL4",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTYL3",
+    "PRINTYL3",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTBLL",
+    "PRINTBLL",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTBLU",
+    "PRINTBLU",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTBL3",
+    "PRINTBL3",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTRDR",
+    "PRINTRDR",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTRDM",
+    "PRINTRDM",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTBC3",
+    "PRINTBC3",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "BONDING",
+    "BONDING",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "METZSIDE",
+    "METZSIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "COATSIDE",
+    "COATSIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SW3YSTCD": "Surface Tension Coated Side",
+   "SW3YSTMZ": "Surface Tension Metz Side",
+   "SW3YFEP5": "Fish Eye Particle 0.3 - 0.5 mm (per m2)",
+   "SW3YFEP4": "Fish Eye Particle < 0.3 mm ( per m2 )",
+   "SW3YSP03": "Shiny Particles < 0.3 mm ( per m2 )",
+   "SW3YSP04": "Shiny Particle 0.3 - 0.5 mm ( per m2 )",
+   "SW3YSP05": "Shiny Particle > 1.0 mm ( per m2 )",
+   "PRINTYL4": "Print Colour Yellow 4729EA",
+   "PRINTYL3": "Print Colour Yellow 39-6-1250",
+   "PRINTBLL": "Print Colour Blue Lithocure",
+   "PRINTBLU": "Print Colour Blue USC 50021",
+   "PRINTBL3": "Print Colour Blue 39-6-6400",
+   "PRINTRDR": "Print Colour Red Rubine",
+   "PRINTRDM": "Print Colour Red Magenta",
+   "PRINTBC3": "Print Colour Black Sicura 770HS",
+   "BONDING": "Bonding",
+   "METZSIDE": "Metz Side",
+   "COATSIDE": "Coated Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "MA91-50|SRECVI->SRKLHI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001540247",
+  "batch_lot": "050001463261",
+  "plan_alias": 38,
+  "plan_batch": 44,
+  "rows": [
+   [
+    "SW3YSTCD",
+    "SKLHSTCD",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SW3YSTMZ",
+    "SKLHSTMZ",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SW3YFEP5",
+    "SKLHFEP5",
+    "RULE",
+    false,
+    null
+   ],
+   [
+    "SW3YFEP4",
+    "SKLHFEP4",
+    "RULE",
+    false,
+    null
+   ],
+   [
+    "SW3YSP03",
+    "SKLHSP03",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SW3YSP04",
+    "SKLHSP04",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SW3YSP05",
+    "SKLHSP05",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "PRINTYL4",
+    "PRINTYL4",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTYL3",
+    "PRINTYL3",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTBLL",
+    "PRINTBLL",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTBLU",
+    "PRINTBLU",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTBL3",
+    "PRINTBL3",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTRDR",
+    "PRINTRDR",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTRDM",
+    "PRINTRDM",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "PRINTBC3",
+    "PRINTBC3",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "BONDING",
+    "BONDING",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "METZSIDE",
+    "METZSIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "COATSIDE",
+    "COATSIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SW3YSTCD": "Surface Tension Coated Side",
+   "SW3YSTMZ": "Surface Tension Metz Side",
+   "SW3YFEP5": "Fish Eye Particle 0.3 - 0.5 mm (per m2)",
+   "SW3YFEP4": "Fish Eye Particle < 0.3 mm ( per m2 )",
+   "SW3YSP03": "Shiny Particles < 0.3 mm ( per m2 )",
+   "SW3YSP04": "Shiny Particle 0.3 - 0.5 mm ( per m2 )",
+   "SW3YSP05": "Shiny Particle > 1.0 mm ( per m2 )",
+   "PRINTYL4": "Print Colour Yellow 4729EA",
+   "PRINTYL3": "Print Colour Yellow 39-6-1250",
+   "PRINTBLL": "Print Colour Blue Lithocure",
+   "PRINTBLU": "Print Colour Blue USC 50021",
+   "PRINTBL3": "Print Colour Blue 39-6-6400",
+   "PRINTRDR": "Print Colour Red Rubine",
+   "PRINTRDM": "Print Colour Red Magenta",
+   "PRINTBC3": "Print Colour Black Sicura 770HS",
+   "BONDING": "Bonding",
+   "METZSIDE": "Metz Side",
+   "COATSIDE": "Coated Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "PSL-30|SRADDI->SRADLI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001115492",
+  "batch_lot": null,
+  "plan_alias": 56,
+  "plan_batch": 63,
+  "rows": [
+   [
+    "SADDDTTR",
+    "SADLDTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SADDSTTR",
+    "SADLSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADDFDNT",
+    "SADLFDNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADDFSNT",
+    "SADLFSNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADDFDTR",
+    "SADLFDTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADDFSTR",
+    "SADLFSTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADDHZ00",
+    "SADLHZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADDSINT",
+    "SADLSINT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADDSITR",
+    "SADLSITR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "LOWSEAL",
+    "LOWSEAL",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLTR125",
+    "SLTR125",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLNT125",
+    "SLNT125",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SADDDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SADDSTTR": "Surface Tension Treated Side",
+   "SADDFDNT": "COF Untreated Side Dyn",
+   "SADDFSNT": "COF Untreated Side Stat",
+   "SADDFDTR": "COF Treated Side Dyn",
+   "SADDFSTR": "COF Treated Side Stat",
+   "SADDHZ00": "Haze",
+   "SADDSINT": "SIT Untreated Side",
+   "SADDSITR": "SIT Treated Side",
+   "TREATED": "Treatment Side",
+   "LOWSEAL": "Low Seal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SLTR125": "Sealing at 125 \u00baC ( TREATED )",
+   "SLNT125": "Sealing at 125 \u00baC ( NON TREATED )"
+  }
+ },
+ "PSL-25|SRADCI->SRADKI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001096559",
+  "batch_lot": null,
+  "plan_alias": 56,
+  "plan_batch": 55,
+  "rows": [
+   [
+    "SADCDTTR",
+    "SADKDTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SADCSTTR",
+    "SADKSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCFDNT",
+    "SADKFDNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCFSNT",
+    "SADKFSNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCFDTR",
+    "SADKFDTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCFSTR",
+    "SADKFSTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCHZ00",
+    "SADKHZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCSINT",
+    "SADKSINT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCSITR",
+    "SADKSITR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "LOWSEAL",
+    "LOWSEAL",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLTR125",
+    "SLTR125",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLNT125",
+    "SLNT125",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SADCDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SADCSTTR": "Surface Tension Treated Side",
+   "SADCFDNT": "COF Untreated Side Dyn",
+   "SADCFSNT": "COF Untreated Side Stat",
+   "SADCFDTR": "COF Treated Side Dyn",
+   "SADCFSTR": "COF Treated Side Stat",
+   "SADCHZ00": "Haze",
+   "SADCSINT": "SIT Untreated Side",
+   "SADCSITR": "SIT Treated Side",
+   "TREATED": "Treatment Side",
+   "LOWSEAL": "Low Seal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SLTR125": "Sealing at 125 \u00baC ( TREATED )",
+   "SLNT125": "Sealing at 125 \u00baC ( NON TREATED )"
+  }
+ },
+ "PSL-25|SRADCI->SRAUFI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001096559",
+  "batch_lot": null,
+  "plan_alias": 56,
+  "plan_batch": 54,
+  "rows": [
+   [
+    "SADCDTTR",
+    "SAUFDTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SRFCUNTR",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SADCSTTR",
+    "SAUFSTTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCFDNT",
+    "SAUFFDNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCFSNT",
+    "SAUFFSNT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCFDTR",
+    "SAUFFDTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCFSTR",
+    "SAUFFSTR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCHZ00",
+    "SAUFHZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCSINT",
+    "SAUFSINT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SADCSITR",
+    "SAUFSITR",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "LOWSEAL",
+    "LOWSEAL",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "SLTR125",
+    null,
+    "NONE",
+    null,
+    null
+   ],
+   [
+    "SLNT125",
+    null,
+    "NONE",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SADCDTTR": "Decay Time Treated Side",
+   "SRFCUNTR": "Surface Tension Untreated Side",
+   "SADCSTTR": "Surface Tension Treated Side",
+   "SADCFDNT": "COF Untreated Side Dyn",
+   "SADCFSNT": "COF Untreated Side Stat",
+   "SADCFDTR": "COF Treated Side Dyn",
+   "SADCFSTR": "COF Treated Side Stat",
+   "SADCHZ00": "Haze",
+   "SADCSINT": "SIT Untreated Side",
+   "SADCSITR": "SIT Treated Side",
+   "TREATED": "Treatment Side",
+   "LOWSEAL": "Low Seal Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "SLTR125": "Sealing at 125 \u00baC ( TREATED )",
+   "SLNT125": "Sealing at 125 \u00baC ( NON TREATED )"
+  }
+ },
+ "SPO-13|SRG1BI->SRG1SI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050000340477",
+  "batch_lot": "050001473673",
+  "plan_alias": 33,
+  "plan_batch": 21,
+  "rows": [
+   [
+    "SG1BSTCD",
+    "SG1SSTCD",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SG1BSTNC",
+    "SG1SSTNC",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SG1BHZ00",
+    "SG1SHZ00",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SG1BSICD",
+    "SG1SSICD",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SG1BSRCD",
+    "SG1SSRCD",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SG1BFDCD",
+    "SG1SFDCD",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SG1BFSCD",
+    "SG1SFSCD",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SG1BFDNC",
+    "SG1SFDNC",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SG1BFSNC",
+    "SG1SFSNC",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SG1BMVTR",
+    "SG1SMVTR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SG1BO2TR",
+    "SG1SO2TR",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "BONDING",
+    "BONDING",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "COATSIDE",
+    "COATSIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SG1BSTCD": "Surface Tension Coated Side",
+   "SG1BSTNC": "Surface Tension Uncoated Side",
+   "SG1BHZ00": "Haze",
+   "SG1BSICD": "SIT Coated Side",
+   "SG1BSRCD": "Seal Strength Coated Side",
+   "SG1BFDCD": "COF Coated Side Dyn",
+   "SG1BFSCD": "COF Coated Side Stat",
+   "SG1BFDNC": "COF Uncoated Side Dyn",
+   "SG1BFSNC": "COF Uncoated Side Stat",
+   "SG1BMVTR": "MVTR",
+   "SG1BO2TR": "O2TR",
+   "BONDING": "Bonding",
+   "COATSIDE": "Coated Side",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll"
+  }
+ },
+ "PLB-15|SRABSI->SRAB5I": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001068440",
+  "batch_lot": null,
+  "plan_alias": 46,
+  "plan_batch": 88,
+  "rows": [
+   [
+    "SABSDTIN",
+    "SAB5DTIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABSDTOT",
+    "SAB5DTOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABSSTIN",
+    "SAB5STIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABSSTOT",
+    "SAB5STOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABSHZ00",
+    "SAB5HZ00",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABSFDIN",
+    "SAB5FDIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABSFSIN",
+    "SAB5FSIN",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABSFDOT",
+    "SAB5FDOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "SABSFSOT",
+    "SAB5FSOT",
+    "RULE",
+    null,
+    null
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    null,
+    null
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    null,
+    null
+   ]
+  ],
+  "desc": {
+   "SABSDTIN": "Decay Time Inside",
+   "SABSDTOT": "Decay Time Outside",
+   "SABSSTIN": "Surface Tension Inside",
+   "SABSSTOT": "Surface Tension Outside",
+   "SABSHZ00": "Haze",
+   "SABSFDIN": "COF Inside Dyn",
+   "SABSFSIN": "COF Inside Stat",
+   "SABSFDOT": "COF Outside Dyn",
+   "SABSFSOT": "COF Outside Stat",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ },
+ "STHC.-30|SRAQKI->SRAQMI": {
+  "mapsrc": "LOT",
+  "alias_lot": "050001161475",
+  "batch_lot": "050001560033",
+  "plan_alias": 42,
+  "plan_batch": 42,
+  "rows": [
+   [
+    "SAQKTH00",
+    "SAQMTH00",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SAQKSTNM",
+    "SAQMSTNM",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAQKDTNM",
+    "SAQMDTNM",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SAQKSINM",
+    "SAQMSINM",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SAQKSIMT",
+    "SAQMSIMT",
+    "RULE",
+    true,
+    true
+   ],
+   [
+    "SAQKSRMT",
+    "SAQMSRMT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SAQKFDNM",
+    "SAQMFDNM",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SAQKFSNM",
+    "SAQMFSNM",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SAQKFDMT",
+    "SAQMFDMT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "SAQKFSMT",
+    "SAQMFSMT",
+    "RULE",
+    true,
+    false
+   ],
+   [
+    "TREATED",
+    "TREATED",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "MATESIDE",
+    "MATESIDE",
+    "EXACT",
+    true,
+    true
+   ],
+   [
+    "DATBERAT",
+    "DATBERAT",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "HARDNESS",
+    "HARDNESS",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICUW",
+    "STATICUW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICRW",
+    "STATICRW",
+    "EXACT",
+    true,
+    false
+   ],
+   [
+    "STATICSP",
+    "STATICSP",
+    "EXACT",
+    true,
+    false
+   ]
+  ],
+  "desc": {
+   "SAQKTH00": "Thickness",
+   "SAQKSTNM": "Surface Tension Unmatte Side",
+   "SAQKDTNM": "Decay Time Unmatte Side",
+   "SAQKSINM": "SIT Unmatte Side",
+   "SAQKSIMT": "SIT Matte Side",
+   "SAQKSRMT": "Seal Strength Matte Side",
+   "SAQKFDNM": "COF Unmatte Side Dyn",
+   "SAQKFSNM": "COF Unmatte Side Stat",
+   "SAQKFDMT": "COF Matte Side Dyn",
+   "SAQKFSMT": "COF Matte Side Stat",
+   "TREATED": "Treatment Side",
+   "MATESIDE": "Matte Side",
+   "DATBERAT": "Actual Berat Roll",
+   "HARDNESS": "Actual Hardness Roll",
+   "STATICUW": "Static Unwind",
+   "STATICRW": "Static Rewind",
+   "STATICSP": "Static Stop"
+  }
+ }
+}
