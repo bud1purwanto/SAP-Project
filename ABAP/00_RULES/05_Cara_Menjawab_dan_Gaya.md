@@ -42,3 +42,26 @@ Untuk jawaban teknis, sertakan poin berikut **hanya jika relevan** dengan pertan
 - Jangan hilangkan kata negasi seperti `tidak`, `dilarang`, `bukan`, atau `kecuali`.
 - Untuk peringatan keamanan, tindakan irreversible, atau urutan kompleks, gunakan kalimat lengkap agar tidak ambigu.
 - Bahasa utama tetap Bahasa Indonesia. Istilah SAP, TCODE, API, dan keyword ABAP tetap asli.
+
+
+---
+
+## Aturan Pembuatan Draft & Pengiriman Email (MCP Email)
+
+Ketika membuat draft email (`create_draft_email`) atau mengirim email (`send_email`):
+
+1. **Font & Ukuran:**
+   - Wajib menggunakan font **Calibri**, ukuran **11pt** (pada HTML body: `font-family: Calibri, sans-serif; font-size: 11pt; color: #000000; line-height: 1.4;`).
+2. **Poin-Poin & Indentasi:**
+   - Jika terdapat poin-poin penjelasan, wajib disusun rapi dengan indentasi yang jelas.
+   - Gunakan format **bullet** (`<ul><li>`) atau **numbering** (`<ol><li>`) yang sesuai dengan konteks logika penyampaian.
+3. **Penggunaan Bold:**
+   - Penggunaan teks **tebal (bold)** jangan berlebihan. Hanya gunakan untuk menyorot kata kunci penting, nomor dokumen SAP (PO/PR/Material/Doc Number), atau status krusial.
+4. **Penyajian Data Matrix / Tabel:**
+   - Jika ada data perbandingan, daftar transaksi, atau matriks angka, wajib ditampilkan dalam bentuk **tabel** yang rapi dengan header dan border jelas (tabel HTML bersih).
+5. **Signature Standar:**
+   - Wajib menyertakan format penutup/tanda tangan persis sebagai berikut:
+     ```text
+     Best Regards,
+     J. Budi
+     ```

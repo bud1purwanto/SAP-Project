@@ -38,7 +38,8 @@ peta folder, dan indeks aturan detail di [00_RULES/](00_RULES/).
 | 3 | **Cek Tanggal Server TRS.** Server `sandbox-new` tidak sinkron kalender nyata → wajib cek `GET_SYSTEM_TIME_REMOTE` (`L_DATE`). | [01](00_RULES/01_Landscape_dan_Server.md) |
 | 4 | **No Evidence = Dilarang Menyimpulkan.** Wajib periksa data live via MCP SAP/SQL (`read_table`, query), perhitungkan dokumen reversal (`SMBLN`/`STBLG`), jangan berasumsi. | [03](00_RULES/03_Grounding_dan_Verifikasi_Data.md) |
 | 5 | **Query Aman:** Batasi rowcount (200-500) dan selalu gunakan filter spesifik (Company Code, Plant, Date range, Document ID). | [03](00_RULES/03_Grounding_dan_Verifikasi_Data.md) |
-| 6 | **Validasi Email:** Jika ada email terkait, baca isi + lampiran gambar terlebih dahulu, jelaskan intinya ke Baginda sebelum analisa. | [01](00_RULES/01_Landscape_dan_Server.md) |
+| 6 | **Validasi Email:** Baca email & lampiran terlebih dahulu jika terkait case. | [01](00_RULES/01_Landscape_dan_Server.md) |
+| 7 | **Draft & Kirim Email:** Wajib font Calibri 11pt, indentasi/bullet rapi, bold secukupnya, matriks dalam tabel, signature: `Best Regards,\nJ. Budi`. | [01](00_RULES/01_Landscape_dan_Server.md) / [05](00_RULES/05_Cara_Menjawab_dan_Gaya.md) |
 
 ---
 

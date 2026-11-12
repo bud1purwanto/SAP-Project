@@ -64,6 +64,8 @@ routing tetap otomatis.
 | 9 | **Checkpoint wajib setelah setiap pekerjaan** (termasuk yang terputus): timpa "Terakhir Dikerjakan" + 1 baris log di root `CHECKPOINT.md`, update `CHECKPOINT.md` sub-project. Awal sesi: baca checkpoint dulu. | [08](00_RULES/08_Checkpoint_Wajib.md) |
 | 10 | **Jawaban:** Bahasa Indonesia, gaya caveman. TCODE, kode 7.31, catatan performa, dampak transport **jika relevan**; peringatan risiko data **selalu**. | [05](00_RULES/05_Cara_Menjawab_dan_Gaya.md) |
 | 11 | **Wajib pull source terbaru dari `sandbox-new` sebelum push.** `src/*.abap` bukan sumber kebenaran (Baginda bisa ubah manual di SE38). Beda dengan base lokal → STOP, lapor Baginda. | [03](00_RULES/03_Push_Program_dan_SmartForm.md#wajib-pull-source-terbaru-sebelum-push) |
+| 12 | **Draft & Kirim Email:** Wajib font Calibri 11pt, bullet/indentasi rapi, bold secukupnya, matriks dalam tabel, signature: `Best Regards,\nJ. Budi`. | [01](00_RULES/01_Landscape_dan_Server.md) / [05](00_RULES/05_Cara_Menjawab_dan_Gaya.md) |
+
 
 ---
 
