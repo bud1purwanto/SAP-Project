@@ -96,6 +96,24 @@ Status: proof-of-concept terverifikasi pada server Linux.
 - Sebelum menyatakan TCODE atau hasil telah terbuka, verifikasi layar virtual dan status bar; jangan pernah menggantikan bukti dengan placeholder gambar atau klaim yang tidak diverifikasi.
 - Respons Hermes untuk support dibuat singkat: status TCODE, SID/client, hasil atau blocker yang terverifikasi.
 
+## 2026-11-12 — Pemulihan Window Frame & Penyelesaian Kendala Klik pada PCR (Input Blocking Resolution)
+
+- Gejala lanjutan: Setelah titlebar diaktifkan, Baginda melaporkan tidak dapat mengklik apa pun pada portal operator PCR (`https://pcr.abap.web.id/`).
+- Akar masalah (Root Causes teridentifikasi):
+  1. **AWT Helper Window Hijacking:** JVM Java AWT secara otomatis membuat jendela helper 10x10 bernama `"java"` (class `Java`). Aturan Openbox sebelumnya (`class="*"`) memaksimalkan dan menaruh jendela transparan/input-only ini tepat di atas jendela asli `"SAP GUI for Java"` (sehingga titlebar sempat bertuliskan `"java"` dan seluruh klik ditelan oleh window transparan tersebut).
+  2. **Watchdog Target Misdirection:** Skrip `run-sap-gui-monitor.sh` mencari `--class "java"`, sehingga setiap 5 detik selalu me-remap dan mengedepankan dummy window `"java"` tersebut menutupi GUI SAP.
+  3. **CUA Driver Invisible Overlay:** Proses `cua-driver serve` secara bawaan membuat jendela transparan fullscreen `Cua.AgentCursorOverlay.default` berukuran 1440x900 (`Override Redirect State: yes`) yang menghalangi pointer events dari x11vnc.
+- Tindakan perbaikan:
+  1. Memperbarui `~/.config/openbox/rc.xml` untuk mengabaikan jendela helper Java (`Java`, `java`, `com-sap-platin-Gui`: `<decor>no</decor>`, `<maximized>no</maximized>`, `<focus>no</focus>`), dan secara eksklusif mendekorasi dan memaksimalkan `SAP GUI for Java`.
+  2. Menambahkan argumen `--no-overlay` pada eksekusi `cua-driver serve` di `scripts/start-sap-gui-monitor.sh`.
+  3. Mengarahkan loop pemantau pada `scripts/run-sap-gui-monitor.sh` agar menargetkan class `"SAP GUI for Java"` asli.
+  4. Me-restart layanan `sap-gui-monitor.service`.
+- Hasil terverifikasi:
+  - Titlebar asli jendela SAP kini bertuliskan **`SAP GUI for Java`** dengan tombol Close (`X`), Maximize, dan Minimize.
+  - Dummy overlay dieliminasi 100%.
+  - Uji klik langsung pada menu (misal: menu Help) berhasil membuka dropdown menu secara interaktif dan responsif.
+  - PCR (`https://pcr.abap.web.id/`) kini dapat diklik normal 100%.
+
 ## 2026-09-15 — ZBMBC parameter support
 
 - Permintaan: buka TCODE `ZBMBC` dan isi parameter Plant `tte` serta Material `srrpai` untuk dipantau melalui VNC.

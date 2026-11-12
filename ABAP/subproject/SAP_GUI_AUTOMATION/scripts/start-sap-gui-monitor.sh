@@ -17,7 +17,17 @@ start_if_missing() {
   local name="$1"
   local match="$2"
   shift 2
-  if ! pgrep -u "$(id -u)" -f "${match}" >/dev/null; then
+  local existing_pid=""
+  for p in $(pgrep -u "$(id -u)" -f "${match}" 2>/dev/null || true); do
+    if [[ -r "/proc/${p}/environ" ]] && tr '\0' '\n' < "/proc/${p}/environ" 2>/dev/null | grep -qx "DISPLAY=${DISPLAY}"; then
+      existing_pid="${p}"
+      break
+    fi
+  done
+
+  if [[ -n "${existing_pid}" ]]; then
+    echo "${existing_pid}" > "${PID_DIR}/${name}.pid"
+  else
     "$@" >>"${LOG_DIR}/${name}.log" 2>&1 &
     echo $! >"${PID_DIR}/${name}.pid"
   fi
@@ -52,10 +62,10 @@ start_if_missing sap-gui "com.sap.platin.Gui" \
       DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus" \
       "${SAP_GUI}"
 
-start_if_missing cua-driver "cua-driver serve --socket ${CUA_SOCKET}" \
+start_if_missing cua-driver "cua-driver serve.*${CUA_SOCKET}" \
   env DISPLAY="${DISPLAY}" XDG_SESSION_TYPE=x11 \
       DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus" \
-      cua-driver serve --socket "${CUA_SOCKET}"
+      cua-driver serve --no-overlay --socket "${CUA_SOCKET}"
 
 start_if_missing x11vnc-viewonly "x11vnc -display ${DISPLAY}.*-rfbport ${VNC_PORT}" \
   env -u WAYLAND_DISPLAY DISPLAY="${DISPLAY}" XDG_SESSION_TYPE=x11 \
