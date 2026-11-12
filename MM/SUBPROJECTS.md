@@ -9,7 +9,7 @@ Semua sub-project berada di dalam folder induk `subproject/`.
 ```
 SAP MM Consultant/
 ├── AGENTS.md                   <- Konteks otomatis agent saat New Chat & routing langsung
-├── CLAUDE.md                   <- Aturan kerja & environment SAP MM
+├── 00_RULES/                   <- Aturan kerja & environment modular SAP MM
 ├── SUBPROJECTS.md              <- File ini (peta routing sub-project)
 ├── subproject/
 │   ├── AUTOMATION_BACKLOG/     <- Backlog inisiatif otomasi proses MM
@@ -17,8 +17,7 @@ SAP MM Consultant/
 │   ├── INVENTORY_MANAGEMENT/   <- MIGO (101/261/311), Stock Overview MB52, Reservasi
 │   ├── INVOICE_VERIFICATION/   <- MIRO, MIRA, MRBR, ERS MRRL
 │   └── ACCOUNT_DETERMINATION/  <- OBYC, Valuation Class, Price Diff, GR/IR Clearing
-├── _SHARED/                    <- Helper / script / config generik lintas sub-project
-```
+├── ```
 
 ## Struktur Umum Tiap Sub-Project
 

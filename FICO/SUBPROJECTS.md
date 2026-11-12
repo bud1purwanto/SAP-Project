@@ -9,7 +9,7 @@ Semua sub-project berada di dalam folder induk `subproject/`.
 ```
 SAP FICO Consultant/
 ├── AGENTS.md               <- Konteks otomatis agent saat New Chat & routing langsung
-├── CLAUDE.md               <- Aturan kerja & environment SAP FICO
+├── 00_RULES/               <- Aturan kerja & environment SAP FICO
 ├── SUBPROJECTS.md          <- File ini (peta routing sub-project)
 ├── subproject/
 │   ├── UPLOAD_FAKTUR/      <- Program ZFIC_UPLOAD_FAKTUR, ZFI106, BKPF-AEDAT

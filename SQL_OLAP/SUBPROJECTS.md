@@ -9,7 +9,7 @@ Semua sub-project berada di dalam folder induk `subproject/`.
 ```
 SQL OLAP Consultant/
 ├── AGENTS.md                   <- Konteks otomatis agent saat New Chat & routing langsung
-├── CLAUDE.md                   <- Aturan kerja & environment SQL Server 2016
+├── 00_RULES/                   <- Aturan kerja & environment modular SQL Server 2016
 ├── SUBPROJECTS.md              <- File ini (peta routing sub-project)
 ├── subproject/
 │   ├── GENERAL_OLAP/           <- Subproject awal tracking inisiatif umum database & query
@@ -17,8 +17,7 @@ SQL OLAP Consultant/
 │   ├── DATA_WAREHOUSE_ETL/     <- Star/Snowflake schema, dimension/fact, SSIS catalog
 │   ├── STORED_PROCEDURES/      <- T-SQL stored procedures, triggers, functions, CTE
 │   └── INDEX_MAINTENANCE/      <- Clustered/Non-clustered/Columnstore index, defrag, stats
-├── _SHARED/                    <- Helper / script / config generik lintas sub-project
-```
+├── ```
 
 ## Struktur Umum Tiap Sub-Project
 

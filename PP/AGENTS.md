@@ -1,30 +1,54 @@
+# AGENTS — SAP PP Consultant
+
+Workspace kerja **SAP PP Consultant** (SAP ECC 6.0 EHP6, NetWeaver 7.31, Oracle).
+File ini adalah **pintu masuk untuk semua AI** (Claude, Gemini, Codex, dll). Isinya: konteks inti, aturan emas,
+peta folder, dan indeks aturan detail di [00_RULES/](00_RULES/).
+
+> Versi: 2026-11-12 (standarisasi arsitektur modular format ABAP) · Backup legacy: `00_RULES/_backup/`
+
+---
+
+## Mulai Dari Sini (urutan wajib)
+
+0. Baca [CHECKPOINT.md](CHECKPOINT.md) → tahu terakhir mengerjakan apa dan lanjut dari mana.
+1. Baca **Konteks Inti** dan **Aturan Emas** di file ini.
+2. Baca [SUBPROJECTS.md](SUBPROJECTS.md) secara lengkap → tentukan sub-project yang relevan.
+3. Baca `README.md` sub-project tersebut (`subproject/<NAMA>/README.md`) lalu dokumen di `docs/` yang relevan.
+4. Bekerja hanya di dalam folder sub-project itu. Pakai template di [01_TEMPLATE/](01_TEMPLATE/) untuk dokumen baru.
+5. **Selesai pekerjaan apa pun → update checkpoint** (root `CHECKPOINT.md` + `CHECKPOINT.md` sub-project) sebelum jawaban akhir. Lihat [08_Checkpoint_Wajib.md](00_RULES/08_Checkpoint_Wajib.md).
+
+---
+
 ## Konteks Inti Otomatis - Wajib Dipahami Saat New Chat
 
 - Ini adalah proyek **SAP PP Consultant**. Jangan menganggap konteks proyek belum tersedia.
 - Panggil user **Baginda**.
+- Gaya komunikasi: **Caveman style** (singkat, tegas, padat, tanpa basa-basi/filler).
 - Jangan menyuruh Baginda melakukan pekerjaan yang masih dapat dicari atau dikerjakan agent.
-- Cari jalur alternatif sampai seluruh opsi aman yang tersedia benar-benar habis.
-- Sebelum pekerjaan teknis, baca `CLAUDE.md` dan `SUBPROJECTS.md` secara lengkap.
-- Jika pembacaan terminal biasa gagal, coba jalur read-only lain atau read-only di luar sandbox. Jangan langsung meminta Baginda menyalin file.
-- Setelah routing ditemukan, baca Markdown relevan di folder subproject sebelum mengubah atau menganalisis apa pun.
 - **Wajib bekerja hanya di dalam folder sub-project terkait (`subproject/<NAMA>/`). Dilarang menaruh file kerja baru di root.**
-- **Setiap sub-project wajib memiliki dan memperbarui file `.md` (misal `CHECKPOINT.md`) serta menyimpan dokumen di subfolder `docs/`, `src/`, `scripts/`, `tests/`, atau `outputs/`.**
 
-### Routing Langsung
+---
 
-- `cohvpi`, `zppi`, `teco`, `auto teco`, `zppi_cohvpi`, `bapi_procord_complete_tech` -> `subproject/AUTO_TECO/`.
-- `bom`, `costing bom`, `production version`, `pv`, `master recipe`, `resource`, `work center`, `mkal`, `mast` -> `subproject/MASTER_DATA_BOM/`.
-- `koreksi rr`, `confirmation`, `co11n`, `cors`, `cogi`, `afru`, `matdoc`, `order-matdoc` -> `subproject/CONFIRMATION_RR/`.
-- `onboarding pp`, `context transfer`, `transfer konteks`, `orientasi pp`, `claude desktop config` -> `subproject/ONBOARDING/`.
-- `jumbo roll`, `jr`, `sequence roll`, `uxtool`, `no urut jr` -> `subproject/JUMBO_ROLL_EXECUTION/`.
-- `slit roll`, `sr`, `slitting`, `rekap slitting`, `koreksi out` -> `subproject/SLIT_ROLL_EXECUTION/`.
+## Aturan Emas PP
 
-### Konteks Teknis Tetap
+| # | Aturan | Detail |
+|---|---|---|
+| 1 | **Server Production (`PRT`/`TRP`) HANYA READ-ONLY.** Dilarang eksekusi posting atau update apa pun di Production. Wajib logout setelah sesi Production. | [01](00_RULES/01_Landscape_dan_Server.md) |
+| 2 | **Target Posting/Write hanya ke `sandbox-new` (TRS).** Wajib konfirmasi Baginda sebelum eksekusi transaksi. | [01](00_RULES/01_Landscape_dan_Server.md) |
+| 3 | **Cek Tanggal Server TRS.** Server `sandbox-new` tidak sinkron kalender nyata → wajib cek `GET_SYSTEM_TIME_REMOTE` (`L_DATE`). | [01](00_RULES/01_Landscape_dan_Server.md) |
+| 4 | **No Evidence = Dilarang Menyimpulkan.** Wajib periksa data live via MCP SAP/SQL (`read_table`, query), perhitungkan dokumen reversal (`SMBLN`/`STBLG`), jangan berasumsi. | [03](00_RULES/03_Grounding_dan_Verifikasi_Data.md) |
+| 5 | **Query Aman:** Batasi rowcount (200-500) dan selalu gunakan filter spesifik (Company Code, Plant, Date range, Document ID). | [03](00_RULES/03_Grounding_dan_Verifikasi_Data.md) |
+| 6 | **Validasi Email:** Jika ada email terkait, baca isi + lampiran gambar terlebih dahulu, jelaskan intinya ke Baginda sebelum analisa. | [01](00_RULES/01_Landscape_dan_Server.md) |
 
-- Landscape: NetWeaver 7.31 / ECC 6.0 EHP6 / Oracle / Plant 2000. Dilarang menyarankan fitur S/4HANA (MRP Live, Fiori native).
-- Default eksekusi transaksi produksi adalah SAP GUI via computer use.
-- MCP SAP (`sap-leader`) digunakan diam-diam di background untuk verifikasi master data & order (`MKAL`, `CRHD`, `PLKO`, `T001L`, `MAST`/`STKO`, `MCHB`, `AUFK`).
-- Prinsip: Tidak ada evidence = tidak boleh eksekusi.
-- Tanggal server: periksa via MCP SAP hanya untuk server `sandbox-new` (TRS). Server lain gunakan real world date.
-- Jika ada case email, wajib baca email dan jelaskan ringkasannya ke Baginda terlebih dahulu.
+---
 
+## Indeks Aturan Detail (00_RULES/)
+
+- [01_Landscape_dan_Server.md](00_RULES/01_Landscape_dan_Server.md) — Server SAP, izin write, tanggal server, aturan email.
+- [02_Master_Data_dan_Tabel_Kunci.md](00_RULES/02_Master_Data_dan_Tabel_Kunci.md) — Tabel utama, relasi data, TCODE standar modul PP.
+- [03_Grounding_dan_Verifikasi_Data.md](00_RULES/03_Grounding_dan_Verifikasi_Data.md) — Verifikasi data nyata, batas baris query, penanganan reversal.
+- [04_Tool_Usage_dan_Eksekusi.md](00_RULES/04_Tool_Usage_dan_Eksekusi.md) — Panduan SAP GUI vs MCP SAP vs SQL.
+- [05_Cara_Menjawab_dan_Gaya.md](00_RULES/05_Cara_Menjawab_dan_Gaya.md) — Caveman style, panggilan Baginda, format teknis.
+- [06_Aturan_Khusus_Subproject.md](00_RULES/06_Aturan_Khusus_Subproject.md) — Struktur folder subproject, larangan file di root.
+- [07_Workflow_Analisa_dan_Troubleshooting.md](00_RULES/07_Workflow_Analisa_dan_Troubleshooting.md) — Step-by-step analisa insiden.
+- [08_Checkpoint_Wajib.md](00_RULES/08_Checkpoint_Wajib.md) — Format update checkpoint harian & subproject.

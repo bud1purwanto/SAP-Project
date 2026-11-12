@@ -9,7 +9,7 @@ Semua sub-project berada di dalam folder induk `subproject/`.
 ```
 SAP PP Consultant/
 ├── AGENTS.md                   <- Konteks otomatis agent saat New Chat & routing langsung
-├── CLAUDE.md                   <- Aturan kerja & environment SAP PP
+├── 00_RULES/                   <- Aturan kerja & environment modular SAP PP
 ├── SUBPROJECTS.md              <- File ini (peta routing sub-project)
 ├── SAP PP Knowledge/           <- Knowledge base referensi dokumen (INDEX.md)
 ├── subproject/
@@ -19,8 +19,7 @@ SAP PP Consultant/
 │   ├── ONBOARDING/             <- Dokumen orientasi pabrik, context transfer, MCP config
 │   ├── JUMBO_ROLL_EXECUTION/   <- Eksekusi JR, reset sequence roll, UXTOOL
 │   └── SLIT_ROLL_EXECUTION/    <- Eksekusi SR, slitting report, koreksi GI out
-├── _SHARED/                    <- Helper / script / config generik lintas sub-project
-```
+├── ```
 
 ## Struktur Umum Tiap Sub-Project
 

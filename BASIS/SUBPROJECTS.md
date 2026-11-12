@@ -9,7 +9,7 @@ Semua sub-project berada di dalam folder induk `subproject/`.
 ```
 SAP BASIS Consultant/
 ├── AGENTS.md               <- Konteks otomatis agent saat New Chat & routing langsung
-├── CLAUDE.md               <- Aturan kerja & environment SAP Basis
+├── 00_RULES/               <- Aturan kerja & environment SAP Basis
 ├── SUBPROJECTS.md          <- File ini (peta routing sub-project)
 ├── subproject/
 │   ├── USER_LICENSE/       <- Klasifikasi dan rekomendasi lisensi user SAP

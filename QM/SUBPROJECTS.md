@@ -9,7 +9,7 @@ Semua sub-project berada di dalam folder induk `subproject/`.
 ```
 SAP QM Consultant/
 ├── AGENTS.md                   <- Konteks otomatis agent saat New Chat & routing langsung
-├── CLAUDE.md                   <- Aturan kerja & environment SAP QM
+├── 00_RULES/                   <- Aturan kerja & environment modular SAP QM
 ├── SUBPROJECTS.md              <- File ini (peta routing sub-project)
 ├── subproject/
 │   ├── COA_AUTOMATION/         <- Review & requirement program COA (ZMAP_COA, ZQMR_COA, ZQMI_COA)
@@ -17,8 +17,7 @@ SAP QM Consultant/
 │   ├── QUALITY_CERTIFICATES/   <- QC01-03 certificate profile, QC15, QC21/22 release
 │   ├── QUALITY_NOTIFICATIONS/  <- QN01-03 defect recording, notification processing
 │   └── BARRIER_INSPECTION/     <- Inspeksi barrier WVTR/OTR, dynamic sampling, judgement
-├── _SHARED/                    <- Helper / script / config generik lintas sub-project
-```
+├── ```
 
 ## Struktur Umum Tiap Sub-Project
 

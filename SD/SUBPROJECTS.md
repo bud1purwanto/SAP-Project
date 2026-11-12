@@ -9,7 +9,7 @@ Semua sub-project berada di dalam folder induk `subproject/`.
 ```
 SAP SD Consultant/
 ├── AGENTS.md                   <- Konteks otomatis agent saat New Chat & routing langsung
-├── CLAUDE.md                   <- Aturan kerja & environment SAP SD
+├── 00_RULES/                   <- Aturan kerja & environment modular SAP SD
 ├── SUBPROJECTS.md              <- File ini (peta routing sub-project)
 ├── subproject/
 │   ├── GENERAL_SD/             <- Subproject awal tracking & inisiatif umum SD
@@ -18,8 +18,7 @@ SAP SD Consultant/
 │   ├── BILLING_REVENUE/        <- Billing VF01-03, VKOA revenue account determination, memo
 │   ├── SPECIAL_SALES/          <- Konsinyasi, third-party TAS, intercompany, STO
 │   └── PRICING_VOFM/           <- Pricing procedure VK11, VOFM formulas, user exits MV45AFZZ
-├── _SHARED/                    <- Helper / script / config generik lintas sub-project
-```
+├── ```
 
 ## Struktur Umum Tiap Sub-Project
 
