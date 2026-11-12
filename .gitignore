@@ -16,6 +16,8 @@ __pycache__/
 
 # Tool state & local caches
 .superpowers/
+graphify-out/
+.graphify*
 
 # OS files
 .DS_Store

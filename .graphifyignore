@@ -1,8 +1,0 @@
-# Generated data dumps / ad-hoc scripts — excluded from graphify
-outputs/
-tests/
-_adhoc/
-_backup/
-*_raw.json
-*_SR_full.md
-*_SR_wms*.md
