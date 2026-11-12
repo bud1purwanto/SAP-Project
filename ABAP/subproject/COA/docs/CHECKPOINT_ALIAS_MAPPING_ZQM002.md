@@ -7,7 +7,30 @@
 | Program terdampak (rencana) | `ZQMI_COA_F01` (versi `_group`, sandbox-new) — bagian pembacaan `ZMAP_COA` & `LT_COA_MAP` |
 | Data dicek | Development AIX (TRD) & Production AIX — **read-only** |
 | Bukti data | `outputs/alias_mapping_20261111/` (`prd_alias_to_material_sample.json`, `prd_mic_compare.json`, `prd_alias_counts_sample50k.json`) |
-| Deck QA | `docs/Alias_Mapping_ZQM002_QA.pptx` |
+| Deck QA | `docs/Alias_COA_Opsi_QA.pptx` (12 Nov, dipakai untuk konfirmasi). Deck lama `docs/Alias_Mapping_ZQM002_QA.pptx` terlalu teknis, tidak dipakai. |
+
+## 0. Revisi 12 Nov 2026 — keputusan utama sebelum desain
+
+Hasil diskusi dengan leader: ada beda persepsi dari blueprint confirmation. Desain di bagian 5 belum bisa dipakai sebelum QA memilih salah satu opsi.
+
+**Kasus:** 1 DO berisi SRAANI (PLE6-18) dan SRAPAI (PLE7-18), keduanya alias PLE-18. Data PRD (lot Z04): 9 MIC dengan deskripsi dan limit yang sama, tapi kode MIC berbeda (`SAANSTTR` vs `SAPASTTR`, `SRFCUNTR` vs `SAPASTNT`). Contoh terakhir menunjukkan pencocokan lewat akhiran 4 huruf tidak selalu berhasil, jadi pencocokan harus lewat deskripsi.
+
+**As-is (dicek di `ZQMI_COA_F02_group.abap`, USER_COMMAND_0100 EXEC):**
+- 1 print = 1 DO + 1 material. Kalau material berbeda: `'Tipe film tidak boleh berbeda!'`.
+- Value per MIC = rata-rata baris roll terpilih (`MICMIT / CTR`).
+- Header `PRODUCT` = alias unik roll material itu, digabung koma (`HSP-18, HSS-18`).
+- Jadi kondisi sekarang sama dengan **Opsi 2**.
+
+| | Opsi 1: 1 COA per alias | Opsi 2: COA per tipe produksi |
+|---|---|---|
+| Jumlah COA | 1 (PLE-18) | 2 (header keduanya PLE-18) |
+| Mapping | 1 mapping untuk alias | Per tipe produksi (as-is) |
+| Value | Rata-rata semua roll lintas tipe | Rata-rata roll satu tipe |
+| Traceability | Per roll, angka COA gabungan | Per roll dan per tipe, terpisah |
+| Spec beda (GLOSS, KZMB-9) | Rata-rata bisa menutupi roll keluar spec; perlu aturan limit atau blokir | Aman |
+| Perubahan program | Besar: izinkan beda material bila alias sama, cocokkan MIC lintas material, mapping per alias | Minimal / tidak ada |
+
+Kalau QA memilih Opsi 2, desain di bagian 5 (mapping berbasis alias) tidak diperlukan.
 
 ## 1. Permintaan User
 
@@ -109,16 +132,70 @@ Material DO (logic sekarang): MATNR_DO + KUNNR → MATNR_DO umum
 - Mapping material alias dan mapping material DO **tidak digabung**.
 - Batch dengan alias berbeda dalam 1 DO → mapping **per batch** (disetujui Baginda). Kunci `LT_COA_MAP` ditambah `CHARG`.
 
-### 5.3 Pencocokan MIC antar material (baru, dari temuan 3.4)
+### 5.3 Konversi MIC mapping alias → MIC lot asli (dianalisa di PRD, 12 Nov)
 
-Mapping MIC material alias diterjemahkan ke MIC milik batch:
-- MIC sama persis → langsung dipakai (MIC umum).
-- MIC berbeda → dicocokkan lewat **akhiran properti** (4 karakter terakhir), dengan cadangan pencocokan **deskripsi** (QPMT-KURZTEXT).
-- Kalau tidak ada padanan → MIC tetap tampil dengan nilai kosong, ditambah warning.
+Usulan Baginda: MIC di mapping alias dikonversi ke MIC material asli memakai pola kode.
+- SR (lot Z04): `S` + 3 huruf tengah material + akhiran properti (SRAANI → `SAAN` + `STTR`)
+- JR (lot Z02/Z03): `P` + 3 huruf tengah material + akhiran properti (JRAPAI → `PAPA` + `DTTR`)
+
+**Hasil cek PRD** (lot Aug–Nov 2026, sampel 45 material SR + 45 material JR; bukti `outputs/alias_mapping_20261111/prd_mic_pattern_sample.json`):
+
+| | SR (Z04) | JR (Z02) |
+|---|---|---|
+| MIC ikut pola | 314 | 823 |
+| MIC umum, kode sama di semua material | 306 | 52 |
+| MIC tidak ikut pola | 20 | 55 |
+| Material dengan pengecualian nyata | 4/45 (SRECVI→`SW3Y`, SRICLI→`SKYR`, SRGAGI→`ZGAG`, SRGAFI→`ZGAF`) | ±6/45 (JRABNI→`PW4R`, JRVCWI→`PW2R`, JRECZI→`PW3M`, JRG1SI→`SG1S`/`PAG1`, JRGAFI→`RGAF`) |
+| Akhiran properti unik dalam 1 lot | 90/90 lot | |
+
+Pengecualian terjadi karena material memakai MIC milik material lain (inspection plan dipakai bersama) atau prefix `Z`/`R`.
+
+**Simulasi pada pasangan alias nyata:** SRIARI↔SRIBRI, SRIARI↔SRIASI, SRICRI↔SRKYGI, SREWCI↔SRKPKI, dan SRAANI→SRAPAI semuanya 100% ketemu. Satu gagal: SRAPAI→SRAANI, `SAPASTNT` (Surface Tension Untreated Side), karena SRAANI memakai MIC umum `SRFCUNTR`. Arah konversi berpengaruh, tergantung material mana yang dijadikan acuan mapping.
+
+**Aturan konversi yang diusulkan** (dicari di MIC lot hasil trace, bukan di material DO):
+1. MIC mapping ada persis di lot → pakai (MIC umum).
+2. Rumus prefix + 3 huruf **material lot** (bukan material DO, karena lot JR punya material JR sendiri) + akhiran → kalau ada di lot, pakai.
+3. Belum ketemu → cari MIC di lot dengan akhiran 4 huruf sama (selalu unik per lot) → menutup kasus `SW3Y`/`PW4R`/`ZGAG`.
+4. Belum ketemu → cocokkan deskripsi (QPMT-KURZTEXT) → menutup kasus `SAPASTNT` ↔ `SRFCUNTR`.
+5. Tetap tidak ketemu → print diblokir dan tampil pesan (bukan baris kosong).
+
+Catatan: akhiran yang sama bisa punya nama sisi berbeda antar keluarga film (`STTR` = Treated Side / Unmatte Side). Dalam satu alias keluarganya sama, jadi aman. Tapi hasil konversi sebaiknya ditampilkan di ALV (MIC mapping → MIC lot) supaya QA bisa memeriksanya.
+
+**Opsi 2 referensi (diusulkan Baginda, dicek PRD 12 Nov):** selain lot, pakai inspection plan material asli (`MAPL` PLNTY 'Q' → `PLMK`) sebagai kamus MIC. Bukti: `outputs/alias_mapping_20261111/prd_inspection_plan_sample.json`.
+- Plan ada per material, dengan nama grup mirip FTYPE: SRAANI = `PLE6-18S`, SRAPAI = `PLE7.18S`, JRAPAI = `PLE7.18J`. Ada 10 group counter (PLNAL) di plant 1000/2000.
+- Plan SR SRAANI juga berisi MIC level JR (`PAAN*`). Akhiran saja bisa bentrok antar level, jadi kunci pencocokan = **huruf pertama (level) + akhiran 4 huruf**.
+- Plan JR berisi prefix `A` (`AAPASTTR`), selain `P`. Pola prefix tidak hanya S/P.
+- Plan SRECVI memang berisi `SW3Y*`, jadi pencocokan di plan menutup kasus MIC pinjaman.
+- Peran: **mapping alias** = apa yang tampil (daftar, urutan, deskripsi, limit override). **Plan material lot** = terjemahan dan validasi MIC. **Lot (QAMV/QAMR)** = nilai dan konfirmasi akhir, karena plan bisa berubah setelah lot dibuat.
 
 ### 5.4 Yang tidak berubah
 
 Struktur `ZMAP_COA`, program `ZMAP_COA_MIC`, aturan per-field limit (kosong berarti ikut MIC), filter `DELETION <> 'X'`, dan traceability lot.
+
+## 8. Live test DEV (12 Nov 2026) — tanpa mengubah program
+
+**Cara:** F01 di-patch di salinan lokal (`tests/alias_live/ZQMI_COA_F01_alias_patch.abap`, FORM `ZZ_ALIAS_MAP`), lalu dijalankan sebagai subroutine pool in-memory di Development AIX (`mt_pool_build.mjs` + runner `tests/alias_live/runner_alias*.abap`). Program dan tabel di DEV **tidak diubah**. Source DEV diambil ulang hari ini (TAG `alias20261112`), isinya sama dengan versi `_group` lokal. Bukti: `outputs/alias_live_20261112/`.
+
+**Logic yang diuji:** alias batch → material (ZZCODE-ATWTB → kode → `SR`+kode+`I`; fallback MAKT) → ZMAP_COA material alias → MIC diterjemahkan ke MIC material batch lewat inspection plan (EXACT → RULE → SUFFIX → DESC) → trace dan nilai tetap dari lot batch sendiri. Kalau alias gagal dikonversi atau tidak ada mapping → mapping material DO.
+
+**Data DEV:** semua roll DO 76/77 bermaterial SRACBI (HSB4-18). Alias HSB-18 dan HSP-18 tidak punya material. HSS-18 → SRACJI (lewat ZZCODE). SRACJI belum punya ZMAP_COA, jadi mapping SRACJI disimulasikan di memori: 14 MIC mengikuti plan `HSS18S`/`HSS18J`, Haze upper = 2.5.
+
+| Uji | Hasil |
+|---|---|
+| Konversi alias | HSS-18 → SRACJI via ZZCODE ✅. HSB-18/HSP-18 → NOCONV → fallback mapping SRACBI ✅ |
+| Terjemahan MIC | 9/14 via RULE (TH00, TSMD, TSTD, ELMD, ELTD, SHMD, SHTD, HZ00, G400). **5/14 NONE**: `SACJSITR/SINT`, `PACJSSTR/SSNT`, `SACJFDTR` |
+| Kenapa 5 gagal | HSB4-18 memakai sisi **Inside/Outside** (`SIIN/SIOT`, "SIT Inside"), HSS-18 memakai **Treated/Untreated** (`SITR/SINT`, "SIT Treated Side"). Akhiran maupun deskripsi tidak sama. Ini keputusan QA (Treated = Inside?), tidak bisa diturunkan otomatis |
+| Traceability & nilai (DO 76 dipaksa HSS-18) | 9 MIC: lot dan nilai **sama persis** dengan baseline. Method/limit dari mapping alias terbawa (Haze upper 2.5) ✅ |
+| MIC hilang | 5 MIC sisi **hilang diam-diam** dari COA (DO 76: 14 → 9 baris) ❌ → wajib blokir/pesan |
+| DO campur alias (DO 77: 6 roll HSP-18 fallback + 12 roll HSS-18 alias) | 1 COA per material: limit Haze 2.5 dari alias ikut ke semua roll. Rata-rata SIT/COF hanya dari 6 roll HSP-18 (SIIN 108 → 101, SIOT 107 → 101, FDIN 0.275 → 0.301) ❌ → mapping per batch tidak konsisten dalam 1 COA |
+| Regresi 15 DO (L-QM + ML-QM), patch tanpa mapping simulasi | **Identik** dengan program asli (182 baris) ✅ |
+
+Catatan: dibandingkan golden Oktober, DO 34/35/44/45/71/72 punya selisih di program asli **dan** patch (ZLOG edit, mapping/data berubah sejak Oktober). Bukan dari patch.
+
+**Kesimpulan:**
+1. Konversi alias dan trace aman. Nilai tetap dari lot batch sendiri.
+2. Pola kode MIC hanya menutup properti yang namanya sama. Properti sisi berbeda antar keluarga film perlu **tabel padanan properti** dari QA, atau print diblokir.
+3. Dalam 1 COA, semua roll harus memakai 1 mapping yang sama. Kalau ada roll yang alias-nya gagal dikonversi atau mapping-nya berbeda, print harus ditolak (mirip "Tipe film tidak boleh berbeda").
 
 ## 6. Pertanyaan Konfirmasi ke QA
 
@@ -130,7 +207,8 @@ Struktur `ZMAP_COA`, program `ZMAP_COA_MIC`, aturan per-field limit (kosong bera
 
 ## 7. Next Step
 
-- [ ] Konfirmasi QA atas pertanyaan di bagian 6 (pakai deck `docs/Alias_Mapping_ZQM002_QA.pptx`)
+- [ ] Konfirmasi QA: Opsi 1 atau Opsi 2 (bagian 0), pakai deck `docs/Alias_COA_Opsi_QA.pptx`
+- [ ] Kalau Opsi 1: jawab pertanyaan di bagian 6
 - [ ] Revisi desain sesuai jawaban QA
 - [ ] Tulis spec final + rencana implementasi
 - [ ] **Execute hanya setelah Baginda bilang "execute"**

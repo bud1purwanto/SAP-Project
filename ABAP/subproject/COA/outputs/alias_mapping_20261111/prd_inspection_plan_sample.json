@@ -1,0 +1,1460 @@
+{
+ "SRAANI": {
+  "mapl": [
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE6-18S",
+    "PLNAL": "01",
+    "WERKS": "1000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE6-18S",
+    "PLNAL": "02",
+    "WERKS": "1000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE6-18S",
+    "PLNAL": "03",
+    "WERKS": "1000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE6-18S",
+    "PLNAL": "04",
+    "WERKS": "1000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE6-18S",
+    "PLNAL": "05",
+    "WERKS": "1000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE6-18S",
+    "PLNAL": "06",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE6-18S",
+    "PLNAL": "07",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE6-18S",
+    "PLNAL": "08",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE6-18S",
+    "PLNAL": "09",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE6-18S",
+    "PLNAL": "10",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   }
+  ],
+  "plmk": {
+   "PLE6-18S": [
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SAANDTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SRFCUNTR",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SAANSTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "TREATED",
+     "KURZTEXT": "Treatment Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "DATBERAT",
+     "KURZTEXT": "Actual Berat Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "HARDNESS",
+     "KURZTEXT": "Actual Hardness Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "STATICUW",
+     "KURZTEXT": "Static Unwind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "STATICRW",
+     "KURZTEXT": "Static Rewind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "STATICSP",
+     "KURZTEXT": "Static Stop",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000002",
+     "VERWMERKM": "DELVINSP",
+     "KURZTEXT": "Delivery Inspection",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SAANDTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SRFCUNTR",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SAANSTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "DATBERAT",
+     "KURZTEXT": "Actual Berat Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "HARDNESS",
+     "KURZTEXT": "Actual Hardness Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANDS00",
+     "KURZTEXT": "Density",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANDTNT",
+     "KURZTEXT": "Decay Time Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANELMD",
+     "KURZTEXT": "Elongation MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANELTD",
+     "KURZTEXT": "Elongation TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANFDNT",
+     "KURZTEXT": "COF Untreated Side Dyn",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANFDTN",
+     "KURZTEXT": "COF Treated-Untreated Dyn",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANFDTR",
+     "KURZTEXT": "COF Treated Side Dyn",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANFSNT",
+     "KURZTEXT": "COF Untreated Side Stat",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANFSTN",
+     "KURZTEXT": "COF Treated-Untreated Stat",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANFSTR",
+     "KURZTEXT": "COF Treated Side Stat",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANG400",
+     "KURZTEXT": "Gloss 45\u00b0",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANHZ00",
+     "KURZTEXT": "Haze",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANSFMD",
+     "KURZTEXT": "Stiffness MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANSFTD",
+     "KURZTEXT": "Stiffness TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANSHMD",
+     "KURZTEXT": "Shrinkage MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANSHTD",
+     "KURZTEXT": "Shrinkage TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANTH00",
+     "KURZTEXT": "Thickness",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANTSMD",
+     "KURZTEXT": "Tensile Strength MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "PAANTSTD",
+     "KURZTEXT": "Tensile Strength TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SAANDTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SAANSTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SRFCUNTR",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "STATICRW",
+     "KURZTEXT": "Static Rewind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "STATICSP",
+     "KURZTEXT": "Static Stop",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "STATICUW",
+     "KURZTEXT": "Static Unwind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "TREATED",
+     "KURZTEXT": "Treatment Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SAANDTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SRFCUNTR",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SAANSTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "SAANDTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "SRFCUNTR",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "SAANSTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "TREATED",
+     "KURZTEXT": "Treatment Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "DATBERAT",
+     "KURZTEXT": "Actual Berat Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "HARDNESS",
+     "KURZTEXT": "Actual Hardness Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "STATICUW",
+     "KURZTEXT": "Static Unwind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "STATICRW",
+     "KURZTEXT": "Static Rewind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "STATICSP",
+     "KURZTEXT": "Static Stop",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000007",
+     "VERWMERKM": "DELVINSP",
+     "KURZTEXT": "Delivery Inspection",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000008",
+     "VERWMERKM": "SAANDTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000008",
+     "VERWMERKM": "SRFCUNTR",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000008",
+     "VERWMERKM": "SAANSTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "DATBERAT",
+     "KURZTEXT": "Actual Berat Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "HARDNESS",
+     "KURZTEXT": "Actual Hardness Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANDS00",
+     "KURZTEXT": "Density",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANDTNT",
+     "KURZTEXT": "Decay Time Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANELMD",
+     "KURZTEXT": "Elongation MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANELTD",
+     "KURZTEXT": "Elongation TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANFDNT",
+     "KURZTEXT": "COF Untreated Side Dyn",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANFDTN",
+     "KURZTEXT": "COF Treated-Untreated Dyn",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANFDTR",
+     "KURZTEXT": "COF Treated Side Dyn",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANFSNT",
+     "KURZTEXT": "COF Untreated Side Stat",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANFSTN",
+     "KURZTEXT": "COF Treated-Untreated Stat",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANFSTR",
+     "KURZTEXT": "COF Treated Side Stat",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANG400",
+     "KURZTEXT": "Gloss 45\u00b0",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANHZ00",
+     "KURZTEXT": "Haze",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANSFMD",
+     "KURZTEXT": "Stiffness MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANSFTD",
+     "KURZTEXT": "Stiffness TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANSHMD",
+     "KURZTEXT": "Shrinkage MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANSHTD",
+     "KURZTEXT": "Shrinkage TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANTH00",
+     "KURZTEXT": "Thickness",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANTSMD",
+     "KURZTEXT": "Tensile Strength MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "PAANTSTD",
+     "KURZTEXT": "Tensile Strength TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "SAANDTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "SAANSTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "SRFCUNTR",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "STATICRW",
+     "KURZTEXT": "Static Rewind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "STATICSP",
+     "KURZTEXT": "Static Stop",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "STATICUW",
+     "KURZTEXT": "Static Unwind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "TREATED",
+     "KURZTEXT": "Treatment Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000010",
+     "VERWMERKM": "SAANDTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000010",
+     "VERWMERKM": "SRFCUNTR",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000010",
+     "VERWMERKM": "SAANSTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    }
+   ]
+  },
+  "shared": {
+   "PLE6-18S": [
+    "SRAANI",
+    "SRAANI",
+    "SRAANI",
+    "SRAANI",
+    "SRAANI",
+    "SRAANI",
+    "SRAANI",
+    "SRAANI",
+    "SRAANI",
+    "SRAANI"
+   ]
+  }
+ },
+ "SRAPAI": {
+  "mapl": [
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18S",
+    "PLNAL": "01",
+    "WERKS": "1000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18S",
+    "PLNAL": "02",
+    "WERKS": "1000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18S",
+    "PLNAL": "03",
+    "WERKS": "1000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18S",
+    "PLNAL": "04",
+    "WERKS": "1000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18S",
+    "PLNAL": "05",
+    "WERKS": "1000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18S",
+    "PLNAL": "06",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18S",
+    "PLNAL": "07",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18S",
+    "PLNAL": "08",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18S",
+    "PLNAL": "09",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18S",
+    "PLNAL": "10",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   }
+  ],
+  "plmk": {
+   "PLE7.18S": [
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SAPADTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SAPASTNT",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SAPASTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "TREATED",
+     "KURZTEXT": "Treatment Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "DATBERAT",
+     "KURZTEXT": "Actual Berat Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "HARDNESS",
+     "KURZTEXT": "Actual Hardness Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "STATICUW",
+     "KURZTEXT": "Static Unwind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "STATICRW",
+     "KURZTEXT": "Static Rewind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "STATICSP",
+     "KURZTEXT": "Static Stop",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000002",
+     "VERWMERKM": "DELVINSP",
+     "KURZTEXT": "Delivery Inspection",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SAPADTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SAPASTNT",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SAPASTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SAPADTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SAPASTNT",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SAPASTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SAPADTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SAPASTNT",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SAPASTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "SAPADTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "SAPASTNT",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "SAPASTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "TREATED",
+     "KURZTEXT": "Treatment Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "DATBERAT",
+     "KURZTEXT": "Actual Berat Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "HARDNESS",
+     "KURZTEXT": "Actual Hardness Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "STATICUW",
+     "KURZTEXT": "Static Unwind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "STATICRW",
+     "KURZTEXT": "Static Rewind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000006",
+     "VERWMERKM": "STATICSP",
+     "KURZTEXT": "Static Stop",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000007",
+     "VERWMERKM": "DELVINSP",
+     "KURZTEXT": "Delivery Inspection",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000008",
+     "VERWMERKM": "SAPADTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000008",
+     "VERWMERKM": "SAPASTNT",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000008",
+     "VERWMERKM": "SAPASTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "SAPADTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "SAPASTNT",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000009",
+     "VERWMERKM": "SAPASTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000010",
+     "VERWMERKM": "SAPADTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000010",
+     "VERWMERKM": "SAPASTNT",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000010",
+     "VERWMERKM": "SAPASTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    }
+   ]
+  },
+  "shared": {
+   "PLE7.18S": [
+    "SRAPAI",
+    "SRAPAI",
+    "SRAPAI",
+    "SRAPAI",
+    "SRAPAI",
+    "SRAPAI",
+    "SRAPAI",
+    "SRAPAI",
+    "SRAPAI",
+    "SRAPAI"
+   ]
+  }
+ },
+ "SRECVI": {
+  "mapl": [
+   {
+    "PLNTY": "Q",
+    "PLNNR": "MA91.50S",
+    "PLNAL": "01",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "MA91.50S",
+    "PLNAL": "02",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "MA91.50S",
+    "PLNAL": "03",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "MA91.50S",
+    "PLNAL": "04",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "MA91.50S",
+    "PLNAL": "05",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   }
+  ],
+  "plmk": {
+   "MA91.50S": [
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SW3YSTCD",
+     "KURZTEXT": "Surface Tension Coated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SW3YSTMZ",
+     "KURZTEXT": "Surface Tension Metz Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SW3YFEP5",
+     "KURZTEXT": "Fish Eye Particle 0.3 - 0.5 mm (per m2)",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SW3YFEP4",
+     "KURZTEXT": "Fish Eye Particle < 0.3 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SW3YSP03",
+     "KURZTEXT": "Shiny Particles < 0.3 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SW3YSP04",
+     "KURZTEXT": "Shiny Particle 0.3 - 0.5 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SW3YSP05",
+     "KURZTEXT": "Shiny Particle > 1.0 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SECVMV01",
+     "KURZTEXT": "Metal Void 0.5 - 2.0 mm ( per 5 m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "SECVMV02",
+     "KURZTEXT": "Metal Void 2.0 - 3.0 mm ( per 5 m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "BONDING",
+     "KURZTEXT": "Bonding",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "METZSIDE",
+     "KURZTEXT": "Metz Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "COATSIDE",
+     "KURZTEXT": "Coated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PRINTYL4",
+     "KURZTEXT": "Print Colour Yellow 4729EA",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PRINTYL3",
+     "KURZTEXT": "Print Colour Yellow 39-6-1250",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PRINTBLL",
+     "KURZTEXT": "Print Colour Blue Lithocure",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PRINTBLU",
+     "KURZTEXT": "Print Colour Blue USC 50021",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PRINTBL3",
+     "KURZTEXT": "Print Colour Blue 39-6-6400",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PRINTRDR",
+     "KURZTEXT": "Print Colour Red Rubine",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PRINTRDM",
+     "KURZTEXT": "Print Colour Red Magenta",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PRINTBC3",
+     "KURZTEXT": "Print Colour Black Sicura 770HS",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "DATBERAT",
+     "KURZTEXT": "Actual Berat Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "HARDNESS",
+     "KURZTEXT": "Actual Hardness Roll",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "STATICUW",
+     "KURZTEXT": "Static Unwind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "STATICRW",
+     "KURZTEXT": "Static Rewind",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "STATICSP",
+     "KURZTEXT": "Static Stop",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000002",
+     "VERWMERKM": "DELVINSP",
+     "KURZTEXT": "Delivery Inspection",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SW3YSTCD",
+     "KURZTEXT": "Surface Tension Coated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SW3YSTMZ",
+     "KURZTEXT": "Surface Tension Metz Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SW3YFEP5",
+     "KURZTEXT": "Fish Eye Particle 0.3 - 0.5 mm ( per m2",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SW3YFEP4",
+     "KURZTEXT": "Fish Eye Particle < 0.3 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SW3YSP03",
+     "KURZTEXT": "Shiny Particles < 0.3 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SW3YSP04",
+     "KURZTEXT": "Shiny Particle 0.3 - 0.5 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000003",
+     "VERWMERKM": "SW3YSP05",
+     "KURZTEXT": "Shiny Particle > 1.0 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SW3YSTCD",
+     "KURZTEXT": "Surface Tension Coated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SW3YSTMZ",
+     "KURZTEXT": "Surface Tension Metz Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SW3YFEP5",
+     "KURZTEXT": "Fish Eye Particle 0.3 - 0.5 mm ( per m2",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SW3YFEP4",
+     "KURZTEXT": "Fish Eye Particle < 0.3 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SW3YSP03",
+     "KURZTEXT": "Shiny Particles < 0.3 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SW3YSP04",
+     "KURZTEXT": "Shiny Particle 0.3 - 0.5 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000004",
+     "VERWMERKM": "SW3YSP05",
+     "KURZTEXT": "Shiny Particle > 1.0 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SW3YSTCD",
+     "KURZTEXT": "Surface Tension Coated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SW3YSTMZ",
+     "KURZTEXT": "Surface Tension Metz Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SW3YFEP5",
+     "KURZTEXT": "Fish Eye Particle 0.3 - 0.5 mm ( per m2",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SW3YFEP4",
+     "KURZTEXT": "Fish Eye Particle < 0.3 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SW3YSP03",
+     "KURZTEXT": "Shiny Particles < 0.3 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SW3YSP04",
+     "KURZTEXT": "Shiny Particle 0.3 - 0.5 mm ( per m2 )",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000005",
+     "VERWMERKM": "SW3YSP05",
+     "KURZTEXT": "Shiny Particle > 1.0 mm ( per m2 )",
+     "LOEKZ": ""
+    }
+   ]
+  },
+  "shared": {
+   "MA91.50S": [
+    "SRECVI",
+    "SRECVI",
+    "SRECVI",
+    "SRECVI",
+    "SRECVI"
+   ]
+  }
+ },
+ "JRAPAI": {
+  "mapl": [
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18J",
+    "PLNAL": "01",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   },
+   {
+    "PLNTY": "Q",
+    "PLNNR": "PLE7.18J",
+    "PLNAL": "02",
+    "WERKS": "2000",
+    "LOEKZ": ""
+   }
+  ],
+  "plmk": {
+   "PLE7.18J": [
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPATH00",
+     "KURZTEXT": "Thickness",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPATSMD",
+     "KURZTEXT": "Tensile Strength MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPATSTD",
+     "KURZTEXT": "Tensile Strength TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPAELMD",
+     "KURZTEXT": "Elongation MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPAELTD",
+     "KURZTEXT": "Elongation TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPASFMD",
+     "KURZTEXT": "Stiffness MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPASFTD",
+     "KURZTEXT": "Stiffness TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPASHMD",
+     "KURZTEXT": "Shrinkage MD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPASHTD",
+     "KURZTEXT": "Shrinkage TD",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPAHZ00",
+     "KURZTEXT": "Haze",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPAG400",
+     "KURZTEXT": "Gloss 45\u00b0",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPASTNT",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPASTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPADTNT",
+     "KURZTEXT": "Decay Time Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPADTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPAFDNT",
+     "KURZTEXT": "COF Untreated Side Dyn",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPAFSNT",
+     "KURZTEXT": "COF Untreated Side Stat",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPAFDTR",
+     "KURZTEXT": "COF Treated Side Dyn",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPAFSTR",
+     "KURZTEXT": "COF Treated Side Stat",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPAFDTN",
+     "KURZTEXT": "COF Treated-Untreated Dyn",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPAFSTN",
+     "KURZTEXT": "COF Treated-Untreated Stat",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "PAPADS00",
+     "KURZTEXT": "Density",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000001",
+     "VERWMERKM": "TREATED",
+     "KURZTEXT": "Treatment Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000002",
+     "VERWMERKM": "AAPADTTR",
+     "KURZTEXT": "Decay Time Treated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000002",
+     "VERWMERKM": "AAPASTNT",
+     "KURZTEXT": "Surface Tension Untreated Side",
+     "LOEKZ": ""
+    },
+    {
+     "PLNKN": "00000002",
+     "VERWMERKM": "AAPASTTR",
+     "KURZTEXT": "Surface Tension Treated Side",
+     "LOEKZ": ""
+    }
+   ]
+  },
+  "shared": {
+   "PLE7.18J": [
+    "JRAPAI",
+    "JRAPAI"
+   ]
+  }
+ }
+}

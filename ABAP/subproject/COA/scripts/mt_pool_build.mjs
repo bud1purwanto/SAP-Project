@@ -55,7 +55,7 @@ for (const name of ['ZQMI_COA_F02', 'ZQMI_COA_ALV']) {
   });
 }
 // runner form
-const runner = readFileSync(new URL('../tests/mt_pool_runner.abap', import.meta.url), 'utf8').split('\n');
+const runner = readFileSync(process.env.RUNNER || new URL('../tests/mt_pool_runner.abap', import.meta.url), 'utf8').split('\n');
 runner.forEach(lit);
 // --- emit harness ---
 const H = [];

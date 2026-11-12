@@ -1,0 +1,2859 @@
+{
+ "HSB18S": [
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000001",
+   "VERWMERKM": "SACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000002",
+   "VERWMERKM": "SACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000003",
+   "VERWMERKM": "SACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000004",
+   "VERWMERKM": "SACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000005",
+   "VERWMERKM": "SACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000006",
+   "VERWMERKM": "SACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000007",
+   "VERWMERKM": "SACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000008",
+   "VERWMERKM": "SACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000009",
+   "VERWMERKM": "SACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000010",
+   "VERWMERKM": "SACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000011",
+   "VERWMERKM": "DATBERAT",
+   "KURZTEXT": "Actual Berat Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000012",
+   "VERWMERKM": "HARDNESS",
+   "KURZTEXT": "Actual Hardness Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000013",
+   "VERWMERKM": "STATICUW",
+   "KURZTEXT": "Static Unwind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000014",
+   "VERWMERKM": "STATICRW",
+   "KURZTEXT": "Static Rewind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000015",
+   "VERWMERKM": "STATICSP",
+   "KURZTEXT": "Static Stop",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000016",
+   "VERWMERKM": "SLIN125",
+   "KURZTEXT": "Sealing at 125 \u00baC ( INSIDE )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000017",
+   "VERWMERKM": "SLOT125",
+   "KURZTEXT": "Sealing at 125 \u00baC ( OUTSIDE )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000018",
+   "VERWMERKM": "DELVINSP",
+   "KURZTEXT": "Delivery Inspection",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000019",
+   "VERWMERKM": "SACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000020",
+   "VERWMERKM": "SACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000021",
+   "VERWMERKM": "SACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000022",
+   "VERWMERKM": "SACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000023",
+   "VERWMERKM": "SACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000024",
+   "VERWMERKM": "SACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000025",
+   "VERWMERKM": "SACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000026",
+   "VERWMERKM": "SACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000027",
+   "VERWMERKM": "SACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000028",
+   "VERWMERKM": "SACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000029",
+   "VERWMERKM": "PACBTH00",
+   "KURZTEXT": "Thickness",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000030",
+   "VERWMERKM": "PACBTSMD",
+   "KURZTEXT": "Tensile Strength MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000031",
+   "VERWMERKM": "PACBTSTD",
+   "KURZTEXT": "Tensile Strength TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000032",
+   "VERWMERKM": "PACBELMD",
+   "KURZTEXT": "Elongation MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000033",
+   "VERWMERKM": "PACBELTD",
+   "KURZTEXT": "Elongation TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000034",
+   "VERWMERKM": "PACBSFMD",
+   "KURZTEXT": "Stiffness MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000035",
+   "VERWMERKM": "PACBSFTD",
+   "KURZTEXT": "Stiffness TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000036",
+   "VERWMERKM": "SACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000037",
+   "VERWMERKM": "SACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000038",
+   "VERWMERKM": "SACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000039",
+   "VERWMERKM": "SACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000040",
+   "VERWMERKM": "PACBDTIN",
+   "KURZTEXT": "Decay Time Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000041",
+   "VERWMERKM": "PACBDTOT",
+   "KURZTEXT": "Decay Time Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000042",
+   "VERWMERKM": "SACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000043",
+   "VERWMERKM": "SACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000044",
+   "VERWMERKM": "PACBSSIN",
+   "KURZTEXT": "Seal Strength at SIT ( Inside )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000045",
+   "VERWMERKM": "PACBSSOT",
+   "KURZTEXT": "Seal Strength at SIT ( Outside )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000046",
+   "VERWMERKM": "SACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000047",
+   "VERWMERKM": "SACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000048",
+   "VERWMERKM": "SACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000049",
+   "VERWMERKM": "SACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000050",
+   "VERWMERKM": "PACBFDIO",
+   "KURZTEXT": "COF Inside-Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000051",
+   "VERWMERKM": "PACBFSIO",
+   "KURZTEXT": "COF Inside-Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000052",
+   "VERWMERKM": "DATBERAT",
+   "KURZTEXT": "Actual Berat Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000053",
+   "VERWMERKM": "HARDNESS",
+   "KURZTEXT": "Actual Hardness Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000054",
+   "VERWMERKM": "STATICUW",
+   "KURZTEXT": "Static Unwind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000055",
+   "VERWMERKM": "STATICRW",
+   "KURZTEXT": "Static Rewind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000056",
+   "VERWMERKM": "STATICSP",
+   "KURZTEXT": "Static Stop",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000057",
+   "VERWMERKM": "SACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000058",
+   "VERWMERKM": "SACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000059",
+   "VERWMERKM": "SACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000060",
+   "VERWMERKM": "SACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000061",
+   "VERWMERKM": "SACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000062",
+   "VERWMERKM": "SACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000063",
+   "VERWMERKM": "SACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000064",
+   "VERWMERKM": "SACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000065",
+   "VERWMERKM": "SACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000066",
+   "VERWMERKM": "SACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000067",
+   "VERWMERKM": "SACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000068",
+   "VERWMERKM": "SACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000069",
+   "VERWMERKM": "SACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000070",
+   "VERWMERKM": "SACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000071",
+   "VERWMERKM": "SACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000072",
+   "VERWMERKM": "SACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000073",
+   "VERWMERKM": "SACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000074",
+   "VERWMERKM": "SACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000075",
+   "VERWMERKM": "SACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000076",
+   "VERWMERKM": "SACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000077",
+   "VERWMERKM": "DATBERAT",
+   "KURZTEXT": "Actual Berat Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000078",
+   "VERWMERKM": "HARDNESS",
+   "KURZTEXT": "Actual Hardness Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000079",
+   "VERWMERKM": "STATICUW",
+   "KURZTEXT": "Static Unwind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000080",
+   "VERWMERKM": "STATICRW",
+   "KURZTEXT": "Static Rewind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000081",
+   "VERWMERKM": "STATICSP",
+   "KURZTEXT": "Static Stop",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000082",
+   "VERWMERKM": "SLIN125",
+   "KURZTEXT": "Sealing at 125 \u00baC ( INSIDE )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000083",
+   "VERWMERKM": "SLOT125",
+   "KURZTEXT": "Sealing at 125 \u00baC ( OUTSIDE )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000007",
+   "ZAEHL": "00000084",
+   "VERWMERKM": "DELVINSP",
+   "KURZTEXT": "Delivery Inspection",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000085",
+   "VERWMERKM": "SACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000086",
+   "VERWMERKM": "SACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000087",
+   "VERWMERKM": "SACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000088",
+   "VERWMERKM": "SACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000089",
+   "VERWMERKM": "SACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000090",
+   "VERWMERKM": "SACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000091",
+   "VERWMERKM": "SACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000092",
+   "VERWMERKM": "SACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000093",
+   "VERWMERKM": "SACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000094",
+   "VERWMERKM": "SACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000095",
+   "VERWMERKM": "PACBTH00",
+   "KURZTEXT": "Thickness",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000096",
+   "VERWMERKM": "PACBTSMD",
+   "KURZTEXT": "Tensile Strength MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000097",
+   "VERWMERKM": "PACBTSTD",
+   "KURZTEXT": "Tensile Strength TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000098",
+   "VERWMERKM": "PACBELMD",
+   "KURZTEXT": "Elongation MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000099",
+   "VERWMERKM": "PACBELTD",
+   "KURZTEXT": "Elongation TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000100",
+   "VERWMERKM": "PACBSFMD",
+   "KURZTEXT": "Stiffness MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000101",
+   "VERWMERKM": "PACBSFTD",
+   "KURZTEXT": "Stiffness TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000102",
+   "VERWMERKM": "SACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000103",
+   "VERWMERKM": "SACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000104",
+   "VERWMERKM": "SACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000105",
+   "VERWMERKM": "SACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000106",
+   "VERWMERKM": "PACBDTIN",
+   "KURZTEXT": "Decay Time Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000107",
+   "VERWMERKM": "PACBDTOT",
+   "KURZTEXT": "Decay Time Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000108",
+   "VERWMERKM": "SACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000109",
+   "VERWMERKM": "SACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000110",
+   "VERWMERKM": "PACBSSIN",
+   "KURZTEXT": "Seal Strength at SIT ( Inside )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000111",
+   "VERWMERKM": "PACBSSOT",
+   "KURZTEXT": "Seal Strength at SIT ( Outside )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000112",
+   "VERWMERKM": "SACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000113",
+   "VERWMERKM": "SACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000114",
+   "VERWMERKM": "SACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000115",
+   "VERWMERKM": "SACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000116",
+   "VERWMERKM": "PACBFDIO",
+   "KURZTEXT": "COF Inside-Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000117",
+   "VERWMERKM": "PACBFSIO",
+   "KURZTEXT": "COF Inside-Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000118",
+   "VERWMERKM": "DATBERAT",
+   "KURZTEXT": "Actual Berat Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000119",
+   "VERWMERKM": "HARDNESS",
+   "KURZTEXT": "Actual Hardness Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000120",
+   "VERWMERKM": "STATICUW",
+   "KURZTEXT": "Static Unwind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000121",
+   "VERWMERKM": "STATICRW",
+   "KURZTEXT": "Static Rewind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000122",
+   "VERWMERKM": "STATICSP",
+   "KURZTEXT": "Static Stop",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000123",
+   "VERWMERKM": "SACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000124",
+   "VERWMERKM": "SACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000125",
+   "VERWMERKM": "SACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000126",
+   "VERWMERKM": "SACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000127",
+   "VERWMERKM": "SACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000128",
+   "VERWMERKM": "SACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000129",
+   "VERWMERKM": "SACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000130",
+   "VERWMERKM": "SACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000131",
+   "VERWMERKM": "SACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000132",
+   "VERWMERKM": "SACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  }
+ ],
+ "HSS18S": [
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000001",
+   "VERWMERKM": "SACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000002",
+   "VERWMERKM": "SACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000003",
+   "VERWMERKM": "SACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000004",
+   "VERWMERKM": "SACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000005",
+   "VERWMERKM": "SACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000006",
+   "VERWMERKM": "SACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000007",
+   "VERWMERKM": "SACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000008",
+   "VERWMERKM": "SACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000009",
+   "VERWMERKM": "SACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000010",
+   "VERWMERKM": "SACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000011",
+   "VERWMERKM": "TREATED",
+   "KURZTEXT": "Treatment Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000012",
+   "VERWMERKM": "DATBERAT",
+   "KURZTEXT": "Actual Berat Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000013",
+   "VERWMERKM": "HARDNESS",
+   "KURZTEXT": "Actual Hardness Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000014",
+   "VERWMERKM": "STATICUW",
+   "KURZTEXT": "Static Unwind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000015",
+   "VERWMERKM": "STATICRW",
+   "KURZTEXT": "Static Rewind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000016",
+   "VERWMERKM": "STATICSP",
+   "KURZTEXT": "Static Stop",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000017",
+   "VERWMERKM": "DELVINSP",
+   "KURZTEXT": "Delivery Inspection",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000018",
+   "VERWMERKM": "SACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000019",
+   "VERWMERKM": "SACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000020",
+   "VERWMERKM": "SACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000021",
+   "VERWMERKM": "SACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000022",
+   "VERWMERKM": "SACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000023",
+   "VERWMERKM": "SACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000024",
+   "VERWMERKM": "SACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000025",
+   "VERWMERKM": "SACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000026",
+   "VERWMERKM": "SACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000027",
+   "VERWMERKM": "SACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000028",
+   "VERWMERKM": "PACJTH00",
+   "KURZTEXT": "Thickness",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000029",
+   "VERWMERKM": "PACJTSMD",
+   "KURZTEXT": "Tensile Strength MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000030",
+   "VERWMERKM": "PACJTSTD",
+   "KURZTEXT": "Tensile Strength TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000031",
+   "VERWMERKM": "PACJELMD",
+   "KURZTEXT": "Elongation MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000032",
+   "VERWMERKM": "PACJELTD",
+   "KURZTEXT": "Elongation TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000033",
+   "VERWMERKM": "PACJSFMD",
+   "KURZTEXT": "Stiffness MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000034",
+   "VERWMERKM": "PACJSFTD",
+   "KURZTEXT": "Stiffness TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000035",
+   "VERWMERKM": "SACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000036",
+   "VERWMERKM": "SACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000037",
+   "VERWMERKM": "SACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000038",
+   "VERWMERKM": "SACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000039",
+   "VERWMERKM": "PACJSTNT",
+   "KURZTEXT": "Surface Tension Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000040",
+   "VERWMERKM": "PACJSTTR",
+   "KURZTEXT": "Surface Tension Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000041",
+   "VERWMERKM": "PACJDTNT",
+   "KURZTEXT": "Decay Time Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000042",
+   "VERWMERKM": "PACJDTTR",
+   "KURZTEXT": "Decay Time Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000043",
+   "VERWMERKM": "SACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000044",
+   "VERWMERKM": "SACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000045",
+   "VERWMERKM": "PACJSSTR",
+   "KURZTEXT": "Seal Strength at SIT ( Treated Side )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000046",
+   "VERWMERKM": "PACJSSNT",
+   "KURZTEXT": "Seal Strength at SIT ( Untreated Side )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000047",
+   "VERWMERKM": "SACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000048",
+   "VERWMERKM": "SACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000049",
+   "VERWMERKM": "SACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000050",
+   "VERWMERKM": "SACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000051",
+   "VERWMERKM": "PACJFDTN",
+   "KURZTEXT": "COF Treated-Untreated Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000052",
+   "VERWMERKM": "PACJFSTN",
+   "KURZTEXT": "COF Treated-Untreated Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000053",
+   "VERWMERKM": "TREATED",
+   "KURZTEXT": "Treatment Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000054",
+   "VERWMERKM": "DATBERAT",
+   "KURZTEXT": "Actual Berat Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000055",
+   "VERWMERKM": "HARDNESS",
+   "KURZTEXT": "Actual Hardness Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000056",
+   "VERWMERKM": "STATICUW",
+   "KURZTEXT": "Static Unwind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000057",
+   "VERWMERKM": "STATICRW",
+   "KURZTEXT": "Static Rewind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000058",
+   "VERWMERKM": "STATICSP",
+   "KURZTEXT": "Static Stop",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000059",
+   "VERWMERKM": "SACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000060",
+   "VERWMERKM": "SACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000061",
+   "VERWMERKM": "SACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000062",
+   "VERWMERKM": "SACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000063",
+   "VERWMERKM": "SACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000064",
+   "VERWMERKM": "SACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000065",
+   "VERWMERKM": "SACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000066",
+   "VERWMERKM": "SACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000067",
+   "VERWMERKM": "SACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000005",
+   "ZAEHL": "00000068",
+   "VERWMERKM": "SACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000069",
+   "VERWMERKM": "SACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000070",
+   "VERWMERKM": "SACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000071",
+   "VERWMERKM": "SACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000072",
+   "VERWMERKM": "SACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000073",
+   "VERWMERKM": "SACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000074",
+   "VERWMERKM": "SACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000075",
+   "VERWMERKM": "SACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000076",
+   "VERWMERKM": "SACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000077",
+   "VERWMERKM": "SACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000078",
+   "VERWMERKM": "SACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000079",
+   "VERWMERKM": "TREATED",
+   "KURZTEXT": "Treatment Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000080",
+   "VERWMERKM": "DATBERAT",
+   "KURZTEXT": "Actual Berat Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000081",
+   "VERWMERKM": "HARDNESS",
+   "KURZTEXT": "Actual Hardness Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000082",
+   "VERWMERKM": "STATICUW",
+   "KURZTEXT": "Static Unwind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000083",
+   "VERWMERKM": "STATICRW",
+   "KURZTEXT": "Static Rewind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000006",
+   "ZAEHL": "00000084",
+   "VERWMERKM": "STATICSP",
+   "KURZTEXT": "Static Stop",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000007",
+   "ZAEHL": "00000085",
+   "VERWMERKM": "DELVINSP",
+   "KURZTEXT": "Delivery Inspection",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000086",
+   "VERWMERKM": "SACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000087",
+   "VERWMERKM": "SACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000088",
+   "VERWMERKM": "SACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000089",
+   "VERWMERKM": "SACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000090",
+   "VERWMERKM": "SACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000091",
+   "VERWMERKM": "SACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000092",
+   "VERWMERKM": "SACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000093",
+   "VERWMERKM": "SACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000094",
+   "VERWMERKM": "SACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000008",
+   "ZAEHL": "00000095",
+   "VERWMERKM": "SACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000096",
+   "VERWMERKM": "PACJTH00",
+   "KURZTEXT": "Thickness",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000097",
+   "VERWMERKM": "PACJTSMD",
+   "KURZTEXT": "Tensile Strength MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000098",
+   "VERWMERKM": "PACJTSTD",
+   "KURZTEXT": "Tensile Strength TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000099",
+   "VERWMERKM": "PACJELMD",
+   "KURZTEXT": "Elongation MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000100",
+   "VERWMERKM": "PACJELTD",
+   "KURZTEXT": "Elongation TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000101",
+   "VERWMERKM": "PACJSFMD",
+   "KURZTEXT": "Stiffness MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000102",
+   "VERWMERKM": "PACJSFTD",
+   "KURZTEXT": "Stiffness TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000103",
+   "VERWMERKM": "SACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000104",
+   "VERWMERKM": "SACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000105",
+   "VERWMERKM": "SACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000106",
+   "VERWMERKM": "SACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000107",
+   "VERWMERKM": "PACJSTNT",
+   "KURZTEXT": "Surface Tension Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000108",
+   "VERWMERKM": "PACJSTTR",
+   "KURZTEXT": "Surface Tension Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000109",
+   "VERWMERKM": "PACJDTNT",
+   "KURZTEXT": "Decay Time Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000110",
+   "VERWMERKM": "PACJDTTR",
+   "KURZTEXT": "Decay Time Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000111",
+   "VERWMERKM": "SACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000112",
+   "VERWMERKM": "SACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000113",
+   "VERWMERKM": "PACJSSTR",
+   "KURZTEXT": "Seal Strength at SIT ( Treated Side )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000114",
+   "VERWMERKM": "PACJSSNT",
+   "KURZTEXT": "Seal Strength at SIT ( Untreated Side )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000115",
+   "VERWMERKM": "SACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000116",
+   "VERWMERKM": "SACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000117",
+   "VERWMERKM": "SACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000118",
+   "VERWMERKM": "SACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000119",
+   "VERWMERKM": "PACJFDTN",
+   "KURZTEXT": "COF Treated-Untreated Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000120",
+   "VERWMERKM": "PACJFSTN",
+   "KURZTEXT": "COF Treated-Untreated Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000121",
+   "VERWMERKM": "TREATED",
+   "KURZTEXT": "Treatment Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000122",
+   "VERWMERKM": "DATBERAT",
+   "KURZTEXT": "Actual Berat Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000123",
+   "VERWMERKM": "HARDNESS",
+   "KURZTEXT": "Actual Hardness Roll",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000124",
+   "VERWMERKM": "STATICUW",
+   "KURZTEXT": "Static Unwind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000125",
+   "VERWMERKM": "STATICRW",
+   "KURZTEXT": "Static Rewind",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000009",
+   "ZAEHL": "00000126",
+   "VERWMERKM": "STATICSP",
+   "KURZTEXT": "Static Stop",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000127",
+   "VERWMERKM": "SACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000128",
+   "VERWMERKM": "SACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000129",
+   "VERWMERKM": "SACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000130",
+   "VERWMERKM": "SACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000131",
+   "VERWMERKM": "SACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000132",
+   "VERWMERKM": "SACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000133",
+   "VERWMERKM": "SACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000134",
+   "VERWMERKM": "SACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000135",
+   "VERWMERKM": "SACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000010",
+   "ZAEHL": "00000136",
+   "VERWMERKM": "SACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  }
+ ],
+ "HSB18J": [
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000001",
+   "VERWMERKM": "PACBTH00",
+   "KURZTEXT": "Thickness",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000002",
+   "VERWMERKM": "PACBTSMD",
+   "KURZTEXT": "Tensile Strength MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000003",
+   "VERWMERKM": "PACBTSTD",
+   "KURZTEXT": "Tensile Strength TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000004",
+   "VERWMERKM": "PACBELMD",
+   "KURZTEXT": "Elongation MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000005",
+   "VERWMERKM": "PACBELTD",
+   "KURZTEXT": "Elongation TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000006",
+   "VERWMERKM": "PACBSFMD",
+   "KURZTEXT": "Stiffness MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000007",
+   "VERWMERKM": "PACBSFTD",
+   "KURZTEXT": "Stiffness TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000008",
+   "VERWMERKM": "PACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000009",
+   "VERWMERKM": "PACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000010",
+   "VERWMERKM": "PACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000011",
+   "VERWMERKM": "PACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000012",
+   "VERWMERKM": "PACBDTIN",
+   "KURZTEXT": "Decay Time Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000013",
+   "VERWMERKM": "PACBDTOT",
+   "KURZTEXT": "Decay Time Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000014",
+   "VERWMERKM": "PACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000015",
+   "VERWMERKM": "PACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000016",
+   "VERWMERKM": "PACBSSIN",
+   "KURZTEXT": "Seal Strength at SIT ( Inside )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000017",
+   "VERWMERKM": "PACBSSOT",
+   "KURZTEXT": "Seal Strength at SIT ( Outside )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000018",
+   "VERWMERKM": "PACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000019",
+   "VERWMERKM": "PACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000020",
+   "VERWMERKM": "PACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000021",
+   "VERWMERKM": "PACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000022",
+   "VERWMERKM": "PACBFDIO",
+   "KURZTEXT": "COF Inside-Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000023",
+   "VERWMERKM": "PACBFSIO",
+   "KURZTEXT": "COF Inside-Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000024",
+   "VERWMERKM": "AACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000025",
+   "VERWMERKM": "AACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000026",
+   "VERWMERKM": "AACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000027",
+   "VERWMERKM": "AACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000028",
+   "VERWMERKM": "AACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000029",
+   "VERWMERKM": "AACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000030",
+   "VERWMERKM": "AACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000031",
+   "VERWMERKM": "AACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000032",
+   "VERWMERKM": "AACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000033",
+   "VERWMERKM": "AACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000034",
+   "VERWMERKM": "PACBTH00",
+   "KURZTEXT": "Thickness",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000035",
+   "VERWMERKM": "PACBTSMD",
+   "KURZTEXT": "Tensile Strength MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000036",
+   "VERWMERKM": "PACBTSTD",
+   "KURZTEXT": "Tensile Strength TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000037",
+   "VERWMERKM": "PACBELMD",
+   "KURZTEXT": "Elongation MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000038",
+   "VERWMERKM": "PACBELTD",
+   "KURZTEXT": "Elongation TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000039",
+   "VERWMERKM": "PACBSFMD",
+   "KURZTEXT": "Stiffness MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000040",
+   "VERWMERKM": "PACBSFTD",
+   "KURZTEXT": "Stiffness TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000041",
+   "VERWMERKM": "PACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000042",
+   "VERWMERKM": "PACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000043",
+   "VERWMERKM": "PACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000044",
+   "VERWMERKM": "PACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000045",
+   "VERWMERKM": "PACBDTIN",
+   "KURZTEXT": "Decay Time Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000046",
+   "VERWMERKM": "PACBDTOT",
+   "KURZTEXT": "Decay Time Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000047",
+   "VERWMERKM": "PACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000048",
+   "VERWMERKM": "PACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000049",
+   "VERWMERKM": "PACBSSIN",
+   "KURZTEXT": "Seal Strength at SIT ( Inside )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000050",
+   "VERWMERKM": "PACBSSOT",
+   "KURZTEXT": "Seal Strength at SIT ( Outside )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000051",
+   "VERWMERKM": "PACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000052",
+   "VERWMERKM": "PACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000053",
+   "VERWMERKM": "PACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000054",
+   "VERWMERKM": "PACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000055",
+   "VERWMERKM": "PACBFDIO",
+   "KURZTEXT": "COF Inside-Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000056",
+   "VERWMERKM": "PACBFSIO",
+   "KURZTEXT": "COF Inside-Outside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000067",
+   "VERWMERKM": "PACBDSTY",
+   "KURZTEXT": "Density",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000057",
+   "VERWMERKM": "AACBSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000058",
+   "VERWMERKM": "AACBSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000059",
+   "VERWMERKM": "AACBHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000060",
+   "VERWMERKM": "AACBG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000061",
+   "VERWMERKM": "AACBSIIN",
+   "KURZTEXT": "SIT Inside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000062",
+   "VERWMERKM": "AACBSIOT",
+   "KURZTEXT": "SIT Outside",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000063",
+   "VERWMERKM": "AACBFDIN",
+   "KURZTEXT": "COF Inside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000064",
+   "VERWMERKM": "AACBFSIN",
+   "KURZTEXT": "COF Inside Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000065",
+   "VERWMERKM": "AACBFDOT",
+   "KURZTEXT": "COF Outside Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000066",
+   "VERWMERKM": "AACBFSOT",
+   "KURZTEXT": "COF Outside Stat",
+   "LOEKZ": ""
+  }
+ ],
+ "HSS18J": [
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000001",
+   "VERWMERKM": "PACJTH00",
+   "KURZTEXT": "Thickness",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000002",
+   "VERWMERKM": "PACJTSMD",
+   "KURZTEXT": "Tensile Strength MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000003",
+   "VERWMERKM": "PACJTSTD",
+   "KURZTEXT": "Tensile Strength TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000004",
+   "VERWMERKM": "PACJELMD",
+   "KURZTEXT": "Elongation MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000005",
+   "VERWMERKM": "PACJELTD",
+   "KURZTEXT": "Elongation TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000006",
+   "VERWMERKM": "PACJSFMD",
+   "KURZTEXT": "Stiffness MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000007",
+   "VERWMERKM": "PACJSFTD",
+   "KURZTEXT": "Stiffness TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000008",
+   "VERWMERKM": "PACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000009",
+   "VERWMERKM": "PACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000010",
+   "VERWMERKM": "PACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000011",
+   "VERWMERKM": "PACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000012",
+   "VERWMERKM": "PACJSTNT",
+   "KURZTEXT": "Surface Tension Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000013",
+   "VERWMERKM": "PACJSTTR",
+   "KURZTEXT": "Surface Tension Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000014",
+   "VERWMERKM": "PACJDTNT",
+   "KURZTEXT": "Decay Time Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000015",
+   "VERWMERKM": "PACJDTTR",
+   "KURZTEXT": "Decay Time Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000016",
+   "VERWMERKM": "PACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000017",
+   "VERWMERKM": "PACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000018",
+   "VERWMERKM": "PACJSSTR",
+   "KURZTEXT": "Seal Strength at SIT ( Treated Side )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000019",
+   "VERWMERKM": "PACJSSNT",
+   "KURZTEXT": "Seal Strength at SIT ( Untreated Side )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000020",
+   "VERWMERKM": "PACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000021",
+   "VERWMERKM": "PACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000022",
+   "VERWMERKM": "PACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000023",
+   "VERWMERKM": "PACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000024",
+   "VERWMERKM": "PACJFDTN",
+   "KURZTEXT": "COF Treated-Untreated Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000025",
+   "VERWMERKM": "PACJFSTN",
+   "KURZTEXT": "COF Treated-Untreated Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000001",
+   "ZAEHL": "00000026",
+   "VERWMERKM": "TREATED",
+   "KURZTEXT": "Treatment Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000027",
+   "VERWMERKM": "AACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000028",
+   "VERWMERKM": "AACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000029",
+   "VERWMERKM": "AACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000030",
+   "VERWMERKM": "AACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000031",
+   "VERWMERKM": "AACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000032",
+   "VERWMERKM": "AACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000033",
+   "VERWMERKM": "AACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000034",
+   "VERWMERKM": "AACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000035",
+   "VERWMERKM": "AACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000002",
+   "ZAEHL": "00000036",
+   "VERWMERKM": "AACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000037",
+   "VERWMERKM": "PACJTH00",
+   "KURZTEXT": "Thickness",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000038",
+   "VERWMERKM": "PACJTSMD",
+   "KURZTEXT": "Tensile Strength MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000039",
+   "VERWMERKM": "PACJTSTD",
+   "KURZTEXT": "Tensile Strength TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000040",
+   "VERWMERKM": "PACJELMD",
+   "KURZTEXT": "Elongation MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000041",
+   "VERWMERKM": "PACJELTD",
+   "KURZTEXT": "Elongation TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000042",
+   "VERWMERKM": "PACJSFMD",
+   "KURZTEXT": "Stiffness MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000043",
+   "VERWMERKM": "PACJSFTD",
+   "KURZTEXT": "Stiffness TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000044",
+   "VERWMERKM": "PACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000045",
+   "VERWMERKM": "PACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000046",
+   "VERWMERKM": "PACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000047",
+   "VERWMERKM": "PACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000048",
+   "VERWMERKM": "PACJSTNT",
+   "KURZTEXT": "Surface Tension Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000049",
+   "VERWMERKM": "PACJSTTR",
+   "KURZTEXT": "Surface Tension Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000050",
+   "VERWMERKM": "PACJDTNT",
+   "KURZTEXT": "Decay Time Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000051",
+   "VERWMERKM": "PACJDTTR",
+   "KURZTEXT": "Decay Time Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000052",
+   "VERWMERKM": "PACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000053",
+   "VERWMERKM": "PACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000054",
+   "VERWMERKM": "PACJSSTR",
+   "KURZTEXT": "Seal Strength at SIT ( Treated Side )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000055",
+   "VERWMERKM": "PACJSSNT",
+   "KURZTEXT": "Seal Strength at SIT ( Untreated Side )",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000056",
+   "VERWMERKM": "PACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000057",
+   "VERWMERKM": "PACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000058",
+   "VERWMERKM": "PACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000059",
+   "VERWMERKM": "PACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000060",
+   "VERWMERKM": "PACJFDTN",
+   "KURZTEXT": "COF Treated-Untreated Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000061",
+   "VERWMERKM": "PACJFSTN",
+   "KURZTEXT": "COF Treated-Untreated Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000003",
+   "ZAEHL": "00000062",
+   "VERWMERKM": "TREATED",
+   "KURZTEXT": "Treatment Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000063",
+   "VERWMERKM": "AACJSHMD",
+   "KURZTEXT": "Shrinkage MD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000064",
+   "VERWMERKM": "AACJSHTD",
+   "KURZTEXT": "Shrinkage TD",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000065",
+   "VERWMERKM": "AACJFDNT",
+   "KURZTEXT": "COF Untreated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000066",
+   "VERWMERKM": "AACJFSNT",
+   "KURZTEXT": "COF Untreated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000067",
+   "VERWMERKM": "AACJFDTR",
+   "KURZTEXT": "COF Treated Side Dyn",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000068",
+   "VERWMERKM": "AACJFSTR",
+   "KURZTEXT": "COF Treated Side Stat",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000069",
+   "VERWMERKM": "AACJHZ00",
+   "KURZTEXT": "Haze",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000070",
+   "VERWMERKM": "AACJG400",
+   "KURZTEXT": "Gloss 45\u00b0",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000071",
+   "VERWMERKM": "AACJSINT",
+   "KURZTEXT": "SIT Untreated Side",
+   "LOEKZ": ""
+  },
+  {
+   "PLNKN": "00000004",
+   "ZAEHL": "00000072",
+   "VERWMERKM": "AACJSITR",
+   "KURZTEXT": "SIT Treated Side",
+   "LOEKZ": ""
+  }
+ ]
+}

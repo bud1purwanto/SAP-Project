@@ -1,0 +1,156 @@
+{
+ "Development AIX|SRAANI": {
+  "makt": [
+   {
+    "MAKTX": "SLITT ROLL PLE6-18"
+   }
+  ],
+  "zmap": [],
+  "n_lots": 0,
+  "last_lot": null
+ },
+ "Development AIX|SRAPAI": {
+  "makt": [],
+  "zmap": [],
+  "n_lots": 0,
+  "last_lot": null
+ },
+ "Production AIX|SRAANI": {
+  "makt": [
+   {
+    "MAKTX": "SLITT ROLL PLE6-18"
+   }
+  ],
+  "zmap": null,
+  "n_lots": 3000,
+  "last_lot": {
+   "PRUEFLOS": "050000901474",
+   "CHARG": "0019325704"
+  },
+  "qamv": [
+   {
+    "VERWMERKM": "SAANDTTR",
+    "KURZTEXT": "Decay Time Treated Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "1.000000000E+02"
+   },
+   {
+    "VERWMERKM": "SRFCUNTR",
+    "KURZTEXT": "Surface Tension Untreated Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "SAANSTTR",
+    "KURZTEXT": "Surface Tension Treated Side",
+    "TOLERANZUN": "3.800000000E+01",
+    "TOLERANZOB": "4.200000000E+01"
+   },
+   {
+    "VERWMERKM": "TREATED",
+    "KURZTEXT": "Treatment Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "DATBERAT",
+    "KURZTEXT": "Actual Berat Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "HARDNESS",
+    "KURZTEXT": "Actual Hardness Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICUW",
+    "KURZTEXT": "Static Unwind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICRW",
+    "KURZTEXT": "Static Rewind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICSP",
+    "KURZTEXT": "Static Stop",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   }
+  ]
+ },
+ "Production AIX|SRAPAI": {
+  "makt": [
+   {
+    "MAKTX": "SLITT ROLL PLE7-18"
+   }
+  ],
+  "zmap": null,
+  "n_lots": 3000,
+  "last_lot": {
+   "PRUEFLOS": "050001494478",
+   "CHARG": "0032583122"
+  },
+  "qamv": [
+   {
+    "VERWMERKM": "SAPADTTR",
+    "KURZTEXT": "Decay Time Treated Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "1.000000000E+02"
+   },
+   {
+    "VERWMERKM": "SAPASTNT",
+    "KURZTEXT": "Surface Tension Untreated Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "SAPASTTR",
+    "KURZTEXT": "Surface Tension Treated Side",
+    "TOLERANZUN": "3.800000000E+01",
+    "TOLERANZOB": "4.200000000E+01"
+   },
+   {
+    "VERWMERKM": "TREATED",
+    "KURZTEXT": "Treatment Side",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "DATBERAT",
+    "KURZTEXT": "Actual Berat Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "HARDNESS",
+    "KURZTEXT": "Actual Hardness Roll",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICUW",
+    "KURZTEXT": "Static Unwind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICRW",
+    "KURZTEXT": "Static Rewind",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   },
+   {
+    "VERWMERKM": "STATICSP",
+    "KURZTEXT": "Static Stop",
+    "TOLERANZUN": "0.000000000E+00",
+    "TOLERANZOB": "0.000000000E+00"
+   }
+  ]
+ }
+}
