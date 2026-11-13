@@ -242,6 +242,42 @@ Sampel di bagian 9 ternyata **data lama**: 50.000 baris AUSP pertama, CUOBJ keci
   4. **Limit spec beda di 6 pasangan**, misalnya PSL-17: 5 MIC (COF, Haze); SPO-13: SIT 120–135 vs 105–120; HSB-17.6: SIT 100–108 vs 102–108.
   5. EP-9: material alias SRCABX tidak punya lot maupun plan SR, jadi tidak bisa disimulasikan.
 
+## 11. Rancangan fallback ke mapping material batch (13 Nov 2026, rencana)
+
+Prinsip: mapping alias dipakai **hanya kalau seluruh COA bisa diselesaikan bersih**; selain itu satu COA penuh kembali ke perilaku as-is (mapping material batch).
+
+**Level keputusan: per COA (DO + MATNR yang dipilih), bukan per batch atau per MIC.** Satu COA merata-rata nilai per MIC; kalau sumber mapping dicampur, set MIC dan limitnya jadi tidak konsisten (contoh: HSP-18 terkonversi, HSS-18 tidak, dalam satu COA).
+
+Pemicu fallback (cukup salah satu):
+
+| Kode | Kondisi |
+|---|---|
+| NOALIAS | Batch tidak punya ZZALIAS |
+| NOCONV | Alias tidak bisa dikonversi ke material (ZZCODE/MAKT) |
+| NOMAP | Material alias tidak punya ZMAP_COA |
+| NONE | Ada MIC mapping alias yang tidak bisa diterjemahkan ke MIC material batch |
+| MIXED | Batch dalam satu COA menghasilkan material alias berbeda |
+
+- Tidak ada fallback per MIC (campur limit dua mapping ditolak).
+- Fallback wajib terlihat: pesan info di layar/ALV + log alasan, supaya QA tahu mapping mana yang dipakai.
+- Kalau mapping material batch juga kosong: blok print (jangan cetak COA tanpa MIC).
+
+Dampak dari data PRD 1 tahun (top 54 alias, bobot batch):
+
+| Jalur | Porsi | Catatan |
+|---|---|---|
+| Mapping alias, MIC terjemah penuh | 69,2% | 4,2% di antaranya limit alias beda dengan plan material batch (MFB-13, HSB-17.6, PFL-38, SPO-13) |
+| Fallback karena MIC tidak terjemah penuh (NONE) | 12,6% | PSL-17, MF-20, PL-20, LCAH-24, MA91-50, keluarga SRFCUNTR |
+| Fallback karena NOCONV | 18,2% | 19 alias; beberapa dipakai beberapa FTYPE (DOFF-18, OL-20, E5102) sehingga jadi perilaku Opsi 2 |
+
+Konsekuensi: mapping material batch **tetap wajib di-maintain** untuk ~31% batch beralias. Simplifikasi mapping hanya berlaku untuk alias yang lolos.
+
+Mapping customer di jalur alias: mapping umum (KUNNR kosong) + override customer **dua-duanya dibaca dari material alias** (contoh SRAAAI + KUNNR). Cukup satu kali per material alias + customer, berlaku untuk semua material produksi beralias sama. Mapping customer yang dibuat di material batch tidak dipakai di jalur alias, hanya dipakai saat fallback. MIC override customer juga ikut diterjemahkan, dan kalau gagal kena pemicu NONE.
+
+Catatan 13 Nov 2026: ZMAP_COA belum ada di PRD (baru di DEV AIX). Jadi saat go-live QA harus membuat mapping material alias (alias yang lolos) **dan** mapping material batch (alias fallback serta batch tanpa alias).
+
+Status harness DEV (`tests/alias_live/zz_alias_form.abap`): fallback NOCONV/NOMAP sudah ada tetapi per batch; pemicu NONE belum (MIC hilang diam-diam) dan MIXED belum ada.
+
 ## 6. Pertanyaan Konfirmasi ke QA
 
 1. Alias sama tetapi limit spec material asli berbeda (GLOSS, KZMB-9): COA mencetak **limit mapping alias** atau **limit material asli batch**?
@@ -255,6 +291,7 @@ Sampel di bagian 9 ternyata **data lama**: 50.000 baris AUSP pertama, CUOBJ keci
 - [ ] Konfirmasi QA: Opsi 1 atau Opsi 2 (bagian 0), pakai deck `docs/Alias_COA_Opsi_QA.pptx`
 - [ ] Kalau Opsi 1: jawab pertanyaan di bagian 6
 - [ ] Revisi desain sesuai jawaban QA
-- [ ] Tulis spec final + rencana implementasi
+- [x] Blueprint final (Opsi 1 PPT, COA gabungan per alias, fallback per tipe produksi): `docs/BLUEPRINT_ALIAS_MAPPING_ZQM002.md` (13 Nov 2026)
+- [ ] Konfirmasi QA atas blueprint (bagian 6 blueprint)
 - [ ] **Execute hanya setelah Baginda bilang "execute"**
 - [ ] Regresi L-QM01–15 + ML-QM01–04 + skenario alias baru

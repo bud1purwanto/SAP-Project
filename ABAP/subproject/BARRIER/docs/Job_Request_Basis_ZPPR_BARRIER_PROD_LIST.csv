@@ -1,0 +1,12 @@
+,Tcode,SE38,,,,,,
+,Menu,-,,,,,,
+,Program,ZPPR_BARRIER_PROD_LIST,,,,,,
+,Job Name,ZTTE_BARRIER_PROD_HIST (usulan),,,,,,
+,Status,New,,,,,,
+,Schedule,Daily,,,,,,
+,Time,01:30:00,,,,,,
+,,,,,,,,
+,Change Request,Create new job for Historical Sync AGS-SAP (4 to 2 months ago),,,,,,
+,,,,,,,,
+,Step,Variant Name,Description,,,,,Screen
+,1,TTE_JOB_2,TTE Job Historical (4-2 Months),,,,,1000

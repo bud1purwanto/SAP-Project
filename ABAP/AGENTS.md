@@ -157,3 +157,4 @@ Tidak butuh ADT — memakai MCP SAP (RFC). Peta tool, keterbatasan, dan cara ins
 - Setiap sub-project baru: folder + subfolder standar + `README.md` (dari template) + 1 baris di `SUBPROJECTS.md`.
 - Setiap pekerjaan: update `CHECKPOINT.md` root + sub-project (wajib, lihat [08](00_RULES/08_Checkpoint_Wajib.md)). Perubahan besar: perbarui juga `README.md` sub-project.
 - Jangan menaruh file kerja di root atau langsung di `subproject/`.
+- Direktori lokal Windows (C:\SAP-Remote) WAJIB SELALU CLEAN. Dilarang menaruh file kerja, attachment, form, atau screenshot di lokal. Semua file kerja wajib disimpan di server remote per sub-project (docs/attachments, outputs, dll.), kecuali pembahasan bersifat other/umum.
