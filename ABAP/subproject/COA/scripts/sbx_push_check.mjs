@@ -6,7 +6,7 @@ import { call_function } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/
 const [prog, file, ...rest] = process.argv.slice(2);
 const checkOnly = rest.includes('--check-only');
 const main = rest.includes('--main') ? rest[rest.indexOf('--main') + 1] : prog;
-if (!/^(ZMAP_COA_BATCH\w*|ZQMI_COA_(TOP|F01|F02)|ZTMP_COA_\w+)$/.test(prog)) throw new Error('Program not allowed: ' + prog);
+if (!/^(ZMAP_COA_BATCH\w*|ZQMI_COA_(TOP|F01|F02|ALV)|ZTMP_COA_\w+)$/.test(prog)) throw new Error('Program not allowed: ' + prog);
 await serverManager.loadConfig();
 await serverManager.setActiveServer('sandbox-new');
 if (!checkOnly) {

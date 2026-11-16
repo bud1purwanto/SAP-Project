@@ -3,6 +3,7 @@
 > Turunan teknis dari [BLUEPRINT_ALIAS_MAPPING_ZQM002.md](BLUEPRINT_ALIAS_MAPPING_ZQM002.md). **Ini rancangan, bukan perubahan.** Program DEV tidak disentuh sampai ada perintah "execute".
 > Dasar baris: `src/ZQMI_COA_{TOP,F01,F02}_group.abap` dan `outputs/ZQMI_COA_ALV_Development AIX_alias20261112.abap` (fetch DEV 12 Nov 2026). Re-fetch DEV dan cocokkan ulang nomor baris sebelum execute.
 > Disusun 13 Nov 2026.
+> **16 Nov 2026: diimplementasikan (tanpa opsi limit) dan diuji di harness DEV, belum push.** Hasil: `docs/IMPLEMENTASI_ALIAS_HARNESS_20261116.md`, patch di `tests/alias_impl/`.
 
 ## 0. Ide Utama: "Baca dengan MIC batch, tampilkan dengan MIC alias"
 
@@ -32,7 +33,7 @@ GET_DATA
  ├─ limit: READ LT_COA_MAP by COA_MAT, lalu PERFORM ALIAS_APPLY_LIMIT  [ubah + FORM baru]
  └─ ZLOG_COA, SET_COA_RANGE_FLAG, SORT by COA_MAT                       [tetap / ubah kunci]
 F02 EXEC: MSTAT by COA_MAT, header alias, lebar dari semua roll         [ubah]
-ALV ZQM003: kunci COA_MAT/COA_MIC + 3 kolom                             [ubah]
+ALV ZQM003: kunci COA_MAT/COA_MIC, tanpa kolom baru                    [ubah]
 ```
 
 ## 1. TOP (`ZQMI_COA_TOP`)
@@ -495,17 +496,17 @@ F_PRINT, batch list, DOWNLOAD_BATCH_LIST_XLSX, PREPARE_DYNAMIC_ROLL_COLUMNS: **t
 
 | Lokasi | Perubahan |
 |---|---|
-| TY_ALVR (±4–24) | `+ COA_MAT LIKE MARA-MATNR, COA_PATH(7), BATCH_MIC LIKE QPMK-MKMNR` |
+| TY_ALVR (±4–24) | **Tetap** (tanpa kolom baru, diputuskan 16 Nov 2026) |
 | LT_UNIQUE / LT_FINAL (±162–216) | Isi dan kunci dari `IT_MIC1-COA_MAT` + `IT_MIC1-COA_MIC` (bukan MATNR + MIC). SORT/COMPARING/pembanding ikut. MICFMT pakai COA_MIC |
 | LT_SEQ (±255–264) | Kunci VBELN + COA_MAT + MIC (IT_DATA-MIC sudah MIC alias) |
 | LT_METHOD (±266–274) | Jalur alias: METHOD dari `GT_AMAP`; as-is: SELECT seperti sekarang |
-| Baris ALV (±286–345) | `MIC = IT_MIC1-COA_MIC`, `BATCH_MIC = IT_MIC1-MIC`, `COA_MAT`, `COA_PATH`; `MICDES/UOM/MICMIN/MICMAX` untuk jalur alias diambil dari baris final `IT_DATA` (READ by VBELN + COA_MAT + MIC alias) supaya **limit dan deskripsi sama dengan print**; READ LT_FINAL dengan COA_MAT + COA_MIC |
+| Baris ALV (±286–345) | `MIC = IT_MIC1-COA_MIC`; `MICDES/UOM/MICMIN/MICMAX` untuk jalur alias diambil dari baris final `IT_DATA` (READ by VBELN + COA_MAT + MIC alias) supaya **limit dan deskripsi sama dengan print**; READ LT_FINAL dengan COA_MAT + COA_MIC |
 | ZLOG (LT_ZKEY ±221) | `MIC = IT_MIC1-COA_MIC` |
-| Field catalog | Tambah COA_MAT ("Material COA"), COA_PATH ("Jalur"), BATCH_MIC ("MIC Batch", `NO_OUT = 'X'`) |
+| Field catalog | **Tetap** |
 
 ### 5.2 DOWNLOAD (F01 ±1129) dan DOWNLOAD_DETAIL (±1264)
 
-Tambah kolom COA_MAT dan BATCH_MIC di file. Baris tetap dari IT_DATA (MIC = MIC alias).
+**Tidak berubah**, tanpa kolom baru. Baris tetap dari IT_DATA, jadi MIC yang tertulis otomatis MIC alias untuk jalur alias.
 
 ## 6. FORM `ALIAS_APPLY_LIMIT` — tiga opsi limit
 
@@ -666,9 +667,8 @@ Catatan bersama:
 | TOP | ±90 baris (tipe + tabel kerja) | ±7 baris (field IT_DATA, IT_MIC1) | Tidak ada DDIC |
 | F01 GET_DATA | — | ±45 baris di 8 titik (§2.1–2.8) | Blok as-is tidak diubah, hanya dibungkus IF |
 | F01/F03 FORM baru | ±400–480 baris | — | ALIAS_RESOLVE, CONVERT, READ_MAP, TRANSLATE_GROUP, CHECK_MIXED, FILL_ZMAP, LIMIT_PREP, APPLY_LIMIT, SET_LIMIT |
-| F01 download | — | ±10 baris | Kolom COA_MAT, BATCH_MIC |
 | F02 EXEC | — | ±25 baris (E1–E4) | |
-| ALV ZQM003 | — | ±35 baris + fieldcat | |
+| ALV ZQM003 | — | ±30 baris | Ganti kunci, tanpa kolom/fieldcat baru |
 
 ## 8. Urutan kerja saat "execute"
 

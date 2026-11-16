@@ -166,11 +166,8 @@ ZQM003 adalah representasi print COA yang dipecah per batch. Saat ini barisnya p
   - Method dan urutan SEQ_NO = dari mapping material alias (+ override customer).
   - Nilai = rata-rata gabungan dengan kunci VBELN + COA_MAT + COA_MIC.
   - ZLOG_COA dibaca dengan MIC alias (sama dengan print).
-- **Kolom baru:**
-  - `COA_MAT` (Material COA): material alias, atau MATNR pada jalur as-is/fallback.
-  - `COA_PATH` (Status jalur): `ALIAS` atau kode fallback (`NOALIAS`, `NOCONV`, `NOMAP`, `NONE`, `MIXED`, `LIMIT`).
-  - `BATCH_MIC` (MIC asli batch): **tersembunyi** (NO_OUT), bisa dimunculkan lewat layout untuk investigasi.
-- **Jalur as-is/fallback:** COA_MAT = MATNR dan COA_MIC = MIC, sehingga tampilan dan nilai identik dengan sekarang (kecuali tambahan kolom).
+- **Tidak ada kolom baru** di ZQM003 maupun di file download (diputuskan 16 Nov 2026). Field COA_MAT, COA_PATH, dan BATCH_MIC hanya dipakai di dalam program (IT_DATA/IT_MIC1), tidak tampil di ALV.
+- **Jalur as-is/fallback:** COA_MAT = MATNR dan COA_MIC = MIC, sehingga tampilan dan nilai identik dengan sekarang.
 
 ## 4. Dampak Berdasarkan Data PRD 1 Tahun
 
@@ -228,13 +225,13 @@ Referensi baris mengikuti `src/ZQMI_COA_F01_group.abap` dan `src/ZQMI_COA_F02_gr
 | 10 | Port dan perbaiki logic harness `tests/alias_live/zz_alias_form.abap`: kelompok VBELN+AMAT, pemicu NONE/MIXED/LIMIT, DESC per level, cek silang deskripsi, pilihan material ganda | — |
 | 11 | Header lebar (ZZWIDTH) di EXEC dikumpulkan dari semua roll kelompok (IT_LOT), bukan hanya dari batch wakil di baris MIC | F02 ±100–125 |
 | 12 | ZLOG_COA (override nilai): simpan dan baca dengan MIC sesuai jalur (alias → MIC alias, fallback/as-is → MIC batch). Tidak ada warning, blok, atau lookup kedua (lihat 9.3 #2) | F01 ±780, F02 ±930 |
-| 13 | ALV: tambah kolom internal `COA_MAT` (material alias) supaya baris gabungan terbaca; DOWNLOAD/DOWNLOAD_DETAIL ikut menampilkan COA_MAT dan MIC batch | ALV ±409, F01 1129/1264 |
+| 13 | ALV dan DOWNLOAD/DOWNLOAD_DETAIL: baris mengikuti IT_DATA (MIC = MIC alias), **tanpa kolom baru** | ALV ±409, F01 1129/1264 |
 | 14 | Tidak ada perubahan DDIC ZMAP_COA, ZLOG_COA, ZQM001, maupun layout Smartform | — |
-| 15 | ZQM003 (§3.8): TY_ALVR tambah COA_MAT, COA_PATH, BATCH_MIC (NO_OUT); kunci LT_UNIQUE/LT_FINAL, LT_SEQ, LT_METHOD dan READ LT_FINAL diganti MATNR/MIC → COA_MAT/COA_MIC; MIC/MICDES/limit dari MIC alias; field catalog | ALV ±4–24, 152–216, 255–274, 286–345, fieldcat |
+| 15 | ZQM003 (§3.8): kunci LT_UNIQUE/LT_FINAL, LT_SEQ, LT_METHOD dan READ LT_FINAL diganti MATNR/MIC → COA_MAT/COA_MIC; MIC/MICDES/limit dari MIC alias. TY_ALVR dan field catalog tetap | ALV 152–216, 255–274, 286–345 |
 
 ## 8. Rencana Uji
 
-1. **Regresi:** L-QM01–15 + ML-QM01–04 harus identik dengan baseline (DO tanpa alias atau fallback), baik output ZQM002 maupun ZQM003 (abaikan kolom baru COA_MAT/COA_PATH).
+1. **Regresi:** L-QM01–15 + ML-QM01–04 harus identik dengan baseline (DO tanpa alias atau fallback), baik output ZQM002 maupun ZQM003.
 2. **Skenario alias** (mapping di-inject lewat harness atau dibuat di DEV):
 
 | ID | Skenario | Ekspektasi |
@@ -249,10 +246,12 @@ Referensi baris mengikuti `src/ZQMI_COA_F01_group.abap` dan `src/ZQMI_COA_F02_gr
 | AL-08 | Pilih roll jalur alias + roll as-is bersamaan | Ditolak `Tipe film tidak boleh berbeda!` |
 | AL-09 | Terjemahan lewat DESC, dan RULE dengan deskripsi berbeda | DESC terpakai; RULE diberi tanda CHK di log |
 | AL-10 | Mapping alias dan mapping batch dua-duanya kosong | STOP dengan pesan "Material belum dimapping" |
-| AL-11 | ZQM003 untuk DO AL-01 | 6 baris batch per MIC alias (CHARG + MATNR asli PLE6/PLE7); nilai, limit, dan MIC sama persis dengan COA AL-01; COA_MAT = SRAAAI, COA_PATH = ALIAS |
-| AL-12 | ZQM003 untuk DO fallback (AL-04/AL-05) | Tampilan dan nilai identik dengan sekarang; COA_MAT = MATNR, COA_PATH = kode fallback |
+| AL-11 | ZQM003 untuk DO AL-01 | 6 baris batch per MIC alias (CHARG + MATNR asli PLE6/PLE7); nilai, limit, dan MIC sama persis dengan COA AL-01; kolom ALV sama dengan sekarang |
+| AL-12 | ZQM003 untuk DO fallback (AL-04/AL-05) | Tampilan dan nilai identik dengan sekarang |
+| AL-13 | Satu MATNR berisi roll beralias + roll tanpa alias | Fallback MIXED: semua roll MATNR itu dicetak as-is, identik dengan program sekarang |
 
-3. Bandingkan dengan simulasi PRD (`outputs/alias_recent_20261112/`) untuk HSS-18, HLS-18, dan HSL-21.
+3. **Data uji DEV** (16 Nov 2026): DO 0085006280 (alias PLE-22 → SRAACI, override customer, limit per opsi) dan DO 0085006281 (MIXED). Cakupan per ID dan expected limit A/B1/B2/C ada di `docs/DATA_UJI_ALIAS_DEV_20261113.md`.
+4. Bandingkan dengan simulasi PRD (`outputs/alias_recent_20261112/`) untuk HSS-18, HLS-18, dan HSL-21.
 
 ## 9. Analisa Impact ke Program Sekarang (13 Nov 2026)
 
@@ -273,9 +272,9 @@ Dasar: source DEV AIX hasil fetch 12 Nov 2026 (`outputs/ZQMI_COA_*_Development A
 | 9 | EXEC: header lebar (ZZWIDTH) | F02 ±100–125 | Lebar diambil dari CHARG baris MIC (batch wakil). Pada COA gabungan, batch wakil bisa hanya dari satu tipe produksi, jadi perlu diambil dari semua roll kelompok | Kecil | Sedang |
 | 10 | QPMK MAX(VERSION), MICFMT (desimal) | F02 ±80, ±270 | Pakai MIC alias, fallback ke MIC batch kalau MIC alias tidak ada di plant | Kecil | Rendah |
 | 11 | **ZLOG_COA (override nilai manual)** | F01 ±780–806, F02 ±930–1010 | Kunci VBELN+PRUEFLOS+MIC+KUNNR. Baris gabungan memakai MIC alias + lot batch wakil | Kecil | Rendah: mapping dipastikan lengkap sebelum dipakai; perubahan mapping setelah override = perilaku as-is (lihat 9.3 #2) |
-| 12 | ALV + download | ALV ±409, F01 1129, 1264 | Tambah kolom COA_MAT | Kecil | Rendah |
+| 12 | ALV + download | ALV ±409, F01 1129, 1264 | Baris ikut MIC alias, tanpa kolom baru | Kecil | Rendah |
 | 13 | Print / batch list | F01 1661–2050 | `LT_ROLL_LOT = IT_LOT`, berisi semua roll DO (tidak difilter MATNR). Untuk COA gabungan tidak perlu diubah | Tidak ada | — |
-| 14 | ZQM003 (report ALV) | ALV ±152–345 + fieldcat | Baris tetap per batch; MIC/limit/method/nilai ikut COA gabungan; tambah COA_MAT, COA_PATH, BATCH_MIC (tersembunyi) — lihat §3.8 | Kecil | Rendah (jalur as-is identik) |
+| 14 | ZQM003 (report ALV) | ALV ±152–345 | Baris tetap per batch; MIC/limit/method/nilai ikut COA gabungan; tanpa kolom baru — lihat §3.8 | Kecil | Rendah (jalur as-is identik) |
 | 15 | DDIC, ZQM001, Smartform | — | Tidak berubah | Tidak ada | — |
 
 ### 9.2 Kesimpulan impact

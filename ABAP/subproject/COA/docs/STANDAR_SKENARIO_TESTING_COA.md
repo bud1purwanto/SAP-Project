@@ -41,7 +41,8 @@ Setiap pembaruan kode ABAP COA **wajib** dibandingkan dengan **semua** skenario 
 
 ### 0.2 Golden baseline file
 
-- **Hasil program (semua DO)**: [`outputs/MT_qm04_C_fix.txt`](../outputs/MT_qm04_C_fix.txt) (19 Okt 2026). Format per baris: `|VBELN|MATNR|CHK|NUM|MIC|NILAI|INSLOT`.
+- **Acuan aktif (16 Nov 2026)**: §0.6 + [`outputs/MT_20261116_before_alias.txt`](../outputs/MT_20261116_before_alias.txt) (ZQM002) dan [`outputs/ALV_20261116_before_alias.txt`](../outputs/ALV_20261116_before_alias.txt) (ZQM003). Golden lama di bawah disimpan untuk riwayat.
+- **Golden lama — hasil program (semua DO)**: [`outputs/MT_qm04_C_fix.txt`](../outputs/MT_qm04_C_fix.txt) (19 Okt 2026). Format per baris: `|VBELN|MATNR|CHK|NUM|MIC|NILAI|INSLOT`.
   - File ini dipilih, bukan `MT_v2_DU.txt` (17 Okt). Di `MT_v2_DU.txt`, DO 43 `PEASFDUZ` bernilai `0.543`, padahal `data_inspeksi` menyebut `-` (belum diisi, jadi seharusnya `0.000`).
 - **Nilai inspeksi SAP (screenshot)**: [`docs/data_inspeksi_sap_gabungan.md`](data_inspeksi_sap_gabungan.md) untuk DO 34 sampai 72. DO 76–79 **tidak** ada di sini.
 - **Urutan MIC (SEQ_NO)**: [`outputs/seq_check_20261103/ALV_fix.txt`](../outputs/seq_check_20261103/ALV_fix.txt) (fix ZQM003, 3 Nov 2026).
@@ -111,7 +112,7 @@ Catatan ML-QM04 (perlu dikonfirmasi):
 
 **Catatan L-QM11 – L-QM13 (dari screenshot ALV DEV, sheet `QM11-85006270`, `QM12-85006271`, `QM13-85006272`)**
 - **L-QM11 (DO 70)**: memakai **mapping khusus customer** ATLANTIC BIRURAYA, PT. (`1141000026`) di ZQM001, dengan Mapping for Get Insp. = `JR Base Film` dan Sequence 1..n. Urutan tampil di ALV: TH00, TSMD, TSTD, ELMD, ELTD, SHMD, SHTD, HZ00, G400, STTR, FDNT, FDTR. Out Limit `X`: Thickness 22.40 (> 20.60) dan Gloss 89 (< 90).
-- **L-QM12 (DO 71)**: ALV user hanya menampilkan 11 MIC, sedangkan golden file punya 13 MIC (ada `SAABMVTR 0.58` dan `SAABO2TR 69.50`, lot `050000014265`). **Diabaikan (keputusan user 2026-11-11):** penyebabnya mapping diubah oleh Aisyah saat testing. Jika `SAABMVTR`/`SAABO2TR` muncul atau hilang di hasil regresi DO 71, jangan dilaporkan sebagai REGRESI. Cukup dicatat sebagai "efek mapping testing".
+- **L-QM12 (DO 71)**: ALV user hanya menampilkan 11 MIC, sedangkan golden file punya 13 MIC (ada `SAABMVTR 0.58` dan `SAABO2TR 69.50`, lot `050000014265`). **Diabaikan (keputusan user 2026-11-11):** penyebabnya mapping diubah oleh Aisyah saat testing (terlacak 16 Nov: mapping customer 1141100304 untuk SRAABI di-flag DELETION 05.11.2026, sehingga DO 71 memakai mapping umum yang tidak punya MVTR/O2TR, lihat §0.6.1). Jika `SAABMVTR`/`SAABO2TR` muncul atau hilang di hasil regresi DO 71, jangan dilaporkan sebagai REGRESI. Cukup dicatat sebagai "efek mapping testing".
 - **L-QM13 (DO 72, item 20)**: Out Limit `X` pada TSMD, TSTD, ELMD, ELTD, SHMD, SHTD. Ini memang nilai lot `040000020690` (out of spec), bukan bug.
 - Tab **`QM16`** dan **`QM17`** di Excel: **di-skip** dulu (keputusan user 2026-11-11), tidak termasuk regresi.
 
@@ -123,11 +124,11 @@ Catatan ML-QM04 (perlu dikonfirmasi):
    DOS="0085006234 0085006235 0085006240 0085006241 0085006242 0085006243 0085006244 0085006245 0085006270 0085006271 0085006272 0085006276 0085006277 0085006278 0085006279" node scripts/mt_run_suite.mjs tests/mt_harness_final.abap outputs/MT_<tgl>_<nama>.txt "Development AIX"
    ```
 3. Bandingkan hasilnya:
-   - dengan golden file: `diff outputs/MT_qm04_C_fix.txt outputs/MT_<tgl>_<nama>.txt`
+   - dengan acuan aktif: `diff outputs/MT_20261116_before_alias.txt outputs/MT_<tgl>_<nama>.txt` (harus 0 selisih untuk 15 DO skenario), lalu cek nilai/MIC/lot per skenario di §0.6. ZQM003: `diff outputs/ALV_20261116_before_alias.txt outputs/ALV_<tgl>_<nama>.txt`
    - dengan nilai SAP: `python3 scripts/mt_compare_expected.py outputs/MT_<tgl>_<nama>.txt`
    - untuk ML-QM01–03, cocokkan dengan tabel §0.3
 4. Laporkan per skenario (L-QM01…L-QM15, ML-QM01…ML-QM04) dengan status **SAMA / BERUBAH (disengaja) / REGRESI**. Setiap perbedaan harus disertai alasannya.
-5. Kalau perubahan memang disengaja dan sudah disetujui, perbarui golden file dan tabel §0.3, lalu catat tanggalnya di §0.5.
+5. Kalau perubahan memang disengaja dan sudah disetujui, perbarui acuan (§0.6 + file acuan aktif), lalu catat tanggalnya di §0.5. Kalau selisih berasal dari data (mapping/ZLOG/hasil inspeksi diubah tim functional), catat nilai sebelum dan sesudah, siapa, dan kapan di §0.6.1 dan tabel §0.6.2.
 
 ### 0.5 Riwayat baseline
 
@@ -138,6 +139,322 @@ Catatan ML-QM04 (perlu dikonfirmasi):
 | 2026-11-03/04 | ZQM003 urutan `SEQ_NO` + DO-or-date (pushed sandbox-new) | Kolom `NUM` mengikuti `SEQ_NO`; acuan `seq_check_20261103/ALV_fix.txt` |
 | 2026-11-11 | L-QM11/12/13 = DO 70/71/72 (dari sheet Excel user) | Tidak ada perubahan nilai |
 | 2026-11-11 | Peta dua set skenario (L-QM vs ML-QM) + DO 76–79; ML-QM04 = outsource DO 79 | Baseline DO 79 (`outputs/MT_ml_qm04_do79_dev_20261111.txt`) ditambahkan ke golden file `MT_qm04_C_fix.txt`; MVTR/O2TR = 0.07 ikut program (hasil input TRST-AISYAH 05.11.2026) |
+| 2026-11-16 | Regresi "before" alias (program tidak diubah), laporan `docs/REGRESI_BEFORE_ALIAS_20261116.md` | Tidak ada regresi program. DO 34/35/42/44/45/72 BERUBAH karena data DEV diubah TRST-AISYAH (mapping 02 & 05 Nov, ZLOG 05 & 09 Nov). Acuan baru §0.6 (nilai asli + override + log mapping), golden aktif = `MT_20261116_before_alias.txt`. Temuan: ZQM003 DO 77 SI 106 vs ZQM002 108/107 |
+| 2026-11-16 | Patch alias tanpa limit (harness DEV, belum push), laporan `docs/IMPLEMENTASI_ALIAS_HARNESS_20261116.md` | 15 DO skenario + DO 6281: ZQM002, ZQM003, EXEC **0 selisih** vs program asli. DO 6280 berubah sesuai tujuan (COA alias PLE-22). Nilai jalur alias (paksa HSS-18, DO 76/77) 14/14 = §0.3 |
+
+
+### 0.6 Data acuan per skenario (before alias, 16 Nov 2026) — **acuan compare utama**
+
+**Default testing = hasil real** (keputusan user 16 Nov 2026): bandingkan dengan kolom **Nilai asli** (hasil inspeksi SAP, tanpa override) per skenario/DO/MIC/lot. Override ZLOG_COA dan perubahan mapping **hanya diuji kalau user menyebut secara eksplisit**; selisih yang berasal dari keduanya dilaporkan terpisah, bukan sebagai selisih hasil. Diambil dari program DEV yang aktif 16 Nov 2026 (harness read-only, source = fetch 12 Nov), file mentah `outputs/MT_20261116_before_alias.txt` (ZQM002) dan `outputs/ALV_20261116_before_alias.txt` (ZQM003). Laporan: `docs/REGRESI_BEFORE_ALIAS_20261116.md`.
+
+Arti kolom:
+- **Nilai asli**: nilai dari hasil inspeksi SAP tanpa override (untuk MIC yang di-override diambil dari golden 19 Okt; sama dengan `data_inspeksi_sap_gabungan.md` dan dengan kolom nilai ZQM003).
+- **Override ZLOG_COA**: nilai yang diketik user di Print Certificate (VALUE2), siapa dan kapan. ZQM002 mencetak nilai ini; ZQM003 menampilkannya di kolom NEW_VALUE.
+- **ZQM003**: `=` sama dengan print, `= asli` sama dengan nilai asli (override ada di NEW_VALUE), angka lain = berbeda (lihat 0.6.3).
+- Baris ~~coret~~: MIC yang dulu ada di golden 19 Okt tapi sekarang tidak tampil karena mapping berubah.
+
+#### 0.6.1 Log perubahan data DEV setelah golden 19 Okt
+
+| Tanggal | User | Objek | Perubahan | Skenario terdampak |
+|---|---|---|---|---|
+| 02.11.2026 | TRST-AISYAH | ZMAP_COA SRAABI (umum) | Tambah PAABTH00 (SEQ 001), SEQ_NO MIC lain diisi ulang | L-QM02, L-QM09 (MIC baru Thickness 19.58) |
+| 02.11.2026 | TRST-AISYAH | ZMAP_COA SRVC2I (umum) | SVC2FDNS di-flag DELETION | L-QM05/06 (SVC2FDNS 0.147 tidak tampil) |
+| 02.11.2026 | TRST-AISYAH | ZMAP_COA semua material skenario lama | SEQ_NO diisi (sebelumnya 999) | Kolom SEQ semua L-QM (bukan regresi) |
+| 05.11.2026 | TRST-AISYAH | ZMAP_COA SRGJBI (umum) | PGJBFDNC, SGJBSTNC di-flag DELETION; tambah PGJBHZ00 (008), SGJBSTCD (009), PGJBFDCD (010) | L-QM10 |
+| 05.11.2026 | TRST-AISYAH | ZMAP_COA SRAABI customer 1141100304 | Semua 13 baris di-flag DELETION → DO 71 pakai mapping umum | L-QM12 (SAABMVTR/SAABO2TR tidak tampil) |
+| 05.11.2026 | TRST-AISYAH | ZLOG_COA DO 0085006234, lot 040000020662 | Override 5 MIC (ELMD, ELTD, SHTD, TSMD, TSTD) | L-QM01, L-QM15 |
+| 09.11.2026 | TRST-AISYAH | ZLOG_COA DO 0085006272, lot 040000020690 | Override 6 MIC (TSMD, TSTD, ELMD, ELTD, SHMD, SHTD) | L-QM13 |
+| 13 & 16.11.2026 | Claude (TRSTDEV) | ZMAP_COA SRAACI baru, ZZALIAS 7 roll, DO 6280/6281 | Data uji alias, lihat `docs/DATA_UJI_ALIAS_DEV_20261113.md` | Tidak ada (skenario di atas identik dengan 12 Nov) |
+
+#### 0.6.2 Nilai dan limit per skenario
+
+Kolom **Lower / Upper** = limit yang tercetak di COA (ZQM002, setelah limit mapping ZMAP_COA). **ZQM003 limit** `=` kalau sama dengan ZQM002; kalau berbeda ditulis limitnya. Per 16 Nov 2026 semua 178 MIC sama. Sumber: `outputs/LIMIT_20261116_before.txt`; hasil after patch alias `outputs/LIMIT_20261116_after_alias.txt` identik untuk semua DO di tabel ini.
+
+
+#### L-QM01, L-QM15: DO `0085006234` (SRCADI), customer 1141000514, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PCADELMD | `040000020662` | 0 | 75 (TRST-AISYAH 05.11.2026) | **75** | 70 | 150 | = asli | = | ZQM003 kolom NEW_VALUE = override |
+| 2 | PCADELTD | `040000020662` | 0 | 110 (TRST-AISYAH 05.11.2026) | **110** | 60 | 120 | = asli | = | ZQM003 kolom NEW_VALUE = override |
+| 3 | PCADSHMD | `040000020662` | 1.36 |  | **1.36** | 1.00 | 3.00 | = | = |  |
+| 4 | PCADSHTD | `040000020662` | 0.81 | 0.43 (TRST-AISYAH 05.11.2026) | **0.43** | 0.00 | 0.50 | = asli | = | ZQM003 kolom NEW_VALUE = override |
+| 5 | PCADHZ00 | `040000020662` | 2.95 |  | **2.95** | 1.50 | 3.00 | = | = |  |
+| 6 | PCADG400 | `040000020662` | 127 |  | **127** | 120 | 140 | = | = |  |
+| 7 | PCADSTTR | `040000020662` | 58 |  | **58** | 55 | 58 | = | = |  |
+| 8 | PCADFDNT | `040000020662` | 0.480 |  | **0.480** | 0.200 | 0.600 | = | = |  |
+| 9 | PCADTSMD | `040000020662` | 0.00 | 17.5 (TRST-AISYAH 05.11.2026) | **17.5** | 16.00 | 26.00 | = asli | = | ZQM003 kolom NEW_VALUE = override |
+| 10 | PCADTSTD | `040000020662` | 0.00 | 22.5 (TRST-AISYAH 05.11.2026) | **22.5** | 18.00 | 30.00 | = asli | = | ZQM003 kolom NEW_VALUE = override |
+
+#### L-QM02: DO `0085006235` (SRAABI), customer 1800000002, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PAABTH00 | `040000020753` | 19.58 |  | **19.58** | 19.40 | 20.60 | = | = | MIC baru: mapping SRAABI ditambah TRST-AISYAH 02.11.2026 |
+| 2 | PAABTSMD | `040000020753` | 12.92 |  | **12.92** | 11.00 | 18.00 | = | = |  |
+| 3 | PAABTSTD | `040000020753` | 27.71 |  | **27.71** | 22.00 | 35.00 | = | = |  |
+| 4 | PAABELMD | `040000020753` | 151 |  | **151** | 120 | 240 | = | = |  |
+| 5 | PAABELTD | `040000020753` | 46 |  | **46** | 30 | 90 | = | = |  |
+| 6 | PAABSHMD | `040000020753` | 4.33 |  | **4.33** | 3.00 | 5.00 | = | = |  |
+| 7 | PAABSHTD | `040000020753` | 2.05 |  | **2.05** | 0.00 | 3.00 | = | = |  |
+| 8 | PAABHZ00 | `040000020753` | 1.75 |  | **1.75** | 1.00 | 2.00 | = | = |  |
+| 9 | PAABG400 | `040000020753` | 97 |  | **97** | 90 | 100 | = | = |  |
+| 10 | SAABSTTR | `050000014208` | 39 |  | **39** | 38 | 42 | = | = |  |
+| 11 | PAABFDNT | `040000020753` | 0.265 |  | **0.265** | 0.300 | 0.500 | = | = |  |
+
+#### L-QM03: DO `0085006240` (SRGIDI), customer 1800000002, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PALZTH00 | `040000020676` | 69.97 |  | **69.97** | 67.90 | 72.10 | = | = |  |
+| 2 | PGIDTSMD | `040000020757` | 0.64 |  | **0.64** | 6.00 | 8.00 | = | = |  |
+| 3 | PGIDTSTD | `040000020757` | 16.00 |  | **16.00** | 10.00 | 17.00 | = | = |  |
+| 4 | PGIDELMD | `040000020757` | 138 |  | **138** | 130 | 170 | = | = |  |
+| 5 | PGIDELTD | `040000020757` | 45 |  | **45** | 30 | 70 | = | = |  |
+| 6 | PGIDSHMD | `040000020757` | 3.25 |  | **3.25** | 1.00 | 4.00 | = | = |  |
+| 7 | PGIDSHTD | `040000020757` | 2.87 |  | **2.87** | 1.00 | 3.00 | = | = |  |
+| 8 | SGIDSTCD | `050000014206` | 40 |  | **40** | 38 | 44 | = | = |  |
+| 9 | PGIDFDG2 | `040000020757` | 67 |  | **67** | 50 | 80 | = | = |  |
+
+#### L-QM04: DO `0085006241` (SREWEI), customer 1800000002, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PCGATH00 | `040000020693` | 12.17 |  | **12.17** | 11.64 | 12.36 | = | = |  |
+| 2 | PCGATSMD | `040000020693` | 27.00 |  | **27.00** | 18.00 | 26.00 | = | = |  |
+| 3 | PCGATSTD | `040000020693` | 26.00 |  | **26.00** | 20.00 | 30.00 | = | = |  |
+| 4 | PCGAELMD | `040000020693` | 95 |  | **95** | 90 | 150 | = | = |  |
+| 5 | PCGAELTD | `040000020693` | 85 |  | **85** | 75 | 120 | = | = |  |
+| 6 | PCGASHMD | `040000020693` | 1.40 |  | **1.40** | 0.00 | 2.00 | = | = |  |
+| 7 | PCGASHTD | `040000020693` | 0.32 |  | **0.32** | 0.00 | 0.60 | = | = |  |
+| 8 | SEWESTUZ | `050000014215` | 55 |  | **55** | 55 | 58 | = | = |  |
+| 9 | PEWEFDUZ | `040000020771` | 0.690 |  | **0.690** | 0.500 | 1.000 | = | = |  |
+| 9 | SEWESTMZ | `050000014215` | 55 |  | **55** | 50 | 58 | = | = |  |
+| 10 | SEWEMVTR | `050000014215` | 0.19 |  | **0.19** | 0.00 | 0.20 | = | = |  |
+| 11 | SEWEO2TR | `050000014215` | 0.21 |  | **0.21** | 0.00 | 0.20 | = | = |  |
+| 12 | SEWEODMZ | `050000014215` | 3.14 |  | **3.14** | 3.00 | 3.50 | = | = |  |
+
+#### L-QM05, L-QM06: DO `0085006242` (SRVC2I), customer 1141000004, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PVC2TH00 | `040000020671` | 25.07 |  | **25.07** | 24.25 | 25.75 | = | = |  |
+| 2 | PVC2TSMD | `040000020671` | 6.48 |  | **6.48** | 5.53 | 6.11 | = | = |  |
+| 3 | PVC2TSTD | `040000020671` | 2.73 |  | **2.73** | 3.78 | 4.18 | = | = |  |
+| 4 | PVC2ELMD | `040000020671` | 389 |  | **389** | 617 | 681 | = | = |  |
+| 5 | PVC2ELTD | `040000020671` | 640 |  | **640** | 725 | 801 | = | = |  |
+| 6 | PVC2SHMD | `040000020671` | -0.32 |  | **-0.32** | -1.00 | 0.00 | = | = |  |
+| 7 | PVC2SHTD | `040000020671` | 1.39 |  | **1.39** | 0.00 | 2.00 | = | = |  |
+| 8 | SVC2HZ00 | `050000014216` | 5.85 |  | **5.85** | 5.50 | 6.50 | = | = |  |
+| 9 | PVC2G400 | `040000020671` | 79 |  | **79** | 70 | 90 | = | = |  |
+| 10 | SVC2STNS | `050000014216` | 39 |  | **39** | 36 | 40 | = | = |  |
+| 11 | SVC2SSSS | `050000014216` | 2185 |  | **2185** | 1900 | 2300 | = | = |  |
+| 12 | SVC2FDSS | `050000014216` | 0.136 |  | **0.136** | 0.050 | 0.150 | = | = |  |
+| – | ~~SVC2FDNS~~ | `050000014216` | 0.147 |  | tidak tampil | – | – | – | – | Hilang: mapping SRVC2I di-flag DELETION TRST-AISYAH 02.11.2026 |
+
+#### L-QM07, L-QM08: DO `0085006243` (SREASI), customer 1141000004, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PAH8TH00 | `040000020683` | 50.09 |  | **50.09** | 48.50 | 51.50 | = | = |  |
+| 2 | PAH8TSMD | `040000020683` | 3.27 |  | **3.27** | 12.00 | 18.00 | = | = |  |
+| 3 | PAH8TSTD | `040000020683` | 0.36 |  | **0.36** | 25.00 | 32.00 | = | = |  |
+| 4 | PAH8ELMD | `040000020683` | 1 |  | **1** | 150 | 220 | = | = |  |
+| 5 | PAH8ELTD | `040000020683` | 92 |  | **92** | 50 | 80 | = | = |  |
+| 6 | PAH8SHMD | `040000020683` | 0.58 |  | **0.58** | 3.00 | 5.00 | = | = |  |
+| 7 | PAH8SHTD | `040000020683` | 0.59 |  | **0.59** | 0.50 | 1.50 | = | = |  |
+| 8 | SEASSTUZ | `050000014211` | 38 |  | **38** | 38 | 44 | = | = |  |
+| 9 | PEASFDUZ | `040000020763` | 0.000 |  | **0.000** | 0.400 | 0.700 | = | = |  |
+| 10 | SEASODMZ | `050000014211` | 2.65 |  | **2.65** | 2.20 | 2.70 | = | = |  |
+
+#### L-QM09: DO `0085006244` (SRAABI), customer 1141000004, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PAABTH00 | `040000020754` | 19.58 |  | **19.58** | 19.40 | 20.60 | = | = | MIC baru: mapping SRAABI ditambah TRST-AISYAH 02.11.2026 |
+| 2 | PAABTSMD | `040000020754` | 12.92 |  | **12.92** | 11.00 | 18.00 | = | = |  |
+| 3 | PAABTSTD | `040000020754` | 27.71 |  | **27.71** | 22.00 | 35.00 | = | = |  |
+| 4 | PAABELMD | `040000020754` | 151 |  | **151** | 120 | 240 | = | = |  |
+| 5 | PAABELTD | `040000020754` | 46 |  | **46** | 30 | 90 | = | = |  |
+| 6 | PAABSHMD | `040000020754` | 4.33 |  | **4.33** | 3.00 | 5.00 | = | = |  |
+| 7 | PAABSHTD | `040000020754` | 2.05 |  | **2.05** | 0.00 | 3.00 | = | = |  |
+| 8 | PAABHZ00 | `040000020754` | 1.75 |  | **1.75** | 1.00 | 2.00 | = | = |  |
+| 9 | PAABG400 | `040000020754` | 97 |  | **97** | 90 | 100 | = | = |  |
+| 10 | SAABSTTR | `050000014222` | 37 |  | **37** | 38 | 42 | = | = |  |
+| 11 | PAABFDNT | `040000020754` | 0.265 |  | **0.265** | 0.300 | 0.500 | = | = |  |
+
+#### L-QM10: DO `0085006245` (SRGJBI), customer 1141000004, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PAH8TH00 | `040000020687` | 50.09 |  | **50.09** | 48.50 | 51.50 | = | = |  |
+| 2 | PAH8TSMD | `040000020687` | 3.27 |  | **3.27** | 12.00 | 18.00 | = | = |  |
+| 3 | PAH8TSTD | `040000020687` | 0.36 |  | **0.36** | 25.00 | 32.00 | = | = |  |
+| 4 | PAH8ELMD | `040000020687` | 1 |  | **1** | 150 | 220 | = | = |  |
+| 5 | PAH8ELTD | `040000020687` | 92 |  | **92** | 50 | 80 | = | = |  |
+| 6 | PAH8SHMD | `040000020687` | 0.58 |  | **0.58** | 3.00 | 5.00 | = | = |  |
+| 7 | PAH8SHTD | `040000020687` | 0.59 |  | **0.59** | 0.50 | 1.50 | = | = |  |
+| 8 | PGJBHZ00 | `040000020773` | 2.04 |  | **2.04** | 1.80 | 3.00 | = | = | MIC baru: mapping SRGJBI 05.11.2026 |
+| 9 | SGJBSTCD | `050000014224` | 45 |  | **45** | 40 | 44 | = | = | Pengganti SGJBSTNC (mapping SRGJBI 05.11.2026) |
+| 10 | PGJBFDCD | `040000020773` | 0.600 |  | **0.600** | 0.300 | 0.600 | = | = | Pengganti PGJBFDNC (mapping SRGJBI 05.11.2026) |
+| – | ~~PGJBFDNC~~ | `040000020773` | 0.480 |  | tidak tampil | – | – | – | – | Hilang: mapping SRGJBI di-flag DELETION 05.11.2026 (diganti PGJBFDCD) |
+| – | ~~SGJBSTNC~~ | `050000014224` | 42 |  | tidak tampil | – | – | – | – | Hilang: mapping SRGJBI di-flag DELETION 05.11.2026 (diganti SGJBSTCD) |
+
+#### L-QM11: DO `0085006270` (SRAABI), customer 1141000026, mapping customer 1141000026
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PAABTH00 | `040000020867` | 22.40 |  | **22.40** | 19.40 | 20.60 | = | = |  |
+| 2 | PAABTSMD | `040000020867` | 14.00 |  | **14.00** | 11.00 | 18.00 | = | = |  |
+| 3 | PAABTSTD | `040000020867` | 26.90 |  | **26.90** | 22.00 | 35.00 | = | = |  |
+| 4 | PAABELMD | `040000020867` | 180 |  | **180** | 120 | 240 | = | = |  |
+| 5 | PAABELTD | `040000020867` | 65 |  | **65** | 30 | 90 | = | = |  |
+| 6 | PAABSHMD | `040000020867` | 4.65 |  | **4.65** | 3.00 | 5.00 | = | = |  |
+| 7 | PAABSHTD | `040000020867` | 1.78 |  | **1.78** | 0.00 | 3.00 | = | = |  |
+| 8 | PAABHZ00 | `040000020867` | 1.00 |  | **1.00** | 1.00 | 2.00 | = | = |  |
+| 9 | PAABG400 | `040000020867` | 89 |  | **89** | 90 | 100 | = | = |  |
+| 10 | SAABSTTR | `050000014263` | 40 |  | **40** | 38 | 42 | = | = |  |
+| 11 | PAABFDNT | `040000020867` | 0.450 |  | **0.450** | 0.300 | 0.500 | = | = |  |
+| 12 | PAABFDTR | `040000020867` | 0.562 |  | **0.562** | 0.300 | 0.600 | = | = |  |
+
+#### L-QM12: DO `0085006271` (SRAABI), customer 1141100304, mapping umum (mapping customer 1141100304 di-flag DELETION 05.11.2026)
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PAABTH00 | `040000020892` | 21.25 |  | **21.25** | 19.40 | 20.60 | = | = |  |
+| 2 | PAABTSMD | `040000020892` | 15.05 |  | **15.05** | 11.00 | 18.00 | = | = |  |
+| 3 | PAABTSTD | `040000020892` | 27.45 |  | **27.45** | 22.00 | 35.00 | = | = |  |
+| 4 | PAABELMD | `040000020892` | 183 |  | **183** | 120 | 240 | = | = |  |
+| 5 | PAABELTD | `040000020892` | 60 |  | **60** | 30 | 90 | = | = |  |
+| 6 | PAABSHMD | `040000020892` | 4.05 |  | **4.05** | 3.00 | 5.00 | = | = |  |
+| 7 | PAABSHTD | `040000020892` | 1.67 |  | **1.67** | 0.00 | 3.00 | = | = |  |
+| 8 | PAABHZ00 | `040000020892` | 1.23 |  | **1.23** | 1.00 | 2.00 | = | = |  |
+| 9 | PAABG400 | `040000020892` | 93 |  | **93** | 90 | 100 | = | = |  |
+| 10 | SAABSTTR | `050000014265` | 41 |  | **41** | 38 | 42 | = | = |  |
+| 11 | PAABFDNT | `040000020892` | 0.399 |  | **0.399** | 0.300 | 0.500 | = | = |  |
+| – | ~~SAABMVTR~~ | `050000014265` | 0.58 |  | tidak tampil | – | – | – | – | Hilang: mapping customer 1141100304 di-flag DELETION 05.11.2026 |
+| – | ~~SAABO2TR~~ | `050000014265` | 69.50 |  | tidak tampil | – | – | – | – | Hilang: mapping customer 1141100304 di-flag DELETION 05.11.2026 |
+
+#### L-QM13: DO `0085006272` (SREASI), customer 1141000265, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PAH8TH00 | `040000020690` | 50.14 |  | **50.14** | 48.50 | 51.50 | = | = |  |
+| 2 | PAH8TSMD | `040000020690` | 3.27 | 13.27 (TRST-AISYAH 09.11.2026) | **13.27** | 12.00 | 18.00 | = asli | = | ZQM003 kolom NEW_VALUE = override |
+| 3 | PAH8TSTD | `040000020690` | 0.36 | 27.36 (TRST-AISYAH 09.11.2026) | **27.36** | 25.00 | 32.00 | = asli | = | ZQM003 kolom NEW_VALUE = override |
+| 4 | PAH8ELMD | `040000020690` | 1 | 178 (TRST-AISYAH 09.11.2026) | **178** | 150 | 220 | = asli | = | ZQM003 kolom NEW_VALUE = override |
+| 5 | PAH8ELTD | `040000020690` | 92 | 72 (TRST-AISYAH 09.11.2026) | **72** | 50 | 80 | = asli | = | ZQM003 kolom NEW_VALUE = override |
+| 6 | PAH8SHMD | `040000020690` | 1.90 | 4.90 (TRST-AISYAH 09.11.2026) | **4.90** | 3.00 | 5.00 | = asli | = | ZQM003 kolom NEW_VALUE = override |
+| 7 | PAH8SHTD | `040000020690` | 0.37 | 1.37 (TRST-AISYAH 09.11.2026) | **1.37** | 0.50 | 1.50 | = asli | = | ZQM003 kolom NEW_VALUE = override |
+| 8 | SEASSTUZ | `050000014269` | 42 |  | **42** | 38 | 44 | = | = |  |
+| 9 | PEASFDUZ | `040000020894` | 0.543 |  | **0.543** | 0.400 | 0.700 | = | = |  |
+| 10 | SEASODMZ | `050000014269` | 2.56 |  | **2.56** | 2.20 | 2.70 | = | = |  |
+
+#### ML-QM01: DO `0085006276` (SRACBI), customer 1141100239, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PACBTH00 | `040000021076` | 17.95 |  | **17.95** | 17.46 | 18.54 | = | = |  |
+| 2 | PACBTSMD | `040000021076` | 14.51 |  | **14.51** | 11.00 | 18.00 | = | = |  |
+| 3 | PACBTSTD | `040000021076` | 28.15 |  | **28.15** | 22.00 | 35.00 | = | = |  |
+| 4 | PACBELMD | `040000021076` | 160 |  | **160** | 120 | 240 | = | = |  |
+| 5 | PACBELTD | `040000021076` | 49 |  | **49** | 30 | 90 | = | = |  |
+| 6 | SACBSHMD | `050000014308` | 4.84 |  | **4.84** | 6.00 | 8.00 | = | = |  |
+| 7 | SACBSHTD | `050000014308` | 7.01 |  | **7.01** | 7.00 | 9.00 | = | = |  |
+| 8 | SACBHZ00 | `050000014308` | 2.21 |  | **2.21** | 1.50 | 2.50 | = | = |  |
+| 9 | SACBG400 | `050000014308` | 88 |  | **88** | 85 | 100 | = | = |  |
+| 10 | SACBSIIN | `050000014308` | 111 |  | **111** | 102 | 108 | = | = |  |
+| 11 | SACBSIOT | `050000014308` | 110 |  | **110** | 102 | 108 | = | = |  |
+| 12 | PACBSSIN | `040000021076` | 294 |  | **294** | 200 | 400 | = | = |  |
+| 13 | PACBSSOT | `040000021076` | 267 |  | **267** | 200 | 400 | = | = |  |
+| 14 | SACBFDIN | `050000014308` | 0.265 |  | **0.265** | 0.200 | 0.400 | = | = |  |
+
+#### ML-QM02: DO `0085006277` (SRACBI), customer 1141100081, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PACBTH00 | `040000021077` | 17.87 |  | **17.87** | 17.46 | 18.54 | = | = |  |
+| 2 | PACBTSMD | `040000021077` | 15.81 |  | **15.81** | 11.00 | 18.00 | = | = |  |
+| 3 | PACBTSTD | `040000021077` | 25.75 |  | **25.75** | 22.00 | 35.00 | = | = |  |
+| 4 | PACBELMD | `040000021077` | 185 |  | **185** | 120 | 240 | = | = |  |
+| 5 | PACBELTD | `040000021077` | 56 |  | **56** | 30 | 90 | = | = |  |
+| 6 | SACBSHMD | `050000014311` | 6.93 |  | **6.93** | 6.00 | 8.00 | = | = |  |
+| 7 | SACBSHTD | `050000014311` | 8.83 |  | **8.83** | 7.00 | 9.00 | = | = |  |
+| 8 | SACBHZ00 | `050000014311` | 1.72 |  | **1.72** | 1.50 | 2.50 | = | = |  |
+| 9 | SACBG400 | `050000014311` | 91 |  | **91** | 85 | 100 | = | = |  |
+| 10 | SACBSIIN | `050000014311` | 108 |  | **108** | 102 | 108 | = (fix) | = | Sebelum fix ZQM003 106 (rata-rata nilai unik, lihat 0.6.3) |
+| 11 | SACBSIOT | `050000014311` | 107 |  | **107** | 102 | 108 | = (fix) | = | Sebelum fix ZQM003 106 (rata-rata nilai unik, lihat 0.6.3) |
+| 12 | PACBSSIN | `040000021077` | 294 |  | **294** | 200 | 400 | = | = |  |
+| 13 | PACBSSOT | `040000021077` | 267 |  | **267** | 200 | 400 | = | = |  |
+| 14 | SACBFDIN | `050000014311` | 0.275 |  | **0.275** | 0.200 | 0.400 | = | = |  |
+
+#### ML-QM03: DO `0085006278` (SRGLBI), customer 1141000131, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PAH8TSMD | `040000021013` | 0.00 |  | **0.00** | 12.00 | 18.00 | = | = |  |
+| 2 | PAH8TSTD | `040000021013` | 0.00 |  | **0.00** | 25.00 | 32.00 | = | = |  |
+| 3 | PAH8ELMD | `040000021013` | 0 |  | **0** | 150 | 220 | = | = |  |
+| 4 | PAH8ELTD | `040000021013` | 0 |  | **0** | 50 | 80 | = | = |  |
+| 5 | PGLASHMD | `040000021042` | 2.62 |  | **2.62** | 3.00 | 5.00 | = | = |  |
+| 6 | PGLASHTD | `040000021042` | 0.34 |  | **0.34** | 0.00 | 2.00 | = | = |  |
+| 7 | SGLASTCD | `050000014297` | 42 |  | **42** | 40 | 44 | = (fix) | = | Sebelum fix ZQM003 41 (lihat 0.6.3) |
+| 8 | SGLASTMZ | `050000014297` | 52 |  | **52** | 38 | 58 | = (fix) | = | Sebelum fix ZQM003 51 (lihat 0.6.3) |
+| 9 | PGLAG6CD | `040000021042` | 636 |  | **636** | 600 | 660 | = | = |  |
+| 10 | PGLBOD00 | `040000021052` | 2.38 |  | **2.38** | 2.20 | 2.80 | = (fix) | = | Sebelum fix ZQM003 2.41 (lihat 0.6.3) |
+
+#### ML-QM04: DO `0085006279` (SREC7I), customer 1141100236, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | SVLCTSMD | `050000014331` | 16.15 |  | **16.15** | 12.00 | 0.00 | = | = |  |
+| 2 | SVLCTSTD | `050000014331` | 24.17 |  | **24.17** | 22.00 | 0.00 | = | = |  |
+| 3 | SVLCELMD | `050000014331` | 237 |  | **237** | 0 | 300 | = | = |  |
+| 4 | SVLCELTD | `050000014331` | 73 |  | **73** | 0 | 80 | = | = |  |
+| 5 | SVLCSHMD | `050000014331` | 0.00 |  | **0.00** | 0.00 | 5.00 | = | = |  |
+| 6 | SVLCSHTD | `050000014331` | 0.00 |  | **0.00** | 0.00 | 4.00 | = | = |  |
+| 7 | SEC7STCD | `050000014339` | 39 |  | **39** | 38 | 42 | = | = |  |
+| 8 | PEC7FDCD | `040000021127` | 0.540 |  | **0.540** | 0.300 | 0.800 | = | = |  |
+| 9 | SEC7MVTR | `050000014339` | 0.07 |  | **0.07** | 0.05 | 0.15 | = | = |  |
+| 10 | SEC7O2TR | `050000014339` | 0.07 |  | **0.07** | 0.05 | 0.15 | = | = |  |
+
+#### Data uji alias (MIXED): DO `0085006281` (SRAABI), customer 1141000512, mapping umum
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PAABTH00 | `000000000000` | 0.00 |  | **0.00** | 19.40 | 20.60 | = | = |  |
+| 2 | PAABTSMD | `000000000000` | 0.00 |  | **0.00** | 11.00 | 18.00 | = | = |  |
+| 3 | PAABTSTD | `000000000000` | 0.00 |  | **0.00** | 22.00 | 35.00 | = | = |  |
+| 4 | PAABELMD | `000000000000` | 0 |  | **0** | 120 | 240 | = | = |  |
+| 5 | PAABELTD | `000000000000` | 0 |  | **0** | 30 | 90 | = | = |  |
+| 6 | PAABSHMD | `000000000000` | 0.00 |  | **0.00** | 3.00 | 5.00 | = | = |  |
+| 7 | PAABSHTD | `000000000000` | 0.00 |  | **0.00** | 0.00 | 3.00 | = | = |  |
+| 8 | PAABHZ00 | `000000000000` | 0.00 |  | **0.00** | 1.00 | 2.00 | = | = |  |
+| 9 | PAABG400 | `000000000000` | 0 |  | **0** | 90 | 100 | = | = |  |
+| 10 | SAABSTTR | `000000000000` | 0 |  | **0** | 38 | 42 | = | = |  |
+| 11 | PAABFDNT | `000000000000` | 0.000 |  | **0.000** | 0.300 | 0.500 | = | = |  |
+
+
+#### Data uji alias: DO `0085006280` (SRAABI + SRABDI, alias PLE-22)
+
+Before alias: ZQM002 dan ZQM003 **kosong**, program STOP "Material belum dimapping di ZMAP_COA" (SRABDI tanpa mapping). Expected setelah alias: `docs/DATA_UJI_ALIAS_DEV_20261113.md`. Hasil after patch alias (9 MIC, limit per MIC): `docs/IMPLEMENTASI_ALIAS_HARNESS_20261116.md` §3, mentah di `outputs/LIMIT_20261116_after_alias.txt`.
+#### 0.6.3 ZQM003 vs ZQM002: bug nilai unik dan perbaikannya (16 Nov 2026)
+
+**Sebelum fix** (program DEV AIX sampai 16 Nov 2026, sudah ada paling lambat 19 Sep 2026): ZQM003 merata-rata nilai **unik** per VBELN + MATNR + MIC, ZQM002 merata-rata per lot. Contoh DO 77 SACBSIIN: lot 050000014309 = 111, …310 = 111, …311 = 101 → ZQM003 (111 + 101) / 2 = 106, ZQM002 (111 + 111 + 101) / 3 = 108. Dilaporkan juga oleh TRST-AISYAH (dulu hanya ZQM002 yang diperbaiki).
+
+**Sesudah fix** (sandbox-new 16 Nov, `docs/FIX_ZQM003_NILAI_20261116.md`): kolom Value ZQM003 = nilai print ZQM002 sebelum override ZLOG_COA; override tetap di NEW_VALUE.
+
+| Skenario | DO | MIC | Sebelum fix | Sesudah fix | ZQM002 print |
+|---|---|---|---|---|---|
+| ML-QM02 | 0085006277 | SACBSIIN | 106 | 108 | 108 |
+| ML-QM02 | 0085006277 | SACBSIOT | 106 | 107 | 107 |
+| ML-QM03 | 0085006278 | PGLBOD00 | 2.41 | 2.38 | 2.38 |
+| ML-QM03 | 0085006278 | SGLASTCD | 41 | 42 | 42 |
+| ML-QM03 | 0085006278 | SGLASTMZ | 51 | 52 | 52 |
+
+Perubahan format saja (nilai 0 tampil sesuai desimal MIC, sama dengan ZQM002): DO 6234 PCADTSMD/TSTD `0`→`0.00`, DO 6243 PEASFDUZ `0`→`0.000`, DO 6278 PAH8TSMD/TSTD, DO 6279 SVLCSHMD/SHTD `0`→`0.00`, DO 6281 7 MIC PAAB*.
+
+Status: fix di-deploy user ke DEV AIX 16 Nov 2026 dan diverifikasi (program DEV apa adanya, 17 DO, `outputs/MT_20261116_dev_after_zqm003fix.txt`). Acuan ZQM003 aktif = kolom **Sesudah fix**; angka "sebelum fix" hanya sejarah.
 
 ---
 

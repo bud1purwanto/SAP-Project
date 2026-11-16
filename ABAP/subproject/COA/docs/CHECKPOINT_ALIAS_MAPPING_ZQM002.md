@@ -293,5 +293,10 @@ Status harness DEV (`tests/alias_live/zz_alias_form.abap`): fallback NOCONV/NOMA
 - [ ] Revisi desain sesuai jawaban QA
 - [x] Blueprint final (Opsi 1 PPT, COA gabungan per alias, fallback per tipe produksi): `docs/BLUEPRINT_ALIAS_MAPPING_ZQM002.md` (13 Nov 2026)
 - [ ] Konfirmasi QA atas blueprint (bagian 6 blueprint)
-- [ ] **Execute hanya setelah Baginda bilang "execute"**
+- [x] Data uji DEV: DO 0085006280 (alias PLE-22 → SRAACI, override customer, limit) + DO 0085006281 (MIXED), nilai inspeksi 0; log, cakupan, dan expected limit di `docs/DATA_UJI_ALIAS_DEV_20261113.md` (13 & 16 Nov 2026)
+- [x] Execute (16 Nov 2026): alias tanpa limit di harness DEV, regresi 0 selisih — `docs/IMPLEMENTASI_ALIAS_HARNESS_20261116.md`
+- [x] Push ke sandbox-new (16 Nov 2026): 4 include, syntax RC 0, readback identik, backup `outputs/*_sandbox-new_backup_before_alias_20261116.abap`
+- [x] **Rollback** alias dari sandbox-new (16 Nov 2026, permintaan user) → diganti fix ZQM003 (`docs/FIX_ZQM003_NILAI_20261116.md`). Patch alias perlu disesuaikan dengan fix itu sebelum push ulang
+- [x] Alias dipasang kembali di atas fix ZQM003 (16 Nov 2026): rebase `tests/alias_v2/`, harness 17 DO + detail + paksa HSS-18 lulus, push sandbox-new RC 0 (IMPLEMENTASI §9)
+- [ ] Opsi limit sesuai keputusan QA (hook ALIAS_APPLY_LIMIT)
 - [ ] Regresi L-QM01–15 + ML-QM01–04 + skenario alias baru
