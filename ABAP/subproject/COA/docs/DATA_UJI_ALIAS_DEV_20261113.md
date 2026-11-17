@@ -119,3 +119,94 @@ Nilai inspeksi 0, jadi bobot Opsi C = 1 per tipe (blueprint §3.6 aturan 1). Des
 - Kelompok SRAACI tidak terbentuk: SRAABI punya roll beralias dan tanpa alias → MIXED → seluruh roll SRAABI dicetak as-is.
 - ZQM002: 1 COA SRAABI, 2 roll, MIC PAAB*, mapping SRAABI umum (customer 1141000512 tanpa override), limit sama dengan program sekarang. Pesan fallback MIXED tampil.
 - ZQM003: 2 baris batch per MIC (MIC PAAB*), kolom, nilai, dan limit identik dengan output program sekarang untuk DO ini (jadikan baseline sebelum implementasi).
+
+## Kandidat roll untuk DO uji alias dengan value (cek 17 Nov 2026, read-only)
+
+Kriteria: SR di stok plant 2000 (unrestricted), batch JR hanya punya **satu** lot (Z02, tanpa Z03), lot itu punya hasil untuk 9 MIC COA SRAACI (TH00, TSMD, TSTD, ELMD, ELTD, SHMD, SHTD, HZ00, G400), roll belum pernah masuk DO (LIPS kosong), bukan batch skenario, dan trace `GET_TRACED_LOTS` (harness DEV terbaru, base `after_matdisp`) sampai ke lot JR tersebut.
+
+| Roll SR (SRAABI) | Sloc | Stok (KG) | JR batch | Lot JR (Z02) | Lot SR (Z04) |
+|---|---|---|---|---|---|
+| 0000359200 | 2302 | 151.28 | 0000343258 | 040000008684 | 050000010855 |
+| 0000361723 | 2P32 | 143.06 | 0000109814 | 040000000189 | 050000000184 |
+| 0000361460 | 2P02 | 122.06 | 0000121622 | 040000000635 | 050000000595 |
+| 0000359921 | 2P02 | 119.54 | 0000192701 | 040000002934 | 050000002924 |
+| 0000163342 | 2P32 | 83.82 | 0000164417 | 040000001849 | 050000001712 |
+| 0000361563 | 2P01 | 65.01 | 0000294749 | 040000006674 | 050000007570 |
+| 0000401403 | 2324 | 40.90 | 0000294656 | 040000006594 | 050000007532 |
+
+Tidak ada SRABDI di stok plant 2000 yang memenuhi kriteria (SRABDI 2801 tidak ter-trace ke JR dengan hasil). SRAABI dari JR JRABDI (lot 040000013897 / 017328) tidak dipakai: lot berisi PABD*, bukan PAAB*.
+
+Belum ada perubahan data. Untuk dipakai perlu: ZZALIAS = PLE-22 di roll terpilih, SO + DO baru (batch split), dicatat di log tahap berikut.
+
+## DO uji alias dengan value: `0085006282` (17 Nov 2026)
+
+Perintah user: "Ya, buat DO". Roll 0000359200 (Rw/Rs SLACK BAND) dan 0000359921 (Scrap) tidak dipakai karena bukan first grade; dipakai 3 roll First Grade dari 3 JR berbeda.
+
+### Log perubahan (lanjutan)
+
+| Tahap | Waktu | Objek | Isi | Cara rollback |
+|---|---|---|---|---|
+| 9 | 17 Nov 2026 | Klasifikasi batch (ZZSRBOPP, 023) | ZZALIAS = PLE-22 pada SRAABI 0000361723, 0000361460, 0000361563 (BAPI_OBJCL_CHANGE). Diff sebelum/sesudah = tepat 3 baris ZZALIAS baru. Snapshot: `outputs/test_data_alias_20261117/st9_before*.txt`, `st9_after.txt` | Hapus nilai ZZALIAS 3 roll (CL20N / BAPI_OBJCL_CHANGE tanpa ZZALIAS) |
+| 10a | 17 Nov 2026 | Sales order `0000007207` | ZDOR, sales office 0002, customer AG/WE 1141000514, PO "UJI ALIAS VALUE PLE-22", item 10 SRAABI 27.3 KG. Incompletion warning V1 555 (sama dengan SO 7205/7206) | Hapus SO (VA02) setelah DO dihapus |
+| 10b | 17 Nov 2026 | Outbound delivery `0085006282` | ZDLF, shipping point 2000, item 10 dari SO 7207 | Hapus DO (VL02N), tanpa PGI |
+| 10c | 17 Nov 2026 | Batch split DO `0085006282` | 900001 0000361723, 900002 0000361460, 900003 0000361563, @9.1 KG, item ZB, sloc 2813 | Ikut hapus DO |
+
+Script: `outputs/test_data_alias_20261117/` (st9_*, st10_so, st10b_dlv, st10c_split).
+
+### Hasil (program DEV apa adanya, 17 Nov 2026)
+
+Output: `outputs/MT_20261117_do6282.txt` (ZQM002 + EXEC + ZQM003), `outputs/MT_20261117_do6282_detail.txt` (detail alias).
+
+- 3 roll → PLE-22 → SRAACI, jalur ALIAS. EXEC: header PLE-22, width 830;870;985.
+- Lot dipakai: JR base 040000000189 (roll 361723), 040000000635 (361460), 040000006674 (361563).
+
+| MIC COA | MIC batch | Lot 189 | Lot 635 | Lot 6674 | Rata-rata manual | ZQM002 | EXEC | ZQM003 | Limit EXEC |
+|---|---|---|---|---|---|---|---|---|---|
+| PAACTH00 | PAABTH00 | 19.9788 | 19.8890 | 20.2908 | 20.0529 → **20.05** | 20.05 | 20.05 | 20.05 | 19.40–20.60 |
+| PAACTSMD | PAABTSMD | 13.81 | 12.85 | 14.06 | 13.5733 → **13.57** | 13.57 | 13.57 | 13.57 | 11.00–18.00 |
+| PAACTSTD | PAABTSTD | 31.77 | 31.50 | 34.25 | 32.5067 → **32.51** | 32.51 | 32.51 | 32.51 | 26.00–34.00 (customer) |
+| PAACELMD | PAABELMD | 188.26 | 170.08 | 178.04 | 178.7933 → **179** | 179 | 179 | 179 | 140.00–230.00 |
+| PAACELTD | PAABELTD | 46.66 | 41.57 | 42.31 | 43.5133 → **44** | 44 | 44 | 44 | 30–90 |
+| PAACSHMD | PAABSHMD | 3.8933 | 4.2900 | 3.3800 | 3.8544 → **3.85** | 3.85 | 3.85 | 3.85 | 3.00–5.00 |
+| PAACSHTD | PAABSHTD | 1.0267 | 1.6133 | 1.2567 | 1.2989 → **1.30** | 1.30 | 1.30 | 1.30 | 0.00–2.00 |
+| PAACHZ00 | PAABHZ00 | 1.6787 | 2.0627 | 1.3880 | 1.7098 → **1.71** | 1.71 | 1.71 | 1.71 | 1.00–2.00 |
+| PAACG400 | PAABG400 | 95.9667 | 94.2667 | 96.3444 | 95.5259 → **96** | 96 | 96 | 96 | 92.00–100 |
+
+**9/9 sama** dengan rata-rata manual QAMR. Limit mengikuti aturan sementara (mapping alias bila diisi, sisi kosong dari spec lot wakil 040000006674 SRAABI), sehingga beberapa limit berbeda dengan DO 6280 (lot wakil SRABDI).
+
+## DO uji alias dua material dengan value: `0085006284` (17 Nov 2026)
+
+Perintah user: "cari material lain sampai dapat, kalau gada inspeksi ya inspeksi sendiri".
+
+Pencarian (read-only, program sementara di DEV): roll SR*I plant 2000 stok > 5 KG, bukan SRAABI/SRABDI, belum di DO, JR 1 lot Z02 tanpa Z03, lot memuat 9 MIC pola P+kode (hasil lengkap atau belum UD), First Grade, belum ber-ZZALIAS. Dari 12.366 roll hanya 2 yang lolos: SRAAAI 0000362398 (PLE-18) dan SRAAEI 0000263260 (PLE-30); tidak ada lot belum-UD yang memenuhi, jadi input inspeksi tidak diperlukan. Dipilih SRAAAI (18 µm, paling dekat SRAABI 20 µm). SRABDI tidak bisa: ke-56 roll di plant 2000 dari JR 0000368300 (lot DO 6280).
+
+### Log perubahan (lanjutan)
+
+| Tahap | Waktu | Objek | Isi | Cara rollback |
+|---|---|---|---|---|
+| 11 | 17 Nov 2026 | Klasifikasi batch | ZZALIAS = PLE-22 pada SRAABI 0000401403 dan SRAAAI 0000362398. Diff = tepat 2 baris ZZALIAS. Snapshot `st11_before.txt` / `st11_after.txt` | Hapus nilai ZZALIAS 2 roll |
+| 12a | 17 Nov 2026 | Sales order `0000007208` | ZDOR, sales office 0002, customer 1141000514, PO "UJI ALIAS VALUE 2 MAT PLE-22", item 10 SRAABI 9.1 KG, item 20 SRAAAI 9.1 KG | Hapus SO setelah DO dihapus |
+| 12b–c | 17 Nov 2026 | DO `0085006283` | Dibuat lalu batch split 1 baris per item; SAP memasang batch langsung di item ZP (tanpa ZB) sehingga tidak terbaca program (filter PSTYV = ZB) | — |
+| 12d | 17 Nov 2026 | DO `0085006283` | **Dihapus** (BAPI_OUTB_DELIVERY_CHANGE DLV_DEL, tanpa PGI) | Tidak perlu |
+| 12e | 17 Nov 2026 | DO `0085006284` | Dibuat ulang dari SO 7208 (2 item) | Hapus DO (VL02N), tanpa PGI |
+| 12f | 17 Nov 2026 | Batch split DO `0085006284` | 900001/900002 SRAABI 0000401403 @4.55 KG, 900003/900004 SRAAAI 0000362398 @4.55 KG, item ZB, sloc 2813 | Ikut hapus DO |
+
+Script: `outputs/test_data_alias_20261117/` (st11_*, st12a_so, st12b_dlv, st12c_split, st12d_del, st12f_split).
+
+### Hasil (program DEV apa adanya)
+
+Output: `outputs/MT_20261117_do6284.txt`, `outputs/MT_20261117_do6284_detail.txt`. 2 roll (2 material) → PLE-22 → SRAACI, 18 MIC RULE (PAAB* dan PAAA* → PAAC*). EXEC header PLE-22, width 700;860. Lot wakil 040000007777 (SRAAAI, lot terbesar).
+
+| MIC COA | SRAABI lot 040000006594 | SRAAAI lot 040000007777 | Rata-rata manual | ZQM002 / EXEC / ZQM003 | Limit EXEC | Out limit |
+|---|---|---|---|---|---|---|
+| PAACTH00 | 19.9100 | 18.1031 | 19.0065 → **19.01** | 19.01 | 17.46–18.54 (lot wakil, 18 µm) | **Ya** |
+| PAACTSMD | 14.0600 | 12.9989 | 13.5294 → **13.53** | 13.53 | 11.00–18.00 | |
+| PAACTSTD | 34.2500 | 32.5311 | 33.3906 → **33.39** | 33.39 | 26.00–34.00 (customer) | |
+| PAACELMD | 178.04 | 180.5333 | 179.2867 → **179** | 179 | 140.00–230.00 (mapping) | |
+| PAACELTD | 42.31 | 43.7778 | 43.0439 → **43** | 43 | 30–90 | |
+| PAACSHMD | 3.7567 | 3.7600 | 3.7583 → **3.76** | 3.76 | 3.00–5.00 | |
+| PAACSHTD | 2.5533 | 2.6800 | 2.6167 → **2.62** | 2.62 | 0.00–2.00 (upper mapping) | **Ya** |
+| PAACHZ00 | 1.4340 | 1.3120 | 1.3730 → **1.37** | 1.37 | 1.00–2.00 | |
+| PAACG400 | 96.70 | 96.6667 | 96.6833 → **97** | 97 | 92.00–100 | |
+
+**9/9 sama** dengan rata-rata manual. Thickness keluar limit karena limit kosong di mapping diambil dari spec lot wakil SRAAAI (18 µm), padahal nilainya rata-rata 20 µm + 18 µm: contoh nyata kenapa opsi limit alias perlu diputuskan QA. Shrinkage TD keluar limit upper mapping 2.00 (data asli kedua lot memang > 2).

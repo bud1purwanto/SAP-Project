@@ -107,7 +107,9 @@ Kelompok COA = **VBELN + AMAT**. Jalur alias hanya dipakai kalau **semua** tipe 
 - Tidak ada fallback per MIC atau per roll.
 - Kalau mapping material batch juga kosong, pesan dan STOP yang sudah ada tetap berlaku (`Material belum dimapping di ZMAP_COA...`).
 
-### 3.6 Limit: dua opsi (menunggu keputusan QA)
+### 3.6 Limit (diputuskan 17 Nov 2026)
+
+**Keputusan final limit alias: Opsi D (17 Nov 2026, QA via user: "dari QA itu yang D, silahkan terapkan di sandbox")**: upper dan lower COA alias = limit yang tercetak bila **material asli** roll wakil dicetak as-is: ZMAP_COA material asli (umum, ditimpa customer bila diisi) untuk MIC asli batch; sisi kosong = spec lot (QAMV); tanpa lot = spec master MIC asli (QPMK). Limit di mapping **material alias** tidak dipakai. Dasar: info QA, dalam 1 alias material berbeda pasti punya upper dan lower yang sama. Diterapkan di `ALIAS_APPLY_LIMIT` (F01), sandbox-new 17 Nov 2026. (Catatan sebelumnya "limit final = perilaku sementara" dikoreksi.) Uraian opsi di bawah disimpan sebagai riwayat.
 
 QA belum memutuskan limit (lower/upper) mana yang dicetak di COA gabungan (deck, pertanyaan 3). Ketiga opsi dicatat di sini. **Yang diimplementasikan hanya opsi yang dipilih QA**, tanpa parameter pemilih dan tanpa kolom baru.
 
@@ -292,3 +294,34 @@ Dasar: source DEV AIX hasil fetch 12 Nov 2026 (`outputs/ZQMI_COA_*_Development A
    - Mapping material alias dipastikan sudah dimaintain sebelum DO dicetak, jadi DO tidak berpindah dari fallback (NOMAP) ke alias di tengah jalan.
    - Kalau QA mengubah atau menghapus mapping setelah ada override, override dengan MIC lama tidak terbawa. Ini **sama dengan perilaku sekarang** (mengganti MIC di ZMAP_COA juga memutus override lama), jadi bukan risiko baru. Aturan operasional: *ubah mapping setelah ada override = override diisi ulang*.
 
+
+## 11. Kolom Material ZQM002 untuk COA alias (17 Nov 2026, sudah di sandbox-new)
+
+Keputusan user: "kalau ada alias pake material alias saja" → layar ZQM002 menampilkan material alias (COA_MAT, mis. SRAACI) untuk baris jalur ALIAS; ZQM003 tetap material asli per roll (sudah begitu). DO tanpa alias tidak berubah.
+
+Temuan (baca layar 0100 lewat `IMPORT DYNPRO`, sandbox-new):
+- Kolom Material table control TCERTI = `IT_DATA-MATNR` (output). Kolom Item = `IT_DATA-UECHA`.
+- PAI `TCTIMB_MODIFY`: `MODIFY IT_DATA INDEX TCERTI-CURRENT_LINE TRANSPORTING CHK CMICMIT RANGE_FLAG` → nilai MATNR dari layar **tidak** ditulis balik ke tabel.
+- Export (XPORT → FORM DOWNLOAD, F01 ±1252): `IT_EXPORT-MATNR = IT_DATA-MATNR`.
+
+Rencana (tanpa ubah layar/dynpro, hanya source):
+
+| Include | Lokasi | Perubahan |
+|---|---|---|
+| F02 | PBO `MODULE TCERTI_GET_LINES` (di dalam LOOP table control) | Header line saja: `IF IT_DATA-COA_PATH = 'ALIAS'. IT_DATA-MATNR = IT_DATA-COA_MAT. ENDIF.` Isi tabel IT_DATA tidak berubah, jadi EXEC, batch detail, urutan, ZLOG tetap pakai material asli |
+| F01 | FORM DOWNLOAD | `IT_EXPORT-MATNR` = `IT_DATA-COA_MAT` bila `COA_PATH = 'ALIAS'`, selain itu tetap `IT_DATA-MATNR` |
+
+Uji: harness tidak bisa menampilkan layar; regresi 17 DO tetap dijalankan (harus identik). Tampilan layar dan file Export dicek manual di sandbox-new (DO 0085006280 → SRAACI; DO skenario → material asli).
+
+**Execute (17 Nov 2026, perintah user "Ya, execute"):**
+
+| Langkah | Hasil |
+|---|---|
+| Base | DEV = sandbox-new = alias_v2 (dicek ulang sebelum patch) |
+| Patch | `tests/matdisp/` (generator `make_patch.py`): F02 +6 baris di `TCERTI_GET_LINES`, F01 +4 baris di `DOWNLOAD` |
+| Regresi harness DEV 17 DO (`outputs/MT_20261117_matdisp.txt`) | **Identik** dengan `MT_20261116_dev_after_alias_v2.txt`. Catatan: harness tidak memuat modul layar, jadi perubahan F02 dibuktikan lewat syntax check; DOWNLOAD tidak dijalankan di harness |
+| Backup sandbox-new | `outputs/ZQMI_COA_{F01,F02}_sandbox-new_backup_before_matdisp_20261117.abap` |
+| Push sandbox-new | F01 5512, F02 1169 baris; syntax RC 0; readback identik |
+| Belum | Cek manual layar ZQM002 + file Export di sandbox-new; DEV belum (transport user) |
+
+**Dibatalkan (17 Nov 2026, user: "material yang tampil di screen ... menggunakan material asli bukan material alias, push ke sandbox")**: kolom Material ZQM002 (layar + Export) kembali menampilkan **material asli** (`IT_DATA-MATNR`). Perubahan F02 `TCERTI_GET_LINES` dan F01 `DOWNLOAD` dihapus; file `tests/matasli/` (F01 = alias_v2 + Opsi D, F02 = alias_v2). Push sandbox-new: F02 1163, F01 5582, syntax RC 0, readback identik. Backup sebelum: `outputs/ZQMI_COA_{F01,F02}_sandbox-new_backup_before_matasli_20261117.abap`. DEV AIX masih versi lama (kolom Material = material alias) sampai user deploy.

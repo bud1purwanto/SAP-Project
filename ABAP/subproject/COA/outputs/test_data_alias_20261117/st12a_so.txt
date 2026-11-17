@@ -1,0 +1,15 @@
+S V4       233
+SALES_HEADER_IN has been processed successfully
+S V4       233
+SALES_ITEM_IN has been processed successfully
+S V4       233
+SALES_ITEM_IN has been processed successfully
+S V4       233
+SALES_CONDITIONS_IN has been processed successfully
+S V4       233
+SALES_CONDITIONS_IN has been processed successfully
+W V1       555
+The sales document is not yet complete: Edit data
+S V1       311
+Domestic Sales Order 7208 has been saved
+COMMIT SO 7208

@@ -1,0 +1,2 @@
+0000401403 OK num         18  char         15  status 1
+0000362398 OK num         19  char         17  status 1

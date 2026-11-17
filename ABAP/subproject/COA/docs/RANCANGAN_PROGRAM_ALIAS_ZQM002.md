@@ -510,6 +510,8 @@ F_PRINT, batch list, DOWNLOAD_BATCH_LIST_XLSX, PREPARE_DYNAMIC_ROLL_COLUMNS: **t
 
 ## 6. FORM `ALIAS_APPLY_LIMIT` — tiga opsi limit
 
+> **Keputusan final limit alias: Opsi D (17 Nov 2026, QA via user: "dari QA itu yang D, silahkan terapkan di sandbox")**: upper dan lower COA alias = limit yang tercetak bila **material asli** roll wakil dicetak as-is: ZMAP_COA material asli (umum, ditimpa customer bila diisi) untuk MIC asli batch; sisi kosong = spec lot (QAMV); tanpa lot = spec master MIC asli (QPMK). Limit di mapping **material alias** tidak dipakai. Dasar: info QA, dalam 1 alias material berbeda pasti punya upper dan lower yang sama. Diterapkan di `ALIAS_APPLY_LIMIT` (F01), sandbox-new 17 Nov 2026. (Catatan sebelumnya "limit final = perilaku sementara" dikoreksi.) Opsi di bawah tidak dipakai (riwayat).
+
 Hanya **satu** opsi yang diimplementasikan, sesuai keputusan QA (§3.6 blueprint). `GC_ALIAS_LIMIT` di bawah hanya untuk menunjukkan percabangan di rancangan; saat execute, cabang yang tidak dipilih tidak ditulis.
 
 ### 6.1 Sumber spec asli (Opsi B dan C): `ALIAS_LIMIT_PREP`

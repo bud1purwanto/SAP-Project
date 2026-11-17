@@ -1,0 +1,6 @@
+S VL       311
+85006282  has been saved
+S BAPI     000
+OutboundDelivery 85006282 has been created. External reference:
+ITEM 85006282   000010 SRAABI                       27.300
+COMMIT DO 85006282   0001

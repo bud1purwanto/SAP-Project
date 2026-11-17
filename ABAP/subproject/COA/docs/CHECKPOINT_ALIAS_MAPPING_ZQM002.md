@@ -298,5 +298,30 @@ Status harness DEV (`tests/alias_live/zz_alias_form.abap`): fallback NOCONV/NOMA
 - [x] Push ke sandbox-new (16 Nov 2026): 4 include, syntax RC 0, readback identik, backup `outputs/*_sandbox-new_backup_before_alias_20261116.abap`
 - [x] **Rollback** alias dari sandbox-new (16 Nov 2026, permintaan user) → diganti fix ZQM003 (`docs/FIX_ZQM003_NILAI_20261116.md`). Patch alias perlu disesuaikan dengan fix itu sebelum push ulang
 - [x] Alias dipasang kembali di atas fix ZQM003 (16 Nov 2026): rebase `tests/alias_v2/`, harness 17 DO + detail + paksa HSS-18 lulus, push sandbox-new RC 0 (IMPLEMENTASI §9)
-- [ ] Opsi limit sesuai keputusan QA (hook ALIAS_APPLY_LIMIT)
+- [x] Opsi limit: **Opsi D** (17 Nov 2026, dari QA): upper/lower dari master data material asli (ZMAP_COA material asli → spec lot → QPMK), limit mapping material alias tidak dipakai. Diterapkan di ALIAS_APPLY_LIMIT, push sandbox-new F01 5586 RC 0 (IMPLEMENTASI §13). Catatan "final = perilaku sekarang" sebelumnya dikoreksi
+  - Info QA (17 Nov 2026, via user): dalam 1 alias, material berbeda **pasti punya upper dan lower yang sama**. Artinya mengambil spec dari salah satu material (perilaku sementara: lot wakil) memberi hasil yang sama dengan B1/C, dan B2 tidak akan menolak. Belum diputuskan: (1) limit mapping alias tetap menang bila diisi, (2) sumber spec lot vs inspection plan. Catatan: data uji DEV DO 6280/6284 sengaja memakai material dengan spec berbeda, jadi tidak mewakili kondisi nyata untuk limit.
 - [ ] Regresi L-QM01–15 + ML-QM01–04 + skenario alias baru
+
+## Rollback kalau alias batal (disusun 17 Nov 2026)
+
+**Titik kembali yang disarankan: "fix ZQM003 saja, tanpa alias"**, yaitu versi DEV yang terverifikasi 16 Nov sebelum alias_v2. Fix ZQM003 (`docs/FIX_ZQM003_NILAI_20261116.md`) tetap dipertahankan karena terpisah dari alias.
+
+| Include | File rollback | Baris | Catatan |
+|---|---|---|---|
+| ZQMI_COA_TOP | `outputs/ZQMI_COA_TOP_sandbox-new_backup_before_alias_v2_20261116.abap` | 382 | = DEV `after_zqm003fix` |
+| ZQMI_COA_F01 | `outputs/ZQMI_COA_F01_sandbox-new_backup_before_alias_v2_20261116.abap` | 4852 | = DEV `after_zqm003fix` |
+| ZQMI_COA_F02 | `outputs/ZQMI_COA_F02_sandbox-new_backup_before_alias_v2_20261116.abap` | 1118 | = DEV `after_zqm003fix` |
+| ZQMI_COA_ALV | `outputs/ZQMI_COA_ALV_sandbox-new_backup_before_alias_v2_20261116.abap` | 376 | = DEV `after_zqm003fix` |
+
+Keempat file sudah ada di repo (commit auto backup 17 Nov) dan dicek identik dengan source DEV `outputs/ZQMI_COA_*_Development AIX_after_zqm003fix.abap`. Kolom Material alias (17 Nov) ikut hilang karena hanya untuk alias.
+
+Titik kembali lain: `outputs/ZQMI_COA_*_sandbox-new_backup_before_alias_20261116.abap` = program asli sebelum semua perubahan (tanpa fix ZQM003, ZQM003 kembali ke angka lama 106/2.41/41/51).
+
+**Langkah program** (sandbox-new; DEV/QAS/PRD lewat transport user/Basis):
+1. Fetch source sekarang, simpan sebagai backup.
+2. Push 4 file di atas (`scripts/sbx_push_check.mjs ZQMI_COA_<INC> <file> --main ZQMI_COA`), syntax check RC 0, readback identik.
+3. Regresi 17 DO → harus identik dengan `outputs/MT_20261116_dev_after_zqm003fix.txt` (DO 6280 kembali STOP "Material belum dimapping").
+
+Sudah pernah dipraktikkan 16 Nov (rollback alias → fix ZQM003, RC 0, readback = backup).
+
+**Data uji DEV** (opsional, tidak mempengaruhi program tanpa alias): rollback per tahap ada di `docs/DATA_UJI_ALIAS_DEV_20261113.md` (ZMAP_COA SRAACI, ZZALIAS 12 roll, SO 7205–7208, DO 6280/6281/6282/6284). Reset UD lot 040000009270 / 040000015420 oleh user: kembalikan dengan UD P1 (QA11) bila perlu. Tanpa alias, ZZALIAS di batch diabaikan program.

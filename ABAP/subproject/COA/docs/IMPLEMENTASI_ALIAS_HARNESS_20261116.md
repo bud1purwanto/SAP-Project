@@ -98,7 +98,7 @@ DEV tidak punya DO dua tipe dengan hasil inspeksi, jadi nilai diuji satu tipe (A
 
 ## 6. Yang belum
 
-- Opsi limit (A/B1/B2/C): menunggu QA; hook `ALIAS_APPLY_LIMIT` kosong.
+- Opsi limit: **Opsi D**, diterapkan 17 Nov 2026 (lihat §12–13).
 - AL-08 (pilih roll alias + roll as-is sekaligus) dan AL-09 (terjemahan DESC) belum diuji; data DEV semua RULE.
 - Syntax check resmi (SE38) belum: yang terbukti hanya GENERATE SUBROUTINE POOL lolos dan runtime berjalan di 17 DO.
 
@@ -163,3 +163,66 @@ Rollback: push ulang backup `*_before_alias_v2_20261116.abap`. Limit alias masih
 | Detail alias DO 6280/6281/6277 (`outputs/MT_20261116_dev_after_alias_v2_detail.txt`) | **Identik** dengan harness alias_v2 |
 | Skenario lama vs DEV sebelum alias (`MT_20261116_dev_after_zqm003fix.txt`) | L-QM01–15, ML-QM01–04 dan DO 6281: **0 selisih** (nilai, limit, EXEC, ZQM003). Yang berubah hanya DO 6280 (uji alias): STOP → COA alias PLE-22 |
 | ZQM002 + EXEC vs program asli sebelum semua perubahan (`MT_20261116_orig_exec.txt`) | 0 selisih (kecuali DO 6280) |
+
+## 11. Rollback DEV AIX ke versi tanpa alias (17 Nov 2026)
+
+Perintah eksplisit user: "untuk dev aix, saya ingin kamu rollback dulu ke versi tanpa alias ... jadi kita di sandbox dulu saja" + "zqm002 juga yang tanpa alias".
+
+| Langkah | Hasil |
+|---|---|
+| Cek DEV | Package ZTRD; include tidak ada di transport request (E071 kosong). `Z_RFC_PROGRAM_UPDATE` = `INSERT REPORT` (package/TADIR tidak berubah, tidak tercatat di request/version history) |
+| Backup sebelum rollback | `outputs/ZQMI_COA_*_Development AIX_backup_before_rollback_alias_20261117.abap` (= alias_v2 + kolom Material, TOP 470 / F01 5512 / F02 1169 / ALV 399) |
+| Push (`scripts/dev_push_check.mjs`) | `outputs/ZQMI_COA_*_sandbox-new_backup_before_alias_v2_20261116.abap`: TOP 382, F01 4852, F02 1118, ALV 376; syntax akhir RC 0 |
+| Readback | Identik dengan `outputs/ZQMI_COA_*_Development AIX_after_zqm003fix.abap` (fix ZQM003 tetap, alias + kolom Material hilang) |
+| Regresi | 15 DO skenario + DO 6280/6281: 0 selisih vs `MT_20261116_dev_after_zqm003fix.txt`. DO 6282/6284 tanpa alias tercatat di `STANDAR_SKENARIO_TESTING_COA.md` §0.6.2 |
+
+Sandbox-new tetap versi alias terbaru (alias_v2 + kolom Material). Pasang ulang di DEV nanti: push `tests/alias_v2/` TOP/ALV + `tests/matdisp/` F01/F02, atau dari backup di atas.
+
+## 12. Keputusan limit alias (17 Nov 2026)
+
+**Keputusan final limit alias: Opsi D (17 Nov 2026, QA via user: "dari QA itu yang D, silahkan terapkan di sandbox")**: upper dan lower COA alias = limit yang tercetak bila **material asli** roll wakil dicetak as-is: ZMAP_COA material asli (umum, ditimpa customer bila diisi) untuk MIC asli batch; sisi kosong = spec lot (QAMV); tanpa lot = spec master MIC asli (QPMK). Limit di mapping **material alias** tidak dipakai. Dasar: info QA, dalam 1 alias material berbeda pasti punya upper dan lower yang sama. Diterapkan di `ALIAS_APPLY_LIMIT` (F01), sandbox-new 17 Nov 2026. (Catatan sebelumnya "limit final = perilaku sementara" dikoreksi.)
+
+Data uji DO 6280 dan 6284 sengaja memakai material dengan spec berbeda (DEV tidak punya pasangan ideal), jadi limit Thickness DO 6284 (17.46–18.54, out limit) tidak mewakili kondisi nyata. DO 6282 (1 material) mewakili kondisi nyata.
+
+## 13. Penerapan Opsi D di sandbox-new (17 Nov 2026)
+
+Perintah user: "Nah dari QA itu yang D, silahkan terapkan di sandbox".
+
+**Perubahan (F01 saja, patch `tests/limitd/`, generator `make_patch.py`, base = sandbox matdisp):**
+- Blok limit di GET_DATA: penggantian limit dari mapping material alias (`LT_COA_MAP`) **dilewati** untuk baris `COA_PATH = 'ALIAS'`; baris as-is tidak berubah.
+- `ALIAS_APPLY_LIMIT`: (1) baris tanpa lot → spec dasar dari QPMK MIC asli (`BATCH_MIC`, plant dulu lalu tanpa plant), format desimal `MICFMT`; (2) ZMAP_COA material asli roll wakil (`IT_DATA-MATNR`) + `BATCH_MIC`, umum lalu ditimpa customer (KUNAG) bila diisi; (3) sisi terisi menggantikan limit, `PARSE_LIMIT_TO_RAW` untuk nilai raw. Sama persis dengan logika as-is.
+
+**Uji harness DEV (in-memory, DEV tetap fix-only):**
+
+| Uji | Hasil |
+|---|---|
+| Unit FORM (data DB asli) | SRICRI PICRFDNE umum 2 sisi → 40.00/48.00; SRAACI PAACTSTD customer menimpa umum → 26.00/34.00; hanya upper (PAACSHTD) → lower tetap spec; hanya lower (PAACG400) → upper tetap spec; tanpa mapping → spec; baris non-alias tidak disentuh |
+| Regresi 19 DO (`outputs/MT_20261117_limitD.txt`) | 15 DO skenario + DO 6281: **0 selisih** vs `MT_20261117_regresi_all.txt`. DO 6280/6282/6284: value, MIC, lot **tidak berubah**; hanya limit |
+| ZQM003 vs ZQM002 limit (`outputs/LIMIT_20261117_limitD.txt`) | 27 baris alias, 0 beda |
+| Alias paksa HSS-18 DO 76/77 (`outputs/test_alias_limitD_force_HSS18.txt`) | Value/MIC/lot 0 selisih; 14 limit EXEC DO 77 **identik** dengan cetak as-is DO 77 |
+
+**Limit EXEC sebelum (mapping alias) → sesudah (Opsi D):**
+
+| MIC COA | DO 6282 (wakil SRAABI) | DO 6284 (wakil SRAAAI) | DO 6280 (wakil SRABDI, tanpa lot → QPMK) |
+|---|---|---|---|
+| PAACTH00 | 19.40–20.60 → 19.40–20.60 | 17.46–18.54 → 17.46–18.54 | 19.40–20.60 → 19.40–20.60 |
+| PAACTSMD | 11.00–18.00 → 11.00–18.00 | 11.00–18.00 → 11.00–18.00 | 12.00–18.00 → 12.00–18.00 |
+| PAACTSTD | 26.00–34.00 → **22.00–35.00** | 26.00–34.00 → **22.00–35.00** | 26.00–34.00 → **28.00–35.00** |
+| PAACELMD | 140.00–230.00 → **120–240** | 140.00–230.00 → **120–240** | 140.00–230.00 → **150–220** |
+| PAACELTD | 30–90 → 30–90 | 30–90 → 30–90 | 50–80 → 50–80 |
+| PAACSHMD | 3.00–5.00 → 3.00–5.00 | 3.00–5.00 → 3.00–5.00 | 3.00–5.00 → 3.00–5.00 |
+| PAACSHTD | 0.00–2.00 → **0.00–3.00** | 0.00–2.00 → **0.00–3.00** (2.62 jadi masuk limit) | 0.50–2.00 → **0.50–1.50** |
+| PAACHZ00 | 1.00–2.00 → 1.00–2.00 | 1.00–2.00 → 1.00–2.00 | 1.00–1.50 → 1.00–1.50 |
+| PAACG400 | 92.00–100 → **90–100** | 92.00–100 → **90–100** | 92.00–99 → **90–99** |
+
+DO 6282 Opsi D = cetak as-is DO 6282 tanpa alias (spec SRAABI), sesuai tujuan.
+
+**Push sandbox-new:** backup `outputs/ZQMI_COA_F01_sandbox-new_backup_before_limitD_20261117.abap`; push F01 5586 baris, syntax RC 0, readback identik. TOP/F02/ALV tidak berubah. DEV AIX tetap fix ZQM003 tanpa alias.
+
+**Live test DEV ulang (17 Nov 2026, perintah user "silahkan live testing ... compare dengan data testing")**: source sandbox-new dicek = `tests/alias_v2` (TOP/ALV) + `tests/limitd` (F01) + `tests/matdisp` (F02); DEV = fix-only. Hasil: value/lot/EXEC/ZQM003 15 DO skenario + DO 6281 0 selisih vs acuan; limit 178 baris = `LIMIT_20261116_before.txt`; limit ZQM003 = ZQM002 untuk semua baris; DO 6282/6284 value 9/9 = markdown AL-VALUE; limit DO 6280/6282/6284 9/9 = tabel Opsi D di atas. Output `outputs/MT_20261117_live_sbxver.txt`, `outputs/LIMIT_20261117_live_sbxver.txt`.
+
+**Deploy user ke DEV AIX (17 Nov 2026):** source DEV identik dengan sandbox-new (alias + kolom Material + Opsi D). Program DEV apa adanya, 19 DO: output identik dengan live test (`outputs/MT_20261117_dev_after_limitD.txt`, `outputs/LIMIT_20261117_dev_after_limitD.txt`). Rollback DEV ke tanpa alias tetap bisa dari `*_backup_before_alias_v2_20261116.abap` (lihat checkpoint).
+
+## 14. Kolom Material kembali material asli (17 Nov 2026)
+
+Atas permintaan user, perubahan kolom Material (blueprint §11) dibatalkan di sandbox-new: F02 = `tests/alias_v2`, F01 = `tests/matasli` (alias_v2 + Opsi D, tanpa ubah Export). Push F02 1163 / F01 5582, RC 0, readback identik. Harness tidak memuat modul layar dan tidak menjalankan DOWNLOAD, jadi output regresi tidak terpengaruh (kedua bagian ini tidak dijalankan harness). Versi sandbox sekarang: TOP 470, F01 5582, F02 1163, ALV 399. DEV AIX belum ikut (masih F01 5586 / F02 1169).

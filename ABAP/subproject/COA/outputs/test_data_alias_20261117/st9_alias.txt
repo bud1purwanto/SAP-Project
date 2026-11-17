@@ -1,0 +1,3 @@
+0000361723 OK num         14  char         19  status 1
+0000361460 OK num         18  char         17  status 1
+0000361563 OK num         19  char         17  status 1
