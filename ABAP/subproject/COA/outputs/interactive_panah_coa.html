@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Interaktif Korelasi COA — Panah Dinamis Bergeser</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --card-border: #334155;
+      --primary: #3b82f6;
+      --primary-dark: #1d4ed8;
+      --teal: #14b8a6;
+      --green: #22c55e;
+      --red: #ef4444;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      min-height: 100vh;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+    .header h1 { font-size: 20px; font-weight: 700; color: #fff; }
+    .header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .controls { display: flex; gap: 12px; align-items: center; }
+    .btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn:hover { background: var(--primary-dark); }
+    .btn.active { background: var(--teal); }
+    .btn-secondary {
+      background: #334155;
+      color: #cbd5e1;
+    }
+    .btn-secondary:hover { background: #475569; }
+
+    .slider-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .slider-box input[type="range"] {
+      width: 140px;
+      cursor: pointer;
+    }
+
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .kpi-card .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+    .kpi-card .val { font-size: 18px; font-weight: 700; color: #fff; margin-top: 4px; }
+    .kpi-card .sub { font-size: 11px; color: var(--teal); margin-top: 2px; }
+
+    .workspace-wrapper {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      overflow: hidden;
+    }
+    .tables-container {
+      display: grid;
+      grid-template-columns: 460px 1fr 460px;
+      gap: 0;
+      position: relative;
+      z-index: 2;
+    }
+    .panel {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .panel-hdr {
+      background: #1e293b;
+      padding: 12px 16px;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .panel-hdr h3 { font-size: 13px; font-weight: 700; color: #fff; }
+    .panel-hdr .badge {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: #0284c7;
+      color: #fff;
+      font-weight: 600;
+    }
+    .table-body {
+      padding: 8px 0;
+    }
+    .row-item {
+      display: grid;
+      grid-template-columns: 32px 90px 1fr 70px;
+      align-items: center;
+      padding: 8px 12px;
+      font-size: 12px;
+      border-bottom: 1px solid #1e293b;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+    .row-item:hover, .row-item.active {
+      background: #1e293b;
+    }
+    .row-item .num { color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); }
+    .row-item .code { font-weight: 700; color: #38bdf8; font-family: var(--font-mono); }
+    .row-item .desc { color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .row-item .val {
+      font-weight: 700;
+      color: #4ade80;
+      text-align: right;
+      font-family: var(--font-mono);
+      background: #064e3b;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .row-item.unmatched .val {
+      color: #f87171;
+      background: #7f1d1d;
+    }
+
+    /* Right Table ZQM005 */
+    .z5-row-item {
+      display: grid;
+      grid-template-columns: 32px 1fr 80px 80px;
+      align-items: center;
+      padding: 8px 12px;
+      font-size: 12px;
+      border-bottom: 1px solid #1e293b;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .z5-row-item:hover, .z5-row-item.active {
+      background: #1e293b;
+    }
+    .z5-row-item .num { color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); }
+    .z5-row-item .desc { color: #e2e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .z5-row-item .val {
+      font-weight: 700;
+      color: #38bdf8;
+      text-align: right;
+      font-family: var(--font-mono);
+      background: #0c4a6e;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .z5-row-item .status {
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #22c55e;
+    }
+
+    /* Center SVG Canvas for Movable Arrows */
+    .arrow-canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+    svg.arrow-canvas {
+      width: 100%;
+      height: 100%;
+    }
+    .connector-line {
+      fill: none;
+      stroke-width: 2.5;
+      transition: stroke-dashoffset 0.3s ease, stroke-width 0.2s, opacity 0.2s;
+      cursor: pointer;
+      pointer-events: stroke;
+    }
+    .connector-line:hover {
+      stroke-width: 5;
+      filter: drop-shadow(0 0 6px currentColor);
+    }
+    .arrow-badge {
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      fill: #fff;
+      pointer-events: all;
+      cursor: grab;
+    }
+
+    .instructions-box {
+      margin-top: 20px;
+      background: #0f172a;
+      border: 1px dashed #334155;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+    .instructions-box strong { color: #f1f5f9; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <h1>DASHBOARD KORELASI COA & PETA PANAH INTERAKTIF</h1>
+      <p>Verifikasi Otomatis DEV AIX (TRD 130) — ZQM002 vs ZQM005 dengan Panah yang Dapat Bergeser Bebas</p>
+    </div>
+    <div class="controls">
+      <button class="btn active" id="btnScen1" onclick="switchScenario('0085006285')">DO 0085006285 (Outsource)</button>
+      <button class="btn btn-secondary" id="btnScen2" onclick="switchScenario('0085006286')">DO 0085006286 (Converting)</button>
+      
+      <div class="slider-box">
+        <span>Geser Panah X:</span>
+        <input type="range" id="arrowOffsetSlider" min="-50" max="50" value="0" oninput="updateArrows()">
+        <span id="offsetVal">0 px</span>
+      </div>
+
+      <button class="btn btn-secondary" onclick="toggleAnimate()">⚡ Gerak Bergeser</button>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="lbl">Delivery Order & Material</div>
+      <div class="val" id="kpiDo">0085006285 (SRCBUX)</div>
+      <div class="sub" id="kpiTrace">3 Roll TTA (9*) -> PO Subcontract -> Plant TTA2</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">Tingkat Kesesuaian (Match Rate)</div>
+      <div class="val" style="color: #4ade80;">90.0% MATCH</div>
+      <div class="sub">9 Sesuai Sempurna, 1 Catatan (SR TTA)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">Lot Sumber Utama</div>
+      <div class="val" style="color: #38bdf8;">040000015885</div>
+      <div class="sub">Plant TTA2 | Material JRSEFI | Batch 0000371969</div>
+    </div>
+    <div class="kpi-card">
+      <div class="lbl">Multi-Lot Formula Status</div>
+      <div class="val" style="color: #facc15;">=AVERAGE() AKTIF</div>
+      <div class="sub">Dinamis di Excel jika ada multiple lot</div>
+    </div>
+  </div>
+
+  <div class="workspace-wrapper" id="workspace">
+    <!-- SVG Canvas for Dynamic Connectors -->
+    <div class="arrow-canvas-container">
+      <svg class="arrow-canvas" id="arrowSvg">
+        <defs>
+          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="tables-container">
+      <!-- Left: ZQM002 Table -->
+      <div class="panel">
+        <div class="panel-hdr">
+          <h3 id="panelZ2Title">ZQM002 — Hasil Seleksi DO 0085006285</h3>
+          <span class="badge">KOLOM VALUE</span>
+        </div>
+        <div class="table-body" id="z2Body"></div>
+      </div>
+
+      <!-- Center Spacer for Arrows -->
+      <div style="min-width: 140px;"></div>
+
+      <!-- Right: ZQM005 Table -->
+      <div class="panel">
+        <div class="panel-hdr">
+          <h3 id="panelZ5Title">ZQM005 — Lot 040000015885 (JR TTA)</h3>
+          <span class="badge" style="background: #0f766e;">MEAN VALUE</span>
+        </div>
+        <div class="table-body" id="z5Body"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="instructions-box">
+    <strong>💡 Fitur Interaktif "Panah Bisa Bergeser-geser":</strong>
+    <br>1. <strong>Geser Slider Offset</strong> di bagian kanan atas untuk menggeser posisi kelengkungan dan titik temu panah secara dinamis (real-time shifting).
+    <br>2. <strong>Klik Tombol "⚡ Gerak Bergeser"</strong> untuk melihat animasi panah bergeser menyelaraskan baris data antara ZQM002 dan ZQM005.
+    <br>3. <strong>Hover / Klik Baris Manapun</strong> untuk menyorot relasi panah spesifik dan melihat perbandingan nilai aslinya.
+    <br>4. Pada file Excel pendukung (<code>TESTING_COA_TTA_DEV_AIX.xlsx</code>), panah telah dibuat dalam format <strong>Shape Vector Excel Native</strong> yang dapat diklik dan digeser (drag & drop) secara leluasa langsung di aplikasi Microsoft Excel.
+  </div>
+
+  <script>
+    const COLORS = [
+      '#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6',
+      '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#64748b'
+    ];
+
+    const DATA_6285 = [
+      { no: 1, code: 'PCADTH00', desc: 'Thickness', val2: '12.00', z5_target: 0, val5: '12.00', match: true },
+      { no: 2, code: 'PCADTSMD', desc: 'Tensile Strength MD', val2: '23.00', z5_target: 1, val5: '23.00', match: true },
+      { no: 3, code: 'PCADTSTD', desc: 'Tensile Strength TD', val2: '27.00', z5_target: 2, val5: '27.00', match: true },
+      { no: 4, code: 'PCADELMD', desc: 'Elongation MD', val2: '133', z5_target: 3, val5: '133', match: true },
+      { no: 5, code: 'PCADELTD', desc: 'Elongation TD', val2: '123', z5_target: 4, val5: '123', match: true },
+      { no: 6, code: 'PCADSHMD', desc: 'Shrinkage MD', val2: '2.00', z5_target: 7, val5: '2.00', match: true },
+      { no: 7, code: 'PCADSHTD', desc: 'Shrinkage TD', val2: '0.30', z5_target: 8, val5: '0.30', match: true },
+      { no: 8, code: 'PCADHZ00', desc: 'Haze', val2: '2.00', z5_target: 9, val5: '2.00', match: true },
+      { no: 9, code: 'PCADG400', desc: 'Gloss 45°', val2: '128', z5_target: 10, val5: '128', match: true },
+      { no: 10, code: 'PCADSTNT', desc: 'Surface Tension Untreated', val2: '0', z5_target: -1, val5: '-', match: false }
+    ];
+
+    const DATA_6286 = [
+      { no: 1, code: 'PEYATH00', desc: 'Thickness', val2: '12.00', z5_target: 0, val5: '12.00', match: true },
+      { no: 2, code: 'PEYATSMD', desc: 'Tensile Strength MD', val2: '23.00', z5_target: 1, val5: '23.00', match: true },
+      { no: 3, code: 'PEYATSTD', desc: 'Tensile Strength TD', val2: '27.00', z5_target: 2, val5: '27.00', match: true },
+      { no: 4, code: 'PEYAELMD', desc: 'Elongation MD', val2: '133', z5_target: 3, val5: '133', match: true },
+      { no: 5, code: 'PEYAELTD', desc: 'Elongation TD', val2: '123', z5_target: 4, val5: '123', match: true },
+      { no: 6, code: 'PEYASHMD', desc: 'Shrinkage MD', val2: '2.00', z5_target: 7, val5: '2.00', match: true },
+      { no: 7, code: 'PEYASHTD', desc: 'Shrinkage TD', val2: '0.30', z5_target: 8, val5: '0.30', match: true },
+      { no: 8, code: 'PEYAHZ00', desc: 'Haze', val2: '2.00', z5_target: 9, val5: '2.00', match: true },
+      { no: 9, code: 'PEYAG400', desc: 'Gloss 45°', val2: '128', z5_target: 10, val5: '128', match: true },
+      { no: 10, code: 'PEYASTNT', desc: 'Surface Tension Untreated', val2: '0', z5_target: -1, val5: '-', match: false }
+    ];
+
+    const Z5_ROWS = [
+      { idx: 0, desc: 'Thickness', val: '12.00' },
+      { idx: 1, desc: 'Tensile Strength MD', val: '23.00' },
+      { idx: 2, desc: 'Tensile Strength TD', val: '27.00' },
+      { idx: 3, desc: 'Elongation MD', val: '133' },
+      { idx: 4, desc: 'Elongation TD', val: '123' },
+      { idx: 5, desc: 'F5 MD (Internal Process)', val: '10.00' },
+      { idx: 6, desc: 'F5 TD (Internal Process)', val: '10.00' },
+      { idx: 7, desc: 'Shrinkage MD', val: '2.00' },
+      { idx: 8, desc: 'Shrinkage TD', val: '0.30' },
+      { idx: 9, desc: 'Haze', val: '2.00' },
+      { idx: 10, desc: 'Gloss 45°', val: '128' },
+      { idx: 11, desc: 'Surface Tension Untreated (TTA2)', val: '47' }
+    ];
+
+    let currentDo = '0085006285';
+    let isAnimating = false;
+    let animFrame = null;
+    let animPhase = 0;
+
+    function renderTables() {
+      const z2Data = currentDo === '0085006285' ? DATA_6285 : DATA_6286;
+      const z2Body = document.getElementById('z2Body');
+      const z5Body = document.getElementById('z5Body');
+      
+      z2Body.innerHTML = '';
+      z5Body.innerHTML = '';
+
+      z2Data.forEach((row, i) => {
+        const div = document.createElement('div');
+        div.className = `row-item ${row.match ? '' : 'unmatched'}`;
+        div.id = `z2_row_${i}`;
+        div.innerHTML = `
+          <span class="num">${row.no}</span>
+          <span class="code">${row.code}</span>
+          <span class="desc" title="${row.desc}">${row.desc}</span>
+          <span class="val">${row.val2}</span>
+        `;
+        div.onmouseenter = () => highlightArrow(i);
+        div.onmouseleave = () => resetArrows();
+        z2Body.appendChild(div);
+      });
+
+      Z5_ROWS.forEach((row, i) => {
+        const div = document.createElement('div');
+        div.className = 'z5-row-item';
+        div.id = `z5_row_${i}`;
+        div.innerHTML = `
+          <span class="num">[${i+1}]</span>
+          <span class="desc" title="${row.desc}">${row.desc}</span>
+          <span class="val">${row.val}</span>
+          <span class="status">OK</span>
+        `;
+        z5Body.appendChild(div);
+      });
+    }
+
+    function drawArrows() {
+      const svg = document.getElementById('arrowSvg');
+      svg.innerHTML = '';
+      
+      const z2Data = currentDo === '0085006285' ? DATA_6285 : DATA_6286;
+      const wsRect = document.getElementById('workspace').getBoundingClientRect();
+      const offset = parseFloat(document.getElementById('arrowOffsetSlider').value);
+      document.getElementById('offsetVal').innerText = `${offset} px`;
+
+      z2Data.forEach((row, i) => {
+        if (!row.match || row.z5_target < 0) return;
+        
+        const r2 = document.getElementById(`z2_row_${i}`);
+        const r5 = document.getElementById(`z5_row_${row.z5_target}`);
+        if (!r2 || !r5) return;
+
+        const b2 = r2.getBoundingClientRect();
+        const b5 = r5.getBoundingClientRect();
+
+        const x1 = b2.right - wsRect.left;
+        const y1 = b2.top + (b2.height / 2) - wsRect.top;
+        const x2 = b5.left - wsRect.left;
+        const y2 = b5.top + (b5.height / 2) - wsRect.top;
+
+        const color = COLORS[i % COLORS.length];
+
+        // Path panah bezier yang melengkung dan bisa bergeser
+        const midX = (x1 + x2) / 2 + offset;
+        const cp1x = x1 + (midX - x1) * 0.7;
+        const cp2x = midX + (x2 - midX) * 0.3;
+
+        const pathData = `M ${x1} ${y1} C ${cp1x} ${y1}, ${cp2x} ${y2}, ${x2} ${y2}`;
+
+        // Arrow line
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', pathData);
+        path.setAttribute('class', 'connector-line');
+        path.setAttribute('stroke', color);
+        path.setAttribute('id', `arrow_${i}`);
+        path.setAttribute('marker-end', `url(#marker_${i})`);
+        svg.appendChild(path);
+
+        // Arrow marker
+        const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+        marker.setAttribute('id', `marker_${i}`);
+        marker.setAttribute('viewBox', '0 0 10 10');
+        marker.setAttribute('refX', '7');
+        marker.setAttribute('refY', '5');
+        marker.setAttribute('markerWidth', '6');
+        marker.setAttribute('markerHeight', '6');
+        marker.setAttribute('orient', 'auto-start-reverse');
+        marker.innerHTML = `<path d="M 0 1 L 10 5 L 0 9 z" fill="${color}" />`;
+        svg.appendChild(marker);
+
+        // Badge Nomor di tengah garis
+        const badgeText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        badgeText.setAttribute('x', midX - 8);
+        badgeText.setAttribute('y', (y1 + y2) / 2 - 4);
+        badgeText.setAttribute('class', 'arrow-badge');
+        badgeText.textContent = `[${i+1}]`;
+        badgeText.setAttribute('fill', color);
+        svg.appendChild(badgeText);
+      });
+    }
+
+    function highlightArrow(idx) {
+      const z2Data = currentDo === '0085006285' ? DATA_6285 : DATA_6286;
+      z2Data.forEach((row, i) => {
+        const line = document.getElementById(`arrow_${i}`);
+        if (!line) return;
+        if (i === idx) {
+          line.style.strokeWidth = '6px';
+          line.style.opacity = '1';
+          line.setAttribute('filter', 'url(#glow)');
+        } else {
+          line.style.strokeWidth = '1.5px';
+          line.style.opacity = '0.2';
+          line.removeAttribute('filter');
+        }
+      });
+    }
+
+    function resetArrows() {
+      const z2Data = currentDo === '0085006285' ? DATA_6285 : DATA_6286;
+      z2Data.forEach((row, i) => {
+        const line = document.getElementById(`arrow_${i}`);
+        if (!line) return;
+        line.style.strokeWidth = '2.5px';
+        line.style.opacity = '1';
+        line.removeAttribute('filter');
+      });
+    }
+
+    function updateArrows() {
+      drawArrows();
+    }
+
+    function toggleAnimate() {
+      isAnimating = !isAnimating;
+      if (isAnimating) {
+        animateLoop();
+      } else {
+        cancelAnimationFrame(animFrame);
+        document.getElementById('arrowOffsetSlider').value = 0;
+        drawArrows();
+      }
+    }
+
+    function animateLoop() {
+      if (!isAnimating) return;
+      animPhase += 0.05;
+      const shift = Math.sin(animPhase) * 35;
+      document.getElementById('arrowOffsetSlider').value = shift;
+      drawArrows();
+      animFrame = requestAnimationFrame(animateLoop);
+    }
+
+    function switchScenario(doNum) {
+      currentDo = doNum;
+      document.getElementById('btnScen1').className = doNum === '0085006285' ? 'btn active' : 'btn btn-secondary';
+      document.getElementById('btnScen2').className = doNum === '0085006286' ? 'btn active' : 'btn btn-secondary';
+      
+      if (doNum === '0085006285') {
+        document.getElementById('kpiDo').innerText = '0085006285 (SRCBUX)';
+        document.getElementById('kpiTrace').innerText = '3 Roll TTA (9*) -> PO Subcontract -> Plant TTA2';
+        document.getElementById('panelZ2Title').innerText = 'ZQM002 — Hasil Seleksi DO 0085006285';
+      } else {
+        document.getElementById('kpiDo').innerText = '0085006286 (SREYAI)';
+        document.getElementById('kpiTrace').innerText = 'Roll TTA -> JREYAI Converting -> SREYAI Converting -> DO';
+        document.getElementById('panelZ2Title').innerText = 'ZQM002 — Hasil Seleksi DO 0085006286';
+      }
+
+      renderTables();
+      setTimeout(drawArrows, 50);
+    }
+
+    window.onload = () => {
+      renderTables();
+      setTimeout(drawArrows, 100);
+    };
+    window.onresize = drawArrows;
+  </script>
+</body>
+</html>

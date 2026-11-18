@@ -41,6 +41,7 @@ Setiap pembaruan kode ABAP COA **wajib** dibandingkan dengan **semua** skenario 
 | **AL-VALUE1** | Alias 1 material, 3 roll / 3 JR, value asli | `0085006282` | SRAABI | §0.6.2 | ✅ 9/9 = rata-rata manual QAMR |
 | **AL-VALUE2** | Alias 2 material (SRAABI + SRAAAI), value asli | `0085006284` | SRAABI, SRAAAI | §0.6.2 | ✅ 9/9 = rata-rata manual QAMR |
 | **TTA-OUTSOURCE** | Outsource TTA (batch 9* + Z3): base film dari lot TTA lewat vendor batch | `0085006285` | SRCBUX | §0.6.2 | ✅ 10/10 = lot JR TTA, SR Base Film 0 |
+| **TTA-CONVERTING** | SRCBUX TTA (9*, Z3) sebagai SR Base Film, jadi input JR converting, lalu SR converting, lalu DO | `0085006286` | SREYAI | §0.6.2 | ✅ 10/10 = lot JR TTA `040000015885` (patch converting; sandbox-new dan DEV 18 Nov, terverifikasi) |
 
 > Tabel ini dipetakan lewat batch: sheet `ML-QM01`/`ML-QM02` di Excel memakai batch BF `0000406862`–`0000406919`, sesuai dengan DO 76/77 (SR `0000406885`). Sheet `ML-QM03` memakai batch `0000406686`–`0000406852`, yaitu silsilah DO 78. Di Excel sendiri tidak tertulis nomor DO-nya.
 >
@@ -156,6 +157,10 @@ Catatan ML-QM04 (perlu dikonfirmasi):
 | 2026-11-17 | **Logika outsource TTA** (`docs/RANCANGAN_PROGRAM_TTA_OUTSOURCE.md` §8), deploy user ke DEV; program DEV apa adanya 20 DO `outputs/MT_20261117_dev_after_tta.txt`, `outputs/LIMIT_20261117_dev_after_tta.txt` | 15 DO skenario + 4 DO AL-*: value dan limit **0 selisih** vs DEV sebelum TTA; limit 178 baris = acuan 16 Nov; ZQM003 limit = ZQM002. DO 6285 10/10. Identik dengan harness TTA |
 | 2026-11-17 | Kolom Material ZQM002 kembali material asli (sandbox, lalu ikut deploy) | Hanya tampilan |
 | 2026-11-17 | **User deploy versi sandbox (alias + kolom Material + Opsi D) ke DEV AIX**; source DEV dicek identik (TOP 470, F01 5586, F02 1169, ALV 399); program DEV apa adanya 19 DO `outputs/MT_20261117_dev_after_limitD.txt`, `outputs/LIMIT_20261117_dev_after_limitD.txt` | **Identik** dengan live test (value, lot, EXEC, ZQM003, limit) → sama dengan data testing §0.6 dan tabel AL-*. Tanpa error/dump |
+| 2026-11-18 | **Patch converting TTA** (`docs/RANCANGAN_PROGRAM_TTA_OUTSOURCE.md` §9), push sandbox-new (TOP 486, F01 5923, syntax check RC 0, readback identik); harness DEV `outputs/MT_20261118_tta_conv.txt`, `outputs/LIMIT_20261118_tta_conv.txt` | 20 DO lama: value dan limit **0 selisih** vs `MT_20261117_dev_after_tta.txt`. DO 6286 (baru) value 10/10 = lot JR TTA. DEV belum memuat patch (deploy oleh user) |
+| 2026-11-18 | **TTA ikut ZEQM015: sambungan batch vendor lewat MSEG 601** (`docs/RANCANGAN_PROGRAM_TTA_OUTSOURCE.md` §9.4), push sandbox-new (F01 5924); `outputs/MT_20261118_tta_601.txt`, `outputs/LIMIT_20261118_tta_601.txt` | 21 DO value dan limit **0 selisih** vs `MT_20261118_tta_conv.txt`; DO 6285 dan 6286 10/10. DEV memuat versi converting sebelum 601 |
+| 2026-11-18 | **TTA_TRACE sama penuh dengan ZEQM015** (GR 101 sah, MILL_OC, semua komponen 261, 601 dan 543; `docs/RANCANGAN_PROGRAM_TTA_OUTSOURCE.md` §9.5), push sandbox-new (F01 6042); `outputs/MT_20261118_tta_543.txt`, `outputs/LIMIT_20261118_tta_543.txt` | 21 DO value dan limit **0 selisih**; DO 6285 dan 6286 10/10. Cabang 543 diuji pada dokumen subcontract DEV `5000043037` |
+| 2026-11-18 | **User deploy versi ZEQM015 ke DEV AIX** (TOP 486, F01 6042, identik dengan `tests/tta`); program DEV apa adanya 21 DO `outputs/MT_20261118_dev_after_543.txt`, `outputs/LIMIT_20261118_dev_after_543.txt` | 20 DO lama value dan limit **0 selisih** vs DEV 17 Nov; identik dengan harness; DO 6285 dan 6286 10/10. Tanpa error/dump |
 | 2026-11-17 | **Live test DEV dengan program versi sandbox** (alias + kolom Material + Opsi D, in-memory; program DEV tetap tanpa alias) `outputs/MT_20261117_live_sbxver.txt`, `outputs/LIMIT_20261117_live_sbxver.txt` | Value/lot/EXEC/ZQM003 15 DO skenario + DO 6281 **0 selisih** vs acuan (`MT_20261116_dev_after_zqm003fix.txt`); limit 178 baris = `LIMIT_20261116_before.txt`; limit ZQM003 = ZQM002; DO 6282/6284 value 9/9 = tabel AL-VALUE; limit DO 6280/6282/6284 9/9 = Opsi D |
 | 2026-11-17 | Opsi D limit alias (sandbox-new, harness DEV) `outputs/MT_20261117_limitD.txt` | 15 DO skenario + DO 6281 0 selisih; DO 6280/6282/6284 hanya limit berubah (value tetap) |
 | 2026-11-17 | Data uji AL-VALUE1 (DO 6282) dan AL-VALUE2 (DO 6284); regresi lengkap 19 DO `outputs/MT_20261117_regresi_all.txt` | 15 DO skenario + DO 6280/6281 **identik** dengan DEV terverifikasi 16 Nov; ZQM002 + EXEC identik dengan program asli sebelum semua perubahan. DO 6282/6284 = rata-rata manual 9/9 |
@@ -186,6 +191,7 @@ Arti kolom:
 | 16.11.2026 | User (Mas) | UD lot 040000009270, 040000015420 (JR DO 6280) | UD di-reset (status REL + UDRE), posting stok tidak dibalik | Tidak ada (lot bukan milik skenario) |
 | 17.11.2026 | Claude (TRSTDEV) | ZMAP_COA SRCBUX baru (10 MIC PCAD*), SO 7209, DO 6285 | Data uji TTA, lihat `docs/DATA_UJI_TTA_DEV_20261117.md` | Tidak ada (19 DO identik) |
 | 17.11.2026 | Claude (TRSTDEV) | ZZALIAS 5 roll, SO 7207/7208, DO 6282/6284 (DO 6283 dibuat lalu dihapus) | Data uji AL-VALUE1/AL-VALUE2, lihat `docs/DATA_UJI_ALIAS_DEV_20261113.md` | Tidak ada (19 DO identik, §0.5) |
+| 18.11.2026 | Claude (TRSTDEV) | Order JR conv 100000073548 (ZP04), SR conv A29000009001 (PPA2) + 100000073549 (ZCA2), batch JREYAI 0000407417, SREYAI 0000407419/0000407420, GI 4900436266/4900436267, GR 5000077820/5000077822, ZMAP_COA SREYAI (10 MIC), SO 7210, DO 6286 | Data uji TTA-CONVERTING, lihat `docs/DATA_UJI_TTA_DEV_20261117.md`. Order liar 100000073547 sudah diberi flag hapus | Tidak ada (20 DO lain identik) |
 
 #### 0.6.2 Nilai dan limit per skenario
 
@@ -528,6 +534,29 @@ Roll 9000377390 / 391 / 392 (ZZPRODLINE Z3, ZZALIAS AZ-12 → SREZAI tanpa mappi
 | 10 | PCADSTNT | SR BF | – | – | **0** | 44 | 50 | = | = | SR TTA tanpa lot (keputusan QA); limit QPMK |
 
 Sebelum logika TTA: semua value 0, lot kosong (`outputs/test_data_tta_20261117/MT_do6285_baseline.txt`).
+
+#### Data uji TTA-CONVERTING: DO `0085006286` (SREYAI, 2 roll SR converting), customer 1141000514
+
+Rantai: SRCBUX TTA `9000377412`–`414` (9*, Z3) dikonsumsi order JR conv `100000073548` (ZP04, JREYAI, batch `0000407417`, lot Z02 `040000021140`) lewat GI 261 (doc `4900436266`). JR itu dikonsumsi order ZCA2 `100000073549` (GI doc `4900436267`) yang terhubung ke order PPA2 `A29000009001` lewat `AFPO-MILL_OC_AUFNR_U`; SR conv SREYAI batch `0000407419` / `0000407420` di-GR 101. Pasangan GR 101 dan GI 261 dicocokkan program lewat `MKPF-BKTXT` yang sama (level JR = nomor roll JR, level SR = nomor order gabungan). Nilai base film diambil dari lot JR TTA `040000015885` (jalur SRCBUX, vendor batch, SRSEFI, JRSEFI). Mapping SREYAI umum (data uji, 10 MIC). Header EXEC KEZ-11, width 460.
+
+| SEQ | MIC COA | Nilai lot | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|--:|--:|--:|--:|:-:|:-:|:--|
+| 1 | PEYATH00 | 12.00 | **12.00** | 11.64 | 12.35 | = | = | ZQM002 menampilkan limit bulat 12\|12, lihat catatan |
+| 2 | PEYATSMD | 23.00 | **23.00** | 16.00 | 26.00 | = | = | |
+| 3 | PEYATSTD | 27.00 | **27.00** | 18.00 | 30.00 | = | = | |
+| 4 | PEYAELMD | 133 | **133** | 70 | 150 | = | = | |
+| 5 | PEYAELTD | 123 | **123** | 60 | 120 | = | = | Out limit |
+| 6 | PEYASHMD | 2.00 | **2.00** | 1.00 | 3.00 | = | = | |
+| 7 | PEYASHTD | 0.30 | **0.30** | 0.00 | 0.50 | = | = | ZQM002 limit tampil 0\|1 |
+| 8 | PEYAHZ00 | 2.00 | **2.00** | 1.50 | 2.50 | = | = | ZQM002 limit tampil 2\|3 |
+| 9 | PEYAG400 | 128 | **128** | 120 | 140 | = | = | |
+| 10 | PEYASTNT | 0 | **0** | 0 | 0 | = | = | Lot Z04 SR converting kosong, value 0 |
+
+Catatan:
+- ZQM002 = EXEC = ZQM003 untuk value (10/10). Header EXEC KEZ-11.
+- Limit ZQM002 enam baris (PEYATH00, PEYATSMD, PEYATSTD, PEYASHMD, PEYASHTD, PEYAHZ00) tampil bulat, sedangkan ZQM003/EXEC tampil desimal. Penyebabnya MIC PEYA* tidak ada di QPMK DEV, sehingga desimal MIC (STELLEN) 0. Bukan bug program. DO lama memakai MIC yang ada di QPMK (STELLEN 2) dan tetap desimal.
+- Sebelum patch converting: lot dan value base film salah/0 (`outputs/test_data_tta_20261118/MT_do6286_baseline.txt`); sesudah patch: `MT_do6286_tta.txt`.
+- Hasil inspeksi lot JR conv `040000021140` dan lot Z04 SR conv sengaja belum diisi.
 
 #### 0.6.3 ZQM003 vs ZQM002: bug nilai unik dan perbaikannya (16 Nov 2026)
 

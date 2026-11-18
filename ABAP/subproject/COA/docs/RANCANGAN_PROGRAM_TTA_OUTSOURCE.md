@@ -122,3 +122,69 @@ User: SRCBUX (roll X dari TTA) sebenarnya **SR Base Film** yang dijadikan input 
 **Usulan perubahan:** jalankan cek TTA juga pada **batch SR Base Film hasil trace** (`L_SR_BASE_BATCH`): batch berawalan 9 + Z3 (klasifikasi batch itu). Kalau ya, `TTA_TRACE` dimulai dari batch itu (bukan dari roll DO) dan mengganti lot SR Base / JR Base dengan lot TTA. Stage SR/JR converting tetap dari logika sekarang. Kasus roll DO langsung TTA (DO 6285) tetap seperti sekarang.
 
 **Data DEV:** hanya 3 roll SR\*X 9* yang dikonsumsi order (261): SRCBUX `9000374179` → JR conv **JREYAI `0000397806`** (lot `040000019000` Z02); SRCJQX `9000393318` → JREZLI `0000394906` (tanpa lot); SRCBUX `9000375133` → order `M10000000080`. **Tidak ada** yang berlanjut ke SR converting / DO. Untuk uji end-to-end perlu dibuat data (order slitting JR conv → SR conv + lot SR conv, lalu SO/DO), atau uji parsial di harness.
+
+### 9.1 Temuan persiapan data converting TTA (18 Nov 2026, read-only)
+
+1. **Rantai JREYAI tidak bisa dipakai.** Roll SRCBUX `9000374179` (input JR conv JREYAI `0000397806`) memang TTA (9*, Z3, vendor batch SRSEFI), tetapi order TTA-nya `E29000156540` tidak punya komponen JR di DEV (261 kosong), jadi lot JR TTA tidak terjangkau (base film tetap 0). JREYAI masih punya stok 162.93 KG (status QI) dan belum pernah diproses jadi SR conv. Lot JR conv `040000019000` (Z02) punya 12 MIC `PEYA*` tapi **belum ada hasil**.
+2. **Roll TTA yang lengkap** (JRSEFI lot `040000015885`): 23 roll SRCBUX `9000377390`–`425`; yang masih ada stok dan belum di DO: `9000377410`–`417` (0.76–0.84 KG, sloc 2801/2804). Belum ada yang dikonsumsi order converting.
+3. **Cara SR converting dibentuk di DEV (contoh DO 6240):** batch SR di-GR 101 pada order tipe **PPA2** (`A29000002540`, LICHA batch = nomor order), sedangkan konsumsi JR (261) dan scrap (531) berada di order tipe **ZCA2** (`100000072913/918/926`) yang terhubung lewat **`AFPO-MILL_OC_AUFNR_U`** = order PPA2. `ZQM_GET_BATCH_JR_BY_SR` (function group ZBARRIER): SR → AUFM 101 → order → AFPO.MILL_OC_AUFNR_U → AUFM 261 → JR. JR conv dibuat order tipe **ZP04** (261 SRCBUX + komponen lain, 101 JR).
+4. **Konsekuensi:** data uji converting penuh = 3 order (JR conv ZP04 yang mengonsumsi roll TTA lengkap; SR conv pasangan ZCA2 + PPA2 dengan link MILL_OC), klasifikasi batch baru (ZZNOMORROLL, ZZPRODLINE dll.), lot Z04 + hasil, lalu SO/DO. Melibatkan GR/GI di DEV, medan custom MILL_OC, dan kemungkinan exit pembentukan batch; belum dicoba.
+
+### 9.2 Percobaan membuat order di DEV (18 Nov 2026) — blocker
+
+Script uji: `outputs/test_data_tta_20261118/st15_order_zp04_try*.abap` (semua tanpa commit, tidak ada order terbentuk).
+
+- ZP04, ZCA2, PPA2, ZPE2 semuanya **process order (kategori 40)**, jadi `BAPI_PRODORD_CREATE` ditolak ("Order type ZP04 is not maintained for order category 10"). `BAPI_PROCORD_CREATE` dipakai.
+- Order asli `100000070188`: ZP04, plant 2000, material JREYAI, versi produksi `0002` (BOM `5669` alt `04`, routing grup `JREYAI` alt `A4`), kuantitas **1 ROL**, kunci jadwal AFKO-TERKZ = `3`, tanggal mulai = selesai = tanggal buat.
+- `BAPI_PROCORD_CREATE` selalu gagal dengan **CO 029 "No lead time scheduling (enter start and finish date)"** walau tanggal dan jam awal/akhir, tanggal explosion, prioritas, serta RECIPE_TYPE `2` / RECIPE_GROUP `JREYAI` / RECIPE_COUNTER `A4` sudah diisi (tanggal sama atau berbeda).
+- Belum dicoba: BDC `COR1` (rekaman layar), atau order dibuat manual oleh user lalu sisanya (release, GI 261, GR 101, klasifikasi, lot, SO/DO) saya lanjutkan lewat BAPI.
+
+### 9.3 Implementasi dan hasil (18 Nov 2026)
+
+**Data DEV lengkap dibangun** (bukan lagi blocker). Order dibuat lewat BDC `COR1` memakai `ABAP4_CALL_TRANSACTION` (mode N, update S; tanggal DD.MM.YYYY, desimal titik), mengikuti `Solusi_COR1_via_RFC.md`. SR converting dibentuk seperti `ZPP003P` (`ZPPC_UPLOAD_SLITROLL`): COR1 order PPA2 sumber, `MILL_OC` menggabungkan ke ZCA2 dan mengisi `AFPO-MILL_OC_AUFNR_U`, lalu MSC1 per roll. Daftar objek dan rollback: `docs/DATA_UJI_TTA_DEV_20261117.md`.
+
+**Temuan BKTXT.** `GET_VALID_ORDER_FROM_MSEG` dan `GET_VALID_COMPONENT_FROM_MSEG` memasangkan dokumen GR 101 dengan GI 261 lewat `MKPF-BKTXT` yang sama (`GV_TRACE_BKTXT`). Pada data nyata: level JR memakai nomor roll JR (contoh `G EYA 124 011`), level SR memakai nomor order gabungan. Data uji harus memakai teks header yang sama, kalau tidak, trace berhenti.
+
+**Perubahan program** (generator `tests/tta/make_patch.py`; hasil `tests/tta/ZQMI_COA_TOP.abap` dan `ZQMI_COA_F01.abap`):
+1. `TTA_CHECK USING P_MATNR P_CHARG P_NOMSR CHANGING P_TTA`: parameter material, batch, dan nomor roll, jadi bisa dipanggil untuk roll DO maupun batch hasil trace. Kalau `P_NOMSR` kosong, `ZZNOMORROLL` dibaca dari AUSP.
+2. `TTA_TRACE USING P_MATNR P_CHARG CHANGING P_SRB P_SRLOT P_JRB P_JRLOT P_SRMAT P_JRMAT`.
+3. `GET_TRACED_LOTS`: kalau roll DO bukan TTA tetapi `L_SR_BASE_BATCH` terisi dan berbeda dari roll DO, ambil `MATNR` dari `MCH1`, jalankan `TTA_CHECK` pada batch itu; bila TTA, `TTA_TRACE` dimulai dari batch SR Base Film itu dan mengganti lot SR Base / JR Base dengan lot TTA. Stage SR/JR converting tetap dari logika sebelumnya. Bila tidak ada material SR/JR TTA yang ditemukan, flag `GV_TTA` dibersihkan.
+4. Cache `GS_TRACE_DATA`: bila `TTA_SRMAT` atau `TTA_JRMAT` terisi, `GV_TTA = 'X'` dipulihkan.
+
+**Hasil uji (harness DEV, 18 Nov 2026)** `outputs/MT_20261118_tta_conv.txt`, `outputs/LIMIT_20261118_tta_conv.txt`:
+- 20 DO lama: value dan limit 0 selisih vs `MT_20261117_dev_after_tta.txt` dan `LIMIT_20261117_dev_after_tta.txt`.
+- DO 0085006286: value 10/10 = lot JR TTA `040000015885`; ZQM002 = EXEC = ZQM003.
+- Tanpa error atau dump.
+- Selisih limit enam baris di DO 6286 (ZQM002 bulat) = MIC PEYA* tidak ada di QPMK DEV (STELLEN 0), bukan bug program.
+
+**Status:** sandbox-new sudah dipush 18 Nov 2026 (TOP 486, F01 5923, RS_SYNTAX_CHECK RC 0, readback identik). Backup pra-push: `outputs/bak_20261118/`. DEV belum memuat patch converting; deploy oleh user, lalu regresi ulang di DEV.
+
+### 9.4 Penyelarasan dengan ZEQM015: sambungan lewat MSEG 601 (18 Nov 2026)
+
+Source ZEQM015 (`ZQMR_TRACEABILITY_TR_TTE_F01`, `UPDATEDATA` baris 196-213) dibaca di DEV: untuk material `SR*`, ZEQM015 mengambil `MCH1-LICHA` batch itu, lalu mencari `MSEG` **601** dengan `CHARG = LICHA`. 543 hanya dipakai di cabang yang berlabel SUBCONTRACT (GR tanpa order). Penjelasan 543 sebagai jalur utama di `ANALISIS_OUTSOURCE_TTA_20261117.md` §1 kurang tepat.
+
+Perubahan `TTA_TRACE`: syarat batch vendor berada di plant `TTA%` (`MCHA`) diganti dengan syarat ada `MSEG` 601 pada batch `LICHA`; material batch TTA diambil dari baris 601. Data DEV: batch SRSEFI 0000377412 (TTA2) punya 601 `4900389694`.
+
+Hasil (harness, dasar = source DEV 18 Nov, yang sudah memuat versi converting): 21 DO value dan limit **0 selisih** vs `MT_20261118_tta_conv.txt` / `LIMIT_20261118_tta_conv.txt`. DO 0085006285 dan 0085006286 value 10/10 = lot JR TTA 040000015885. Berkas: `outputs/MT_20261118_tta_601.txt`, `outputs/LIMIT_20261118_tta_601.txt`.
+
+Status: sandbox-new dipush 18 Nov (TOP 486, F01 5924 baris, RS_SYNTAX_CHECK RC 0, readback identik). DEV memuat versi sebelum 601 (F01 5923 baris); deploy versi 601 oleh user.
+
+### 9.5 TTA_TRACE disamakan penuh dengan ZEQM015, termasuk 543 (18 Nov 2026, perintah user)
+
+User: "saya minta sama dengan zeqm015, karna di prd ada kemungkinan gitu". `TTA_TRACE` ditulis ulang mengikuti `UPDATEDATA` ZEQM015, dengan tiga FORM baru:
+
+| FORM | Isi (sama dengan ZEQM015) |
+|:--|:--|
+| `TTA_GR101` | GR 101/102 batch, pasangan yang dibatalkan dibuang (SMBLN/SJAHR/SMBLP), urut `CPUDT_MKPF`/`CPUTM_MKPF`, ambil yang pertama; tanggal dari MKPF |
+| `TTA_COMBINE` | Order gabungan: `AFPO` dengan `MILL_OC_AUFNR_U` = order (VCOMBINE), kalau tidak ada pakai order itu |
+| `TTA_SRC` | Batch asal: (1) material `SR*`: `MCH1-LICHA` lalu `MSEG` 601 dengan `CHARG = LICHA`; (2) GR tanpa order (SUBCONTRACT): `MSEG` 543 di dokumen GR itu |
+
+Alur: roll sendiri lewat `TTA_SRC`; kalau kosong, roll ke GR 101 sah, order gabungan, **semua** komponen `AUFM` 261 dicoba lewat `TTA_SRC` sampai ketemu. Batch hasil = SR TTA (lot Z04). Naik ke JR material I: GR 101 sah atau 531 (tambahan di luar ZEQM015, keputusan QA karena nilai hanya ada di lot JR TTA), order gabungan, komponen `AUFM` 261 `JR%`.
+
+Beda yang disengaja: ZEQM015 menampilkan hasil 601 dan 543 bersama di tree; COA butuh satu batch, jadi urutannya 601 dulu, lalu 543.
+
+Uji:
+- `TTA_SRC` di DEV (program uji baca saja): dokumen subcontract `5000043037` (SRAQEO 0000314786, 543) menghasilkan SRAHAI 0000000284; SRCBUO 0000379742 (601) menghasilkan SRSEFI 0000377412. Data 543 untuk vendor TTA (2132000001) tidak ada di DEV.
+- Harness 21 DO (dasar source DEV 18 Nov): value dan limit 0 selisih vs `MT_20261118_tta_601.txt` / `LIMIT_20261118_tta_601.txt`; DO 0085006285 dan 0085006286 10/10. Berkas: `outputs/MT_20261118_tta_543.txt`, `outputs/LIMIT_20261118_tta_543.txt`.
+
+Status: sandbox-new dipush 18 Nov (TOP 486, F01 6042 baris, RS_SYNTAX_CHECK RC 0, readback identik). DEV masih versi converting sebelum 601 (F01 5923); deploy oleh user.

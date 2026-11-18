@@ -1,0 +1,6 @@
+percobaan          0  error
+S CL                   506
+Saving changes to assignments
+S CL                   737
+Assignment changed
+COMMIT status 1

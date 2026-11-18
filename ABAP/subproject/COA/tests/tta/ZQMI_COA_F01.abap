@@ -2467,8 +2467,11 @@ FORM GET_TRACED_LOTS.
   SPLIT IT_DATA-NOMSR AT SPACE INTO V_LINE V_CODE V_MOYE V_SEQ V_DUMMY.
   CONCATENATE V_LINE V_CODE V_MOYE V_SEQ INTO L_MOTHER_ROLL SEPARATED BY SPACE.
   " Outsource TTA: batch 9* + Z3 -> base film dari lot TTA
+  DATA: LV_TTAMAT TYPE MARA-MATNR,
+        LV_TTABAT TYPE MCH1-CHARG.
   CLEAR: GV_TTA, GV_TTA_SRMAT, GV_TTA_JRMAT.
-  PERFORM TTA_CHECK CHANGING GV_TTA.
+  PERFORM TTA_CHECK USING IT_DATA-MATNR IT_DATA-CHARG IT_DATA-NOMSR
+                    CHANGING GV_TTA.
 
   " 1. SR Converting Lot
   SELECT SINGLE PRUEFLOS INTO LOT_SR_CONV FROM QALS WHERE CHARG = IT_DATA-CHARG AND ART = 'Z04'.
@@ -2504,7 +2507,9 @@ FORM GET_TRACED_LOTS.
       ENDIF.
     ENDIF.
 
-    IF GV_TTA = 'X'.
+    IF GS_TRACE_DATA-TTA_SRMAT IS NOT INITIAL OR
+       GS_TRACE_DATA-TTA_JRMAT IS NOT INITIAL.
+      GV_TTA = 'X'.
       GV_TTA_SRMAT = GS_TRACE_DATA-TTA_SRMAT.
       GV_TTA_JRMAT = GS_TRACE_DATA-TTA_JRMAT.
     ENDIF.
@@ -2743,11 +2748,33 @@ FORM GET_TRACED_LOTS.
     ENDIF.
   ENDIF.
 
-  " Outsource TTA: lot base film dari rantai TTA (converting tetap)
+  " Outsource TTA: roll DO langsung TTA, atau SR Base Film (batch 9*)
+  " di alur converting. Stage converting tetap logika lama.
   IF GV_TTA = 'X'.
-    PERFORM TTA_TRACE CHANGING L_SR_BASE_BATCH LOT_SR_BASE
+    PERFORM TTA_TRACE USING IT_DATA-MATNR IT_DATA-CHARG
+                      CHANGING L_SR_BASE_BATCH LOT_SR_BASE
                                L_JR_BASE_BATCH LOT_JR_BASE
                                GV_TTA_SRMAT GV_TTA_JRMAT.
+  ELSEIF L_SR_BASE_BATCH IS NOT INITIAL AND
+         L_SR_BASE_BATCH <> IT_DATA-CHARG.
+    CLEAR LV_TTAMAT.
+    LV_TTABAT = L_SR_BASE_BATCH.
+    SELECT SINGLE MATNR INTO LV_TTAMAT FROM MCH1
+      WHERE CHARG = L_SR_BASE_BATCH.
+    IF SY-SUBRC = 0.
+      PERFORM TTA_CHECK USING LV_TTAMAT LV_TTABAT SPACE
+                        CHANGING GV_TTA.
+    ENDIF.
+    IF GV_TTA = 'X'.
+      PERFORM TTA_TRACE USING LV_TTAMAT LV_TTABAT
+                        CHANGING L_SR_BASE_BATCH LOT_SR_BASE
+                                 L_JR_BASE_BATCH LOT_JR_BASE
+                                 GV_TTA_SRMAT GV_TTA_JRMAT.
+    ENDIF.
+  ENDIF.
+  IF GV_TTA = 'X' AND GV_TTA_SRMAT IS INITIAL AND
+     GV_TTA_JRMAT IS INITIAL.
+    CLEAR GV_TTA.
   ENDIF.
   " Setelah selesai mencari semuanya, simpan ke cache
   GS_TRACE_DATA-MOTHER_ROLL = L_MOTHER_ROLL.
@@ -5646,21 +5673,20 @@ ENDFORM.                    " ALIAS_MESSAGE
 *       Roll outsource TTA: batch berawalan 9 DAN Z3 (token pertama
 *       ZZNOMORROLL atau ZZPRODLINE). Keputusan QA 17.11.2026.
 *----------------------------------------------------------------------*
-FORM TTA_CHECK CHANGING P_TTA.
+FORM TTA_CHECK USING    P_MATNR P_CHARG P_NOMSR
+               CHANGING P_TTA.
   DATA: LV_T1  TYPE STRING,
         LV_T2  TYPE STRING,
+        LV_NM  TYPE STRING,
         LV_OBJ TYPE INOB-OBJEK,
         LV_CU  TYPE INOB-CUOBJ,
         LV_OB2 TYPE AUSP-OBJEK,
-        LV_PL  TYPE AUSP-ATWRT.
+        LV_PL  TYPE AUSP-ATWRT,
+        LV_RL  TYPE AUSP-ATWRT.
   CLEAR P_TTA.
-  CHECK IT_DATA-CHARG IS NOT INITIAL.
-  CHECK IT_DATA-CHARG(1) = '9'.
-  SPLIT IT_DATA-NOMSR AT SPACE INTO LV_T1 LV_T2.
-  IF LV_T1 = 'Z3'.
-    P_TTA = 'X'.
-    RETURN.
-  ENDIF.
+  CHECK P_CHARG IS NOT INITIAL.
+  CHECK P_CHARG(1) = '9'.
+  LV_NM = P_NOMSR.
   IF GV_ATINN_PLINE IS INITIAL.
     CALL FUNCTION 'CONVERSION_EXIT_ATINN_INPUT'
       EXPORTING
@@ -5668,14 +5694,26 @@ FORM TTA_CHECK CHANGING P_TTA.
       IMPORTING
         OUTPUT = GV_ATINN_PLINE.
   ENDIF.
-  LV_OBJ = IT_DATA-MATNR.
-  LV_OBJ+18 = IT_DATA-CHARG.
+  LV_OBJ = P_MATNR.
+  LV_OBJ+18 = P_CHARG.
   SELECT SINGLE CUOBJ INTO LV_CU FROM INOB
     WHERE KLART = '023'
       AND OBTAB = 'MCH1'
       AND OBJEK = LV_OBJ.
   CHECK SY-SUBRC = 0.
   LV_OB2 = LV_CU.
+  IF LV_NM IS INITIAL.
+    SELECT SINGLE ATWRT INTO LV_RL FROM AUSP
+      WHERE OBJEK = LV_OB2
+        AND ATINN = ATINN_ROLL
+        AND KLART = '023'.
+    LV_NM = LV_RL.
+  ENDIF.
+  SPLIT LV_NM AT SPACE INTO LV_T1 LV_T2.
+  IF LV_T1 = 'Z3'.
+    P_TTA = 'X'.
+    RETURN.
+  ENDIF.
   SELECT SINGLE ATWRT INTO LV_PL FROM AUSP
     WHERE OBJEK = LV_OB2
       AND ATINN = GV_ATINN_PLINE
@@ -5687,46 +5725,58 @@ ENDFORM.                    " TTA_CHECK
 *&---------------------------------------------------------------------*
 *&      Form  TTA_TRACE
 *&---------------------------------------------------------------------*
-*       Ikut ZEQM015: roll -> order (101) -> komponen (261) -> vendor
-*       batch (MCH1-LICHA) di plant TTA = SR TTA (lot Z04 = SR Base
-*       Film, boleh kosong) -> order -> komponen JR, berhenti di JR
-*       material I (lot Z02/Z03 = JR Base Film). Vendor batch TTA
-*       tidak ketemu -> lot base film tidak diubah.
+*       Sama dengan ZEQM015 (ZQMR_TRACEABILITY_TR_TTE UPDATEDATA):
+*       - GR 101 sah: pasangan batal dibuang, ambil yang paling awal
+*       - order gabungan lewat AFPO-MILL_OC_AUFNR_U, komponen AUFM 261
+*       - batch SR: MCH1-LICHA -> MSEG 601 (antar plant)
+*       - GR tanpa order (SUBCONTRACT): MSEG 543 di dokumen GR itu
+*       Batch hasil = SR TTA (lot Z04 = SR Base Film, boleh kosong),
+*       lalu naik ke JR material I (lot Z02/Z03 = JR Base Film).
+*       Tidak ketemu -> lot base film tidak diubah.
 *----------------------------------------------------------------------*
-FORM TTA_TRACE CHANGING P_SRB P_SRLOT P_JRB P_JRLOT
+FORM TTA_TRACE USING    P_MATNR P_CHARG
+               CHANGING P_SRB P_SRLOT P_JRB P_JRLOT
                         P_SRMAT P_JRMAT.
-  DATA: LV_AUF TYPE MSEG-AUFNR,
-        LV_CM  TYPE MSEG-MATNR,
-        LV_CC  TYPE MSEG-CHARG,
-        LV_LI  TYPE MCH1-LICHA,
-        LV_TB  TYPE MCHA-CHARG,
-        LV_TM  TYPE MCHA-MATNR,
+  TYPES: BEGIN OF LTY_CMP,
+           MATNR TYPE AUFM-MATNR,
+           CHARG TYPE AUFM-CHARG,
+         END OF LTY_CMP.
+  DATA: LT_CMP TYPE STANDARD TABLE OF LTY_CMP,
+        LS_CMP TYPE LTY_CMP,
+        LV_AUF TYPE MSEG-AUFNR,
+        LV_MBL TYPE MSEG-MBLNR,
+        LV_DT  TYPE MKPF-CPUDT,
+        LV_CMB TYPE AFPO-AUFNR,
+        LV_TB  TYPE MSEG-CHARG,
+        LV_TM  TYPE MSEG-MATNR,
         LV_B   TYPE MSEG-CHARG,
+        LV_BM  TYPE MSEG-MATNR,
         LV_JM  TYPE MSEG-MATNR,
         LV_JC  TYPE MSEG-CHARG,
         LV_LOT TYPE QALS-PRUEFLOS,
         LV_L   TYPE I.
-  SELECT SINGLE AUFNR INTO LV_AUF FROM MSEG
-    WHERE MATNR = IT_DATA-MATNR
-      AND CHARG = IT_DATA-CHARG
-      AND BWART = '101'
-      AND AUFNR <> SPACE
-      AND SMBLN = SPACE.
-  CHECK LV_AUF IS NOT INITIAL.
-  SELECT SINGLE MATNR CHARG INTO (LV_CM, LV_CC) FROM MSEG
-    WHERE AUFNR = LV_AUF
-      AND BWART = '261'
-      AND SMBLN = SPACE.
-  CHECK LV_CC IS NOT INITIAL.
-  SELECT SINGLE LICHA INTO LV_LI FROM MCH1
-    WHERE MATNR = LV_CM
-      AND CHARG = LV_CC.
-  CHECK LV_LI IS NOT INITIAL.
-  LV_TB = LV_LI.
-  SELECT SINGLE MATNR INTO LV_TM FROM MCHA
-    WHERE CHARG = LV_TB
-      AND WERKS LIKE 'TTA%'.
-  CHECK SY-SUBRC = 0.
+* Roll sendiri: vendor batch (601) / subcontract (543)
+  PERFORM TTA_SRC USING P_MATNR P_CHARG CHANGING LV_TM LV_TB.
+  IF LV_TB IS INITIAL.
+*   Roll -> order -> komponen 261 -> vendor batch / subcontract
+    PERFORM TTA_GR101 USING P_MATNR P_CHARG
+                      CHANGING LV_AUF LV_MBL LV_DT.
+    CHECK LV_AUF IS NOT INITIAL.
+    PERFORM TTA_COMBINE USING LV_AUF CHANGING LV_CMB.
+    SELECT MATNR CHARG INTO TABLE LT_CMP FROM AUFM
+      WHERE AUFNR = LV_CMB
+        AND BWART = '261'.
+    SORT LT_CMP BY MATNR CHARG.
+    DELETE ADJACENT DUPLICATES FROM LT_CMP COMPARING MATNR CHARG.
+    LOOP AT LT_CMP INTO LS_CMP WHERE CHARG IS NOT INITIAL.
+      PERFORM TTA_SRC USING LS_CMP-MATNR LS_CMP-CHARG
+                      CHANGING LV_TM LV_TB.
+      IF LV_TB IS NOT INITIAL.
+        EXIT.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.
+  CHECK LV_TB IS NOT INITIAL.
 * SR TTA = SR Base Film
   P_SRB   = LV_TB.
   P_SRMAT = LV_TM.
@@ -5736,22 +5786,31 @@ FORM TTA_TRACE CHANGING P_SRB P_SRLOT P_JRB P_JRLOT
       AND ART   = 'Z04'.
   P_SRLOT = LV_LOT.
 * JR TTA material I = JR Base Film
-  LV_B = LV_TB.
+  LV_B  = LV_TB.
+  LV_BM = LV_TM.
   DO 5 TIMES.
-    CLEAR: LV_AUF, LV_JM, LV_JC.
-    SELECT SINGLE AUFNR INTO LV_AUF FROM MSEG
-      WHERE CHARG = LV_B
-        AND ( BWART = '101' OR BWART = '531' )
-        AND AUFNR <> SPACE
-        AND SMBLN = SPACE.
+    CLEAR: LV_AUF, LV_JM, LV_JC, LV_CMB.
+    PERFORM TTA_GR101 USING LV_BM LV_B
+                      CHANGING LV_AUF LV_MBL LV_DT.
+    IF LV_AUF IS INITIAL.
+*     SR hasil slitting: 531 di order JR
+      SELECT SINGLE AUFNR INTO LV_AUF FROM MSEG
+        WHERE MATNR = LV_BM
+          AND CHARG = LV_B
+          AND BWART = '531'
+          AND AUFNR <> SPACE
+          AND SMBLN = SPACE.
+    ENDIF.
     IF LV_AUF IS INITIAL.
       EXIT.
     ENDIF.
-    SELECT SINGLE MATNR CHARG INTO (LV_JM, LV_JC) FROM MSEG
-      WHERE AUFNR = LV_AUF
+    PERFORM TTA_COMBINE USING LV_AUF CHANGING LV_CMB.
+    SELECT MATNR CHARG INTO (LV_JM, LV_JC) FROM AUFM
+      UP TO 1 ROWS
+      WHERE AUFNR = LV_CMB
         AND BWART = '261'
-        AND SMBLN = SPACE
         AND MATNR LIKE 'JR%'.
+    ENDSELECT.
     IF LV_JC IS INITIAL.
       EXIT.
     ENDIF.
@@ -5761,7 +5820,8 @@ FORM TTA_TRACE CHANGING P_SRB P_SRLOT P_JRB P_JRLOT
       P_JRMAT = LV_JM.
       EXIT.
     ENDIF.
-    LV_B = LV_JC.
+    LV_B  = LV_JC.
+    LV_BM = LV_JM.
   ENDDO.
   IF P_JRB IS NOT INITIAL.
     CLEAR LV_LOT.
@@ -5775,6 +5835,104 @@ FORM TTA_TRACE CHANGING P_SRB P_SRLOT P_JRB P_JRLOT
     P_JRLOT = LV_LOT.
   ENDIF.
 ENDFORM.                    " TTA_TRACE
+*&---------------------------------------------------------------------*
+*&      Form  TTA_SRC
+*&---------------------------------------------------------------------*
+*       Batch asal satu level di atas (ZEQM015 IT_PREBATCH):
+*       1. material SR: MCH1-LICHA -> MSEG 601 dengan CHARG = LICHA
+*       2. GR 101 tanpa order (SUBCONTRACT): MSEG 543 di dokumen GR
+*       Ambil yang pertama ketemu (urutan 601, lalu 543).
+*----------------------------------------------------------------------*
+FORM TTA_SRC USING    P_MATNR P_CHARG
+             CHANGING P_TM P_TB.
+  DATA: LV_LI  TYPE MCH1-LICHA,
+        LV_MAT TYPE MARA-MATNR,
+        LV_AUF TYPE MSEG-AUFNR,
+        LV_MBL TYPE MSEG-MBLNR,
+        LV_DT  TYPE MKPF-CPUDT.
+  CLEAR: P_TM, P_TB.
+  LV_MAT = P_MATNR.
+  IF LV_MAT(2) = 'SR'.
+    SELECT SINGLE LICHA INTO LV_LI FROM MCH1
+      WHERE MATNR = P_MATNR
+        AND CHARG = P_CHARG.
+    IF LV_LI IS NOT INITIAL.
+      SELECT SINGLE MATNR CHARG INTO (P_TM, P_TB) FROM MSEG
+        WHERE CHARG = LV_LI
+          AND BWART = '601'.
+    ENDIF.
+    IF P_TB IS NOT INITIAL.
+      RETURN.
+    ENDIF.
+  ENDIF.
+  PERFORM TTA_GR101 USING P_MATNR P_CHARG
+                    CHANGING LV_AUF LV_MBL LV_DT.
+  IF LV_AUF IS INITIAL AND LV_DT IS NOT INITIAL.
+    SELECT SINGLE MATNR CHARG INTO (P_TM, P_TB) FROM MSEG
+      WHERE MBLNR = LV_MBL
+        AND BWART = '543'.
+  ENDIF.
+ENDFORM.                    " TTA_SRC
+*&---------------------------------------------------------------------*
+*&      Form  TTA_GR101
+*&---------------------------------------------------------------------*
+*       GR 101 sah seperti ZEQM015: 101/102 batch, buang pasangan yang
+*       dibatalkan, urut tanggal-jam entri, ambil yang pertama.
+*----------------------------------------------------------------------*
+FORM TTA_GR101 USING    P_MATNR P_CHARG
+               CHANGING P_AUF P_MBL P_DT.
+  TYPES: BEGIN OF LTY_GR,
+           AUFNR TYPE MSEG-AUFNR,
+           MBLNR TYPE MSEG-MBLNR,
+           MJAHR TYPE MSEG-MJAHR,
+           ZEILE TYPE MSEG-ZEILE,
+           CPUDT TYPE MSEG-CPUDT_MKPF,
+           CPUTM TYPE MSEG-CPUTM_MKPF,
+           SMBLN TYPE MSEG-SMBLN,
+           SJAHR TYPE MSEG-SJAHR,
+           SMBLP TYPE MSEG-SMBLP,
+           BWART TYPE MSEG-BWART,
+         END OF LTY_GR.
+  DATA: LT_GR TYPE STANDARD TABLE OF LTY_GR,
+        LT_RV TYPE STANDARD TABLE OF LTY_GR,
+        LS_GR TYPE LTY_GR.
+  CLEAR: P_AUF, P_MBL, P_DT.
+  SELECT AUFNR MBLNR MJAHR ZEILE CPUDT_MKPF CPUTM_MKPF
+         SMBLN SJAHR SMBLP BWART
+    INTO TABLE LT_GR FROM MSEG
+    WHERE BWART IN ('101','102')
+      AND MATNR = P_MATNR
+      AND CHARG = P_CHARG.
+  LT_RV = LT_GR.
+  DELETE LT_RV WHERE SMBLN IS INITIAL.
+  LOOP AT LT_RV INTO LS_GR.
+    DELETE LT_GR WHERE MBLNR = LS_GR-SMBLN
+                   AND MJAHR = LS_GR-SJAHR
+                   AND ZEILE = LS_GR-SMBLP.
+  ENDLOOP.
+  DELETE LT_GR WHERE SMBLN IS NOT INITIAL OR BWART = '102'.
+  SORT LT_GR BY CPUDT CPUTM.
+  READ TABLE LT_GR INTO LS_GR INDEX 1.
+  CHECK SY-SUBRC = 0.
+  P_AUF = LS_GR-AUFNR.
+  P_MBL = LS_GR-MBLNR.
+  SELECT SINGLE CPUDT INTO P_DT FROM MKPF
+    WHERE MBLNR = P_MBL.
+ENDFORM.                    " TTA_GR101
+*&---------------------------------------------------------------------*
+*&      Form  TTA_COMBINE
+*&---------------------------------------------------------------------*
+*       Order gabungan (MILL_OC), seperti VCOMBINE di ZEQM015.
+*----------------------------------------------------------------------*
+FORM TTA_COMBINE USING    P_AUF
+                 CHANGING P_CMB.
+  CLEAR P_CMB.
+  SELECT SINGLE AUFNR INTO P_CMB FROM AFPO
+    WHERE MILL_OC_AUFNR_U = P_AUF.
+  IF P_CMB IS INITIAL.
+    P_CMB = P_AUF.
+  ENDIF.
+ENDFORM.                    " TTA_COMBINE
 *&---------------------------------------------------------------------*
 *&      Form  TTA_MAP_MIC
 *&---------------------------------------------------------------------*

@@ -18,7 +18,7 @@ peta folder, dan indeks aturan detail di [00_RULES/](00_RULES/).
 > **Pengecualian langkah 2–3:** tanya-jawab konsep / sintaks / TCODE umum yang tidak menyentuh program, data, atau file sub-project → cukup langkah 0–1, langsung jawab.
 4. Untuk development: ikuti [07_Workflow_Development.md](00_RULES/07_Workflow_Development.md). Sebelum menulis/mengubah kode, baca aturan detail yang relevan di [00_RULES/](#indeks-aturan-detail-00_rules).
 5. Simpan hasil kerja hanya di folder sub-project itu. Pakai template di [01_TEMPLATE/](01_TEMPLATE/) untuk dokumen baru.
-6. **Selesai pekerjaan apa pun → update checkpoint** (root `CHECKPOINT.md` + `CHECKPOINT.md` sub-project) sebelum jawaban akhir. Lihat [08](00_RULES/08_Checkpoint_Wajib.md).
+6. **Selesai setiap step/pekerjaan yang OK → LANGSUNG update file Markdown (.md) yang relevan & checkpoint** (update panduan/dokumen teknis di subproject `docs/`, `CHECKPOINT.md` sub-project, dan root `CHECKPOINT.md`) seketika tanpa menunda. Lihat [08](00_RULES/08_Checkpoint_Wajib.md).
 
 ---
 

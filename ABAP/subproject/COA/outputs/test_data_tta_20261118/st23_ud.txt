@@ -1,0 +1,4 @@
+RET S QV                   050
+Usage decision for inspection lot 040000021140 was successfu
+UDRET done
+COMMIT

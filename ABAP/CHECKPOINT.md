@@ -6,22 +6,27 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 
 | Atribut | Isi |
 |---|---|
-| Waktu | 2026-11-11 21:10 |
-| AI / device | Claude (desktop app) |
+| Waktu | 2026-11-18 12:50 |
+| AI / device | Antigravity / Windows |
 | Sub-project | COA |
-| Pekerjaan | Desain mapping ZMAP_COA berbasis alias untuk ZQM002 (rencana saja) + data PRD alias sama/material beda + deck QA |
-| Status | Menunggu Baginda — belum ada perubahan program |
-| Next step | Konfirmasi QA (5 pertanyaan di `subproject/COA/docs/CHECKPOINT_ALIAS_MAPPING_ZQM002.md` §6), lalu tunggu perintah execute |
-| Backup | Bukti data: `subproject/COA/outputs/alias_mapping_20261111/` |
-
+| Pekerjaan | Testing 2 Skenario Terakhir COA di DEV AIX via SAP GUI (ZQM002 vs ZQM005), verifikasi nilai MIC & Excel report ber-screenshot |
+| Status | Selesai |
+| Next step | Presentasi dan approval Baginda |
+| Backup | `subproject/COA/outputs/TESTING_COA_TTA_DEV_AIX.xlsx` |
 ## Log (terbaru di atas)
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
+| 2026-11-18 12:50 | Antigravity / Linux GUI | COA | Testing SAP GUI 2 skenario terakhir (TTA-OUTSOURCE & TTA-CONVERTING) di DEV AIX TRD 130: ZQM002 vs ZQM005, Excel `outputs/TESTING_COA_TTA_DEV_AIX.xlsx` | Selesai | Siap review Baginda |
+| 2026-11-18 11:35 | Antigravity / Windows | BTP_HYBRID_INTEGRATION | Setup Docker SCC 2.19.2, Tunnel BTP, Destination S4HANA_ONPREM, BAS FioriDev & subproject docs | Selesai | Deploy aplikasi Fiori perdana dari BAS |
 | 2026-11-11 21:10 | Claude / desktop | COA | Desain mapping berbasis alias ZQM002 + deck QA (rencana) | Menunggu Baginda | Konfirmasi QA, belum execute |
 | 2026-11-11 | Claude / desktop | ZMMI_WMS | Testing setelah deploy DEV Ref 003 (READY) | Selesai | Transport QA + retest Aldi |
 | 2026-11-11 | Claude / desktop | ZMMI_WMS | Uji before/after DEV 2 batch Aldi (after = ZBMBC) | Selesai | Naik ke DEV + retest |
 | 2026-11-11 | Claude / desktop | ZMMI_WMS | Patch Ref 003 opsi B (aturan HU = ZBMBC) push sandbox-new + compare TRS | Selesai (READY WITH WARNINGS) | Transport + retest QA |
+| 2026-11-18 14:40 | Antigravity / Linux GUI | COA | Pengujian Lengkap 21 DO Skenario COA di SAP GUI DEV AIX: Capture 42 tangkapan layar (sel & ALV), kompilasi Master Workbook 21 sheet `MASTER_TESTING_COA_SEMUA_SKENARIO.xlsx` (1.3 MB) berpanah movable & formula dinamis | Selesai | Siap review Baginda |
+| 2026-11-18 14:10 | Antigravity / Linux GUI | COA | Pembuatan Dokumen Testing Komprehensif Seluruh Skenario COA (21 DO Uji, 4 Kelompok Skenario) di `subproject/COA/docs/DOKUMEN_TESTING_SEMUA_SKENARIO_COA.md` | Selesai | Siap review Baginda |
+| 2026-11-18 14:07 | Antigravity / Linux GUI | COA | Rancang Versi Sendiri Laporan Rekonsiliasi COA TTA DEV: Panah Movable (Shape Vector Native Excel bisa digeser), KPI cards, formula AVERAGE multi-lot aktif, & Dashboard Animasi SVG `interactive_panah_coa.html` | Selesai | Siap review Baginda |
+| 2026-11-18 13:55 | Antigravity / Linux GUI | COA | Generate Peta Panah HD Uncompressed (Anti-Pecah) dan Workbook Excel Sinkron (`GUI_TEST_COA_TTA_DEV_20261118.xlsx` dan `TESTING_COA_TTA_DEV_AIX.xlsx`) dengan formula AVERAGE dinamis dan screenshot pendukung lengkap | Selesai | Siap review Baginda |
 | 2026-11-10 | Claude / desktop | ZMMI_WMS | Analisa temuan QA Aldi (duplikat & HU beda vs ZBMBC), akar M4 | Menunggu Baginda | Pilih opsi aturan HU |
 | 2026-11-10 | Claude / desktop | COA | ZMAP_COA_MIC cek MIC per plant material + released, push sandbox-new | Selesai | Push DEV oleh Baginda; koreksi data PIBJ* SRIBJI |
 | 2026-11-06 | Claude / desktop | ZMMI_WMS | Variant TODAY di sandbox-new (dinamis hari ini, PLT/BOX, WMS/DBCO WMS) | Selesai | Variant DEV via SE38 bila perlu |

@@ -1,0 +1,6 @@
+0000407419 S 506 Saving changes to assignments
+0000407419 S 737 Assignment changed
+0000407419 COMMIT
+0000407420 S 506 Saving changes to assignments
+0000407420 S 737 Assignment changed
+0000407420 COMMIT

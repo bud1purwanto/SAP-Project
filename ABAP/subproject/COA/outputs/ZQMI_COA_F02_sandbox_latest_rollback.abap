@@ -1,5 +1,5 @@
 *&---------------------------------------------------------------------*
-*&  Include           ZQMI_CERTIFICATE_F02
+*&  Include           ZQMI_COA_F02
 *&---------------------------------------------------------------------*
 *&---------------------------------------------------------------------*
 *&      Module  STATUS_0100  OUTPUT
@@ -35,7 +35,9 @@ MODULE USER_COMMAND_0100 INPUT.
          LV_CUOBJ_BM TYPE MCH1-CUOBJ_BM,
          LV_KLART TYPE AUSP-KLART,
          LV_ATINN_ALIAS TYPE CABN-ATINN,
-         LV_ATWRT TYPE AUSP-ATWRT.
+         LV_ATWRT TYPE AUSP-ATWRT,
+         LV_PRODUCT_COAMAT TYPE MARA-MATNR,
+         LV_PRODUCT_PATH TYPE C LENGTH 7.
   CASE SY-UCOMM.
     WHEN 'BACK'.
       LEAVE TO SCREEN 0.
@@ -65,12 +67,15 @@ MODULE USER_COMMAND_0100 INPUT.
       REFRESH: TBATCH, IT_DETAIL, T_DETAIL1, IT_DETAIL1, T_DETAIL,IT_WIDTH.
       CLEAR: PRODUCT, LV_PRODUCT_MATNR, LV_PRODUCT_CHARG,
              LV_PRODUCT_WERKS, LV_CUOBJ_BM, LV_KLART,
-             LV_ATINN_ALIAS, LV_ATWRT.
+             LV_ATINN_ALIAS, LV_ATWRT,
+             LV_PRODUCT_COAMAT, LV_PRODUCT_PATH.
 
       LOOP AT IT_DATA WHERE CHK EQ 'X'.
         CLEAR : MAX, IT_DETAIL.
         VBELN = IT_DATA-VBELN.
         LV_PRODUCT_MATNR = IT_DATA-MATNR.
+        LV_PRODUCT_COAMAT = IT_DATA-COA_MAT.
+        LV_PRODUCT_PATH = IT_DATA-COA_PATH.
         LV_PRODUCT_CHARG = IT_DATA-CHARG.
         LV_PRODUCT_WERKS = IT_DATA-WERKS.
         IT_DETAIL-MIC = IT_DATA-MIC.
@@ -146,6 +151,44 @@ MODULE USER_COMMAND_0100 INPUT.
         PRODUCT = TBATCH-ATWTB.
       ENDIF.
 
+      " Alias COA: lebar (ZZWIDTH) dari semua roll kelompok alias
+      IF LV_PRODUCT_PATH = 'ALIAS'.
+        DATA: LT_AW_ROLL LIKE TABLE OF IT_DATA WITH HEADER LINE,
+              LV_AW_VBELN TYPE LIPS-VBELN.
+        REFRESH: IT_WIDTH, LT_AW_ROLL.
+        LV_AW_VBELN = VBELN.
+        LT_AW_ROLL[] = IT_LOT[].
+        DELETE LT_AW_ROLL WHERE VBELN <> LV_AW_VBELN
+                             OR COA_MAT <> LV_PRODUCT_COAMAT.
+        SORT LT_AW_ROLL BY MATNR CHARG.
+        DELETE ADJACENT DUPLICATES FROM LT_AW_ROLL COMPARING MATNR CHARG.
+        LOOP AT LT_AW_ROLL.
+          CLEAR IT_WIDTH.
+          REFRESH TBATCH.
+          CALL FUNCTION 'VB_INIT'
+            EXPORTING
+              INIT_RESET = 'X'.
+          CALL FUNCTION 'VB_BATCH_GET_DETAIL'
+            EXPORTING
+              MATNR              = LT_AW_ROLL-MATNR
+              CHARG              = LT_AW_ROLL-CHARG
+              WERKS              = LT_AW_ROLL-WERKS
+              GET_CLASSIFICATION = 'X'
+            TABLES
+              CHAR_OF_BATCH      = TBATCH
+            EXCEPTIONS
+              OTHERS             = 9.
+          IF SY-SUBRC = 0.
+            READ TABLE TBATCH WITH KEY ATNAM = 'ZZWIDTH'.
+            IF SY-SUBRC EQ 0.
+              WRITE TBATCH-ATWTB TO IT_WIDTH-WIDTH DECIMALS 2.
+              IT_WIDTH-CLENG = STRLEN( IT_WIDTH-WIDTH ) + 1.
+              APPEND IT_WIDTH.
+            ENDIF.
+          ENDIF.
+        ENDLOOP.
+      ENDIF.
+
       " Kumpulkan semua alias unik dari batch-batch yang dipilih (IT_LOT / IT_DATA)
       DATA: BEGIN OF LT_SEL_ALIASES OCCURS 0,
               ALIAS TYPE C LENGTH 40,
@@ -171,7 +214,8 @@ MODULE USER_COMMAND_0100 INPUT.
         SORT LT_DIST_BATCHES BY MATNR CHARG.
         DELETE ADJACENT DUPLICATES FROM LT_DIST_BATCHES COMPARING MATNR CHARG.
 
-        LOOP AT LT_DIST_BATCHES WHERE MATNR = LV_PRODUCT_MATNR.
+        " Alias COA: alias header dari semua roll material COA yang sama
+        LOOP AT LT_DIST_BATCHES WHERE COA_MAT = LV_PRODUCT_COAMAT.
           CLEAR: LV_AL_CUOBJ, LV_AL_ATWRT.
           SELECT SINGLE CUOBJ_BM INTO LV_AL_CUOBJ FROM MCH1
             WHERE MATNR = LT_DIST_BATCHES-MATNR
@@ -230,8 +274,9 @@ MODULE USER_COMMAND_0100 INPUT.
         T_DETAIL1[] = T_DETAIL[].
         SORT T_DETAIL BY VBELN ASCENDING.
         DELETE ADJACENT DUPLICATES FROM T_DETAIL COMPARING VBELN.
-        SORT T_DETAIL1 BY MATNR ASCENDING.
-        DELETE ADJACENT DUPLICATES FROM T_DETAIL1 COMPARING MATNR.
+        " Alias COA: 1 kelompok alias = 1 material COA
+        SORT T_DETAIL1 BY COA_MAT ASCENDING.
+        DELETE ADJACENT DUPLICATES FROM T_DETAIL1 COMPARING COA_MAT.
         CLEAR : CSTAT,MSTAT.
         CSTAT = LINES( T_DETAIL ).
         MSTAT = LINES( T_DETAIL1 ).

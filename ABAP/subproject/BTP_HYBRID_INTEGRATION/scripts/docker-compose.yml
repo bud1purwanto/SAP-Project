@@ -1,0 +1,12 @@
+services:
+  sap-cloud-connector:
+    build: .
+    image: sap-cloud-connector:2.19.2
+    container_name: sap-cloud-connector
+    restart: unless-stopped
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./data/scc_config:/opt/sap/scc/scc_config
+      - ./data/config:/opt/sap/scc/config
+      - ./data/log:/opt/sap/scc/log
