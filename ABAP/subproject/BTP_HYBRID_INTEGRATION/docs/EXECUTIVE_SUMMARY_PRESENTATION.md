@@ -71,6 +71,8 @@ flowchart TD
 | **M4: On-Premise Mapping** | Resource Policy | Selesai | Mapping `s4hana-onprem:8080` $\rightarrow$ `192.168.1.199:8080` aktif |
 | **M5: Cloud Destination** | BTP Cockpit Destination | Selesai | Test Connection: **"Backend is reachable from Cloud Connector"** |
 | **M6: Cloud IDE Setup** | SAP BAS Dev Space | Selesai | Dev Space `FioriDev` siap dipakai dengan Fiori Application Generator |
+| **M7: Fiori App Generation** | SAP Fiori Elements | Selesai | Aplikasi `zpoitems` (List Report) sukses di-generate dari OData live |
+| **M8: End-to-End Live Runtime** | BTP ke S/4HANA Core | Selesai | Runtime HTTP 200 OK, resolusi navigasi `Results` pada CDS berparameter |
 
 ---
 
@@ -125,9 +127,9 @@ Saat presentasi di hadapan audiens, Baginda dapat mendemonstrasikan 4 bukti nyat
 
 ---
 
-## Lampiran: Bukti Visual Integrasi (Screenshots)
+## Lampiran: Bukti Visual Integrasi (Screenshots Lengkap 19 File)
 
-Semua bukti visual telah disimpan di direktori arsip subproject:
+Semua bukti visual telah disimpan dan terverifikasi di direktori arsip subproject (`docs/attachments/`):
 - `01_onprem_fiori_launchpad_login.png`: Verifikasi login Fiori On-Premise
 - `02_scc_initial_dashboard.jpg`: Tampilan dashboard SAP Cloud Connector
 - `03_scc_subaccount_connected.png`: Status Tunnel Subaccount BTP Connected
@@ -136,3 +138,14 @@ Semua bukti visual telah disimpan di direktori arsip subproject:
 - `06_btp_destination_check_success.jpg`: Konfirmasi koneksi backend reachable sukses
 - `07_bas_devspace_running.png`: Status running Dev Space FioriDev di SAP BAS
 - `08_bas_fiori_generator_destination.png`: Integrasi Destination di Fiori Tools Generator
+- `09_btp_destination_dynamic_property.png`: Konfigurasi properti `HTML5.DynamicDestination = true` & `sap-client = 130`
+- `10_bas_auth_incorrect_error.png`: Investigasi issue autentikasi saat routing client default
+- `11_bas_odata_services_loaded.png`: Katalog OData S/4HANA live berhasil termuat otomatis di BAS
+- `12_bas_entity_selection_selected.png`: Pemilihan CDS View `C_PurchaseOrderItemMoni`
+- `13_bas_project_attributes.png`: Konfigurasi atribut project Fiori `zpoitems` (Namespace: `zbtp`)
+- `14_bas_project_generated_open_folder.png`: Notifikasi project sukses ter-generate di workspace BAS
+- `15_bas_fiori_run_debugging_active.jpg`: Eksekusi local dev server `fiori run` port 8081
+- `16_fiori_app_initial_screen.png`: Halaman awal Fiori Elements List Report ("To start, set the relevant filters")
+- `17_fiori_app_error_unknown_entity.png`: Investigasi error runtime entity CDS berparameter
+- `18_user_query_steps_7_8.png`: Penyelarasan step implementasi konfigurasi navigasi `Results`
+- `19_fiori_app_success_no_data_found.png`: Bukti otentik keberhasilan integrasi end-to-end (HTTP 200 OK, tabel siap pakai)

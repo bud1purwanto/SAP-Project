@@ -6,9 +6,13 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 
 | Atribut | Isi |
 |---|---|
-| Waktu | 2026-11-19 09:25 |
+| Waktu | 2026-11-19 10:45 |
 | AI / device | Antigravity / Windows |
-| Sub-project | S4HANA_DATA_MIGRATION |
+| Sub-project | BTP_HYBRID_INTEGRATION |
+| Pekerjaan | Aplikasi Fiori zpoitems (List Report) sukses terhubung live end-to-end ke S/4HANA via SCC & OData berparameter (HTTP 200 OK) |
+| Status | Selesai (Milestone M8 Tercapai) |
+| Next step | Opsi A (Input dummy PO di S/4HANA agar tabel terisi) & Opsi C (Deploy ke BTP HTML5 Launchpad) |
+| Backup | `subproject/BTP_HYBRID_INTEGRATION/docs/STEP_BY_STEP_IMPLEMENTATION_GUIDE.md` |
 | Pekerjaan | Ekstraksi & blueprint Enterprise Structure (FI/CO/MM/PP/SD) dari DEV AIX ke S/4HANA, inisiasi subproject docs |
 | Status | Selesai (Fase 0) |
 | Next step | Eksekusi/validasi Enterprise Structure di S/4HANA & Pilot Material FG |
@@ -17,6 +21,7 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
+| 2026-11-19 10:45 | Antigravity / Windows | BTP_HYBRID_INTEGRATION | Aplikasi Fiori zpoitems (List Report) sukses terhubung live end-to-end ke S/4HANA via SCC & OData berparameter (HTTP 200 OK) | Selesai | Opsi A (Input dummy PO di S/4HANA) & Opsi C (Deploy ke BTP Launchpad) |
 | 2026-11-19 09:25 | Antigravity / Windows | S4HANA_DATA_MIGRATION | Ekstraksi & blueprint Enterprise Structure (FI/CO/MM/PP/SD) dari DEV AIX ke S/4HANA, inisiasi subproject docs | Selesai | Eksekusi/validasi Enterprise Structure di S/4HANA & Pilot Material FG |
 | 2026-11-18 12:50 | Antigravity / Linux GUI | COA | Testing SAP GUI 2 skenario terakhir (TTA-OUTSOURCE & TTA-CONVERTING) di DEV AIX TRD 130: ZQM002 vs ZQM005, Excel `outputs/TESTING_COA_TTA_DEV_AIX.xlsx` | Selesai | Siap review Baginda |
 | 2026-11-18 11:35 | Antigravity / Windows | BTP_HYBRID_INTEGRATION | Setup Docker SCC 2.19.2, Tunnel BTP, Destination S4HANA_ONPREM, BAS FioriDev & subproject docs | Selesai | Deploy aplikasi Fiori perdana dari BAS |
