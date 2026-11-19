@@ -23,7 +23,7 @@ def list_wins():
 
 def take_snapshot(win_id, out_file):
     sock = '/home/abap/.cache/cua-driver/cua-driver-sap.sock'
-    cmd = f"/home/abap/.local/bin/cua-driver --socket {sock} call get_window_state '{{\"pid\":11474,\"window_id\":{win_id},\"screenshot_out_file\":\"{out_file}\"}}'"
+    cmd = f"/home/abap/.local/bin/cua-driver --socket {sock} call get_window_state '{{\"pid\":1288533,\"window_id\":{win_id},\"screenshot_out_file\":\"{out_file}\"}}'"
     r = run(cmd)
     return r.returncode == 0
 
