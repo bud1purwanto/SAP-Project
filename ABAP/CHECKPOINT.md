@@ -19,6 +19,7 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
 | 2026-11-19 11:15 | Antigravity / Linux GUI | S4HANA_DATA_MIGRATION | Eksekusi EC01 di S/4HANA ADB 130: Copy Company Code 0001 -> 9999 sukses penuh, tercatat di TR ADBK900049, verifikasi live di tabel T001 (BUKRS 9999 aktif) | Selesai | Maintenance detail CoCode 9999 di OX02 (IDR, Sidoarjo) & Copy Plant 1000/2000 via EC02 |
+| 2026-11-19 11:58 | Antigravity / Windows | BTP_HYBRID_INTEGRATION | Seeding 10 Data PO di S/4HANA (Client 130) via BAPI & ABAP; OData MM_PUR_POITEMS_MONI_SRV verified 10 records (HTTP 200 OK) | Selesai | Opsi C (Deploy aplikasi zpoitems ke BTP Launchpad / HTML5 Repository) |
 | 2026-11-19 10:45 | Antigravity / Windows | BTP_HYBRID_INTEGRATION | Aplikasi Fiori zpoitems (List Report) sukses terhubung live end-to-end ke S/4HANA via SCC & OData berparameter (HTTP 200 OK) | Selesai | Opsi A (Input dummy PO di S/4HANA) & Opsi C (Deploy ke BTP Launchpad) |
 | 2026-11-19 09:25 | Antigravity / Windows | S4HANA_DATA_MIGRATION | Ekstraksi & blueprint Enterprise Structure (FI/CO/MM/PP/SD) dari DEV AIX ke S/4HANA, inisiasi subproject docs | Selesai | Eksekusi/validasi Enterprise Structure di S/4HANA & Pilot Material FG |
 | 2026-11-18 12:50 | Antigravity / Linux GUI | COA | Testing SAP GUI 2 skenario terakhir (TTA-OUTSOURCE & TTA-CONVERTING) di DEV AIX TRD 130: ZQM002 vs ZQM005, Excel `outputs/TESTING_COA_TTA_DEV_AIX.xlsx` | Selesai | Siap review Baginda |

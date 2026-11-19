@@ -32,12 +32,20 @@
 - [x] Pemilihan Main Entity: `C_PurchaseOrderItemMoni` untuk floorplan List Report Page.
 - [x] Project Fiori Elements `zpoitems` berhasil di-generate sempurna di SAP BAS.
 - [x] Eksekusi Preview Fiori Run: server lokal aktif di BAS (`npx fiori run --open test/flp.html#app-preview`).
-- [x] Penyusunan dokumentasi teknis \STEP_BY_STEP_IMPLEMENTATION_GUIDE.md\ dan presentasi eksekutif \EXECUTIVE_SUMMARY_PRESENTATION.md\.
+- [x] Penyusunan dokumentasi teknis `STEP_BY_STEP_IMPLEMENTATION_GUIDE.md` dan presentasi eksekutif `EXECUTIVE_SUMMARY_PRESENTATION.md`.
+- [x] Provisioning Master Data & Seeding 10 Data Purchase Order di S/4HANA Client 130 (Opsi A Selesai).
+  - Business Partner `0000000102` / Vendor `0000100000` (PT TECH SOLUTIONS INDONESIA) dibuat via BAPI CVI (`FLVN01`).
+  - Purchasing Org `0001` dimaintain di `LFM1`.
+  - Rate tukar `EUR` dimaintain di `TCURR` dan `TCURF`.
+  - 10 Data Purchase Order `4500000001` - `4500000010` dibuat di `EKKO`, `EKPO`, `EKET`.
+  - Root cause filter `IMMPURCHORDRITEM` terpecahkan (`EKPO-BSTYP = 'F'` dan `EKPO-MFRNR = '0000100000'`).
+  - OData service `MM_PUR_POITEMS_MONI_SRV` memverifikasi 10 data PO mengalir sempurna dengan status HTTP 200 OK.
 
 ## 2. Perubahan Terakhir
 | Tanggal | Perubahan | Objek / FORM | Bukti (push / test) |
 |---|---|---|---|
 | 2026-11-18 | Initial Subproject Creation | BTP_HYBRID_INTEGRATION | Check Connection HTTP 200 OK |
+| 2026-11-19 | Master Data & PO Seeding (Opsi A) Selesai | EKKO, EKPO, EKET, LFM1, TCURR | OData returns 10 PO records HTTP 200 OK |
 
 ## 3. Keputusan Baginda
 | Tanggal | Keputusan |
@@ -49,6 +57,8 @@
 ## 4. Masih Terbuka / Next Step
 - [x] Pemilihan skenario Fiori pertama: List Report `ZMM_PUR_POITEMS_MONI_SRV` (aktif di ADB, dicek 2026-11-18). Checklist: `docs/FIORI_APP_PERTAMA_CHECKLIST.md`.
 - [x] Generate, preview aplikasi di BAS → BTP (Terverifikasi OK, HTTP 200 via Cloud Connector).
+- [x] Seeding 10 Dokumen Purchase Order di S/4HANA On-Premise Client 130 (Opsi A Selesai).
+- [ ] Deploy Fiori Application ke SAP BTP Cloud Foundry Launchpad / HTML5 Repository (Opsi C).
 - [ ] Konfigurasi Principal Propagation / SSO (X.509 Client Certificate).
 
 ## 5. Risiko / Catatan
