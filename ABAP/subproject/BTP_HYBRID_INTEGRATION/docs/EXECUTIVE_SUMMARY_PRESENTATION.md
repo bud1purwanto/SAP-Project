@@ -132,7 +132,7 @@ Saat presentasi di hadapan audiens, Baginda dapat mendemonstrasikan 4 bukti nyat
 
 ---
 
-## Lampiran: Bukti Visual Integrasi (Screenshots Lengkap 25 File)
+## Lampiran: Bukti Visual Integrasi (Screenshots Lengkap 29 File)
 
 Semua bukti visual telah disimpan dan terverifikasi di direktori arsip subproject (`docs/attachments/`):
 - `01_onprem_fiori_launchpad_login.png`: Verifikasi login Fiori On-Premise
@@ -160,3 +160,7 @@ Semua bukti visual telah disimpan dan terverifikasi di direktori arsip subprojec
 - `23_fiori_blank_screen_noflp.png`: Investigasi crash layar putih saat menjalankan preview mode standalone `no-flp`
 - `24_bas_preview_options_dialog.png`: Menu Preview Options di SAP BAS (pemilihan opsi FLP sandbox)
 - `25_define_column_properties_1_column.png`: Temuan kunci personalisasi tabel (1/1 kolom) yang mengonfirmasi perlunya entity set `Results`
+- `26_fiori_table_10_records_success.jpg`: Tampilan sukses 10 dokumen PO S/4HANA live di tabel Fiori Elements
+- `27_page_editor_custom_column_dialog.png`: Investigasi pop-up "Add Custom Column" di Page Editor OData V2
+- `28_pagemap_instruction_query.jpg`: Penyelarasan alur Page Map vs editing langsung `annotation.xml`
+- `29_bas_default_annotation_xml.png`: Inspeksi file default `annotation.xml` bawaan SAP BAS

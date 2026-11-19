@@ -59,6 +59,13 @@ flowchart LR
 
 ---
 
+> [!TIP]
+> **Bedah Arsitektur & Alur Data Mendalam:**  
+> Untuk penjelasan teknis lengkap dari database fisik S/4HANA (`EKKO`/`EKPO`), CDS View `C_PurchaseOrderItemMoni`, OData Gateway, reverse tunnel Cloud Connector, hingga siklus 1 detik saat tombol "Go" ditekan di browser, silakan baca dokumen terpisah:  
+> 📖 [END_TO_END_TECHNICAL_ARCHITECTURE_FLOW.md](./END_TO_END_TECHNICAL_ARCHITECTURE_FLOW.md)
+
+---
+
 ## 2. Tahap 1: Verifikasi & Persiapan S/4HANA On-Premise
 
 Sebelum menghubungkan Cloud Connector, seluruh layanan ICF dan user access di S/4HANA 1909 diverifikasi.
@@ -365,6 +372,99 @@ Setelah data 10 PO berhasil dibuat di S/4HANA dan query OData terverifikasi meng
 
 3. **Status Akhir (Milestone Verified OK):**
    - Aplikasi Fiori Elements List Report `zpoitems` di SAP BAS sukses besar memuat dan menampilkan ke-10 baris Purchase Order dari core ERP S/4HANA On-Premise secara real-time via SAP Cloud Connector & BTP Destination!
+
+---
+
+### 8.7 Kustomisasi Permanen Kolom PO & FilterBar via `annotation.xml`
+
+Secara bawaan (*default out-of-the-box*) SAP, kolom `PurchaseOrder` dan `PurchaseOrderItem` tidak dimasukkan ke dalam `UI.LineItem` tabel awal (hanya menampilkan Material, Supplier, Qty, dan Amount). Selain itu di FilterBar, kolom pencarian Nomor PO belum tersedia.
+
+#### A. Mengapa Tombol "+" di Page Editor / Page Map Membuka "Add Custom Column"?
+Ketika developer mencoba menambahkan kolom melalui GUI visual *Page Editor* (Page Map) pada aplikasi **OData V2** (`MM_PUR_POITEMS_MONI_SRV`), tombol `+` pada seksi *Columns* sengaja didesain SAP untuk membuat *Custom Column Extension* (berbasis fragment XML dan JavaScript Controller). Untuk properti standar OData, Fiori Elements mengatur tampilannya melalui file **`webapp/annotations/annotation.xml`**.
+
+#### B. Konfigurasi Permanen `annotation.xml`
+Dengan menyisipkan anotasi `UI.SelectionFields` dan `UI.LineItem` di dalam `webapp/annotations/annotation.xml`, nomor Purchase Order dan Item secara permanen tampil di urutan paling depan tabel dan filter PO langsung tersedia di FilterBar:
+
+```xml
+<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Communication.xml">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/sap/MM_PUR_POITEMS_MONI_SRV/$metadata">
+        <edmx:Include Namespace="MM_PUR_POITEMS_MONI_SRV" Alias="SAP"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local">
+            <Annotations Target="SAP.C_PurchaseOrderItemMoniResult">
+                <!-- 1. FILTER BAR PERMANEN (UI.SelectionFields) -->
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>PurchaseOrder</PropertyPath>
+                        <PropertyPath>Supplier</PropertyPath>
+                        <PropertyPath>Material</PropertyPath>
+                        <PropertyPath>Plant</PropertyPath>
+                    </Collection>
+                </Annotation>
+
+                <!-- 2. KOLOM TABEL PERMANEN (UI.LineItem) -->
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="PurchaseOrder"/>
+                            <PropertyValue Property="Label" String="Purchase Order"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="PurchaseOrderItem"/>
+                            <PropertyValue Property="Label" String="Item"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="Material"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="Supplier"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="ScheduleLineDeliveryDate"/>
+                            <PropertyValue Property="Label" String="Next Delivery Date"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="ScheduleLineOpenQty"/>
+                            <PropertyValue Property="Label" String="Next Delivery Qty"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="OrderQuantity"/>
+                            <PropertyValue Property="Label" String="Order Qty"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NetPriceAmount"/>
+                            <PropertyValue Property="Label" String="Net Price"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="NetAmount"/>
+                            <PropertyValue Property="Label" String="Net Order Value"/>
+                            <Annotation Term="UI.Importance" EnumMember="UI.ImportanceType/High"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
+```
 
 ---
 
