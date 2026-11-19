@@ -11,6 +11,7 @@
 ## Log Sesi (terbaru di atas, wajib — lihat [08](../../00_RULES/08_Checkpoint_Wajib.md))
 | Waktu | AI / device | Pekerjaan | Status | Next step |
 |---|---|---|---|---|
+| 2026-11-19 14:00 | Antigravity / Windows | Update tanggal 10 PO ke 20261119 & verifikasi query filter 2026 sukses (10 items) | Selesai | Refresh preview Fiori & Pilih kolom via gear settings |
 | 2026-11-19 10:38 | Antigravity / Windows | Verifikasi End-to-End Fiori App zpoitems SUKSES (HTTP 200 OK, tabel ter-load sempurna) | Selesai (Milestone Tercapai) | Dokumentasi & Opsi Input Data PO di S/4HANA |
 | 2026-11-19 10:15 | Antigravity / Windows | Analisis error runtime 'Unknown entity MM_PUR_POITEMS_MONI~*C_PurchaseOrderItemMoni' saat klik Go | OK (Root Cause Identik) | Konfigurasi navigationProperty 'Results' pada manifest.json di BAS |
 | 2026-11-19 09:58 | Antigravity / Windows | Eksekusi Preview Aplikasi Fiori zpoitems (fiori run) aktif di SAP BAS | Selesai | Buka Preview Application di Browser |
