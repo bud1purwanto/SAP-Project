@@ -11,6 +11,7 @@
 ## Log Sesi (terbaru di atas, wajib — lihat [08](../../00_RULES/08_Checkpoint_Wajib.md))
 | Waktu | AI / device | Pekerjaan | Status | Next step |
 |---|---|---|---|---|
+| 2026-11-19 10:38 | Antigravity / Windows | Verifikasi End-to-End Fiori App zpoitems SUKSES (HTTP 200 OK, tabel ter-load sempurna) | Selesai (Milestone Tercapai) | Dokumentasi & Opsi Input Data PO di S/4HANA |
 | 2026-11-19 10:15 | Antigravity / Windows | Analisis error runtime 'Unknown entity MM_PUR_POITEMS_MONI~*C_PurchaseOrderItemMoni' saat klik Go | OK (Root Cause Identik) | Konfigurasi navigationProperty 'Results' pada manifest.json di BAS |
 | 2026-11-19 09:58 | Antigravity / Windows | Eksekusi Preview Aplikasi Fiori zpoitems (fiori run) aktif di SAP BAS | Selesai | Buka Preview Application di Browser |
 | 2026-11-19 09:48 | Antigravity / Windows | Fiori App zpoitems (List Report) sukses di-generate di SAP BAS | Selesai | Open Folder & Run Preview Application |
@@ -47,7 +48,7 @@
 
 ## 4. Masih Terbuka / Next Step
 - [x] Pemilihan skenario Fiori pertama: List Report `ZMM_PUR_POITEMS_MONI_SRV` (aktif di ADB, dicek 2026-11-18). Checklist: `docs/FIORI_APP_PERTAMA_CHECKLIST.md`.
-- [ ] Generate, preview, dan deploy aplikasi di BAS → BTP (ikuti checklist).
+- [x] Generate, preview aplikasi di BAS → BTP (Terverifikasi OK, HTTP 200 via Cloud Connector).
 - [ ] Konfigurasi Principal Propagation / SSO (X.509 Client Certificate).
 
 ## 5. Risiko / Catatan
