@@ -11,6 +11,11 @@
 ## Log Sesi (terbaru di atas, wajib — lihat [08](../../00_RULES/08_Checkpoint_Wajib.md))
 | Waktu | AI / device | Pekerjaan | Status | Next step |
 |---|---|---|---|---|
+| 2026-11-19 10:15 | Antigravity / Windows | Analisis error runtime 'Unknown entity MM_PUR_POITEMS_MONI~*C_PurchaseOrderItemMoni' saat klik Go | OK (Root Cause Identik) | Konfigurasi navigationProperty 'Results' pada manifest.json di BAS |
+| 2026-11-19 09:58 | Antigravity / Windows | Eksekusi Preview Aplikasi Fiori zpoitems (fiori run) aktif di SAP BAS | Selesai | Buka Preview Application di Browser |
+| 2026-11-19 09:48 | Antigravity / Windows | Fiori App zpoitems (List Report) sukses di-generate di SAP BAS | Selesai | Open Folder & Run Preview Application |
+| 2026-11-19 09:35 | Antigravity / Windows | Pemilihan Main Entity C_PurchaseOrderItemMoni pada Fiori Generator di SAP BAS | Selesai | Input Project Attributes & Generate App (Finish) |
+| 2026-11-19 09:15 | Antigravity / Windows | Penambahan sap-client 130 di destination BTP & verifikasi katalog OData live berhasil terbaca di BAS | Selesai | Generate Fiori App List Report ZMM_PUR_POITEMS_MONI_SRV |
 | 2026-11-18 11:35 | Antigravity / Windows | Setup SCC 2.19.2 Docker, reverse tunnel BTP, destination S4HANA_ONPREM, dev space BAS FioriDev & subproject docs | Selesai | Deploy aplikasi Fiori perdana dari BAS |
 
 ## 1. Yang Sudah Selesai
@@ -22,6 +27,10 @@
 - [x] Pembuatan BTP Destination \S4HANA_ONPREM\ (Check Connection sukses reachable).
 - [x] Pembuatan Dev Space \FioriDev\ di SAP Business Application Studio (BAS).
 - [x] Penambahan properti \HTML5.DynamicDestination = true\ untuk konsumsi katalog OData dinamis.
+- [x] Verifikasi katalog OData live di SAP BAS: dropdown Service sukses memuat daftar OData S/4HANA (misal ZMM_PUR_POITEMS_MONI_SRV).
+- [x] Pemilihan Main Entity: `C_PurchaseOrderItemMoni` untuk floorplan List Report Page.
+- [x] Project Fiori Elements `zpoitems` berhasil di-generate sempurna di SAP BAS.
+- [x] Eksekusi Preview Fiori Run: server lokal aktif di BAS (`npx fiori run --open test/flp.html#app-preview`).
 - [x] Penyusunan dokumentasi teknis \STEP_BY_STEP_IMPLEMENTATION_GUIDE.md\ dan presentasi eksekutif \EXECUTIVE_SUMMARY_PRESENTATION.md\.
 
 ## 2. Perubahan Terakhir

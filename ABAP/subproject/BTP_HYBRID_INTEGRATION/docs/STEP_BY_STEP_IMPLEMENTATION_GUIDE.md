@@ -65,7 +65,7 @@ Sebelum menghubungkan Cloud Connector, seluruh layanan ICF dan user access di S/
 
 ### 2.1 Pengecekan User & Unlock Account
 - Di Client `130`, akun `USER-FIORI` dan `TRSTABAP` diperiksa status lock-nya.
-- Menggunakan RFC `BAPI_USER_CHANGE` atau `SU01`, status lock diubah menjadi terbuka (`UFLAG = 0`) dan password diatur ke standar aman (`Trias123!`).
+- Status lock terbuka (`UFLAG = 0`) dan password diatur ke standar aman (`Trias123!`).
 
 ### 2.2 Pengecekan Endpoint ICF (HTTP 8080)
 - URL Fiori Launchpad lokal:
@@ -126,57 +126,6 @@ Skrip `entrypoint.sh` dirancang otomatis untuk:
 3. Memulihkan user admin default `Administrator / manage` jika file `users.xml` tertimpa volume mount kosong.
 4. Menjalankan proses dengan user non-root `sccadmin`.
 
-```bash
-#!/bin/bash
-set -e
-
-mkdir -p /opt/sap/scc/scc_config /opt/sap/scc/config /opt/sap/scc/log /opt/sap/scc/work /opt/sap/scc/temp
-
-if [ ! -f /opt/sap/scc/scc_config/SSFS_SCC.DAT ]; then
-    echo "Generating initial Secure Storage and Keystore..."
-    PASS=$(head -c 32 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9' | head -c 16)
-    export LD_LIBRARY_PATH=/opt/sap/scc/lib/native:$LD_LIBRARY_PATH
-    
-    /opt/sap/scc/lib/native/initSecStore "$PASS" /opt/sap/scc/scc_config
-    
-    keytool -genkey -v -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -alias tomcat \
-        -validity 842 -storetype PKCS12 -storepass "$PASS" \
-        -keystore /opt/sap/scc/config/ks.p12 \
-        -dname "CN=SCC, OU=Connectivity, O=SAP SE, C=DE"
-    keytool -export -alias tomcat -keystore /opt/sap/scc/config/ks.p12 -storepass "$PASS" \
-        -storetype PKCS12 -file /opt/sap/scc/config/tmp.cert
-    keytool -import -alias tomcattrust -file /opt/sap/scc/config/tmp.cert -keystore /opt/sap/scc/config/ks.p12 \
-        -storepass "$PASS" -storetype PKCS12 -noprompt
-    rm -f /opt/sap/scc/config/tmp.cert
-    echo "Secure storage and keystore created successfully."
-fi
-
-if [ ! -f /opt/sap/scc/config/users.xml ]; then
-    echo "Restoring initial users.xml..."
-    cat << 'EOF' > /opt/sap/scc/config/users.xml
-<?xml version="1.0" encoding="UTF-8"?>
-<tomcat-users>
-  <role rolename="admin"/>
-  <user username="Administrator" password="181229424893BB65D94A74C2132B8B9E5ADFE851464FDB5CB9F49E8A8204BE7B" roles="admin" groups="initial"/>
-</tomcat-users>
-EOF
-    chmod 640 /opt/sap/scc/config/users.xml
-fi
-
-chown -R sccadmin:sccgroup /opt/sap/scc/scc_config /opt/sap/scc/config /opt/sap/scc/log /opt/sap/scc/work /opt/sap/scc/temp
-
-cd /opt/sap/scc
-echo "Launching SAP Cloud Connector..."
-exec su -s /bin/bash sccadmin -c /opt/sap/scc/go.sh
-```
-
-### 3.4 Menjalankan Layanan Docker
-```bash
-cd /data/Projects/sap-cloud-connector
-docker compose up -d
-```
-Verifikasi status: `docker ps` menampilkan container `sap-cloud-connector` status `Up`, port `0.0.0.0:8443->8443/tcp`.
-
 ---
 
 ## 4. Tahap 3: Konfigurasi Subaccount Tunnel di Cloud Connector UI
@@ -187,7 +136,6 @@ Verifikasi status: `docker ps` menampilkan container `sap-cloud-connector` statu
 2. **First Login:**
    - Username: `Administrator`
    - Initial Password: `manage`
-   - Konfigurasi password baru dan Master Instance role.
 3. **Menghubungkan BTP Subaccount (`Add Subaccount`):**
    - **Region:** `cf.us10.hana.ondemand.com` (US East (VA) - AWS)
    - **Subaccount ID:** `4b0c5dbd-a7d7-4799-aaf2-08438302d5cd` *(Wajib menggunakan karakter hyphen ASCII biasa `-`)*
@@ -203,20 +151,16 @@ Verifikasi status: `docker ps` menampilkan container `sap-cloud-connector` statu
 Pada menu **Cloud To On-Premise** di Cloud Connector:
 
 ### 5.1 Mapping System
-1. Klik tanda **+** (Add System Mapping):
-   - **Back-end Type:** `ABAP System`
-   - **Protocol:** `HTTP`
-   - **Internal Host:** `192.168.1.199`
-   - **Internal Port:** `8080`
-   - **Virtual Host:** `s4hana-onprem`
-   - **Virtual Port:** `8080`
-   - **Principal Type:** `None`
-   - **Host In Request Header:** `Use Virtual Host`
+- **Back-end Type:** `ABAP System`
+- **Protocol:** `HTTP`
+- **Internal Host:** `192.168.1.199` | **Port:** `8080`
+- **Virtual Host:** `s4hana-onprem` | **Port:** `8080`
+- **Principal Type:** `None`
+- **Host In Request Header:** `Use Virtual Host`
 
 ### 5.2 Mapping Accessible Resources
-1. Pada tabel bawah (**Resources Accessible On s4hana-onprem:8080**), klik **+**:
-   - **URL Path:** `/sap`
-   - **Access Policy:** `Path and all sub-paths` (Mengizinkan akses penuh ke seluruh OData catalog `/sap/opu/odata/` dan Fiori runtime `/sap/bc/`).
+- **URL Path:** `/sap`
+- **Access Policy:** `Path and all sub-paths` (Mengizinkan akses penuh ke OData catalog `/sap/opu/odata/` dan Fiori runtime `/sap/bc/`).
 
 ---
 
@@ -231,45 +175,107 @@ Pada BTP Cockpit $\rightarrow$ Subaccount `trial` $\rightarrow$ **Connectivity**
 - **URL:** `http://s4hana-onprem:8080`
 - **Proxy Type:** `OnPremise`
 - **Authentication:** `BasicAuthentication`
-- **User:** `TRSTABAP`
+- **User:** `TRSTABAP` (atau `USER-FIORI`)
 - **Password:** `Trias123!`
 
-### 6.2 Additional Properties (Sangat Krusial untuk BAS / Fiori)
-Klik **New Property** dan tambahkan baris-baris berikut:
-| Property | Value | Fungsi |
+### 6.2 Additional Properties (Kunci Penghubung BAS & Routing Client)
+| Property | Value | Fungsi & Alasan Wajib |
 | :--- | :--- | :--- |
-| `HTML5.DynamicDestination` | `true` | Memungkinkan SAP Fiori Tools / BAS membaca katalog OData dinamis |
-| `WebIDEUsage` | `odata_abap,bsp_execute_abap,dev_abap` | Menandai destination untuk Fiori Generator |
-| `WebIDESystem` | `ADB` | System ID On-Premise |
-| `sap-client` | `130` | Default client routing |
+| `HTML5.DynamicDestination` | `true` | **Wajib.** Menghilangkan error *"DynamicDestination is missing"* dan mengizinkan BAS mengonsumsi katalog dinamis. |
+| `sap-client` | `130` | **Wajib.** Menghilangkan error *"Authentication incorrect"*. Mengarahkan login HTTP langsung ke Client 130 (mencegah redirect ke client default 000/100). |
+| `WebIDEUsage` | `odata_abap,dev_abap` | Menandai destination untuk Fiori Application Generator. |
+| `WebIDESystem` | `ADB` | System ID On-Premise ERP. |
+| `WebIDEEnabled` | `true` | Mengaktifkan integrasi Web IDE / BAS tooling. |
 
 ### 6.3 Verifikasi Koneksi
 - Klik tombol **Check Connection**.
-- Hasil: **`Backend is reachable from the Cloud Connector.`** (HTTP 200/302).
+- Hasil: **`Backend is reachable from the Cloud Connector.`**
 
 ---
 
-## 7. Tahap 6: Pengembangan Aplikasi di SAP Business Application Studio (BAS)
+## 7. Tahap 6: Pembuatan Aplikasi Fiori di SAP Business Application Studio (BAS)
 
-1. **Akses BAS:** BTP Cockpit $\rightarrow$ Services $\rightarrow$ SAP Business Application Studio.
-2. **Buat Dev Space:**
-   - Name: `FioriDev`
-   - Type: `SAP Fiori`
-   - Status: `RUNNING`
-3. **Generate Fiori App:**
-   - Template: `SAP Fiori application` $\rightarrow$ `List Report Page`
-   - Data source: `Connect to an SAP System`
-   - System: `S4HANA_ONPREM`
-   - Service: Pilih OData service yang tersedia di katalog `/sap/opu/odata/` (misalnya EPM OData atau custom service).
-   - Main Entity: Pilih Entity Set target.
-4. **Local Run & Preview:**
-   - Aplikasi siap di-run langsung di BAS dengan live backend connection ke SAP S/4HANA 1909 On-Premise.
+### 7.1 Membuka Dev Space
+1. Akses SAP Business Application Studio di browser.
+2. Dev Space: **`FioriDev`** (Template: `SAP Fiori`, Status: `RUNNING`).
+
+### 7.2 Menjalankan SAP Fiori Application Generator
+1. Klik **New Project from Template** di layar Welcome.
+2. **Template Selection:** Pilih tile **SAP Fiori generator** $\rightarrow$ klik **Start**.
+3. **Floorplan Selection:** Pilih **List Report Page** $\rightarrow$ klik **Next**.
+
+### 7.3 Data Source and Service Selection (Koneksi Live ke S/4HANA)
+1. **Data source:** Pilih `Connect to a System`.
+2. **System:** Pilih `S4HANA_ONPREM`.
+3. **Service:** BAS secara otomatis memuat daftar OData Service aktif dari S/4HANA On-Premise.
+   Pilih OData Service:
+   👉 **`ZMM_PUR_POITEMS_MONI_SRV (1) - OData V2`** (Service Monitoring Purchase Order Items).
+4. Klik **Next**.
+
+### 7.4 Entity Selection (Pemetaan Data Tabel)
+> **Konsep Kunci: Apa itu Entity?**  
+> Dalam OData / SAP Fiori:
+> - **Service** adalah katalog / wadah API-nya (`ZMM_PUR_POITEMS_MONI_SRV`).
+> - **Entity Set** adalah kumpulan tabel/baris data spesifik di dalam service tersebut.
+> - `C_PurchaseOrderItemMoni` adalah **Core Data Services (CDS) View** di database HANA yang menggabungkan tabel `EKKO` (PO Header), `EKPO` (PO Item), nama vendor, material, dan status delivery.
+
+Konfigurasi yang dipilih:
+- **Main Entity:** `C_PurchaseOrderItemMoni`  
+  *(Catatan: Jangan diketik bebas. Gunakan filter pencarian `Moni` atau `C_Pur` untuk memilih entity resmi).*
+- **Navigation Entity:** `None` *(Fokus pada monitoring tabel tunggal, tanpa sub-page detail bertingkat)*.
+- **Table Type:** `Responsive` *(Format tabel standar Fiori modern yang adaptif di semua ukuran layar desktop maupun mobile)*.
+- Klik **Next**.
+
+### 7.5 Project Attributes & Build (Langkah Terakhir)
+- **Module name:** `zpoitems` *(huruf kecil semua, tanpa spasi)*
+- **Application title:** `Monitoring PO Items S4HANA`
+- **Application namespace:** `zbtp`
+- **Description:** `Monitoring Purchase Order Items S4HANA via BTP Cloud`
+- **Add deployment configuration:** `No` *(untuk uji lokal & preview terlebih dahulu)*
+- **Add FLP configuration:** `No`
+- Klik **Finish**.
+
+### 7.6 Menjalankan Preview Aplikasi Fiori (fiori run)
+1. Setelah proses pembuatan selesai, akan muncul dialog: *"The project '/home/user/projects/zpoitems' is not in the current workspace. What do you want to do?"*.
+2. Klik tombol biru **Open Folder**.
+3. Di SAP BAS, klik tombol menu Run / Debug atau buka Terminal (`Ctrl + ~`) dan ketik:
+   ```bash
+   npx fiori run --open test/flp.html#app-preview
+   ```
+4. BAS akan menjalankan server lokal pada port `8081` dan secara otomatis membuka tab preview Fiori Launchpad di browser.
+
+### 7.7 Memahami Perilaku Tampilan Awal Fiori Elements ("To start, set the relevant filters")
+- Saat aplikasi Fiori Elements List Report pertama kali terbuka, tabel data memang sengaja **kosong** dan menampilkan pesan:
+  *"To start, set the relevant filters"*.
+- Ini adalah desain standar Fiori (*lazy-loading*) agar aplikasi tidak langsung menyedot ratusan ribu baris data ERP yang bisa membebani memori dan jaringan.
+- Untuk menampilkan data, pengguna cukup menekan tombol biru **"Go"** di sisi kanan FilterBar.
+
+### 7.8 Mengatasi Error Parameterized CDS Entity ('Unknown entity MM_PUR_POITEMS_MONI~*C_PurchaseOrderItemMoni')
+- **Akar Masalah:**
+  CDS View `C_PurchaseOrderItemMoni` pada S/4HANA adalah CDS View dengan **Parameter Wajib** (`P_DisplayCurrency`). Pada skema OData SAP Gateway (SADL), entitas ini terbagi dua:
+  1. `C_PurchaseOrderItemMoni` $ightarrow$ Entitas penampung Parameter (`C_PurchaseOrderItemMoniParameters`).
+  2. `C_PurchaseOrderItemMoniResults` $ightarrow$ Entitas baris data aktual yang terhubung lewat asosiasi navigasi: `C_PurchaseOrderItemMoni(P_DisplayCurrency='...')/Results`.
+  Karena pada wizard langkah 7.4 *Navigation Entity* dibiarkan `None`, Fiori Elements memanggil `GET C_PurchaseOrderItemMoni` langsung tanpa parameter. Backend S/4HANA menolak karena entitas parameter tidak dapat di-query langsung sebagai tabel.
+- **Solusi Cepat (Edit manifest.json di BAS):**
+  1. Di Explorer SAP BAS sebelah kiri, buka file:
+     `zpoitems` $ightarrow$ `webapp` $ightarrow$ `manifest.json`.
+  2. Cari blok `"sap.ui.generic.app"` $ightarrow$ `"pages"` $ightarrow$ `"ListReport|C_PurchaseOrderItemMoni"` $ightarrow$ `"component"` $ightarrow$ `"settings"`.
+  3. Tambahkan properti `"navigationProperty": "Results"`:
+     ```json
+     "settings": {
+         "entitySet": "C_PurchaseOrderItemMoni",
+         "navigationProperty": "Results"
+     }
+     ```
+  4. Simpan file (`Ctrl + S`), lalu kembali ke tab preview browser dan tekan **Refresh (F5)**.
+  5. FilterBar kini menampilkan field wajib **Display Currency** (masukkan misal `EUR` atau `USD`).
+  6. Klik tombol **Go** $ightarrow$ Data Purchase Order Items dari ERP S/4HANA On-Premise langsung mengalir dan tampil pada tabel!
 
 ---
 
-## 8. Matriks Troubleshooting & Solusi
+## 8. Matriks Troubleshooting & Solusi Lengkap
 
-| Gejala Error | Akar Masalah | Solusi & Tindakan |
+| Gejala Error | Akar Masalah | Solusi & Tindakan Pasti |
 | :--- | :--- | :--- |
 | **"User authentication failed" (Administrator / manage)** | Mount volume host `./data/config` menimpa file `users.xml` default Tomcat. | Menyuntikkan template `users.xml` dengan SHA-256 password hash di `entrypoint.sh`. |
 | **"SSFS-4182: Data file ... SSFS_SCC.DAT does not exist"** | Cloud Connector 2.19+ membutuhkan inisialisasi SSFS sebelum service aktif. | Memanggil `/opt/sap/scc/lib/native/initSecStore` dan `keytool` secara otomatis sebelum Tomcat start. |
@@ -277,8 +283,11 @@ Klik **New Property** dan tambahkan baris-baris berikut:
 | **"Tunnel certificate failed: 404 Not Found"** | Menggunakan Instance GUID service Steampunk, bukan Subaccount GUID BTP. | Mengambil Subaccount ID resmi `4b0c5dbd-a7d7-4799-aaf2-08438302d5cd` dari halaman Overview BTP Cockpit. |
 | **"Bad Request: This combination of host and port requires TLS"** | Mengakses port 8443 menggunakan protokol `http://`. | Mengakses menggunakan `https://<IP>:8443`. |
 | **Build Apps Booster: "insufficient quota"** | SAP BTP Trial telah menghentikan plan mandiri SAP Build Apps untuk trial gratis. | Berpindah ke **SAP Business Application Studio (BAS)** yang memiliki quota trial aktif penuh. |
-| **Fiori Generator: "HTML5.DynamicDestination is missing"** | BTP Destination belum memiliki flag dinamis OData. | Menambahkan properti `HTML5.DynamicDestination = true` pada Additional Properties Destination. |
+| **Fiori Generator: "HTML5.DynamicDestination is missing"** | BTP Destination belum memiliki flag dinamis OData. | Menambahkan properti `HTML5.DynamicDestination = true` pada Additional Properties Destination di BTP Cockpit. |
+| **"Authentication incorrect. Please check destination authentication"** | Properti `sap-client = 130` belum disematkan di Additional Properties BTP Destination, sehingga SAP merouting ke client default (000/100). | Menambahkan properti `sap-client = 130` pada Additional Properties Destination dan memastikan kredensial user cocok di Client 130. |
+| **"No data available" saat memilih Main Entity di Fiori Generator** | Nama entity diketik bebas atau salah ketik (misal mengetik `C_PurchaseOrderItemFs` dengan akhiran `Fs` yang tidak ada di skema). | Menghapus input dan memfilter dengan kata kunci `Moni` atau `C_Pur`, lalu memilih entity CDS resmi yang terdaftar: `C_PurchaseOrderItemMoni`. |
+| **Error saat klik Go: "Unknown entity MM_PUR_POITEMS_MONI~*C_PurchaseOrderItemMoni" / "The entity was not found"** | `C_PurchaseOrderItemMoni` adalah CDS View berparameter (`P_DisplayCurrency`). Backend SADL mewajibkan navigasi `Results` untuk mengambil data barisnya (`C_PurchaseOrderItemMoni(P_DisplayCurrency=...)/Results`). | Tambahkan `"navigationProperty": "Results"` pada `"settings"` di `webapp/manifest.json`, refresh browser, isi Display Currency pada filter, lalu klik **Go**. |
 
 ---
 
-*Panduan ini disusun untuk Baginda sebagai referensi teknis permanen dalam proyek BTP Hybrid Integration.*
+*Panduan ini disusun untuk Baginda sebagai referensi teknis permanen dalam subproject BTP_HYBRID_INTEGRATION.*
