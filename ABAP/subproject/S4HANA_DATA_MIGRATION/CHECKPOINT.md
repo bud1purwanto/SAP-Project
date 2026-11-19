@@ -3,7 +3,7 @@
 | Atribut | Isi |
 |---|---|
 | Tanggal | 2026-11-19 |
-| Status | In Progress (Fase 1: Enterprise Structure S/4HANA Aktif) |
+| Status | In Progress (Fase 1 Selesai 100%: Enterprise Structure S/4HANA Aktif & Tervalidasi Live) |
 | Server source | `dev-aix` (TRD 130) |
 | Server target | `S4-HANA` (ADB 130) |
 | Transport Request | `ADBK900049` (*Enterprise Structure S4HANA - CoCode 9999*) |
@@ -12,48 +12,66 @@
 ## Log Sesi (terbaru di atas, wajib)
 | Waktu | AI / device | Pekerjaan | Status | Next step |
 |---|---|---|---|---|
+| 2026-11-19 12:12 | Antigravity / Linux GUI | Pemilihan Pilot Production Data dari DEV AIX: Material `JRAAAI` (Jumbo Roll PLE-18, ZSFG), BOM (`00005910`), Work Center `JROPP01`, Recipe `JRAAAI/10`, Production Version `0001` (`MKAL`) | OK / Terpilih | Pembuatan Storage Location di OX09 & Eksekusi Master Data (MM01, CR01, CS01, C223) di S/4HANA ADB |
+| 2026-11-19 12:11 | Antigravity / Linux GUI | Maintenance Plant Details & Address di OX10: Plant 1000 (Pabrik Waru) & Plant 2000 (Pabrik Krian), Alamat Sidoarjo ID 61256/61262. Verifikasi live di tabel `T001W` sukses penuh | OK / Selesai | Setup Master Data Pilot Production |
+| 2026-11-19 11:58 | Antigravity / Linux GUI | Assign Plant ke Company Code di OX18: Hapus relasi bawaan 0001->1000/2000, assign 9999->1000 & 9999->2000, save ke TR ADBK900049. Verifikasi live di tabel `T001K` sukses penuh (row_count: 3) | OK / Selesai | Maintenance detail nama & alamat Plant di OX10 |
+| 2026-11-19 11:30 | Antigravity / Linux GUI | Eksekusi EC02: Copy Plant 0001 -> 1000 & 0001 -> 2000 sukses ke TR ADBK900049. Verifikasi live tabel `T001W` | OK / Selesai | Assignment Plant ke Company Code 9999 via OX18 |
+| 2026-11-19 11:27 | Antigravity / Linux GUI | Maintenance detail CoCode 9999 di OX02: Nama `PT Trias Sentosa, Tbk.`, Currency `IDR`, City `Sidoarjo`, Country `ID`, Lang `EN`. Verifikasi live tabel `T001` sukses | OK / Selesai | Copy Plant 1000 & 2000 via EC02 |
 | 2026-11-19 11:15 | Antigravity / Linux GUI | Eksekusi EC01 di S/4HANA ADB 130: Copy Company Code 0001 -> 9999 sukses penuh, tercatat di TR `ADBK900049`, verifikasi live di tabel T001 (BUKRS 9999 aktif) | OK / Selesai | Maintenance detail CoCode 9999 di OX02 (IDR, Sidoarjo) & Copy Plant 1000/2000 via EC02 |
 | 2026-11-19 10:55 | Antigravity / Linux GUI | Kalibrasi koordinat dialog license sesi ganda (Option 2 pada y=359, Enter y=881) & login sukses ke SAP Easy Access | OK / Selesai | Navigasi EC01 & eksekusi copy |
 | 2026-11-19 10:09 | Antigravity / Linux GUI | Login ke SAP GUI S/4HANA (ADB Client 130) via Virtual GUI (:99 / pc & pcr abap) user TRSTABAP | OK / Selesai | Navigasi EC01 (Copy Company Code 0001 -> 9999) & EC02 |
-| 2026-11-19 09:44 | Antigravity / Windows | Pembuatan Panduan Praktis Eksekusi Enterprise Structure (EC01/EC02) di S/4HANA (ADB) | Selesai | Eksekusi EC01/EC02 di SAP GUI & verifikasi RFC |
-| 2026-11-19 09:25 | Antigravity / Windows | Ekstraksi komparasi DEV AIX vs S4HANA, penyusunan Blueprint Enterprise Structure (FI/CO/MM/PP/SD), inisiasi subproject | Selesai | Verifikasi eksekusi SPRO / TR di S4HANA & Pilot Material FG |
 
-## 1. Yang Sudah Selesai
-- [x] Pengecekan tabel live sistem **DEV AIX (TRD)** dan **S4-HANA (ADB)** via MCP SAP RFC.
-- [x] Temuan kondisi awal: S4HANA ADB client 130 baseline murni.
-- [x] Pemetaan hierarki ketergantungan data master (Fase 0 s/d Fase 6).
-- [x] Ekstraksi spesifikasi Enterprise Structure lengkap dari DEV AIX.
-- [x] Penyusunan dokumen blueprint resmi di `docs/BLUEPRINT_ENTERPRISE_STRUCTURE.md`.
+## 1. Yang Sudah Selesai (Milestone Fase 1 Tuntas 100%)
 - [x] Login presisi SAP GUI S/4HANA (ADB Client 130, User `TRSTABAP`, Pass `supporter`).
-- [x] Penanganan dialog perizinan sesi ganda (*License Information for Multiple Logons*): Pemilihan opsi 2 (*Continue without ending other logons*) terkalibrasi presisi pada koordinat `(x=15, y=359)`.
-- [x] Eksekusi **`EC01`** (Copy Company Code `0001` -> `9999`):
-  - Konfirmasi G/L accounts copying: **Yes**
-  - Konfirmasi Controlling Area assignment copying: **Yes**
-  - Konfirmasi Number ranges transport: **No** (*best practice* SAP)
-  - Pembuatan Transport Request Customizing: **`ADBK900049`** (*Enterprise Structure S4HANA - CoCode 9999*)
-  - Replikasi tabel tuntas 100% dengan status: *"Company code 0001 copied to 9999"*.
-  - Verifikasi tabel live `T001`: Record Company Code `9999` telah aktif di ADB Client 130.
+- [x] Penanganan dialog lisensi sesi ganda (*License Information for Multiple Logons*).
+- [x] Eksekusi **`EC01`** (Copy Company Code `0001` -> `9999`) tersimpan pada TR **`ADBK900049`**.
+- [x] Pemeliharaan detail Company Code `9999` via **`OX02`**:
+  - `BUTXT`: `PT Trias Sentosa, Tbk.`
+  - `ORT01`: `Sidoarjo`
+  - `LAND1`: `ID`
+  - `WAERS`: `IDR`
+  - `SPRAS`: `EN`
+  - Verifikasi tabel live `T001`: **VALID & AKTIF**.
+- [x] Eksekusi **`EC02`** (Copy Plant `0001` -> `1000` dan `0001` -> `2000`) ke TR `ADBK900049`.
+- [x] Penetapan Plant ke Company Code via **`OX18`**:
+  - Menghapus penugasan default `0001 -> 1000` dan `0001 -> 2000`.
+  - Menambahkan penugasan baru:
+    - Company Code `9999` -> Plant `1000`
+    - Company Code `9999` -> Plant `2000`
+    - Company Code `0003` -> Plant `0003`
+  - Verifikasi tabel live `T001K`: `BWKEY = '1000' -> BUKRS = '9999'`, `BWKEY = '2000' -> BUKRS = '9999'` (**VALID**).
+- [x] Pemeliharaan detail nama dan alamat Plant via **`OX10`**:
+  - Plant `1000`: `Pabrik Waru (Trias Sentosa)`, Kota `Sidoarjo`, Kode Pos `61256`, Negara `ID`.
+  - Plant `2000`: `Pabrik Krian (Trias Sentosa)`, Kota `Sidoarjo`, Kode Pos `61262`, Negara `ID`.
+  - Verifikasi tabel live `T001W`: **VALID & AKTIF**.
+- [x] Pemilihan Data Percontohan Produksi Otentik (Pilot Production Model) dari DEV AIX (TRD 130):
+  - **Material Utama:** `JRAAAI` (*Jumbo Roll PLE-18*, Tipe `ZSFG`, Satuan `KG`).
+  - **BOM (CS01 / `STPO`):** Alternatif 01, STLNR `00005910` (7 komponen: `RPV-HC401BF`, `SRP-I`, `SRP-E`, `M5AAA01`, `RPV-FS3011E3`, `RPM-ABPP10T`, `RPC-FS5612`).
+  - **Work Center (CR01 / `CRHD`):** `JROPP01` (Jumbo Roll OPP Extrusion Line 1).
+  - **Routing / Recipe (CA01 / `MAPL`):** `JRAAAI`, Group Counter `10`.
+  - **Production Version (C223 / `MKAL`):** `VERID = '0001'` (*JR PLE-18 + JROPP01*).
 
-## 2. Parameter Kunci
-- **Target Company Code:** `9999`
-- **Source Template:** `0001`
-- **Transport Request:** `ADBK900049`
-- **Owner:** `TRSTABAP`
-- **Status T001 Live:**
-  - `MANDT`: `130`
-  - `BUKRS`: `9999`
-  - `BUTXT`: `SAP A.G.` (akan disesuaikan via `OX02` menjadi `PT Trias Sentosa, Tbk.`)
-  - `KTOPL`: `INT`
-  - `PERIV`: `K4`
+## 2. Parameter Kunci Live S/4HANA (ADB 130)
+| Objek | Kode | Nilai Parameter | Status Database |
+|---|---|---|---|
+| Company Code | `9999` | PT Trias Sentosa, Tbk. / IDR / Sidoarjo / ID / EN | `T001` (OK) |
+| Plant Waru | `1000` | Pabrik Waru (Trias Sentosa) / Sidoarjo / ID / Pos: 61256 | `T001W` (OK) |
+| Plant Krian | `2000` | Pabrik Krian (Trias Sentosa) / Sidoarjo / ID / Pos: 61262 | `T001W` (OK) |
+| Assignment Waru | `9999 - 1000` | CoCode 9999 terhubung ke Plant 1000 | `T001K` (OK) |
+| Assignment Krian | `9999 - 2000` | CoCode 9999 terhubung ke Plant 2000 | `T001K` (OK) |
+| Transport Request | `ADBK900049` | Enterprise Structure S4HANA - CoCode 9999 | S/4HANA Customizing |
 
-## 3. Masih Terbuka / Next Step
-- [ ] Penyesuaian nama, alamat, dan mata uang CoCode 9999 di transaksi **`OX02`**:
-  - Name: `PT Trias Sentosa, Tbk.`
-  - City: `Sidoarjo`
-  - Country: `ID`
-  - Currency: `IDR`
-  - Language: `EN`
-- [ ] Penyalinan Plant **`1000`** (Waru) dan **`2000`** (Krian) via transaksi **`EC02`** (Copy `0001` -> `1000` & `0001` -> `2000`).
-- [ ] Penetapan Plant ke Company Code via **`OX18`** (`1000` -> `9999`, `2000` -> `9999`).
-- [ ] Pemilihan 1 material percontohan (Pilot FG ZFGS) dari DEV AIX untuk ekstraksi komponen BOM, Routing, dan parameter MRP.
-- [ ] Eksekusi pembuatan Material, Work Center, BOM, Routing, dan Production Version di S4HANA.
+## 3. Langkah Selanjutnya (Fase 2: Master Data Produksi di S/4HANA)
+1. **Pembuatan Storage Locations (`OX09`):**
+   - Plant 1000: `1813` (WR FGS-Non WM) & `1011` (Feed OPP WR).
+   - Plant 2000: `2813` (KR FGS-Non WM) & `2011` (Feed OPP KR).
+2. **Pembuatan Material Master (`MM01`):**
+   - Material `JRAAAI` (Jumbo Roll PLE-18) dan bahan baku utama resin (`RPV-HC401BF`, `SRP-I`).
+3. **Pembuatan Work Center (`CR01`):**
+   - Work Center `JROPP01` (Line Extrusion Waru).
+4. **Pembuatan BOM (`CS01`):**
+   - Input BOM resin untuk Jumbo Roll PLE-18.
+5. **Pembuatan Routing (`CA01`):**
+   - Operasi Extrusion di Work Center `JROPP01`.
+6. **Pembuatan Production Version (`C223` / tabel `MKAL`):**
+   - Mandatory untuk validasi MRP dan Manufacturing Order di S/4HANA.
