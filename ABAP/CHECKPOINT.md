@@ -6,21 +6,19 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 
 | Atribut | Isi |
 |---|---|
-| Waktu | 2026-11-19 10:45 |
-| AI / device | Antigravity / Windows |
-| Sub-project | BTP_HYBRID_INTEGRATION |
-| Pekerjaan | Aplikasi Fiori zpoitems (List Report) sukses terhubung live end-to-end ke S/4HANA via SCC & OData berparameter (HTTP 200 OK) |
-| Status | Selesai (Milestone M8 Tercapai) |
-| Next step | Opsi A (Input dummy PO di S/4HANA agar tabel terisi) & Opsi C (Deploy ke BTP HTML5 Launchpad) |
-| Backup | `subproject/BTP_HYBRID_INTEGRATION/docs/STEP_BY_STEP_IMPLEMENTATION_GUIDE.md` |
-| Pekerjaan | Ekstraksi & blueprint Enterprise Structure (FI/CO/MM/PP/SD) dari DEV AIX ke S/4HANA, inisiasi subproject docs |
-| Status | Selesai (Fase 0) |
-| Next step | Eksekusi/validasi Enterprise Structure di S/4HANA & Pilot Material FG |
-| Backup | `subproject/S4HANA_DATA_MIGRATION/docs/BLUEPRINT_ENTERPRISE_STRUCTURE.md` |
+| Waktu | 2026-11-19 11:15 |
+| AI / device | Antigravity / Linux GUI |
+| Sub-project | S4HANA_DATA_MIGRATION |
+| Pekerjaan | Eksekusi EC01 di S/4HANA ADB 130: Copy Company Code 0001 -> 9999 sukses penuh, tercatat di TR ADBK900049, verifikasi live di tabel T001 (BUKRS 9999 aktif) |
+| Status | Selesai (Fase 1: CoCode 9999 Terbuat) |
+| Next step | Maintenance detail CoCode 9999 di OX02 (IDR, Sidoarjo) & Copy Plant 1000/2000 via EC02 |
+| Backup | `subproject/S4HANA_DATA_MIGRATION/CHECKPOINT.md` |
+
 ## Log (terbaru di atas)
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
+| 2026-11-19 11:15 | Antigravity / Linux GUI | S4HANA_DATA_MIGRATION | Eksekusi EC01 di S/4HANA ADB 130: Copy Company Code 0001 -> 9999 sukses penuh, tercatat di TR ADBK900049, verifikasi live di tabel T001 (BUKRS 9999 aktif) | Selesai | Maintenance detail CoCode 9999 di OX02 (IDR, Sidoarjo) & Copy Plant 1000/2000 via EC02 |
 | 2026-11-19 10:45 | Antigravity / Windows | BTP_HYBRID_INTEGRATION | Aplikasi Fiori zpoitems (List Report) sukses terhubung live end-to-end ke S/4HANA via SCC & OData berparameter (HTTP 200 OK) | Selesai | Opsi A (Input dummy PO di S/4HANA) & Opsi C (Deploy ke BTP Launchpad) |
 | 2026-11-19 09:25 | Antigravity / Windows | S4HANA_DATA_MIGRATION | Ekstraksi & blueprint Enterprise Structure (FI/CO/MM/PP/SD) dari DEV AIX ke S/4HANA, inisiasi subproject docs | Selesai | Eksekusi/validasi Enterprise Structure di S/4HANA & Pilot Material FG |
 | 2026-11-18 12:50 | Antigravity / Linux GUI | COA | Testing SAP GUI 2 skenario terakhir (TTA-OUTSOURCE & TTA-CONVERTING) di DEV AIX TRD 130: ZQM002 vs ZQM005, Excel `outputs/TESTING_COA_TTA_DEV_AIX.xlsx` | Selesai | Siap review Baginda |
@@ -44,7 +42,7 @@ Baca file ini **pertama kali** di awal sesi (device/AI mana pun). Aturan: [00_RU
 | 2026-11-05 11:54 | Claude / desktop | — | Review isi & mapping sub-project (read-only), daftar optimasi | Menunggu Baginda | AGREED → rapikan mapping + src |
 | 2026-11-05 11:51 | Claude / desktop | — | Hapus `_REVIEW_IMAGES/` + `_SHARED/` (arsip di `00_RULES/_backup/arsip_hapus_20261105/`), update referensi | Selesai | Kandidat A–D masih menunggu |
 | 2026-11-05 11:46 | Claude / desktop | — | Survei file tidak terpakai (kandidat A–D), belum hapus | Menunggu Baginda | Pilih kategori + opsi arsip |
-| 2026-11-05 | Claude / VSCode remote | ADT_VSCODE | Setup ADT sandbox-new (ICF + ICM 8000 + proxy + ext VSCode) | Menunggu Baginda | Enable proxy systemd, RZ10 port permanen |
+| 2026-11-05 | Claude / desktop | ADT_VSCODE | Setup ADT sandbox-new (ICF + ICM 8000 + proxy + ext VSCode) | Menunggu Baginda | Enable proxy systemd, RZ10 port permanen |
 | 2026-11-05 11:43 | Claude / desktop | — | Terapkan optimasi rules poin 1–6 + aturan wajib pull terbaru sebelum push (backup `00_RULES/_backup/rules_20261105_optimasi/`) | Selesai | Perbaiki config MCP desktop |
 | 2026-11-05 | Claude / desktop | — | Review rules markdown: daftar optimasi + jawab soal file `.abap` | Selesai | — |
 | 2026-11-05 | Claude / desktop | ZMMI_WMS | Draft email update program WMS baru | Selesai (draft) | Baginda kirim |

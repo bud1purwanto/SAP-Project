@@ -1,0 +1,59 @@
+import os
+import time
+import subprocess
+
+def run(cmd):
+    print("RUN:", cmd)
+    env = dict(os.environ)
+    env["DISPLAY"] = ":99"
+    res = subprocess.run(cmd, shell=True, capture_output=True, text=True, env=env)
+    if res.stdout: print("OUT:", res.stdout.strip())
+    if res.stderr: print("ERR:", res.stderr.strip())
+    return res
+
+def main():
+    win_id = "29377504"
+    run(f"xdotool windowactivate --sync {win_id}")
+    time.sleep(0.5)
+
+    # 1. From User, Shift+Tab to Client
+    run("xdotool key shift+Tab")
+    time.sleep(0.3)
+    run("xdotool key End BackSpace BackSpace BackSpace BackSpace Delete Delete")
+    time.sleep(0.2)
+    run("xdotool type --delay 60 '130'")
+    time.sleep(0.3)
+
+    # 2. Tab to User
+    run("xdotool key Tab")
+    time.sleep(0.3)
+    run("xdotool key End BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace Delete Delete Delete")
+    time.sleep(0.2)
+    run("xdotool type --delay 60 'TRSTABAP'")
+    time.sleep(0.3)
+
+    # 3. Tab to Password
+    run("xdotool key Tab")
+    time.sleep(0.3)
+    run("xdotool key End BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace BackSpace Delete Delete Delete")
+    time.sleep(0.2)
+    run("xdotool type --delay 60 'supporter'")
+    time.sleep(0.3)
+
+    # Capture pre-enter
+    sock = "/home/abap/.cache/cua-driver/cua-driver-sap.sock"
+    cmd_shot = f"/home/abap/.local/bin/cua-driver --socket {sock} call get_window_state '{{\"pid\":11474,\"window_id\":{win_id},\"screenshot_out_file\":\"/tmp/pre_clean.png\"}}'"
+    run(cmd_shot)
+    run("cp /tmp/pre_clean.png /data/Projects/SAP/ABAP/subproject/S4HANA_DATA_MIGRATION/docs/attachments/09_pre_clean.png")
+
+    # 4. Press Enter
+    run("xdotool key Return")
+    time.sleep(6)
+
+    # 5. Capture post-login
+    cmd_shot2 = f"/home/abap/.local/bin/cua-driver --socket {sock} call get_window_state '{{\"pid\":11474,\"window_id\":{win_id},\"screenshot_out_file\":\"/tmp/post_clean.png\"}}'"
+    run(cmd_shot2)
+    run("cp /tmp/post_clean.png /data/Projects/SAP/ABAP/subproject/S4HANA_DATA_MIGRATION/docs/attachments/10_post_clean.png")
+
+if __name__ == '__main__':
+    main()
