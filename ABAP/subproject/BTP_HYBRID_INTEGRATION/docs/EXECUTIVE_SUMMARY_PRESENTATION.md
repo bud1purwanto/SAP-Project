@@ -115,11 +115,16 @@ Saat presentasi di hadapan audiens, Baginda dapat mendemonstrasikan 4 bukti nyat
 
 ---
 
-## Slide 6: Rencana Lanjutan & Rekomendasi (Next Steps)
+## Slide 6: Pencapaian Milestone & Rencana Lanjutan (Next Steps)
 
-1. **Deploy Aplikasi Fiori Perdana:**
-   - Memilih business scenario (misalnya: Approval Purchase Order, Monitoring Sales Order, atau Master Data Material).
-   - Men-generate Fiori List Report dan mendeploy artifact ke SAP BTP HTML5 Application Repository.
+1. **Milestone Opsi A (SUKSES 100%): Data Real S/4HANA Tampil Live di Fiori Elements**
+   - 10 Dokumen Purchase Order otentik (`4500000001` - `4500000010`) telah dibuat di S/4HANA On-Premise Client 130.
+   - Aplikasi Fiori Elements List Report di SAP BAS sukses memuat dan menampilkan ke-10 baris PO secara real-time via OData berparameter `C_PurchaseOrderItemMoniResults`.
+   - Data mengalir sempurna: Nomor PO, Vendor, Material, Qty, Harga, Net Amount, dan Mata Uang.
+2. **Milestone Opsi C (Langkah Berikutnya): Deploy Aplikasi ke SAP BTP HTML5 Repository / Launchpad**
+   - Build artifact produksi UI5 (`npm run build`).
+   - Deployment ke SAP BTP Cloud Foundry runtime menggunakan HTML5 Application Repository (`cf deploy` / `npm run deploy`).
+   - Pemasangan aplikasi pada portal terpadu SAP Build Work Zone / Fiori Launchpad di BTP Cloud.
 2. **Penerapan Single Sign-On (SSO) / Principal Propagation:**
    - Mengonfigurasi x.509 client certificate agar user BTP otomatis terpetakan ke SAP User On-Premise tanpa perlu hardcoded user/password di destination.
 3. **Persiapan Transisi ke BTP Production:**
@@ -127,7 +132,7 @@ Saat presentasi di hadapan audiens, Baginda dapat mendemonstrasikan 4 bukti nyat
 
 ---
 
-## Lampiran: Bukti Visual Integrasi (Screenshots Lengkap 19 File)
+## Lampiran: Bukti Visual Integrasi (Screenshots Lengkap 25 File)
 
 Semua bukti visual telah disimpan dan terverifikasi di direktori arsip subproject (`docs/attachments/`):
 - `01_onprem_fiori_launchpad_login.png`: Verifikasi login Fiori On-Premise
@@ -149,3 +154,9 @@ Semua bukti visual telah disimpan dan terverifikasi di direktori arsip subprojec
 - `17_fiori_app_error_unknown_entity.png`: Investigasi error runtime entity CDS berparameter
 - `18_user_query_steps_7_8.png`: Penyelarasan step implementasi konfigurasi navigasi `Results`
 - `19_fiori_app_success_no_data_found.png`: Bukti otentik keberhasilan integrasi end-to-end (HTTP 200 OK, tabel siap pakai)
+- `20_fiori_app_no_data_user_view.png`: Tampilan awal preview aplikasi saat tabel memuat filter mata uang default
+- `21_sap_gui_ekko_10_hits.jpg`: Verifikasi otentik SAP GUI SE16 menampilkan 10 dokumen PO di tabel `EKKO`
+- `22_bas_manifest_json_inspection.jpg`: Inspeksi konfigurasi `manifest.json` di SAP Business Application Studio
+- `23_fiori_blank_screen_noflp.png`: Investigasi crash layar putih saat menjalankan preview mode standalone `no-flp`
+- `24_bas_preview_options_dialog.png`: Menu Preview Options di SAP BAS (pemilihan opsi FLP sandbox)
+- `25_define_column_properties_1_column.png`: Temuan kunci personalisasi tabel (1/1 kolom) yang mengonfirmasi perlunya entity set `Results`

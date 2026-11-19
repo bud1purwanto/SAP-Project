@@ -6,11 +6,12 @@
 | Status | Selesai (Production-Ready Architecture) |
 | Server source terakhir | S/4HANA 1909 ADB (192.168.1.199:8080) & SCC Host (100.73.54.71:8443) |
 | Target Cloud | SAP BTP Trial US East (AWS) \cf.us10.hana.ondemand.com\ |
-| Backup terakhir | \docs/attachments/\ (8 screenshots terverifikasi) |
+| Backup terakhir | \docs/attachments/\ (25 screenshots terverifikasi) |
 
 ## Log Sesi (terbaru di atas, wajib — lihat [08](../../00_RULES/08_Checkpoint_Wajib.md))
 | Waktu | AI / device | Pekerjaan | Status | Next step |
 |---|---|---|---|---|
+| 2026-11-19 14:58 | Antigravity / Windows | Opsi A TUNTAS 100%: 10 Purchase Order S/4HANA live berhasil tampil di tabel Fiori Elements List Report BAS | Selesai (Milestone Tercapai) | Opsi C: Build & Deploy ke SAP BTP HTML5 Repository / Launchpad |
 | 2026-11-19 14:00 | Antigravity / Windows | Update tanggal 10 PO ke 20261119 & verifikasi query filter 2026 sukses (10 items) | Selesai | Refresh preview Fiori & Pilih kolom via gear settings |
 | 2026-11-19 10:38 | Antigravity / Windows | Verifikasi End-to-End Fiori App zpoitems SUKSES (HTTP 200 OK, tabel ter-load sempurna) | Selesai (Milestone Tercapai) | Dokumentasi & Opsi Input Data PO di S/4HANA |
 | 2026-11-19 10:15 | Antigravity / Windows | Analisis error runtime 'Unknown entity MM_PUR_POITEMS_MONI~*C_PurchaseOrderItemMoni' saat klik Go | OK (Root Cause Identik) | Konfigurasi navigationProperty 'Results' pada manifest.json di BAS |
@@ -33,6 +34,9 @@
 - [x] Pemilihan Main Entity: `C_PurchaseOrderItemMoni` untuk floorplan List Report Page.
 - [x] Project Fiori Elements `zpoitems` berhasil di-generate sempurna di SAP BAS.
 - [x] Eksekusi Preview Fiori Run: server lokal aktif di BAS (`npx fiori run --open test/flp.html#app-preview`).
+- [x] Seeding 10 Data Purchase Order otentik di S/4HANA Client 130 (`EKKO`, `EKPO`, `EKET`, `LFM1`, `TCURR`, `TCURF`).
+- [x] Konfigurasi entity set `C_PurchaseOrderItemMoniResults` & `considerAnalyticalParameters = true` di `manifest.json`.
+- [x] **OPSI A TUNTAS 100%**: 10 Dokumen Purchase Order S/4HANA On-Premise mengalir live dan tampil sempurna di tabel Fiori Elements.
 - [x] Penyusunan dokumentasi teknis `STEP_BY_STEP_IMPLEMENTATION_GUIDE.md` dan presentasi eksekutif `EXECUTIVE_SUMMARY_PRESENTATION.md`.
 - [x] Provisioning Master Data & Seeding 10 Data Purchase Order di S/4HANA Client 130 (Opsi A Selesai).
   - Business Partner `0000000102` / Vendor `0000100000` (PT TECH SOLUTIONS INDONESIA) dibuat via BAPI CVI (`FLVN01`).
