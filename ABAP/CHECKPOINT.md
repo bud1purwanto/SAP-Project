@@ -2,18 +2,20 @@
 
 | Atribut | Isi |
 |---|---|
-| Waktu | 2026-11-20 14:55 |
-| AI / device | Antigravity / Linux RFC & BAPI |
-| Sub-project | S4HANA_DATA_MIGRATION |
-| Pekerjaan | Siklus Manufaktur PP-PI Selesai 100%: Rilis Order, Goods Issue (MIGO 261, MatDoc 4900000002), Konfirmasi Produksi (BAPI_PROCORDCONF_CREATE_HDR, Doc 0000000003), Penerimaan Barang Jadi (MIGO 101, MatDoc 5000000000), Resolusi CO/PCA/OBYC lengkap, Order Status REL GMPS CNF HCNF DLV, Stok JRAAAI 100 KG di SLoc 1813 |
-| Status | Selesai (Milestone Siklus PP-PI Manufaktur S/4HANA Tuntas 100%) |
-| Next step | Presentasi ke Baginda & Opsi Replikasi Produk/Modul Lainnya |
-| Backup | subproject/S4HANA_DATA_MIGRATION/CHECKPOINT.md |
+| Waktu | 2026-11-20 15:40 |
+| AI / device | Antigravity / Windows |
+| Sub-project | BTP_HYBRID_INTEGRATION |
+| Pekerjaan | Eksekusi Opsi C Deployment Fiori ke BTP Cloud Foundry: Build arsip MTA zbtpzpoitems_0.0.1.mtar, penanganan tuntas Error 422 OIDC Trust Missing, aktivasi SAP Cloud Identity Services di BTP Trial, dan konfigurasi OIDC Trust tenant adnznjp2l.trial-accounts.ondemand.com |
+| Status | Selesai (Milestone OIDC & Deploy) |
+| Next step | Aktivasi langganan SAP Build Work Zone standard edition, penambahan Tile di Site Directory, dan verifikasi akses live end-to-end |
+| Backup | subproject/BTP_HYBRID_INTEGRATION/CHECKPOINT.md |
 
 ## Log (terbaru di atas)
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
+| 2026-11-20 15:40 | Antigravity / Windows | BTP_HYBRID_INTEGRATION | Eksekusi Opsi C: Build MTA zbtpzpoitems_0.0.1.mtar, mitigasi Error 422 OIDC Trust, provisioning Cloud Identity Services, dan konfigurasi OIDC Trust adnznjp2l | Selesai (Milestone OIDC & Deploy) | Aktivasi SAP Build Work Zone Launchpad & Verifikasi Live Portal |
+| 2026-11-20 15:16 | Antigravity / RFC & GUI | ZSMS | Replikasi Program & TCode ZSMS dari DEV AIX ke S/4HANA: Program aktif, SE93 report transaction (CINFO 80), verified live di SAP GUI tanpa dump ST22 | Selesai (Milestone ZSMS) | Handover ke Baginda |
 | 2026-11-20 14:55 | Antigravity / BAPI & RFC | S4HANA_DATA_MIGRATION | Siklus Manufaktur PP-PI Tuntas 100%: Rilis Order, GI 261 (MatDoc 4900000002), Konfirmasi Produksi (Doc 0000000003), GR 101 (MatDoc 5000000000), Resolusi CO/PCA/OBYC, Order REL GMPS CNF HCNF DLV, Stok JRAAAI 100 KG | Selesai (Milestone PP-PI) | Siap Dipresentasikan ke Baginda |
 | 2026-11-20 13:40 | Antigravity / Windows | BTP_HYBRID_INTEGRATION | Troubleshooting BAS Preview & Error ECONNREFUSED 3001 / Invalid URL / Missing Preview Menu: Identifikasi failure extension Fiori Tools, perbaikan ui5.yaml, dan dokumentasi mitigasi | Selesai (Analisis & Solusi Tuntas) | Opsi C: Build & Deploy ke SAP BTP HTML5 Repository / Launchpad |
 | 2026-11-20 11:20 | Antigravity / Linux GUI | S4HANA_DATA_MIGRATION | Setup Modul PP-PI TUNTAS 100%: Master Recipe JRAAAI/10 tipe 2, Production Version 0002 (MKAL), dan Transaksional Process Order 000001000001 (PI01, Kategori 40) terbuat & 9 resin komponen ter-explode otomatis di RESB | Selesai (Milestone PP-PI) | Release Order / Goods Issue MIGO 261 |

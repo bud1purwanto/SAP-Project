@@ -498,7 +498,71 @@ Dengan menyisipkan anotasi `UI.SelectionFields` dan `UI.LineItem` di dalam `weba
 | **`Failed to register backend for /sap. TypeError: Invalid URL`** | Properti `url:` hilang atau terhapus pada blok konfigurasi `fiori-tools-proxy` di `ui5.yaml` ketika proxy mencoba menyambungkan destination BTP. | Pastikan `ui5.yaml` memiliki kedua atribut lengkap: `url: http://s4hana-onprem:8080` dan `destination: S4HANA_ONPREM`. |
 | **`EADDRINUSE: Port 8085 is already in use`** | Proses `ui5 serve` sebelumnya masih berjalan dan mengunci port 8085 di container BAS. | Matikan proses lama sebelum menjalankan serve baru: `pkill -f "ui5" 2>/dev/null` atau `fuser -k 8085/tcp 2>/dev/null`. |
 | **Menu klik kanan "Preview Application" hilang dari `package.json` & tab "Application Info" blank putih** | Extension pack visual `SAP Fiori Tools` mengalami crash atau incomplete install di container Dev Space. | 1. Gunakan CLI `npx ui5 serve --port 8085` untuk preview cepat.<br>2. Coba pulihkan: tekan `F1` -> pilih `Developer: Reload Window`.<br>3. Solusi permanen jika container corrupt: buat Dev Space baru bertipe **SAP Fiori** (`FioriDev2`). |
+| **`Error retrieving MTA: Could not find MTA mta_archives/zpoitems_0.0.1.mtar` saat `cf deploy`** | Project ID aplikasi memiliki namespace `zbtp` (`zbtp.zpoitems`). Cloud MTA Build Tool (`mbt`) menggabungkan namespace dan module name menjadi berkas `zbtpzpoitems_0.0.1.mtar`. | Jalankan perintah deploy dengan nama file arsip yang valid: `cf deploy mta_archives/zbtpzpoitems_0.0.1.mtar`. |
+| **`Subscription Failed: Error Code: 422 - OIDC trust missing` pada SAP Build Work Zone** | SAP BTP mewajibkan otentikasi OpenID Connect (OIDC) melalui SAP Cloud Identity Services (IAS) untuk seluruh subscription baru Build Work Zone. SAML bawaan tidak didukung. | Berlangganan service **Cloud Identity Services** (Plan: `default`) di Service Marketplace, lalu lakukan **Establish Trust** di menu Security -> Trust Configuration sebelum membuat subscription Build Work Zone. |
+| **`No tenants available` saat klik Establish Trust di Trust Configuration BTP Trial** | Pada akun SAP BTP Trial, tenant Cloud Identity Services (IAS) tidak disediakan otomatis secara default saat subaccount dibuat. | Buka **Service Marketplace** ??? cari **Cloud Identity Services** ??? klik **Create** (Plan: `default`, Subscriptions). Setelah berstatus hijau (`Subscribed`), tenant akan otomatis terdaftar dan dapat dipilih di dialog Establish Trust. |
+| **Menu HTML5 Applications menampilkan peringatan "To display or run HTML5 applications, please subscribe..."** | Arsitektur Managed Application Router BTP mewajibkan minimal satu portal terpadu aktif (seperti Build Work Zone) sebagai entry point routing HTML5 Application Repository. | Aktifkan langganan SAP Build Work Zone, standard edition (setelah OIDC trust terhubung) agar daftar aplikasi dan link langsung muncul di HTML5 Applications. |
 
 ---
+
+
+---
+
+## 10. Panduan Lengkap Eksekusi Opsi C: Deployment Cloud Foundry & Integrasi OIDC
+
+### 10.1 Konfigurasi Deployment MTA & Fiori Launchpad
+Pada folder project Fiori `zpoitems` di SAP BAS:
+1. Menambahkan blueprint deployment Cloud Foundry:
+   ```bash
+   npx fiori add deploy-config
+   ```
+   * *Target:* `Cloud Foundry`
+   * *Destination name:* `S4HANA_ONPREM`
+   * *Add application to managed application router:* `Yes`
+   * Menghasilkan: `mta.yaml`, `ui5-deploy.yaml`, `xs-app.json`, dan `xs-security.json`.
+2. Menambahkan identitas navigasi Tile Fiori Launchpad:
+   ```bash
+   npx fiori add flp-config
+   ```
+   * *Semantic Object:* `PurchaseOrder`
+   * *Action:* `display`
+   * *Title:* `Monitoring PO Items S/4HANA`
+   * *Subtitle:* `Real-time S/4HANA On-Premise`
+
+### 10.2 Kompilasi Paket Produksi Cloud (`.mtar`)
+Eksekusi build tool MTA:
+```bash
+npm run build:mta
+```
+* Menghasilkan berkas arsip enterprise: `mta_archives/zbtpzpoitems_0.0.1.mtar`.
+* *Catatan Kritis:* Karena aplikasi memiliki namespace `zbtp` dan ID `zbtp.zpoitems`, nama file `.mtar` menggabungkan keduanya menjadi `zbtpzpoitems_0.0.1.mtar`.
+
+### 10.3 Deployment ke SAP BTP Cloud Foundry Runtime
+1. Login ke Cloud Foundry CLI:
+   ```bash
+   cf login -a https://api.cf.us10-001.hana.ondemand.com
+   ```
+2. Eksekusi pengiriman arsip:
+   ```bash
+   cf deploy mta_archives/zbtpzpoitems_0.0.1.mtar
+   ```
+   * Mem-provisioning service `html5-apps-repo-host`, binding destination `S4HANA_ONPREM`, dan XSUAA service.
+
+### 10.4 Mitigasi Kebijakan OIDC Baru BTP & Konfigurasi SAP Cloud Identity Services
+1. **Aktivasi Cloud Identity Services:**
+   * Masuk ke **Service Marketplace** di BTP Subaccount.
+   * Pilih **Cloud Identity Services** ??? Klik **Create** (Plan: `default` di bawah kategori *Subscriptions*).
+   * Status berubah menjadi hijau (**`Subscribed`**).
+2. **Establish OIDC Trust Configuration:**
+   * Buka **Security** ??? **Trust Configuration** ??? Klik **Establish Trust**.
+   * Tenant resmi BTP Trial (`adnznjp2l.trial-accounts.ondemand.com`, Type: Productive, Data Center: Trial (USA)) otomatis terdeteksi.
+   * Parameter resmi:
+     * *Name:* `adnznjp2l.trial-accounts.ondemand.com (business users)`
+     * *Origin Key:* `sap.custom`
+     * *Parameters:* `Available for User Logon = Checked`, `Create Shadow Users on Logon = Checked`.
+   * Klik **Finish**.
+3. **Penyelesaian Langganan SAP Build Work Zone:**
+   * Di menu **Instances and Subscriptions**, buat langganan **`SAP Build Work Zone, standard edition`** (Plan: `standard`).
+   * Status sukses aktif hijau (**`Subscribed`**) tanpa kendala Error 422.
 
 *Panduan ini disusun untuk Baginda sebagai referensi teknis permanen dalam subproject BTP_HYBRID_INTEGRATION.*
