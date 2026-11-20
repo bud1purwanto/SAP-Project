@@ -144,6 +144,109 @@ Dibuat dan dipelihara via transaksi massal `C223`:
 
 ---
 
+
+### Fase 9: Aktivasi Material Ledger & CKMSTART Productive
+- **Transaksi:** `OMX1` & `CKMSTART`.
+- **Hasil:**
+  - Plant `1000` (Waru) & Plant `2000` (Krian) diaktifkan status Material Ledger (`OMX1`).
+  - Eksekusi set productive via program `SAPRCKMJ` (`CKMSTART`): 31/31 sub-proses sukses berstatus hijau.
+
+### Fase 10: Pengaturan Akuntansi Material & Penyelarasan Mata Uang G/L (`OMWD` & `SKB1`)
+- **Valuation Grouping Code (`OMWD`):**
+  - Plant `1000` dan `2000` ditetapkan ke Valuation Grouping Code `0001` pada tabel `T001K`.
+- **Mata Uang Akun G/L (`SKB1`):**
+  - Sebanyak 852 akun G/L untuk Company Code `9999` yang sebelumnya mewarisi mata uang template `EUR` telah diperbarui menjadi mata uang lokal `IDR` melalui program ABAP `ZUPDATE_SKB1`.
+  - Mengeliminasi error posting `M7 049` (*Postings can only be made to G/L acct in curr. EUR*).
+
+### Fase 11: Pembukaan Periode Posting Finansial FI (`T001B`)
+- **Transaksi:** `OB52` / Tabel `T001B`.
+- **Eksekusi:** Program ABAP `ZOPEN_PERIODS` membuka seluruh 9 record varian `0001` (semua tipe akun: +, A, D, K, M, S, V) hingga periode 012 tahun 9999.
+- Mengeliminasi error posting `F5 286` (*Period is not open for account type*).
+
+### Fase 12: Pengaturan Controlling Area & Universal Journal (`TKA01` & `FINSC_*`)
+- **Controlling Area (`TKA01` & `TKA02`):**
+  - Dibuat Controlling Area `9999` dengan mata uang `IDR` (`CTYP = 10`), Fiscal Year Variant `K4`, dan Chart of Accounts `CAID` via report `ZSETUP_KOKRS_9999`.
+  - Assignment: Company Code `9999` ditugaskan ke Controlling Area `9999` (`TKA02`), memastikan keselarasan mata uang 100%.
+- **Universal Journal Ledger (`FINSC_VERSN_LD`, `FINSC_CMP_VERSNC`, `FINSC_CMP_VERSND`):**
+  - Entri konfigurasi versi ledger `0L` untuk Company Code `9999` diselaraskan via report `ZFIX_FINSC`.
+- **S/4HANA Migration Status (`FINS_MIG_STATUS`):**
+  - Program `ZCALL_WRITE_COMPLETE` mengeksekusi method `cl_fins_mig_utility=>write_migration_complete( iv_errors_found = abap_false )`.
+  - Status migrasi: `check_mig_complete = TRUE`, mengizinkan pembaruan dokumen finansial dan material (`FINS_FI_MIG 150` cleared).
+
+### Fase 13: Pemeliharaan View Accounting 1 (`MBEW`)
+- View akuntansi material (`MBEW`) dipelihara di Plant `1000` dengan Valuation Class `3000` dan Price Control `V` (Moving Average Price):
+  - `RPV-HC401BF`: Moving Price = 125 IDR / KG
+  - `SRP-I`: Moving Price = 151 IDR / KG
+  - `SRP-E`: Moving Price = 150 IDR / KG
+  - `M5AAA01`: Moving Price = 217 IDR / KG
+  - `RPV-FS3011E3`: Moving Price = 151 IDR / KG
+  - `RPM-ABPP10T`: Moving Price = 259 IDR / KG
+  - `RPC-FS5612`: Moving Price = 173 IDR / KG
+  - `JRAAAI`: Moving Price = 136 IDR / KG
+
+### Fase 14: Inisialisasi Stok Bahan Baku (Initial Stock Posting - Movement 561)
+- **Eksekusi:** Transaksi `MIGO` Movement Type `561` via `BAPI_GOODSMVT_CREATE` + `BAPI_TRANSACTION_COMMIT`.
+- **Material Document:** `4900000001` / Tahun `2023`.
+- **Saldo Stok Terverifikasi di Database (`MARD` Plant `1000`, SLoc `1011` & `MBEW`):**
+  - `RPV-HC401BF`: 1.000,000 KG (Nilai: Rp 125.000,-)
+  - `SRP-I`: 1.000,000 KG (Nilai: Rp 151.000,-)
+  - `SRP-E`: 1.000,000 KG (Nilai: Rp 150.000,-)
+  - `M5AAA01`: 1.000,000 KG (Nilai: Rp 217.000,-)
+  - `RPV-FS3011E3`: 1.000,000 KG (Nilai: Rp 151.000,-)
+  - `RPM-ABPP10T`: 1.000,000 KG (Nilai: Rp 259.000,-)
+  - `RPC-FS5612`: 1.000,000 KG (Nilai: Rp 173.000,-)
+  - **Total Bahan Baku Tersedia di Gudang:** 7.000,000 KG siap dikonsumsi proses produksi.
+
+### Fase 15: Penyelarasan Tipe Material & Work Scheduling View
+- **Tipe Material (`MARA-MTART`):**
+  - Diperbarui dari `ROH` (Raw Material) menjadi `HALB` (Semifinished Product) via report `ZFIX_MARA_MTART`, sesuai spesifikasi manufaktur `JRAAAI` (Jumbo Roll PLE-18).
+- **Procurement Type & Maintenance Status (`MARC-BESKZ` & `PSTAT`):**
+  - `MARC-BESKZ` disetel ke `E` (In-house production).
+  - Status pemeliharaan `PSTAT` pada `MARA` disetel ke `KDAELB` dan pada `MARC` disetel ke `DAELB` (termasuk view `A` = Work Scheduling).
+  - Mengeliminasi hambatan `CO 046` (*Material cannot be produced in-house*) dan `CO 070` (*Work scheduling data not maintained*).
+
+### Fase 16: Pembuktian Transaksional Produksi (Production Order PP01)
+- **Eksekusi:** Pembuatan Production Order via standard `BAPI_PRODORD_CREATE`.
+- **Nomor Production Order:** `000001000000`
+- **Order Type:** `PP01` (Standard Production Order - Plant 1000)
+- **Target Kuantitas:** 100,000 KG `JRAAAI` (Jumbo Roll PLE-18)
+- **Hasil Verifikasi Live Database S/4HANA:**
+  1. **Header Order (`AUFK` & `AFKO`):**
+     - AUFNR: `000001000000`
+     - Status: Active
+     - Tanggal Produksi: Terjadwal otomatis
+  2. **Reservasi Komponen Otomatis (`RESB`):**
+     - Reservation Number: `0000000001`
+     - Sembilan (9) komponen resin dari BOM Alt `02` ter-explode otomatis ke komponen order:
+       - Pos 0001: `RPV-HC401BF` = 22,454 KG
+       - Pos 0002: `SRP-I` = 64,948 KG
+       - Pos 0003: `SRP-E` = 3,711 KG
+       - Pos 0004: `M5AAA01` = 1,670 KG
+       - Pos 0005: `RPV-FS3011E3` = 5,077 KG
+       - Pos 0006: `RPM-ABPP10T` = 0,077 KG
+       - Pos 0007: `RPV-FS3011E3` = 4,948 KG
+       - Pos 0008: `RPC-FS5612` = 0,155 KG
+       - Pos 0009: `RPM-ABPP10T` = 0,052 KG
+  3. **Operasi & Routing Terbaca Otomatis (`AFVC`):**
+     - Routing Plan: `0000000001`
+     - Operation: `0010`
+     - Work Center: `10000178` (`JROPP01` - Line Extrusion Waru 1)
+
+---
+
+## 3. Analisis Teknis: Production Order (CO01) vs Process Order (COR1)
+
+| Aspek Komparasi | Production Order (`CO01` / `PP01`) | Process Order (`COR1` / `PI01` - PP-PI) |
+|---|---|---|
+| **Karakteristik Industri** | Discrete Manufacturing / Extrusion Plastik Standar | Process Manufacturing / Industri Kimia Batch / Farmasi |
+| **Tipe Task List** | Routing (`CA01`, `PLNTY = 'N'`) | Master Recipe (`C201`, `PLNTY = '2'`) |
+| **Work Center / Mesin** | Work Center (`CR01`, misal `JROPP01`) | Resource (`CRC1`, Category `0008` Process Unit) |
+| **Operasi vs Phase** | Operasi Tunggal / Bertahap (`0010`, `0020`) | Operasi memiliki sub-Phase & PI Sheets / XSteps |
+| **Status di S/4HANA Target** | **100% AKTIF & TERVERIFIKASI LIVE** (Order `000001000000`) | Memerlukan Master Recipe (`C201`) & Resource (`CRC1`) |
+| **Rekomendasi untuk Pilot** | **Sangat Direkomendasikan (Siap Release & Goods Issue)** | Dapat disiapkan sebagai ekspansi modul PP-PI lanjutan |
+
+---
+
 ## 3. Matriks Pembuktian Live Database (S/4HANA Client 130)
 
 | Tabel | Key Utama | Field Kunci | Nilai Live Database | Status |

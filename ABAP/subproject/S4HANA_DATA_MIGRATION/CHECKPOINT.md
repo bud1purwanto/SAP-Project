@@ -23,6 +23,16 @@
 | 2026-11-19 12:12 | Antigravity / Linux GUI | Pemilihan Pilot Production Data dari DEV AIX: Material JRAAAI (Jumbo Roll PLE-18, ZSFG), BOM (00005910), Work Center JROPP01, Recipe JRAAAI/10, Production Version 0001 (MKAL) | OK / Terpilih | Pembuatan Storage Location di OX09 & Eksekusi Master Data (MM01, CR01, CS01, C223) di S/4HANA ADB |
 | 2026-11-19 12:11 | Antigravity / Linux GUI | Maintenance Plant Details & Address di OX10: Plant 1000 (Pabrik Waru) & Plant 2000 (Pabrik Krian), Alamat Sidoarjo ID 61256/61262. Verifikasi live di tabel T001W sukses penuh | OK / Selesai | Setup Master Data Pilot Production |
 | 2026-11-19 11:58 | Antigravity / Linux GUI | Assign Plant ke Company Code di OX18: Hapus relasi bawaan 0001->1000/2000, assign 9999->1000 & 9999->2000, save ke TR ADBK900049. Verifikasi live di tabel T001K sukses penuh | OK / Selesai | Maintenance detail nama & alamat Plant di OX10 |
+| 2026-11-20 10:44 | Antigravity / BAPI | Eksekusi BAPI_PRODORD_CREATE sukses: Production Order 000001000000 dibuat di Plant 1000 untuk Material JRAAAI (100 KG). Verifikasi tabel AUFK, AFKO, RESB (9 resin items ter-explode), AFVC (Op 0010 Work Center JROPP01) | OK / Selesai | Siap Release order & Goods Issue MIGO 261 |
+| 2026-11-20 10:42 | Antigravity / ABAP | Penyelarasan MARA-MTART = HALB via ZFIX_MARA_MTART, MARC-BESKZ = E via ZFIX_MARC_BESKZ, PSTAT = KDAELB/DAELB via ZFIX_PSTAT. Mengeliminasi error CO 046 & CO 070 | OK / Selesai | Eksekusi pembuatan Production Order PP01 |
+| 2026-11-20 10:22 | Antigravity / Python RFC | Eksekusi Initial Stock Movement 561 (BAPI_GOODSMVT_CREATE): Saldo awal 1.000 KG per resin untuk 7 komponen (total 7.000 KG) di Plant 1000 SLoc 1011. MatDoc 4900000001 / 2023 | OK / Selesai | Pembuatan Production Order simulasi |
+| 2026-11-20 10:20 | Antigravity / SA38 | Eksekusi cl_fins_mig_utility=>write_migration_complete via ZCALL_WRITE_COMPLETE. Status migrasi S/4HANA check_mig_complete = TRUE (FINS_FI_MIG 150 cleared) | OK / Selesai | Initial stock posting 561 |
+| 2026-11-20 10:10 | Antigravity / SA38 | Konfigurasi Universal Journal Ledger FINSC_VERSN_LD, FINSC_CMP_VERSNC/D via ZFIX_FINSC untuk BUKRS 9999 & Ledger 0L | OK / Selesai | Write migration complete |
+| 2026-11-20 10:05 | Antigravity / SA38 | Pembuatan Controlling Area 9999 di TKA01 (Currency IDR, K4, CAID) dan assignment BUKRS 9999 di TKA02 via ZSETUP_KOKRS_9999 | OK / Selesai | Konfigurasi Universal Journal Ledgers |
+| 2026-11-20 10:00 | Antigravity / SA38 | Pembukaan posting period T001B varian 0001 sd 9999/012 via ZOPEN_PERIODS (F5 286 cleared) | OK / Selesai | Pembuatan Controlling Area 9999 |
+| 2026-11-20 09:40 | Antigravity / SA38 | Penyelarasan mata uang 852 akun G/L SKB1 BUKRS 9999 menjadi IDR via ZUPDATE_SKB1 (M7 049 cleared) | OK / Selesai | Buka periode posting T001B |
+| 2026-11-20 09:25 | Antigravity / Linux GUI | Setting Valuation Grouping Code 0001 di OMWD (T001K) untuk Plant 1000 & 2000 | OK / Selesai | Penyelarasan mata uang SKB1 |
+| 2026-11-20 09:18 | Antigravity / Linux GUI | Aktivasi Material Ledger (OMX1) & CKMSTART productive Plant 1000 & 2000 (31/31 sub-proses sukses) | OK / Selesai | Setting OMWD |
 | 2026-11-19 11:30 | Antigravity / Linux GUI | Eksekusi EC02: Copy Plant 0001 -> 1000 & 0001 -> 2000 sukses ke TR ADBK900049. Verifikasi live tabel T001W | OK / Selesai | Assignment Plant ke Company Code 9999 via OX18 |
 | 2026-11-19 11:27 | Antigravity / Linux GUI | Maintenance detail CoCode 9999 di OX02: Nama PT Trias Sentosa, Tbk., Currency IDR, City Sidoarjo, Country ID, Lang EN. Verifikasi live tabel T001 sukses | OK / Selesai | Copy Plant 1000 & 2000 via EC02 |
 | 2026-11-19 11:15 | Antigravity / Linux GUI | Eksekusi EC01 di S/4HANA ADB 130: Copy Company Code 0001 -> 9999 sukses penuh, tercatat di TR ADBK900049, verifikasi live di tabel T001 (BUKRS 9999 aktif) | OK / Selesai | Maintenance detail CoCode 9999 di OX02 (IDR, Sidoarjo) & Copy Plant 1000/2000 via EC02 |
@@ -36,6 +46,15 @@
 - [x] **Fase 6: Bill of Materials / BOM** (CS01 Material JRAAAI, Usage 1, Alt 02, STLNR 00000001, 9 resin components seimbang 100.000 KG).
 - [x] **Fase 7: Routing** (CA01 Material JRAAAI, Group 50000000, Counter 01, Op 0010 pada Work Center JROPP01).
 - [x] **Fase 8: Production Version** (C223 / MKAL Material JRAAAI, Plant 1000, VERID 0001 mengikat BOM Alt 02 dan Routing Group 50000000/01).
+
+- [x] **Fase 9: Material Ledger Activation** (OMX1 & CKMSTART productive Plant 1000 & 2000, 31/31 status hijau).
+- [x] **Fase 10: Account Determination & G/L Currency** (OMWD Valuation Grouping Code 0001, 852 akun SKB1 CoCode 9999 diselaraskan ke IDR).
+- [x] **Fase 11: FI Posting Periods** (T001B varian 0001 dibuka s/d periode 012 tahun 9999 via ZOPEN_PERIODS).
+- [x] **Fase 12: Controlling Area 9999 & Universal Journal** (KOKRS 9999 IDR di TKA01/TKA02, FINSC ledgers terkonfigurasi, FINS_MIG_STATUS complete).
+- [x] **Fase 13: View Accounting 1 MBEW** (Semua 7 resin + JRAAAI dipelihara Val Class 3000 & Moving Price).
+- [x] **Fase 14: Initial Stock Movement 561** (1.000 KG per resin di Plant 1000 SLoc 1011, MatDoc 4900000001 / 2023).
+- [x] **Fase 15: Penyelarasan Tipe Material & Work Scheduling** (MARA-MTART = HALB, MARC-BESKZ = E, PSTAT = KDAELB/DAELB).
+- [x] **Fase 16: Transaksional Production Order PP01** (Order 000001000000 untuk 100 KG JRAAAI berhasil terbuat, 9 komponen resin ter-explode otomatis di RESB, Routing Op 0010 di AFVC).
 
 ## 2. Parameter Kunci Live S/4HANA (ADB 130)
 | Objek | Kode | Nilai Parameter | Status Database |
