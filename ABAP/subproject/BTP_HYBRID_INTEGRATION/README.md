@@ -14,9 +14,11 @@
 /data/Projects/SAP/ABAP/subproject/BTP_HYBRID_INTEGRATION/
 ├── README.md                               <-- File ini (Indeks Subproject)
 ├── docs/
+│   ├── DOKUMENTASI_STEP_BY_STEP_BTP_FIORI_HYBRID_INTEGRATION.docx <-- Dokumen Word Resmi Siap Share
 │   ├── STEP_BY_STEP_IMPLEMENTATION_GUIDE.md <-- Panduan teknis lengkap & detail per-langkah
 │   ├── EXECUTIVE_SUMMARY_PRESENTATION.md   <-- Format presentasi eksekutif & alur demo
-│   └── attachments/                        <-- Arsip screenshot & bukti verifikasi integrasi
+│   └── attachments/                        <-- Arsip 29 screenshot bukti verifikasi integrasi
+│       └── annotated/                      <-- 29 Screenshot Beranotasi Visual (Kotak Merah & Badge Aksi)
 │       ├── 01_onprem_fiori_launchpad_login.png
 │       ├── 02_scc_initial_dashboard.jpg
 │       ├── 03_scc_subaccount_connected.png
@@ -30,7 +32,7 @@
 │   ├── docker-compose.yml
 │   └── entrypoint.sh
 ├── src/                                    <-- Source code aplikasi UI5 / Fiori masa depan
-└── outputs/                                <-- File ekspor / log verifikasi
+└── outputs/                                <-- DOKUMENTASI_STEP_BY_STEP_BTP_FIORI_HYBRID_INTEGRATION.docx (Versi 2.0 - 3.6 MB, 39 Screenshots Beranotasi)
 ```
 
 ## Ringkasan Konfigurasi Utama

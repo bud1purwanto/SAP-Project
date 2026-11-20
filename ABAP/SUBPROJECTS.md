@@ -67,6 +67,7 @@ Prinsip: **1 TCODE / program = 1 sub-project** (program + include + Smart Form +
 | `subproject/ADT_VSCODE/` | ICF `/sap/bc/adt` + ICM 8000 + proxy | Buka/edit program SAP langsung di VSCode via ADT (ext ABAP remote FS), setup sandbox-new, proxy header `X-Requested-With` untuk SAP_BASIS 731 SP4 | adt, vscode, abap remote fs, abapfs, sicf adt, smicm, icm port, eclipse adt |
 | `subproject/S4HANA_DATA_MIGRATION/` | Blueprint & Migrasi Master Data SAP S/4HANA (Org Structure, Material, BOM, Routing, Prod Version) | Penyiapan Enterprise Structure dan Master Data manufaktur di S/4HANA 1909 On-Premise mengacu sistem DEV AIX TRD | s4hana, master data, migration, enterprise structure, bom, routing, production version, plant 1000, plant 2000 |
 | `subproject/BTP_HYBRID_INTEGRATION/` | SAP Cloud Connector 2.19.2 + BTP Destination + BAS | Integrasi hybrid S/4HANA 1909 On-Premise ke SAP BTP via SCC Docker, reverse tunnel port 443, Destination S4HANA_ONPREM, dev space FioriDev di BAS | btp, cloud connector, scc, hybrid integration, s4hana onprem, bas, sap business application studio, destination, fiori dev, subaccount, tunnel |
+| `subproject/ZSMS/` | `ZSMS` | Utilitas broadcast pesan instan antar user aktif SAP GUI via C-kernel & TH_POPUP, replikasi dari DEV AIX ke S/4HANA 1909 | zsms, messaging, popup message, broadcast user, th_popup, send message, program messaging |
 
 
 ## Folder Non-Sub-Project
