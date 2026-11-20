@@ -2,18 +2,19 @@
 
 | Atribut | Isi |
 |---|---|
-| Waktu | 2026-11-20 15:40 |
+| Waktu | 2026-11-20 16:12 |
 | AI / device | Antigravity / Windows |
 | Sub-project | BTP_HYBRID_INTEGRATION |
-| Pekerjaan | Eksekusi Opsi C Deployment Fiori ke BTP Cloud Foundry: Build arsip MTA zbtpzpoitems_0.0.1.mtar, penanganan tuntas Error 422 OIDC Trust Missing, aktivasi SAP Cloud Identity Services di BTP Trial, dan konfigurasi OIDC Trust tenant adnznjp2l.trial-accounts.ondemand.com |
-| Status | Selesai (Milestone OIDC & Deploy) |
-| Next step | Aktivasi langganan SAP Build Work Zone standard edition, penambahan Tile di Site Directory, dan verifikasi akses live end-to-end |
+| Pekerjaan | Milestone Puncak Opsi C Tercapai: Langganan SAP Build Work Zone standard edition (SAPLaunchpadSMS) SUKSES AKTIF HIJAU (Subscribed) dengan Subscription ID 7e0d17d6-5990-4f93-8e5a-cf096ffa9583 setelah integrasi penuh OIDC Cloud Identity Services |
+| Status | Selesai (Milestone Work Zone) |
+| Next step | Penugasan Role Collection Launchpad_Admin, konfigurasi Tile Monitoring PO Items di Site Manager, dan akses Launchpad live |
 | Backup | subproject/BTP_HYBRID_INTEGRATION/CHECKPOINT.md |
 
 ## Log (terbaru di atas)
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
 |---|---|---|---|---|---|
+| 2026-11-20 16:12 | Antigravity / Windows | BTP_HYBRID_INTEGRATION | Langganan SAP Build Work Zone standard edition SUKSES AKTIF PENUH (Subscribed, ID 7e0d17d6) setelah OIDC IAS aktif penuh | Selesai (Milestone Work Zone) | Assign Role Launchpad_Admin & Setup Tile di Site Manager |
 | 2026-11-20 15:40 | Antigravity / Windows | BTP_HYBRID_INTEGRATION | Eksekusi Opsi C: Build MTA zbtpzpoitems_0.0.1.mtar, mitigasi Error 422 OIDC Trust, provisioning Cloud Identity Services, dan konfigurasi OIDC Trust adnznjp2l | Selesai (Milestone OIDC & Deploy) | Aktivasi SAP Build Work Zone Launchpad & Verifikasi Live Portal |
 | 2026-11-20 15:16 | Antigravity / RFC & GUI | ZSMS | Replikasi Program & TCode ZSMS dari DEV AIX ke S/4HANA: Program aktif, SE93 report transaction (CINFO 80), verified live di SAP GUI tanpa dump ST22 | Selesai (Milestone ZSMS) | Handover ke Baginda |
 | 2026-11-20 14:55 | Antigravity / BAPI & RFC | S4HANA_DATA_MIGRATION | Siklus Manufaktur PP-PI Tuntas 100%: Rilis Order, GI 261 (MatDoc 4900000002), Konfirmasi Produksi (Doc 0000000003), GR 101 (MatDoc 5000000000), Resolusi CO/PCA/OBYC, Order REL GMPS CNF HCNF DLV, Stok JRAAAI 100 KG | Selesai (Milestone PP-PI) | Siap Dipresentasikan ke Baginda |

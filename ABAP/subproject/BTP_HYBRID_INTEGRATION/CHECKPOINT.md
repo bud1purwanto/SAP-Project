@@ -11,6 +11,7 @@
 ## Log Sesi (terbaru di atas, wajib — lihat [08](../../00_RULES/08_Checkpoint_Wajib.md))
 | Waktu | AI / device | Pekerjaan | Status | Next step |
 |---|---|---|---|---|
+| 2026-11-20 16:12 | Antigravity / Windows | Langganan SAP Build Work Zone SUKSES AKTIF (Subscribed, ID 7e0d17d6), OIDC IAS 100% tuntas | Selesai (Milestone Work Zone) | Assign Role Launchpad_Admin & Setup Tile di Site Manager |
 | 2026-11-20 15:40 | Antigravity / Windows | Eksekusi Opsi C: Build MTA zbtpzpoitems, penyelesaian Error 422 OIDC Trust via SAP Cloud Identity Services, dan Trust Configuration sukses | Selesai (Milestone OIDC & Deploy) | Aktivasi SAP Build Work Zone Launchpad & Verifikasi Live Portal |
 | 2026-11-20 13:40 | Antigravity / Windows | Troubleshooting BAS Preview & Error ECONNREFUSED 3001 / Invalid URL / Missing Preview Menu | Selesai (Analisis & Solusi Tuntas) | Dokumentasi lengkap di CHECKPOINT & Guide |
 | 2026-11-20 09:40 | Antigravity / Windows | SAP HANA Consultant Review & Pembaruan Dokumen Word (.docx) Versi 2.0: Penambahan 10 screenshot baru (total 39 screenshot beranotasi visual) mencakup live SAP GUI (SICF, SU01, /IWFND/MAINT_SERVICE, SE16N EKPO, ME23N), BTP Cockpit Cloud Connectors tab, BAS Wizard Step 1 & 2, OData Metadata XML, dan Fiori Table Settings Gear | Selesai (Milestone Dokumentasi V2) | Upload file .docx revisi ke Google Drive Baginda |
@@ -26,6 +27,9 @@
 | 2026-11-18 11:35 | Antigravity / Windows | Setup SCC 2.19.2 Docker, reverse tunnel BTP, destination S4HANA_ONPREM, dev space BAS FioriDev & subproject docs | Selesai | Deploy aplikasi Fiori perdana dari BAS |
 
 ## 1. Yang Sudah Selesai
+- [x] Langganan **SAP Build Work Zone, standard edition** SUKSES AKTIF PENUH berstatus hijau (**`Subscribed`**, Subscription ID: `7e0d17d6-5990-4f93-8e5a-cf096ffa9583`, Plan: `standard`).
+- [x] Transisi kendala Error 422 (OIDC missing), Error 500 (IAS handshake delay), dan Unsubscription lock tuntas teratasi 100% via aktivasi IAS Console dan retry deletion.
+- [x] Tenant OIDC `adnznjp2l.trial-accounts.ondemand.com` (`sap.custom`) aktif melayani autentikasi portal Launchpad.
 - [x] Eksekusi Fase 1 & 2 Opsi C: Konfigurasi deployment Cloud Foundry (`mta.yaml`, `ui5-deploy.yaml`, `xs-app.json`, `xs-security.json`) dan FLP Tile (`PurchaseOrder-display`).
 - [x] Eksekusi Fase 3 Opsi C: Kompilasi bundle produksi MTA `zbtpzpoitems_0.0.1.mtar` via `npm run build:mta` sukses 100%.
 - [x] Identifikasi tuntas nama file arsip MTA: `zbtpzpoitems_0.0.1.mtar` (namespace `zbtp` + module `zpoitems`).

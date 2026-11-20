@@ -561,8 +561,32 @@ npm run build:mta
      * *Origin Key:* `sap.custom`
      * *Parameters:* `Available for User Logon = Checked`, `Create Shadow Users on Logon = Checked`.
    * Klik **Finish**.
-3. **Penyelesaian Langganan SAP Build Work Zone:**
+3. **Penyelesaian Langganan SAP Build Work Zone (SUKSES 100%):**
    * Di menu **Instances and Subscriptions**, buat langganan **`SAP Build Work Zone, standard edition`** (Plan: `standard`).
-   * Status sukses aktif hijau (**`Subscribed`**) tanpa kendala Error 422.
+   * **Status Terverifikasi AKTIF & HIJAU (`Subscribed`):**
+     * *Subscription ID:* `7e0d17d6-5990-4f93-8e5a-cf096ffa9583`
+     * *Application Technical Name:* `SAPLaunchpadSMS`
+     * *Plan:* `standard`
+     * *Status:* `Subscribed`
+   * Link `Go to Application` telah aktif dan siap diakses.
+
+### 10.5 Langkah Konfigurasi Fiori Launchpad Portal (Site Manager)
+Setelah SAP Build Work Zone berstatus `Subscribed`, berikut langkah penyelesaian hingga aplikasi live di Launchpad:
+1. **Penugasan Hak Akses Admin Launchpad:**
+   * Masuk ke **Security** ??? **Users** ??? Klik akun user (`budi.purwanto15@gmail.com`).
+   * Klik **Assign Role Collection** ??? Centang **`Launchpad_Admin`** ??? Simpan.
+   * Lakukan refresh browser.
+2. **Sinkronisasi Katalog HTML5 Application:**
+   * Buka portal Work Zone via tombol **Go to Application**.
+   * Buka menu **Channel Manager** ??? Klik ikon **Update Content** pada baris *HTML5 Apps* agar aplikasi `zbtpzpoitems` terbaca.
+3. **Penyusunan Konten Portal (Content Manager):**
+   * Masuk ke **Content Manager** ??? tab **Content Explorer** ??? klik **HTML5 Apps**.
+   * Pilih aplikasi `Monitoring PO Items S/4HANA` ??? klik **+ Add to My Content**.
+   * Di tab **My Content**:
+     * Masukkan ke **Role: Everyone** (klik Edit, centang aplikasi, klik Save).
+     * Masukkan ke **Group: My Home** (klik Edit, centang aplikasi, klik Save).
+4. **Peluncuran Portal Fiori Launchpad Live:**
+   * Buka menu **Site Directory** ??? Klik tombol **Go to site**.
+   * Portal Fiori Launchpad resmi cloud BTP terbuka dengan Tile aktif `Monitoring PO Items S/4HANA` yang mengalirkan 10 PO real-time dari S/4HANA On-Premise Client 130!
 
 *Panduan ini disusun untuk Baginda sebagai referensi teknis permanen dalam subproject BTP_HYBRID_INTEGRATION.*
