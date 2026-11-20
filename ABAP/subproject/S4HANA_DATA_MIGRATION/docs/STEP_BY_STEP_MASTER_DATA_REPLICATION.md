@@ -1,17 +1,17 @@
 # DOKUMENTASI LENGKAP: REPLIKASI MASTER DATA PRODUKSI S/4HANA
-**Target System:** SAP S/4HANA (SID: ADB, Client: 130)  
-**Source Baseline:** SAP ECC on DEV AIX (SID: TRD, Client: 130)  
-**Penanggung Jawab / User:** TRSTABAP  
-**Tanggal Eksekusi:** 19 November 2026  
+**Target System:** SAP S/4HANA (SID: `ADB`, Client: `130`)  
+**Source Baseline:** SAP ECC on DEV AIX (SID: `TRD`, Client: `130`)  
+**Penanggung Jawab / User:** `TRSTABAP`  
+**Tanggal Eksekusi:** 19-20 November 2026  
 **Status:** **TUNTAS 100% & TERVERIFIKASI LIVE DI DATABASE**
 
 ---
 
 ## 1. Executive Summary & Arsitektur Solusi
-Seluruh rangkaian konfigurasi fondasi manufaktur dan replikasi data master produksi percontohan (Pilot Production Master Data) untuk model **Jumbo Roll PLE-18** (Material: JRAAAI) telah berhasil direplikasi secara end-to-end dari DEV AIX ke lingkungan target **SAP S/4HANA**.
+Seluruh rangkaian konfigurasi fondasi manufaktur dan replikasi data master produksi percontohan (Pilot Production Master Data) untuk model **Jumbo Roll PLE-18** (Material: `JRAAAI`) telah berhasil direplikasi secara end-to-end dari DEV AIX ke lingkungan target **SAP S/4HANA**.
 
 Alur keterkaitan data manufaktur yang telah terverifikasi aktif di database:
-`
+```
 [Company Code: 9999] 
    └── [Plant: 1000 - Pabrik Waru]
           ├── [Storage Locations: 1011 (Raw), 1813 (FG)]
@@ -23,12 +23,147 @@ Alur keterkaitan data manufaktur yang telah terverifikasi aktif di database:
           └── [Production Version: C223 VERID 0001 (MKAL)]
                  ├── Mengikat BOM: Alt 02 / Usage 1
                  └── Mengikat Routing: Group 50000000 / Counter 01 / Type N
-`
+```
 
 ---
 
 ## 2. Rincian Langkah & Hasil Eksekusi Per Fase
 
 ### Fase 1: Enterprise Structure (Organisasi Perusahaan)
-1. **Company Code (T001):**
-   - Transaksi: EC01 (Copy Company Code dari template 
+1. **Company Code (`T001`):**
+   - Transaksi: `EC01` (Copy Company Code dari template `0001` ke `9999`).
+   - Penyesuaian `OX02`:
+     - Company Code: `9999`
+     - Nama Perusahaan: `PT Trias Sentosa, Tbk.`
+     - Kota: `Sidoarjo`
+     - Negara: `ID`
+     - Mata Uang: `IDR`
+     - Bahasa: `EN`
+   - Transport Request: `ADBK900049`.
+2. **Plant (`T001W`):**
+   - Transaksi: `EC02` (Copy Plant dari template `0001` ke `1000` dan `2000`).
+   - Penyesuaian `OX10`:
+     - Plant `1000`: `Pabrik Waru (Trias Sentosa)`, Sidoarjo (61256), ID.
+     - Plant `2000`: `Pabrik Krian (Trias Sentosa)`, Sidoarjo (61262), ID.
+3. **Penetapan Plant ke Company Code (`T001K`):**
+   - Transaksi: `OX18`.
+   - Hubungan:
+     - Company Code `9999` <-> Plant `1000`
+     - Company Code `9999` <-> Plant `2000`
+     - Company Code `0003` <-> Plant `0003` (Bawaan)
+
+### Fase 2: Storage Locations (`T001L`)
+Dikonfigurasi via transaksi `OX09` dan tersimpan di TR `ADBK900049`:
+- **Plant 1000:**
+  - `1011`: Feed OPP WR (Bahan Baku / Resin)
+  - `1813`: WR FGS-Non WM (Gudang Barang Jadi / Semi-Finished)
+- **Plant 2000:**
+  - `1813`: WR FGS-Non WM
+  - `2011`: Feed XLM1
+  - `2021`: Feed OPP4
+
+### Fase 3: Inisialisasi Periode Material Management (`MARV`)
+Mengaktifkan periode posting MM untuk Company Code `9999`:
+- Current Period: `11` (November)
+- Current Year: `2023`
+- Status: Mengizinkan transaksi pergerakan material dan master data material.
+
+### Fase 4: Material Master Extensions (`MARA`, `MARC`, `MARD`)
+Total 8 material berhasil dipelihara dan diekstensikan ke Plant `1000`:
+1. `JRAAAI`: Jumbo Roll PLE-18 (Finished / Semi-Finished Goods ZSFG, Satuan: KG).
+2. 7 Komponen Resin Bahan Baku:
+   - `RPV-HC401BF`: Polypropylene Resin
+   - `SRP-I`: Synthetic Resin Polypropylene
+   - `SRP-E`: Synthetic Resin Polypropylene Type E
+   - `M5AAA01`: Masterbatch White
+   - `RPV-FS3011E3`: Homopolymer PP Resin
+   - `RPM-ABPP10T`: Anti-Block Masterbatch
+   - `RPC-FS5612`: Copolymer Resin
+
+### Fase 5: Work Center Produksi (`CRHD`, `CRTX`)
+Dibuat via transaksi `CR01`:
+- Plant: `1000`
+- Work Center: `JROPP01`
+- Category: `0001` (Machine)
+- Description: `Jumbo Roll OPP Extrusion Line 1`
+- Standard Value Key: `SAP1` (Setup, Machine, Labor)
+- Person Responsible: `001`
+- Internal Object ID (`ARBID`): `10000178`
+
+### Fase 6: Bill of Materials / BOM (`MAST`, `STKO`, `STAS`, `STPO`)
+Dibuat via transaksi `CS01`:
+- Material: `JRAAAI`
+- Plant: `1000`
+- BOM Usage: `1` (Production)
+- Alternative BOM: `02`
+- Internal BOM Number (`STLNR`): `00000001`
+- Status: Active
+- Base Quantity: `100.000 KG`
+- Komposisi 9 Item Resin:
+  - Pos 0010: `RPV-HC401BF` = 63.900 KG
+  - Pos 0020: `SRP-I` = 12.000 KG
+  - Pos 0030: `SRP-E` = 8.000 KG
+  - Pos 0040: `M5AAA01` = 1.000 KG
+  - Pos 0050: `RPV-FS3011E3` = 4.200 KG
+  - Pos 0060: `RPM-ABPP10T` = 0.900 KG
+  - Pos 0070: `RPC-FS5612` = 4.000 KG
+  - Pos 0080: `RPV-HC401BF` = 4.000 KG
+  - Pos 0090: `RPM-ABPP10T` = 2.000 KG
+  - **Total Berat:** `100.000 KG` (Persis seimbang dengan Base Qty)
+
+### Fase 7: Routing / Standar Operasi (`MAPL`, `PLAS`, `PLPO`)
+Dibuat via transaksi `CA01`:
+- Material: `JRAAAI`
+- Plant: `1000`
+- Task List Type: `N` (Routing)
+- Task List Group (`PLNNR`): `50000000`
+- Group Counter (`ALNAL`): `01`
+- Status: Released / Active
+- Operation `0010`:
+  - Work Center: `JROPP01`
+  - Base Quantity: `100.000 KG`
+  - Description: `Extrusion Line Waru 1`
+
+### Fase 8: Production Version (`C223`, `MKAL`)
+Dibuat dan dipelihara via transaksi massal `C223`:
+- Header Key:
+  - Plant: `1000`
+  - Material: `JRAAAI`
+  - Version: `0001`
+  - Version Text: `JR PLE-18 LINE 1`
+  - Validitas: `10.12.2020` s/d `31.12.9999`
+- Relasi Routing (Task List):
+  - Task List Type: `Routing` (`N`)
+  - Group: `50000000`
+  - Group Counter: `1` (`01`)
+- Relasi Bill of Material (BOM):
+  - Alternative BOM: `2` (`02`)
+  - BOM Usage: `1`
+- Consistency Check: **Passed / Valid** (Hijau).
+- Status Penyimpanan: **Saved & Active** (Terverifikasi di tabel `MKAL`).
+
+---
+
+## 3. Matriks Pembuktian Live Database (S/4HANA Client 130)
+
+| Tabel | Key Utama | Field Kunci | Nilai Live Database | Status |
+|---|---|---|---|---|
+| `T001` | BUKRS = '9999' | BUTXT, WAERS, LAND1 | PT Trias Sentosa, Tbk. / IDR / ID | VALID |
+| `T001W` | WERKS = '1000' | NAME1, ORT01, LAND1 | Pabrik Waru (Trias Sentosa) / Sidoarjo / ID | VALID |
+| `T001W` | WERKS = '2000' | NAME1, ORT01, LAND1 | Pabrik Krian (Trias Sentosa) / Sidoarjo / ID | VALID |
+| `T001K` | BWKEY = '1000' | BUKRS | 9999 | VALID |
+| `T001L` | WERKS = '1000' | LGORT, LGOBE | 1011 (Feed OPP WR), 1813 (WR FGS-Non WM) | VALID |
+| `MARV` | BUKRS = '9999' | LFMON, LFGJA | Period 11 / Year 2023 | VALID |
+| `MARC` | MATNR = 'JRAAAI', WERKS = '1000' | LVORM | Blank (Active) | VALID |
+| `CRHD` | ARBPL = 'JROPP01', WERKS = '1000' | ARBID, VERWE, ZTMEN | 10000178 / 0001 (Machine) / SAP1 | VALID |
+| `MAST` | MATNR = 'JRAAAI', WERKS = '1000' | STLNR, STLAL, STLAN | 00000001 / 02 / 1 | VALID |
+| `MAPL` | MATNR = 'JRAAAI', WERKS = '1000' | PLNTY, PLNNR, PLNAL | N / 50000000 / 01 | VALID |
+| `MKAL` | MATNR = 'JRAAAI', WERKS = '1000' | VERID, STLAL, PLNNR | 0001 / Alt 02 / Group 50000000 | VALID |
+
+---
+
+## 4. Arsip Lampiran GUI (Screenshots)
+Semua bukti visual sesi eksekusi tersimpan rapi di direktori:
+`/data/Projects/SAP/ABAP/subproject/S4HANA_DATA_MIGRATION/docs/attachments/`
+1. `c223_detail_screen.png`: Layar detail pemeliharaan Production Version 0001 mengikat Routing & BOM.
+2. `c223_production_version_saved.png`: Layar tabel ringkasan C223 setelah perubahan tersimpan.
