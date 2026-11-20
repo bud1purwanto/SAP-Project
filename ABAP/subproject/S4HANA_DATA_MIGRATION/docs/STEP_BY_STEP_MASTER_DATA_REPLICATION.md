@@ -270,3 +270,82 @@ Semua bukti visual sesi eksekusi tersimpan rapi di direktori:
 `/data/Projects/SAP/ABAP/subproject/S4HANA_DATA_MIGRATION/docs/attachments/`
 1. `c223_detail_screen.png`: Layar detail pemeliharaan Production Version 0001 mengikat Routing & BOM.
 2. `c223_production_version_saved.png`: Layar tabel ringkasan C223 setelah perubahan tersimpan.
+
+
+---
+
+## 5. Implementasi Modul PP-PI (Process Industry) & Process Order (COR1 / PI01)
+
+Sesuai arahan Baginda untuk menjalankan **OPSI B (Setup Modul PP-PI)**, seluruh master data resep proses (Master Recipe) dan Production Version terintegrasi telah berhasil dikonfigurasi, dan simulasi pembuatan **Process Order** berhasil dieksekusi tanpa error.
+
+### 5.1. Master Data PP-PI Terkonfigurasi
+1. **Master Recipe Header (`PLKO`):**
+   - Recipe Type (`PLNTY`): `2` (Master Recipe PP-PI)
+   - Recipe Group (`PLNNR`): `JRAAAI`
+   - Group Counter (`PLNAL`): `10`
+   - Status: `4` (Released / General Release)
+   - Base Quantity: `100.000 KG`
+   - Deskripsi: *Jumbo Roll PLE-18 Master Recipe*
+2. **Material to Recipe Assignment (`MAPL`):**
+   - Material: `JRAAAI`
+   - Plant: `1000`
+   - Recipe: Group `JRAAAI`, Counter `10`, Type `2`
+3. **Operations & Recipe Phases (`PLAS` & `PLPO`):**
+   - Operasi Header `0010`: Resource `10000178` (`JROPP01` Extrusion Line 1 Waru), Control Key `PI01`.
+   - Fase Proses `0020`: Sub-phase yang merujuk pada Op `0010` (`PVZKN = 00000001`), Control Key `PI01`.
+4. **Production Version 0002 (`MKAL`):**
+   - Version ID: `0002`
+   - Deskripsi: *JR PLE-18 PP-PI Recipe (Line 1)*
+   - Validitas: `20201210` s/d `99991231`
+   - BOM: Alternative `02` (Usage `1`)
+   - Recipe: Type `2`, Group `JRAAAI`, Counter `10`
+
+---
+
+### 5.2. Eksekusi Transaksional Process Order 000001000001
+Pembuatan Process Order dilakukan menggunakan API standar SAP PP-PI (`BAPI_PROCORD_CREATE`):
+- **Nomor Process Order:** `000001000001` (GUI Display: `1000001`)
+- **Order Type:** `PI01` (Process Order)
+- **Order Category (`AUTYP`):** `40` (Process Order)
+- **Material Output:** `JRAAAI` (Jumbo Roll PLE-18)
+- **Plant / Company Code:** `1000` / `9999`
+- **Target Quantity:** `100.000 KG`
+- **Storage Location Output:** `1813` (WR FGS-Non WM)
+- **Production Version Dipakai:** `0002` (PP-PI Recipe)
+- **Status Sistem SAP:** `CRTD PRC CSER MANC OPGN SETC`
+
+---
+
+### 5.3. Pembuktian Live Database S/4HANA (ADB 130)
+
+#### A. Order Master & PP Detail (`AUFK` & `AFKO`)
+| Tabel | Key | Field Kunci | Nilai Live Database | Status |
+|---|---|---|---|---|
+| `AUFK` | AUFNR = '000001000001' | AUART, AUTYP, WERKS, BUKRS | `PI01` / `40` (Process Order) / `1000` / `9999` | VALID |
+| `AFKO` | AUFNR = '000001000001' | GAMNG, GMEIN, PLNTY, STLAL | `100.000 KG` / Task List Type `2` (Recipe) / BOM Alt `02` | VALID |
+
+#### B. Reservasi & Komponen Bahan Baku Otomatis Ter-explode (`RESB`)
+Reservasi Number: `0000000002`
+| Posisi | Material Komponen | Deskripsi Resin | Kuantitas Kebutuhan | Satuan |
+|---|---|---|---|---|
+| 0001 | `RPV-HC401BF` | Polypropylene Resin Grade HC401BF | 22.454 | KG |
+| 0002 | `SRP-I` | Scrap Resin Polos Internal | 64.948 | KG |
+| 0003 | `SRP-E` | Scrap Resin Polos External | 3.711 | KG |
+| 0004 | `M5AAA01` | Masterbatch Additive 5AAA01 | 1.670 | KG |
+| 0005 | `RPV-FS3011E3` | Polypropylene Resin Film Grade | 5.077 | KG |
+| 0006 | `RPM-ABPP10T` | Anti-Block Masterbatch | 0.077 | KG |
+| 0007 | `RPV-FS3011E3` | Polypropylene Resin Film Grade | 4.948 | KG |
+| 0008 | `RPC-FS5612` | Polypropylene Terpolymer Resin | 0.155 | KG |
+| 0009 | `RPM-ABPP10T` | Anti-Block Masterbatch | 0.052 | KG |
+
+#### C. Operasi & Fase Resep Proses (`AFVC`)
+- Recipe AUFPL: `0000000002`
+- Operation: `0010`
+- Control Key: `PI01` (Process Order Standard)
+
+---
+
+### 5.4. Bukti Visual SAP GUI (COR3)
+Bukti screenshot resmi tersimpan di subproject attachments:
+1. `cor3_header.png`: Tampilan layar utama SAP GUI transaksi **COR3** untuk Order **1000001** (Type PI01, Qty 100 KG).
+2. `cor3_operations.png`: Tampilan layar operasi & fase transaksi **COR3** menunjukkan Operation 0010 dengan Control Key PI01.
