@@ -349,3 +349,59 @@ Reservasi Number: `0000000002`
 Bukti screenshot resmi tersimpan di subproject attachments:
 1. `cor3_header.png`: Tampilan layar utama SAP GUI transaksi **COR3** untuk Order **1000001** (Type PI01, Qty 100 KG).
 2. `cor3_operations.png`: Tampilan layar operasi & fase transaksi **COR3** menunjukkan Operation 0010 dengan Control Key PI01.
+
+---
+
+### 5.5. Rilis Order & Konsumsi Bahan Baku (Goods Issue - MIGO 261)
+
+#### A. Rilis Process Order
+- Rilis order dieksekusi menggunakan standard API `BAPI_PROCORD_RELEASE`.
+- Status order berubah dari `CRTD` menjadi `REL` (Released).
+- Verifikasi rilis: `CO 282: No missing parts in order 1000001`, `CO 093: Order 1000001 is released`.
+
+#### B. Resolusi Konfigurasi Universal Journal, CO & PCA (Controlling Area 9999)
+Sebelum pemotongan stok bahan baku (Movement 261), S/4HANA Universal Journal memvalidasi struktur akuntansi manajerial:
+1. **Cost Elements (`CSKB`):** Mengatasi error `KI 280` dengan mereplikasi 170 Cost Elements dari Controlling Area `0001` ke `9999` melalui program ABAP `ZSETUP_CSKB_9999`. Akun konsumsi `400000` aktif dengan Category `01`.
+2. **Profit Center Accounting (`CEPC`, `CEPCT`, Sets):** Mengatasi error `KM 026` dengan membuat Dummy Profit Center `SAP-DUMMY` di `CEPC`/`CEPCT` serta menyalin hirarki set standar (`0106`, `0101` di `SETHEADER`, `SETHEADERT`, `SETNODE`, `SETLEAF`) untuk `KOKRS = '9999'` melalui program ABAP `ZSETUP_PCA_9999`.
+3. **Controlling Version Fiscal Years (`TKA07`, `TKV09`):** Mengatasi error `GP 626` dengan mengaktifkan Version 0 untuk fiscal years 2013 s/d 2030 di Controlling Area `9999` melalui program ABAP `ZSETUP_TKA07_YEARS`.
+
+#### C. Eksekusi Goods Issue Movement 261
+Konsumsi 9 komponen resin bahan baku diposting via `BAPI_GOODSMVT_CREATE` (GM_CODE `03`):
+- **Material Document:** `4900000002` (Fiscal Year `2023`)
+- **Movement Type:** `261` (GI for Order)
+- **Reservasi Terkait:** `0000000002` (9 item terpotong penuh dari SLoc `1011` dengan indikator final issue `KZEAR = 'X'`)
+- **Status Order Ter-update:** `GMPS` (Goods Movement Posted) & `MACM` (Material Committed).
+
+---
+
+### 5.6. Konfirmasi Produksi (CORS) & Penerimaan Barang Jadi (Goods Receipt - MIGO 101)
+
+#### A. Konfirmasi Hasil Produksi (Process Order Confirmation)
+- Konfirmasi hasil cetak Jumbo Roll dieksekusi menggunakan `BAPI_PROCORDCONF_CREATE_HDR`:
+  - **Yield Quantity:** `100.000 KG`
+  - **Posting Date:** `20201211` (Sinkron dengan system date server S/4HANA)
+  - **Confirmation Number:** `0000000003` / Counter `00000001`
+  - **Status Order Ter-update:** `CNF` (Confirmed) & `HCNF` (Order Header Confirmed).
+
+#### B. Resolusi Account Determination OBYC GBB-AUF
+- Mengatasi error `M8 147 (Account determination for entry INT GBB 0001 AUF 3000 not possible)`:
+  - Diperbarui tabel `T030` untuk Chart of Accounts `INT`, Transaction Key `GBB`, Modif `AUF`, Valuation Class `3000` dan `2001` ke akun Inventory Change `0000895000` via report ABAP `ZSETUP_T030_AUF`.
+
+#### C. Penerimaan Barang Jadi (Goods Receipt Movement 101)
+Penerimaan finished goods Jumbo Roll PLE-18 diposting via `BAPI_GOODSMVT_CREATE` (GM_CODE `02`):
+- **Material Document:** `5000000000` (Fiscal Year `2023`)
+- **Movement Type:** `101` (GR for Order to Warehouse)
+- **Material / Plant / SLoc:** `JRAAAI` / `1000` / `1813` (Waru Finished Goods)
+- **Quantity:** `100.000 KG`
+- **Delivered Quantity di AFPO (`WEMNG`):** `100.000 KG` (Lengkap, `ELIKZ = 'X'`)
+- **Stok Akhir di MARD (Plant 1000 / SLoc 1813):** `100.000 KG`
+- **Status Akhir Process Order (`AUFK`/`JEST`):** `REL GMPS CNF HCNF DLV` (Delivered)!
+
+---
+
+### 5.7. Bukti Visual SAP GUI Transaksi Lengkap
+Bukti screenshot resmi tersimpan di subproject attachments:
+1. `cor3_header.png`: Header Order 1000001 (Type PI01, Qty 100 KG).
+2. `cor3_operations.png`: Operation 0010 & Control Key PI01.
+3. `cor3_after_gi.png`: Tampilan layar Order setelah Goods Issue (Status `GMPS`).
+4. `cor3_final_dlv.png`: Tampilan layar Order setelah Konfirmasi & Goods Receipt (Status `CNF DLV`).
