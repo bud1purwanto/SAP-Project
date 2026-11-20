@@ -6,11 +6,14 @@
 | Status | Selesai (Production-Ready Architecture) |
 | Server source terakhir | S/4HANA 1909 ADB (192.168.1.199:8080) & SCC Host (100.73.54.71:8443) |
 | Target Cloud | SAP BTP Trial US East (AWS) \cf.us10.hana.ondemand.com\ |
-| Backup terakhir | \docs/attachments/\ (25 screenshots terverifikasi) |
+| Backup terakhir | \docs/attachments/\ (39 screenshots beranotasi terverifikasi) |
 
 ## Log Sesi (terbaru di atas, wajib — lihat [08](../../00_RULES/08_Checkpoint_Wajib.md))
 | Waktu | AI / device | Pekerjaan | Status | Next step |
 |---|---|---|---|---|
+| 2026-11-20 13:40 | Antigravity / Windows | Troubleshooting BAS Preview & Error ECONNREFUSED 3001 / Invalid URL / Missing Preview Menu | Selesai (Analisis & Solusi Tuntas) | Dokumentasi lengkap di CHECKPOINT & Guide |
+| 2026-11-20 09:40 | Antigravity / Windows | SAP HANA Consultant Review & Pembaruan Dokumen Word (.docx) Versi 2.0: Penambahan 10 screenshot baru (total 39 screenshot beranotasi visual) mencakup live SAP GUI (SICF, SU01, /IWFND/MAINT_SERVICE, SE16N EKPO, ME23N), BTP Cockpit Cloud Connectors tab, BAS Wizard Step 1 & 2, OData Metadata XML, dan Fiori Table Settings Gear | Selesai (Milestone Dokumentasi V2) | Upload file .docx revisi ke Google Drive Baginda |
+| 2026-11-20 09:15 | Antigravity / Windows | Pembuatan dokumen Word (.docx) komprehensif berisi 29 screenshot beranotasi visual (kotak merah & nomor penunjuk aksi) untuk pelaporan Google Drive | Selesai (Milestone Dokumentasi) | Upload file .docx ke Google Drive Baginda |
 | 2026-11-19 14:58 | Antigravity / Windows | Opsi A TUNTAS 100%: 10 Purchase Order S/4HANA live berhasil tampil di tabel Fiori Elements List Report BAS | Selesai (Milestone Tercapai) | Opsi C: Build & Deploy ke SAP BTP HTML5 Repository / Launchpad |
 | 2026-11-19 14:00 | Antigravity / Windows | Update tanggal 10 PO ke 20261119 & verifikasi query filter 2026 sukses (10 items) | Selesai | Refresh preview Fiori & Pilih kolom via gear settings |
 | 2026-11-19 10:38 | Antigravity / Windows | Verifikasi End-to-End Fiori App zpoitems SUKSES (HTTP 200 OK, tabel ter-load sempurna) | Selesai (Milestone Tercapai) | Dokumentasi & Opsi Input Data PO di S/4HANA |
@@ -22,6 +25,10 @@
 | 2026-11-18 11:35 | Antigravity / Windows | Setup SCC 2.19.2 Docker, reverse tunnel BTP, destination S4HANA_ONPREM, dev space BAS FioriDev & subproject docs | Selesai | Deploy aplikasi Fiori perdana dari BAS |
 
 ## 1. Yang Sudah Selesai
+- [x] Fix konfigurasi `ui5.yaml` (`url: http://s4hana-onprem:8080` & `destination: S4HANA_ONPREM`) terverifikasi sukses (`Backend proxy created for https://S4HANA_ONPREM.dest`).
+- [x] Eksekusi UI5 serve via CLI `npx ui5 serve --port 8085` terverifikasi sukses running independen dari extension VS Code.
+- [x] Identifikasi tuntas root cause error `connect ECONNREFUSED 3001`, `Application Info` blank putih, dan hilangnya menu `Preview Application` akibat failure extension `@sap/ux-fiori-tools-extension` di container Dev Space BAS.
+- [x] Solusi pemulihan teridentifikasi lengkap: `Developer: Reload Window`, `[Installation Details]`, atau pembuatan Dev Space baru (`FioriDev2`).
 - [x] Verifikasi endpoint S/4HANA 1909 HTTP 8080 (Client 130) & unlock akun Fiori.
 - [x] Build dan deployment container Docker SAP Cloud Connector 2.19.2 (Rocky Linux 9 + OpenJDK 21 LTS).
 - [x] Otomatisasi inisialisasi SSFS Secure Storage (\initSecStore\), Keystore PKCS12, dan user admin Tomcat.
@@ -38,6 +45,8 @@
 - [x] Konfigurasi entity set `C_PurchaseOrderItemMoniResults` & `considerAnalyticalParameters = true` di `manifest.json`.
 - [x] **OPSI A TUNTAS 100%**: 10 Dokumen Purchase Order S/4HANA On-Premise mengalir live dan tampil sempurna di tabel Fiori Elements.
 - [x] Penyusunan dokumentasi teknis `STEP_BY_STEP_IMPLEMENTATION_GUIDE.md` dan presentasi eksekutif `EXECUTIVE_SUMMARY_PRESENTATION.md`.
+- [x] Pembuatan dokumen resmi Microsoft Word (.docx) 2.6 MB beranotasi visual lengkap (kotak merah, nomor badge penunjuk aksi, tabel parameter, alur arsitektur, dan panduan troubleshooting) di folder outputs/ dan docs/.
+- [x] Review SAP HANA Consultant & Rilis Dokumen Word Versi 2.0 (3.6 MB, 39 screenshot beranotasi visual lengkap, mencakup live SAP GUI SICF, SU01, /IWFND/MAINT_SERVICE, SE16N EKPO 10 hits, ME23N PO detail, OData $metadata XML, BTP Cockpit Cloud Connectors tab, BAS Wizard Step 1 & 2, dan Fiori Table Settings Gear).
 - [x] Provisioning Master Data & Seeding 10 Data Purchase Order di S/4HANA Client 130 (Opsi A Selesai).
   - Business Partner `0000000102` / Vendor `0000100000` (PT TECH SOLUTIONS INDONESIA) dibuat via BAPI CVI (`FLVN01`).
   - Purchasing Org `0001` dimaintain di `LFM1`.

@@ -7,6 +7,14 @@
 **Dokumentasi Dibuat Untuk:** Baginda  
 
 ---
+> [!IMPORTANT]
+> **DOKUMEN RESMI MICROSOFT WORD (.DOCX) TELAH TERSEDIA:**  
+> Seluruh panduan implementasi teknis di bawah ini telah dikompilasi secara lengkap ke dalam dokumen Microsoft Word (.docx) siap pakai yang memuat **29 tangkapan layar (screenshot) beranotasi visual (kotak merah dan nomor penunjuk aksi)**:  
+> 📄 **File Dokumen:** `outputs/DOKUMENTASI_STEP_BY_STEP_BTP_FIORI_HYBRID_INTEGRATION.docx` (serta salinan di `docs/`)  
+> 🖼️ **Arsip Gambar Beranotasi:** `docs/attachments/annotated/`  
+> Siap diunggah ke Google Drive dan dipresentasikan kepada manajemen maupun tim teknis.
+
+
 
 ## 1. Arsitektur Solusi & Topologi Jaringan
 
@@ -486,6 +494,10 @@ Dengan menyisipkan anotasi `UI.SelectionFields` dan `UI.LineItem` di dalam `weba
 | **Tabel Fiori hanya punya 1 kolom "Display Currency" (Define Column Properties: 1/1)** | List Report pada `manifest.json` terikat ke entitas parameter `C_PurchaseOrderItemMoni`, bukan ke entitas data `C_PurchaseOrderItemMoniResults`. | Ubah `entitySet` menjadi `C_PurchaseOrderItemMoniResults` dan tambahkan `"considerAnalyticalParameters": true` pada `component.settings` di `manifest.json`. |
 | **Menjalankan preview `start-noflp` (`index.html`) menghasilkan layar putih polos (*blank screen*)** | Aplikasi SAP Fiori Elements wajib berjalan di dalam shell container Fiori Launchpad (`sap.ushell`) untuk me-render SmartFilterBar dan SmartTable. Membuka `index.html` langsung menyebabkan *bootstrapping crash*. | Selalu jalankan preview menggunakan opsi default: `start fiori run --open "test/flp.html#app-preview"`. |
 | **Preview aplikasi Fiori menampilkan layar putih pada port berbeda (misal port 8084)** | Perintah `fiori run` dijalankan ulang saat proses sebelumnya masih aktif di port 8083, atau port yang diakses pada URL browser tidak sesuai dengan port yang sedang listening di terminal BAS. | Periksa terminal BAS untuk memastikan nomor port yang aktif (misal port 8083), atau klik popup *"Open in New Tab"* resmi dari BAS. |
+| **Command run failed: `connect ECONNREFUSED ::1:3001` saat `npm start` atau `fiori run`** | Extension visual `SAP Fiori Tools` (`@sap/ux-fiori-tools-extension`) di BAS Dev Space gagal termuat saat inisialisasi awal (*"Some extensions were not fully installed. Source: BAS Framework"*). Daemon background port 3001 yang melayani CLI `fiori run` mati. | Hindari `fiori run` sementara. Jalankan server langsung via UI5 CLI: `npx ui5 serve --port 8085`. Untuk memulihkan extension, lakukan `F1` -> `Developer: Reload Window` atau buat Dev Space baru bertipe SAP Fiori. |
+| **`Failed to register backend for /sap. TypeError: Invalid URL`** | Properti `url:` hilang atau terhapus pada blok konfigurasi `fiori-tools-proxy` di `ui5.yaml` ketika proxy mencoba menyambungkan destination BTP. | Pastikan `ui5.yaml` memiliki kedua atribut lengkap: `url: http://s4hana-onprem:8080` dan `destination: S4HANA_ONPREM`. |
+| **`EADDRINUSE: Port 8085 is already in use`** | Proses `ui5 serve` sebelumnya masih berjalan dan mengunci port 8085 di container BAS. | Matikan proses lama sebelum menjalankan serve baru: `pkill -f "ui5" 2>/dev/null` atau `fuser -k 8085/tcp 2>/dev/null`. |
+| **Menu klik kanan "Preview Application" hilang dari `package.json` & tab "Application Info" blank putih** | Extension pack visual `SAP Fiori Tools` mengalami crash atau incomplete install di container Dev Space. | 1. Gunakan CLI `npx ui5 serve --port 8085` untuk preview cepat.<br>2. Coba pulihkan: tekan `F1` -> pilih `Developer: Reload Window`.<br>3. Solusi permanen jika container corrupt: buat Dev Space baru bertipe **SAP Fiori** (`FioriDev2`). |
 
 ---
 
