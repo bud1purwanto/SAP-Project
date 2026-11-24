@@ -1,0 +1,60 @@
+EKSTRAK PROGRAM ABAP - PANDUAN WINDOWS
+
+Ekstrak seluruh ZIP ke folder yang bisa ditulis. Jalankan file BAT dari
+folder hasil ekstraksi.
+
+1. PILIH CARA MEMBACA SOURCE
+
+Dari SAP Development
+- Klik dua kali Ekstrak Program ABAP.bat.
+- Masukkan T-code atau nama program, misalnya ZQM015 atau
+  ZQMR_TRACEABILITY, lalu tekan Enter. Awalan SAP: opsional.
+- Siapkan koneksi SAP sesuai bagian 2.
+
+Dari file lokal
+- Seret file utama .abap ke Ekstrak Program ABAP.bat, atau klik dua kali
+  BAT lalu masukkan path lengkap file tersebut.
+- Letakkan file INCLUDE di folder yang sama dengan file utama.
+- Mode lokal memerlukan Node.js di PATH dan Windows PowerShell.
+  File .env, akses SAP, dan driver RFC hanya diperlukan untuk mode SAP.
+
+2. PERSIAPAN MODE SAP
+
+- Pasang Node.js x64 di PATH. Tool telah diuji dengan versi 22.16.0.
+- Pasang SAP NetWeaver RFC SDK x64. Jika lokasinya selain C:\nwrfcsdk,
+  atur environment variable Windows SAPNWRFC_HOME ke folder SDK.
+- Buka PowerShell di folder hasil ekstraksi, lalu jalankan:
+    npm.cmd install --no-save node-rfc@3.3.1
+- Salin .env.example menjadi .env di samping file BAT. Isi host,
+  system number, client, user, dan password SAP Development sesuai
+  template. Gunakan tanda kutip untuk nilai yang berisi spasi atau #.
+  Pastikan namanya .env, bukan .env.txt.
+- Pastikan jaringan/VPN dapat menjangkau SAP Development. Server
+  perlu menyediakan ZRFC_READ_REPORT dan akun perlu diizinkan
+  membaca source serta metadata repository melalui RFC_READ_TABLE.
+- Bagikan ZIP distribusi dengan template kosong. Simpan .env yang
+  sudah diisi di komputer masing-masing.
+
+3. HASIL EKSTRAKSI
+
+Setiap scan yang berhasil membuat folder tersendiri di:
+  artifacts\ekstraksi-abap\<program>-<waktu>-<id>\
+
+Isi folder:
+  source\     File .abap program utama dan dependensi yang terbaca.
+  *.xlsx       Inventaris dalam 13 sheet menurut jenis objek.
+  *.txt        Detail deep scan, termasuk objek yang belum terbaca.
+
+Setelah selesai, peluncur membuka .xlsx melalui aplikasi Windows
+yang terpasang untuk format tersebut. Lokasi file juga tampil di terminal.
+
+Deep scan SAP mengikuti INCLUDE dan panggilan custom yang bisa dipetakan
+secara statis, termasuk SUBMIT, CALL FUNCTION, dan CALL TRANSACTION.
+Jika T-code tidak bisa dipetakan, masukkan nama program ABAP langsung.
+Panggilan dinamis dan objek yang gagal dibaca perlu diperiksa terpisah.
+Sheet Teks Seleksi mencatat referensi dari source. Isi text pool dan
+varian seleksi perlu diperiksa di SAP.
+
+Tool membaca source secara baca-saja. Inventaris ini digunakan sebagai
+bahan penilaian. Kompatibilitas S/4HANA diperiksa melalui ATC atau
+pemeriksaan teknis di sistem tujuan.

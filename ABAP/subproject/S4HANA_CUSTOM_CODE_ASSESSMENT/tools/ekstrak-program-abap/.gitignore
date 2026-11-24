@@ -1,0 +1,4 @@
+# Kredensial SAP lokal - jangan di-commit
+.env
+node_modules/
+artifacts/

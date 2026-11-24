@@ -1,0 +1,37 @@
+{
+  "ZLDESC": [
+    {
+      "WA": "ZLDESC                        ETEXT30                        CHAR000030000000Description Line                                            Description Line                                       Desc Line Description Line    Description Line"
+    }
+  ],
+  "ZMATFA": [
+    {
+      "WA": "ZMATFA                        EMATNR                         CHAR000018000000FG Recycle Mutu A                                           FGood A                                                FGood A   Finish Good A       Material Finish Good A"
+    }
+  ],
+  "ZMATRA": [
+    {
+      "WA": "ZMATRA                        EMATNR                         CHAR000018000000Raw Recycle Mutu A                                          Raw A                                                  Raw A     Raw Material A      Raw Material A"
+    }
+  ],
+  "ZSLOCDESC": [
+    {
+      "WA": "ZSLOCDESC                     ETEXT30                        CHAR000030000000Description Sloc JR                                         Description Sloc JR                                    Dsc Sl JR Description Sloc JR Description Sloc JR"
+    }
+  ],
+  "ZSLOCJR": [
+    {
+      "WA": "ZSLOCJR                       ETEXT04                        CHAR000004000000Sloc/Stand JR                                               Sloc/Stand JR                                          Sloc JR   Sloc/Stand JR       Sloc/Stand JR"
+    }
+  ],
+  "ZZFILM": [
+    {
+      "WA": "ZZFILM                        E                              CHAR000003000000Film Type                                                   Film                                                   Film      Film Type           Film Type"
+    }
+  ],
+  "ZCODE": [
+    {
+      "WA": "ZCODE                         E                              CHAR000003000000Code consigne PO form                                       Code consigne PO form                                  Code consiCode consigne PO forCode consigne PO form"
+    }
+  ]
+}

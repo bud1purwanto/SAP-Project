@@ -1,0 +1,2283 @@
+{
+ "Z_SO": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20160725",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20160718"
+  },
+  "masters": [
+   "Z_SO"
+  ],
+  "tc": {
+   "Z_SO": []
+  }
+ },
+ "Z_POOPEN": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20160408",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20160106"
+  },
+  "masters": [
+   "Z_POOPEN"
+  ],
+  "tc": {
+   "Z_POOPEN": []
+  }
+ },
+ "Z_ITI_SQL02_INCL": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20160113",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20151207"
+  },
+  "masters": [
+   "SAPLZTRIAS02"
+  ],
+  "tc": {
+   "SAPLZTRIAS02": []
+  }
+ },
+ "Z_GET_PRODUCTION_DATE=========FT": {
+  "trdir": {
+   "SUBC": "S",
+   "UNAM": "SAP*",
+   "UDAT": "20211116",
+   "CNAM": "SAP*",
+   "CDAT": "20130214"
+  },
+  "masters": [
+   "Z_GET_PRODUCTION_DATE=========FT"
+  ],
+  "tc": {
+   "Z_GET_PRODUCTION_DATE=========FT": []
+  }
+ },
+ "Z_CONSIGNMENT2": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20160111",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20160111"
+  },
+  "masters": [
+   "Z_CONSIGNMENT2"
+  ],
+  "tc": {
+   "Z_CONSIGNMENT2": []
+  }
+ },
+ "Z_COBA_HU": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20160418",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20160408"
+  },
+  "masters": [
+   "Z_COBA_HU"
+  ],
+  "tc": {
+   "Z_COBA_HU": []
+  }
+ },
+ "ZTPPR_PRO_MOVEMENT": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20170111",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20161111"
+  },
+  "masters": [
+   "ZTPPR_PRO_MOVEMENT"
+  ],
+  "tc": {
+   "ZTPPR_PRO_MOVEMENT": [
+    "ZTCOID"
+   ]
+  }
+ },
+ "ZTMB51": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20181123",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20161215"
+  },
+  "masters": [
+   "ZTMB51"
+  ],
+  "tc": {
+   "ZTMB51": [
+    "ZTMB51"
+   ]
+  }
+ },
+ "ZTES_LABEL_INCL": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20161107",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20161107"
+  },
+  "masters": [
+   "ZTES_LABEL_INCL"
+  ],
+  "tc": {
+   "ZTES_LABEL_INCL": []
+  }
+ },
+ "ZTEMPLATE_MASTERDATA_TEMP": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20181221",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20181221"
+  },
+  "masters": [
+   "ZTEMPLATE_MASTERDATA_TEMP"
+  ],
+  "tc": {
+   "ZTEMPLATE_MASTERDATA_TEMP": []
+  }
+ },
+ "ZTEMPLATE_MASTERDATA": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20190423",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20180409"
+  },
+  "masters": [
+   "ZTEMPLATE_MASTERDATA"
+  ],
+  "tc": {
+   "ZTEMPLATE_MASTERDATA": [
+    "ZMM020"
+   ]
+  }
+ },
+ "ZTBAP_STOCK_BY_CHAR1": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20170109",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20161110"
+  },
+  "masters": [
+   "ZTBAP_STOCK_BY_CHAR1"
+  ],
+  "tc": {
+   "ZTBAP_STOCK_BY_CHAR1": [
+    "ZTBMBC"
+   ]
+  }
+ },
+ "ZSO": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20160726",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20160719"
+  },
+  "masters": [
+   "ZSO"
+  ],
+  "tc": {
+   "ZSO": []
+  }
+ },
+ "ZSDR_QUOTATION_LIST_TOP": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20130604",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20120925"
+  },
+  "masters": [
+   "ZSDR_QUOTATION_LIST"
+  ],
+  "tc": {
+   "ZSDR_QUOTATION_LIST": [
+    "ZSD500"
+   ]
+  }
+ },
+ "ZSDR_QUOTATION_LIST_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20130612",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20120925"
+  },
+  "masters": [
+   "ZSDR_QUOTATION_LIST"
+  ],
+  "tc": {
+   "ZSDR_QUOTATION_LIST": [
+    "ZSD500"
+   ]
+  }
+ },
+ "ZSDR_CUSTOMIZING_MASTER1_TOP": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20171127",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20121025"
+  },
+  "masters": [
+   "ZSDR_CUSTOMIZING_SALES_MASTER1"
+  ],
+  "tc": {
+   "ZSDR_CUSTOMIZING_SALES_MASTER1": [
+    "ZSD506_1"
+   ]
+  }
+ },
+ "ZSDR_CUSTOMIZING_MASTER1_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20171127",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20121025"
+  },
+  "masters": [
+   "ZSDR_CUSTOMIZING_SALES_MASTER1"
+  ],
+  "tc": {
+   "ZSDR_CUSTOMIZING_SALES_MASTER1": [
+    "ZSD506_1"
+   ]
+  }
+ },
+ "ZSDI_UP_QUOT_TTE_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20190506",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20190429"
+  },
+  "masters": [
+   "ZSDI_UP_QUOT_TTE"
+  ],
+  "tc": {
+   "ZSDI_UP_QUOT_TTE": [
+    "ZSD101TTE"
+   ]
+  }
+ },
+ "ZSDI_UP_QUOT_TTA_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20190506",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20190429"
+  },
+  "masters": [
+   "ZSDI_UP_QUOT_TTA"
+  ],
+  "tc": {
+   "ZSDI_UP_QUOT_TTA": [
+    "ZSD101TTA"
+   ]
+  }
+ },
+ "ZSDI_UP_QUOT_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20200204",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20120912"
+  },
+  "masters": [
+   "ZSDI_UP_QUOT"
+  ],
+  "tc": {
+   "ZSDI_UP_QUOT": [
+    "ZSD101"
+   ]
+  }
+ },
+ "ZRM07MLBS": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130118",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130108"
+  },
+  "masters": [
+   "ZRM07MLBS"
+  ],
+  "tc": {
+   "ZRM07MLBS": [
+    "ZBMBC2"
+   ]
+  }
+ },
+ "ZQMR_PROCUREMENT_PROP_TOP": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20230602",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20121129"
+  },
+  "masters": [
+   "ZQMR_PROCUREMENT_PROP"
+  ],
+  "tc": {
+   "ZQMR_PROCUREMENT_PROP": [
+    "ZQM006"
+   ]
+  }
+ },
+ "ZQMR_PROCUREMENT_PROP_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20230602",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20121129"
+  },
+  "masters": [
+   "ZQMR_PROCUREMENT_PROP"
+  ],
+  "tc": {
+   "ZQMR_PROCUREMENT_PROP": [
+    "ZQM006"
+   ]
+  }
+ },
+ "ZQMR_BARRIER_SR_POSITION": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20261002",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20250925"
+  },
+  "masters": [
+   "ZQMR_BARRIER_SR_POSITION"
+  ],
+  "tc": {
+   "ZQMR_BARRIER_SR_POSITION": []
+  }
+ },
+ "ZQMI_TESTING": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260727",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20260727"
+  },
+  "masters": [
+   "ZQMI_TESTING"
+  ],
+  "tc": {
+   "ZQMI_TESTING": []
+  }
+ },
+ "ZQMI_PACKING_STATUS_TTE_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20190415",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20190415"
+  },
+  "masters": [
+   "ZQMI_PACKING_STATUS_TTE"
+  ],
+  "tc": {
+   "ZQMI_PACKING_STATUS_TTE": [
+    "ZEQM001P"
+   ]
+  }
+ },
+ "ZQMI_PACKING_STATUS_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20261008",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20120725"
+  },
+  "masters": [
+   "ZQMI_PACKING_STATUS"
+  ],
+  "tc": {
+   "ZQMI_PACKING_STATUS": [
+    "ZQM001P"
+   ]
+  }
+ },
+ "ZQMI_COA_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20261118",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20260629"
+  },
+  "masters": [
+   "ZQMI_COA"
+  ],
+  "tc": {
+   "ZQMI_COA": [
+    "ZQM003",
+    "ZQM002"
+   ]
+  }
+ },
+ "ZQMI_BARRIER_PASS_FAIL_CP": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20251104",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20251104"
+  },
+  "masters": [
+   "ZQMI_BARRIER_PASS_FAIL_CP"
+  ],
+  "tc": {
+   "ZQMI_BARRIER_PASS_FAIL_CP": []
+  }
+ },
+ "ZQMI_BARRIER_PASS_FAIL": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20261123",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20250925"
+  },
+  "masters": [
+   "ZQMI_BARRIER_PASS_FAIL"
+  ],
+  "tc": {
+   "ZQMI_BARRIER_PASS_FAIL": []
+  }
+ },
+ "ZQMI_BARRIER_NCR_UPLOAD": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20251024",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20250925"
+  },
+  "masters": [
+   "ZQMI_BARRIER_NCR_UPLOAD"
+  ],
+  "tc": {
+   "ZQMI_BARRIER_NCR_UPLOAD": []
+  }
+ },
+ "ZQMI_BARRIER_APPROVAL": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260622",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20250925"
+  },
+  "masters": [
+   "ZQMI_BARRIER_APPROVAL"
+  ],
+  "tc": {
+   "ZQMI_BARRIER_APPROVAL": [
+    "ZEQM040"
+   ]
+  }
+ },
+ "ZPP_UP_CLASS5": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20121114",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20121114"
+  },
+  "masters": [
+   "ZPP_UP_CLASS5"
+  ],
+  "tc": {
+   "ZPP_UP_CLASS5": []
+  }
+ },
+ "ZPP_UP_CLASS4": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20121106",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20121106"
+  },
+  "masters": [
+   "ZPP_UP_CLASS4"
+  ],
+  "tc": {
+   "ZPP_UP_CLASS4": []
+  }
+ },
+ "ZPP_UP_CLASS3": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20121105",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20121105"
+  },
+  "masters": [
+   "ZPP_UP_CLASS3"
+  ],
+  "tc": {
+   "ZPP_UP_CLASS3": []
+  }
+ },
+ "ZPPR_SLITTING_REKAP_KACONG_TOP": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260302",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20260302"
+  },
+  "masters": [
+   "ZPPR_SLITTING_REKAP_KACONG"
+  ],
+  "tc": {
+   "ZPPR_SLITTING_REKAP_KACONG": []
+  }
+ },
+ "ZPPR_SLITTING_REKAP_KACONG_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260302",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20260302"
+  },
+  "masters": [
+   "ZPPR_SLITTING_REKAP_KACONG"
+  ],
+  "tc": {
+   "ZPPR_SLITTING_REKAP_KACONG": []
+  }
+ },
+ "ZPPR_PENDING_ORDER_SCHLINE": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20220120",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20160804"
+  },
+  "masters": [
+   "ZPPR_PENDING_ORDER_SCHLINE"
+  ],
+  "tc": {
+   "ZPPR_PENDING_ORDER_SCHLINE": [
+    "ZPP005S"
+   ]
+  }
+ },
+ "ZPPR_PENDING_ORDER_ALF_CP": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20220128",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20220126"
+  },
+  "masters": [
+   "ZPPR_PENDING_ORDER_ALF_CP"
+  ],
+  "tc": {
+   "ZPPR_PENDING_ORDER_ALF_CP": []
+  }
+ },
+ "ZPPR_PENDING_ORDER_ALF": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260917",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20130710"
+  },
+  "masters": [
+   "ZPPR_PENDING_ORDER_ALF"
+  ],
+  "tc": {
+   "ZPPR_PENDING_ORDER_ALF": [
+    "ZPP005N"
+   ]
+  }
+ },
+ "ZPPR_BATCH_CHAR_V2_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20250317",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20250317"
+  },
+  "masters": [
+   "ZPPR_BATCH_CHAR_V2"
+  ],
+  "tc": {
+   "ZPPR_BATCH_CHAR_V2": []
+  }
+ },
+ "ZPPR_BATCH_CHAR_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20250519",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20121121"
+  },
+  "masters": [
+   "ZPPR_BATCH_CHAR"
+  ],
+  "tc": {
+   "ZPPR_BATCH_CHAR": []
+  }
+ },
+ "ZPPI_JR_EXEC_BDC": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20120813",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20120813"
+  },
+  "masters": [
+   "ZPPI_JR_EXEC_BDC"
+  ],
+  "tc": {
+   "ZPPI_JR_EXEC_BDC": []
+  }
+ },
+ "ZPERTAMAX1": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20120703",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20120703"
+  },
+  "masters": [
+   "ZPERTAMAX1"
+  ],
+  "tc": {
+   "ZPERTAMAX1": []
+  }
+ },
+ "ZPERTAMAX": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20120703",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20120702"
+  },
+  "masters": [
+   "ZPERTAMAX"
+  ],
+  "tc": {
+   "ZPERTAMAX": []
+  }
+ },
+ "ZOLAP_MB5M": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20200505",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20180123"
+  },
+  "masters": [
+   "ZOLAP_MB5M"
+  ],
+  "tc": {
+   "ZOLAP_MB5M": [
+    "ZMB5M"
+   ]
+  }
+ },
+ "ZMM_TYBROL_TO_BATCH": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20200409",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20180419"
+  },
+  "masters": [
+   "ZMM_TYBROL_TO_BATCH"
+  ],
+  "tc": {
+   "ZMM_TYBROL_TO_BATCH": [
+    "ZTYB10"
+   ]
+  }
+ },
+ "ZMMR_UPLOAD_KTNG_CP": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20220301",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20220210"
+  },
+  "masters": [
+   "ZMMR_UPLOAD_KTNG_CP"
+  ],
+  "tc": {
+   "ZMMR_UPLOAD_KTNG_CP": []
+  }
+ },
+ "ZMMR_UPLOAD_KTNG": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20220308",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20190301"
+  },
+  "masters": [
+   "ZMMR_UPLOAD_KTNG"
+  ],
+  "tc": {
+   "ZMMR_UPLOAD_KTNG": [
+    "ZMM065"
+   ]
+  }
+ },
+ "ZMMR_STOCK_BY_CHAR_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130108",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20120919"
+  },
+  "masters": [
+   "ZMMR_STOCK_BY_CHAR"
+  ],
+  "tc": {
+   "ZMMR_STOCK_BY_CHAR": []
+  }
+ },
+ "ZMMR_STOCK_BY_CHAR1_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130104",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130104"
+  },
+  "masters": [
+   "ZMMR_STOCK_BY_CHAR1"
+  ],
+  "tc": {
+   "ZMMR_STOCK_BY_CHAR1": []
+  }
+ },
+ "ZMMR_RETURN_PALLET_W_CYCLE": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260506",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20260318"
+  },
+  "masters": [
+   "ZMMR_RETURN_PALLET_W_CYCLE"
+  ],
+  "tc": {
+   "ZMMR_RETURN_PALLET_W_CYCLE": []
+  }
+ },
+ "ZMMR_RETURN_PALLET": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260506",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20171109"
+  },
+  "masters": [
+   "ZMMR_RETURN_PALLET"
+  ],
+  "tc": {
+   "ZMMR_RETURN_PALLET": [
+    "ZMM062_WKA",
+    "ZEMM062",
+    "ZMM062_TS",
+    "ZAMM062K"
+   ]
+  }
+ },
+ "ZMMR_LABELROL_WINDOWS": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260502",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20230711"
+  },
+  "masters": [
+   "ZMMR_LABELROL_WINDOWS"
+  ],
+  "tc": {
+   "ZMMR_LABELROL_WINDOWS": []
+  }
+ },
+ "ZMMR_LABELROL_TYB_WIN": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20261027",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20150812"
+  },
+  "masters": [
+   "ZMMR_LABELROL_TYB_WIN"
+  ],
+  "tc": {
+   "ZMMR_LABELROL_TYB_WIN": []
+  }
+ },
+ "ZMMR_LABELROL_TYB_ALF": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20180828",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20180828"
+  },
+  "masters": [
+   "ZMMR_LABELROL_ALF"
+  ],
+  "tc": {
+   "ZMMR_LABELROL_ALF": []
+  }
+ },
+ "ZMMR_LABELROL_TYB": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20190808",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20141106"
+  },
+  "masters": [
+   "ZMMR_LABELROL_TYB"
+  ],
+  "tc": {
+   "ZMMR_LABELROL_TYB": []
+  }
+ },
+ "ZMMR_LABELROL_TOYOBO": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20221207",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20121011"
+  },
+  "masters": [
+   "ZMMR_LABELROL",
+   "ZMMR_LABELROL_CP"
+  ],
+  "tc": {
+   "ZMMR_LABELROL": [],
+   "ZMMR_LABELROL_CP": []
+  }
+ },
+ "ZMMR_LABELROL_STANDAR": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260915",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20121011"
+  },
+  "masters": [
+   "ZMMR_LABELROL",
+   "ZMMR_LABELROL_ALF",
+   "ZMMR_LABELROL_CP"
+  ],
+  "tc": {
+   "ZMMR_LABELROL": [],
+   "ZMMR_LABELROL_ALF": [],
+   "ZMMR_LABELROL_CP": []
+  }
+ },
+ "ZMMR_LABELROL_PM": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20160819",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20121011"
+  },
+  "masters": [
+   "ZMMR_LABELROL",
+   "ZMMR_LABELROL_ALF",
+   "ZMMR_LABELROL_CP"
+  ],
+  "tc": {
+   "ZMMR_LABELROL": [],
+   "ZMMR_LABELROL_ALF": [],
+   "ZMMR_LABELROL_CP": []
+  }
+ },
+ "ZMMR_LABELROL_NONSAP": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20230718",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20230707"
+  },
+  "masters": [
+   "ZMMR_LABELROL_NONSAP"
+  ],
+  "tc": {
+   "ZMMR_LABELROL_NONSAP": []
+  }
+ },
+ "ZMMR_LABELROL_MODIFIED_KTNG": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20220211",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20200522"
+  },
+  "masters": [
+   "ZMMR_LABELROL_MODIFIED_KTNG"
+  ],
+  "tc": {
+   "ZMMR_LABELROL_MODIFIED_KTNG": [
+    "ZLABEL01"
+   ]
+  }
+ },
+ "ZMMR_LABELROL_INCHI": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20241125",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20130613"
+  },
+  "masters": [
+   "ZMMR_LABELROL",
+   "ZMMR_LABELROL_ALF",
+   "ZMMR_LABELROL_CP"
+  ],
+  "tc": {
+   "ZMMR_LABELROL": [],
+   "ZMMR_LABELROL_ALF": [],
+   "ZMMR_LABELROL_CP": []
+  }
+ },
+ "ZMMR_LABELROL_DOCX": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20250425",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20231123"
+  },
+  "masters": [
+   "ZMMR_LABELROL_DOCX"
+  ],
+  "tc": {
+   "ZMMR_LABELROL_DOCX": []
+  }
+ },
+ "ZMMR_LABELHU_WINDOWS": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260127",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20230711"
+  },
+  "masters": [
+   "ZMMR_LABELHU_WINDOWS"
+  ],
+  "tc": {
+   "ZMMR_LABELHU_WINDOWS": []
+  }
+ },
+ "ZMMR_LABELHU_KTNG": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20250625",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20240209"
+  },
+  "masters": [
+   "ZMMR_LABELHU_KTNG"
+  ],
+  "tc": {
+   "ZMMR_LABELHU_KTNG": []
+  }
+ },
+ "ZMMR_CHANGE_LABELROL_WIN_BUDI": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20210604",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20210604"
+  },
+  "masters": [
+   "ZMMR_CHANGE_LABELROL_WIN_BUDI"
+  ],
+  "tc": {
+   "ZMMR_CHANGE_LABELROL_WIN_BUDI": []
+  }
+ },
+ "ZMMR_CHANGE_LABELROL_WIN": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20230502",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20171002"
+  },
+  "masters": [
+   "ZMMR_CHANGE_LABELROL_WIN"
+  ],
+  "tc": {
+   "ZMMR_CHANGE_LABELROL_WIN": [
+    "ZLABEL91"
+   ]
+  }
+ },
+ "ZMMI_UPLOAD_BATCH_RM": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20121203",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20121203"
+  },
+  "masters": [
+   "ZMMI_UPLOAD_BATCH_RM"
+  ],
+  "tc": {
+   "ZMMI_UPLOAD_BATCH_RM": [
+    "ZMMIB_07"
+   ]
+  }
+ },
+ "ZMMI_GRN_SUBCON_TTE_BUDI": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20220617",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20220608"
+  },
+  "masters": [
+   "ZMMI_GRN_SUBCON_TTE_BUDI"
+  ],
+  "tc": {
+   "ZMMI_GRN_SUBCON_TTE_BUDI": []
+  }
+ },
+ "ZMMI_GRN_SUBCON_TTE": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20220712",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20200526"
+  },
+  "masters": [
+   "ZMMI_GRN_SUBCON_TTE"
+  ],
+  "tc": {
+   "ZMMI_GRN_SUBCON_TTE": [
+    "ZIC007"
+   ]
+  }
+ },
+ "ZMMC_UP_MAT_MAS_TOP": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20190123",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20121030"
+  },
+  "masters": [
+   "ZMMC_UP_MAT_MAS"
+  ],
+  "tc": {
+   "ZMMC_UP_MAT_MAS": [
+    "ZBC001"
+   ]
+  }
+ },
+ "ZMMC_UP_MAT_MAS_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20190123",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20121030"
+  },
+  "masters": [
+   "ZMMC_UP_MAT_MAS"
+  ],
+  "tc": {
+   "ZMMC_UP_MAT_MAS": [
+    "ZBC001"
+   ]
+  }
+ },
+ "ZMAP_COA_BATCH": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20261116",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20260818"
+  },
+  "masters": [
+   "ZMAP_COA_BATCH"
+  ],
+  "tc": {
+   "ZMAP_COA_BATCH": []
+  }
+ },
+ "ZLABEL_TYB_UNDERWINDOWS": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20200511",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20200420"
+  },
+  "masters": [
+   "ZLABEL_TYB_UNDERWINDOWS"
+  ],
+  "tc": {
+   "ZLABEL_TYB_UNDERWINDOWS": []
+  }
+ },
+ "ZLABEL_A211": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20150402",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20150331"
+  },
+  "masters": [
+   "ZMMR_LABELROL",
+   "ZMMR_LABELROL_ALF",
+   "ZMMR_LABELROL_CP"
+  ],
+  "tc": {
+   "ZMMR_LABELROL": [],
+   "ZMMR_LABELROL_ALF": [],
+   "ZMMR_LABELROL_CP": []
+  }
+ },
+ "ZLABELROL_TES": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20170104",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20170104"
+  },
+  "masters": [
+   "ZLABELROL_TES"
+  ],
+  "tc": {
+   "ZLABELROL_TES": []
+  }
+ },
+ "ZLABELROL_CHANGE_90": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20250821",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20170412"
+  },
+  "masters": [
+   "ZLABELROL_CHANGE_90"
+  ],
+  "tc": {
+   "ZLABELROL_CHANGE_90": [
+    "ZLABEL90"
+   ]
+  }
+ },
+ "ZLABELROL_B002": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20180823",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20180823"
+  },
+  "masters": [
+   "ZLABELROL_B002"
+  ],
+  "tc": {
+   "ZLABELROL_B002": []
+  }
+ },
+ "ZLABELROL_A401": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20210106",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20210106"
+  },
+  "masters": [
+   "ZLABELROL_A401"
+  ],
+  "tc": {
+   "ZLABELROL_A401": []
+  }
+ },
+ "ZLABELROL_A400": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20190415",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20190412"
+  },
+  "masters": [
+   "ZLABELROL_A400"
+  ],
+  "tc": {
+   "ZLABELROL_A400": []
+  }
+ },
+ "ZLABELROL_A149_CP": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20220609",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20220609"
+  },
+  "masters": [
+   "ZLABELROL_A149_CP"
+  ],
+  "tc": {
+   "ZLABELROL_A149_CP": []
+  }
+ },
+ "ZLABELROL_A149": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260511",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20220204"
+  },
+  "masters": [
+   "ZLABELROL_A149"
+  ],
+  "tc": {
+   "ZLABELROL_A149": []
+  }
+ },
+ "ZLABELROL_A146": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20230612",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20220107"
+  },
+  "masters": [
+   "ZLABELROL_A146"
+  ],
+  "tc": {
+   "ZLABELROL_A146": []
+  }
+ },
+ "ZLABELROL_A139": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20230612",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20190624"
+  },
+  "masters": [
+   "ZLABELROL_A139"
+  ],
+  "tc": {
+   "ZLABELROL_A139": []
+  }
+ },
+ "ZLABELROL_A138": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20230612",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20190124"
+  },
+  "masters": [
+   "ZLABELROL_A138"
+  ],
+  "tc": {
+   "ZLABELROL_A138": []
+  }
+ },
+ "ZLABELROL_A136": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260916",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20180703"
+  },
+  "masters": [
+   "ZLABELROL_A136"
+  ],
+  "tc": {
+   "ZLABELROL_A136": []
+  }
+ },
+ "ZLABELROL_A133": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20170321",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20170306"
+  },
+  "masters": [
+   "ZLABELROL_A133"
+  ],
+  "tc": {
+   "ZLABELROL_A133": []
+  }
+ },
+ "ZLABELROL_A132": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20170106",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20161230"
+  },
+  "masters": [
+   "ZLABELROL_A132"
+  ],
+  "tc": {
+   "ZLABELROL_A132": []
+  }
+ },
+ "ZLABELROL_A131": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20230612",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20161108"
+  },
+  "masters": [
+   "ZLABELROL_A131"
+  ],
+  "tc": {
+   "ZLABELROL_A131": []
+  }
+ },
+ "ZLABELHU_A401": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20210108",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20210108"
+  },
+  "masters": [
+   "ZLABELHU_A401"
+  ],
+  "tc": {
+   "ZLABELHU_A401": []
+  }
+ },
+ "ZLABELHU_A400": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20190425",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20190425"
+  },
+  "masters": [
+   "ZLABELHU_A400"
+  ],
+  "tc": {
+   "ZLABELHU_A400": []
+  }
+ },
+ "ZLABELHU_A146": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20230512",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20220107"
+  },
+  "masters": [
+   "ZLABELHU_A146"
+  ],
+  "tc": {
+   "ZLABELHU_A146": []
+  }
+ },
+ "ZJARWO_TEST": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20181102",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20161215"
+  },
+  "masters": [
+   "ZJARWO_TEST"
+  ],
+  "tc": {
+   "ZJARWO_TEST": []
+  }
+ },
+ "ZITI_ZSD024S": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20150303",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20150202"
+  },
+  "masters": [
+   "ZITI_ZSD024S"
+  ],
+  "tc": {
+   "ZITI_ZSD024S": []
+  }
+ },
+ "ZIC_UPLOAD_SO_TOP_CKI_2": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20250520",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20250520"
+  },
+  "masters": [
+   "ZIC_UPLOAD_SO_CKI_2"
+  ],
+  "tc": {
+   "ZIC_UPLOAD_SO_CKI_2": [
+    "ZIC004SL"
+   ]
+  }
+ },
+ "ZIC_UPLOAD_SO_TOP_CKI": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20250516",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20250212"
+  },
+  "masters": [
+   "ZIC_UPLOAD_SO_CKI"
+  ],
+  "tc": {
+   "ZIC_UPLOAD_SO_CKI": []
+  }
+ },
+ "ZIC_UPLOAD_SO_TOP": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20231024",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20200921"
+  },
+  "masters": [
+   "ZIC_UPLOAD_SO"
+  ],
+  "tc": {
+   "ZIC_UPLOAD_SO": []
+  }
+ },
+ "ZIC_UPLOAD_SO_F01_CKI_2": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20250610",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20250520"
+  },
+  "masters": [
+   "ZIC_UPLOAD_SO_CKI_2"
+  ],
+  "tc": {
+   "ZIC_UPLOAD_SO_CKI_2": [
+    "ZIC004SL"
+   ]
+  }
+ },
+ "ZIC_UPLOAD_SO_F01_CKI": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20250517",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20250212"
+  },
+  "masters": [
+   "ZIC_UPLOAD_SO_CKI"
+  ],
+  "tc": {
+   "ZIC_UPLOAD_SO_CKI": []
+  }
+ },
+ "ZIC_UPLOAD_SO_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20241224",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20200921"
+  },
+  "masters": [
+   "ZIC_UPLOAD_SO"
+  ],
+  "tc": {
+   "ZIC_UPLOAD_SO": []
+  }
+ },
+ "ZHU_LABEL_PMI": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20160812",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20121015"
+  },
+  "masters": [
+   "ZHU_LABEL_PMI"
+  ],
+  "tc": {
+   "ZHU_LABEL_PMI": [
+    "ZHU020"
+   ]
+  }
+ },
+ "ZHU_LABEL_KTNG": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20180308",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20180116"
+  },
+  "masters": [
+   "ZHU_LABEL_KTNG"
+  ],
+  "tc": {
+   "ZHU_LABEL_KTNG": [
+    "ZHU025"
+   ]
+  }
+ },
+ "ZHU_LABEL_GG01X": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20131223",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20131223"
+  },
+  "masters": [
+   "ZHU_LABEL_GG01X"
+  ],
+  "tc": {
+   "ZHU_LABEL_GG01X": []
+  }
+ },
+ "ZHU_LABEL_GG01": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20220117",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20131122"
+  },
+  "masters": [
+   "ZHU_LABEL_GG01"
+  ],
+  "tc": {
+   "ZHU_LABEL_GG01": [
+    "ZHU021"
+   ]
+  }
+ },
+ "ZHU_LABEL_GENT": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20150225",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20150210"
+  },
+  "masters": [
+   "ZHU_LABEL_GENT"
+  ],
+  "tc": {
+   "ZHU_LABEL_GENT": [
+    "ZLABEL10"
+   ]
+  }
+ },
+ "ZHU_LABEL_1100": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20121017",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20121015"
+  },
+  "masters": [
+   "ZHU_LABEL"
+  ],
+  "tc": {
+   "ZHU_LABEL": [
+    "ZHU023"
+   ]
+  }
+ },
+ "ZHU_LABEL": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20180912",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20121015"
+  },
+  "masters": [
+   "ZHU_LABEL"
+  ],
+  "tc": {
+   "ZHU_LABEL": [
+    "ZHU023"
+   ]
+  }
+ },
+ "ZHUR_ROLL_LIST_BY_DEL_V2_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260303",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20260303"
+  },
+  "masters": [
+   "ZHUR_ROLL_LIST_BY_DEL_V2"
+  ],
+  "tc": {
+   "ZHUR_ROLL_LIST_BY_DEL_V2": []
+  }
+ },
+ "ZHUR_ROLL_LIST_BY_DEL_GG": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20200123",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20150923"
+  },
+  "masters": [
+   "ZHUR_ROLL_LIST_BY_DEL_GG"
+  ],
+  "tc": {
+   "ZHUR_ROLL_LIST_BY_DEL_GG": [
+    "ZSD024A"
+   ]
+  }
+ },
+ "ZHUR_ROLL_LIST_BY_DEL_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20250516",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20120827"
+  },
+  "masters": [
+   "ZHUR_ROLL_LIST_BY_DEL"
+  ],
+  "tc": {
+   "ZHUR_ROLL_LIST_BY_DEL": [
+    "ZSD024TTE",
+    "ZSD024"
+   ]
+  }
+ },
+ "ZHUR_ROLL_LIST_BY_DEL2_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130108",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130108"
+  },
+  "masters": [
+   "ZHUR_ROLL_LIST_BY_DEL2"
+  ],
+  "tc": {
+   "ZHUR_ROLL_LIST_BY_DEL2": []
+  }
+ },
+ "ZHUR_ROLL_LIST_BY_DEL1_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130108",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130107"
+  },
+  "masters": [
+   "ZHUR_ROLL_LIST_BY_DEL1"
+  ],
+  "tc": {
+   "ZHUR_ROLL_LIST_BY_DEL1": []
+  }
+ },
+ "ZHUR_READY_REPORT_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20130207",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20120905"
+  },
+  "masters": [
+   "ZHUR_READY_REPORT"
+  ],
+  "tc": {
+   "ZHUR_READY_REPORT": []
+  }
+ },
+ "ZHUR_LABELPACK_INCL": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20261019",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20121108"
+  },
+  "masters": [
+   "ZHUR_LABELPACK"
+  ],
+  "tc": {
+   "ZHUR_LABELPACK": []
+  }
+ },
+ "ZHUR_LABELPACK_INCH": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260604",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20130617"
+  },
+  "masters": [
+   "ZHUR_LABELPACK"
+  ],
+  "tc": {
+   "ZHUR_LABELPACK": []
+  }
+ },
+ "ZFIR_AR_AGING_PIUTANG_V2": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20210330",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20210324"
+  },
+  "masters": [
+   "ZFIR_AR_AGING_PIUTANG_V2"
+  ],
+  "tc": {
+   "ZFIR_AR_AGING_PIUTANG_V2": [
+    "ZFI017N"
+   ]
+  }
+ },
+ "ZFIF_PAYMENT_INSTRUC_DNM_T_F02": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20240131",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20240130"
+  },
+  "masters": [
+   "ZFIF_PAYMENT_INSTRUC_DNM_T"
+  ],
+  "tc": {
+   "ZFIF_PAYMENT_INSTRUC_DNM_T": []
+  }
+ },
+ "ZFIF_PAYMENT_INSTRUC_DNM_F02": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20240115",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20220622"
+  },
+  "masters": [
+   "ZFIF_PAYMENT_INSTRUC_DNM"
+  ],
+  "tc": {
+   "ZFIF_PAYMENT_INSTRUC_DNM": [
+    "ZFI508"
+   ]
+  }
+ },
+ "ZCOPY_ZBMBC_TOP": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20210414",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20210414"
+  },
+  "masters": [
+   "ZCOPY_ZBMBC"
+  ],
+  "tc": {
+   "ZCOPY_ZBMBC": [
+    "ZBMBC_2"
+   ]
+  }
+ },
+ "ZCOPY_ZBMBC_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20210414",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20210414"
+  },
+  "masters": [
+   "ZCOPY_ZBMBC"
+  ],
+  "tc": {
+   "ZCOPY_ZBMBC": [
+    "ZBMBC_2"
+   ]
+  }
+ },
+ "ZBMBC_JR": {
+  "trdir": {
+   "SUBC": "1",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20161215",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20161215"
+  },
+  "masters": [
+   "ZBMBC_JR"
+  ],
+  "tc": {
+   "ZBMBC_JR": []
+  }
+ },
+ "ZBAP_STOCK_BY_CHAR_TOP": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130109",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130107"
+  },
+  "masters": [
+   "ZBAP_STOCK_BY_CHAR"
+  ],
+  "tc": {
+   "ZBAP_STOCK_BY_CHAR": []
+  }
+ },
+ "ZBAP_STOCK_BY_CHAR_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130109",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130107"
+  },
+  "masters": [
+   "ZBAP_STOCK_BY_CHAR"
+  ],
+  "tc": {
+   "ZBAP_STOCK_BY_CHAR": []
+  }
+ },
+ "ZBAP_STOCK_BY_CHAR1_TOP": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20261030",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130109"
+  },
+  "masters": [
+   "ZBAP_STOCK_BY_CHAR1"
+  ],
+  "tc": {
+   "ZBAP_STOCK_BY_CHAR1": [
+    "ZBMBC"
+   ]
+  }
+ },
+ "ZBAP_STOCK_BY_CHAR1_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20261030",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130109"
+  },
+  "masters": [
+   "ZBAP_STOCK_BY_CHAR1"
+  ],
+  "tc": {
+   "ZBAP_STOCK_BY_CHAR1": [
+    "ZBMBC"
+   ]
+  }
+ },
+ "ZBAP_READY_REPORT_TOP_STFN": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20200309",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20200309"
+  },
+  "masters": [
+   "ZBAP_READY_REPORT_STFN"
+  ],
+  "tc": {
+   "ZBAP_READY_REPORT_STFN": []
+  }
+ },
+ "ZBAP_READY_REPORT_TOP": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260929",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130102"
+  },
+  "masters": [
+   "ZBAP_READY_REPORT"
+  ],
+  "tc": {
+   "ZBAP_READY_REPORT": [
+    "ZSD012N"
+   ]
+  }
+ },
+ "ZBAP_READY_REPORT_ORI_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130103",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130103"
+  },
+  "masters": [
+   "ZBAP_READY_REPORT_ORI"
+  ],
+  "tc": {
+   "ZBAP_READY_REPORT_ORI": []
+  }
+ },
+ "ZBAP_READY_REPORT_F01_STFN": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20200327",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20200309"
+  },
+  "masters": [
+   "ZBAP_READY_REPORT_STFN"
+  ],
+  "tc": {
+   "ZBAP_READY_REPORT_STFN": []
+  }
+ },
+ "ZBAP_READY_REPORT_F01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20260921",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130102"
+  },
+  "masters": [
+   "ZBAP_READY_REPORT"
+  ],
+  "tc": {
+   "ZBAP_READY_REPORT": [
+    "ZSD012N"
+   ]
+  }
+ },
+ "LZ_TESTING_SQLU01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20160718",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20160713"
+  },
+  "masters": [
+   "SAPLZ_TESTING_SQL"
+  ],
+  "tc": {
+   "SAPLZ_TESTING_SQL": []
+  }
+ },
+ "LZTRIASU11": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20150128",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20150128"
+  },
+  "masters": [
+   "SAPLZTRIAS"
+  ],
+  "tc": {
+   "SAPLZTRIAS": []
+  }
+ },
+ "LZTRIASU09": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20150127",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20150127"
+  },
+  "masters": [
+   "SAPLZTRIAS"
+  ],
+  "tc": {
+   "SAPLZTRIAS": []
+  }
+ },
+ "LZTRIASU08": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20150128",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20150123"
+  },
+  "masters": [
+   "SAPLZTRIAS"
+  ],
+  "tc": {
+   "SAPLZTRIAS": []
+  }
+ },
+ "LZTRIASU01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20181112",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20130214"
+  },
+  "masters": [
+   "SAPLZTRIAS"
+  ],
+  "tc": {
+   "SAPLZTRIAS": []
+  }
+ },
+ "LZTRIAS02U01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20160120",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20150128"
+  },
+  "masters": [
+   "SAPLZTRIAS02"
+  ],
+  "tc": {
+   "SAPLZTRIAS02": []
+  }
+ },
+ "LZTRIAS$01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "SAP*",
+   "UDAT": "20181112",
+   "CNAM": "SAP*",
+   "CDAT": "20130214"
+  },
+  "masters": [
+   "SAPLZTRIAS"
+  ],
+  "tc": {
+   "SAPLZTRIAS": []
+  }
+ },
+ "LZSD_DOU01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20160203",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20160126"
+  },
+  "masters": [
+   "SAPLZSD_DO"
+  ],
+  "tc": {
+   "SAPLZSD_DO": []
+  }
+ },
+ "LZMM_INVU01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "TRSTDEV",
+   "UDAT": "20250815",
+   "CNAM": "TRSTDEV",
+   "CDAT": "20160126"
+  },
+  "masters": [
+   "SAPLZMM_INV"
+  ],
+  "tc": {
+   "SAPLZMM_INV": []
+  }
+ },
+ "LZCHARACTERISTICSU06": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130110",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130110"
+  },
+  "masters": [
+   "SAPLZCHARACTERISTICS"
+  ],
+  "tc": {
+   "SAPLZCHARACTERISTICS": []
+  }
+ },
+ "LZCHARACTERISTICSU04": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130111",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130110"
+  },
+  "masters": [
+   "SAPLZCHARACTERISTICS"
+  ],
+  "tc": {
+   "SAPLZCHARACTERISTICS": []
+  }
+ },
+ "LZCHARACTERISTICSU03": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130110",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130109"
+  },
+  "masters": [
+   "SAPLZCHARACTERISTICS"
+  ],
+  "tc": {
+   "SAPLZCHARACTERISTICS": []
+  }
+ },
+ "LZCHARACTERISTICSU01": {
+  "trdir": {
+   "SUBC": "I",
+   "UNAM": "PST_ABAP",
+   "UDAT": "20130110",
+   "CNAM": "PST_ABAP",
+   "CDAT": "20130109"
+  },
+  "masters": [
+   "SAPLZCHARACTERISTICS"
+  ],
+  "tc": {
+   "SAPLZCHARACTERISTICS": []
+  }
+ }
+}

@@ -1,0 +1,383 @@
+{
+  "ZCORER": {
+    "header": [
+      {
+        "WA": "ZCORER                        TRANSP  XA"
+      }
+    ],
+    "fields": [
+      {
+        "WA": "CHARG                         0003  CHARG_D                       *                             CHARG                         CHAR000010000000"
+      },
+      {
+        "WA": "COREID                        0002                                                                                            CHAR000010000000"
+      },
+      {
+        "WA": "DOCNO                         0007                                                                                            CHAR000020000000"
+      },
+      {
+        "WA": "DOCTYPE                       0006                                                                                            CHAR000002000000"
+      },
+      {
+        "WA": "ERSDA                         0009  ERSDA                                                       DATUM                         DATS000008000000"
+      },
+      {
+        "WA": "ERZET                         0010  ERZET                                                       UZEIT                         TIMS000006000000"
+      },
+      {
+        "WA": "POSNR                         0008  POSNR_VA                      *                             POSNR                         NUMC000006000000"
+      },
+      {
+        "WA": "REMARK                        0013                                                                                            CHAR000100000000"
+      },
+      {
+        "WA": "SEQNO                         0001X                                                                                           NUMC000010000000"
+      },
+      {
+        "WA": "SMBLN                         0012                                                                                            NUMC000010000000"
+      },
+      {
+        "WA": "STATUS                        0005                                                                                            CHAR000001000000"
+      },
+      {
+        "WA": "WERKS                         0004  WERKS_D                       *                             WERKS                         CHAR000004000000"
+      },
+      {
+        "WA": "ZUSER                         0011                                                                                            CHAR000050000000"
+      }
+    ],
+    "text": [
+      {
+        "WA": "ZCORER                        EZ Table  for RTP Core"
+      }
+    ]
+  },
+  "ZMAP_INDICATOR": {
+    "header": [
+      {
+        "WA": "ZMAP_INDICATOR                TRANSP   A"
+      }
+    ],
+    "fields": [
+      {
+        "WA": "INDC                          0001X                                                                                           CHAR000020000000"
+      },
+      {
+        "WA": "STATUS                        0002                                                                                            CHAR000001000000"
+      }
+    ],
+    "text": [
+      {
+        "WA": "ZMAP_INDICATOR                ETable Mapping Indicator"
+      }
+    ]
+  },
+  "ZMAP_TYPE": {
+    "header": [
+      {
+        "WA": "ZMAP_TYPE                     TRANSP  XA"
+      }
+    ],
+    "fields": [
+      {
+        "WA": "AEDAT                         0015  AEDAT                                                       DATUM                         DATS000008000000"
+      },
+      {
+        "WA": "AENAM                         0017  AENAM                                                       USNAM                         CHAR000012000000"
+      },
+      {
+        "WA": "CPUDT                         0011  CPUDT                                                       DATUM                         DATS000008000000"
+      },
+      {
+        "WA": "CPUTM                         0012  CPUTM                                                       UZEIT                         TIMS000006000000"
+      },
+      {
+        "WA": "DELETION                      0019                                                                                            CHAR000001000000"
+      },
+      {
+        "WA": "OPT                           0004X                                                                                           CHAR000030000000"
+      },
+      {
+        "WA": "PROG                          0002X PROGRAM_ID                                                  PROGNAME                      CHAR000040000000"
+      },
+      {
+        "WA": "PSOTM                         0016  PSOTM                                                       UZEIT                         TIMS000006000000"
+      },
+      {
+        "WA": "TCODE                         0001X TCODE                         *                             TCODE                         CHAR000020000000"
+      },
+      {
+        "WA": "TERM1                         0014  XUTERMINAL                                                  XUTERMINAL                    CHAR000036000000"
+      },
+      {
+        "WA": "TERM2                         0018  XUTERMINAL                                                  XUTERMINAL                    CHAR000036000000"
+      },
+      {
+        "WA": "TEXT1                         0006                                                                                            CHAR000020000000"
+      },
+      {
+        "WA": "TEXT2                         0007                                                                                            CHAR000020000000"
+      },
+      {
+        "WA": "TEXT3                         0008                                                                                            CHAR000030000000"
+      },
+      {
+        "WA": "TEXT4                         0009                                                                                            CHAR000030000000"
+      },
+      {
+        "WA": "TEXT5                         0010                                                                                            CHAR000045000000"
+      },
+      {
+        "WA": "TYPE                          0003X                                                                                           CHAR000030000000"
+      },
+      {
+        "WA": "USNAM                         0013  USNAM                         *                             XUBNAME                       CHAR000012000000"
+      },
+      {
+        "WA": "VALUE                         0005X ATWRT                                                       ATWRT                         CHAR000030000000"
+      }
+    ],
+    "text": [
+      {
+        "WA": "ZMAP_TYPE                     EMapping PO/SO/PRO/Dll Type"
+      }
+    ]
+  },
+  "ZMRTYB": {
+    "header": [
+      {
+        "WA": "ZMRTYB                        TRANSP   A"
+      }
+    ],
+    "fields": [
+      {
+        "WA": "ARBPL                         0004  ARBPL                                                       ARBPL                         CHAR000008000000"
+      },
+      {
+        "WA": "AUFNR                         0006  AUFNR                         *                             AUFNR                         CHAR000012000000"
+      },
+      {
+        "WA": "CHARG                         0001X CHARG_D                       *                             CHARG                         CHAR000010000000"
+      },
+      {
+        "WA": "CHARG2                        0014  CHARG_D                       *                             CHARG                         CHAR000010000000"
+      },
+      {
+        "WA": "CPUDT                         0002  CPUDT                                                       DATUM                         DATS000008000000"
+      },
+      {
+        "WA": "CPUTM                         0005  CPUTM                                                       UZEIT                         TIMS000006000000"
+      },
+      {
+        "WA": "JRNO                          0013                                                                                            CHAR000018000000"
+      },
+      {
+        "WA": "LOTNO                         0010                                                                                            CHAR000012000000"
+      },
+      {
+        "WA": "MATNR                         0003  MATNR                         *                             MATNR                         CHAR000018000000"
+      },
+      {
+        "WA": "MBLNR                         0007  MBLNR                                                       BELNR                         CHAR000010000000"
+      },
+      {
+        "WA": "MOTHER                        0012  CHARG_D                       *                             CHARG                         CHAR000010000000"
+      },
+      {
+        "WA": "NOTES                         0016                                                                                            CHAR000050000000"
+      },
+      {
+        "WA": "RERUN                         0015                                                                                            CHAR000001000000"
+      },
+      {
+        "WA": "ROLNO                         0011                                                                                            CHAR000012000000"
+      },
+      {
+        "WA": "SEQLOT                        0008                                                                                            NUMC000002000000"
+      },
+      {
+        "WA": "SEQROL                        0009                                                                                            NUMC000003000000"
+      }
+    ],
+    "text": [
+      {
+        "WA": "ZMRTYB                        ELOT ROL and Mother Rol toyobo"
+      }
+    ]
+  },
+  "ZPROGINFO": {
+    "header": [
+      {
+        "WA": "ZPROGINFO                     TRANSP  XC"
+      }
+    ],
+    "fields": [
+      {
+        "WA": "LINE                          0002X                                                                                           NUMC000003000000"
+      },
+      {
+        "WA": "PGMNA                         0001X PROGRAM_ID                                                  PROGNAME                      CHAR000040000000"
+      },
+      {
+        "WA": "TDFORMAT                      0003  TDFORMAT                                                    TDELEMSTYL                    CHAR000002000000"
+      },
+      {
+        "WA": "TDLINE                        0004  TDLINE                                                      TDSTXLLINE                    CHAR000132000000"
+      }
+    ],
+    "text": [
+      {
+        "WA": "ZPROGINFO                     EProgram Documentations"
+      }
+    ]
+  },
+  "ZSEQNUM": {
+    "header": [
+      {
+        "WA": "ZSEQNUM                       TRANSP  XA"
+      }
+    ],
+    "fields": [
+      {
+        "WA": "ARBPL                         0001X ARBPL                                                       ARBPL                         CHAR000008000000"
+      },
+      {
+        "WA": "ZMONTH                        0002                                                                                            NUMC000002000000"
+      },
+      {
+        "WA": "ZSEQNO                        0003                                                                                            INT4000010000000"
+      }
+    ],
+    "text": [
+      {
+        "WA": "ZSEQNUM                       ETable for Record History Sequence Number Resource"
+      }
+    ]
+  },
+  "ZTMAP_MATRECYCLE": {
+    "header": [
+      {
+        "WA": "ZTMAP_MATRECYCLE              TRANSP  XA"
+      }
+    ],
+    "fields": [
+      {
+        "WA": "FGR_A_MATNR                   0006  ZMATFA                        *                             MATNR                         CHAR000018000000"
+      },
+      {
+        "WA": "FILMT                         0003X ZZFILM                                                                                    CHAR000003000000"
+      },
+      {
+        "WA": "MANDT                         0001X MANDT                         *                             MANDT                         CLNT000003000000"
+      },
+      {
+        "WA": "MATNR                         0005X MATNR                         *                             MATNR                         CHAR000018000000"
+      },
+      {
+        "WA": "RAR_A_MATNR                   0004X ZMATRA                        *                             MATNR                         CHAR000018000000"
+      },
+      {
+        "WA": "WERKS                         0002X WERKS_D                       *                             WERKS                         CHAR000004000000"
+      }
+    ],
+    "text": [
+      {
+        "WA": "ZTMAP_MATRECYCLE              EMapping of Recyle Materials (Raw A to FG A)"
+      }
+    ]
+  },
+  "ZTMAP_SLOCRR": {
+    "header": [
+      {
+        "WA": "ZTMAP_SLOCRR                  TRANSP  XA"
+      }
+    ],
+    "fields": [
+      {
+        "WA": "MANDT                         0001X MANDT                         *                             MANDT                         CLNT000003000000"
+      },
+      {
+        "WA": "WERKS                         0004  WERKS_D                       *                             WERKS                         CHAR000004000000"
+      },
+      {
+        "WA": "ZCXLGORT                      0010                                                                                            CHAR000004000000"
+      },
+      {
+        "WA": "ZDESC                         0005                                                                                            CHAR000030000000"
+      },
+      {
+        "WA": "ZGRSLLGORT                    0013                                                                                            CHAR000004000000"
+      },
+      {
+        "WA": "ZJRLGORT                      0008                                                                                            CHAR000004000000"
+      },
+      {
+        "WA": "ZLINE                         0003X                                                                                           CHAR000002000000"
+      },
+      {
+        "WA": "ZNALGORT                      0006                                                                                            CHAR000004000000"
+      },
+      {
+        "WA": "ZRRLGORT                      0012                                                                                            CHAR000004000000"
+      },
+      {
+        "WA": "ZSLLGORT                      0011                                                                                            CHAR000004000000"
+      },
+      {
+        "WA": "ZWCLGORT                      0009                                                                                            CHAR000004000000"
+      },
+      {
+        "WA": "ZWPLGORT                      0007                                                                                            CHAR000004000000"
+      },
+      {
+        "WA": "ZZNUMBER                      0002X                                                                                           NUMC000005000000"
+      }
+    ],
+    "text": [
+      {
+        "WA": "ZTMAP_SLOCRR                  EMapping Line & Sloc Raw Recycle"
+      }
+    ]
+  },
+  "ZTMAP_SLOC_JR_GR": {
+    "header": [
+      {
+        "WA": "ZTMAP_SLOC_JR_GR              TRANSP  XA"
+      }
+    ],
+    "fields": [
+      {
+        "WA": "MANDT                         0001X MANDT                         *                             MANDT                         CLNT000003000000"
+      },
+      {
+        "WA": "ZDCODE                        0006                                                                                            CHAR000003000000"
+      },
+      {
+        "WA": "ZDCODESC                      0007                                                                                            CHAR000030000000"
+      },
+      {
+        "WA": "ZLDESC                        0004  ZLDESC                                                      TEXT30                        CHAR000030000000"
+      },
+      {
+        "WA": "ZLINE                         0002X                                                                                           CHAR000002000000"
+      },
+      {
+        "WA": "ZSLOCDESC                     0005  ZSLOCDESC                                                   TEXT30                        CHAR000030000000"
+      },
+      {
+        "WA": "ZSLOCGIDESC                   0009                                                                                            CHAR000030000000"
+      },
+      {
+        "WA": "ZSLOCGIJR                     0008                                                                                            CHAR000004000000"
+      },
+      {
+        "WA": "ZSLOCJR                       0003X ZSLOCJR                                                     TEXT04                        CHAR000004000000"
+      }
+    ],
+    "text": [
+      {
+        "WA": "ZTMAP_SLOC_JR_GR              ETable SLoc Jumbo Roll GR"
+      }
+    ]
+  }
+}

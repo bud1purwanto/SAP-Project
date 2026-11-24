@@ -1,0 +1,7686 @@
+{
+  "ADM": {
+    "ACTCODE": "000005",
+    "MENCODE": "000050",
+    "PFKCODE": "000006",
+    "DEFAULTACT": "",
+    "DEFAULTPFK": "",
+    "MOD_LANGU": "E"
+  },
+  "AUTHOR": "PST_ABAP",
+  "CAUTHOR": "TRSTDEV",
+  "CDATE": "20220729",
+  "CTIME": "094754",
+  "DATE": "20120903",
+  "GDATE": "20220729",
+  "GTIME": "135620",
+  "LANGU": "E",
+  "TIME": "171537",
+  "ACT": [
+    {
+      "CODE": "000001",
+      "NO": "01",
+      "MENUCODE": "000001"
+    },
+    {
+      "CODE": "000001",
+      "NO": "02",
+      "MENUCODE": "000004"
+    },
+    {
+      "CODE": "000001",
+      "NO": "03",
+      "MENUCODE": "000006"
+    },
+    {
+      "CODE": "000001",
+      "NO": "04",
+      "MENUCODE": "000007"
+    },
+    {
+      "CODE": "000001",
+      "NO": "05",
+      "MENUCODE": "000008"
+    },
+    {
+      "CODE": "000002",
+      "NO": "01",
+      "MENUCODE": "000011"
+    },
+    {
+      "CODE": "000002",
+      "NO": "02",
+      "MENUCODE": "000014"
+    },
+    {
+      "CODE": "000002",
+      "NO": "03",
+      "MENUCODE": "000016"
+    },
+    {
+      "CODE": "000002",
+      "NO": "04",
+      "MENUCODE": "000017"
+    },
+    {
+      "CODE": "000002",
+      "NO": "05",
+      "MENUCODE": "000018"
+    },
+    {
+      "CODE": "000003",
+      "NO": "01",
+      "MENUCODE": "000021"
+    },
+    {
+      "CODE": "000003",
+      "NO": "02",
+      "MENUCODE": "000024"
+    },
+    {
+      "CODE": "000003",
+      "NO": "03",
+      "MENUCODE": "000026"
+    },
+    {
+      "CODE": "000003",
+      "NO": "04",
+      "MENUCODE": "000027"
+    },
+    {
+      "CODE": "000003",
+      "NO": "05",
+      "MENUCODE": "000028"
+    },
+    {
+      "CODE": "000004",
+      "NO": "01",
+      "MENUCODE": "000031"
+    },
+    {
+      "CODE": "000004",
+      "NO": "02",
+      "MENUCODE": "000034"
+    },
+    {
+      "CODE": "000004",
+      "NO": "03",
+      "MENUCODE": "000036"
+    },
+    {
+      "CODE": "000004",
+      "NO": "04",
+      "MENUCODE": "000037"
+    },
+    {
+      "CODE": "000004",
+      "NO": "05",
+      "MENUCODE": "000038"
+    },
+    {
+      "CODE": "000005",
+      "NO": "01",
+      "MENUCODE": "000041"
+    },
+    {
+      "CODE": "000005",
+      "NO": "02",
+      "MENUCODE": "000044"
+    },
+    {
+      "CODE": "000005",
+      "NO": "03",
+      "MENUCODE": "000046"
+    },
+    {
+      "CODE": "000005",
+      "NO": "04",
+      "MENUCODE": "000047"
+    },
+    {
+      "CODE": "000005",
+      "NO": "05",
+      "MENUCODE": "000048"
+    }
+  ],
+  "BIV": [],
+  "BUT": [
+    {
+      "PFK_CODE": "000001",
+      "CODE": "0001",
+      "NO": "01",
+      "PFNO": "08"
+    },
+    {
+      "PFK_CODE": "000001",
+      "CODE": "0001",
+      "NO": "02",
+      "PFNO": "17"
+    },
+    {
+      "PFK_CODE": "000001",
+      "CODE": "0001",
+      "NO": "03",
+      "PFNO": "09"
+    },
+    {
+      "PFK_CODE": "000001",
+      "CODE": "0001",
+      "NO": "04",
+      "PFNO": "S"
+    },
+    {
+      "PFK_CODE": "000001",
+      "CODE": "0001",
+      "NO": "05",
+      "PFNO": "05"
+    },
+    {
+      "PFK_CODE": "000001",
+      "CODE": "0001",
+      "NO": "06",
+      "PFNO": "06"
+    },
+    {
+      "PFK_CODE": "000001",
+      "CODE": "0001",
+      "NO": "07",
+      "PFNO": "S"
+    },
+    {
+      "PFK_CODE": "000001",
+      "CODE": "0001",
+      "NO": "08",
+      "PFNO": "29"
+    },
+    {
+      "PFK_CODE": "000001",
+      "CODE": "0001",
+      "NO": "09",
+      "PFNO": "38"
+    },
+    {
+      "PFK_CODE": "000001",
+      "CODE": "0001",
+      "NO": "10",
+      "PFNO": "28"
+    },
+    {
+      "PFK_CODE": "000001",
+      "CODE": "0001",
+      "NO": "11",
+      "PFNO": "40"
+    },
+    {
+      "PFK_CODE": "000002",
+      "CODE": "0001",
+      "NO": "01",
+      "PFNO": "08"
+    },
+    {
+      "PFK_CODE": "000002",
+      "CODE": "0001",
+      "NO": "02",
+      "PFNO": "S"
+    },
+    {
+      "PFK_CODE": "000002",
+      "CODE": "0001",
+      "NO": "03",
+      "PFNO": "18"
+    },
+    {
+      "PFK_CODE": "000002",
+      "CODE": "0001",
+      "NO": "04",
+      "PFNO": "21"
+    },
+    {
+      "PFK_CODE": "000002",
+      "CODE": "0001",
+      "NO": "05",
+      "PFNO": "S"
+    },
+    {
+      "PFK_CODE": "000002",
+      "CODE": "0001",
+      "NO": "06",
+      "PFNO": "17"
+    },
+    {
+      "PFK_CODE": "000002",
+      "CODE": "0001",
+      "NO": "07",
+      "PFNO": "20"
+    },
+    {
+      "PFK_CODE": "000002",
+      "CODE": "0001",
+      "NO": "08",
+      "PFNO": "07"
+    },
+    {
+      "PFK_CODE": "000003",
+      "CODE": "0001",
+      "NO": "01",
+      "PFNO": "08"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "01",
+      "PFNO": "39"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "02",
+      "PFNO": "37"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "03",
+      "PFNO": "08"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "04",
+      "PFNO": "S"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "05",
+      "PFNO": "05"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "06",
+      "PFNO": "06"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "07",
+      "PFNO": "S"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "08",
+      "PFNO": "28"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "09",
+      "PFNO": "40"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "10",
+      "PFNO": "29"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "11",
+      "PFNO": "38"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "12",
+      "PFNO": "S"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "13",
+      "PFNO": "30"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "14",
+      "PFNO": "42"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "15",
+      "PFNO": "S"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "16",
+      "PFNO": "46"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "17",
+      "PFNO": "S"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "18",
+      "PFNO": "43"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "19",
+      "PFNO": "44"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "20",
+      "PFNO": "45"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "21",
+      "PFNO": "31"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "22",
+      "PFNO": "25"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "23",
+      "PFNO": "47"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "24",
+      "PFNO": "S"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "25",
+      "PFNO": "32"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "26",
+      "PFNO": "33"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "27",
+      "PFNO": "34"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "28",
+      "PFNO": "S"
+    },
+    {
+      "PFK_CODE": "000005",
+      "CODE": "0001",
+      "NO": "29",
+      "PFNO": "36"
+    },
+    {
+      "PFK_CODE": "000006",
+      "CODE": "0001",
+      "NO": "01",
+      "PFNO": "09"
+    },
+    {
+      "PFK_CODE": "000006",
+      "CODE": "0002",
+      "NO": "01",
+      "PFNO": "07"
+    }
+  ],
+  "DOC": [
+    {
+      "OBJ_TYPE": "A",
+      "OBJ_CODE": "000001",
+      "SUB_CODE": "",
+      "MODAL": "D",
+      "NORM": "",
+      "INT_NOTE": "Standard Interface              STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "A",
+      "OBJ_CODE": "000002",
+      "SUB_CODE": "",
+      "MODAL": "D",
+      "NORM": "",
+      "INT_NOTE": "Standard Interface              STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "A",
+      "OBJ_CODE": "000003",
+      "SUB_CODE": "",
+      "MODAL": "D",
+      "NORM": "",
+      "INT_NOTE": "Standard Interface              STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "B",
+      "OBJ_CODE": "000001",
+      "SUB_CODE": "0001",
+      "MODAL": "",
+      "NORM": "",
+      "INT_NOTE": "Standard Maximum Interaction STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "B",
+      "OBJ_CODE": "000002",
+      "SUB_CODE": "0001",
+      "MODAL": "",
+      "NORM": "",
+      "INT_NOTE": "Standard Maximum Interaction STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "B",
+      "OBJ_CODE": "000003",
+      "SUB_CODE": "0001",
+      "MODAL": "",
+      "NORM": "",
+      "INT_NOTE": "Standard Maximum Interaction STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "B",
+      "OBJ_CODE": "000004",
+      "SUB_CODE": "0001",
+      "MODAL": "P",
+      "NORM": "",
+      "INT_NOTE": "Edit target/actual plan"
+    },
+    {
+      "OBJ_TYPE": "P",
+      "OBJ_CODE": "000001",
+      "SUB_CODE": "",
+      "MODAL": "D",
+      "NORM": "X",
+      "INT_NOTE": "Standard Maximum Interaction STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "P",
+      "OBJ_CODE": "000002",
+      "SUB_CODE": "",
+      "MODAL": "D",
+      "NORM": "X",
+      "INT_NOTE": "Standard Maximum Interaction STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "P",
+      "OBJ_CODE": "000003",
+      "SUB_CODE": "",
+      "MODAL": "D",
+      "NORM": "X",
+      "INT_NOTE": "Standard Maximum Interaction STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "P",
+      "OBJ_CODE": "000004",
+      "SUB_CODE": "",
+      "MODAL": "P",
+      "NORM": "",
+      "INT_NOTE": "Edit target/actual plan"
+    },
+    {
+      "OBJ_TYPE": "A",
+      "OBJ_CODE": "000004",
+      "SUB_CODE": "",
+      "MODAL": "D",
+      "NORM": "",
+      "INT_NOTE": "Standard Interface              STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "P",
+      "OBJ_CODE": "000005",
+      "SUB_CODE": "",
+      "MODAL": "D",
+      "NORM": "X",
+      "INT_NOTE": "Standard Maximum Interaction STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "B",
+      "OBJ_CODE": "000005",
+      "SUB_CODE": "0001",
+      "MODAL": "",
+      "NORM": "",
+      "INT_NOTE": "Standard Maximum Interaction STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "A",
+      "OBJ_CODE": "000005",
+      "SUB_CODE": "",
+      "MODAL": "D",
+      "NORM": "",
+      "INT_NOTE": "Standard Interface              STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "P",
+      "OBJ_CODE": "000006",
+      "SUB_CODE": "",
+      "MODAL": "D",
+      "NORM": "X",
+      "INT_NOTE": "Standard Maximum Interaction STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "B",
+      "OBJ_CODE": "000006",
+      "SUB_CODE": "0001",
+      "MODAL": "",
+      "NORM": "",
+      "INT_NOTE": "Standard Maximum Interaction STANDARD_FULLSCREEN"
+    },
+    {
+      "OBJ_TYPE": "B",
+      "OBJ_CODE": "000006",
+      "SUB_CODE": "0002",
+      "MODAL": "",
+      "NORM": "",
+      "INT_NOTE": "Standard Maximum Interaction STANDARD_FULLSCREEN"
+    }
+  ],
+  "FUN": [
+    {
+      "CODE": "%ML",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Folder",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "F",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "%PC",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_EXPORT",
+      "ICON_ID": "@49@",
+      "FUN_TEXT": "Local file...",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "L",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "%SC",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_SEARCH",
+      "ICON_ID": "@13@",
+      "FUN_TEXT": "Find",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "N",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "%SC+",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_SEARCH_NEXT",
+      "ICON_ID": "@4E@",
+      "FUN_TEXT": "Find next",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "%SL",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_MAIL",
+      "ICON_ID": "@1S@",
+      "FUN_TEXT": "Mail Recipient",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "M",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&ABC",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_ABC",
+      "ICON_ID": "@DL@",
+      "FUN_TEXT": "ABC Analysis",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "A",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&ALL",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_SELECT_ALL",
+      "ICON_ID": "@4B@",
+      "FUN_TEXT": "Select all",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "S",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&AQW",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_WORD_PROCESSING",
+      "ICON_ID": "@DK@",
+      "FUN_TEXT": "Word processing...",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "W",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&AUF",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Define totals drilldown...",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "S",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&AVE",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Saving...",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "S",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&AVE",
+      "TEXTNO": "002",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_ALV_VARIANT_SAVE",
+      "ICON_ID": "@DN@",
+      "FUN_TEXT": "Save layout...",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&AVR",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Mean value",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "M",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&BATAL",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_CHANGE",
+      "ICON_ID": "@0Z@",
+      "FUN_TEXT": "Batal",
+      "ICON_TEXT": "Batal JR",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&BTBTL",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Batal",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&BTL",
+      "TEXTNO": "001",
+      "TYPE": "E",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_CANCEL",
+      "ICON_ID": "@0W@",
+      "FUN_TEXT": "&BTL",
+      "ICON_TEXT": "Batal",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&CCL",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_CANCEL",
+      "ICON_ID": "@0W@",
+      "FUN_TEXT": "Close",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&CDF",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Unfreeze",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "U",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&CFI",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Freeze to column",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "F",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&CHD",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_INTENSIFY_CRITICAL",
+      "ICON_ID": "@HC@",
+      "FUN_TEXT": "Chg Winder",
+      "ICON_TEXT": "Change Winder",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&CLAB",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_DISPLAY",
+      "ICON_ID": "@10@",
+      "FUN_TEXT": "Check",
+      "ICON_TEXT": "Check Lab",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&CLS",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_CANCEL",
+      "ICON_ID": "@0W@",
+      "FUN_TEXT": "Close",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&COUNT",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Count",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "C",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&DATA_SAVE",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_SYSTEM_SAVE",
+      "ICON_ID": "@2L@",
+      "FUN_TEXT": "Save",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&DORDER",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_DISPLAY",
+      "ICON_ID": "@10@",
+      "FUN_TEXT": "DISPLAY",
+      "ICON_TEXT": "Order",
+      "INFO_TEXT": "Display Order",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&EB9",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_TABLE_SETTINGS",
+      "ICON_ID": "@36@",
+      "FUN_TEXT": "Call Up Report",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "C",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&ELP",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_SYSTEM_HELP",
+      "ICON_ID": "@35@",
+      "FUN_TEXT": "Help",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&EORDER",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_CHANGE",
+      "ICON_ID": "@0Z@",
+      "FUN_TEXT": "EDIT",
+      "ICON_TEXT": "Order",
+      "INFO_TEXT": "Edit Order",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&ERW",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Layout Management",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "L",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&ETA",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_EXECUTE_OBJECT",
+      "ICON_ID": "@15@",
+      "FUN_TEXT": "Execute",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&ETA",
+      "TEXTNO": "002",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_SELECT_DETAIL",
+      "ICON_ID": "@16@",
+      "FUN_TEXT": "Details",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&EXEC",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_EXECUTE_OBJECT",
+      "ICON_ID": "@15@",
+      "FUN_TEXT": "Execute",
+      "ICON_TEXT": "Execute",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&F03",
+      "TEXTNO": "001",
+      "TYPE": "E",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Back",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "B",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&F12",
+      "TEXTNO": "001",
+      "TYPE": "E",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_CANCEL",
+      "ICON_ID": "@0W@",
+      "FUN_TEXT": "Cancel",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "A",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&F15",
+      "TEXTNO": "001",
+      "TYPE": "E",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Exit",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "X",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&F4",
+      "TEXTNO": "001",
+      "TYPE": "E",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Possible entries",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&F4SSS",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Possible entries",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&GRAPH",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_GRAPHICS",
+      "ICON_ID": "@0N@",
+      "FUN_TEXT": "Graphic",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "G",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&IC1",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_SELECT_DETAIL",
+      "ICON_ID": "@16@",
+      "FUN_TEXT": "Choose",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&ILD",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_FILTER_UNDO",
+      "ICON_ID": "@GD@",
+      "FUN_TEXT": "Delete Filter",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "L",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&ILT",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_FILTER",
+      "ICON_ID": "@4G@",
+      "FUN_TEXT": "Set filter",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "F",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&INFO",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_INFORMATION",
+      "ICON_ID": "@0S@",
+      "FUN_TEXT": "Information",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&MAX",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Maximum",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "A",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&MIN",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Minimum",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "I",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&OAD",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Choose...",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "H",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&OAD",
+      "TEXTNO": "002",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_ALV_VARIANT_CHOOSE",
+      "ICON_ID": "@DM@",
+      "FUN_TEXT": "Select layout...",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&ODN",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_SORT_DOWN",
+      "ICON_ID": "@3F@",
+      "FUN_TEXT": "Sort in descending order",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "O",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&OL0",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_ALV_VARIANTS",
+      "ICON_ID": "@LZ@",
+      "FUN_TEXT": "Change layout...",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&OLX",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_VARIANTS",
+      "ICON_ID": "@0R@",
+      "FUN_TEXT": "Change...",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "C",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&OPT",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Optimize width",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "P",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&ORDER",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "D",
+      "TEXT_NAME": "ORDER",
+      "ICON_ID": "",
+      "FUN_TEXT": "",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&ORDERS",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Order",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&OUP",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_SORT_UP",
+      "ICON_ID": "@3E@",
+      "FUN_TEXT": "Sort in Ascending Order",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "I",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&R",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Refresh",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&REFRESH",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_REFRESH",
+      "ICON_ID": "@42@",
+      "FUN_TEXT": "Refresh",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&REXEC",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_EXECUTE_OBJECT",
+      "ICON_ID": "@15@",
+      "FUN_TEXT": "Re-Execute",
+      "ICON_TEXT": "Re-execute",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&RFRESH",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_REFRESH",
+      "ICON_ID": "@42@",
+      "FUN_TEXT": "Refresh",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&RFRSH",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_REFRESH",
+      "ICON_ID": "@42@",
+      "FUN_TEXT": "Refresh",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&RNT",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_PRINT",
+      "ICON_ID": "@0X@",
+      "FUN_TEXT": "Print",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "P",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&RNT_PREV",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_LAYOUT_CONTROL",
+      "ICON_ID": "@3G@",
+      "FUN_TEXT": "Print preview",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "R",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&RPRINT",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_PRINT",
+      "ICON_ID": "@0X@",
+      "FUN_TEXT": "Reprint",
+      "ICON_TEXT": "Re-Print Label",
+      "INFO_TEXT": "Reprint Label",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&SAL",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_DESELECT_ALL",
+      "ICON_ID": "@4D@",
+      "FUN_TEXT": "Deselect all",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "D",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&STOP",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_BREAKPOINT",
+      "ICON_ID": "@3U@",
+      "FUN_TEXT": "Stop",
+      "ICON_TEXT": "Stop",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&SUM",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_INTERMEDIATE_SUM",
+      "ICON_ID": "@5V@",
+      "FUN_TEXT": "Subtotals...",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "U",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&UMC",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_SUM",
+      "ICON_ID": "@3Z@",
+      "FUN_TEXT": "Total",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "T",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&VCRYSTAL",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Crystal Reports",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "C",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&VEXCEL",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_XLS",
+      "ICON_ID": "@J2@",
+      "FUN_TEXT": "Microsoft Excel",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "M",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&VGRID",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "SAP List Viewer",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "S",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&VLOTUS",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Lotus 1-2-3",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "L",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&XINT",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "ICON_ID": "",
+      "FUN_TEXT": "Additional Functions of SAP Query",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "E",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "&XXL",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_XXL",
+      "ICON_ID": "@DJ@",
+      "FUN_TEXT": "Spreadsheet...",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "A",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "CANC",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "ICON_CANCEL",
+      "ICON_ID": "@0W@",
+      "FUN_TEXT": "Cancel",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    },
+    {
+      "CODE": "ORDER",
+      "TEXTNO": "001",
+      "TYPE": "",
+      "MODIF": "",
+      "TEXT_TYPE": "D",
+      "TEXT_NAME": "ORDER",
+      "ICON_ID": "",
+      "FUN_TEXT": "",
+      "ICON_TEXT": "",
+      "INFO_TEXT": "",
+      "PATH": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": ""
+    }
+  ],
+  "MEN": [
+    {
+      "CODE": "000001",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&RNT_PREV",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000001",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&RNT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000001",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000001",
+      "NO": "04",
+      "REF_TYPE": "M",
+      "REF_CODE": "000002",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000001",
+      "NO": "05",
+      "REF_TYPE": "M",
+      "REF_CODE": "000003",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000001",
+      "NO": "06",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000001",
+      "NO": "07",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F15",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000002",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AQW",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000002",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&XXL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000002",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "%PC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000002",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&XINT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000003",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "%SL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000003",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "%ML",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000004",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ALL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000004",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&SAL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000004",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000004",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ILT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000004",
+      "NO": "05",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ILD",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000004",
+      "NO": "06",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000004",
+      "NO": "07",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OUP",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000004",
+      "NO": "08",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ODN",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000004",
+      "NO": "09",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000004",
+      "NO": "10",
+      "REF_TYPE": "M",
+      "REF_CODE": "000005",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000004",
+      "NO": "11",
+      "REF_TYPE": "F",
+      "REF_CODE": "&SUM",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000004",
+      "NO": "12",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000004",
+      "NO": "13",
+      "REF_TYPE": "F",
+      "REF_CODE": "%SC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000004",
+      "NO": "14",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000004",
+      "NO": "15",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F12",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000005",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&UMC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000005",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AVR",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000005",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&MIN",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000005",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&MAX",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000005",
+      "NO": "05",
+      "REF_TYPE": "F",
+      "REF_CODE": "&COUNT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000006",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ABC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000006",
+      "NO": "02",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000006",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F03",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000007",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VGRID",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000007",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VEXCEL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000007",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VLOTUS",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000007",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VCRYSTAL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000007",
+      "NO": "05",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000007",
+      "NO": "06",
+      "REF_TYPE": "F",
+      "REF_CODE": "&GRAPH",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000008",
+      "NO": "01",
+      "REF_TYPE": "M",
+      "REF_CODE": "000009",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000008",
+      "NO": "02",
+      "REF_TYPE": "M",
+      "REF_CODE": "000010",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000008",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AUF",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000009",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OLX",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000009",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OAD",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000009",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000009",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AVE",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000009",
+      "NO": "05",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000009",
+      "NO": "06",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ERW",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000010",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OPT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000010",
+      "NO": "02",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000010",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&CFI",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000010",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&CDF",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000011",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&RNT_PREV",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000011",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&RNT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000011",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000011",
+      "NO": "04",
+      "REF_TYPE": "M",
+      "REF_CODE": "000012",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000011",
+      "NO": "05",
+      "REF_TYPE": "M",
+      "REF_CODE": "000013",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000011",
+      "NO": "06",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000011",
+      "NO": "07",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F15",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000012",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AQW",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000012",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&XXL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000012",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "%PC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000012",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&XINT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000013",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "%SL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000013",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "%ML",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000014",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ALL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000014",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&SAL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000014",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000014",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ILT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000014",
+      "NO": "05",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ILD",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000014",
+      "NO": "06",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000014",
+      "NO": "07",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OUP",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000014",
+      "NO": "08",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ODN",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000014",
+      "NO": "09",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000014",
+      "NO": "10",
+      "REF_TYPE": "M",
+      "REF_CODE": "000015",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000014",
+      "NO": "11",
+      "REF_TYPE": "F",
+      "REF_CODE": "&SUM",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000014",
+      "NO": "12",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000014",
+      "NO": "13",
+      "REF_TYPE": "F",
+      "REF_CODE": "%SC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000014",
+      "NO": "14",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000014",
+      "NO": "15",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F12",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000015",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&UMC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000015",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AVR",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000015",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&MIN",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000015",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&MAX",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000015",
+      "NO": "05",
+      "REF_TYPE": "F",
+      "REF_CODE": "&COUNT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000016",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ABC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000016",
+      "NO": "02",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000016",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F03",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000017",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VGRID",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000017",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VEXCEL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000017",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VLOTUS",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000017",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VCRYSTAL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000017",
+      "NO": "05",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000017",
+      "NO": "06",
+      "REF_TYPE": "F",
+      "REF_CODE": "&GRAPH",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000018",
+      "NO": "01",
+      "REF_TYPE": "M",
+      "REF_CODE": "000019",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000018",
+      "NO": "02",
+      "REF_TYPE": "M",
+      "REF_CODE": "000020",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000018",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AUF",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000019",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OLX",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000019",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OAD",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000019",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000019",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AVE",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000019",
+      "NO": "05",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000019",
+      "NO": "06",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ERW",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000020",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OPT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000020",
+      "NO": "02",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000020",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&CFI",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000020",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&CDF",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000021",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&RNT_PREV",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000021",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&RNT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000021",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000021",
+      "NO": "04",
+      "REF_TYPE": "M",
+      "REF_CODE": "000022",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000021",
+      "NO": "05",
+      "REF_TYPE": "M",
+      "REF_CODE": "000023",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000021",
+      "NO": "06",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000021",
+      "NO": "07",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F15",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000022",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AQW",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000022",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&XXL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000022",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "%PC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000022",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&XINT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000023",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "%SL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000023",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "%ML",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000024",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ALL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000024",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&SAL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000024",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000024",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ILT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000024",
+      "NO": "05",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ILD",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000024",
+      "NO": "06",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000024",
+      "NO": "07",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OUP",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000024",
+      "NO": "08",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ODN",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000024",
+      "NO": "09",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000024",
+      "NO": "10",
+      "REF_TYPE": "M",
+      "REF_CODE": "000025",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000024",
+      "NO": "11",
+      "REF_TYPE": "F",
+      "REF_CODE": "&SUM",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000024",
+      "NO": "12",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000024",
+      "NO": "13",
+      "REF_TYPE": "F",
+      "REF_CODE": "%SC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000024",
+      "NO": "14",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000024",
+      "NO": "15",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F12",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000025",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&UMC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000025",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AVR",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000025",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&MIN",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000025",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&MAX",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000025",
+      "NO": "05",
+      "REF_TYPE": "F",
+      "REF_CODE": "&COUNT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000026",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ABC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000026",
+      "NO": "02",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000026",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F03",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000027",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VGRID",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000027",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VEXCEL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000027",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VLOTUS",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000027",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VCRYSTAL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000027",
+      "NO": "05",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000027",
+      "NO": "06",
+      "REF_TYPE": "F",
+      "REF_CODE": "&GRAPH",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000028",
+      "NO": "01",
+      "REF_TYPE": "M",
+      "REF_CODE": "000029",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000028",
+      "NO": "02",
+      "REF_TYPE": "M",
+      "REF_CODE": "000030",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000028",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AUF",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000029",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OLX",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000029",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OAD",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000029",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000029",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AVE",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000029",
+      "NO": "05",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000029",
+      "NO": "06",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ERW",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000030",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OPT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000030",
+      "NO": "02",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000030",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&CFI",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000030",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&CDF",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000031",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&RNT_PREV",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000031",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&RNT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000031",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000031",
+      "NO": "04",
+      "REF_TYPE": "M",
+      "REF_CODE": "000032",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000031",
+      "NO": "05",
+      "REF_TYPE": "M",
+      "REF_CODE": "000033",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000031",
+      "NO": "06",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000031",
+      "NO": "07",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F15",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000032",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AQW",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000032",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&XXL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000032",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "%PC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000032",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&XINT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000033",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "%SL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000033",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "%ML",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000034",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ALL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000034",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&SAL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000034",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000034",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ILT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000034",
+      "NO": "05",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ILD",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000034",
+      "NO": "06",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000034",
+      "NO": "07",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OUP",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000034",
+      "NO": "08",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ODN",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000034",
+      "NO": "09",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000034",
+      "NO": "10",
+      "REF_TYPE": "M",
+      "REF_CODE": "000035",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000034",
+      "NO": "11",
+      "REF_TYPE": "F",
+      "REF_CODE": "&SUM",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000034",
+      "NO": "12",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000034",
+      "NO": "13",
+      "REF_TYPE": "F",
+      "REF_CODE": "%SC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000034",
+      "NO": "14",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000034",
+      "NO": "15",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F12",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000035",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&UMC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000035",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AVR",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000035",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&MIN",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000035",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&MAX",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000035",
+      "NO": "05",
+      "REF_TYPE": "F",
+      "REF_CODE": "&COUNT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000036",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ABC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000036",
+      "NO": "02",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000036",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F03",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000037",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VGRID",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000037",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VEXCEL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000037",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VLOTUS",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000037",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VCRYSTAL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000037",
+      "NO": "05",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000037",
+      "NO": "06",
+      "REF_TYPE": "F",
+      "REF_CODE": "&GRAPH",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000038",
+      "NO": "01",
+      "REF_TYPE": "M",
+      "REF_CODE": "000039",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000038",
+      "NO": "02",
+      "REF_TYPE": "M",
+      "REF_CODE": "000040",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000038",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AUF",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000039",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OLX",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000039",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OAD",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000039",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000039",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AVE",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000039",
+      "NO": "05",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000039",
+      "NO": "06",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ERW",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000040",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OPT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000040",
+      "NO": "02",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000040",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&CFI",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000040",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&CDF",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000041",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&RNT_PREV",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000041",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&RNT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000041",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000041",
+      "NO": "04",
+      "REF_TYPE": "M",
+      "REF_CODE": "000042",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000041",
+      "NO": "05",
+      "REF_TYPE": "M",
+      "REF_CODE": "000043",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000041",
+      "NO": "06",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000041",
+      "NO": "07",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F15",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000042",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AQW",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000042",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&XXL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000042",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "%PC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000042",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&XINT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000043",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "%SL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000043",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "%ML",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000044",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ALL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000044",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&SAL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000044",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000044",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ILT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000044",
+      "NO": "05",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ILD",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000044",
+      "NO": "06",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000044",
+      "NO": "07",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OUP",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000044",
+      "NO": "08",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ODN",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000044",
+      "NO": "09",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000044",
+      "NO": "10",
+      "REF_TYPE": "M",
+      "REF_CODE": "000045",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000044",
+      "NO": "11",
+      "REF_TYPE": "F",
+      "REF_CODE": "&SUM",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000044",
+      "NO": "12",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000044",
+      "NO": "13",
+      "REF_TYPE": "F",
+      "REF_CODE": "%SC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000044",
+      "NO": "14",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000044",
+      "NO": "15",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F12",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000045",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&UMC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000045",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AVR",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000045",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&MIN",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000045",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&MAX",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000045",
+      "NO": "05",
+      "REF_TYPE": "F",
+      "REF_CODE": "&COUNT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000046",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ABC",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000046",
+      "NO": "02",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000046",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&F03",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000047",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VGRID",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000047",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VEXCEL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000047",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VLOTUS",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000047",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&VCRYSTAL",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000047",
+      "NO": "05",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000047",
+      "NO": "06",
+      "REF_TYPE": "F",
+      "REF_CODE": "&GRAPH",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000048",
+      "NO": "01",
+      "REF_TYPE": "M",
+      "REF_CODE": "000049",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000048",
+      "NO": "02",
+      "REF_TYPE": "M",
+      "REF_CODE": "000050",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000048",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AUF",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000049",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OLX",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000049",
+      "NO": "02",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OAD",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000049",
+      "NO": "03",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000049",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&AVE",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000049",
+      "NO": "05",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000049",
+      "NO": "06",
+      "REF_TYPE": "F",
+      "REF_CODE": "&ERW",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000050",
+      "NO": "01",
+      "REF_TYPE": "F",
+      "REF_CODE": "&OPT",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000050",
+      "NO": "02",
+      "REF_TYPE": "S",
+      "REF_CODE": "",
+      "REF_NO": ""
+    },
+    {
+      "CODE": "000050",
+      "NO": "03",
+      "REF_TYPE": "F",
+      "REF_CODE": "&CFI",
+      "REF_NO": "001"
+    },
+    {
+      "CODE": "000050",
+      "NO": "04",
+      "REF_TYPE": "F",
+      "REF_CODE": "&CDF",
+      "REF_NO": "001"
+    }
+  ],
+  "MTX": [
+    {
+      "CODE": "000001",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "List",
+      "PATH": "L",
+      "INT_NOTE": "STANDARD_FULLSCREEN List"
+    },
+    {
+      "CODE": "000002",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Export",
+      "PATH": "E",
+      "INT_NOTE": "STANDARD Save"
+    },
+    {
+      "CODE": "000003",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Send to",
+      "PATH": "S",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000004",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Edit",
+      "PATH": "E",
+      "INT_NOTE": "STANDARD"
+    },
+    {
+      "CODE": "000005",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Calculate",
+      "PATH": "C",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000006",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Goto",
+      "PATH": "G",
+      "INT_NOTE": "STANDARD"
+    },
+    {
+      "CODE": "000007",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Views",
+      "PATH": "I",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000008",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Settings",
+      "PATH": "S",
+      "INT_NOTE": "STANDARD_FULLSCREEN"
+    },
+    {
+      "CODE": "000009",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Layout",
+      "PATH": "A",
+      "INT_NOTE": "Sub STANDARD"
+    },
+    {
+      "CODE": "000010",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Columns",
+      "PATH": "C",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000011",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "List",
+      "PATH": "L",
+      "INT_NOTE": "STANDARD_FULLSCREEN List"
+    },
+    {
+      "CODE": "000012",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Export",
+      "PATH": "E",
+      "INT_NOTE": "STANDARD Save"
+    },
+    {
+      "CODE": "000013",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Send to",
+      "PATH": "S",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000014",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Edit",
+      "PATH": "E",
+      "INT_NOTE": "STANDARD"
+    },
+    {
+      "CODE": "000015",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Calculate",
+      "PATH": "C",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000016",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Goto",
+      "PATH": "G",
+      "INT_NOTE": "STANDARD"
+    },
+    {
+      "CODE": "000017",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Views",
+      "PATH": "I",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000018",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Settings",
+      "PATH": "S",
+      "INT_NOTE": "STANDARD_FULLSCREEN"
+    },
+    {
+      "CODE": "000019",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Layout",
+      "PATH": "A",
+      "INT_NOTE": "Sub STANDARD"
+    },
+    {
+      "CODE": "000020",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Columns",
+      "PATH": "C",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000021",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "List",
+      "PATH": "L",
+      "INT_NOTE": "STANDARD_FULLSCREEN List"
+    },
+    {
+      "CODE": "000022",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Export",
+      "PATH": "E",
+      "INT_NOTE": "STANDARD Save"
+    },
+    {
+      "CODE": "000023",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Send to",
+      "PATH": "S",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000024",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Edit",
+      "PATH": "E",
+      "INT_NOTE": "STANDARD"
+    },
+    {
+      "CODE": "000025",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Calculate",
+      "PATH": "C",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000026",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Goto",
+      "PATH": "G",
+      "INT_NOTE": "STANDARD"
+    },
+    {
+      "CODE": "000027",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Views",
+      "PATH": "I",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000028",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Settings",
+      "PATH": "S",
+      "INT_NOTE": "STANDARD_FULLSCREEN"
+    },
+    {
+      "CODE": "000029",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Layout",
+      "PATH": "A",
+      "INT_NOTE": "Sub STANDARD"
+    },
+    {
+      "CODE": "000030",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Columns",
+      "PATH": "C",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000031",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "List",
+      "PATH": "L",
+      "INT_NOTE": "STANDARD_FULLSCREEN List"
+    },
+    {
+      "CODE": "000032",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Export",
+      "PATH": "E",
+      "INT_NOTE": "STANDARD Save"
+    },
+    {
+      "CODE": "000033",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Send to",
+      "PATH": "S",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000034",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Edit",
+      "PATH": "E",
+      "INT_NOTE": "STANDARD"
+    },
+    {
+      "CODE": "000035",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Calculate",
+      "PATH": "C",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000036",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Goto",
+      "PATH": "G",
+      "INT_NOTE": "STANDARD"
+    },
+    {
+      "CODE": "000037",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Views",
+      "PATH": "I",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000038",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Settings",
+      "PATH": "S",
+      "INT_NOTE": "STANDARD_FULLSCREEN"
+    },
+    {
+      "CODE": "000039",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Layout",
+      "PATH": "A",
+      "INT_NOTE": "Sub STANDARD"
+    },
+    {
+      "CODE": "000040",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Columns",
+      "PATH": "C",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000041",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "List",
+      "PATH": "L",
+      "INT_NOTE": "STANDARD_FULLSCREEN List"
+    },
+    {
+      "CODE": "000042",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Export",
+      "PATH": "E",
+      "INT_NOTE": "STANDARD Save"
+    },
+    {
+      "CODE": "000043",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Send to",
+      "PATH": "S",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000044",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Edit",
+      "PATH": "E",
+      "INT_NOTE": "STANDARD"
+    },
+    {
+      "CODE": "000045",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Calculate",
+      "PATH": "C",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000046",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Goto",
+      "PATH": "G",
+      "INT_NOTE": "STANDARD"
+    },
+    {
+      "CODE": "000047",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Views",
+      "PATH": "I",
+      "INT_NOTE": ""
+    },
+    {
+      "CODE": "000048",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Settings",
+      "PATH": "S",
+      "INT_NOTE": "STANDARD_FULLSCREEN"
+    },
+    {
+      "CODE": "000049",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Layout",
+      "PATH": "A",
+      "INT_NOTE": "Sub STANDARD"
+    },
+    {
+      "CODE": "000050",
+      "TEXT_TYPE": "S",
+      "TEXT_NAME": "",
+      "INC_PROG": "",
+      "INC_STATUS": "",
+      "SFW_SWITCHID": "",
+      "SFW_SHOWHIDE": "",
+      "TEXT": "Columns",
+      "PATH": "C",
+      "INT_NOTE": ""
+    }
+  ],
+  "PFK": [
+    {
+      "CODE": "000001",
+      "PFNO": "01",
+      "FUNCODE": "&ELP",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "02",
+      "FUNCODE": "&IC1",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "03",
+      "FUNCODE": "&F03",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "04",
+      "FUNCODE": "&F4",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "05",
+      "FUNCODE": "&ALL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "06",
+      "FUNCODE": "&SAL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "07",
+      "FUNCODE": "&R",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "08",
+      "FUNCODE": "&EXEC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "09",
+      "FUNCODE": "&ORDERS",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "11",
+      "FUNCODE": "&DATA_SAVE",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "12",
+      "FUNCODE": "&F12",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "15",
+      "FUNCODE": "&F15",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "17",
+      "FUNCODE": "&RFRSH",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "25",
+      "FUNCODE": "&ABC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "28",
+      "FUNCODE": "&OUP",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "29",
+      "FUNCODE": "&ILT",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "30",
+      "FUNCODE": "&UMC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "31",
+      "FUNCODE": "%SL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "32",
+      "FUNCODE": "&OL0",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "33",
+      "FUNCODE": "&OAD",
+      "FUNNO": "002"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "34",
+      "FUNCODE": "&AVE",
+      "FUNNO": "002"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "36",
+      "FUNCODE": "&INFO",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "37",
+      "FUNCODE": "&EB9",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "38",
+      "FUNCODE": "&ILD",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "39",
+      "FUNCODE": "&ETA",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "40",
+      "FUNCODE": "&ODN",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "41",
+      "FUNCODE": "&VGRID",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "42",
+      "FUNCODE": "&SUM",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "43",
+      "FUNCODE": "&VEXCEL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "44",
+      "FUNCODE": "&AQW",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "45",
+      "FUNCODE": "%PC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "46",
+      "FUNCODE": "&RNT_PREV",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "47",
+      "FUNCODE": "&GRAPH",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "48",
+      "FUNCODE": "&VCRYSTAL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "71",
+      "FUNCODE": "%SC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "84",
+      "FUNCODE": "%SC+",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000001",
+      "PFNO": "86",
+      "FUNCODE": "&RNT",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "01",
+      "FUNCODE": "&ELP",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "02",
+      "FUNCODE": "&IC1",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "03",
+      "FUNCODE": "&F03",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "04",
+      "FUNCODE": "&F4",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "05",
+      "FUNCODE": "&ALL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "06",
+      "FUNCODE": "&SAL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "07",
+      "FUNCODE": "&CHD",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "08",
+      "FUNCODE": "&RFRESH",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "09",
+      "FUNCODE": "&EXEC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "11",
+      "FUNCODE": "&DATA_SAVE",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "12",
+      "FUNCODE": "&F12",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "15",
+      "FUNCODE": "&F15",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "17",
+      "FUNCODE": "&CLAB",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "18",
+      "FUNCODE": "&BATAL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "20",
+      "FUNCODE": "&RPRINT",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "21",
+      "FUNCODE": "&REXEC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "25",
+      "FUNCODE": "&EORDER",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "26",
+      "FUNCODE": "&DORDER",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "28",
+      "FUNCODE": "&OUP",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "29",
+      "FUNCODE": "&ILT",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "30",
+      "FUNCODE": "&UMC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "31",
+      "FUNCODE": "%SL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "32",
+      "FUNCODE": "&OL0",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "33",
+      "FUNCODE": "&OAD",
+      "FUNNO": "002"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "34",
+      "FUNCODE": "&AVE",
+      "FUNNO": "002"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "36",
+      "FUNCODE": "&INFO",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "37",
+      "FUNCODE": "&EB9",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "38",
+      "FUNCODE": "&ILD",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "39",
+      "FUNCODE": "&ETA",
+      "FUNNO": "002"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "40",
+      "FUNCODE": "&ODN",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "41",
+      "FUNCODE": "&VGRID",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "42",
+      "FUNCODE": "&SUM",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "43",
+      "FUNCODE": "&VEXCEL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "44",
+      "FUNCODE": "&AQW",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "45",
+      "FUNCODE": "%PC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "46",
+      "FUNCODE": "&RNT_PREV",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "47",
+      "FUNCODE": "&GRAPH",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "48",
+      "FUNCODE": "&VCRYSTAL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "71",
+      "FUNCODE": "%SC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "84",
+      "FUNCODE": "%SC+",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000002",
+      "PFNO": "86",
+      "FUNCODE": "&RNT",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000003",
+      "PFNO": "01",
+      "FUNCODE": "&ELP",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000003",
+      "PFNO": "02",
+      "FUNCODE": "&IC1",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000003",
+      "PFNO": "03",
+      "FUNCODE": "&F03",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000003",
+      "PFNO": "08",
+      "FUNCODE": "&STOP",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000003",
+      "PFNO": "12",
+      "FUNCODE": "&F12",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000003",
+      "PFNO": "15",
+      "FUNCODE": "&F15",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000004",
+      "PFNO": "12",
+      "FUNCODE": "CANC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "01",
+      "FUNCODE": "&ELP",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "02",
+      "FUNCODE": "&IC1",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "04",
+      "FUNCODE": "&F4",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "05",
+      "FUNCODE": "&ALL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "06",
+      "FUNCODE": "&SAL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "08",
+      "FUNCODE": "&REFRESH",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "25",
+      "FUNCODE": "&ABC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "28",
+      "FUNCODE": "&OUP",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "29",
+      "FUNCODE": "&ILT",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "30",
+      "FUNCODE": "&UMC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "31",
+      "FUNCODE": "%SL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "32",
+      "FUNCODE": "&OL0",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "33",
+      "FUNCODE": "&OAD",
+      "FUNNO": "002"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "34",
+      "FUNCODE": "&AVE",
+      "FUNNO": "002"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "36",
+      "FUNCODE": "&INFO",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "37",
+      "FUNCODE": "&EB9",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "38",
+      "FUNCODE": "&ILD",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "39",
+      "FUNCODE": "&ETA",
+      "FUNNO": "002"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "40",
+      "FUNCODE": "&ODN",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "41",
+      "FUNCODE": "&VGRID",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "42",
+      "FUNCODE": "&SUM",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "43",
+      "FUNCODE": "&VEXCEL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "44",
+      "FUNCODE": "&AQW",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "45",
+      "FUNCODE": "%PC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "46",
+      "FUNCODE": "&RNT_PREV",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "47",
+      "FUNCODE": "&GRAPH",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000005",
+      "PFNO": "48",
+      "FUNCODE": "&VCRYSTAL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "02",
+      "FUNCODE": "&IC1",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "04",
+      "FUNCODE": "&F4",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "05",
+      "FUNCODE": "&ALL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "06",
+      "FUNCODE": "&SAL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "07",
+      "FUNCODE": "&BTL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "08",
+      "FUNCODE": "&REFRESH",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "09",
+      "FUNCODE": "&CCL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "12",
+      "FUNCODE": "&F12",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "13",
+      "FUNCODE": "&BTBTL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "25",
+      "FUNCODE": "&ABC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "28",
+      "FUNCODE": "&OUP",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "29",
+      "FUNCODE": "&ILT",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "30",
+      "FUNCODE": "&UMC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "31",
+      "FUNCODE": "%SL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "32",
+      "FUNCODE": "&OL0",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "33",
+      "FUNCODE": "&OAD",
+      "FUNNO": "002"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "34",
+      "FUNCODE": "&AVE",
+      "FUNNO": "002"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "36",
+      "FUNCODE": "&INFO",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "37",
+      "FUNCODE": "&EB9",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "38",
+      "FUNCODE": "&ILD",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "39",
+      "FUNCODE": "&ETA",
+      "FUNNO": "002"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "40",
+      "FUNCODE": "&ODN",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "41",
+      "FUNCODE": "&VGRID",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "42",
+      "FUNCODE": "&SUM",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "43",
+      "FUNCODE": "&VEXCEL",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "44",
+      "FUNCODE": "&AQW",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "45",
+      "FUNCODE": "%PC",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "46",
+      "FUNCODE": "&RNT_PREV",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "47",
+      "FUNCODE": "&GRAPH",
+      "FUNNO": "001"
+    },
+    {
+      "CODE": "000006",
+      "PFNO": "48",
+      "FUNCODE": "&VCRYSTAL",
+      "FUNNO": "001"
+    }
+  ],
+  "SET": [
+    {
+      "STATUS": "TEXT",
+      "FUNCTION": "CANC"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "%CH"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "%ML"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "%PC"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "%SC"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "%SC+"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "%SL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&ABC"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&ALL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&AQW"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&AUF"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&AVE"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&AVR"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&BS"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&BS+"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&BS-"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&BTBTL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&BTL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&CDF"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&CFI"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&COUNT"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&CRB"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&CRBATCH"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&CRDESIG"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&CRE"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&CRL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&CRR"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&CRTEMPL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&CRYSTAL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&DATA_SAVE"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&DAU"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&DOF"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&DON"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&EB3"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&EB9"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&ELP"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&ERW"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&ETA"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&F03"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&F12"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&F15"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&F4"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&GRAPH"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&IC1"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&ILD"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&ILT"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&INFO"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&KOM"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&LFO"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&LIS"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&MAX"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&MIN"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&NFO"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&NTE"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&OAD"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&ODN"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&OL0"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&OLX"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&OMP"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&OPT"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&OUP"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&REFRESH"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&RNT"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&RNT_PREV"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&SAL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&SAVE"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&SUM"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&UMC"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&URL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&VCRYSTAL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&VEXCEL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&VGRID"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&VLOTUS"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&XINT"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&XML"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&XPA"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "&XXL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "BAC1"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "BACK"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "BEB1"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "BEB2"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "BEB3"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "BEB9"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "BEBN"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "COL0"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "COLX"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "DETA"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "DRUK"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "DSAL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "ENTE"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "EXIT"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "EXPA"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "FILD"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "FILT"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "GLIS"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "HELP"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "INFO"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "KOMP"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "P+"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "P++"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "P-"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "P--"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "PF09"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "PF13"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "PIC1"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "PICK"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "PRI"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "PRIN"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "PRNT"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "RW"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "SALL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "SAUF"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "SAVE"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "SCRB"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "SCRE"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "SCRL"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "SCRR"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "SKOM"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "SODN"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "SOUP"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "SUMC"
+    },
+    {
+      "STATUS": "ZBLANK",
+      "FUNCTION": "ZSUM"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "%CH"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "%ML"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "%PC"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "%SC"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "%SC+"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "%SL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&ABC"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&ALL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&AQW"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&AUF"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&AVE"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&AVR"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&BS"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&BS+"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&BS-"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&CDF"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&CFI"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&COUNT"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&CRB"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&CRBATCH"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&CRDESIG"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&CRE"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&CRL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&CRR"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&CRTEMPL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&CRYSTAL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&DATA_SAVE"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&DAU"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&DOF"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&DON"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&EB3"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&EB9"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&ELP"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&ERW"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&ETA"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&F03"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&F12"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&F15"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&F4"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&F4SSS"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&GRAPH"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&IC1"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&ILD"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&ILT"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&INFO"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&KOM"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&LFO"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&LIS"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&MAX"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&MIN"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&NFO"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&NTE"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&OAD"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&ODN"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&OL0"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&OLX"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&OMP"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&OPT"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&OUP"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&REFRESH"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&RNT"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&RNT_PREV"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&SAL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&SAVE"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&STOP"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&SUM"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&UMC"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&URL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&VCRYSTAL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&VEXCEL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&VGRID"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&VLOTUS"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&XINT"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&XML"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&XPA"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "&XXL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "BAC1"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "BACK"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "BEB1"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "BEB2"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "BEB3"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "BEB9"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "BEBN"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "COL0"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "COLX"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "DETA"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "DRUK"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "DSAL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "ENTE"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "EXIT"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "EXPA"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "FILD"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "FILT"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "GLIS"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "HELP"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "INFO"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "KOMP"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "P+"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "P++"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "P-"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "P--"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "PF09"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "PF13"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "PIC1"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "PICK"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "PRI"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "PRIN"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "PRNT"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "RW"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "SALL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "SAUF"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "SAVE"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "SCRB"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "SCRE"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "SCRL"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "SCRR"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "SKOM"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "SODN"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "SOUP"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "SUMC"
+    },
+    {
+      "STATUS": "ZEXECUTION",
+      "FUNCTION": "ZSUM"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "%CH"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "%ML"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "%PC"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "%SC"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "%SC+"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "%SL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&ABC"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&ALL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&AQW"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&AUF"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&AVE"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&AVR"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&BS"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&BS+"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&BS-"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&BTL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CCL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CDF"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CFI"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CLS"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&COUNT"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CRB"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CRBATCH"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CRDESIG"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CRE"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CRL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CRR"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CRTEMPL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&CRYSTAL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&DATA_SAVE"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&DAU"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&DOF"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&DON"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&EB3"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&EB9"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&ELP"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&ERW"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&ETA"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&F03"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&F12"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&F15"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&F4"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&GRAPH"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&IC1"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&ILD"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&ILT"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&INFO"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&KOM"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&LFO"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&LIS"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&MAX"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&MIN"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&NFO"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&NTE"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&OAD"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&ODN"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&OL0"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&OLX"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&OMP"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&OPT"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&OUP"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&REFRESH"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&RNT"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&RNT_PREV"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&SAL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&SAVE"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&SUM"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&UMC"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&URL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&VCRYSTAL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&VEXCEL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&VGRID"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&VLOTUS"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&XINT"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&XML"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&XPA"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "&XXL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "BAC1"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "BACK"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "BEB1"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "BEB2"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "BEB3"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "BEB9"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "BEBN"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "COL0"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "COLX"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "DETA"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "DRUK"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "DSAL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "ENTE"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "EXIT"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "EXPA"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "FILD"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "FILT"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "GLIS"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "HELP"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "INFO"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "KOMP"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "P+"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "P++"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "P-"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "P--"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "PF09"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "PF13"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "PIC1"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "PICK"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "PRI"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "PRIN"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "PRNT"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "RW"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "SALL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "SAUF"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "SAVE"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "SCRB"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "SCRE"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "SCRL"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "SCRR"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "SKOM"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "SODN"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "SOUP"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "SUMC"
+    },
+    {
+      "STATUS": "ZINFO",
+      "FUNCTION": "ZSUM"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "%CH"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "%ML"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "%PC"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "%SC"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "%SC+"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "%SL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&ABC"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&ALL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&AQW"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&AUF"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&AVE"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&AVR"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&BS"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&BS+"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&BS-"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&CDF"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&CFI"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&COUNT"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&CRB"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&CRBATCH"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&CRDESIG"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&CRE"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&CRL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&CRR"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&CRTEMPL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&CRYSTAL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&DATA_SAVE"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&DAU"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&DOF"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&DON"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&EB3"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&EB9"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&ELP"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&ERW"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&ETA"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&EXEC"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&F03"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&F12"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&F15"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&F4"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&GRAPH"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&IC1"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&ILD"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&ILT"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&INFO"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&KOM"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&LFO"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&LIS"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&MAX"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&MIN"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&NFO"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&NTE"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&OAD"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&ODN"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&OL0"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&OLX"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&OMP"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&OPT"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&ORDER"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&ORDERS"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&OUP"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&R"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&REFRESH"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&RFRSH"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&RNT"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&RNT_PREV"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&SAL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&SAVE"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&SUM"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&UMC"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&URL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&VCRYSTAL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&VEXCEL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&VGRID"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&VLOTUS"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&XINT"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&XML"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&XPA"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "&XXL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "BAC1"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "BACK"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "BEB1"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "BEB2"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "BEB3"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "BEB9"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "BEBN"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "COL0"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "COLX"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "DETA"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "DRUK"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "DSAL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "ENTE"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "EXIT"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "EXPA"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "FILD"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "FILT"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "GLIS"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "HELP"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "INFO"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "KOMP"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "ORDER"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "P+"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "P++"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "P-"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "P--"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "PF09"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "PF13"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "PIC1"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "PICK"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "PRI"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "PRIN"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "PRNT"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "RW"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "SALL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "SAUF"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "SAVE"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "SCRB"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "SCRE"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "SCRL"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "SCRR"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "SKOM"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "SODN"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "SOUP"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "SUMC"
+    },
+    {
+      "STATUS": "ZPEJRR",
+      "FUNCTION": "ZSUM"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "%CH"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "%ML"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "%PC"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "%SC"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "%SC+"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "%SL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&ABC"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&ALL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&AQW"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&AUF"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&AVE"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&AVR"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&BATAL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&BS"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&BS+"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&BS-"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CDF"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CFI"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CHD"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CLAB"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&COUNT"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CRB"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CRBATCH"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CRDESIG"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CRE"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CRL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CRR"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CRTEMPL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&CRYSTAL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&DATA_SAVE"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&DAU"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&DOF"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&DON"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&DORDER"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&EB3"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&EB9"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&ELP"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&EORDER"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&ERW"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&ETA"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&EXEC"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&F03"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&F12"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&F15"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&F4"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&GRAPH"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&IC1"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&ILD"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&ILT"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&INFO"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&KOM"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&LFO"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&LIS"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&MAX"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&MIN"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&NFO"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&NTE"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&OAD"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&ODN"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&OL0"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&OLX"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&OMP"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&OPT"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&OUP"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&REFRESH"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&REXEC"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&RFRESH"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&RNT"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&RNT_PREV"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&RPRINT"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&SAL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&SAVE"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&SUM"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&UMC"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&URL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&VCRYSTAL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&VEXCEL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&VGRID"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&VLOTUS"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&XINT"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&XML"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&XPA"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "&XXL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "BAC1"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "BACK"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "BEB1"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "BEB2"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "BEB3"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "BEB9"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "BEBN"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "COL0"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "COLX"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "DETA"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "DRUK"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "DSAL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "ENTE"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "EXIT"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "EXPA"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "FILD"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "FILT"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "GLIS"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "HELP"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "INFO"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "KOMP"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "P+"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "P++"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "P-"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "P--"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "PF09"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "PF13"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "PIC1"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "PICK"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "PRI"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "PRIN"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "PRNT"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "RW"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "SALL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "SAUF"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "SAVE"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "SCRB"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "SCRE"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "SCRL"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "SCRR"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "SKOM"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "SODN"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "SOUP"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "SUMC"
+    },
+    {
+      "STATUS": "ZPEJRR_ORD",
+      "FUNCTION": "ZSUM"
+    }
+  ],
+  "STA": [
+    {
+      "CODE": "TEXT",
+      "MODAL": "P",
+      "ACTCODE": "",
+      "PFKCODE": "000004",
+      "BUTCODE": "0001",
+      "INT_NOTE": "Text display",
+      "CTXCODE": ""
+    },
+    {
+      "CODE": "ZBLANK",
+      "MODAL": "D",
+      "ACTCODE": "000005",
+      "PFKCODE": "000006",
+      "BUTCODE": "0002",
+      "INT_NOTE": "Standard for General List Output in Fullscreen Grid",
+      "CTXCODE": ""
+    },
+    {
+      "CODE": "ZEXECUTION",
+      "MODAL": "D",
+      "ACTCODE": "000003",
+      "PFKCODE": "000003",
+      "BUTCODE": "0001",
+      "INT_NOTE": "Standard for General List Output in Fullscreen Grid",
+      "CTXCODE": ""
+    },
+    {
+      "CODE": "ZINFO",
+      "MODAL": "D",
+      "ACTCODE": "000005",
+      "PFKCODE": "000006",
+      "BUTCODE": "0001",
+      "INT_NOTE": "Standard for General List Output in Fullscreen Grid",
+      "CTXCODE": ""
+    },
+    {
+      "CODE": "ZPEJRR",
+      "MODAL": "D",
+      "ACTCODE": "000001",
+      "PFKCODE": "000001",
+      "BUTCODE": "0001",
+      "INT_NOTE": "Standard for General List Output in Fullscreen Grid",
+      "CTXCODE": ""
+    },
+    {
+      "CODE": "ZPEJRR_ORD",
+      "MODAL": "D",
+      "ACTCODE": "000002",
+      "PFKCODE": "000002",
+      "BUTCODE": "0001",
+      "INT_NOTE": "Standard for General List Output in Fullscreen Grid",
+      "CTXCODE": ""
+    }
+  ],
+  "TIT": [
+    {
+      "CODE": "ZBOPET",
+      "TEXT": "Execute of Jumbo Roll BOPET"
+    },
+    {
+      "CODE": "ZBOPET2",
+      "TEXT": "Re-Execute of Jumbo Roll BOPET"
+    },
+    {
+      "CODE": "ZBOPET_TTA",
+      "TEXT": "Execution of Jumbo Roll BOPET TTA"
+    },
+    {
+      "CODE": "ZBOPET_TTA2",
+      "TEXT": "Re-Execution of Jumbo Roll BOPET TTA"
+    },
+    {
+      "CODE": "ZBOPP",
+      "TEXT": "Execute of Jumbo Roll BOPP"
+    },
+    {
+      "CODE": "ZBOPP2",
+      "TEXT": "Re-Execute of Jumbo Roll BOPP"
+    },
+    {
+      "CODE": "ZCAST",
+      "TEXT": "Execute of Cast Sheet"
+    },
+    {
+      "CODE": "ZCAST2",
+      "TEXT": "Re-Execute of Cast Sheet"
+    },
+    {
+      "CODE": "ZCOAT",
+      "TEXT": "Execute of Jumbo Roll Coating"
+    },
+    {
+      "CODE": "ZCOAT2",
+      "TEXT": "Re-Execute of Jumbo Roll Coating"
+    },
+    {
+      "CODE": "ZCPP",
+      "TEXT": "Execute of Jumbo Roll CPP"
+    },
+    {
+      "CODE": "ZCPP2",
+      "TEXT": "Re-Execute of Jumbo Roll CPP"
+    },
+    {
+      "CODE": "ZEXECUTE",
+      "TEXT": "Execution of Jumbo Roll"
+    },
+    {
+      "CODE": "ZEXECUTE2",
+      "TEXT": "Re-Execute of Jumbo Roll"
+    },
+    {
+      "CODE": "ZLAMINATE",
+      "TEXT": "Execute of Jumbo Roll Laminating"
+    },
+    {
+      "CODE": "ZLAMINATE2",
+      "TEXT": "Re-Execute of Jumbo Roll Laminating"
+    },
+    {
+      "CODE": "ZMETALIZING",
+      "TEXT": "Execute of Jumbo Roll Metalizing"
+    },
+    {
+      "CODE": "ZMETALIZING2",
+      "TEXT": "Re-Execute of Jumbo Roll Metalizing"
+    },
+    {
+      "CODE": "ZSCRIM",
+      "TEXT": "Execute of Jumbo Roll Scrim"
+    },
+    {
+      "CODE": "ZSCRIM2",
+      "TEXT": "Re-Execute of Jumbo Roll Scrim"
+    },
+    {
+      "CODE": "ZTHERMAL",
+      "TEXT": "Execute of Jumbo Roll Thermal"
+    },
+    {
+      "CODE": "ZTHERMAL2",
+      "TEXT": "Re-Execute of Jumbo Roll Thermal"
+    }
+  ]
+}

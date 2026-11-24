@@ -1,0 +1,2462 @@
+[
+ {
+  "obj": "LZCHARACTERISTICSU01",
+  "subc": "I",
+  "udat": "20130110",
+  "masters": [
+   "SAPLZCHARACTERISTICS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZCHARACTERISTICSU03",
+  "subc": "I",
+  "udat": "20130110",
+  "masters": [
+   "SAPLZCHARACTERISTICS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZCHARACTERISTICSU04",
+  "subc": "I",
+  "udat": "20130111",
+  "masters": [
+   "SAPLZCHARACTERISTICS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZCHARACTERISTICSU06",
+  "subc": "I",
+  "udat": "20130110",
+  "masters": [
+   "SAPLZCHARACTERISTICS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZMM_INVU01",
+  "subc": "I",
+  "udat": "20250815",
+  "masters": [
+   "SAPLZMM_INV"
+  ],
+  "tcodes": [],
+  "hits": {
+   "VFDAT": 3,
+   "HSDAT": 3
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZSD_DOU01",
+  "subc": "I",
+  "udat": "20160203",
+  "masters": [
+   "SAPLZSD_DO"
+  ],
+  "tcodes": [],
+  "hits": {
+   "VFDAT": 3,
+   "HSDAT": 3
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZTRIAS$01",
+  "subc": "I",
+  "udat": "20181112",
+  "masters": [
+   "SAPLZTRIAS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZTRIAS02U01",
+  "subc": "I",
+  "udat": "20160120",
+  "masters": [
+   "SAPLZTRIAS02"
+  ],
+  "tcodes": [],
+  "hits": {
+   "VFDAT": 12,
+   "HSDAT": 12
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZTRIASU01",
+  "subc": "I",
+  "udat": "20181112",
+  "masters": [
+   "SAPLZTRIAS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZTRIASU08",
+  "subc": "I",
+  "udat": "20150128",
+  "masters": [
+   "SAPLZTRIAS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "VFDAT": 4,
+   "HSDAT": 4
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZTRIASU09",
+  "subc": "I",
+  "udat": "20150127",
+  "masters": [
+   "SAPLZTRIAS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "VFDAT": 4,
+   "HSDAT": 4
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZTRIASU11",
+  "subc": "I",
+  "udat": "20150128",
+  "masters": [
+   "SAPLZTRIAS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "VFDAT": 4,
+   "HSDAT": 4
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "LZ_TESTING_SQLU01",
+  "subc": "I",
+  "udat": "20160718",
+  "masters": [
+   "SAPLZ_TESTING_SQL"
+  ],
+  "tcodes": [],
+  "hits": {
+   "VFDAT": 3,
+   "HSDAT": 3
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZBAP_READY_REPORT_F01",
+  "subc": "I",
+  "udat": "20260921",
+  "masters": [
+   "ZBAP_READY_REPORT"
+  ],
+  "tcodes": [
+   "ZSD012N"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 4,
+   "FM_PRODDATE": 1,
+   "EXPIR": 5
+  },
+  "formula": [
+   "L640: <FS_HU>-ZZEXPIREDLIVE = <FS_HU>-ERSDA + <FS_CHAR>-ATFLV."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZBAP_READY_REPORT_F01_STFN",
+  "subc": "I",
+  "udat": "20200327",
+  "masters": [
+   "ZBAP_READY_REPORT_STFN"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 4,
+   "FM_PRODDATE": 1,
+   "EXPIR": 5
+  },
+  "formula": [
+   "L640: <FS_HU>-ZZEXPIREDLIVE = <FS_HU>-ERSDA + <FS_CHAR>-ATFLV."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZBAP_READY_REPORT_ORI_F01",
+  "subc": "I",
+  "udat": "20130103",
+  "masters": [
+   "ZBAP_READY_REPORT_ORI"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L574: WA_HU-ZZEXPR = WA_HU-ERSDA + V_VTVALUE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZBAP_READY_REPORT_TOP",
+  "subc": "I",
+  "udat": "20260929",
+  "masters": [
+   "ZBAP_READY_REPORT"
+  ],
+  "tcodes": [
+   "ZSD012N"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZBAP_READY_REPORT_TOP_STFN",
+  "subc": "I",
+  "udat": "20200309",
+  "masters": [
+   "ZBAP_READY_REPORT_STFN"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZBAP_STOCK_BY_CHAR1_F01",
+  "subc": "I",
+  "udat": "20261030",
+  "masters": [
+   "ZBAP_STOCK_BY_CHAR1"
+  ],
+  "tcodes": [
+   "ZBMBC"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 7,
+   "FM_PRODDATE": 2,
+   "EXPIR": 8
+  },
+  "formula": [
+   "L720: <FS_ZBMBC>-DEXDT = <FS_ZBMBC>-ERSDA + <FS_ZBMBC>-ZZEXPIREDLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZBAP_STOCK_BY_CHAR1_TOP",
+  "subc": "I",
+  "udat": "20261030",
+  "masters": [
+   "ZBAP_STOCK_BY_CHAR1"
+  ],
+  "tcodes": [
+   "ZBMBC"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZBAP_STOCK_BY_CHAR_F01",
+  "subc": "I",
+  "udat": "20130109",
+  "masters": [
+   "ZBAP_STOCK_BY_CHAR"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 3,
+   "EXPIR": 4
+  },
+  "formula": [
+   "L625: <FS_ZBMBC>-DEXDT = <FS_ZBMBC>-ERSDA + <FS_ZBMBC>-ZZEXPIREDLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZBAP_STOCK_BY_CHAR_TOP",
+  "subc": "I",
+  "udat": "20130109",
+  "masters": [
+   "ZBAP_STOCK_BY_CHAR"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZBMBC_JR",
+  "subc": "1",
+  "udat": "20161215",
+  "masters": [
+   "ZBMBC_JR"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 4,
+   "FM_PRODDATE": 2,
+   "EXPIR": 5
+  },
+  "formula": [
+   "L785: <FS_ZBMBC>-DEXDT = <FS_ZBMBC>-ERSDA + <FS_ZBMBC>-ZZEXPIREDLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZCOPY_ZBMBC_F01",
+  "subc": "I",
+  "udat": "20210414",
+  "masters": [
+   "ZCOPY_ZBMBC"
+  ],
+  "tcodes": [
+   "ZBMBC_2"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 7,
+   "FM_PRODDATE": 2,
+   "EXPIR": 8
+  },
+  "formula": [
+   "L687: <FS_ZBMBC>-DEXDT = <FS_ZBMBC>-ERSDA + <FS_ZBMBC>-ZZEXPIREDLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZCOPY_ZBMBC_TOP",
+  "subc": "I",
+  "udat": "20210414",
+  "masters": [
+   "ZCOPY_ZBMBC"
+  ],
+  "tcodes": [
+   "ZBMBC_2"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZFIF_PAYMENT_INSTRUC_DNM_F02",
+  "subc": "I",
+  "udat": "20240115",
+  "masters": [
+   "ZFIF_PAYMENT_INSTRUC_DNM"
+  ],
+  "tcodes": [
+   "ZFI508"
+  ],
+  "hits": {
+   "EXPIR": 1
+  },
+  "formula": [
+   "L550: V_EXPDT = P_DATE + 1.",
+   "L648: V_EXPDT = P_DATE + 1."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZFIF_PAYMENT_INSTRUC_DNM_T_F02",
+  "subc": "I",
+  "udat": "20240131",
+  "masters": [
+   "ZFIF_PAYMENT_INSTRUC_DNM_T"
+  ],
+  "tcodes": [],
+  "hits": {
+   "EXPIR": 1
+  },
+  "formula": [
+   "L550: V_EXPDT = P_DATE + 1.",
+   "L648: V_EXPDT = P_DATE + 1."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZFIR_AR_AGING_PIUTANG_V2",
+  "subc": "1",
+  "udat": "20210330",
+  "masters": [
+   "ZFIR_AR_AGING_PIUTANG_V2"
+  ],
+  "tcodes": [
+   "ZFI017N"
+  ],
+  "hits": {
+   "D180": 4
+  },
+  "formula": [],
+  "plants": [
+   "9999"
+  ]
+ },
+ {
+  "obj": "ZHUR_LABELPACK_INCH",
+  "subc": "I",
+  "udat": "20260604",
+  "masters": [
+   "ZHUR_LABELPACK"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L327: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHUR_LABELPACK_INCL",
+  "subc": "I",
+  "udat": "20261019",
+  "masters": [
+   "ZHUR_LABELPACK"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 2,
+   "EXPIR": 3
+  },
+  "formula": [
+   "L1712: V_EXPDATE = V_POSTDATE + V_LIVE.",
+   "L1736: V_EXPDATE = V_POSTDATE + ( V_LIVE_TEMP * 30 ).",
+   "L1746: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHUR_READY_REPORT_F01",
+  "subc": "I",
+  "udat": "20130207",
+  "masters": [
+   "ZHUR_READY_REPORT"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L565: <FS_HU>-ZZEXPR = <FS_HU>-ERSDA + V_VTVALUE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHUR_ROLL_LIST_BY_DEL1_F01",
+  "subc": "I",
+  "udat": "20130108",
+  "masters": [
+   "ZHUR_ROLL_LIST_BY_DEL1"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L790: <FS_HU>-ZZEXPR = <FS_HU>-LWEDT + V_EXPR."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHUR_ROLL_LIST_BY_DEL2_F01",
+  "subc": "I",
+  "udat": "20130108",
+  "masters": [
+   "ZHUR_ROLL_LIST_BY_DEL2"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L738: IT_HU-ZZEXPR = IT_HU-LWEDT + V_EXPR."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHUR_ROLL_LIST_BY_DEL_F01",
+  "subc": "I",
+  "udat": "20250516",
+  "masters": [
+   "ZHUR_ROLL_LIST_BY_DEL"
+  ],
+  "tcodes": [
+   "ZSD024",
+   "ZSD024TTE"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L662: <FS_HU>-ZZEXPR = <FS_HU>-LWEDT + V_EXPR."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHUR_ROLL_LIST_BY_DEL_GG",
+  "subc": "1",
+  "udat": "20200123",
+  "masters": [
+   "ZHUR_ROLL_LIST_BY_DEL_GG"
+  ],
+  "tcodes": [
+   "ZSD024A"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 2,
+   "BESTUSE": 1
+  },
+  "formula": [
+   "L855: V_EDATE = V_PDATE + V_VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHUR_ROLL_LIST_BY_DEL_V2_F01",
+  "subc": "I",
+  "udat": "20260303",
+  "masters": [
+   "ZHUR_ROLL_LIST_BY_DEL_V2"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L705: <FS_HU>-ZZEXPR = <FS_HU>-LWEDT + V_EXPR."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHU_LABEL",
+  "subc": "1",
+  "udat": "20180912",
+  "masters": [
+   "ZHU_LABEL"
+  ],
+  "tcodes": [
+   "ZHU023"
+  ],
+  "hits": {
+   "EXPIR": 1,
+   "BESTUSE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZHU_LABEL_1100",
+  "subc": "I",
+  "udat": "20121017",
+  "masters": [
+   "ZHU_LABEL"
+  ],
+  "tcodes": [
+   "ZHU023"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L206: ITAB-EDATE = ITAB-PDATE + ITAB-VLIVE.",
+   "L218: ITAB-EDATE = ITAB-PDATE + ITAB-VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHU_LABEL_GENT",
+  "subc": "1",
+  "udat": "20150225",
+  "masters": [
+   "ZHU_LABEL_GENT"
+  ],
+  "tcodes": [
+   "ZLABEL10"
+  ],
+  "hits": {
+   "EXPIR": 1,
+   "BESTUSE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZHU_LABEL_GG01",
+  "subc": "1",
+  "udat": "20220117",
+  "masters": [
+   "ZHU_LABEL_GG01"
+  ],
+  "tcodes": [
+   "ZHU021"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 2,
+   "BESTUSE": 1
+  },
+  "formula": [
+   "L338: ITAB-EDATE = ITAB-PDATE + ITAB-VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHU_LABEL_GG01X",
+  "subc": "1",
+  "udat": "20131223",
+  "masters": [
+   "ZHU_LABEL_GG01X"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 2,
+   "BESTUSE": 1
+  },
+  "formula": [
+   "L263: ITAB-EDATE = ITAB-PDATE + ITAB-VLIVE.",
+   "L275: ITAB-EDATE = ITAB-PDATE + ITAB-VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHU_LABEL_KTNG",
+  "subc": "1",
+  "udat": "20180308",
+  "masters": [
+   "ZHU_LABEL_KTNG"
+  ],
+  "tcodes": [
+   "ZHU025"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1,
+   "BESTUSE": 1
+  },
+  "formula": [
+   "L237: ITAB-EDATE = ITAB-PDATE + ITAB-VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZHU_LABEL_PMI",
+  "subc": "1",
+  "udat": "20160812",
+  "masters": [
+   "ZHU_LABEL_PMI"
+  ],
+  "tcodes": [
+   "ZHU020"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L343: V_EXPDATE = V_POSTDATE + V_LIFE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZIC_UPLOAD_SO_F01",
+  "subc": "I",
+  "udat": "20241224",
+  "masters": [
+   "ZIC_UPLOAD_SO"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 6,
+   "EXPIR": 6
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZIC_UPLOAD_SO_F01_CKI",
+  "subc": "I",
+  "udat": "20250517",
+  "masters": [
+   "ZIC_UPLOAD_SO_CKI"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 6,
+   "EXPIR": 6
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZIC_UPLOAD_SO_F01_CKI_2",
+  "subc": "I",
+  "udat": "20250610",
+  "masters": [
+   "ZIC_UPLOAD_SO_CKI_2"
+  ],
+  "tcodes": [
+   "ZIC004SL"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 6,
+   "EXPIR": 6
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZIC_UPLOAD_SO_TOP",
+  "subc": "I",
+  "udat": "20231024",
+  "masters": [
+   "ZIC_UPLOAD_SO"
+  ],
+  "tcodes": [],
+  "hits": {
+   "EXPIR": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZIC_UPLOAD_SO_TOP_CKI",
+  "subc": "I",
+  "udat": "20250516",
+  "masters": [
+   "ZIC_UPLOAD_SO_CKI"
+  ],
+  "tcodes": [],
+  "hits": {
+   "EXPIR": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZIC_UPLOAD_SO_TOP_CKI_2",
+  "subc": "I",
+  "udat": "20250520",
+  "masters": [
+   "ZIC_UPLOAD_SO_CKI_2"
+  ],
+  "tcodes": [
+   "ZIC004SL"
+  ],
+  "hits": {
+   "EXPIR": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZITI_ZSD024S",
+  "subc": "1",
+  "udat": "20150303",
+  "masters": [
+   "ZITI_ZSD024S"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L784: <FS_HU>-ZZEXPR = <FS_HU>-LWEDT + V_EXPR."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZJARWO_TEST",
+  "subc": "1",
+  "udat": "20181102",
+  "masters": [
+   "ZJARWO_TEST"
+  ],
+  "tcodes": [],
+  "hits": {
+   "VFDAT": 4,
+   "HSDAT": 4
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELHU_A146",
+  "subc": "1",
+  "udat": "20230512",
+  "masters": [
+   "ZLABELHU_A146"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L243: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELHU_A400",
+  "subc": "1",
+  "udat": "20190425",
+  "masters": [
+   "ZLABELHU_A400"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L213: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELHU_A401",
+  "subc": "1",
+  "udat": "20210108",
+  "masters": [
+   "ZLABELHU_A401"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L213: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_A131",
+  "subc": "1",
+  "udat": "20230612",
+  "masters": [
+   "ZLABELROL_A131"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 2,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_A132",
+  "subc": "1",
+  "udat": "20170106",
+  "masters": [
+   "ZLABELROL_A132"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L183: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_A133",
+  "subc": "1",
+  "udat": "20170321",
+  "masters": [
+   "ZLABELROL_A133"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L186: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_A136",
+  "subc": "1",
+  "udat": "20260916",
+  "masters": [
+   "ZLABELROL_A136"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_A138",
+  "subc": "1",
+  "udat": "20230612",
+  "masters": [
+   "ZLABELROL_A138"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 2,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_A139",
+  "subc": "1",
+  "udat": "20230612",
+  "masters": [
+   "ZLABELROL_A139"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 2,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_A146",
+  "subc": "1",
+  "udat": "20230612",
+  "masters": [
+   "ZLABELROL_A146"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_A149",
+  "subc": "1",
+  "udat": "20260511",
+  "masters": [
+   "ZLABELROL_A149"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_A149_CP",
+  "subc": "1",
+  "udat": "20220609",
+  "masters": [
+   "ZLABELROL_A149_CP"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_A400",
+  "subc": "1",
+  "udat": "20190415",
+  "masters": [
+   "ZLABELROL_A400"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L183: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_A401",
+  "subc": "1",
+  "udat": "20210106",
+  "masters": [
+   "ZLABELROL_A401"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L183: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_B002",
+  "subc": "I",
+  "udat": "20180823",
+  "masters": [
+   "ZLABELROL_B002"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_CHANGE_90",
+  "subc": "1",
+  "udat": "20250821",
+  "masters": [
+   "ZLABELROL_CHANGE_90"
+  ],
+  "tcodes": [
+   "ZLABEL90"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L763: V_EXPDATE = V_POSTDATE + V_LIVE.",
+   "L788: V_EXPDATE = V_POSTDATE + ( V_LIVE_TEMP * 30 ).",
+   "L798: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZLABELROL_TES",
+  "subc": "1",
+  "udat": "20170104",
+  "masters": [
+   "ZLABELROL_TES"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L166: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZLABEL_A211",
+  "subc": "I",
+  "udat": "20150402",
+  "masters": [
+   "ZMMR_LABELROL",
+   "ZMMR_LABELROL_ALF",
+   "ZMMR_LABELROL_CP"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L730: V_GROS = V_GROS + V_TAB-ATFLV."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZLABEL_TYB_UNDERWINDOWS",
+  "subc": "1",
+  "udat": "20200511",
+  "masters": [
+   "ZLABEL_TYB_UNDERWINDOWS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMAP_COA_BATCH",
+  "subc": "1",
+  "udat": "20261116",
+  "masters": [
+   "ZMAP_COA_BATCH"
+  ],
+  "tcodes": [],
+  "hits": {
+   "EXPIR": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMC_UP_MAT_MAS_F01",
+  "subc": "I",
+  "udat": "20190123",
+  "masters": [
+   "ZMMC_UP_MAT_MAS"
+  ],
+  "tcodes": [
+   "ZBC001"
+  ],
+  "hits": {
+   "MHD": 4,
+   "BESTUSE": 4,
+   "SLED_FM": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMC_UP_MAT_MAS_TOP",
+  "subc": "I",
+  "udat": "20190123",
+  "masters": [
+   "ZMMC_UP_MAT_MAS"
+  ],
+  "tcodes": [
+   "ZBC001"
+  ],
+  "hits": {
+   "MHD": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMI_GRN_SUBCON_TTE",
+  "subc": "1",
+  "udat": "20220712",
+  "masters": [
+   "ZMMI_GRN_SUBCON_TTE"
+  ],
+  "tcodes": [
+   "ZIC007"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMI_GRN_SUBCON_TTE_BUDI",
+  "subc": "1",
+  "udat": "20220617",
+  "masters": [
+   "ZMMI_GRN_SUBCON_TTE_BUDI"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMI_UPLOAD_BATCH_RM",
+  "subc": "1",
+  "udat": "20121203",
+  "masters": [
+   "ZMMI_UPLOAD_BATCH_RM"
+  ],
+  "tcodes": [
+   "ZMMIB_07"
+  ],
+  "hits": {
+   "VFDAT": 1,
+   "HSDAT": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_CHANGE_LABELROL_WIN",
+  "subc": "1",
+  "udat": "20230502",
+  "masters": [
+   "ZMMR_CHANGE_LABELROL_WIN"
+  ],
+  "tcodes": [
+   "ZLABEL91"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L442: V_EXPDATE = V_POSTDATE + ITAB-VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_CHANGE_LABELROL_WIN_BUDI",
+  "subc": "1",
+  "udat": "20210604",
+  "masters": [
+   "ZMMR_CHANGE_LABELROL_WIN_BUDI"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L428: ITAB-VEXPDATE = ITAB-VPOSTDATE + ITAB-VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELHU_KTNG",
+  "subc": "1",
+  "udat": "20250625",
+  "masters": [
+   "ZMMR_LABELHU_KTNG"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELHU_WINDOWS",
+  "subc": "1",
+  "udat": "20260127",
+  "masters": [
+   "ZMMR_LABELHU_WINDOWS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1,
+   "BESTUSE": 1
+  },
+  "formula": [
+   "L330: V_EXPDATE = V_POSTDATE + ITAB-VLIVE.",
+   "L335: V_EXPDATE = V_POSTDATE + ITAB-VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELROL_DOCX",
+  "subc": "1",
+  "udat": "20250425",
+  "masters": [
+   "ZMMR_LABELROL_DOCX"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L495: V_EXPDATE = V_POSTDATE + ITAB-VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELROL_INCHI",
+  "subc": "I",
+  "udat": "20241125",
+  "masters": [
+   "ZMMR_LABELROL",
+   "ZMMR_LABELROL_ALF",
+   "ZMMR_LABELROL_CP"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L395: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELROL_MODIFIED_KTNG",
+  "subc": "1",
+  "udat": "20220211",
+  "masters": [
+   "ZMMR_LABELROL_MODIFIED_KTNG"
+  ],
+  "tcodes": [
+   "ZLABEL01"
+  ],
+  "hits": {
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELROL_NONSAP",
+  "subc": "1",
+  "udat": "20230718",
+  "masters": [
+   "ZMMR_LABELROL_NONSAP"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1,
+   "BESTUSE": 1
+  },
+  "formula": [
+   "L353: V_EXPDATE = V_POSTDATE + ITAB-VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELROL_PM",
+  "subc": "I",
+  "udat": "20160819",
+  "masters": [
+   "ZMMR_LABELROL",
+   "ZMMR_LABELROL_ALF",
+   "ZMMR_LABELROL_CP"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 2,
+   "FM_PRODDATE": 2,
+   "EXPIR": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELROL_STANDAR",
+  "subc": "I",
+  "udat": "20260915",
+  "masters": [
+   "ZMMR_LABELROL",
+   "ZMMR_LABELROL_ALF",
+   "ZMMR_LABELROL_CP"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 3,
+   "BESTUSE": 1
+  },
+  "formula": [
+   "L1646: V_EXPDATE = V_POSTDATE + V_LIVE.",
+   "L1671: V_EXPDATE = V_POSTDATE + ( V_LIVE_TEMP * 30 ).",
+   "L1681: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELROL_TOYOBO",
+  "subc": "I",
+  "udat": "20221207",
+  "masters": [
+   "ZMMR_LABELROL",
+   "ZMMR_LABELROL_CP"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELROL_TYB",
+  "subc": "1",
+  "udat": "20190808",
+  "masters": [
+   "ZMMR_LABELROL_TYB"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L552: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELROL_TYB_ALF",
+  "subc": "I",
+  "udat": "20180828",
+  "masters": [
+   "ZMMR_LABELROL_ALF"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELROL_TYB_WIN",
+  "subc": "1",
+  "udat": "20261027",
+  "masters": [
+   "ZMMR_LABELROL_TYB_WIN"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_LABELROL_WINDOWS",
+  "subc": "1",
+  "udat": "20260502",
+  "masters": [
+   "ZMMR_LABELROL_WINDOWS"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1,
+   "BESTUSE": 1
+  },
+  "formula": [
+   "L343: V_EXPDATE = V_POSTDATE + ITAB-VLIVE.",
+   "L348: V_EXPDATE = V_POSTDATE + ITAB-VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_RETURN_PALLET",
+  "subc": "1",
+  "udat": "20260506",
+  "masters": [
+   "ZMMR_RETURN_PALLET"
+  ],
+  "tcodes": [
+   "ZAMM062K",
+   "ZEMM062",
+   "ZMM062_TS",
+   "ZMM062_WKA"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1,
+   "BESTUSE": 1
+  },
+  "formula": [
+   "L655: V_EDATE = V_PDATE + V_VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_RETURN_PALLET_W_CYCLE",
+  "subc": "1",
+  "udat": "20260506",
+  "masters": [
+   "ZMMR_RETURN_PALLET_W_CYCLE"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1,
+   "BESTUSE": 1
+  },
+  "formula": [
+   "L725: V_EDATE = V_PDATE + V_VLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_STOCK_BY_CHAR1_F01",
+  "subc": "I",
+  "udat": "20130104",
+  "masters": [
+   "ZMMR_STOCK_BY_CHAR1"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L426: IT_ZBMBC-DEXDT = IT_ZBMBC-ERSDA + IT_ZBMBC-ZZEXDT."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_STOCK_BY_CHAR_F01",
+  "subc": "I",
+  "udat": "20130108",
+  "masters": [
+   "ZMMR_STOCK_BY_CHAR"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L427: <FS_ZBMBC>-DEXDT = <FS_ZBMBC>-ERSDA + <FS_ZBMBC>-ZZEXDT."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_UPLOAD_KTNG",
+  "subc": "1",
+  "udat": "20220308",
+  "masters": [
+   "ZMMR_UPLOAD_KTNG"
+  ],
+  "tcodes": [
+   "ZMM065"
+  ],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMMR_UPLOAD_KTNG_CP",
+  "subc": "1",
+  "udat": "20220301",
+  "masters": [
+   "ZMMR_UPLOAD_KTNG_CP"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZMM_TYBROL_TO_BATCH",
+  "subc": "1",
+  "udat": "20200409",
+  "masters": [
+   "ZMM_TYBROL_TO_BATCH"
+  ],
+  "tcodes": [
+   "ZTYB10"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 1
+  },
+  "formula": [
+   "L147: ITAB-GRDATE = ITAB-GRDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZOLAP_MB5M",
+  "subc": "1",
+  "udat": "20200505",
+  "masters": [
+   "ZOLAP_MB5M"
+  ],
+  "tcodes": [
+   "ZMB5M"
+  ],
+  "hits": {
+   "VFDAT": 15,
+   "MHD": 1,
+   "EXPIR": 1,
+   "BESTUSE": 3
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZPERTAMAX",
+  "subc": "1",
+  "udat": "20120703",
+  "masters": [
+   "ZPERTAMAX"
+  ],
+  "tcodes": [],
+  "hits": {
+   "HSDAT": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZPERTAMAX1",
+  "subc": "1",
+  "udat": "20120703",
+  "masters": [
+   "ZPERTAMAX1"
+  ],
+  "tcodes": [],
+  "hits": {
+   "HSDAT": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZPPI_JR_EXEC_BDC",
+  "subc": "1",
+  "udat": "20120813",
+  "masters": [
+   "ZPPI_JR_EXEC_BDC"
+  ],
+  "tcodes": [],
+  "hits": {
+   "HSDAT": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZPPR_BATCH_CHAR_F01",
+  "subc": "I",
+  "udat": "20250519",
+  "masters": [
+   "ZPPR_BATCH_CHAR"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZPPR_BATCH_CHAR_V2_F01",
+  "subc": "I",
+  "udat": "20250317",
+  "masters": [
+   "ZPPR_BATCH_CHAR_V2"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZPPR_PENDING_ORDER_ALF",
+  "subc": "1",
+  "udat": "20260917",
+  "masters": [
+   "ZPPR_PENDING_ORDER_ALF"
+  ],
+  "tcodes": [
+   "ZPP005N"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": [
+   "TTA2"
+  ]
+ },
+ {
+  "obj": "ZPPR_PENDING_ORDER_ALF_CP",
+  "subc": "1",
+  "udat": "20220128",
+  "masters": [
+   "ZPPR_PENDING_ORDER_ALF_CP"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": [
+   "TTA2"
+  ]
+ },
+ {
+  "obj": "ZPPR_PENDING_ORDER_SCHLINE",
+  "subc": "1",
+  "udat": "20220120",
+  "masters": [
+   "ZPPR_PENDING_ORDER_SCHLINE"
+  ],
+  "tcodes": [
+   "ZPP005S"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZPPR_SLITTING_REKAP_KACONG_F01",
+  "subc": "I",
+  "udat": "20260302",
+  "masters": [
+   "ZPPR_SLITTING_REKAP_KACONG"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 2,
+   "EXPIR": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZPPR_SLITTING_REKAP_KACONG_TOP",
+  "subc": "I",
+  "udat": "20260302",
+  "masters": [
+   "ZPPR_SLITTING_REKAP_KACONG"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZPP_UP_CLASS3",
+  "subc": "1",
+  "udat": "20121105",
+  "masters": [
+   "ZPP_UP_CLASS3"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZPP_UP_CLASS4",
+  "subc": "1",
+  "udat": "20121106",
+  "masters": [
+   "ZPP_UP_CLASS4"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZPP_UP_CLASS5",
+  "subc": "1",
+  "udat": "20121114",
+  "masters": [
+   "ZPP_UP_CLASS5"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZQMI_BARRIER_APPROVAL",
+  "subc": "1",
+  "udat": "20260622",
+  "masters": [
+   "ZQMI_BARRIER_APPROVAL"
+  ],
+  "tcodes": [
+   "ZEQM040"
+  ],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZQMI_BARRIER_NCR_UPLOAD",
+  "subc": "1",
+  "udat": "20251024",
+  "masters": [
+   "ZQMI_BARRIER_NCR_UPLOAD"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 4,
+   "FM_PRODDATE": 1,
+   "EXPIR": 10
+  },
+  "formula": [
+   "L1781: EXPIRED_DATE = PROD_DATE + V_COUNT."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZQMI_BARRIER_PASS_FAIL",
+  "subc": "1",
+  "udat": "20261123",
+  "masters": [
+   "ZQMI_BARRIER_PASS_FAIL"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 5,
+   "EXPIR": 13
+  },
+  "formula": [
+   "L3478: EXPIRED_DATE = PROD_DATE + V_COUNT."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZQMI_BARRIER_PASS_FAIL_CP",
+  "subc": "1",
+  "udat": "20251104",
+  "masters": [
+   "ZQMI_BARRIER_PASS_FAIL_CP"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 5,
+   "FM_PRODDATE": 1,
+   "EXPIR": 13
+  },
+  "formula": [
+   "L2495: EXPIRED_DATE = PROD_DATE + V_COUNT."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZQMI_COA_F01",
+  "subc": "I",
+  "udat": "20261118",
+  "masters": [
+   "ZQMI_COA"
+  ],
+  "tcodes": [
+   "ZQM002",
+   "ZQM003"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 2,
+   "FM_PRODDATE": 2,
+   "VFDAT": 1,
+   "HSDAT": 1,
+   "EXPIR": 3,
+   "BESTUSE": 1
+  },
+  "formula": [
+   "L3786: LV_SPL_SUM = LV_SPL_SUM + GS_CHAR_CACHE-ATFLV.",
+   "L3793: LV_SPL_SUM = LV_SPL_SUM + GS_CHAR_CACHE-ATFLV.",
+   "L3800: LV_SPL_SUM = LV_SPL_SUM + GS_CHAR_CACHE-ATFLV.",
+   "L4360: LV_EXPD = LV_PDATE + LV_DAYS."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZQMI_PACKING_STATUS_F01",
+  "subc": "I",
+  "udat": "20261008",
+  "masters": [
+   "ZQMI_PACKING_STATUS"
+  ],
+  "tcodes": [
+   "ZQM001P"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 3
+  },
+  "formula": [
+   "L756: <FS_VEKP>-ZEXP = V_BUDAT + V_EXP."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZQMI_PACKING_STATUS_TTE_F01",
+  "subc": "I",
+  "udat": "20190415",
+  "masters": [
+   "ZQMI_PACKING_STATUS_TTE"
+  ],
+  "tcodes": [
+   "ZEQM001P"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 3
+  },
+  "formula": [
+   "L479: <FS_VEKP>-ZEXP = V_BUDAT + V_EXP."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZQMI_TESTING",
+  "subc": "1",
+  "udat": "20260727",
+  "masters": [
+   "ZQMI_TESTING"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZQMR_BARRIER_SR_POSITION",
+  "subc": "1",
+  "udat": "20261002",
+  "masters": [
+   "ZQMR_BARRIER_SR_POSITION"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZQMR_PROCUREMENT_PROP_F01",
+  "subc": "I",
+  "udat": "20230602",
+  "masters": [
+   "ZQMR_PROCUREMENT_PROP"
+  ],
+  "tcodes": [
+   "ZQM006"
+  ],
+  "hits": {
+   "VFDAT": 1,
+   "HSDAT": 4,
+   "MHD": 4,
+   "EXPIR": 6
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZQMR_PROCUREMENT_PROP_TOP",
+  "subc": "I",
+  "udat": "20230602",
+  "masters": [
+   "ZQMR_PROCUREMENT_PROP"
+  ],
+  "tcodes": [
+   "ZQM006"
+  ],
+  "hits": {
+   "HSDAT": 2,
+   "MHD": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZRM07MLBS",
+  "subc": "1",
+  "udat": "20130118",
+  "masters": [
+   "ZRM07MLBS"
+  ],
+  "tcodes": [
+   "ZBMBC2"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 7,
+   "EXPIR": 9
+  },
+  "formula": [
+   "L1992: BESTAND-ZZEXPIREDLIVE = BESTAND-ERSDA + ATFLV2."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZSDI_UP_QUOT_F01",
+  "subc": "I",
+  "udat": "20200204",
+  "masters": [
+   "ZSDI_UP_QUOT"
+  ],
+  "tcodes": [
+   "ZSD101"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": [
+   "2000"
+  ]
+ },
+ {
+  "obj": "ZSDI_UP_QUOT_TTA_F01",
+  "subc": "I",
+  "udat": "20190506",
+  "masters": [
+   "ZSDI_UP_QUOT_TTA"
+  ],
+  "tcodes": [
+   "ZSD101TTA"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": [
+   "TTA"
+  ]
+ },
+ {
+  "obj": "ZSDI_UP_QUOT_TTE_F01",
+  "subc": "I",
+  "udat": "20190506",
+  "masters": [
+   "ZSDI_UP_QUOT_TTE"
+  ],
+  "tcodes": [
+   "ZSD101TTE"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": [
+   "TTE"
+  ]
+ },
+ {
+  "obj": "ZSDR_CUSTOMIZING_MASTER1_F01",
+  "subc": "I",
+  "udat": "20171127",
+  "masters": [
+   "ZSDR_CUSTOMIZING_SALES_MASTER1"
+  ],
+  "tcodes": [
+   "ZSD506_1"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 4
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZSDR_CUSTOMIZING_MASTER1_TOP",
+  "subc": "I",
+  "udat": "20171127",
+  "masters": [
+   "ZSDR_CUSTOMIZING_SALES_MASTER1"
+  ],
+  "tcodes": [
+   "ZSD506_1"
+  ],
+  "hits": {
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZSDR_QUOTATION_LIST_F01",
+  "subc": "I",
+  "udat": "20130612",
+  "masters": [
+   "ZSDR_QUOTATION_LIST"
+  ],
+  "tcodes": [
+   "ZSD500"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 4,
+   "EXPIR": 5
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZSDR_QUOTATION_LIST_TOP",
+  "subc": "I",
+  "udat": "20130604",
+  "masters": [
+   "ZSDR_QUOTATION_LIST"
+  ],
+  "tcodes": [
+   "ZSD500"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZSO",
+  "subc": "1",
+  "udat": "20160726",
+  "masters": [
+   "ZSO"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "EXPIR": 1
+  },
+  "formula": [],
+  "plants": [
+   "2000"
+  ]
+ },
+ {
+  "obj": "ZTBAP_STOCK_BY_CHAR1",
+  "subc": "1",
+  "udat": "20170109",
+  "masters": [
+   "ZTBAP_STOCK_BY_CHAR1"
+  ],
+  "tcodes": [
+   "ZTBMBC"
+  ],
+  "hits": {
+   "ZZEXPIREDLIVE": 5,
+   "FM_PRODDATE": 2,
+   "EXPIR": 6
+  },
+  "formula": [
+   "L697: <FS_ZBMBC>-DEXDT = <FS_ZBMBC>-ERSDA + <FS_ZBMBC>-ZZEXPIREDLIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZTEMPLATE_MASTERDATA",
+  "subc": "1",
+  "udat": "20190423",
+  "masters": [
+   "ZTEMPLATE_MASTERDATA"
+  ],
+  "tcodes": [
+   "ZMM020"
+  ],
+  "hits": {
+   "MHD": 10,
+   "BESTUSE": 4
+  },
+  "formula": [],
+  "plants": [
+   "1000",
+   "2000",
+   "TTA2",
+   "TTE2"
+  ]
+ },
+ {
+  "obj": "ZTEMPLATE_MASTERDATA_TEMP",
+  "subc": "1",
+  "udat": "20181221",
+  "masters": [
+   "ZTEMPLATE_MASTERDATA_TEMP"
+  ],
+  "tcodes": [],
+  "hits": {
+   "MHD": 10,
+   "BESTUSE": 4
+  },
+  "formula": [],
+  "plants": [
+   "1000",
+   "2000",
+   "TTA2",
+   "TTE2"
+  ]
+ },
+ {
+  "obj": "ZTES_LABEL_INCL",
+  "subc": "I",
+  "udat": "20161107",
+  "masters": [
+   "ZTES_LABEL_INCL"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L1477: V_EXPDATE = V_POSTDATE + V_LIVE."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "ZTMB51",
+  "subc": "1",
+  "udat": "20181123",
+  "masters": [
+   "ZTMB51"
+  ],
+  "tcodes": [
+   "ZTMB51"
+  ],
+  "hits": {
+   "VFDAT": 4,
+   "HSDAT": 4
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "ZTPPR_PRO_MOVEMENT",
+  "subc": "1",
+  "udat": "20170111",
+  "masters": [
+   "ZTPPR_PRO_MOVEMENT"
+  ],
+  "tcodes": [
+   "ZTCOID"
+  ],
+  "hits": {
+   "VFDAT": 4,
+   "HSDAT": 4
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "Z_COBA_HU",
+  "subc": "1",
+  "udat": "20160418",
+  "masters": [
+   "Z_COBA_HU"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 5,
+   "FM_PRODDATE": 1,
+   "EXPIR": 6
+  },
+  "formula": [
+   "L692: <FS_HU>-ZZEXPIREDLIVE = <FS_HU>-ERSDA + <FS_CHAR>-ATFLV."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "Z_CONSIGNMENT2",
+  "subc": "1",
+  "udat": "20160111",
+  "masters": [
+   "Z_CONSIGNMENT2"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 1,
+   "FM_PRODDATE": 1,
+   "EXPIR": 2
+  },
+  "formula": [
+   "L802: <FS_HU>-ZZEXPR = <FS_HU>-LWEDT + V_EXPR."
+  ],
+  "plants": []
+ },
+ {
+  "obj": "Z_GET_PRODUCTION_DATE=========FT",
+  "subc": "S",
+  "udat": "20211116",
+  "masters": [
+   "Z_GET_PRODUCTION_DATE=========FT"
+  ],
+  "tcodes": [],
+  "hits": {
+   "FM_PRODDATE": 3
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "Z_ITI_SQL02_INCL",
+  "subc": "I",
+  "udat": "20160113",
+  "masters": [
+   "SAPLZTRIAS02"
+  ],
+  "tcodes": [],
+  "hits": {
+   "MHD": 1
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "Z_POOPEN",
+  "subc": "1",
+  "udat": "20160408",
+  "masters": [
+   "Z_POOPEN"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 2,
+   "EXPIR": 2
+  },
+  "formula": [],
+  "plants": []
+ },
+ {
+  "obj": "Z_SO",
+  "subc": "1",
+  "udat": "20160725",
+  "masters": [
+   "Z_SO"
+  ],
+  "tcodes": [],
+  "hits": {
+   "ZZEXPIREDLIVE": 2,
+   "EXPIR": 2
+  },
+  "formula": [],
+  "plants": [
+   "2000"
+  ]
+ }
+]

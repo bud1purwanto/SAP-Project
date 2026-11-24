@@ -1,0 +1,590 @@
+{
+  "FUNCTION_POOL": "ZMMCHAR",
+  "GLOBAL_FLAG": "",
+  "REMOTE_BASXML_SUPPORTED": "",
+  "REMOTE_CALL": "",
+  "SHORT_TEXT": "Rounding integer 5 digits",
+  "UPDATE_TASK": "",
+  "CHANGING_PARAMETER": [],
+  "DOCUMENTATION": [
+    {
+      "PARAMETER": "I_VALUE",
+      "KIND": "P",
+      "STEXT": "",
+      "INDEX": " 001"
+    },
+    {
+      "PARAMETER": "I_DECIMALS",
+      "KIND": "P",
+      "STEXT": "Number of Decimal Places",
+      "INDEX": " 002"
+    },
+    {
+      "PARAMETER": "O_NOMINATOR",
+      "KIND": "P",
+      "STEXT": "",
+      "INDEX": " 003"
+    },
+    {
+      "PARAMETER": "O_DENOMINATOR",
+      "KIND": "P",
+      "STEXT": "",
+      "INDEX": " 004"
+    },
+    {
+      "PARAMETER": "O_VALUE",
+      "KIND": "P",
+      "STEXT": "",
+      "INDEX": " 005"
+    },
+    {
+      "PARAMETER": "O_VALUE_CHANGED",
+      "KIND": "P",
+      "STEXT": "",
+      "INDEX": " 006"
+    },
+    {
+      "PARAMETER": "INPUT_INVALID",
+      "KIND": "X",
+      "STEXT": "",
+      "INDEX": " 007"
+    },
+    {
+      "PARAMETER": "OUTPUT_INVALID",
+      "KIND": "X",
+      "STEXT": "",
+      "INDEX": " 008"
+    },
+    {
+      "PARAMETER": "OVERFLOW",
+      "KIND": "X",
+      "STEXT": "",
+      "INDEX": " 009"
+    }
+  ],
+  "EXCEPTION_LIST": [
+    {
+      "EXCEPTION": "INPUT_INVALID",
+      "IS_RESUMABLE": ""
+    },
+    {
+      "EXCEPTION": "OUTPUT_INVALID",
+      "IS_RESUMABLE": ""
+    },
+    {
+      "EXCEPTION": "OVERFLOW",
+      "IS_RESUMABLE": ""
+    }
+  ],
+  "EXPORT_PARAMETER": [
+    {
+      "PARAMETER": "O_NOMINATOR",
+      "DBFIELD": "",
+      "TYPES": "",
+      "REFERENCE": "",
+      "TYP": "",
+      "CLASS": "",
+      "REF_CLASS": "",
+      "LINE_OF": "",
+      "TABLE_OF": ""
+    },
+    {
+      "PARAMETER": "O_DENOMINATOR",
+      "DBFIELD": "",
+      "TYPES": "",
+      "REFERENCE": "",
+      "TYP": "",
+      "CLASS": "",
+      "REF_CLASS": "",
+      "LINE_OF": "",
+      "TABLE_OF": ""
+    },
+    {
+      "PARAMETER": "O_VALUE",
+      "DBFIELD": "",
+      "TYPES": "",
+      "REFERENCE": "",
+      "TYP": "",
+      "CLASS": "",
+      "REF_CLASS": "",
+      "LINE_OF": "",
+      "TABLE_OF": ""
+    },
+    {
+      "PARAMETER": "O_VALUE_CHANGED",
+      "DBFIELD": "",
+      "TYPES": "",
+      "REFERENCE": "",
+      "TYP": "",
+      "CLASS": "",
+      "REF_CLASS": "",
+      "LINE_OF": "",
+      "TABLE_OF": ""
+    }
+  ],
+  "IMPORT_PARAMETER": [
+    {
+      "PARAMETER": "I_VALUE",
+      "DBFIELD": "",
+      "DEFAULT": "1",
+      "TYPES": "",
+      "OPTIONAL": "X",
+      "REFERENCE": "",
+      "CHANGING": "",
+      "TYP": "",
+      "CLASS": "",
+      "REF_CLASS": "",
+      "LINE_OF": "",
+      "TABLE_OF": ""
+    },
+    {
+      "PARAMETER": "I_DECIMALS",
+      "DBFIELD": "CABN-ANZDZ",
+      "DEFAULT": "3",
+      "TYPES": "",
+      "OPTIONAL": "X",
+      "REFERENCE": "",
+      "CHANGING": "",
+      "TYP": "",
+      "CLASS": "",
+      "REF_CLASS": "",
+      "LINE_OF": "",
+      "TABLE_OF": ""
+    }
+  ],
+  "SOURCE": [
+    {
+      "LINE": "FUNCTION Z_MMUR_ROUND_FOR_FRACT5."
+    },
+    {
+      "LINE": "*\"----------------------------------------------------------------------"
+    },
+    {
+      "LINE": "*\"*\"Local Interface:"
+    },
+    {
+      "LINE": "*\"  IMPORTING"
+    },
+    {
+      "LINE": "*\"     VALUE(I_VALUE) DEFAULT 1"
+    },
+    {
+      "LINE": "*\"     VALUE(I_DECIMALS) LIKE  CABN-ANZDZ DEFAULT 3"
+    },
+    {
+      "LINE": "*\"  EXPORTING"
+    },
+    {
+      "LINE": "*\"     VALUE(O_NOMINATOR)"
+    },
+    {
+      "LINE": "*\"     VALUE(O_DENOMINATOR)"
+    },
+    {
+      "LINE": "*\"     VALUE(O_VALUE)"
+    },
+    {
+      "LINE": "*\"     VALUE(O_VALUE_CHANGED)"
+    },
+    {
+      "LINE": "*\"  EXCEPTIONS"
+    },
+    {
+      "LINE": "*\"      INPUT_INVALID"
+    },
+    {
+      "LINE": "*\"      OUTPUT_INVALID"
+    },
+    {
+      "LINE": "*\"      OVERFLOW"
+    },
+    {
+      "LINE": "*\"----------------------------------------------------------------------"
+    },
+    {
+      "LINE": "* Local Data"
+    },
+    {
+      "LINE": " DATA: L_RESULT(2),"
+    },
+    {
+      "LINE": "       L_UMREZ_F TYPE F,"
+    },
+    {
+      "LINE": "       L_UMREN_F TYPE F,"
+    },
+    {
+      "LINE": "       L_CHAR_F  TYPE F,"
+    },
+    {
+      "LINE": "       L_ROUND_F TYPE F,"
+    },
+    {
+      "LINE": "       L_OLD_FRACTION_F TYPE F,"
+    },
+    {
+      "LINE": "       L_NEW_FRACTION_F TYPE F,"
+    },
+    {
+      "LINE": "       L_ROUND_DECIMALS TYPE I,"
+    },
+    {
+      "LINE": "       L_UMREZ LIKE MARM-UMREZ,"
+    },
+    {
+      "LINE": "       L_UMREN LIKE MARM-UMREN,"
+    },
+    {
+      "LINE": "       T,                         \"Datentyp des aktuellen Feldes"
+    },
+    {
+      "LINE": "       T_OUT.                     \"Datentyp des Feldes Output"
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "* Pr\u00fcfen, ob INPUT eine Zahl ist."
+    },
+    {
+      "LINE": "  DESCRIBE FIELD I_VALUE TYPE T."
+    },
+    {
+      "LINE": "  IF T NE 'F' AND T NE 'P' AND T NE 'I'."
+    },
+    {
+      "LINE": "    MESSAGE E102(MM) WITH 'INPUT' RAISING INPUT_INVALID."
+    },
+    {
+      "LINE": "  ELSE."
+    },
+    {
+      "LINE": "    L_CHAR_F = I_VALUE."
+    },
+    {
+      "LINE": "  ENDIF."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "* Pr\u00fcfen, ob OUTPUT eine Zahl ist."
+    },
+    {
+      "LINE": "  DESCRIBE FIELD O_VALUE TYPE T_OUT.       \"ab 3.0d Hilfsvar. T_OUT"
+    },
+    {
+      "LINE": "  IF T_OUT NE 'F' AND T_OUT NE 'P' AND T_OUT NE 'I'."
+    },
+    {
+      "LINE": "     MESSAGE E102(MM) WITH 'OUTPUT' RAISING OUTPUT_INVALID."
+    },
+    {
+      "LINE": "  ENDIF."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "* Round with decreasing number of decimals until value is ok"
+    },
+    {
+      "LINE": "  L_RESULT = 'NE'."
+    },
+    {
+      "LINE": "  L_ROUND_DECIMALS = I_DECIMALS."
+    },
+    {
+      "LINE": "  WHILE ( L_RESULT EQ 'NE' AND"
+    },
+    {
+      "LINE": "          L_ROUND_DECIMALS GE 0 )."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "*-----Round"
+    },
+    {
+      "LINE": "      CALL FUNCTION 'ROUND'"
+    },
+    {
+      "LINE": "           EXPORTING"
+    },
+    {
+      "LINE": "                DECIMALS      = L_ROUND_DECIMALS"
+    },
+    {
+      "LINE": "                INPUT         = L_CHAR_F"
+    },
+    {
+      "LINE": "                SIGN          = 'X'"
+    },
+    {
+      "LINE": "           IMPORTING"
+    },
+    {
+      "LINE": "                OUTPUT        = L_ROUND_F"
+    },
+    {
+      "LINE": "           EXCEPTIONS"
+    },
+    {
+      "LINE": "                OVERFLOW      = 1."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "      IF SY-SUBRC NE 0."
+    },
+    {
+      "LINE": "        RAISE OVERFLOW."
+    },
+    {
+      "LINE": "      ENDIF."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "*-----Convert to five-digit nominator-denominator for Erfme-BasMe"
+    },
+    {
+      "LINE": "      CALL FUNCTION 'CONVERT_TO_FRACT5'"
+    },
+    {
+      "LINE": "           EXPORTING"
+    },
+    {
+      "LINE": "               NOMIN               = L_ROUND_F"
+    },
+    {
+      "LINE": "               DENOMIN             = 1"
+    },
+    {
+      "LINE": "          IMPORTING"
+    },
+    {
+      "LINE": "               NOMOUT              = L_UMREZ"
+    },
+    {
+      "LINE": "               DENOMOUT            = L_UMREN"
+    },
+    {
+      "LINE": "          EXCEPTIONS"
+    },
+    {
+      "LINE": "               CONVERSION_OVERFLOW = 1."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "      IF SY-SUBRC NE 0."
+    },
+    {
+      "LINE": "        RAISE OVERFLOW."
+    },
+    {
+      "LINE": "      ENDIF."
+    },
+    {
+      "LINE": "*-----Check whether 5 digits had been enough to describe the fraction"
+    },
+    {
+      "LINE": "*-----exactly"
+    },
+    {
+      "LINE": "      L_OLD_FRACTION_F = L_ROUND_F / 1."
+    },
+    {
+      "LINE": "      L_NEW_FRACTION_F = L_UMREZ  /  L_UMREN."
+    },
+    {
+      "LINE": "      PERFORM Z_FLOAT_VERGLEICH"
+    },
+    {
+      "LINE": "         USING    L_OLD_FRACTION_F"
+    },
+    {
+      "LINE": "                  L_NEW_FRACTION_F"
+    },
+    {
+      "LINE": "         CHANGING L_RESULT."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "*-----If not, do the same, but round with one digit less"
+    },
+    {
+      "LINE": "      L_ROUND_DECIMALS = L_ROUND_DECIMALS - 1."
+    },
+    {
+      "LINE": "  ENDWHILE."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "*-Fill Export and warn User"
+    },
+    {
+      "LINE": "  PERFORM Z_FLOAT_VERGLEICH"
+    },
+    {
+      "LINE": "    USING  L_ROUND_F     \"Rounded Value"
+    },
+    {
+      "LINE": "           L_CHAR_F      \"Import Value"
+    },
+    {
+      "LINE": "    CHANGING L_RESULT."
+    },
+    {
+      "LINE": "IF L_RESULT EQ 'NE'."
+    },
+    {
+      "LINE": "     O_VALUE_CHANGED = 'X'."
+    },
+    {
+      "LINE": "  ENDIF."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "* Set Output values"
+    },
+    {
+      "LINE": "  O_VALUE       = L_ROUND_F."
+    },
+    {
+      "LINE": "  O_NOMINATOR   = L_UMREZ."
+    },
+    {
+      "LINE": "  O_DENOMINATOR = L_UMREN."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "ENDFUNCTION."
+    },
+    {
+      "LINE": "*&---------------------------------------------------------------------*"
+    },
+    {
+      "LINE": "*&      Form  Z_FLOAT_VERGLEICH"
+    },
+    {
+      "LINE": "*&---------------------------------------------------------------------*"
+    },
+    {
+      "LINE": "* Compares two float values                                            *"
+    },
+    {
+      "LINE": "*----------------------------------------------------------------------*"
+    },
+    {
+      "LINE": "FORM Z_FLOAT_VERGLEICH USING     I_FLOAT_1 TYPE F"
+    },
+    {
+      "LINE": "                               I_FLOAT_2 TYPE F"
+    },
+    {
+      "LINE": "                     CHANGING  O_RESULT."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "  DATA: SMALL_NUMBER TYPE F,"
+    },
+    {
+      "LINE": "        DIFFERENCE   TYPE F."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "  SMALL_NUMBER = 10 ** ( -15 )."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "* Beide Werte sehr klein"
+    },
+    {
+      "LINE": "  IF I_FLOAT_1 LE SMALL_NUMBER AND"
+    },
+    {
+      "LINE": "     I_FLOAT_2 LE SMALL_NUMBER."
+    },
+    {
+      "LINE": "         O_RESULT = 'EQ'."
+    },
+    {
+      "LINE": "         O_RESULT = 'EQ'."
+    },
+    {
+      "LINE": "* Nur ein Wert sehr klein"
+    },
+    {
+      "LINE": "  ELSEIF I_FLOAT_1 LT SMALL_NUMBER AND"
+    },
+    {
+      "LINE": "         I_FLOAT_2 GE SMALL_NUMBER."
+    },
+    {
+      "LINE": "         O_RESULT = 'NE'."
+    },
+    {
+      "LINE": "  ELSEIF I_FLOAT_1 GE SMALL_NUMBER AND"
+    },
+    {
+      "LINE": "         I_FLOAT_2 LT SMALL_NUMBER."
+    },
+    {
+      "LINE": "         O_RESULT = 'NE'."
+    },
+    {
+      "LINE": "* Beide Wert gro\u00df"
+    },
+    {
+      "LINE": "  ELSE."
+    },
+    {
+      "LINE": "         DIFFERENCE = ABS( ( I_FLOAT_1 - I_FLOAT_2 ) / I_FLOAT_1 )."
+    },
+    {
+      "LINE": "         IF DIFFERENCE LT SMALL_NUMBER."
+    },
+    {
+      "LINE": "            O_RESULT = 'EQ'."
+    },
+    {
+      "LINE": "         ELSE."
+    },
+    {
+      "LINE": "            O_RESULT = 'NE'."
+    },
+    {
+      "LINE": "         ENDIF."
+    },
+    {
+      "LINE": ""
+    },
+    {
+      "LINE": "  ENDIF."
+    },
+    {
+      "LINE": "ENDFORM.                    \" FLOAT_VERGLEICH"
+    }
+  ],
+  "TABLES_PARAMETER": []
+}

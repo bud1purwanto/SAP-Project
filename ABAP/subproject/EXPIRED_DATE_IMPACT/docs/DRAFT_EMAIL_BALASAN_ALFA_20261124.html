@@ -1,0 +1,45 @@
+<div style="font-family:Arial,sans-serif;font-size:10pt;color:#000">
+<p>Dear Mbak Alfa,</p>
+
+<p>Berikut hasil impact analysis dari sisi ABAP terkait rencana perubahan perhitungan Expired Date / Best Used roll. Detail lengkap ada di Excel terlampir.</p>
+
+<p><b>Kesimpulan utama: dampaknya luas, terutama di report dan label.</b> Expired Date roll <u>tidak disimpan</u> di SAP. Setiap report dan program label menghitung sendiri dengan rumus yang sama, yaitu <b>Production Date (GR 101) + ZZEXPIREDLIVE (hari)</b>. Jadi aturan baru tidak cukup diubah di satu tempat.</p>
+
+<p><b>Program yang menampilkan Expired Date: 34 program</b> (hasil scan seluruh source Z/Y di SAP, lalu dicek satu per satu apakah benar menampilkan Expired Date):</p>
+<table cellpadding="5" cellspacing="0" border="1" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:10pt">
+<tr style="background:#1F3864;color:#fff"><th align="left">Area</th><th>Jumlah program</th><th align="left">Di mana terlihat</th></tr>
+<tr><td><b>Label roll</b></td><td align="center"><b>10</b></td><td>Program label dipilih otomatis sesuai <b>label type</b> batch (tabel ZMAP_LABEL), antara lain label standar, Windows (A010-A013, A161, CP18), DOCX (A153-A159, B101, C109, D128, E127/128/133), Inchi, A132, A400, A401, dan label Toyobo (ZTYB03). Juga T-code ganti label <b>ZLABEL90</b> dan <b>ZLABEL91</b>.</td></tr>
+<tr><td><b>Label HU / pallet</b></td><td align="center"><b>9</b></td><td>Output HU (Z001/Z002), label pallet <b>ZHU020, ZHU021, ZHU023, ZHU025</b>, dan label HU per label type (A146, A400, A401, Windows).</td></tr>
+<tr><td><b>Report / monitor / COA</b></td><td align="center"><b>15</b></td><td><b>ZBMBC, ZBMBC2, ZSD012N, ZSD024 / ZSD024TTE / ZSD024A, ZQM001P / ZEQM001P, COA ZQM002 / ZQM003</b>, Returnable Pallet ZMM062 dkk., ZTYB10, Barrier TTE ZEQM041 / ZEQM044</td></tr>
+<tr style="background:#D9E2F3"><td><b>Total</b></td><td align="center"><b>34</b></td><td>Report berlaku di semua company (Trias, TTA, TTE, UNS). Label type khusus TTA (TA02-TA07) dan TTE (TE02) tidak mencetak Expired Date.</td></tr>
+</table>
+<p>Label roll tidak punya T-code sendiri. Label tercetak otomatis setelah transaksi produksi (misalnya slitting) atau saat cetak ulang, dan isi labelnya ditentukan oleh label type, bukan oleh transaksinya.</p>
+
+<p>Catatan penting:</p>
+<ul>
+<li><b>7 dari 34 program</b> (antara lain ZQM001P, ZEQM001P, ZBMBC2, label HU ZHU021/023/025) menghitung tanggal produksi sendiri tanpa FM standar, sehingga tidak terlihat dari where-used biasa dan harus diubah satu per satu.</li>
+<li>Sudah dicek langsung di SAP DEV dengan contoh DO 0085006287 (GR 23.11.2026, umur 180 hari): <b>ZBMBC, ZBMBC2, ZSD012N, ZSD024 dan ZQM001P semuanya menampilkan 22.05.2027</b>. Dengan aturan usulan, best used di label menjadi <b>Juni 2027</b>. Screenshot ada di Excel.</li>
+<li>Umur simpan tidak seragam: Trias mayoritas 180 hari, sedangkan <b>TTA dan TTE mayoritas 365 hari</b>. Aturan "+6 bulan" perlu dipastikan berlaku untuk company mana saja.</li>
+<li>Selain itu ada 6 program label (antara lain A131, A136, A138, A139, label PMI, label HU KT&amp;G) yang mencetak <b>tanggal/bulan produksi</b>, bukan expired. Program ini ikut terdampak kalau bulan produksi di label juga digeser sesuai usulan.</li>
+<li>Sejalan dengan info Mas Cahya, OLAP mengambil Expired Date langsung dari report SAP (ZBMBC, ZSD024). Jadi kalau report SAP diubah, OLAP ikut berubah setelah data diturunkan ulang.</li>
+</ul>
+
+<p><b>Dampak per opsi:</b></p>
+<ul>
+<li><b>Hanya label diubah:</b> tetap 19 program label (roll + HU/pallet) yang harus diubah. Tetapi 15 report tetap menampilkan tanggal lama, sehingga label fisik (Juni) dan SAP (Mei) berbeda di QA packing, monitoring stok, monitor DO, dan COA.</li>
+<li><b>Label dan SAP diselaraskan:</b> 34 program diubah. Saran kami dibuat satu function module pusat "Expired Date" yang dipanggil semua report dan label, supaya hasilnya sama di semua tempat dan perubahan berikutnya cukup di satu titik.</li>
+</ul>
+
+<p><b>Hal yang perlu diputuskan di meeting dengan user:</b></p>
+<ol>
+<li>Kriteria customer kritis (STT dll.) dan pengecualian metallized CPP: berdasarkan customer, type film, label type, atau setting di SO/quotation?</li>
+<li>Company yang ikut: Trias saja, atau juga TTA, TTE, UNS?</li>
+<li>Tanggal persis di report SAP: awal bulan, akhir bulan, atau tanggal produksi? (label hanya bulan, report menampilkan tanggal penuh)</li>
+<li>Umur simpan tetap hari (180/365) atau diganti bulan (6/12)?</li>
+<li>Tanggal mulai berlaku, dan apakah roll lama ikut dihitung ulang. Karena tidak disimpan, perubahan rumus otomatis mengubah tampilan roll lama di report.</li>
+</ol>
+
+<p>Catatan: analisis ini berdasarkan SAP DEV. Pengecekan di PRD menyusul bila diperlukan.</p>
+
+<p>Terima kasih,<br>Budi Purwanto<br>Tim ABAP</p>
+</div>

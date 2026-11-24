@@ -1,0 +1,2056 @@
+*&---------------------------------------------------------------------*
+*&  Report     :  ZQMI_BARRIER_APPROVAL                                *
+*&  Appl. Area :  QM                                                   *
+*&  Created by :  J. Budi                                              *
+*&  Created on :  23 July 2025                                         *
+*&---------------------------------------------------------------------*
+
+REPORT  ZQMI_BARRIER_APPROVAL.
+
+TYPES: BEGIN OF T_UPLOAD,
+       PRODDATE       TYPE C LENGTH 12,           "Prod Date
+       PRODDATE2      TYPE SY-DATUM,              "Prod Date
+       INSPDATE       TYPE SY-DATUM,              "Estimation Date
+       INSPECTION     TYPE KURZTEXT,              "WVTR/OTR
+       POSISI         TYPE ATWRT,                 "Po sisi
+       SORT_KEY       TYPE I,                     "Sort Key
+       TYPE           TYPE ATWRT,                 "Type
+       STATUS         TYPE ATWRT,                 "Status
+       TIMES          LIKE QASE-PROBENR,          "Sample/Point
+       CYCLE          TYPE I,                     "Cycle
+       "Value WVTR and OTR
+       VALUE1         TYPE P DECIMALS 3,          "Value Cycle 1
+       VALUE2         TYPE P DECIMALS 3,          "Value Cycle 2
+       VALUE3         TYPE P DECIMALS 3,          "Value Cycle 3
+       VALUE4         TYPE P DECIMALS 3,          "Value Cycle 4
+       DEVICE         LIKE QASE-PRUEFBEMKT,       "Device
+       SAMPLE         LIKE QASE-MASCHINE,         "Sample
+       ACTDATE        TYPE C LENGTH 12,           "Actual Inspection Date
+       APPROVAL       TYPE ATWRT,                 "Approval
+       "Data After Proccess
+       MATNRJR        LIKE MARA-MATNR,            "Material
+       CHARGJR        LIKE MSEG-CHARG,            "Batch JR
+       FTYPEJR        TYPE ATWRT,                 "Film Type JR
+       ROLLJR         TYPE ATWRT,                 "Roll JR
+       TURUN          LIKE AUSP-ATWRT,            "Turunan
+       PRUEFLOS       LIKE QALS-PRUEFLOS,         "Inspection Lot
+       AUFPL          LIKE QALS-AUFPL,            "Inspection Plan
+       KTEXTLOS       LIKE QALS-KTEXTLOS,         "Short Text (RCL)
+       ROLLSR         LIKE ZQM_LOG_GS-ROLLSR,     "Roll SR
+       MATNR          LIKE QALS-MATNR,            "Material
+       CHARG          LIKE QALS-CHARG,            "Batch SR
+       WERKS          LIKE QALS-WERK,             "Plant
+       INSP_CHAR      LIKE QAMV-MERKNR,           "Insp Characteristic
+       VERWMERKM      LIKE QAMV-VERWMERKM,        "MIC
+       MKVERSION      TYPE QVERSNRMK,             "VERSION
+       PRUEFER        LIKE QASE-PRUEFER,          "NIK
+       VCODE          LIKE QAVE-VCODE,            "UD Code
+       REJECT_MARK,                                "Mark Reject
+       LINE_COLOR     TYPE C LENGTH 4,            "Color
+       BOX,                                       "Choice
+       ERR,                                       "Error Mark
+       OK,                                        "Complete
+       EDIT,                                      "Edit Mark for Before value on Change
+       ZSTAT          TYPE C LENGTH 4,            "Indicator
+       MESS           TYPE C LENGTH 150,          "Message
+       END OF T_UPLOAD.
+
+"For Display
+TYPES: BEGIN OF T_TAB.
+        INCLUDE TYPE T_UPLOAD.
+TYPES: CELL_COLOR     TYPE LVC_T_SCOL.
+TYPES: END OF T_TAB.
+
+TYPES: BEGIN OF T_CHECK,
+       MATNR          TYPE MATNR,           "Material No
+       WERKS          TYPE WERKS_D,         "Plant
+       LGORT          TYPE LGORT_D,         "Storage Location
+       CHARG          TYPE CHARG_D,         "Batch
+       MBLNR          TYPE MBLNR,           "Matdoc SR Number
+       SMBLN          TYPE MBLNR,           "Matdoc SR Number Cancel
+       MJAHR          TYPE MJAHR,           "Matdoc SR Year
+       SJAHR          TYPE MJAHR,           "Matdoc SR Year Cancel
+       ZEILE          TYPE MBLPO,           "Matdoc SR Item
+       SMBLP          TYPE MBLPO,           "Matdoc SR Item Cancel
+       BWART          TYPE BWART,           "Movement Type
+       END OF T_CHECK.
+
+"For Recording
+TYPES: BEGIN OF TY_QASE,
+       PRUEFLOS       LIKE QASE-PRUEFLOS,         "Inspection Lot
+       MERKNR         LIKE QASE-MERKNR,           "Char
+       VERWMERKM      LIKE QAMV-VERWMERKM,        "WVTR MIC
+       MKVERSION      TYPE QVERSNRMK,             "OTR VERSION
+       PROBENR        LIKE QASE-PROBENR,          "Sample/Point
+       STUECKNR       LIKE QASE-STUECKNR,         "Cycle
+       MESSWERT       TYPE P DECIMALS 3,          "Measured value
+       MBEWERTG       LIKE QASE-MBEWERTG,         "Valuation
+       ATTRIBUT       LIKE QASE-ATTRIBUT,         "Deletion Flag
+       BUDAT          LIKE QASE-PRUEFDATUV,       "Date
+       PRUEFBEMKT     LIKE QASE-PRUEFBEMKT,       "Text
+       SAMPLE         LIKE QASE-MASCHINE,         "Sample
+       PRUEFER        LIKE QASE-PRUEFER,          "NIK
+       END OF TY_QASE.
+
+DATA: IT_UPLOAD       TYPE STANDARD TABLE OF T_TAB WITH HEADER LINE,
+      IT_MAIN         TYPE STANDARD TABLE OF T_TAB   WITH HEADER LINE,
+      IT_JR           TYPE STANDARD TABLE OF T_TAB   WITH HEADER LINE,
+      IT_PRUEFLOS     TYPE STANDARD TABLE OF T_TAB   WITH HEADER LINE,
+      ITAB            TYPE STANDARD TABLE OF T_TAB   WITH HEADER LINE,
+      IT_INSPECTION   TYPE STANDARD TABLE OF T_TAB   WITH HEADER LINE,
+      IT_COUNT_ROW    TYPE STANDARD TABLE OF T_TAB   WITH HEADER LINE.
+
+"BAPI
+DATA: BAPIRETURN1     LIKE BAPIRETURN1  OCCURS 0 WITH HEADER LINE.
+
+"Variable
+DATA: V_ATINN         TYPE ATINN,
+      V_TEMP(50),
+      V_DATE          TYPE MSEG-BUDAT_MKPF,
+      V_TFILL         TYPE I,
+      V_LEN           TYPE I,
+      V_WVTR          TYPE C LENGTH 20,
+      V_OTR           TYPE C LENGTH 20,
+      V_O2TR          TYPE C LENGTH 20,
+      V_PROC_EX       TYPE I VALUE 4,
+      ACCEPT,
+      REJECT.
+
+DATA: INSPLOT         LIKE BAPI2045L2-INSPLOT,
+      INSPOPER        LIKE BAPI2045L4-INSPOPER VALUE '0010',
+      INSPOINT        LIKE BAPI2045L4-INSPPOINT,
+      INSPPOINTS      LIKE BAPI2045L4 OCCURS 0 WITH HEADER LINE,
+      V_CANCELLED     TYPE I,
+      V_NCANCELLED    TYPE I.
+
+"Usage Decision
+DATA: IT_QASE         TYPE STANDARD TABLE OF TY_QASE WITH NON-UNIQUE KEY PRUEFLOS WITH HEADER LINE,
+      IT_QPMK         LIKE QPMK,
+      V_UD            LIKE QAVE-VCODE,
+      V_UD_ALL        LIKE QAVE-VCODE,
+      V_PASS          LIKE QAVE-VCODE VALUE 'PASS',
+      V_FAIL          LIKE QAVE-VCODE VALUE 'FAIL',
+      V_NCR           LIKE QAVE-VCODE VALUE 'NCR',
+      V_OK            LIKE QAVE-VCODE VALUE 'OK',
+      V_NO            LIKE QAVE-VCODE VALUE 'NO',
+      V_NG            LIKE QAVE-VCODE VALUE 'NG',
+      V_SELECTED      TYPE QVMENGE    VALUE 'E-UD-BAR',
+      V_CUT_OVER_DATE TYPE DATUM.
+
+CONSTANTS:
+      ERROR(4)        TYPE C VALUE '@0A@',        "Error
+      SUCCES(4)       TYPE C VALUE '@08@',        "Success
+      WARNING(4)      TYPE C VALUE '@09@',        "Warning
+      GREY(4)         TYPE C VALUE '@EB@'.        "Grey
+
+FIELD-SYMBOLS :
+      <FS_VALUE>      TYPE ANY,
+      <FS_DETAIL>     LIKE LINE OF ITAB.
+
+"ALV
+DATA: OK_CODE         LIKE SY-UCOMM,
+      SAVE_OK         LIKE SY-UCOMM,
+      DIALOG_BOX      TYPE REF TO CL_GUI_DIALOGBOX_CONTAINER,
+      GRID1           TYPE REF TO CL_GUI_ALV_GRID,
+      GS_LAYOUT       TYPE LVC_S_LAYO,
+      G_MAX           TYPE I VALUE 10,
+      GT_FIELDCAT     TYPE LVC_T_FCAT,
+      GS_VARIANT      TYPE DISVARIANT,
+      LT_ROW_NO       TYPE LVC_T_ROID WITH HEADER LINE.
+
+TABLES: QALS, AUSP.
+
+DATA: IT_CUT_OVER     LIKE ZMAP_TYPE OCCURS 0 WITH HEADER LINE.
+
+RANGES: R_STATUS        FOR QAPP-VCODE,
+        R_TYPE          FOR QAMV-KURZTEXT.
+
+DATA: BEGIN OF IT_CHAR OCCURS 0,
+       CHARG          TYPE CHARG_D,
+       ATINN          TYPE ATINN,
+       ATWRT          TYPE ATWRT,
+       ATFLV          TYPE ATFLV,
+       ATWTB          TYPE ATWTB,
+      END OF IT_CHAR.
+
+DATA: IT_SR_DATA      LIKE ZQM_GET_BATCH_SR OCCURS 0 WITH HEADER LINE,
+      IT_CABN         LIKE CABN OCCURS 0 WITH HEADER LINE.
+
+DATA: V_ZZTYPE             TYPE ATINN,
+      V_ZZTHICKNESS        TYPE ATINN,
+      V_ZZWIDTH            TYPE ATINN,
+      V_ZZLENGTH           TYPE ATINN,
+      V_ZZNOMORROLL        TYPE ATINN,
+      V_ZZDERIVATIVESS     TYPE ATINN,
+      V_ZZDERIVATIVEMS     TYPE ATINN,
+      V_ZZPOSITIONSS       TYPE ATINN,
+      V_ZZPOSITIONMS       TYPE ATINN,
+      V_ZZTYBCOMBINATIONNO TYPE ATINN,
+      V_ZZGRADE            TYPE ATINN.
+
+"Short Text Batch
+DATA: V_NAME          LIKE THEAD-TDNAME,
+      THEAD           LIKE THEAD,
+      TLINE           LIKE TLINE OCCURS 0 WITH HEADER LINE.
+
+DATA: UDSTAT          TYPE QALS-STAT35,
+      MESSTAB         LIKE BDCMSGCOLL   OCCURS 0 WITH HEADER LINE,
+      BDCDATA         LIKE BDCDATA      OCCURS 0 WITH HEADER LINE,
+      OPT             LIKE CTU_PARAMS,
+      LS_SUBRC        TYPE SY-SUBRC.
+
+DATA: IT_ZLOG_BARRIER LIKE ZLOG_BARRIER OCCURS 0 WITH HEADER LINE.
+
+INCLUDE ZABAPALV.
+
+SELECTION-SCREEN BEGIN OF BLOCK BLK1 WITH FRAME TITLE TEXT-001.
+SELECT-OPTIONS: S_SAMPL FOR QALS-BUDAT    MODIF ID B1.
+SELECT-OPTIONS: S_BUDAT FOR QALS-BUDAT    MODIF ID B1.
+SELECT-OPTIONS: S_FTYPE FOR AUSP-ATWRT    MODIF ID B1.
+SELECT-OPTIONS: S_NOROL FOR AUSP-ATWRT    MODIF ID B1.
+SELECT-OPTIONS: S_CHARG FOR QALS-CHARG    MODIF ID B1.
+SELECT-OPTIONS: S_WERKS FOR QALS-WERK     MODIF ID B1 NO-EXTENSION NO INTERVALS.
+SELECTION-SCREEN END OF BLOCK BLK1.
+
+SELECTION-SCREEN BEGIN OF BLOCK BLK2 WITH FRAME TITLE TEXT-002.
+PARAMETERS: P_NOT AS CHECKBOX DEFAULT 'X'.
+PARAMETERS: P_APV AS CHECKBOX.
+PARAMETERS: P_RJT AS CHECKBOX.
+SELECTION-SCREEN END OF BLOCK BLK2.
+
+SELECTION-SCREEN BEGIN OF BLOCK BLK3 WITH FRAME TITLE TEXT-003.
+PARAMETERS: P_MVT AS CHECKBOX USER-COMMAND AC DEFAULT 'X'.
+PARAMETERS: P_OTR AS CHECKBOX USER-COMMAND AC DEFAULT 'X'.
+SELECTION-SCREEN END OF BLOCK BLK3.
+
+SELECTION-SCREEN BEGIN OF BLOCK BLK4 WITH FRAME TITLE TEXT-004.
+PARAMETER: P_PROD RADIOBUTTON GROUP RB DEFAULT 'X' MODIF ID PRM.
+PARAMETER: P_ETMD RADIOBUTTON GROUP RB MODIF ID PRM.
+PARAMETER: P_ROLL RADIOBUTTON GROUP RB MODIF ID PRM.
+SELECTION-SCREEN END OF BLOCK BLK4.
+
+START-OF-SELECTION.
+  CALL SCREEN 100.
+
+END-OF-SELECTION.
+
+*----------------------------------------------------------------------*
+*  MODULE awal OUTPUT
+*----------------------------------------------------------------------*
+*
+*----------------------------------------------------------------------*
+MODULE AWAL OUTPUT.
+  IF SY-UCOMM = ''.           "Upload
+    PERFORM VALIDATION.
+    PERFORM GET_PARAM.
+    PERFORM GET_DATA.
+    PERFORM DISPLAY_ALV.
+  ENDIF.
+ENDMODULE.                    "awal OUTPUT
+
+*&---------------------------------------------------------------------*
+*&      Form  VALIDATION
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM VALIDATION.
+  CLEAR: V_CUT_OVER_DATE.
+
+  IF S_BUDAT[] IS INITIAL AND S_SAMPL[] IS INITIAL AND ( P_APV EQ 'X' OR P_RJT EQ 'X' ).
+    MESSAGE 'Please fill the date parameters!' TYPE 'S' DISPLAY LIKE 'E'.
+    LEAVE TO SCREEN 0.
+  ENDIF.
+
+  IF S_WERKS[] IS INITIAL.
+    MESSAGE 'Please fill plant!' TYPE 'S' DISPLAY LIKE 'E'.
+    LEAVE TO SCREEN 0.
+  ENDIF.
+
+  IF P_APV IS INITIAL AND P_RJT IS INITIAL AND P_NOT IS INITIAL.
+    MESSAGE 'Please choose at least one option!' TYPE 'S' DISPLAY LIKE 'E'.
+    LEAVE TO SCREEN 0.
+  ENDIF.
+
+  SELECT * INTO CORRESPONDING FIELDS OF TABLE IT_CUT_OVER
+      FROM ZMAP_TYPE
+     WHERE TCODE    EQ SY-TCODE
+       AND TYPE     EQ 'BARRIER'
+       AND OPT      EQ 'CUT OVER'
+       AND DELETION EQ ''.
+
+  IF IT_CUT_OVER[] IS INITIAL.
+    SELECT * INTO CORRESPONDING FIELDS OF TABLE IT_CUT_OVER
+      FROM ZMAP_TYPE
+     WHERE PROG     EQ SY-CPROG
+       AND TYPE     EQ 'BARRIER'
+       AND OPT      EQ 'CUT OVER'
+       AND DELETION EQ ''.
+  ENDIF.
+
+  IF IT_CUT_OVER[] IS NOT INITIAL.
+    READ TABLE IT_CUT_OVER INDEX 1.
+    IF SY-SUBRC EQ 0.
+      LOOP AT S_BUDAT.
+        PERFORM CONVERT_DATE_INPUT USING IT_CUT_OVER-VALUE CHANGING IT_CUT_OVER-VALUE.
+        IF S_BUDAT-LOW LT IT_CUT_OVER-VALUE.
+          MESSAGE IT_CUT_OVER-TEXT5 TYPE 'S' DISPLAY LIKE 'E'.
+          LEAVE TO SCREEN 0.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+  ENDIF.
+
+  IF S_SAMPL[] IS INITIAL.
+    IF S_BUDAT[] IS INITIAL.
+      PERFORM CONVERT_DATE_INPUT USING IT_CUT_OVER-VALUE CHANGING V_CUT_OVER_DATE.
+    ELSE.
+      V_CUT_OVER_DATE = IT_CUT_OVER-VALUE.
+    ENDIF.
+  ENDIF.
+ENDFORM.                    "VALIDATION
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_PARAM
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM GET_PARAM.
+  IF P_APV EQ 'X'.
+    IF P_MVT EQ 'X'.
+      R_STATUS-LOW = V_OK && '%'.
+      APPEND R_STATUS.
+    ENDIF.
+
+    IF P_OTR EQ 'X'.
+      R_STATUS-LOW = '%' && V_OK.
+      APPEND R_STATUS.
+    ENDIF.
+  ENDIF.
+
+  IF P_RJT EQ 'X'.
+    IF P_MVT EQ 'X'.
+      R_STATUS-LOW = V_NG && '%'.
+      APPEND R_STATUS.
+    ENDIF.
+
+    IF P_OTR EQ 'X'.
+      R_STATUS-LOW = '%' && V_NG.
+      APPEND R_STATUS.
+    ENDIF.
+  ENDIF.
+
+  IF P_NOT EQ 'X'.
+    IF P_MVT EQ 'X'.
+      R_STATUS-LOW = V_NO && '%'.
+      APPEND R_STATUS.
+    ENDIF.
+
+    IF P_OTR EQ 'X'.
+      R_STATUS-LOW = '%' && V_NO.
+      APPEND R_STATUS.
+    ENDIF.
+  ENDIF.
+
+  IF R_STATUS[] IS NOT INITIAL.
+    R_STATUS-SIGN   = 'I'.
+    R_STATUS-OPTION = 'EQ'.
+    MODIFY R_STATUS TRANSPORTING OPTION SIGN WHERE SIGN = ''.
+  ENDIF.
+
+  IF P_MVT EQ 'X'.
+    V_WVTR  = '%WVTR%'.
+  ELSE.
+    V_WVTR  = '%SSSSSSSSSSSSSSSSSS%' .
+  ENDIF.
+
+  IF P_OTR EQ 'X'.
+    V_OTR   = '%OTR%'.
+    V_O2TR  = '%O2TR%'.
+  ELSE.
+    V_OTR   = '%SSSSSSSSSSSSSSSSSS%' .
+    V_O2TR  = '%SSSSSSSSSSSSSSSSSS%' .
+  ENDIF.
+
+  SELECT * INTO CORRESPONDING FIELDS OF TABLE IT_CABN FROM CABN WHERE ATNAM LIKE 'ZZ%'.
+
+  READ TABLE IT_CABN WITH KEY ATNAM = 'ZZTYPE'.
+  IF SY-SUBRC EQ 0.
+    V_ZZTYPE = IT_CABN-ATINN.
+  ENDIF.
+
+  READ TABLE IT_CABN WITH KEY ATNAM = 'ZZWIDTH'.
+  IF SY-SUBRC EQ 0.
+    V_ZZWIDTH = IT_CABN-ATINN.
+  ENDIF.
+
+  READ TABLE IT_CABN WITH KEY ATNAM = 'ZZLENGTH'.
+  IF SY-SUBRC EQ 0.
+    V_ZZLENGTH = IT_CABN-ATINN.
+  ENDIF.
+
+  READ TABLE IT_CABN WITH KEY ATNAM = 'ZZNOMORROLL'.
+  IF SY-SUBRC EQ 0.
+    V_ZZNOMORROLL = IT_CABN-ATINN.
+  ENDIF.
+
+  READ TABLE IT_CABN WITH KEY ATNAM = 'ZZDERIVATIVESS'.
+  IF SY-SUBRC EQ 0.
+    V_ZZDERIVATIVESS = IT_CABN-ATINN.
+  ENDIF.
+
+  READ TABLE IT_CABN WITH KEY ATNAM = 'ZZDERIVATIVEMS'.
+  IF SY-SUBRC EQ 0.
+    V_ZZDERIVATIVEMS = IT_CABN-ATINN.
+  ENDIF.
+
+  READ TABLE IT_CABN WITH KEY ATNAM = 'ZZPOSITIONSS'.
+  IF SY-SUBRC EQ 0.
+    V_ZZPOSITIONSS = IT_CABN-ATINN.
+  ENDIF.
+
+  READ TABLE IT_CABN WITH KEY ATNAM = 'ZZPOSITIONMS'.
+  IF SY-SUBRC EQ 0.
+    V_ZZPOSITIONMS = IT_CABN-ATINN.
+  ENDIF.
+
+
+  READ TABLE IT_CABN WITH KEY ATNAM = 'ZZGRADE'.
+  IF SY-SUBRC EQ 0.
+    V_ZZGRADE = IT_CABN-ATINN.
+  ENDIF.
+ENDFORM.                    "GET_PARAM
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_DATA
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM GET_DATA.
+  REFRESH: ITAB, IT_MAIN, IT_CHAR, IT_JR.
+  CLEAR: ITAB, IT_MAIN, IT_CHAR, IT_JR.
+
+  PERFORM SET_INDICATOR USING 1 1 1 V_PROC_EX 'Get Inspection Lot Data...'.
+
+  IF V_CUT_OVER_DATE IS NOT INITIAL.
+    LOOP AT R_STATUS.
+      SELECT QALS~MATNR
+             QALS~CHARG
+             QALS~PRUEFLOS
+             QALS~KTEXTLOS
+             QALS~WERK       AS WERKS
+             QAMV~KURZTEXT   AS INSPECTION
+             QAMV~MERKNR     AS INSP_CHAR
+             QAPP~PROBENR    AS TIMES
+             QASR~PRUEFDATUV AS INSPDATE
+             QAPP~VCODE
+        APPENDING CORRESPONDING FIELDS OF TABLE IT_MAIN
+        FROM QALS
+        JOIN QAPP ON QALS~PRUEFLOS EQ QAPP~PRUEFLOS
+        JOIN QAMV ON QALS~PRUEFLOS EQ QAMV~PRUEFLOS
+        JOIN QASR ON QALS~PRUEFLOS EQ QASR~PRUEFLOS AND QAMV~MERKNR EQ QASR~MERKNR AND QAPP~PROBENR EQ QASR~PROBENR
+      LEFT JOIN MSEG ON QALS~MATNR EQ MSEG~MATNR    AND QALS~CHARG  EQ MSEG~CHARG
+        JOIN MKPF ON MSEG~MBLNR EQ MKPF~MBLNR       AND MSEG~MJAHR  EQ MKPF~MJAHR
+       WHERE QASR~PRUEFDATUV IN S_BUDAT
+         AND MKPF~BUDAT      GE V_CUT_OVER_DATE
+         AND WERK            IN S_WERKS
+         AND VCODE           LIKE R_STATUS-LOW
+         AND ART             EQ 'ZE04'
+         AND HERKUNFT        EQ '05'
+         AND ( KTEXTLOS LIKE '|R|%'   OR KTEXTLOS LIKE '|C|%'   OR KTEXTLOS LIKE '|L|%' )
+         AND ( KURZTEXT LIKE V_WVTR OR KURZTEXT LIKE V_OTR  OR KURZTEXT LIKE V_O2TR )
+         %_HINTS  ORACLE 'INDEX("MKPF" "MKPF~BUD")'
+                  ORACLE 'INDEX("MESG" "MSEG~Z07")'.
+    ENDLOOP.
+  ELSE.
+    LOOP AT R_STATUS.
+      SELECT QALS~MATNR
+             QALS~CHARG
+             QALS~PRUEFLOS
+             QALS~KTEXTLOS
+             QALS~WERK       AS WERKS
+             QAMV~KURZTEXT   AS INSPECTION
+             QAMV~MERKNR     AS INSP_CHAR
+             QAPP~PROBENR    AS TIMES
+             QASR~PRUEFDATUV AS INSPDATE
+             QAPP~VCODE
+        APPENDING CORRESPONDING FIELDS OF TABLE IT_MAIN
+        FROM QALS
+        JOIN QAPP ON QALS~PRUEFLOS EQ QAPP~PRUEFLOS
+        JOIN QAMV ON QALS~PRUEFLOS EQ QAMV~PRUEFLOS
+        JOIN QASR ON QALS~PRUEFLOS EQ QASR~PRUEFLOS AND QAMV~MERKNR EQ QASR~MERKNR AND QAPP~PROBENR EQ QASR~PROBENR
+      LEFT JOIN MSEG ON QALS~MATNR EQ MSEG~MATNR    AND QALS~CHARG  EQ MSEG~CHARG
+        JOIN MKPF ON MSEG~MBLNR EQ MKPF~MBLNR       AND MSEG~MJAHR  EQ MKPF~MJAHR
+       WHERE QASR~PRUEFDATUV IN S_BUDAT
+         AND MKPF~BUDAT      IN S_SAMPL
+         AND WERK            IN S_WERKS
+         AND VCODE           LIKE R_STATUS-LOW
+         AND ART             EQ 'ZE04'
+         AND HERKUNFT        EQ '05'
+         AND ( KTEXTLOS LIKE '|R|%'   OR KTEXTLOS LIKE '|C|%'   OR KTEXTLOS LIKE '|L|%' )
+         AND ( KURZTEXT LIKE V_WVTR OR KURZTEXT LIKE V_OTR  OR KURZTEXT LIKE V_O2TR )
+         %_HINTS  ORACLE 'INDEX("MKPF" "MKPF~BUD")'
+                  ORACLE 'INDEX("MESG" "MSEG~Z07")'.
+    ENDLOOP.
+  ENDIF.
+
+  PERFORM SET_INDICATOR USING 1 1 2 V_PROC_EX 'Get Cancellation Data...'.
+
+  IT_JR[] = IT_MAIN[].
+  SORT IT_JR BY CHARG.
+  DELETE ADJACENT DUPLICATES FROM IT_JR COMPARING CHARG.
+
+  CLEAR: V_TFILL.
+  DESCRIBE TABLE IT_JR LINES V_TFILL.
+
+  "For Selection Screen
+  LOOP AT IT_JR.
+    PERFORM SET_INDICATOR USING SY-TABIX V_TFILL 3 V_PROC_EX 'Getting JR Data...'.
+
+    CALL FUNCTION 'ZQM_GET_BATCH_JR_BY_SR'
+      EXPORTING
+        CHARG_S = IT_JR-CHARG
+      IMPORTING
+        MATNR_J = IT_MAIN-MATNRJR
+        CHARG_J = IT_MAIN-CHARGJR.
+
+    IF IT_MAIN-CHARGJR NOT IN S_CHARG.
+      DELETE IT_MAIN WHERE CHARG EQ IT_JR-CHARG.
+      CONTINUE.
+    ENDIF.
+
+    IT_JR-MATNRJR = IT_MAIN-MATNRJR.
+    IT_JR-CHARGJR = IT_MAIN-CHARGJR.
+    MODIFY IT_JR.
+
+    MODIFY IT_MAIN TRANSPORTING MATNRJR CHARGJR WHERE CHARG EQ IT_JR-CHARG.
+    CLEAR IT_MAIN.
+  ENDLOOP.
+
+  IF IT_JR[] IS INITIAL.
+    MESSAGE 'Data not found!' TYPE 'S' DISPLAY LIKE 'E'.
+    LEAVE TO SCREEN 0.
+  ENDIF.
+
+  SELECT SINGLE ATINN INTO V_ZZTYPE              FROM CABN WHERE ATNAM = 'ZZTYPE'.
+  SELECT SINGLE ATINN INTO V_ZZNOMORROLL         FROM CABN WHERE ATNAM = 'ZZNOMORROLL'.
+
+  SELECT
+    CHARG
+    AUSP~ATINN
+    AUSP~ATWRT
+    AUSP~ATFLV
+    INTO CORRESPONDING FIELDS OF TABLE IT_CHAR
+    FROM MCH1
+    JOIN AUSP  ON AUSP~OBJEK EQ MCH1~CUOBJ_BM
+     FOR ALL ENTRIES IN IT_JR
+   WHERE MATNR EQ IT_JR-MATNRJR
+     AND CHARG EQ IT_JR-CHARGJR
+     AND KLART EQ '023'
+     AND AUSP~ATINN IN (V_ZZTYPE, V_ZZNOMORROLL).
+
+  LOOP AT IT_JR.
+    READ TABLE IT_CHAR WITH KEY CHARG = IT_JR-CHARGJR ATINN = V_ZZTYPE.
+    IF SY-SUBRC EQ 0.
+      IT_MAIN-FTYPEJR = IT_CHAR-ATWRT.
+    ENDIF.
+
+    READ TABLE IT_CHAR WITH KEY CHARG = IT_JR-CHARGJR ATINN = V_ZZNOMORROLL.
+    IF SY-SUBRC EQ 0.
+      IT_MAIN-ROLLJR = IT_CHAR-ATWRT.
+    ENDIF.
+
+    MODIFY IT_MAIN TRANSPORTING FTYPEJR ROLLJR WHERE CHARG EQ IT_JR-CHARG.
+    CLEAR IT_MAIN.
+  ENDLOOP.
+
+  "Check Parameters
+  DELETE IT_MAIN WHERE ROLLJR IS INITIAL.
+  DELETE IT_MAIN WHERE FTYPEJR NOT IN S_FTYPE OR ROLLJR NOT IN S_NOROL.
+
+  CLEAR: IT_PRUEFLOS.
+  REFRESH: IT_PRUEFLOS.
+  IT_PRUEFLOS[]  = IT_MAIN[].
+  SORT IT_PRUEFLOS BY PRUEFLOS.
+  DELETE ADJACENT DUPLICATES FROM IT_PRUEFLOS COMPARING PRUEFLOS.
+
+  LOOP AT IT_PRUEFLOS.
+    CLEAR : V_CANCELLED, V_NCANCELLED.
+
+    SELECT COUNT(*)
+      INTO V_CANCELLED
+      FROM JEST
+      JOIN QALS   ON JEST~OBJNR = QALS~OBJNR
+      JOIN TJ02T  ON JEST~STAT  = TJ02T~ISTAT
+     WHERE QALS~PRUEFLOS = IT_PRUEFLOS-PRUEFLOS
+      AND TJ02T~TXT04 EQ 'LTCA'
+      AND TJ02T~SPRAS EQ 'E'.
+
+    "Inspection Lot Status Cancel
+    IF SY-SUBRC EQ 0.
+      DELETE IT_MAIN WHERE PRUEFLOS EQ IT_PRUEFLOS-PRUEFLOS.
+    ENDIF.
+  ENDLOOP.
+
+  SORT IT_MAIN BY PRUEFLOS INSPECTION TIMES.
+  DELETE ADJACENT DUPLICATES FROM IT_MAIN COMPARING PRUEFLOS INSPECTION TIMES.
+
+  IF IT_MAIN[] IS INITIAL.
+    MESSAGE 'Data not found!' TYPE 'S' DISPLAY LIKE 'E'.
+    LEAVE TO SCREEN 0.
+  ENDIF.
+
+  CLEAR: V_TFILL.
+  DESCRIBE TABLE IT_MAIN LINES V_TFILL.
+
+  LOOP AT IT_MAIN.
+    CLEAR: IT_QASE.
+    REFRESH: IT_QASE.
+    MOVE-CORRESPONDING IT_MAIN TO ITAB.
+
+    PERFORM SET_INDICATOR USING SY-TABIX V_TFILL 4 V_PROC_EX 'Get WVTR & OTR Data...'.
+
+    ITAB-POSISI = ITAB-KTEXTLOS.
+    REPLACE ALL OCCURRENCES OF '|' IN ITAB-POSISI WITH SPACE.
+
+    "Select Characteristic
+    CLEAR: V_TEMP.
+    V_TEMP = '%' && ITAB-INSPECTION && '%'.
+    SELECT SINGLE VERWMERKM MKVERSION INTO (ITAB-VERWMERKM, ITAB-MKVERSION) FROM QAMV WHERE PRUEFLOS EQ ITAB-PRUEFLOS AND KURZTEXT LIKE V_TEMP.
+
+    "Get Data WVTR and OTR
+    SELECT PRUEFLOS MERKNR PROBENR STUECKNR MESSWERT MBEWERTG ATTRIBUT PRUEFBEMKT MASCHINE AS SAMPLE PRUEFER
+      INTO CORRESPONDING FIELDS OF TABLE IT_QASE
+      FROM QASE
+     WHERE PRUEFLOS EQ ITAB-PRUEFLOS
+       AND MERKNR   EQ ITAB-INSP_CHAR
+       AND PROBENR  EQ ITAB-TIMES.
+
+    LOOP AT IT_QASE.
+      IF IT_QASE-STUECKNR EQ 1.
+        ITAB-VALUE1 = IT_QASE-MESSWERT.
+      ELSEIF IT_QASE-STUECKNR EQ 2.
+        ITAB-VALUE2 = IT_QASE-MESSWERT.
+      ELSEIF IT_QASE-STUECKNR EQ 3.
+        ITAB-VALUE3 = IT_QASE-MESSWERT.
+      ELSEIF IT_QASE-STUECKNR EQ 4.
+        ITAB-VALUE4 = IT_QASE-MESSWERT.
+      ENDIF.
+
+      ITAB-DEVICE = IT_QASE-PRUEFBEMKT.
+      ITAB-SAMPLE = IT_QASE-SAMPLE.
+
+      IF IT_QASE-MESSWERT IS NOT INITIAL.
+        ITAB-CYCLE  = IT_QASE-STUECKNR.
+      ENDIF.
+
+      IF ITAB-INSPECTION CS 'WVTR'.
+        ITAB-INSPECTION = 'WVTR'.
+      ELSE.
+        ITAB-INSPECTION = 'OTR'.
+      ENDIF.
+
+      ITAB-PRUEFER = IT_QASE-PRUEFER.
+    ENDLOOP.
+
+    CLEAR: V_DATE.
+    CALL FUNCTION 'Z_GET_PRODUCTION_DATE'
+      EXPORTING
+        MATNR = ITAB-MATNR
+        CHARG = ITAB-CHARG
+      IMPORTING
+        PDATE = V_DATE.
+
+    PERFORM CONVERT_DATE_OUTPUT USING V_DATE CHANGING ITAB-PRODDATE.
+    ITAB-PRODDATE2 = V_DATE.
+
+    IF V_DATE NOT IN S_SAMPL.
+      CONTINUE.
+    ENDIF.
+
+    CLEAR: V_DATE.
+    SELECT SINGLE PRUEFDATUB INTO V_DATE FROM QASR
+     WHERE PRUEFLOS EQ ITAB-PRUEFLOS
+       AND MERKNR   EQ ITAB-INSP_CHAR
+       AND PROBENR  EQ ITAB-TIMES.
+
+    PERFORM CONVERT_DATE_OUTPUT USING V_DATE CHANGING ITAB-ACTDATE.
+
+    CASE ITAB-POSISI.
+      WHEN 'R'.
+        ITAB-SORT_KEY = 1.
+      WHEN 'C'.
+        ITAB-SORT_KEY = 2.
+      WHEN 'L'.
+        ITAB-SORT_KEY = 3.
+    ENDCASE.
+
+    IF ITAB-ZSTAT IS INITIAL.
+      ITAB-ZSTAT = GREY.
+    ENDIF.
+
+    APPEND ITAB.
+    CLEAR ITAB.
+  ENDLOOP.
+
+  DELETE ITAB WHERE CYCLE IS INITIAL.
+  PERFORM FILTER.
+
+  IF ITAB[] IS INITIAL.
+    MESSAGE 'Data not found!' TYPE 'S' DISPLAY LIKE 'E'.
+    LEAVE TO SCREEN 0.
+  ENDIF.
+
+  IF ITAB[] IS NOT INITIAL.
+    PERFORM REFRESH.
+  ENDIF.
+
+  IF P_PROD EQ 'X'.
+    SORT ITAB BY INSPECTION PRODDATE2 TIMES SORT_KEY.
+  ELSEIF P_ETMD EQ 'X'.
+    SORT ITAB BY INSPECTION INSPDATE TIMES SORT_KEY.
+  ELSEIF P_ROLL EQ 'X'.
+    SORT ITAB BY INSPECTION ROLLJR INSPECTION TIMES SORT_KEY.
+  ENDIF.
+ENDFORM.                    "GET_PREVIEW
+
+*&---------------------------------------------------------------------*
+*&      Form  FILTER
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM FILTER.
+  SORT ITAB BY ROLLJR INSPECTION POSISI TIMES.
+  DELETE ADJACENT DUPLICATES FROM ITAB COMPARING ROLLJR INSPECTION POSISI TIMES.
+
+  LOOP AT ITAB.
+    IF P_APV IS INITIAL.
+      IF P_MVT IS INITIAL AND ITAB-INSPECTION CS 'WVTR'.
+        DELETE ITAB.
+        CONTINUE.
+      ELSE.
+        IF ITAB-VCODE+0(2) EQ V_OK AND ITAB-INSPECTION CS 'WVTR'.
+          DELETE ITAB.
+          CONTINUE.
+        ENDIF.
+      ENDIF.
+      IF P_OTR IS INITIAL AND ( ITAB-INSPECTION CS 'OTR' OR ITAB-INSPECTION CS 'O2TR' ).
+        DELETE ITAB.
+        CONTINUE.
+      ELSE.
+        IF ITAB-VCODE+2(2) EQ V_OK AND ( ITAB-INSPECTION CS 'OTR' OR ITAB-INSPECTION CS 'O2TR' ).
+          DELETE ITAB.
+          CONTINUE.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+    IF P_RJT IS INITIAL.
+      IF P_MVT IS INITIAL AND ITAB-INSPECTION CS 'WVTR'.
+        DELETE ITAB.
+        CONTINUE.
+      ELSE.
+        IF ITAB-VCODE+0(2) EQ V_NG AND ITAB-INSPECTION CS 'WVTR'.
+          DELETE ITAB.
+          CONTINUE.
+        ENDIF.
+      ENDIF.
+      IF P_OTR IS INITIAL AND ( ITAB-INSPECTION CS 'OTR' OR ITAB-INSPECTION CS 'O2TR' ).
+        DELETE ITAB.
+        CONTINUE.
+      ELSE.
+        IF ITAB-VCODE+2(2) EQ V_NG AND ( ITAB-INSPECTION CS 'OTR' OR ITAB-INSPECTION CS 'O2TR' ).
+          DELETE ITAB.
+          CONTINUE.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+    IF P_NOT IS INITIAL.
+      IF P_MVT IS INITIAL AND ITAB-INSPECTION CS 'WVTR'.
+        DELETE ITAB.
+        CONTINUE.
+      ELSE.
+        IF ITAB-VCODE+0(2) EQ V_NO AND ITAB-INSPECTION CS 'WVTR'.
+          DELETE ITAB.
+          CONTINUE.
+        ENDIF.
+      ENDIF.
+      IF P_OTR IS INITIAL AND ( ITAB-INSPECTION CS 'OTR' OR ITAB-INSPECTION CS 'O2TR' ).
+        DELETE ITAB.
+        CONTINUE.
+      ELSE.
+        IF ITAB-VCODE+2(2) EQ V_NO AND ( ITAB-INSPECTION CS 'OTR' OR ITAB-INSPECTION CS 'O2TR' ).
+          DELETE ITAB.
+          CONTINUE.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.                    "FILTER
+*&---------------------------------------------------------------------*
+*&      Form  REFRESH
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM REFRESH.
+  LOOP AT ITAB.
+    REFRESH: IT_QASE.
+    CLEAR: IT_QASE.
+
+    ITAB-STATUS = 'Not Yet'.
+
+    SELECT SINGLE VCODE INTO ITAB-VCODE FROM QAPP WHERE PRUEFLOS EQ ITAB-PRUEFLOS AND PROBENR EQ ITAB-TIMES.
+
+    IF ITAB-INSPECTION EQ 'WVTR'.
+      IF ITAB-VCODE+0(2) EQ '' OR ITAB-VCODE+0(2) EQ V_NO.
+        ITAB-APPROVAL = 'CREATED'.
+      ELSEIF ITAB-VCODE+0(2) EQ V_OK.
+        ITAB-APPROVAL = 'APPROVED'.
+        ITAB-ZSTAT = SUCCES.
+      ELSEIF ITAB-VCODE+0(2) EQ V_NG.
+        ITAB-APPROVAL = 'REJECTED'.
+        ITAB-ZSTAT = WARNING.
+      ENDIF.
+    ENDIF.
+
+    IF ITAB-INSPECTION EQ 'OTR' OR ITAB-INSPECTION EQ 'O2TR'.
+      IF ITAB-VCODE+2(2) EQ '' OR ITAB-VCODE+2(2) EQ V_NO.
+        ITAB-APPROVAL = 'CREATED'.
+      ELSEIF ITAB-VCODE+2(2) EQ V_OK.
+        ITAB-APPROVAL = 'APPROVED'.
+        ITAB-ZSTAT = SUCCES.
+      ELSEIF ITAB-VCODE+2(2) EQ V_NG.
+        ITAB-APPROVAL = 'REJECTED'.
+        ITAB-ZSTAT = WARNING.
+      ENDIF.
+    ENDIF.
+
+    V_LEN = 1.
+    WHILE V_LEN LE 4.
+      MOVE-CORRESPONDING ITAB TO IT_QASE.
+      IT_QASE-PROBENR  = ITAB-TIMES.
+      IT_QASE-STUECKNR = V_LEN.
+
+      IF V_LEN = 1.
+        IT_QASE-MESSWERT = ITAB-VALUE1.
+      ELSEIF V_LEN = 2.
+        IT_QASE-MESSWERT = ITAB-VALUE2.
+      ELSEIF V_LEN = 3.
+        IT_QASE-MESSWERT = ITAB-VALUE3.
+      ELSEIF V_LEN = 4.
+        IT_QASE-MESSWERT = ITAB-VALUE4.
+      ENDIF.
+
+      ADD 1 TO V_LEN.
+
+      IF IT_QASE-MESSWERT IS NOT INITIAL.
+        APPEND IT_QASE.
+        CLEAR IT_QASE.
+      ENDIF.
+    ENDWHILE.
+
+    SORT IT_QASE BY PROBENR DESCENDING STUECKNR DESCENDING.
+    READ TABLE IT_QASE INDEX 1.
+    IF SY-SUBRC EQ 0.
+      PERFORM GET_CALCULATION USING ITAB-WERKS ITAB-VERWMERKM ITAB-MKVERSION IT_QASE-MESSWERT CHANGING ITAB-STATUS.
+    ENDIF.
+
+    IF ITAB-ZSTAT IS INITIAL.
+      ITAB-ZSTAT = GREY.
+    ENDIF.
+
+    MODIFY ITAB.
+    CLEAR ITAB.
+  ENDLOOP.
+ENDFORM.                    "REFRESH
+
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0100  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE USER_COMMAND_0100 INPUT.
+
+  CASE SY-UCOMM.
+    WHEN 'EXIT'.
+      SET SCREEN 0.
+    WHEN 'EXEC'.
+      PERFORM SELECT_LINES.
+      PERFORM COLLECT_DATA.
+    WHEN 'REFRESH'.
+      PERFORM GET_DATA.
+  ENDCASE.
+
+  CALL METHOD GRID1->REFRESH_TABLE_DISPLAY.
+ENDMODULE.                 " USER_COMMAND_0100  INPUT
+
+*&---------------------------------------------------------------------*
+*&      Form  COLLECT_DATA
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM COLLECT_DATA.
+  READ TABLE ITAB WITH KEY BOX = 'X' ERR = ''.
+  IF SY-SUBRC EQ 0.
+    CALL SCREEN 2000 STARTING AT 20 01.
+  ENDIF.
+ENDFORM.                    "COLLECT_DATA
+
+*&---------------------------------------------------------------------*
+*&      Form  SET_UD
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM SET_APPROVAL.
+  IF ACCEPT EQ 'X'.
+    V_UD = V_OK.
+  ELSEIF REJECT EQ 'X'.
+    V_UD = V_NG.
+  ELSE.
+    V_UD = ''.
+  ENDIF.
+
+  REFRESH: IT_COUNT_ROW.
+  CLEAR: IT_COUNT_ROW.
+
+  IT_COUNT_ROW[] = ITAB[].
+  DELETE IT_COUNT_ROW WHERE BOX EQ '' OR ERR EQ 'X'.
+  DESCRIBE TABLE IT_COUNT_ROW LINES V_TFILL.
+ENDFORM.                    "SET_UD
+*&---------------------------------------------------------------------*
+*&      Form  APPROVAL
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM APPROVAL.
+  CLEAR: IT_INSPECTION.
+  REFRESH: IT_INSPECTION.
+  IT_INSPECTION[] = ITAB[].
+  DELETE IT_INSPECTION WHERE ERR EQ 'X' OR BOX EQ '' OR PRUEFLOS IS INITIAL.
+  SORT IT_INSPECTION BY PRUEFLOS INSPECTION.
+  DELETE ADJACENT DUPLICATES FROM IT_INSPECTION COMPARING PRUEFLOS INSPECTION.
+
+  LOOP AT IT_INSPECTION.
+    CLEAR: INSPLOT, INSPOINT, BAPIRETURN1, INSPPOINTS.
+    REFRESH: BAPIRETURN1, INSPPOINTS.
+
+    PERFORM SET_INDICATOR USING SY-TABIX V_TFILL 1 1 'Approving Data...'.
+
+    INSPLOT  = IT_INSPECTION-PRUEFLOS.
+    INSPOINT = IT_INSPECTION-TIMES.
+
+    CALL FUNCTION 'BAPI_INSPPOINT_GETLIST'
+      EXPORTING
+        INSPLOT        = INSPLOT
+        INSPOPER       = INSPOPER
+        INSPPOINT_FROM = INSPOINT
+        INSPPOINT_TO   = INSPOINT
+      IMPORTING
+        RETURN         = BAPIRETURN1
+      TABLES
+        INSPPOINT_LIST = INSPPOINTS.
+
+    APPEND BAPIRETURN1.
+    READ TABLE  BAPIRETURN1 WITH KEY TYPE = 'E'.
+    IF SY-SUBRC EQ 0.
+      CONCATENATE 'Get Point:' BAPIRETURN1-MESSAGE INTO ITAB-MESS SEPARATED BY SPACE.
+      ITAB-ZSTAT = ERROR.
+      ITAB-ERR   = 'X'.
+      MODIFY ITAB TRANSPORTING MESS ZSTAT ERR WHERE PRUEFLOS EQ INSPLOT AND TIMES EQ INSPOINT AND INSPECTION EQ IT_INSPECTION-INSPECTION.
+      CONTINUE.
+    ENDIF.
+
+    CLEAR: BAPIRETURN1.
+    REFRESH: BAPIRETURN1.
+
+    CLEAR: V_UD_ALL.
+    SELECT SINGLE VCODE INTO V_UD_ALL FROM QAPP WHERE PRUEFLOS EQ INSPLOT AND PROBENR EQ INSPOINT.
+
+    IF IT_INSPECTION-INSPECTION CS 'WVTR'.
+      V_UD_ALL+0(2) = V_UD.
+    ELSEIF IT_INSPECTION-INSPECTION CS 'OTR' OR IT_INSPECTION-INSPECTION CS 'O2TR'.
+      V_UD_ALL+2(2) = V_UD.
+    ENDIF.
+
+    LOOP AT INSPPOINTS.
+      INSPPOINTS-PSEL_SET   = IT_INSPECTION-WERKS.
+      INSPPOINTS-SEL_SET    = V_SELECTED.
+      INSPPOINTS-CODE_GRP   = V_SELECTED.
+      INSPPOINTS-CODE       = V_UD_ALL.
+      MODIFY INSPPOINTS.
+    ENDLOOP.
+
+    CALL FUNCTION 'BAPI_INSPPOINT_CHANGE'
+      EXPORTING
+        DATA      = INSPPOINTS
+        INSPLOT   = INSPLOT
+        INSPOPER  = INSPOPER
+        INSPPOINT = INSPOINT
+      IMPORTING
+        RETURN    = BAPIRETURN1.
+
+    APPEND BAPIRETURN1.
+    READ TABLE  BAPIRETURN1 WITH KEY TYPE = 'E'.
+    IF SY-SUBRC EQ 0.
+      CONCATENATE 'Approval:' BAPIRETURN1-MESSAGE INTO ITAB-MESS SEPARATED BY SPACE.
+      ITAB-ZSTAT = ERROR.
+      ITAB-ERR   = 'X'.
+    ELSE.
+      PERFORM BAPI_COMMIT.
+      ITAB-VCODE = V_UD.
+    ENDIF.
+
+    IF REJECT EQ 'X' AND ITAB-ERR IS INITIAL.
+      PERFORM CANCEL_UD IN PROGRAM ZQMI_BARRIER_INSP_LIST USING IT_INSPECTION-PRUEFLOS CHANGING SY-SUBRC ITAB-MESS ITAB-ZSTAT ITAB-ERR.
+      ITAB-REJECT_MARK = 'X'.
+    ENDIF.
+
+    MODIFY ITAB TRANSPORTING MESS ZSTAT ERR REJECT_MARK WHERE PRUEFLOS EQ INSPLOT AND TIMES EQ INSPOINT AND INSPECTION EQ IT_INSPECTION-INSPECTION.
+    CLEAR ITAB.
+  ENDLOOP.
+
+  READ TABLE ITAB WITH KEY REJECT_MARK = 'X'.
+  IF SY-SUBRC EQ 0.
+    PERFORM PROCESS_DELAYING.
+    PERFORM RESULT_RECORDING.
+    PERFORM DELETE_ZLOG.
+  ENDIF.
+ENDFORM.                    "APPROVAL
+
+
+*&---------------------------------------------------------------------*
+*&      Form  CANCEL_UD
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->PRUEFLOS   text
+*      -->LS_SUBRC   text
+*      -->MESS       text
+*      -->ZSTAT      text
+*      -->ERR        text
+*----------------------------------------------------------------------*
+FORM CANCEL_UD USING PRUEFLOS CHANGING LS_SUBRC MESS ZSTAT ERR.
+  CLEAR: UDSTAT, LS_SUBRC.
+  REFRESH : MESSTAB, BDCDATA.
+
+  "Check UD Status
+  SELECT SINGLE QALS~STAT35
+    INTO UDSTAT
+    FROM QALS
+   WHERE PRUEFLOS = PRUEFLOS.
+
+  "If Not UD
+  IF UDSTAT NE 'X'.
+    LS_SUBRC = 0.
+    EXIT.
+  ENDIF.
+
+  PERFORM BDC_DYNPRO      USING 'SAPMQEVA'          '0100'.
+  PERFORM BDC_FIELD       USING 'BDC_CURSOR'        'QALS-PRUEFLOS'.
+  PERFORM BDC_FIELD       USING 'BDC_OKCODE'        '/00'.
+  PERFORM BDC_FIELD       USING 'QALS-PRUEFLOS'     PRUEFLOS.
+  PERFORM BDC_DYNPRO      USING 'SAPMQEVA'          '0200'.
+  PERFORM BDC_FIELD       USING 'BDC_OKCODE'        '=+FC1'.
+  PERFORM BDC_FIELD       USING 'BDC_CURSOR'        'RQEVA-MHD_01'.
+  PERFORM BDC_DYNPRO      USING 'SAPLSPO1'          '0500'.
+  PERFORM BDC_FIELD       USING 'BDC_OKCODE'        '=OPT1'.
+  PERFORM BDC_DYNPRO      USING 'SAPMQEVA'          '0200'.
+  PERFORM BDC_FIELD       USING 'BDC_OKCODE'        '=BU'.
+  PERFORM BDC_FIELD       USING 'BDC_CURSOR'        'RQEVA-MHD_01'.
+  PERFORM BDC_DYNPRO      USING 'SAPLSTXX'          '1100'.
+  PERFORM BDC_FIELD       USING 'BDC_CURSOR'        'RSTXT-TXLINE(02)'.
+  PERFORM BDC_FIELD       USING 'BDC_OKCODE'        '=TXBA'.
+
+  OPT-DISMODE   = 'N'.
+  OPT-UPDMODE   = 'S'.
+  OPT-DEFSIZE   = 'X'.
+  OPT-RACOMMIT  = 'X'.
+  OPT-NOBINPT   = ''.
+
+  CALL TRANSACTION 'QA12' USING BDCDATA OPTIONS FROM OPT MESSAGES INTO MESSTAB.
+
+  READ TABLE MESSTAB WITH KEY MSGTYP = 'E'.
+  IF SY-SUBRC = 0.
+    SELECT SINGLE TEXT INTO MESS FROM T100 WHERE SPRSL = 'E' AND ARBGB = MESSTAB-MSGID AND MSGNR = MESSTAB-MSGNR.
+    REPLACE FIRST OCCURRENCE OF '&' IN MESS WITH MESSTAB-MSGV2.
+    REPLACE FIRST OCCURRENCE OF '&' IN MESS WITH MESSTAB-MSGV1.
+    CONCATENATE 'Cancel UD:' MESS INTO MESS SEPARATED BY SPACE.
+    ZSTAT    = ERROR.
+    ERR      = 'X'.
+    LS_SUBRC = -1.
+  ELSE.
+    COMMIT WORK AND WAIT.
+    LS_SUBRC = 0.
+  ENDIF.
+
+  PERFORM PROCESS_DELAYING.
+ENDFORM.                    "CANCEL_UD
+
+*&---------------------------------------------------------------------*
+*&      Form  BDC_DYNPRO
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->PROGRAM    text
+*      -->DYNPRO     text
+*----------------------------------------------------------------------*
+FORM  BDC_DYNPRO USING PROGRAM DYNPRO.
+  CLEAR BDCDATA.
+  BDCDATA-PROGRAM  = PROGRAM.
+  BDCDATA-DYNPRO   = DYNPRO.
+  BDCDATA-DYNBEGIN = 'X'.
+  APPEND BDCDATA.
+ENDFORM.                    "BDC_DYNPRO
+
+*&---------------------------------------------------------------------*
+*&      Form  BDC_FIELD
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->FNAM       text
+*      -->FVAL       text
+*----------------------------------------------------------------------*
+FORM BDC_FIELD USING FNAM FVAL.
+  CLEAR BDCDATA.
+  BDCDATA-FNAM = FNAM.
+  BDCDATA-FVAL = FVAL.
+  APPEND BDCDATA.
+ENDFORM.                    "BDC_FIELD
+
+
+*&---------------------------------------------------------------------*
+*&      Form  RESULT_RECORDING
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM RESULT_RECORDING.
+
+  DATA: V_MINCYCLE      TYPE I VALUE 1,
+        V_NEW_POINT,
+        V_INSPOINT      LIKE BAPI2045L4-INSPPOINT.
+
+
+  DATA: INSPLOT         LIKE BAPI2045L2-INSPLOT,
+        INSPOPER        LIKE BAPI2045L4-INSPOPER VALUE '0010',
+        INSPOINT        LIKE BAPI2045L4-INSPPOINT,
+        V_CODEGRUPPE    LIKE QPAC-CODEGRUPPE,
+        V_WERK          LIKE QALS-WERK,
+        V_CANCELLED     TYPE I,
+        V_NCANCELLED    TYPE I,
+*      V_INSPOINT      LIKE BAPI2045L4-INSPPOINT,
+        V_TEMP_MEAN     TYPE P DECIMALS 3.
+
+  TYPES: BEGIN OF TY_CREATE,
+       PRUEFLOS       TYPE QIBPLOSNR,            "Inspection Lot
+       DATE           TYPE MKPF-BUDAT,           "Date
+       ACTDATE        TYPE MKPF-BUDAT,           "Actual Date
+       PROBENR        TYPE QIBPPPKTNR,           "Inspection Point
+       CHAR_NO        TYPE QIBPMERKNR,           "Insp. Lot Char. Number
+       MEAN_VAL       TYPE QEINFELD,             "Mean Value
+       VALUATION      TYPE QMBEWERTG,            "Valuation
+       INSPECTOR      TYPE QINSPECTOR,           "Inspector
+       ZZCOUNTER      LIKE BAPI2045D4-RES_NO,    "Counter
+       DEVICE         LIKE BAPI2045D4-REMARK,    "Device
+       SAMPLE         LIKE BAPI2045D4-ADD_INFO1, "Sample
+       INSPECTION     LIKE QAMV-VERWMERKM,
+       END OF TY_CREATE.
+
+  DATA: IT_PRUEFLOS     TYPE SORTED TABLE OF TY_CREATE WITH NON-UNIQUE KEY PRUEFLOS WITH HEADER LINE.
+  DATA: IT_RECORD       TYPE TY_CREATE OCCURS 0 WITH HEADER LINE.
+
+  DATA: CHAR_RESULTS    LIKE BAPI2045D2 OCCURS 0 WITH HEADER LINE,
+      SINGLE_RESULTS  LIKE BAPI2045D4 OCCURS 0 WITH HEADER LINE,
+      SAMPLE_RESULTS  LIKE BAPI2045D3 OCCURS 0 WITH HEADER LINE,
+      INSPPOINTS      LIKE BAPI2045L4 OCCURS 0 WITH HEADER LINE.
+
+  FIELD-SYMBOLS:
+    <FS_RECORD>     TYPE TY_CREATE,
+    <FS_SINGLE>     TYPE BAPI2045D4,
+    <FS_SAMPLE>     TYPE BAPI2045D3,
+    <FS_CHAR>       TYPE BAPI2045D2.
+
+  "BAPI
+  DATA: BAPIRETURN1     LIKE BAPIRETURN1  OCCURS 0 WITH HEADER LINE,
+        BAPIRET2        LIKE BAPIRET2     OCCURS 0 WITH HEADER LINE.
+
+
+  LOOP AT ITAB WHERE REJECT_MARK EQ 'X'.
+*    PERFORM SET_INDICATOR USING SY-TABIX V_TFILL 3 V_PROC_EX 'Collecting Sample...'.
+
+    V_MINCYCLE = 1.
+*
+    WHILE V_MINCYCLE LE 4.
+      CLEAR IT_RECORD.
+
+      IT_RECORD-MEAN_VAL      = 0.
+      IT_RECORD-DEVICE        = ''.
+      IT_RECORD-SAMPLE        = ''.
+      IT_RECORD-PRUEFLOS      = ITAB-PRUEFLOS.
+      IT_RECORD-CHAR_NO       = ITAB-INSP_CHAR.
+      IT_RECORD-PROBENR       = ITAB-TIMES.
+      IT_RECORD-ZZCOUNTER     = V_MINCYCLE.
+      IT_RECORD-VALUATION     = 'A'.
+      IT_RECORD-INSPECTOR     = ITAB-PRUEFER.
+      IT_RECORD-DEVICE        = ITAB-DEVICE.
+      IT_RECORD-SAMPLE        = ITAB-SAMPLE.
+      IT_RECORD-INSPECTION    = ITAB-INSPECTION.
+*      PERFORM CONVERT_DATE_INPUT USING ITAB-INSPDATE CHANGING IT_RECORD-DATE.
+*      PERFORM CONVERT_DATE_INPUT USING ITAB-ACTDATE CHANGING IT_RECORD-ACTDATE.
+
+      IT_RECORD-DATE = ITAB-INSPDATE.
+      IT_RECORD-ACTDATE = IT_RECORD-ACTDATE.
+
+
+      CONDENSE IT_RECORD-MEAN_VAL.
+
+
+      APPEND IT_RECORD.
+      CLEAR IT_RECORD.
+      ADD 1 TO V_MINCYCLE.
+    ENDWHILE.
+    MODIFY ITAB.
+  ENDLOOP.
+
+  IF IT_RECORD[] IS INITIAL.
+    EXIT.
+  ENDIF.
+
+  CLEAR: IT_PRUEFLOS.
+  REFRESH: IT_PRUEFLOS.
+  IT_PRUEFLOS[]  = IT_RECORD[].
+  DELETE ADJACENT DUPLICATES FROM IT_PRUEFLOS COMPARING PRUEFLOS PROBENR.
+
+  LOOP AT IT_PRUEFLOS.
+    PERFORM SET_INDICATOR USING SY-TABIX V_TFILL 4 V_PROC_EX 'Uploading Sample...'.
+
+    "Cancel UD, Must be Canceled
+    PERFORM CANCEL_UD USING IT_PRUEFLOS-PRUEFLOS CHANGING LS_SUBRC ITAB-MESS ITAB-ZSTAT ITAB-ERR.
+    IF LS_SUBRC NE 0.
+      MODIFY ITAB TRANSPORTING MESS ZSTAT ERR WHERE PRUEFLOS EQ IT_PRUEFLOS-PRUEFLOS AND INSPECTION EQ IT_PRUEFLOS-INSPECTION.
+      CONTINUE.
+    ENDIF.
+
+    REFRESH: CHAR_RESULTS, SINGLE_RESULTS, INSPPOINTS.
+    CLEAR: CHAR_RESULTS, SINGLE_RESULTS, INSPPOINTS, INSPLOT, INSPOINT, V_UD, V_NEW_POINT.
+
+    INSPLOT   = IT_PRUEFLOS-PRUEFLOS.
+    INSPOINT  = IT_PRUEFLOS-PROBENR.
+
+    "Get Data
+    CALL FUNCTION 'BAPI_INSPOPER_GETDETAIL'
+      EXPORTING
+        INSPLOT             = INSPLOT
+        INSPOPER            = INSPOPER
+        READ_CHAR_RESULTS   = 'X'
+        READ_SINGLE_RESULTS = 'X'
+        READ_INSPPOINTS     = 'X'
+        READ_SAMPLE_RESULTS = 'X'
+        INSPPOINT_FROM      = INSPOINT
+        MAX_INSPPOINTS      = 1
+      TABLES
+        CHAR_RESULTS        = CHAR_RESULTS
+        SINGLE_RESULTS      = SINGLE_RESULTS
+        SAMPLE_RESULTS      = SAMPLE_RESULTS
+        INSPPOINTS          = INSPPOINTS.
+
+    IF SY-SUBRC = 0.
+      LOOP AT IT_RECORD ASSIGNING <FS_RECORD> WHERE PRUEFLOS = IT_PRUEFLOS-PRUEFLOS AND PROBENR = INSPOINT.
+        "Single Result
+        READ TABLE SINGLE_RESULTS ASSIGNING <FS_SINGLE> WITH KEY INSPLOT    = INSPLOT
+                                                                 INSPCHAR   = <FS_RECORD>-CHAR_NO
+                                                                 INSPOPER   = INSPOPER
+                                                                 INSPSAMPLE = <FS_RECORD>-PROBENR
+                                                                 RES_NO     = <FS_RECORD>-ZZCOUNTER.
+        IF SY-SUBRC = 0.
+          IF <FS_RECORD>-MEAN_VAL CA 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.
+            CLEAR: V_CODEGRUPPE, V_WERK.
+            SELECT SINGLE QALS~WERK
+              INTO V_WERK
+              FROM QALS
+             WHERE QALS~PRUEFLOS = INSPLOT.
+
+            SELECT SINGLE QPMZ~AUSWMENGE1 INTO V_CODEGRUPPE
+              FROM QPMZ
+              JOIN QAMV ON QPMZ~MKMNR = QAMV~VERWMERKM
+             WHERE QAMV~PRUEFLOS    = INSPLOT
+               AND QAMV~MERKNR      = <FS_RECORD>-CHAR_NO
+               AND QPMZ~ZAEHLER     = V_WERK.
+
+            <FS_SINGLE>-CODE_GRP1   = V_CODEGRUPPE.
+            <FS_SINGLE>-CODE1       = <FS_RECORD>-MEAN_VAL.
+          ELSE.
+            <FS_SINGLE>-RES_VALUE   = <FS_RECORD>-MEAN_VAL.
+          ENDIF.
+          <FS_SINGLE>-INSPECTOR     = <FS_RECORD>-INSPECTOR.
+          <FS_SINGLE>-INSP_DATE     = <FS_RECORD>-DATE.
+          <FS_SINGLE>-INSP_TIME     = SY-UZEIT.
+          <FS_SINGLE>-REMARK        = <FS_RECORD>-DEVICE.
+          <FS_SINGLE>-ADD_INFO1     = <FS_RECORD>-SAMPLE.
+
+          "Char Result
+          READ TABLE CHAR_RESULTS ASSIGNING <FS_CHAR> WITH KEY INSPLOT   = INSPLOT
+                                                               INSPCHAR  = <FS_RECORD>-CHAR_NO
+                                                               INSPOPER  = INSPOPER.
+          IF SY-SUBRC = 0.
+            <FS_CHAR>-EVALUATION    = <FS_RECORD>-VALUATION.
+            <FS_CHAR>-CLOSED        = 'X'.
+            <FS_CHAR>-EVALUATED     = 'E'.
+            <FS_CHAR>-EVALUATION    = 'A'.
+          ENDIF.
+
+          "Sample Result
+          READ TABLE SAMPLE_RESULTS ASSIGNING <FS_SAMPLE> WITH KEY INSPLOT   = INSPLOT
+                                                                   INSPCHAR  = <FS_RECORD>-CHAR_NO
+                                                                   INSPOPER  = INSPOPER
+                                                                   INSPSAMPLE  = <FS_RECORD>-PROBENR.
+          IF SY-SUBRC = 0.
+            <FS_SAMPLE>-CLOSED      = 'X'.
+            <FS_SAMPLE>-EVALUATED   = 'E'.
+            <FS_SAMPLE>-EVALUATION  = 'A'.
+            <FS_SAMPLE>-START_DATE  = <FS_RECORD>-DATE.
+            <FS_SAMPLE>-END_DATE    = <FS_RECORD>-ACTDATE.
+            <FS_SAMPLE>-ORIGINAL_INPUT = <FS_RECORD>-MEAN_VAL.
+          ENDIF.
+          <FS_SINGLE>-ORIGINAL_INPUT = <FS_RECORD>-MEAN_VAL.
+        ELSE.
+          READ TABLE CHAR_RESULTS ASSIGNING <FS_CHAR> WITH KEY INSPLOT   = INSPLOT
+                                                               INSPCHAR  = <FS_RECORD>-CHAR_NO
+                                                               INSPOPER  = INSPOPER.
+
+          IF SY-SUBRC = 0.
+            <FS_CHAR>-EVALUATION  = <FS_RECORD>-VALUATION.
+            <FS_CHAR>-INSPECTOR   = <FS_RECORD>-INSPECTOR.
+
+            IF <FS_RECORD>-MEAN_VAL CA 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.
+              CLEAR: V_CODEGRUPPE, V_WERK.
+
+              CLEAR V_WERK.
+              SELECT SINGLE QALS~WERK
+                INTO V_WERK
+                FROM QALS
+               WHERE QALS~PRUEFLOS = INSPLOT.
+
+              SELECT SINGLE QPMZ~AUSWMENGE1 INTO V_CODEGRUPPE
+                FROM QPMZ
+                JOIN QAMV ON QPMZ~MKMNR = QAMV~VERWMERKM
+               WHERE QAMV~PRUEFLOS  = INSPLOT
+                 AND QAMV~MERKNR    = <FS_RECORD>-CHAR_NO
+                 AND QPMZ~ZAEHLER   = V_WERK.
+
+              <FS_CHAR>-CODE_GRP1   = V_CODEGRUPPE.
+              <FS_CHAR>-CODE1       = <FS_RECORD>-MEAN_VAL.
+            ELSE.
+              <FS_CHAR>-MEAN_VALUE  = <FS_RECORD>-MEAN_VAL.
+            ENDIF.
+          ENDIF.
+          <FS_CHAR>-ORIGINAL_INPUT = <FS_RECORD>-MEAN_VAL.
+        ENDIF.
+
+      ENDLOOP.
+
+      DELETE SINGLE_RESULTS WHERE ( RES_VALUE = '' AND CODE1 = '' ) AND RES_ATTR IS INITIAL.
+
+      REFRESH: BAPIRET2.
+      CLEAR: BAPIRET2.
+
+      PERFORM PROCESS_DELAYING.
+
+      "Record Data on Table
+      CALL FUNCTION 'BAPI_INSPOPER_RECORDRESULTS'
+        EXPORTING
+          INSPLOT        = INSPLOT
+          INSPOPER       = INSPOPER
+          INSPPOINTDATA  = INSPPOINTS
+        IMPORTING
+          RETURN         = BAPIRET2
+        TABLES
+          CHAR_RESULTS   = CHAR_RESULTS
+          SINGLE_RESULTS = SINGLE_RESULTS
+          SAMPLE_RESULTS = SAMPLE_RESULTS.
+
+      APPEND BAPIRET2.
+      READ TABLE BAPIRET2 WITH KEY TYPE = 'E'.
+      IF SY-SUBRC EQ 0.
+        IF BAPIRET2-NUMBER EQ '026' AND BAPIRET2-ID EQ 'Q5'.
+          PERFORM BAPI_COMMIT.
+          PERFORM PROCESS_DELAYING.
+          IF ITAB-ERR EQ 'X'.
+            CONTINUE.
+          ENDIF.
+        ELSE.
+          CONCATENATE 'RR:' BAPIRET2-MESSAGE INTO ITAB-MESS SEPARATED BY SPACE.
+          ITAB-ZSTAT = ERROR.
+          ITAB-ERR   = 'X'.
+          MODIFY ITAB TRANSPORTING MESS ZSTAT ERR WHERE PRUEFLOS EQ IT_PRUEFLOS-PRUEFLOS AND TIMES EQ IT_PRUEFLOS-PROBENR AND INSPECTION EQ IT_PRUEFLOS-INSPECTION.
+        ENDIF.
+      ELSE.
+        PERFORM BAPI_COMMIT.
+        PERFORM PROCESS_DELAYING.
+        IF ITAB-ERR EQ 'X'.
+          CONTINUE.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.                    "RESULT_RECORDING
+
+*&---------------------------------------------------------------------*
+*&      Form  DELETE_ZLOG
+*&---------------------------------------------------------------------*
+FORM DELETE_ZLOG.
+  " Deklarasi variabel
+  DATA: LT_ZLOG_DEL    TYPE STANDARD TABLE OF ZLOG_BARRIER,
+        LV_BARRIER_POS TYPE TDLINE. " Menampung hasil return dari text
+
+  LOOP AT ITAB WHERE REJECT_MARK EQ 'X'.
+    READ TABLE IT_SR_DATA WITH KEY CHARGJR = ITAB-CHARGJR.
+    IF SY-SUBRC NE 0.
+      REFRESH: IT_SR_DATA.
+      CLEAR: IT_SR_DATA.
+
+      CALL FUNCTION 'ZQM_GET_BATCH_SR_BY_JR'
+        EXPORTING
+          CHARGJR = ITAB-CHARGJR
+          SCRAP   = 'X'
+        TABLES
+          T_SR    = IT_SR_DATA
+          T_CABN  = IT_CABN.
+
+      SORT IT_SR_DATA BY DERIVATIVE ASCENDING POSITION ASCENDING.
+    ENDIF.
+
+    IF IT_SR_DATA[] IS NOT INITIAL.
+
+      " --- 1. Ambil nilai Barrier Position ---
+      CLEAR LV_BARRIER_POS.
+      PERFORM GET_BARRIER_POS USING ITAB-MATNR ITAB-CHARG
+                              CHANGING LV_BARRIER_POS.
+
+      " Opsional: Hilangkan spasi kosong di awal/akhir jika format teks dari READ_TEXT kurang rapi
+      CONDENSE LV_BARRIER_POS.
+
+      " --- 2. Cek apakah Barrier Position = ITAB-POSISI ---
+      IF LV_BARRIER_POS CS ITAB-POSISI.
+
+        " --- 3. Lakukan logika penghapusan jika kondisi terpenuhi ---
+        REFRESH LT_ZLOG_DEL.
+
+        SELECT * FROM ZLOG_BARRIER
+          INTO TABLE LT_ZLOG_DEL
+          FOR ALL ENTRIES IN IT_SR_DATA
+          WHERE CHARG = IT_SR_DATA-CHARG. " <--- SESUAIKAN FIELD
+
+        IF SY-SUBRC = 0.
+          DELETE ZLOG_BARRIER FROM TABLE LT_ZLOG_DEL.
+        ENDIF.
+
+      ENDIF. " End condition IF lv_barrier_pos EQ itab-posisi
+
+    ENDIF.
+
+  ENDLOOP.
+ENDFORM.                    "DELETE_ZLOG
+
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_BARRIER_POS
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->MATNR        text
+*      -->CHARG        text
+*      -->BARRIER_POS  text
+*----------------------------------------------------------------------*
+FORM GET_BARRIER_POS USING MATNR CHARG CHANGING BARRIER_POS.
+  CLEAR: V_NAME, THEAD, TLINE.
+  REFRESH: TLINE.
+
+  "Check Barrier
+  V_NAME+0(10)    = MATNR.
+  V_NAME+22(10)   = CHARG.
+
+  THEAD-TDID      = 'VERM'.
+  THEAD-TDSPRAS   = SY-LANGU.
+  THEAD-TDNAME    = V_NAME.
+  THEAD-TDOBJECT  = 'CHARGE'.
+
+  CALL FUNCTION 'READ_TEXT'
+    EXPORTING
+      CLIENT                  = SY-MANDT
+      ID                      = THEAD-TDID
+      LANGUAGE                = THEAD-TDSPRAS
+      NAME                    = THEAD-TDNAME
+      OBJECT                  = THEAD-TDOBJECT
+    TABLES
+      LINES                   = TLINE
+    EXCEPTIONS
+      ID                      = 1
+      LANGUAGE                = 2
+      NAME                    = 3
+      NOT_FOUND               = 4
+      OBJECT                  = 5
+      REFERENCE_CHECK         = 6
+      WRONG_ACCESS_TO_ARCHIVE = 7
+      OTHERS                  = 8.
+
+  READ TABLE TLINE INDEX 1.
+  IF SY-SUBRC EQ 0.
+    BARRIER_POS = TLINE-TDLINE.
+  ENDIF.
+ENDFORM.                    "GET_BARRIER_POS
+
+*&---------------------------------------------------------------------*
+*&      Form  CALCULATE_BARRIER_POS
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->SR           text
+*      -->MATNR_SR     text
+*      -->CHARG_SR     text
+*      -->MATNR_JR     text
+*      -->CHARG_JR     text
+*      -->BARRIER_POS  text
+*----------------------------------------------------------------------*
+FORM CALCULATE_BARRIER_POS USING MATNR_SR CHARG_SR MATNR_JR CHARG_JR CHANGING BARRIER_POS.
+  CALL FUNCTION 'ZQM_GET_BARRIER_POS'
+    EXPORTING
+      MATNR_SR    = MATNR_SR
+      CHARG_SR    = CHARG_SR
+      MATNR_JR    = MATNR_JR
+      CHARG_JR    = CHARG_JR
+    IMPORTING
+      BARRIER_POS = BARRIER_POS
+    TABLES
+      IT_SR       = IT_SR_DATA
+      IT_CABN     = IT_CABN.
+ENDFORM.                    "CALCULATE_BARRIER_POS
+
+*&---------------------------------------------------------------------*
+*&      Form  PROCESS_DELAYING
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM PROCESS_DELAYING .
+  DATA : X1 TYPE P DECIMALS 4.                              "#EC NEEDED
+  DO 80000 TIMES.
+    X1 = SQRT( SY-INDEX ) / SQRT( SY-INDEX ).
+  ENDDO.
+  WAIT UP TO 1 SECONDS. "ADD DELAY TIME
+ENDFORM.                    "PROCESS_DELAYING
+
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_CALCULATION
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->WERKS      text
+*      -->MIC        text
+*      -->VERSION    text
+*      -->VALUE      text
+*      -->UD         text
+*----------------------------------------------------------------------*
+FORM GET_CALCULATION USING WERKS MIC VERSION VALUE CHANGING UD.
+  CLEAR: IT_QPMK.
+  SELECT SINGLE * FROM QPMK INTO CORRESPONDING FIELDS OF IT_QPMK WHERE ZAEHLER EQ WERKS AND MKMNR EQ MIC AND VERSION EQ VERSION.
+  IF VALUE GE IT_QPMK-TOLERANZUN AND VALUE LE IT_QPMK-SOLLWERT.
+    UD = V_PASS.
+  ELSEIF VALUE GT IT_QPMK-SOLLWERT AND VALUE LE IT_QPMK-TOLERANZOB.
+    UD = V_NCR.
+  ELSE.
+    UD = V_FAIL.
+  ENDIF.
+ENDFORM.                    "GET_CALCULATION
+
+
+*&---------------------------------------------------------------------*
+*&      Form  BAPI_COMMIT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM BAPI_COMMIT .
+  CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+    EXPORTING
+      WAIT = 'X'.
+ENDFORM.                    "BAPI_COMMIT
+
+*&---------------------------------------------------------------------*
+*&      Form  CHECK_ERROR
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->MODE       text
+*----------------------------------------------------------------------*
+FORM CHECK_ERROR.
+  LOOP AT ITAB WHERE BOX = 'X' AND ERR = ''.
+    ITAB-MESS = 'Transaction Success'.
+    ITAB-ZSTAT  = SUCCES.
+    MODIFY ITAB.
+    CLEAR ITAB.
+  ENDLOOP.
+ENDFORM.                    "CHECK_ERROR
+
+*&---------------------------------------------------------------------*
+*&      Form  display_alv
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM DISPLAY_ALV.
+  DATA: LT_EXCLUDE TYPE UI_FUNCTIONS.
+
+  PERFORM PREPARE_LAYOUT CHANGING GS_LAYOUT .
+  PERFORM PREPARE_FIELD_CATALOG CHANGING GT_FIELDCAT .
+  PERFORM EXCLUDE_TB_FUNCTIONS CHANGING LT_EXCLUDE.
+
+  GS_LAYOUT-STYLEFNAME = 'CELLTAB'.
+
+  CREATE OBJECT GRID1
+    EXPORTING
+      I_PARENT = DIALOG_BOX.
+
+  CALL METHOD GRID1->SET_TABLE_FOR_FIRST_DISPLAY
+    EXPORTING
+      IS_LAYOUT            = GS_LAYOUT
+      IT_TOOLBAR_EXCLUDING = LT_EXCLUDE
+      IS_VARIANT           = GS_VARIANT
+      I_SAVE               = 'A'
+    CHANGING
+      IT_OUTTAB            = ITAB[]
+      IT_FIELDCATALOG      = GT_FIELDCAT.
+
+ENDFORM.                    "display_alv
+
+*&---------------------------------------------------------------------*
+*&      Form  prepare_layout
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->P_GS_LAYOUT  text
+*----------------------------------------------------------------------*
+FORM PREPARE_LAYOUT  CHANGING P_GS_LAYOUT TYPE LVC_S_LAYO.
+  P_GS_LAYOUT-ZEBRA = '' .
+  P_GS_LAYOUT-SMALLTITLE = 'X' .
+  P_GS_LAYOUT-BOX_FNAME = 'BOX'.
+  P_GS_LAYOUT-EDIT = ''.
+  P_GS_LAYOUT-SEL_MODE = 'A'.
+  P_GS_LAYOUT-INFO_FNAME = 'LINE_COLOR'.
+  GS_VARIANT-REPORT = SY-REPID.
+ENDFORM.                    " prepare_layout
+
+
+*&---------------------------------------------------------------------*
+*&      Module  STATUS_0100  OUTPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE STATUS_0100 OUTPUT.
+  AUTHORITY-CHECK OBJECT 'Z_OLAP' ID 'ZOLAP' FIELD '1'.
+  IF SY-SUBRC NE 0.
+    SET PF-STATUS 'MAIN100' EXCLUDING 'CANC'.
+  ELSE.
+    SET PF-STATUS 'MAIN100'.
+  ENDIF.
+
+  SET TITLEBAR 'MAIN200'.
+ENDMODULE.                 " STATUS_0100  OUTPUT
+
+
+*&---------------------------------------------------------------------*
+*&      Form  prepare_field_catalog
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->P_FCAT     text
+*----------------------------------------------------------------------*
+FORM PREPARE_FIELD_CATALOG  CHANGING P_FCAT TYPE LVC_T_FCAT.
+  DATA: V_POS LIKE SY-TABIX.
+  DATA M_FIELDCAT TYPE LVC_S_FCAT .
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-TABNAME    = 'ITAB'.
+  M_FIELDCAT-FIELDNAME  = 'ZSTAT'.
+  M_FIELDCAT-OUTPUTLEN  = 6.
+  M_FIELDCAT-JUST       = 'C'.
+  M_FIELDCAT-REPTEXT    = 'Indicator'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-FIX_COLUMN = 'X'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'PRODDATE'.
+  M_FIELDCAT-OUTPUTLEN  = 8.
+  M_FIELDCAT-REPTEXT    = 'Product Date'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-FIX_COLUMN = 'X'.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'INSPDATE'.
+  M_FIELDCAT-OUTPUTLEN  = 8.
+  M_FIELDCAT-REPTEXT    = 'ETM Date Time'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-FIX_COLUMN = 'X'.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'INSPECTION'.
+  M_FIELDCAT-OUTPUTLEN  = 6.
+  M_FIELDCAT-REPTEXT    = 'Inspection'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-FIX_COLUMN = 'X'.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'ROLLJR'.
+  M_FIELDCAT-OUTPUTLEN  = 13.
+  M_FIELDCAT-REPTEXT    = 'No. Roll'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-FIX_COLUMN = 'X'.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'POSISI'.
+  M_FIELDCAT-OUTPUTLEN  = 3.
+  M_FIELDCAT-REPTEXT    = 'Posisi'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-FIX_COLUMN = 'X'.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'FTYPEJR'.
+  M_FIELDCAT-OUTPUTLEN  = 8.
+  M_FIELDCAT-REPTEXT    = 'Type'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-FIX_COLUMN = 'X'.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'STATUS'.
+  M_FIELDCAT-OUTPUTLEN  = 6.
+  M_FIELDCAT-REPTEXT    = 'Status'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'TIMES'.
+  M_FIELDCAT-OUTPUTLEN  = 4.
+  M_FIELDCAT-REPTEXT    = 'Times'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'CYCLE'.
+  M_FIELDCAT-OUTPUTLEN  = 4.
+  M_FIELDCAT-REPTEXT    = 'Cycle'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'VALUE1'.
+  M_FIELDCAT-OUTPUTLEN  = 6.
+  M_FIELDCAT-REPTEXT    = 'Value 1'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-JUST       = 'C'.
+  M_FIELDCAT-NO_ZERO    = 'X'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'VALUE2'.
+  M_FIELDCAT-OUTPUTLEN  = 6.
+  M_FIELDCAT-REPTEXT    = 'Value 2'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-JUST       = 'C'.
+  M_FIELDCAT-NO_ZERO    = 'X'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'VALUE3'.
+  M_FIELDCAT-OUTPUTLEN  = 6.
+  M_FIELDCAT-REPTEXT    = 'Value 3'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-JUST       = 'C'.
+  M_FIELDCAT-NO_ZERO    = 'X'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'VALUE4'.
+  M_FIELDCAT-OUTPUTLEN  = 6.
+  M_FIELDCAT-REPTEXT    = 'Value 4'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-JUST       = 'C'.
+  M_FIELDCAT-NO_ZERO    = 'X'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'DEVICE'.
+  M_FIELDCAT-OUTPUTLEN  = 10.
+  M_FIELDCAT-REPTEXT    = 'Device'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'SAMPLE'.
+  M_FIELDCAT-OUTPUTLEN  = 10.
+  M_FIELDCAT-REPTEXT    = 'Sample'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'ACTDATE'.
+  M_FIELDCAT-OUTPUTLEN  = 8.
+  M_FIELDCAT-REPTEXT    = 'Actual Date'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-FIX_COLUMN = 'X'.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  CLEAR: M_FIELDCAT, V_POS.
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'APPROVAL'.
+  M_FIELDCAT-OUTPUTLEN  = 15.
+  M_FIELDCAT-REPTEXT    = 'Approval Status'.
+  M_FIELDCAT-KEY        = ''.
+  M_FIELDCAT-JUST       = 'C'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+  V_POS = V_POS + 1.
+  M_FIELDCAT-COL_POS    = V_POS.
+  M_FIELDCAT-FIELDNAME  = 'MESS'.
+  M_FIELDCAT-OUTPUTLEN  = 100.
+  M_FIELDCAT-REPTEXT    = 'Remark'.
+  M_FIELDCAT-JUST       = 'L'.
+  APPEND M_FIELDCAT TO P_FCAT.
+
+ENDFORM.                    "prepare_field_catalog
+
+
+*&---------------------------------------------------------------------*
+*&      Form  exclude_tb_functions
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->PT_EXCLUDE text
+*----------------------------------------------------------------------*
+FORM EXCLUDE_TB_FUNCTIONS CHANGING PT_EXCLUDE TYPE UI_FUNCTIONS.
+  DATA LS_EXCLUDE TYPE UI_FUNC.
+  LS_EXCLUDE = CL_GUI_ALV_GRID=>MC_FC_LOC_COPY_ROW.
+  APPEND LS_EXCLUDE TO PT_EXCLUDE.
+  LS_EXCLUDE = CL_GUI_ALV_GRID=>MC_FC_LOC_DELETE_ROW.
+  APPEND LS_EXCLUDE TO PT_EXCLUDE.
+  LS_EXCLUDE = CL_GUI_ALV_GRID=>MC_FC_LOC_APPEND_ROW.
+  APPEND LS_EXCLUDE TO PT_EXCLUDE.
+  LS_EXCLUDE = CL_GUI_ALV_GRID=>MC_FC_LOC_INSERT_ROW.
+  APPEND LS_EXCLUDE TO PT_EXCLUDE.
+  LS_EXCLUDE = CL_GUI_ALV_GRID=>MC_FC_LOC_MOVE_ROW.
+  APPEND LS_EXCLUDE TO PT_EXCLUDE.
+  LS_EXCLUDE = CL_GUI_ALV_GRID=>MC_FC_LOC_COPY.
+  APPEND LS_EXCLUDE TO PT_EXCLUDE.
+  LS_EXCLUDE = CL_GUI_ALV_GRID=>MC_FC_LOC_CUT.
+  APPEND LS_EXCLUDE TO PT_EXCLUDE.
+  LS_EXCLUDE = CL_GUI_ALV_GRID=>MC_FC_LOC_PASTE.
+  APPEND LS_EXCLUDE TO PT_EXCLUDE.
+  LS_EXCLUDE = CL_GUI_ALV_GRID=>MC_FC_LOC_PASTE_NEW_ROW.
+  APPEND LS_EXCLUDE TO PT_EXCLUDE.
+  LS_EXCLUDE = CL_GUI_ALV_GRID=>MC_FC_LOC_UNDO.
+  APPEND LS_EXCLUDE TO PT_EXCLUDE.
+ENDFORM.                               " EXCLUDE_TB_FUNCTIONS
+
+*&---------------------------------------------------------------------*
+*&      Form  SELECT_LINES
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM SELECT_LINES.
+  ITAB-BOX = ''.
+  MODIFY ITAB TRANSPORTING BOX WHERE BOX NE ''.
+
+  CALL METHOD GRID1->CHECK_CHANGED_DATA.
+
+  CALL METHOD GRID1->GET_SELECTED_ROWS
+    IMPORTING
+      ET_ROW_NO = LT_ROW_NO[].
+
+  LOOP AT LT_ROW_NO.
+    READ TABLE ITAB INDEX LT_ROW_NO-ROW_ID.
+    IF SY-SUBRC = 0.
+      ITAB-BOX = 'X'.
+      MODIFY ITAB INDEX LT_ROW_NO-ROW_ID.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.                    "set_lineselection
+
+*&---------------------------------------------------------------------*
+*&      Form  COMMIT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM COMMIT.
+  CALL FUNCTION 'DB_COMMIT'.
+  CALL FUNCTION 'DEQUEUE_ALL'
+    EXPORTING
+      _SYNCHRON = 'X'.
+  COMMIT WORK AND WAIT.
+
+  CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+    EXPORTING
+      WAIT = 'X'.
+ENDFORM.                    "COMMIT
+
+*&---------------------------------------------------------------------*
+*&      Form  CONVERSION_INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->INPUT      text
+*      -->OUTPUT     text
+*----------------------------------------------------------------------*
+FORM CONVERSION_INPUT USING INPUT CHANGING OUTPUT.
+  CALL FUNCTION 'CONVERSION_EXIT_ALPHA_INPUT'
+    EXPORTING
+      INPUT  = INPUT
+    IMPORTING
+      OUTPUT = OUTPUT.
+ENDFORM.                    "CONVERSION_INPUT
+
+*&---------------------------------------------------------------------*
+*&      Form  CONVERSION_OUTPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->INPUT      text
+*      -->OUTPUT     text
+*----------------------------------------------------------------------*
+FORM CONVERSION_OUTPUT USING INPUT CHANGING OUTPUT.
+  CALL FUNCTION 'CONVERSION_EXIT_ALPHA_OUTPUT'
+    EXPORTING
+      INPUT  = INPUT
+    IMPORTING
+      OUTPUT = OUTPUT.
+ENDFORM.                    "CONVERSION_OUTPUT
+
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_2000  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE USER_COMMAND_2000 INPUT.
+  CASE SY-UCOMM.
+    WHEN 'BTN_CANCEL'.
+      SET SCREEN 0.
+      LEAVE SCREEN.
+    WHEN 'BTN_SAVE'.
+      PERFORM SET_APPROVAL.
+      PERFORM APPROVAL.
+      PERFORM REFRESH.
+      PERFORM CHECK_ERROR.
+      SET SCREEN 0.
+  ENDCASE.
+ENDMODULE.                 " USER_COMMAND_2000  INPUT
+
+*&---------------------------------------------------------------------*
+*&      Form  SET_INDICATOR
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->INDEX          text
+*      -->COUNT_INDEX    text
+*      -->PROCESS        text
+*      -->COUNT_PROCESS  text
+*      -->TEXT           text
+*----------------------------------------------------------------------*
+FORM SET_INDICATOR USING INDEX COUNT_INDEX PROCESS COUNT_PROCESS TEXT.
+  DATA: PERCENT TYPE P.
+  CLEAR: PERCENT.
+  PERCENT =  ( ( INDEX + ( COUNT_INDEX * PROCESS ) - COUNT_INDEX ) / ( COUNT_INDEX * COUNT_PROCESS ) )  * 100.
+
+  CALL FUNCTION 'SAPGUI_PROGRESS_INDICATOR'
+    EXPORTING
+      PERCENTAGE = PERCENT
+      TEXT       = TEXT.
+ENDFORM.                    "SET_INDICATOR
+
+*&---------------------------------------------------------------------*
+*&      Form  CONVERT_DATE_INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->I_DATE     text
+*      -->O_DATE     text
+*----------------------------------------------------------------------*
+FORM CONVERT_DATE_INPUT USING I_DATE CHANGING O_DATE.
+  CALL FUNCTION 'CONVERSION_EXIT_PDATE_INPUT'
+    EXPORTING
+      INPUT  = I_DATE
+    IMPORTING
+      OUTPUT = O_DATE.
+ENDFORM.                    "CONVERT_DATE_INPUT
+
+*&---------------------------------------------------------------------*
+*&      Form  CONVERT_DATE_OUTPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->I_DATE     text
+*      -->O_DATE     text
+*----------------------------------------------------------------------*
+FORM CONVERT_DATE_OUTPUT USING I_DATE CHANGING O_DATE.
+  CALL FUNCTION 'CONVERSION_EXIT_PDATE_OUTPUT'
+    EXPORTING
+      INPUT  = I_DATE
+    IMPORTING
+      OUTPUT = O_DATE.
+ENDFORM.                    "CONVERT_DATE_OUTPUT
+*&---------------------------------------------------------------------*
+*&      Module  STATUS_2000  OUTPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE STATUS_2000 OUTPUT.
+  SET PF-STATUS 'MAIN200'.
+ENDMODULE.                 " STATUS_2000  OUTPUT

@@ -1,0 +1,578 @@
+*&---------------------------------------------------------------------*
+*& Report  ZPPR_BATCH_CHAR_F01
+*&
+*&---------------------------------------------------------------------*
+*&
+*&
+*&---------------------------------------------------------------------*
+
+
+FORM GET_DATA.
+  SELECT MCHA~MATNR AS MATNR
+         MCHA~WERKS AS WERKS
+         MCHA~CHARG AS CHARG
+    INTO CORRESPONDING FIELDS OF TABLE IT_PP
+    FROM MCHA
+    WHERE MCHA~MATNR IN S_MATNR
+    AND MCHA~WERKS IN S_WERKS
+    AND MCHA~CHARG IN S_CHARG.
+
+  LOOP AT IT_PP.
+    CALL FUNCTION 'QC01_BATCH_VALUES_READ'
+      EXPORTING
+       I_VAL_MATNR          = IT_PP-MATNR
+       I_VAL_WERKS          = IT_PP-WERKS
+       I_VAL_CHARGE         = IT_PP-CHARG
+       I_LANGUAGE           = SY-LANGU
+       I_DATE               = SY-DATUM
+* IMPORTING
+*   E_CLASS              =
+*   E_CLASS_TYPE         =
+     TABLES
+       T_VAL_TAB            = IT_CHAR
+*   T_CHAR_TAB           =
+*   T_ATT_TAB            =
+     EXCEPTIONS
+       NO_CLASS             = 1
+       INTERNAL_ERROR       = 2
+       NO_VALUES            = 3
+       NO_CHARS             = 4
+       OTHERS               = 5.
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+    IT_PP2-MATNR = IT_PP-MATNR.
+    IT_PP2-WERKS = IT_PP-WERKS.
+    IT_PP2-CHARG = IT_PP-CHARG.
+    LOOP AT IT_CHAR.
+      IT_PP2-IMERK = IT_CHAR-ATINN.
+      IT_PP2-DESC = IT_CHAR-ATBEZ.
+      IT_PP2-CHARVAL = IT_CHAR-ATWRT.
+      IT_PP2-CHARDESC = IT_CHAR-ATWTB.
+      APPEND IT_PP2.
+    ENDLOOP.
+  ENDLOOP.
+
+ENDFORM.                    "GET_DATA
+
+*&---------------------------------------------------------------------*
+*&      Form  F_LAYOUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM F_LAYOUT.
+  CLEAR WA_LAYOUT.
+  WA_LAYOUT-CONFIRMATION_PROMPT = 'X'.
+*  WA_LAYOUT-SUBTOTALS_TEXT = 'Sub Total'.
+*  WA_LAYOUT-TOTALS_TEXT = 'Total'.
+*  WA_LAYOUT-BOX_FIELDNAME = 'BOX'.
+  WA_LAYOUT-CELL_MERGE = 'X'.
+  WA_LAYOUT-ZEBRA = 'X'.
+ENDFORM.                    "F_LAYOUT                "
+
+*&---------------------------------------------------------------------*
+*&      Form  SET_ATINN
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM SET_ATINN.
+
+  SELECT SINGLE ATINN INTO V_ZZNOMORROLL    FROM CABN WHERE ATNAM = 'ZZNOMORROLL'.
+  SELECT SINGLE ATINN INTO V_ZZNOMORROLLTYB    FROM CABN WHERE ATNAM = 'ZZNOROLLTOYOBO'.
+  SELECT SINGLE ATINN INTO V_ZZCRITERIA   FROM CABN WHERE ATNAM = 'ZZCRITERIA'.
+  SELECT SINGLE ATINN INTO V_ZZGRADE   FROM CABN WHERE ATNAM = 'ZZGRADE'.
+  SELECT SINGLE ATINN INTO V_ZZSTATUS   FROM CABN WHERE ATNAM = 'ZZGRADEJR'.
+
+ENDFORM.                    "SET_ATINN
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_DATA_BATCHPRO
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM GET_DATA_BATCHPRO.
+
+  SELECT DISTINCT MCH1~MATNR MCH1~CHARG MAKT~MAKTX MCH1~LWEDT MCH1~CUOBJ_BM MCHA~WERKS
+    FROM MCH1
+    JOIN MAKT ON MCH1~MATNR = MAKT~MATNR
+    JOIN MARA ON MAKT~MATNR = MARA~MATNR
+    JOIN MCHA ON MCHA~CHARG = MCH1~CHARG
+      AND MCHA~MATNR = MCH1~MATNR
+    INTO CORRESPONDING FIELDS OF TABLE IT_DISPLAY
+    WHERE (  MCH1~LWEDT IN S_LWEDT )"OR MCH1~ERSDA IN S_LWEDT )
+      AND MCH1~CHARG IN S_CHARGP
+      AND MAKT~SPRAS = 'EN'
+      AND MCHA~WERKS IN S_WERKSP
+      AND (  MARA~MATKL LIKE '3%' OR MARA~MATKL LIKE '4%' ).
+
+
+  IF S_LWEDT IS NOT INITIAL.
+
+    SELECT DISTINCT CHARG
+      INTO P_CHARG-LOW
+      FROM ZBATCHISTORY
+      WHERE BUDAT IN S_LWEDT.
+      P_CHARG-SIGN = 'I'.
+      P_CHARG-OPTION = 'EQ'.
+      APPEND P_CHARG.
+    ENDSELECT.
+
+
+    SELECT DISTINCT CHARG
+      INTO P_CHARG-LOW
+      FROM MSEG
+      INNER JOIN MARA ON MSEG~MATNR = MARA~MATNR
+      WHERE BWART IN ('301','302')
+      AND BUDAT_MKPF IN S_LWEDT
+      AND (  MARA~MATKL LIKE '3%' OR MARA~MATKL LIKE '4%' ).
+      P_CHARG-SIGN = 'I'.
+      P_CHARG-OPTION = 'EQ'.
+      APPEND P_CHARG.
+    ENDSELECT.
+
+
+    DELETE P_CHARG WHERE LOW IS INITIAL.
+
+    IF P_CHARG[] IS NOT INITIAL.
+
+      SELECT DISTINCT MCH1~MATNR MCH1~CHARG MAKT~MAKTX MCH1~LWEDT MCH1~CUOBJ_BM MCHA~WERKS
+        FROM MCH1
+        JOIN MAKT ON MCH1~MATNR = MAKT~MATNR
+        JOIN MARA ON MAKT~MATNR = MARA~MATNR
+        JOIN MCHA ON MCHA~CHARG = MCH1~CHARG
+          AND MCHA~MATNR = MCH1~MATNR
+        APPENDING CORRESPONDING FIELDS OF TABLE IT_DISPLAY
+        WHERE  (  MCH1~LWEDT NOT IN S_LWEDT )"OR MCH1~ERSDA NOT IN S_LWEDT )
+          AND MCH1~CHARG IN P_CHARG
+          AND MCHA~WERKS IN S_WERKSP
+          AND MAKT~SPRAS = 'EN'
+          AND (  MARA~MATKL LIKE '3%' OR MARA~MATKL LIKE '4%' ).
+
+    ENDIF.
+
+
+
+  ENDIF.
+
+  IF IT_DISPLAY[] IS INITIAL.
+    EXIT.
+  ENDIF.
+
+
+  IF P_CHARG[] IS INITIAL.
+
+    DELETE IT_DISPLAY WHERE LWEDT NOT IN S_LWEDT.
+
+  ELSE.
+
+    DELETE IT_DISPLAY WHERE ( LWEDT NOT IN S_LWEDT AND CHARG NOT IN P_CHARG ).
+
+  ENDIF.
+
+
+  SORT IT_DISPLAY BY CHARG.
+  DELETE ADJACENT DUPLICATES FROM IT_DISPLAY COMPARING ALL FIELDS.
+
+  SELECT CHARG CPUTM_MKPF CPUDT_MKPF BWART WERKS
+    FROM MSEG
+    INTO CORRESPONDING FIELDS OF TABLE IT_MSEG
+      FOR ALL ENTRIES IN IT_DISPLAY
+    WHERE BWART IN ('101','102','531','532')
+    AND CHARG EQ IT_DISPLAY-CHARG.
+
+
+  SELECT MSEG~CHARG CPUTM_MKPF CPUDT_MKPF BWART MSEG~WERKS
+   FROM MSEG
+   APPENDING CORRESPONDING FIELDS OF TABLE IT_MSEG
+     FOR ALL ENTRIES IN IT_DISPLAY
+   WHERE BWART IN ('301','302','311','312')
+   AND MSEG~CHARG EQ IT_DISPLAY-CHARG
+   AND MSEG~SHKZG = 'S'.
+
+
+  SORT IT_MSEG BY CPUTM_MKPF DESCENDING.
+  SORT IT_MSEG BY CPUDT_MKPF DESCENDING.
+  SORT IT_MSEG BY CHARG DESCENDING.
+
+  DATA : V_COUNT TYPE I.
+  LOOP AT IT_DISPLAY .
+    V_COUNT = 1.
+    LOOP AT IT_MSEG WHERE CHARG = IT_DISPLAY-CHARG.
+
+      IF V_COUNT = 1.
+        IT_MSEG-LATEST = 'X'.
+        MODIFY IT_MSEG.
+      ENDIF.
+
+      EXIT.
+    ENDLOOP.
+
+
+  ENDLOOP.
+
+  DELETE IT_MSEG WHERE LATEST NE 'X'.
+
+  SELECT ATINN ATWRT OBJEK
+    FROM AUSP
+    INTO CORRESPONDING FIELDS OF TABLE IT_AUSP
+    FOR ALL ENTRIES IN IT_DISPLAY
+    WHERE OBJEK EQ IT_DISPLAY-CUOBJ_BM
+      AND ATINN IN (V_ZZNOMORROLL,V_ZZNOMORROLLTYB,V_ZZGRADE, V_ZZSTATUS, V_ZZCRITERIA)
+      AND KLART = '023'.
+
+
+  LOOP AT IT_DISPLAY.
+
+    CALL FUNCTION 'Z_GET_PRODUCTION_DATE'
+      EXPORTING
+        MATNR = IT_DISPLAY-MATNR
+        CHARG = IT_DISPLAY-CHARG
+      IMPORTING
+        PDATE = IT_DISPLAY-ERSDA.
+
+    IF SY-SUBRC = 0.
+      MODIFY IT_DISPLAY.
+    ENDIF.
+    READ TABLE IT_MSEG WITH KEY CHARG = IT_DISPLAY-CHARG.
+    IF SY-SUBRC = 0.
+      IT_DISPLAY-WERKS = IT_MSEG-WERKS.
+      MODIFY IT_DISPLAY.
+
+    ENDIF.
+
+    IF IT_DISPLAY-LWEDT IS INITIAL OR IT_DISPLAY-LWEDT = ''.
+      IT_DISPLAY-LWEDT = IT_DISPLAY-ERSDA.
+    ENDIF.
+    MODIFY IT_DISPLAY.
+
+    READ TABLE IT_AUSP WITH KEY OBJEK = IT_DISPLAY-CUOBJ_BM ATINN = V_ZZNOMORROLL.
+
+    IF SY-SUBRC = 0.
+      IT_DISPLAY-ATWRT = IT_AUSP-ATWRT.
+      MODIFY IT_DISPLAY.
+    ENDIF.
+
+    READ TABLE IT_AUSP WITH KEY OBJEK = IT_DISPLAY-CUOBJ_BM ATINN = V_ZZNOMORROLLTYB.
+
+    IF SY-SUBRC = 0.
+      IT_DISPLAY-ATWRTTYB = IT_AUSP-ATWRT.
+      MODIFY IT_DISPLAY.
+    ENDIF.
+
+    IF IT_DISPLAY-MATNR(2) = 'SR'.
+
+      READ TABLE IT_AUSP WITH KEY OBJEK = IT_DISPLAY-CUOBJ_BM ATINN = V_ZZGRADE.
+      IF SY-SUBRC = 0.
+        IT_DISPLAY-GRADE = IT_AUSP-ATWRT.
+      ENDIF.
+
+      READ TABLE IT_AUSP WITH KEY OBJEK = IT_DISPLAY-CUOBJ_BM ATINN = V_ZZCRITERIA.
+      IF SY-SUBRC = 0.
+
+        SELECT SINGLE ATWTB
+          INTO IT_DISPLAY-CRGRADE
+          FROM CAWN
+          INNER JOIN CAWNT ON CAWN~ATZHL = CAWNT~ATZHL AND CAWN~ATINN = CAWNT~ATINN
+          WHERE CAWN~ATINN = IT_AUSP-ATINN AND CAWN~ATWRT = IT_AUSP-ATWRT.
+        MODIFY IT_DISPLAY.
+
+      ENDIF.
+    ELSEIF IT_DISPLAY-MATNR(2) = 'JR'.
+      READ TABLE IT_AUSP WITH KEY OBJEK = IT_DISPLAY-CUOBJ_BM ATINN = V_ZZSTATUS.
+
+      IF SY-SUBRC = 0.
+
+        SELECT SINGLE ATWTB
+          INTO IT_DISPLAY-GRADE
+          FROM CAWN
+          INNER JOIN CAWNT ON CAWN~ATZHL = CAWNT~ATZHL AND CAWN~ATINN = CAWNT~ATINN
+          WHERE CAWN~ATINN = IT_AUSP-ATINN AND CAWN~ATWRT = IT_AUSP-ATWRT.
+
+        IT_DISPLAY-CRGRADE = IT_DISPLAY-GRADE.
+      ENDIF.
+    ENDIF.
+
+    MODIFY IT_DISPLAY.
+  ENDLOOP.
+
+
+  SORT IT_DISPLAY BY CHARG.
+  DELETE ADJACENT DUPLICATES FROM IT_DISPLAY COMPARING CHARG.
+
+ENDFORM.                    "GET_DATA_BATCHPRO
+
+*&---------------------------------------------------------------------*
+*&      Form  F_DISPLAYDATA
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM F_DISPLAYDATA .
+  DATA: V_PFSTAT TYPE SLIS_FORMNAME.
+  "SUBROUTINE UNTUK MEMBUAT TABEL BESERTA KOLOM-KOLOM UNTUK OUTPUT.
+  PERFORM F_CREATEALV.
+  "SUBROUTINE UNTUK MENENTUKAN LAYOUT DARI OUTPUT YANG DITAMPILKAN
+  PERFORM F_LAYOUT.
+
+*  V_PFSTAT = 'SET_PF_STATUS'.
+
+  V_REPID = SY-REPID.
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      I_CALLBACK_PROGRAM       = V_REPID
+*     I_CALLBACK_USER_COMMAND  = 'F_USER_COMMAND' "UNTUK MEMANGGIL COMMAND DARI USER
+      I_CALLBACK_PF_STATUS_SET = V_PFSTAT  "UNTUK MEMANGGIL STATUS / MENU
+      IT_FIELDCAT              = IT_FCAT            "KIRIMKAN INTERNAL TABLE FCAT KE FUNCTION
+      IS_LAYOUT                = WA_LAYOUT          "KIRIMKAN LAYOUT KE FUNCTION
+    TABLES
+      T_OUTTAB                 = IT_DISPLAY.        "TABLE INTERNAL YANG AKAN DI OUTPUT KAN
+
+ENDFORM.                    " F_DISPLAYDATA
+
+*&---------------------------------------------------------------------*
+*&      Form  F_DISPLAYDATA
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM F_DISPLAYDATA_GNR.
+  DATA: V_PFSTAT TYPE SLIS_FORMNAME.
+  "SUBROUTINE UNTUK MEMBUAT TABEL BESERTA KOLOM-KOLOM UNTUK OUTPUT.
+  PERFORM F_CREATEALV_GNR.
+  "SUBROUTINE UNTUK MENENTUKAN LAYOUT DARI OUTPUT YANG DITAMPILKAN
+  PERFORM F_LAYOUT.
+
+*  V_PFSTAT = 'SET_PF_STATUS'.
+
+  V_REPID = SY-REPID.
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      I_CALLBACK_PROGRAM       = V_REPID
+      I_CALLBACK_USER_COMMAND  = 'F_USER_COMMAND'  "UNTUK MEMANGGIL COMMAND DARI USER
+      I_CALLBACK_PF_STATUS_SET = V_PFSTAT  "UNTUK MEMANGGIL STATUS / MENU
+      IT_FIELDCAT              = IT_FCAT            "KIRIMKAN INTERNAL TABLE FCAT KE FUNCTION
+      IS_LAYOUT                = WA_LAYOUT          "KIRIMKAN LAYOUT KE FUNCTION
+    TABLES
+      T_OUTTAB                 = IT_PP2.        "TABLE INTERNAL YANG AKAN DI OUTPUT KAN
+
+ENDFORM.                    " F_DISPLAYDATA
+
+*&---------------------------------------------------------------------*
+*&      Form  prepare_field_catalog
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->IT_FCAT     text
+*----------------------------------------------------------------------*
+FORM F_CREATEALV .
+  CLEAR: IT_FCAT, WA_FCAT.
+  REFRESH: IT_FCAT..
+
+*  ENDIF.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_DISPLAY'.
+  WA_FCAT-FIELDNAME = 'WERKS'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Plant'.
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_DISPLAY'.
+  WA_FCAT-FIELDNAME = 'MATNR'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Material'.
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_DISPLAY'.
+  WA_FCAT-FIELDNAME = 'MAKTX'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Material Desc.'.
+
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_DISPLAY'.
+  WA_FCAT-FIELDNAME = 'CHARG'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'BATCH'.
+
+  APPEND WA_FCAT TO IT_FCAT.
+
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_DISPLAY'.
+  WA_FCAT-FIELDNAME = 'ATWRT'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Nomor Roll'.
+
+  APPEND WA_FCAT TO IT_FCAT.
+
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_DISPLAY'.
+  WA_FCAT-FIELDNAME = 'ATWRTTYB'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Nomor Roll Toyobo'.
+
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_DISPLAY'.
+  WA_FCAT-FIELDNAME = 'GRADE'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Grade Film'.
+
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_DISPLAY'.
+  WA_FCAT-FIELDNAME = 'CRGRADE'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Criteria Grade'.
+
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_DISPLAY'.
+  WA_FCAT-FIELDNAME = 'ERSDA'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Production Date'.
+
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_DISPLAY'.
+  WA_FCAT-FIELDNAME = 'LWEDT'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'GR Date'.
+
+  APPEND WA_FCAT TO IT_FCAT.
+
+
+ENDFORM.                    "prepare_field_catalog
+
+*&---------------------------------------------------------------------*
+*&      Form  prepare_field_catalog
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->IT_FCAT     text
+*----------------------------------------------------------------------*
+FORM F_CREATEALV_GNR .
+  CLEAR: IT_FCAT, WA_FCAT.
+  REFRESH: IT_FCAT.
+
+*  ENDIF.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_PP'.
+  WA_FCAT-FIELDNAME = 'MATNR'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Material Code'.
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_PP'.
+  WA_FCAT-FIELDNAME = 'WEKRS'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Plant'.
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_PP'.
+  WA_FCAT-FIELDNAME = 'CHARG'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Batch'.
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_PP'.
+  WA_FCAT-FIELDNAME = 'IMERK'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Characteristic'.
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_PP'.
+  WA_FCAT-FIELDNAME = 'DESC'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Char Desc'.
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_PP'.
+  WA_FCAT-FIELDNAME = 'CHARVAL'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Char Val'.
+  APPEND WA_FCAT TO IT_FCAT.
+
+  CLEAR WA_FCAT .
+
+  WA_FCAT-TABNAME = 'IT_PP'.
+  WA_FCAT-FIELDNAME = 'CHARDESC'.
+  WA_FCAT-OUTPUTLEN = 15.
+  WA_FCAT-SELTEXT_M = 'Char Val Desc'.
+  APPEND WA_FCAT TO IT_FCAT.
+
+ENDFORM.                    "prepare_field_catalog
+
+*&---------------------------------------------------------------------*
+*&      Form  INSERT_SQL
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM INSERT_SQL.
+
+  TRY.
+      EXEC SQL.
+        DELETE FROM XBMBC_2
+      ENDEXEC.
+
+      EXEC SQL.
+        COMMIT WORK
+      ENDEXEC.
+
+    CATCH CX_SY_NATIVE_SQL_ERROR.
+      MESSAGE 'Error in procedure delete' TYPE 'I'.
+  ENDTRY.
+
+
+  TRY .
+      LOOP AT IT_DISPLAY. "ASSIGNING <FS_ZBMBC>.
+        EXEC SQL.
+          INSERT INTO XBMBC_2(PLANT, MATERIAL, MATERIALDESC, BATCH, NOMORROLL, NOMORROLLTYB, GRADE, CRITERIAGRADE, PRODUCTIONDATE, GRDATE )
+          VALUES (:IT_DISPLAY-WERKS,:IT_DISPLAY-MATNR, :IT_DISPLAY-MAKTX, :IT_DISPLAY-CHARG, :IT_DISPLAY-ATWRT, :IT_DISPLAY-ATWRTTYB,:IT_DISPLAY-GRADE,:IT_DISPLAY-CRGRADE,
+            :IT_DISPLAY-ERSDA, :IT_DISPLAY-LWEDT)
+        ENDEXEC.
+      ENDLOOP.
+
+      EXEC SQL.
+        EXECUTE PROCEDURE DBO.SP_MERGE_ZBMBC_2
+      ENDEXEC.
+
+      MESSAGE 'Penyimpanan Data ke SQL sukses!!!' TYPE 'I'.
+
+      EXEC SQL.
+        COMMIT WORK
+      ENDEXEC.
+
+    CATCH CX_SY_NATIVE_SQL_ERROR.
+      MESSAGE `Error in procedure insert` TYPE 'I'.
+  ENDTRY.
+ENDFORM.                    "INSERT_SQL

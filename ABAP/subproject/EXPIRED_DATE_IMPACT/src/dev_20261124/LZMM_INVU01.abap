@@ -1,0 +1,653 @@
+FUNCTION ZMM_INV_DL.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     VALUE(MODE) TYPE  CHAR10
+*"     VALUE(DATE_FROM) TYPE  DATS OPTIONAL
+*"     VALUE(DATE_TO) TYPE  DATS OPTIONAL
+*"     VALUE(MAT_TYPE) TYPE  CHAR120 OPTIONAL
+*"     VALUE(MAT_GROUP) TYPE  CHAR120 OPTIONAL
+*"     VALUE(MVT_TYPE) TYPE  CHAR120 OPTIONAL
+*"     VALUE(PR_TYPE) TYPE  CHAR120 OPTIONAL
+*"  TABLES
+*"      MKPF STRUCTURE  MKPF
+*"      MSEG STRUCTURE  MSEG
+*"      ZCHAR00 STRUCTURE  ZCHAR00
+*"      MARD STRUCTURE  MARD
+*"      MCHB STRUCTURE  MCHB
+*"      MSKA STRUCTURE  MSKA
+*"      MSSA STRUCTURE  MSSA
+*"      MSLB STRUCTURE  MSLB
+*"  EXCEPTIONS
+*"      PAR_DATE_IS_NULL
+*"      MODE_IS_NOT_AVAILABLE
+*"      DATE_NOT_VALID
+*"      DATA_NOT_FOUND
+*"      PAR_MAT_TYPE_IS_NULL
+*"      PARAMETER_IS_NOT_VALID
+*"----------------------------------------------------------------------
+
+  DATA: V1(10).
+
+  RANGES: P_DATE FOR MKPF-CPUDT,
+          P_BWART FOR MSEG-BWART,
+          P_MATKL FOR MARA-MATKL,
+          P_MTART FOR MARA-MTART,
+          P_BSART FOR EBAN-BSART.
+
+  P_DATE-SIGN = 'I'.
+  P_DATE-OPTION = 'BT'.
+  P_DATE-LOW = DATE_FROM.
+  P_DATE-HIGH = DATE_TO.
+  APPEND P_DATE.
+
+  IF MAT_TYPE IS NOT INITIAL.
+    CLEAR V1.
+    P_MTART-SIGN = 'I'.
+    P_MTART-OPTION = 'EQ'.
+    WHILE MAT_TYPE NE ''.
+      SPLIT MAT_TYPE AT ',' INTO V1 MAT_TYPE.
+      P_MTART-LOW = V1.
+      APPEND P_MTART.
+    ENDWHILE.
+    DELETE P_MTART WHERE LOW = ''.
+  ENDIF.
+
+  IF MVT_TYPE IS NOT INITIAL.
+    CLEAR V1.
+    P_BWART-SIGN = 'I'.
+    P_BWART-OPTION = 'EQ'.
+    WHILE MVT_TYPE NE ''.
+      SPLIT MVT_TYPE AT ',' INTO V1 MVT_TYPE.
+      P_BWART-LOW = V1.
+      APPEND P_BWART.
+    ENDWHILE.
+    DELETE P_BWART WHERE LOW = ''.
+  ENDIF.
+
+  IF MAT_GROUP IS NOT INITIAL.
+    CLEAR V1.
+    P_MATKL-SIGN = 'I'.
+    P_MATKL-OPTION = 'EQ'.
+    WHILE MAT_GROUP NE ''.
+      SPLIT MAT_GROUP AT ',' INTO V1 MAT_GROUP.
+      P_MATKL-LOW = V1.
+      APPEND P_MATKL.
+    ENDWHILE.
+    DELETE P_MATKL WHERE LOW = ''.
+  ENDIF.
+
+  IF PR_TYPE IS NOT INITIAL.
+    CLEAR V1.
+    P_BSART-SIGN = 'I'.
+    P_BSART-OPTION = 'EQ'.
+    WHILE PR_TYPE NE ''.
+      SPLIT PR_TYPE AT ',' INTO V1 PR_TYPE.
+      P_BSART-LOW = V1.
+      APPEND P_BSART.
+    ENDWHILE.
+    DELETE P_BSART WHERE LOW = ''.
+  ENDIF.
+
+  CASE MODE.
+    WHEN 'MSEG'.
+      IF P_DATE-LOW IS INITIAL OR P_DATE-HIGH IS INITIAL.
+        MESSAGE 'parameter DATE_FROM and DATE_TO must be initialized' TYPE 'S' RAISING PAR_DATE_IS_NULL.
+      ELSEIF P_DATE-LOW GT P_DATE-HIGH.
+        MESSAGE 'Date Not Valid' TYPE 'S' RAISING DATE_NOT_VALID.
+      ELSE.
+        IF P_MTART[] IS INITIAL.
+          MESSAGE 'Parameter MAT_TYPE and MVT_TYPE must be initialized' TYPE 'S' RAISING PAR_MAT_TYPE_IS_NULL.
+        ELSE.
+          DATA : I_MKPF LIKE MKPF OCCURS 0,
+                 I_MSEG LIKE MSEG OCCURS 0,
+                 I_ZCHAR00 LIKE ZCHAR00 OCCURS 0.
+
+          PERFORM GET_DATA_MSEG USING P_DATE[] P_BWART[] P_MTART[] P_MATKL[] CHANGING I_MKPF I_MSEG I_ZCHAR00.
+          MSEG[] = I_MSEG[].
+          MKPF[] = I_MKPF[].
+          ZCHAR00[] = I_ZCHAR00[].
+          CLEAR : I_MSEG[], I_MKPF[], I_ZCHAR00[].
+          REFRESH : I_MSEG[], I_MKPF[], I_ZCHAR00[].
+        ENDIF.
+      ENDIF.
+    WHEN 'FREETEXT'.
+      IF P_DATE-LOW IS INITIAL OR P_DATE-HIGH IS INITIAL.
+        MESSAGE 'parameter DATE_FROM and DATE_TO must be initialized' TYPE 'S' RAISING PAR_DATE_IS_NULL.
+      ELSEIF P_DATE-LOW GT P_DATE-HIGH.
+        MESSAGE 'Date Not Valid' TYPE 'S' RAISING DATE_NOT_VALID.
+      ELSE.
+        IF P_MTART[] IS INITIAL.
+          MESSAGE 'Parameter MAT_TYPE and MVT_TYPE must be initialized' TYPE 'S' RAISING PAR_MAT_TYPE_IS_NULL.
+        ELSE.
+          DATA : I_MSEG2 LIKE MSEG OCCURS 0,
+                 I_MKPF2 LIKE MKPF OCCURS 0.
+
+
+          PERFORM GET_DATA_FREETEXT USING P_DATE[] P_BWART[] P_MTART[] P_MATKL[] CHANGING I_MSEG2 I_MKPF2.
+          MSEG[] = I_MSEG2[].
+          MKPF[] = I_MKPF2[].
+
+          CLEAR : I_MSEG2[], I_MKPF2[].
+          REFRESH : I_MSEG2[], I_MKPF2[].
+        ENDIF.
+      ENDIF.
+    WHEN 'FREETEXTSP'.
+      IF P_DATE-LOW IS INITIAL OR P_DATE-HIGH IS INITIAL.
+        MESSAGE 'parameter DATE_FROM and DATE_TO must be initialized' TYPE 'S' RAISING PAR_DATE_IS_NULL.
+      ELSEIF P_DATE-LOW GT P_DATE-HIGH.
+        MESSAGE 'Date Not Valid' TYPE 'S' RAISING DATE_NOT_VALID.
+      ELSE.
+        IF P_MATKL[] IS INITIAL AND P_BWART[] IS INITIAL.
+          MESSAGE 'Parameter MAT_TYPE and MVT_TYPE must be initialized' TYPE 'S' RAISING PAR_MAT_TYPE_IS_NULL.
+        ELSE.
+          DATA : I_MSEG3 LIKE MSEG OCCURS 0,
+                 I_MKPF3 LIKE MKPF OCCURS 0.
+
+          PERFORM GET_DATA_FREETEXT_SP USING P_DATE[] P_BWART[] P_MATKL[] P_BSART[] CHANGING I_MSEG3 I_MKPF3.
+          MSEG[] = I_MSEG3[].
+          MKPF[] = I_MKPF3[].
+
+          CLEAR : I_MSEG3[], I_MKPF3[].
+          REFRESH : I_MSEG3[], I_MKPF3[].
+        ENDIF.
+      ENDIF.
+    WHEN 'MARD'.
+      DATA : I_MARD LIKE MARD OCCURS 0.
+      PERFORM GET_MARD USING P_MTART[] CHANGING I_MARD. " Modified by William at 15.08.2025 (change method get data MCHB for more flexible, request for add ZPCK)
+      MARD[] = I_MARD[].
+      CLEAR : I_MARD[].
+      REFRESH : I_MARD[].
+    WHEN 'MCHB'.
+      DATA : I_MCHB LIKE MCHB OCCURS 0.
+      PERFORM GET_MCHB USING P_MTART[] CHANGING I_MCHB. " Modified by William at 07.08.2025 (change method get data MCHB for more flexible, request for add ZPCK)
+      MCHB[] = I_MCHB[].
+      CLEAR : I_MCHB[].
+      REFRESH : I_MCHB[].
+    WHEN 'MSKA'.
+      DATA : I_MSKA LIKE MSKA OCCURS 0.
+      PERFORM GET_MSKA CHANGING I_MSKA.
+      MSKA[] = I_MSKA[].
+      CLEAR : I_MSKA[].
+      REFRESH : I_MSKA[].
+    WHEN 'MSSA'.
+      DATA : I_MSSA LIKE MSSA OCCURS 0.
+      PERFORM GET_MSSA CHANGING I_MSSA.
+      MSSA[] = I_MSSA[].
+      CLEAR : I_MSSA[].
+      REFRESH : I_MSSA[].
+    WHEN 'MSLB'.
+      DATA : I_MSLB LIKE MSLB OCCURS 0.
+      PERFORM GET_MSLB CHANGING I_MSLB.
+      MSLB[] = I_MSLB[].
+      CLEAR : I_MSLB[].
+      REFRESH : I_MSLB[].
+    WHEN OTHERS.
+      MESSAGE 'Mode Is Not Available' TYPE 'S' RAISING MODE_IS_NOT_AVAILABLE.
+  ENDCASE.
+
+ENDFUNCTION.
+
+DATA : T_MSEG LIKE STANDARD TABLE OF MSEG,
+       T_MKPF LIKE STANDARD TABLE OF MKPF,
+       T_CHAR LIKE STANDARD TABLE OF ZCHAR00,
+       IT_CHAR TYPE ZCHAR00 OCCURS 0 WITH HEADER LINE,
+       IT_CLBATCH TYPE CLBATCH OCCURS 0 WITH HEADER LINE,
+       WA_CLBATCH LIKE CLBATCH.
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_DATA_MSEG
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->VALUE      text
+*      -->(P_DATE)   text
+*      -->VALUE      text
+*      -->(P_BWART)  text
+*      -->VALUE      text
+*      -->(MTYPE)    text
+*      -->W_MKPF     text
+*      -->W_MSEG     text
+*      -->W_CHAR     text
+*----------------------------------------------------------------------*
+FORM GET_DATA_MSEG USING VALUE(P_DATE) TYPE STANDARD TABLE
+                         VALUE(P_BWART) TYPE STANDARD TABLE
+                         VALUE(MTYPE) TYPE STANDARD TABLE
+                         VALUE(MGROUP) TYPE STANDARD TABLE
+                   CHANGING W_MKPF LIKE T_MKPF
+                            W_MSEG LIKE T_MSEG
+                            W_CHAR LIKE T_CHAR.
+
+  RANGES: P_SMBLN FOR MSEG-SMBLN.
+
+  DATA: BEGIN OF IT_MBLNR OCCURS 0,
+            MBLNR LIKE MKPF-MBLNR,
+            MJAHR LIKE MKPF-MJAHR,
+        END OF IT_MBLNR.
+
+  DATA: IT_MSEG TYPE MSEG OCCURS 0 WITH HEADER LINE,
+        IT_MKPF TYPE MKPF OCCURS 0 WITH HEADER LINE.
+
+  DATA :V_ATFLV TYPE P LENGTH 8 DECIMALS 2.
+  CLEAR : IT_MSEG, IT_MKPF, IT_CHAR.
+  REFRESH : IT_MSEG, IT_MKPF, IT_CHAR, IT_CLBATCH.
+
+  RANGES : P_MATNR FOR MSEG-MATNR.
+
+  DATA: IT_MARA LIKE MARA OCCURS 0 WITH HEADER LINE.
+  IF MGROUP[] IS NOT INITIAL OR MTYPE[] IS NOT INITIAL.
+    SELECT * INTO TABLE IT_MARA FROM MARA WHERE MATKL IN MGROUP AND MTART IN MTYPE.
+    LOOP AT IT_MARA.
+      P_MATNR-SIGN = 'I'.
+      P_MATNR-OPTION = 'CP'.
+      P_MATNR-LOW = IT_MARA-MATNR.
+      APPEND P_MATNR.
+    ENDLOOP.
+  ENDIF.
+
+  IF P_MATNR[] IS NOT INITIAL.
+    SELECT MKPF~MBLNR MKPF~MJAHR INTO TABLE IT_MBLNR
+    FROM ( MKPF JOIN MSEG ON MKPF~MBLNR = MSEG~MBLNR )
+    WHERE MSEG~MATNR IN P_MATNR AND MKPF~CPUDT IN P_DATE
+    AND MSEG~SMBLN IN P_SMBLN AND MSEG~BWART IN P_BWART.
+    REFRESH: IT_MARA.
+  ENDIF.
+
+  IF IT_MBLNR[] IS NOT INITIAL.
+    SORT IT_MBLNR BY MBLNR.
+    DELETE ADJACENT DUPLICATES FROM IT_MBLNR COMPARING MBLNR.
+    SELECT * INTO TABLE IT_MKPF
+      FROM MKPF FOR ALL ENTRIES IN IT_MBLNR WHERE MBLNR = IT_MBLNR-MBLNR AND MJAHR = IT_MBLNR-MJAHR.
+    SELECT * INTO TABLE IT_MSEG FROM MSEG
+      FOR ALL ENTRIES IN IT_MBLNR WHERE MBLNR = IT_MBLNR-MBLNR AND MJAHR = IT_MBLNR-MJAHR.
+  ENDIF.
+
+  SORT IT_MSEG BY CHARG.
+  DATA: V_CEK LIKE MSEG-CHARG.
+  LOOP AT IT_MSEG WHERE CHARG NE ''.
+    IF V_CEK = IT_MSEG-CHARG.
+      CONTINUE.
+    ENDIF.
+
+    CALL FUNCTION 'VB_INIT'
+      EXPORTING
+        INIT_RESET = 'X'.
+    CALL FUNCTION 'VB_BATCH_GET_DETAIL'
+      EXPORTING
+        MATNR              = IT_MSEG-MATNR
+        CHARG              = IT_MSEG-CHARG
+        WERKS              = IT_MSEG-WERKS
+        GET_CLASSIFICATION = 'X'
+      TABLES
+        CHAR_OF_BATCH      = IT_CLBATCH.
+
+    IF SY-SUBRC <> 0.
+      CONTINUE.
+    ENDIF.
+
+    READ TABLE IT_CLBATCH INTO WA_CLBATCH WITH KEY ATNAM ='ZZTYPE'.
+    IT_CHAR-CHAR02 = WA_CLBATCH-ATWTB. CLEAR WA_CLBATCH.
+    READ TABLE IT_CLBATCH INTO WA_CLBATCH WITH KEY ATNAM ='ZZTHICKNESS'.
+    IT_CHAR-CHAR03 = WA_CLBATCH-ATWTB. CLEAR WA_CLBATCH.
+    READ TABLE IT_CLBATCH INTO WA_CLBATCH WITH KEY ATNAM ='ZZLENGTH'.
+    IT_CHAR-CHAR04 = WA_CLBATCH-ATWTB. CLEAR WA_CLBATCH.
+    READ TABLE IT_CLBATCH INTO WA_CLBATCH WITH KEY ATNAM ='ZZWIDTH'.
+    IT_CHAR-CHAR05 = WA_CLBATCH-ATWTB. CLEAR WA_CLBATCH.
+    READ TABLE IT_CLBATCH INTO WA_CLBATCH WITH KEY ATNAM ='ZZCORE'.
+    IT_CHAR-CHAR06 = WA_CLBATCH-ATWTB. CLEAR WA_CLBATCH.
+    READ TABLE IT_CLBATCH INTO WA_CLBATCH WITH KEY ATNAM ='ZZTREATMENT'.
+    IT_CHAR-CHAR07 = WA_CLBATCH-ATWTB. CLEAR WA_CLBATCH.
+    READ TABLE IT_CLBATCH INTO WA_CLBATCH WITH KEY ATNAM ='ZZCRITERIA'.
+    IT_CHAR-CHAR08 = WA_CLBATCH-ATWTB. CLEAR WA_CLBATCH.
+    READ TABLE IT_CLBATCH INTO WA_CLBATCH WITH KEY ATNAM ='ZZNOMORROLL'.
+    IT_CHAR-CHAR09 = WA_CLBATCH-ATWTB. CLEAR WA_CLBATCH.
+    READ TABLE IT_CLBATCH INTO WA_CLBATCH WITH KEY ATNAM ='ZZGRADEJR'.
+    IF SY-SUBRC = 0.
+      IT_CHAR-CHAR10 = WA_CLBATCH-ATWTB. CLEAR WA_CLBATCH.
+    ELSE.
+      READ TABLE IT_CLBATCH INTO WA_CLBATCH WITH KEY ATNAM ='ZZGRADE'.
+      IT_CHAR-CHAR10 = WA_CLBATCH-ATWTB. CLEAR WA_CLBATCH.
+    ENDIF.
+
+    WRITE IT_MSEG-MATNR TO IT_CHAR-MATNR.
+    WRITE IT_MSEG-CHARG TO IT_CHAR-CHARG.
+
+    APPEND IT_CHAR.
+    CLEAR: IT_CHAR, WA_CLBATCH, IT_CLBATCH.
+    REFRESH : IT_CLBATCH.
+    V_CEK = IT_MSEG-CHARG.
+  ENDLOOP.
+
+  IT_MKPF-BUDAT = '19000101'.
+  MODIFY IT_MKPF TRANSPORTING BUDAT WHERE BUDAT = 00000000.
+  IT_MKPF-BLDAT = '19000101'.
+  MODIFY IT_MKPF TRANSPORTING BLDAT WHERE BLDAT = 00000000.
+  IT_MKPF-CPUDT = '19000101'.
+  MODIFY IT_MKPF TRANSPORTING CPUDT WHERE CPUDT = 00000000.
+  IT_MKPF-AEDAT = '19000101'.
+  MODIFY IT_MKPF TRANSPORTING AEDAT WHERE AEDAT = 00000000.
+
+  IT_MSEG-VFDAT = '19000101'.
+  MODIFY IT_MSEG TRANSPORTING VFDAT WHERE VFDAT = 00000000.
+  IT_MSEG-DABRBZ = '19000101'.
+  MODIFY IT_MSEG TRANSPORTING DABRBZ WHERE DABRBZ = 00000000.
+  IT_MSEG-DABRZ = '19000101'.
+  MODIFY IT_MSEG TRANSPORTING DABRZ WHERE DABRZ = 00000000.
+  IT_MSEG-HSDAT = '19000101'.
+  MODIFY IT_MSEG TRANSPORTING HSDAT WHERE HSDAT = 00000000.
+  IT_MSEG-BUDAT_MKPF = '19000101'.
+  MODIFY IT_MSEG TRANSPORTING BUDAT_MKPF WHERE BUDAT_MKPF = 00000000.
+  IT_MSEG-CPUDT_MKPF = '19000101'.
+  MODIFY IT_MSEG TRANSPORTING CPUDT_MKPF WHERE CPUDT_MKPF = 00000000.
+  IT_MSEG-/BEV2/ED_AEDAT = '19000101'.
+  MODIFY IT_MSEG TRANSPORTING /BEV2/ED_AEDAT WHERE /BEV2/ED_AEDAT = 00000000.
+
+  W_MSEG[] = IT_MSEG[].
+  W_CHAR[] = IT_CHAR[].
+  W_MKPF[] = IT_MKPF[].
+ENDFORM.                    "GET_DATA_MSEG
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_MARD
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->W_MARD     text
+*----------------------------------------------------------------------*
+FORM GET_MARD USING VALUE(MTART) TYPE STANDARD TABLE
+              CHANGING W_MARD TYPE STANDARD TABLE.
+  DATA : IT_MARD TYPE MARD OCCURS 0 WITH HEADER LINE.
+  DATA : BEGIN OF IT_MATNR OCCURS 0,
+          MATNR LIKE MARA-MATNR,
+         END OF IT_MATNR.
+
+  " Modified by William at 15.08.2025 (change method get data MCHB for more flexible, request for add ZPCK)
+*  SELECT MATNR INTO TABLE IT_MATNR FROM MARA WHERE MTART IN ('ZRAW', 'ZSFG', 'ZFGS').
+  SELECT MATNR INTO TABLE IT_MATNR FROM MARA WHERE MTART IN MTART.
+  " End modified by William at 15.08.2025 (change method get data MCHB for more flexible, request for add ZPCK)
+
+  SELECT * INTO TABLE IT_MARD
+  FROM MARD
+  FOR ALL ENTRIES IN IT_MATNR
+  WHERE MARD~MATNR = IT_MATNR-MATNR.
+
+  IF IT_MARD[] IS INITIAL.
+    MESSAGE 'Data Not Found' TYPE 'S' RAISING DATA_NOT_FOUND.
+  ELSE.
+    CLEAR : W_MARD[].
+    REFRESH : W_MARD[].
+
+    IT_MARD-DLINL = '19000101'.
+    IT_MARD-ERSDA = '19000101'.
+    MODIFY IT_MARD TRANSPORTING DLINL WHERE DLINL = 00000000.
+    MODIFY IT_MARD TRANSPORTING ERSDA WHERE ERSDA = 00000000.
+
+    W_MARD[] = IT_MARD[].
+    CLEAR : IT_MARD[].
+    REFRESH : IT_MARD[].
+  ENDIF.
+ENDFORM.                    "GET_MARD
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_MCHB
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->W_MCHB     text
+*----------------------------------------------------------------------*
+FORM GET_MCHB USING VALUE(MTART) TYPE STANDARD TABLE
+              CHANGING W_MCHB TYPE STANDARD TABLE.
+
+  DATA : IT_MCHB TYPE MCHB OCCURS 0 WITH HEADER LINE.
+  DATA : BEGIN OF IT_MATNR OCCURS 0,
+          MATNR LIKE MARA-MATNR,
+         END OF IT_MATNR.
+
+  " Modified by William at 07.08.2025 (change method get data MCHB for more flexible, request for add ZPCK)
+*  SELECT MATNR INTO TABLE IT_MATNR FROM MARA WHERE MTART IN ('ZRAW', 'ZSFG', 'ZFGS').
+  SELECT MATNR INTO TABLE IT_MATNR FROM MARA WHERE MTART IN MTART.
+  " End modified by William at 07.08.2025 (change method get data MCHB for more flexible, request for add ZPCK)
+
+  SELECT * INTO TABLE IT_MCHB
+  FROM MCHB
+  FOR ALL ENTRIES IN IT_MATNR
+  WHERE MCHB~MATNR = IT_MATNR-MATNR AND
+        ( MCHB~CLABS > 0 OR MCHB~CUMLM > 0 OR MCHB~CINSM > 0 OR MCHB~CSPEM > 0 OR MCHB~CRETM > 0 ).
+
+  IF IT_MCHB[] IS INITIAL.
+    MESSAGE 'Data Not Found' TYPE 'S' RAISING DATA_NOT_FOUND.
+  ELSE.
+    CLEAR : W_MCHB[].
+    REFRESH : W_MCHB[].
+
+    IT_MCHB-CHDLL = '19000101'.
+    IT_MCHB-ERSDA = '19000101'.
+    IT_MCHB-LAEDA = '19000101'.
+    MODIFY IT_MCHB TRANSPORTING CHDLL WHERE CHDLL = 00000000.
+    MODIFY IT_MCHB TRANSPORTING ERSDA WHERE ERSDA = 00000000.
+    MODIFY IT_MCHB TRANSPORTING LAEDA WHERE LAEDA = 00000000.
+    W_MCHB[] = IT_MCHB[].
+    CLEAR : IT_MCHB[].
+    REFRESH : IT_MCHB[].
+  ENDIF.
+ENDFORM.                    "GET_MCHB
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_MSKA
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->W_MSKA     text
+*----------------------------------------------------------------------*
+FORM GET_MSKA CHANGING W_MSKA TYPE STANDARD TABLE.
+  DATA : IT_MSKA TYPE MSKA OCCURS 0 WITH HEADER LINE.
+
+  SELECT * INTO TABLE IT_MSKA
+  FROM MSKA
+  WHERE KALAB > 0 OR KAINS > 0 OR KASPE > 0 AND MATNR LIKE 'SR%'.
+
+  IF IT_MSKA[] IS INITIAL.
+    MESSAGE 'Data Not Found' TYPE 'S' RAISING DATA_NOT_FOUND.
+  ELSE.
+    CLEAR : W_MSKA[].
+    REFRESH : W_MSKA[].
+
+    IT_MSKA-KADLL = '19000101'.
+    IT_MSKA-ERSDA = '19000101'.
+    MODIFY IT_MSKA TRANSPORTING KADLL WHERE KADLL = 00000000.
+    MODIFY IT_MSKA TRANSPORTING ERSDA WHERE ERSDA = 00000000.
+    W_MSKA[] = IT_MSKA[].
+    CLEAR : IT_MSKA[].
+    REFRESH : IT_MSKA[].
+  ENDIF.
+
+ENDFORM.                    "GET_MSKA
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_MSSA
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->W_MSSA     text
+*----------------------------------------------------------------------*
+FORM GET_MSSA CHANGING W_MSSA TYPE STANDARD TABLE.
+  DATA : IT_MSSA TYPE MSSA OCCURS 0 WITH HEADER LINE.
+  DATA : BEGIN OF IT_MATNR OCCURS 0,
+          MATNR LIKE MARA-MATNR,
+         END OF IT_MATNR.
+  SELECT MATNR INTO TABLE IT_MATNR FROM MARA WHERE MTART IN ('ZRAW', 'ZSFG', 'ZFGS').
+  SELECT * INTO TABLE IT_MSSA
+  FROM MSSA
+  FOR ALL ENTRIES IN IT_MATNR
+  WHERE MSSA~MATNR = IT_MATNR-MATNR AND
+      ( MSSA~SALAB > 0 OR MSSA~SAINS > 0 OR MSSA~SASPE > 0 ).
+
+  IF IT_MSSA[] IS INITIAL.
+    MESSAGE 'Data Not Found' TYPE 'S' RAISING DATA_NOT_FOUND.
+  ELSE.
+    CLEAR : W_MSSA[].
+    REFRESH : W_MSSA[].
+
+    IT_MSSA-ERSDA = '19000101'.
+    MODIFY IT_MSSA TRANSPORTING ERSDA WHERE ERSDA = 00000000.
+    W_MSSA[] = IT_MSSA[].
+    CLEAR : IT_MSSA[].
+    REFRESH : IT_MSSA[].
+  ENDIF.
+ENDFORM.                    "GET_MSSA
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_MSLB
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->W_MLSB    text
+*----------------------------------------------------------------------*
+FORM GET_MSLB CHANGING W_MSLB TYPE STANDARD TABLE.
+  DATA : IT_MSLB TYPE MSLB OCCURS 0 WITH HEADER LINE.
+  DATA : BEGIN OF IT_MATNR OCCURS 0,
+          MATNR LIKE MARA-MATNR,
+         END OF IT_MATNR.
+  SELECT MATNR INTO TABLE IT_MATNR FROM MARA WHERE MTART IN ('ZRAW', 'ZSFG', 'ZFGS').
+
+  IF IT_MATNR[] IS NOT INITIAL.
+    SELECT * INTO TABLE IT_MSLB
+    FROM MSLB
+    FOR ALL ENTRIES IN IT_MATNR
+    WHERE MSLB~MATNR = IT_MATNR-MATNR.
+  ENDIF.
+
+  IF IT_MSLB[] IS INITIAL.
+    MESSAGE 'Data Not Found' TYPE 'S' RAISING DATA_NOT_FOUND.
+  ELSE.
+    CLEAR : W_MSLB[].
+    REFRESH : W_MSLB[].
+
+    IT_MSLB-ERSDA = '19000101'.
+    IT_MSLB-LBDLL = '19000101'.
+    MODIFY IT_MSLB TRANSPORTING ERSDA WHERE ERSDA = 00000000.
+    MODIFY IT_MSLB TRANSPORTING LBDLL WHERE LBDLL = 00000000.
+    W_MSLB[] = IT_MSLB[].
+    CLEAR : IT_MSLB[].
+    REFRESH : IT_MSLB[].
+  ENDIF.
+ENDFORM.                    "GET_MSLB
+*&---------------------------------------------------------------------*
+*&      Form  GET_DATA_FREETEXT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->VALUE      text
+*      -->(P_DATE)   text
+*      -->VALUE      text
+*      -->(P_BWART)  text
+*      -->VALUE      text
+*      -->(MTYPE)    text
+*      -->VALUE      text
+*      -->(MGROUP)   text
+*      -->W_MSEG     text
+*----------------------------------------------------------------------*
+FORM GET_DATA_FREETEXT USING  VALUE(P_DATE) TYPE STANDARD TABLE
+                         VALUE(P_BWART) TYPE STANDARD TABLE
+                         VALUE(MTYPE) TYPE STANDARD TABLE
+                         VALUE(MGROUP) TYPE STANDARD TABLE
+                   CHANGING W_MSEG LIKE T_MSEG
+                            W_MKPF LIKE T_MKPF.
+
+
+  DATA: BEGIN OF IT_MARA2 OCCURS 0,
+     MATKL LIKE MARA-MATKL,
+    END OF IT_MARA2.
+
+  DATA: BEGIN OF IT_EKPO OCCURS 0,
+      EBELN LIKE EKPO-EBELN,
+      EBELP LIKE EKPO-EBELP,
+    END OF IT_EKPO.
+
+  DATA: IT_MSEG2 TYPE MSEG OCCURS 0 WITH HEADER LINE,
+        IT_MKPF2 TYPE MKPF OCCURS 0 WITH HEADER LINE.
+
+  SELECT MATKL FROM MARA INTO CORRESPONDING FIELDS OF TABLE IT_MARA2
+     WHERE MATKL IN MGROUP AND MTART IN MTYPE.
+
+  IF IT_MARA2[] IS NOT INITIAL.
+    SELECT EBELN EBELP INTO CORRESPONDING FIELDS OF TABLE IT_EKPO FROM EKPO FOR ALL ENTRIES IN IT_MARA2
+       WHERE MATKL EQ IT_MARA2-MATKL AND MATNR EQ ''.
+  ENDIF.
+
+  IF IT_EKPO[] IS NOT INITIAL.
+    SELECT * INTO CORRESPONDING FIELDS OF TABLE IT_MSEG2 FROM MSEG "JOIN MKPF ON MSEG~MBLNR EQ MKPF~MBLNR
+        FOR ALL ENTRIES IN IT_EKPO WHERE MSEG~EBELN EQ IT_EKPO-EBELN AND MSEG~EBELP EQ IT_EKPO-EBELP AND MSEG~BWART IN P_BWART AND MSEG~CPUDT_MKPF IN P_DATE.
+  ENDIF.
+
+  DELETE IT_MSEG2 WHERE MATNR NE ''.
+
+  IF IT_MSEG2[] IS NOT INITIAL.
+    SELECT * INTO TABLE IT_MKPF2
+        FROM MKPF FOR ALL ENTRIES IN IT_MSEG2 WHERE MBLNR = IT_MSEG2-MBLNR AND MJAHR = IT_MSEG2-MJAHR.
+  ENDIF.
+
+
+
+  W_MSEG[] = IT_MSEG2[].
+  W_MKPF[] = IT_MKPF2[].
+ENDFORM.                    "GET_DATA_FREETEXT
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_DATA_FREETEXT_SP
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->VALUE      text
+*      -->(P_DATE)   text
+*      -->VALUE      text
+*      -->(P_BWART)  text
+*      -->VALUE      text
+*      -->(MGROUP)   text
+*      -->W_MSEG     text
+*      -->W_MKPF     text
+*----------------------------------------------------------------------*
+FORM GET_DATA_FREETEXT_SP USING  VALUE(P_DATE) TYPE STANDARD TABLE
+                                 VALUE(P_BWART) TYPE STANDARD TABLE
+                                 VALUE(MGROUP) TYPE STANDARD TABLE
+                                 VALUE(P_BSART) TYPE STANDARD TABLE
+                          CHANGING W_MSEG LIKE T_MSEG
+                                   W_MKPF LIKE T_MKPF.
+
+
+  DATA: BEGIN OF IT_MARA2 OCCURS 0,
+     MATKL LIKE MARA-MATKL,
+    END OF IT_MARA2.
+
+  DATA: BEGIN OF IT_EKPO OCCURS 0,
+      EBELN LIKE EKPO-EBELN,
+      EBELP LIKE EKPO-EBELP,
+    END OF IT_EKPO.
+
+  DATA: IT_MSEG2 TYPE MSEG OCCURS 0 WITH HEADER LINE,
+        IT_MKPF2 TYPE MKPF OCCURS 0 WITH HEADER LINE.
+
+  SELECT MATKL FROM MARA INTO CORRESPONDING FIELDS OF TABLE IT_MARA2
+     WHERE MATKL IN MGROUP.
+
+  IF IT_MARA2[] IS NOT INITIAL.
+    SELECT A~EBELN A~EBELP INTO CORRESPONDING FIELDS OF TABLE IT_EKPO FROM EKPO AS A JOIN EBAN AS B ON A~BANFN EQ B~BANFN AND A~BNFPO EQ B~BNFPO
+      FOR ALL ENTRIES IN IT_MARA2
+       WHERE A~MATKL EQ IT_MARA2-MATKL AND A~MATNR EQ '' AND B~BSART IN P_BSART.
+  ENDIF.
+
+  IF IT_EKPO[] IS NOT INITIAL.
+    SELECT * INTO CORRESPONDING FIELDS OF TABLE IT_MSEG2 FROM MSEG "JOIN MKPF ON MSEG~MBLNR EQ MKPF~MBLNR
+        FOR ALL ENTRIES IN IT_EKPO WHERE MSEG~EBELN EQ IT_EKPO-EBELN AND MSEG~EBELP EQ IT_EKPO-EBELP AND MSEG~BWART IN P_BWART AND MSEG~CPUDT_MKPF IN P_DATE.
+  ENDIF.
+
+  DELETE IT_MSEG2 WHERE MATNR NE ''.
+
+  IF IT_MSEG2[] IS NOT INITIAL.
+    SELECT * INTO TABLE IT_MKPF2
+        FROM MKPF FOR ALL ENTRIES IN IT_MSEG2 WHERE MBLNR = IT_MSEG2-MBLNR AND MJAHR = IT_MSEG2-MJAHR.
+  ENDIF.
+
+  W_MSEG[] = IT_MSEG2[].
+  W_MKPF[] = IT_MKPF2[].
+ENDFORM.                    "GET_DATA_FREETEXT_SP

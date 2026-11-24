@@ -1,0 +1,2258 @@
+*&---------------------------------------------------------------------*
+*&  Include           ZSDR_QUOTATION_LIST_F01
+*&---------------------------------------------------------------------*
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_DATA
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM GET_DATA .
+  CLEAR   : IT_QUOT.
+  REFRESH : IT_QUOT.
+
+  CLEAR   : IT_QUOT2.
+  REFRESH : IT_QUOT2.
+
+  CLEAR   : IT_SO.
+  REFRESH : IT_SO.
+
+  CLEAR   : WA_SO.
+  REFRESH : WA_SO.
+
+  CLEAR   : IT_QUOT3.
+  REFRESH : IT_QUOT3.
+
+  CLEAR   : WA_QUOT2.
+  REFRESH : WA_QUOT2.
+
+  "~ List semua quotation (level header)
+  SELECT
+    VBAK~VBELN
+    VBAK~AUART
+    VBAK~KUNNR
+    VBAK~ANGDT AS ZVALF
+    VBAK~BNDDT AS ZVALT
+    VBAK~WAERK
+    VBAK~BSTNK
+    VBAK~VKBUR
+    VBAK~VKORG
+    VBAK~VTWEG
+    VBAK~SPART
+    VBAK~ERNAM
+    VBAK~ERDAT
+    VBAK~AUDAT
+    VBAK~AUGRU
+    VBAK~ABRVW
+    INTO CORRESPONDING FIELDS OF TABLE IT_QUOT3
+    FROM VBAK
+    WHERE VBAK~VBTYP EQ 'B'
+    AND VBAK~AUART IN S_AUART
+    AND VBAK~VBELN IN S_VBELN
+    AND VBAK~KUNNR IN S_KUNNR
+    AND VBAK~AUDAT IN S_AUDAT
+    AND VBAK~ANGDT IN S_VALIDF
+    AND VBAK~BNDDT IN S_VALIDT
+    AND VBAK~BSTNK IN S_PO
+    AND VBAK~ERNAM IN S_CRTDBY
+    AND VBAK~VTWEG IN S_VTWEG
+    AND VBAK~VKBUR IN S_SOFF
+    .
+
+  "~ List semua quotation yang punya SO
+  SELECT
+    VBFA~VBELV " Quotation
+    VBFA~POSNV " Quotation Item
+    VBFA~VBELN " SO
+    VBFA~POSNN " SO Item
+    INTO CORRESPONDING FIELDS OF TABLE IT_SO
+    FROM VBFA
+    JOIN VBAK ON VBAK~VBELN = VBFA~VBELV
+    WHERE VBAK~VBTYP EQ 'B'
+    AND VBAK~AUART IN S_AUART
+    AND VBFA~VBELV IN S_VBELN
+    AND VBFA~VBTYP_N EQ 'C'
+    AND VBFA~POSNV NE ''
+    "Tambahan untuk selection screen
+    AND VBAK~KUNNR IN S_KUNNR
+    AND VBAK~AUDAT IN S_AUDAT
+    AND VBAK~ANGDT IN S_VALIDF
+    AND VBAK~BNDDT IN S_VALIDT
+    AND VBAK~BSTNK IN S_PO
+    AND VBAK~ERNAM IN S_CRTDBY
+    AND VBAK~VTWEG IN S_VTWEG
+    AND VBAK~VKBUR IN S_SOFF.
+
+
+  DATA: V_POSNV LIKE VBFA-POSNV,
+        D_VBELN LIKE VBFA-VBELN,
+        D_SO LIKE VBFA-VBELN,
+        D_SOITEM LIKE VBFA-POSNN,
+        D_QUOT LIKE VBFA-VBELN,
+        D_POSNN LIKE VBFA-POSNN.
+
+  LOOP AT IT_SO.
+    CLEAR: V_POSNV, D_VBELN, D_POSNN.
+
+    SELECT SINGLE
+      VBFA~POSNV VBFA~VBELN VBFA~POSNN
+      INTO (V_POSNV, D_VBELN, D_POSNN)
+      FROM VBFA
+      WHERE VBFA~VBELV = IT_SO-VBELV
+      AND VBFA~POSNV = '000000'
+      AND VBFA~VBELN = IT_SO-VBELN.
+
+    D_SO = IT_SO-VBELN.
+    D_SOITEM = IT_SO-POSNN.
+    D_QUOT = IT_SO-VBELV.
+
+    IF D_VBELN EQ ''.
+      DELETE IT_SO WHERE VBELN = D_SO AND POSNN = D_SOITEM AND VBELV = D_QUOT.
+      CONTINUE.
+    ENDIF.
+
+    MODIFY IT_SO.
+  ENDLOOP.
+
+  "~ Data yang ditampilkan
+  SELECT
+    VBAK~AUART
+    VBAK~VBELN
+    VBAP~POSNR
+    VBAP~PSTYV
+    VBAK~KUNNR
+    VBPA~ADRNR
+    VBAK~ABRVW
+    VBAP~MATNR
+    VBAK~WAERK
+    VBAK~BSTNK
+    VBAK~VKORG
+    VBAK~VTWEG
+    VBAP~SPART
+    VBAK~VKBUR
+    VBAK~ERNAM
+    VBAK~ERDAT
+    VBAK~AUDAT
+    VBAK~AUGRU
+    VBAP~ABGRU
+    VBAP~ARKTX
+    VBAP~NETWR
+    VBAK~ANGDT AS ZVALF
+    VBAK~BNDDT AS ZVALT
+    VBAP~NTGEW
+    VBAP~BRGEW
+    VBAP~KWMENG
+    VBAP~VRKME
+    VBAP~PRODH
+    VBAP~MVGR1
+    VBAP~MVGR2
+    VBAP~MVGR3
+    VBAP~MVGR4
+    VBAP~MVGR5
+    INTO CORRESPONDING FIELDS OF TABLE IT_QUOT
+    FROM VBAK
+    INNER JOIN VBPA ON VBAK~VBELN = VBPA~VBELN
+    INNER JOIN VBAP ON VBAP~VBELN = VBAK~VBELN
+    INNER JOIN KNA1 ON KNA1~KUNNR = VBAK~KUNNR
+   WHERE VBAK~VBELN IN S_VBELN
+      AND VBAK~AUART IN S_AUART
+      AND VBAK~VBTYP = 'B'
+      AND VBAK~AUART IN ('ZEQT', 'ZDQT')
+      AND VBAK~KUNNR IN S_KUNNR
+      AND VBAK~AUDAT IN S_AUDAT
+      AND VBAP~MATNR IN S_MATNR
+      AND VBAK~ANGDT IN S_VALIDF
+      AND VBAK~BNDDT IN S_VALIDT
+      AND VBAK~BSTNK IN S_PO
+      AND VBAK~VKORG IN S_VKORG
+      AND VBAK~VTWEG IN S_VTWEG
+      AND VBAP~SPART IN S_SPART
+      AND VBAK~VKBUR IN S_SOFF
+      AND VBPA~PERNR IN S_SLSEMP
+      AND VBAK~ERNAM IN S_CRTDBY
+      "AND VBPA~PERNR IN S_EMPRES
+      AND VBPA~POSNR = ''
+      AND VBPA~PARVW EQ 'AG'.
+
+  LOOP AT IT_QUOT3 INTO WA_QUOT2.
+
+    WA_QUOT-AUART = WA_QUOT2-AUART.
+    WA_QUOT-VBELN = WA_QUOT2-VBELN.
+    WA_QUOT-KUNNR = WA_QUOT2-KUNNR.
+    WA_QUOT-ZVALF = WA_QUOT2-ZVALF.
+    WA_QUOT-ZVALT = WA_QUOT2-ZVALT.
+    WA_QUOT-WAERK = WA_QUOT2-WAERK.
+    WA_QUOT-BSTNK = WA_QUOT2-BSTNK.
+    WA_QUOT-VKBUR = WA_QUOT2-VKBUR.
+    WA_QUOT-VKORG = WA_QUOT2-VKORG.
+    WA_QUOT-VTWEG = WA_QUOT2-VTWEG.
+    WA_QUOT-SPART = WA_QUOT2-SPART.
+    WA_QUOT-ERNAM = WA_QUOT2-ERNAM.
+    WA_QUOT-ERDAT = WA_QUOT2-ERDAT.
+    WA_QUOT-AUDAT = WA_QUOT2-AUDAT.
+    WA_QUOT-AUGRU = WA_QUOT2-AUGRU.
+    WA_QUOT-ABRVW = WA_QUOT2-ABRVW.
+
+    APPEND WA_QUOT TO IT_QUOT.
+  ENDLOOP.
+
+  LOOP AT IT_SO INTO WA_SO.
+    WA_QUOT-VBELV = WA_SO-VBELN. "SO
+    WA_QUOT-POSNV = WA_SO-POSNN.
+    WA_QUOT-ZSO   = WA_SO-VBELN. "SO
+    WA_QUOT-ZSOITEM = WA_SO-POSNN.
+    WA_QUOT-VBELN = WA_SO-VBELV. "Quotation
+    WA_QUOT-POSNR = WA_SO-POSNV.
+
+    APPEND WA_QUOT TO IT_QUOT.
+  ENDLOOP.
+
+  DATA: V_TEMP LIKE VBAP-POSNR,
+        V_VBELN2 LIKE VBAP-VBELN,
+        V_AUART LIKE VBAK-AUART.
+
+  IT_QUOT2[] = IT_QUOT[].
+
+  LOOP AT IT_QUOT2 WHERE ZSO NE ''.
+
+    LOOP AT IT_QUOT WHERE VBELN = IT_QUOT2-VBELN
+                     AND POSNR = IT_QUOT2-POSNR
+                     AND ZSO EQ ''.
+      DELETE IT_QUOT.
+      CONTINUE.
+    ENDLOOP.
+
+  ENDLOOP.
+
+  DATA: COUNTER TYPE P,
+        COUNTER1 TYPE P,
+        Z_VBELN LIKE VBAK-VBELN,
+        Z_VBELN1 LIKE VBAK-VBELN,
+        Z_POSNV LIKE VBFA-POSNV.
+
+  LOOP AT IT_QUOT.
+
+    CLEAR: COUNTER, COUNTER1, Z_VBELN.
+
+    "- Cari line Quotation yang ada SOnya
+    IF IT_QUOT-ZSO NE ''.
+      COUNTER = COUNTER + 1.
+      Z_VBELN = IT_QUOT-VBELN.
+    ENDIF.
+
+    "- Cari line Quotation yang punya item > 1
+    IF IT_QUOT-POSNR NE ''.
+      COUNTER1 = COUNTER1 + 1.
+      Z_VBELN1 = IT_QUOT-VBELN.
+    ENDIF.
+
+    LOOP AT IT_QUOT.
+      IF COUNTER > 0 AND IT_QUOT-POSNR EQ '000000'.
+        DELETE IT_QUOT WHERE VBELN = Z_VBELN AND
+        POSNR EQ '000000'.
+      ENDIF.
+
+      IF COUNTER1 > 0.
+        DELETE IT_QUOT WHERE VBELN = Z_VBELN1 AND
+        POSNR EQ '000000'.
+      ENDIF.
+
+    ENDLOOP.
+
+  ENDLOOP.
+
+  LOOP AT IT_QUOT.
+
+    SELECT SINGLE
+      VBAK~AUART
+      VBAK~VBELN
+      VBAP~POSNR
+      VBAP~PSTYV
+      VBAK~KUNNR
+      VBPA~ADRNR
+      VBAK~ABRVW
+      VBAP~MATNR
+      VBAK~WAERK
+      VBAK~BSTNK
+      VBAK~VKORG
+      VBAK~VTWEG
+      VBAP~SPART
+      VBAK~VKBUR
+      VBAK~ERNAM
+      VBAK~ERDAT
+      VBAK~AUDAT
+      VBAK~AUGRU
+      VBAP~ABGRU
+      VBAP~ARKTX
+      VBAP~NETWR
+      VBAK~ANGDT AS ZVALF
+      VBAK~BNDDT AS ZVALT
+      VBAP~NTGEW
+      VBAP~BRGEW
+      VBAP~KWMENG
+      VBAP~VRKME
+      VBAP~POSEX
+      VBAP~PRODH
+      VBAP~MVGR1
+      VBAP~MVGR2
+      VBAP~MVGR3
+      VBAP~MVGR4
+      VBAP~MVGR5
+*    VBFA~VBELN AS ZSO
+*    VBFA~POSNN AS ZSOITEM
+    INTO (IT_QUOT-AUART,
+      IT_QUOT-VBELN,
+      IT_QUOT-POSNR,
+      IT_QUOT-PSTYV,
+      IT_QUOT-KUNNR,
+      IT_QUOT-ADRNR,
+      IT_QUOT-ABRVW,
+      IT_QUOT-MATNR,
+      IT_QUOT-WAERK,
+      IT_QUOT-BSTNK,
+      IT_QUOT-VKORG,
+      IT_QUOT-VTWEG,
+      IT_QUOT-SPART,
+      IT_QUOT-VKBUR,
+      IT_QUOT-ERNAM,
+      IT_QUOT-ERDAT,
+      IT_QUOT-AUDAT,
+      IT_QUOT-AUGRU,
+      IT_QUOT-ABGRU,
+      IT_QUOT-ARKTX,
+      IT_QUOT-NETWR,
+      IT_QUOT-ZVALF,
+      IT_QUOT-ZVALT,
+      IT_QUOT-NTGEW,
+      IT_QUOT-BRGEW,
+      IT_QUOT-KWMENG,
+      IT_QUOT-VRKME,
+      IT_QUOT-POSEX,
+      IT_QUOT-PRODH,
+      IT_QUOT-MVGR1,
+      IT_QUOT-MVGR2,
+      IT_QUOT-MVGR3,
+      IT_QUOT-MVGR4,
+      IT_QUOT-MVGR5)
+    FROM VBAK
+    INNER JOIN VBPA ON VBAK~VBELN = VBPA~VBELN
+    INNER JOIN VBAP ON VBAP~VBELN = VBAK~VBELN
+    INNER JOIN VBEP ON VBAP~VBELN = VBEP~VBELN AND VBAP~POSNR = VBEP~POSNR
+    INNER JOIN KNA1 ON KNA1~KUNNR = VBAK~KUNNR
+*    INNER JOIN VBFA ON VBFA~VBELV = VBAP~VBELN AND VBFA~POSNV = VBAP~POSNR
+    WHERE VBAK~VBELN = IT_QUOT-VBELN
+      AND VBAP~POSNR  = IT_QUOT-POSNR
+      AND VBAK~AUART IN S_AUART
+      AND VBAK~VBTYP = 'B'
+      AND VBAK~AUART IN ('ZEQT', 'ZDQT')
+*      AND VBFA~VBTYP_N = 'C'
+      AND VBAK~KUNNR IN S_KUNNR
+      AND VBEP~EDATU IN S_EDATU
+      AND VBAK~AUDAT IN S_AUDAT
+      AND VBAP~MATNR IN S_MATNR
+      AND VBAK~ANGDT IN S_VALIDF
+      AND VBAK~BNDDT IN S_VALIDT
+      AND VBAK~BSTNK IN S_PO
+      AND VBAK~VKORG IN S_VKORG
+      AND VBAK~VTWEG IN S_VTWEG
+      AND VBAP~SPART IN S_SPART
+      AND VBAK~VKBUR IN S_SOFF
+      AND VBPA~PERNR IN S_SLSEMP
+      AND VBAK~ERNAM IN S_CRTDBY
+      AND VBPA~POSNR = ''
+      AND VBPA~PARVW EQ 'AG'
+      AND VBEP~ETENR = 1.
+
+    "- PI Number
+    V_VBELN = IT_QUOT-VBELN.
+
+    CLEAR: IT_LINE.
+    REFRESH: IT_LINE.
+    CALL FUNCTION 'READ_TEXT'
+      EXPORTING
+*       CLIENT                        = SY-MANDT
+        ID                            = 'Z101'
+        LANGUAGE                      = SY-LANGU
+        NAME                          = V_VBELN
+        OBJECT                        = 'VBBK'
+*       ARCHIVE_HANDLE                = 0
+*       LOCAL_CAT                     = ' '
+*     IMPORTING
+*       HEADER                        =
+*       OLD_LINE_COUNTER              =
+      TABLES
+        LINES                         = IT_LINE
+     EXCEPTIONS
+       ID                            = 1
+       LANGUAGE                      = 2
+       NAME                          = 3
+       NOT_FOUND                     = 4
+       OBJECT                        = 5
+       REFERENCE_CHECK               = 6
+       WRONG_ACCESS_TO_ARCHIVE       = 7
+       OTHERS                        = 8
+              .
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+
+    READ TABLE IT_LINE INDEX 1.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZPINO = IT_LINE-TDLINE.
+    ENDIF.
+
+    "- Order Indicator
+    CLEAR: IT_LINE, V_NAME.
+    REFRESH: IT_LINE.
+    CONCATENATE V_VBELN IT_QUOT-POSNR INTO V_NAME.
+    CONDENSE V_NAME NO-GAPS.
+    CALL FUNCTION 'READ_TEXT'
+      EXPORTING
+        CLIENT                  = SY-MANDT
+        ID                      = 'Z104'
+        LANGUAGE                = SY-LANGU
+        NAME                    = V_NAME
+        OBJECT                  = 'VBBP'
+      TABLES
+        LINES                   = IT_LINE
+      EXCEPTIONS
+        ID                      = 1
+        LANGUAGE                = 2
+        NAME                    = 3
+        NOT_FOUND               = 4
+        OBJECT                  = 5
+        REFERENCE_CHECK         = 6
+        WRONG_ACCESS_TO_ARCHIVE = 7
+        OTHERS                  = 8.
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+
+    READ TABLE IT_LINE INDEX 1.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZORDER = IT_LINE-TDLINE.
+    ENDIF.
+
+    "- Search Term
+    SELECT SINGLE VBPA~ADRNR
+      INTO IT_QUOT-ADRNR
+      FROM VBPA
+      WHERE VBPA~VBELN = IT_QUOT-VBELN.
+
+    SELECT SINGLE ADRC~SORT1 FROM ADRC
+      INTO IT_QUOT-SORTL
+    WHERE ADRC~ADDRNUMBER = IT_QUOT-ADRNR.
+
+    "- Ship to Party
+    SELECT SINGLE VBPA~KUNNR VBPA~ADRNR INTO (IT_QUOT-ZKUNNR2, IT_QUOT-ADRNR)
+      FROM VBPA
+      WHERE VBPA~VBELN = IT_QUOT-VBELN AND
+        VBPA~POSNR = IT_QUOT-POSNR AND
+        VBPA~PARVW EQ 'WE'.
+
+    IF IT_QUOT-ZKUNNR2 EQ ''.
+      SELECT SINGLE VBPA~KUNNR VBPA~ADRNR INTO (IT_QUOT-ZKUNNR2, IT_QUOT-ADRNR)
+      FROM VBPA
+      WHERE VBPA~VBELN = IT_QUOT-VBELN AND
+        VBPA~PARVW EQ 'WE'.
+    ENDIF.
+
+    "- Ship to Party Name
+    SELECT SINGLE ADRC~NAME1 INTO IT_QUOT-ZCUST2
+      FROM ADRC
+      WHERE ADRC~ADDRNUMBER  = IT_QUOT-ADRNR.
+
+    "- Customer Name
+    CLEAR : IT_XVBPA.
+    REFRESH : IT_XVBPA.
+    CALL FUNCTION 'SD_PARTNER_READ'
+      EXPORTING
+        F_VBELN          = IT_QUOT-VBELN
+        OBJECT           = 'VBPA'
+*       NO_MASTER_ADRESS = ' '
+*       IV_NO_INIT       = ' '
+*       IV_PARVW         =
+*       IV_POSNR         =
+      TABLES
+        I_XVBADR         = IT_XVBADR
+        I_XVBPA          = IT_XVBPA
+*       I_YVBADR         =
+*       I_YVBPA          =
+*       I_XVBPA2         =
+*       I_YVBPA2         =
+      .
+
+    READ TABLE IT_XVBPA WITH KEY PARVW = 'AG'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZCUST = IT_XVBPA-NAME1.
+    ENDIF.
+
+    "- Status Quotation
+    DATA : ZBEZEI LIKE TVLVT-BEZEI.
+    DATA : ZBEZEI1(30).
+
+    CLEAR: ZBEZEI, ZBEZEI1.
+
+    SELECT SINGLE TVLVT~BEZEI
+      INTO ZBEZEI FROM TVLVT
+      WHERE TVLVT~ABRVW = IT_QUOT-ABRVW
+      AND TVLVT~SPRAS EQ 'E'.
+
+    ZBEZEI1 = IT_QUOT-ABRVW.
+
+    IF ZBEZEI1 NE ''.
+      CONCATENATE ZBEZEI1 ZBEZEI INTO ZBEZEI1 SEPARATED BY SPACE.
+    ELSEIF ZBEZEI EQ ''.
+      ZBEZEI1 = 'PI Created'.
+    ENDIF.
+    IT_QUOT-ABRVW = ZBEZEI1.
+
+
+
+    "- Characteristic
+    SELECT SINGLE VBAP~CUOBJ
+      INTO V_CUOBJ
+      FROM VBAP
+    WHERE VBAP~VBELN = IT_QUOT-VBELN
+      AND VBAP~POSNR = IT_QUOT-POSNR.
+
+    CLEAR: IT_TEMP.
+    REFRESH: IT_TEMP.
+    CALL FUNCTION 'VC_I_GET_CONFIGURATION'
+     EXPORTING
+       INSTANCE                    = V_CUOBJ
+*         BUSINESS_OBJECT             =
+*          LANGUAGE                    = SY-LANGU
+*         PRINT_SALES                 = ' '
+*         PRINT_PURCHASE              = ' '
+*         PRINT_ENGINEERING           = ' '
+*         IDOC_MODE                   = ' '
+*         ANW_SICHT                   = ' '
+*         EXCL_IND                    = ' '
+*         IV_INVALID_POSSIBLE         = ' '
+*         IV_MAX_MASSPROCESSING       = 0
+*         IV_EXPLICIT_ORGAREA         = ' '
+*         IV_NO_DESCRIPTION           = ' '
+*         IV_USER                     = ' '
+*         IV_NO_VALUE_CHECK           = 'X'
+*         IV_NO_DIALOG                = ' '
+*         IV_DISPLAY_WARNING          = ' '
+*         MILL_SE_RECALC              =
+*         MILL_SE_EVAL_DK             =
+*       IMPORTING
+*         /SAPMP/CONF_RECORD          =
+    TABLES
+      CONFIGURATION                   = IT_TEMP
+*         CONFIGURATION_IDOC          =
+*       CHANGING
+*         MILL_SE_FATTR               =
+    EXCEPTIONS
+      INSTANCE_NOT_FOUND          = 1
+      INTERNAL_ERROR              = 2
+      NO_CLASS_ALLOCATION         = 3
+      INSTANCE_NOT_VALID          = 4
+      OTHERS                      = 5
+             .
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+
+    "- Type Film
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZTYPE'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZTYPE = IT_TEMP-ATWRT.
+    ENDIF.
+
+    "- Kode Film
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZCODE'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZCODE = IT_TEMP-ATWRT.
+    ENDIF.
+
+    "- Kode Film Description
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZCODE'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZCODEDESC = IT_TEMP-ATWTB.
+    ENDIF.
+
+    "- Thickness
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZTHICKNESS'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZTHICKNESS = IT_TEMP-ATWRT.
+    ENDIF.
+
+    "- Panjang
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZLENGTH'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZLENGTH = IT_TEMP-ATWRT.
+    ENDIF.
+
+    "- Panjang Sheet
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZLENGTHSHT'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZLENGTHSHT = IT_TEMP-ATWRT.
+    ENDIF.
+
+    "- Lebar
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZWIDTH'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZWIDTH = IT_TEMP-ATWRT.
+    ENDIF.
+
+
+    "- Diameter Core
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZCORE'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZCORE = IT_TEMP-ATWTB.
+    ENDIF.
+
+    "- Treatment
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZTREATMENT'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZTREATMENT = IT_TEMP-ATWTB.
+    ENDIF.
+
+    "- Grade
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZGRADE'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZGRADE = IT_TEMP-ATWTB.
+    ENDIF.
+
+    "- Jumlah Roll
+    DATA: ZROLL1(20), ZNUMBRROLL(20).
+    CLEAR: ZROLL1, ZNUMBRROLL.
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZNUMBEROFROLL'.
+    IF SY-SUBRC = 0.
+      ZROLL1 = IT_TEMP-ATWTB.
+    ENDIF.
+
+    IF ZROLL1 NE ''.
+      SPLIT ZROLL1 AT SPACE INTO ZNUMBRROLL ZROLL1.
+      IT_QUOT-ZZNUMBEROFROLL = ZNUMBRROLL.
+    ENDIF.
+
+    "- Jumlah Sheet
+    DATA: ZSHEET(20), ZNUMBSHT(20).
+    CLEAR: ZSHEET, ZNUMBSHT.
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZNUMBEROFSHEET'.
+    IF SY-SUBRC = 0.
+      ZSHEET = IT_TEMP-ATWTB.
+    ENDIF.
+
+    IF ZSHEET NE ''.
+      SPLIT ZSHEET AT SPACE INTO ZNUMBSHT ZSHEET.
+      IT_QUOT-ZJUMLAHSHEET = ZNUMBSHT.
+    ENDIF.
+
+    "- Expired Life
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZEXPIREDLIVE'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZEXPIREDLIVE = IT_TEMP-ATWTB.
+    ENDIF.
+
+    "- Criteria
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZCRITERIA'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZCRITERIA = IT_TEMP-ATWTB.
+    ENDIF.
+
+    "- Density
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZDENSITY'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZDENSITY = IT_TEMP-ATWTB.
+    ENDIF.
+
+    IF IT_QUOT-ZZDENSITY EQ ''.
+      IT_QUOT-ZZDENSITY = ''.
+    ENDIF.
+
+    "- Grammage
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZGRAMMAGE'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZGRAMMAGE = IT_TEMP-ATWTB.
+    ENDIF.
+
+    "- Label
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZLABEL'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZLABEL = IT_TEMP-ATWTB.
+    ENDIF.
+
+    "- Packing
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZPACKING'.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZZPACKING = IT_TEMP-ATWTB.
+    ENDIF.
+
+    "- Weight Total
+    DATA: ZWEIGHT(30), ZWEIGHT1(30).
+    CLEAR: ZWEIGHT.
+    READ TABLE IT_TEMP WITH KEY ATNAM = 'ZZWEIGTHTOTAL'.
+    IF SY-SUBRC = 0.
+      ZWEIGHT = IT_TEMP-ATWTB.
+    ENDIF.
+
+    SPLIT ZWEIGHT AT SPACE INTO ZWEIGHT ZWEIGHT1.
+
+    IT_QUOT-ZZWEIGHTOTAL = ZWEIGHT.
+
+    "- Sales Office
+    DATA: ZVKBUR(30).
+    SELECT SINGLE TVKBT~BEZEI
+      INTO ZVKBUR FROM TVKBT
+      WHERE TVKBT~VKBUR = IT_QUOT-VKBUR
+      AND TVKBT~SPRAS = 'E'.
+
+    IF ZVKBUR NE ''.
+*      CONCATENATE IT_QUOT-VKBUR ZVKBUR INTO IT_QUOT-VKBUR SEPARATED BY ' - '.
+      IT_QUOT-VKBUR = ZVKBUR.
+    ENDIF.
+
+    "- Sales Organization
+    DATA: ZVKORGDESC(30).
+    SELECT SINGLE TVKOT~VTEXT
+      INTO ZVKORGDESC FROM TVKOT
+      WHERE TVKOT~VKORG = IT_QUOT-VKORG
+      AND TVKOT~SPRAS = 'E'.
+
+    CONCATENATE IT_QUOT-VKORG ZVKORGDESC INTO IT_QUOT-VKORG SEPARATED BY ' - '.
+
+    "- Distribution Channel
+    DATA: ZVTWEGDESC(30).
+    SELECT SINGLE TVTWT~VTEXT
+      INTO ZVTWEGDESC FROM TVTWT
+      WHERE TVTWT~VTWEG = IT_QUOT-VTWEG
+      AND TVTWT~SPRAS = 'E'.
+
+    CONCATENATE IT_QUOT-VTWEG ZVTWEGDESC INTO IT_QUOT-VTWEG SEPARATED BY ' - '.
+
+    "- Division
+    DATA: ZSPARTDESC(30).
+
+    SELECT SINGLE TSPAT~VTEXT
+      INTO ZSPARTDESC FROM TSPAT
+      WHERE TSPAT~SPART = IT_QUOT-SPART
+      AND TSPAT~SPRAS = 'E'.
+
+    IF IT_QUOT-SPART NE ''.
+      CONCATENATE IT_QUOT-SPART ZSPARTDESC INTO IT_QUOT-SPART SEPARATED BY ' - '.
+    ENDIF.
+
+    "- Amount
+    V_WAERS = IT_QUOT-WAERK.
+    V_AMOUNT = IT_QUOT-NETWR.
+
+    CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+      EXPORTING
+        CURRENCY              = V_WAERS
+        AMOUNT_INTERNAL       = V_AMOUNT
+     IMPORTING
+       AMOUNT_DISPLAY        = V_AMOUNT
+*     EXCEPTIONS
+*       INTERNAL_ERROR        = 1
+*       OTHERS                = 2
+              .
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+
+    IT_QUOT-NETWR = V_AMOUNT.
+
+    "- Order Reason
+    SELECT SINGLE TVAUT~BEZEI
+      INTO IT_QUOT-AUGRU FROM TVAUT
+      WHERE SPRAS = 'E' AND
+      AUGRU = IT_QUOT-AUGRU.
+
+    "- Reason Reject
+    SELECT SINGLE TVAGT~BEZEI
+      INTO IT_QUOT-ABGRU FROM TVAGT
+      WHERE SPRAS = 'E' AND
+      ABGRU = IT_QUOT-ABGRU.
+
+    "- Delivery Date
+    IF IT_QUOT-POSNR NE ''.
+      SELECT SINGLE VBEP~EDATU
+        INTO IT_QUOT-EDATU FROM VBEP
+        WHERE VBEP~VBELN = IT_QUOT-VBELN
+        AND VBEP~POSNR = IT_QUOT-POSNR
+        AND VBEP~ETENR = 1.
+    ELSE.
+      SELECT SINGLE VBAK~VDATU
+        INTO IT_QUOT-EDATU FROM VBAK
+        WHERE VBAK~VBELN = IT_QUOT-VBELN.
+    ENDIF.
+
+    "- Delivery Date (Week)
+    V_DATE = IT_QUOT-EDATU.
+    IF V_DATE NE '00000000'.
+      CALL FUNCTION 'DATE_GET_WEEK'
+        EXPORTING
+          DATE               = V_DATE
+       IMPORTING
+         WEEK               = V_WEEK
+*     EXCEPTIONS
+*       DATE_INVALID       = 1
+*       OTHERS             = 2
+                .
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IT_QUOT-ZREQDLV = V_WEEK.
+
+    DATA: V_WEEK1(2), V_YEAR(4), V_IDX(1), V_TEXT(10).
+    V_WEEK1 = IT_QUOT-ZREQDLV+4(2).
+    V_YEAR = IT_QUOT-ZREQDLV(4).
+    V_IDX = V_WEEK1+1(1).
+
+    IF V_IDX = 1.
+      V_TEXT = 'st'.
+    ELSEIF V_IDX = 2.
+      V_TEXT = 'nd'.
+    ELSEIF V_IDX = 3.
+      V_TEXT = 'rd'.
+    ELSEIF V_IDX = '4' OR
+      V_IDX = '5' OR
+      V_IDX = '6' OR
+      V_IDX = '7' OR
+      V_IDX = '8' OR
+      V_IDX = '9' OR
+      V_IDX = '0'.
+      V_TEXT = 'th'.
+    ENDIF.
+
+    CONCATENATE V_WEEK1 V_TEXT ' week of ' INTO IT_QUOT-ZREQDLV.
+    CONCATENATE IT_QUOT-ZREQDLV V_YEAR INTO IT_QUOT-ZREQDLV SEPARATED BY SPACE.
+
+    "- Sales District
+    DATA: V_DISTRICT TYPE VBKD-BZIRK.
+    SELECT SINGLE VBKD~BZIRK
+      INTO V_DISTRICT FROM VBKD
+      WHERE VBKD~VBELN = IT_QUOT-VBELN.
+
+    IF V_DISTRICT NE ''.
+      SELECT SINGLE T171T~BZTXT
+      INTO IT_QUOT-BZIRK FROM T171T
+      WHERE T171T~BZIRK = V_DISTRICT
+      AND T171T~SPRAS = 'E'.
+
+*      CONCATENATE V_DISTRICT IT_QUOT-BZIRK INTO IT_QUOT-BZIRK SEPARATED BY ' - '.
+    ENDIF.
+
+    "-Customer Groups
+    DATA: V_CUSTGRP TYPE VBKD-KDGRP.
+    SELECT SINGLE VBKD~KDGRP
+      INTO V_CUSTGRP FROM VBKD
+        WHERE VBKD~VBELN = IT_QUOT-VBELN.
+
+    IF V_CUSTGRP NE ''.
+      SELECT SINGLE T151T~KTEXT
+      INTO IT_QUOT-KDGRP FROM T151T
+      WHERE T151T~KDGRP = V_CUSTGRP
+      AND T151T~SPRAS = 'E'.
+
+      CONCATENATE V_CUSTGRP IT_QUOT-KDGRP INTO IT_QUOT-KDGRP SEPARATED BY ' - '.
+    ENDIF.
+
+    "- Industry of customer
+    DATA: V_IND TYPE KNA1-BRSCH.
+    SELECT SINGLE KNA1~BRSCH
+      INTO V_IND FROM KNA1
+      WHERE KNA1~KUNNR = IT_QUOT-KUNNR.
+
+    IF V_IND NE ''.
+      SELECT SINGLE T016T~BRTXT
+      INTO IT_QUOT-BRSCH FROM T016T
+      WHERE T016T~BRSCH = V_IND
+      AND T016T~SPRAS = 'E'.
+
+      CONCATENATE V_IND IT_QUOT-BRSCH INTO IT_QUOT-BRSCH SEPARATED BY ' - '.
+
+    ENDIF.
+
+    "- Customer group 1-5
+    DATA: V_KVGR1 TYPE VBAK-KVGR1,
+          V_KVGR2 TYPE VBAK-KVGR2,
+          V_KVGR3 TYPE VBAK-KVGR3,
+          V_KVGR4 TYPE VBAK-KVGR4,
+          V_KVGR5 TYPE VBAK-KVGR5.
+
+    SELECT SINGLE VBAK~KVGR1 VBAK~KVGR2 VBAK~KVGR3 VBAK~KVGR4 VBAK~KVGR5
+      INTO (V_KVGR1, V_KVGR2, V_KVGR3, V_KVGR4, V_KVGR5)
+      FROM VBAK
+      WHERE VBAK~VBELN = IT_QUOT-VBELN.
+
+    IF V_KVGR1 NE ''.
+      SELECT SINGLE TVV1T~BEZEI
+        INTO IT_QUOT-KVGR1 FROM TVV1T
+        WHERE TVV1T~KVGR1 = V_KVGR1
+        AND TVV1T~SPRAS = 'E'.
+
+      CONCATENATE V_KVGR1 IT_QUOT-KVGR1 INTO IT_QUOT-KVGR1 SEPARATED BY ' - '.
+
+    ENDIF.
+
+    IF V_KVGR2 NE ''.
+      SELECT SINGLE TVV2T~BEZEI
+           INTO IT_QUOT-KVGR2 FROM TVV2T
+           WHERE TVV2T~KVGR2 = V_KVGR2
+           AND TVV2T~SPRAS = 'E'.
+
+      CONCATENATE V_KVGR2 IT_QUOT-KVGR2 INTO IT_QUOT-KVGR2 SEPARATED BY ' - '.
+
+    ENDIF.
+
+    IF V_KVGR3 NE ''.
+      SELECT SINGLE TVV3T~BEZEI
+          INTO IT_QUOT-KVGR3 FROM TVV3T
+          WHERE TVV3T~KVGR3 = V_KVGR3
+          AND TVV3T~SPRAS = 'E'.
+
+      CONCATENATE V_KVGR3 IT_QUOT-KVGR3 INTO IT_QUOT-KVGR3 SEPARATED BY ' - '.
+
+    ENDIF.
+
+    IF V_KVGR4 NE ''.
+      SELECT SINGLE TVV4T~BEZEI
+         INTO IT_QUOT-KVGR4 FROM TVV4T
+         WHERE TVV4T~KVGR4 = V_KVGR4
+         AND TVV4T~SPRAS = 'E'.
+
+      CONCATENATE V_KVGR4 IT_QUOT-KVGR4 INTO IT_QUOT-KVGR4 SEPARATED BY ' - '.
+
+    ENDIF.
+
+    IF V_KVGR5 NE ''.
+      SELECT SINGLE TVV5T~BEZEI
+         INTO IT_QUOT-KVGR5 FROM TVV5T
+         WHERE TVV5T~KVGR5 = V_KVGR5
+         AND TVV5T~SPRAS = 'E'.
+
+      CONCATENATE V_KVGR5 IT_QUOT-KVGR5 INTO IT_QUOT-KVGR5 SEPARATED BY ' - '.
+
+    ENDIF.
+
+    CLEAR: IT_LINE2.
+    REFRESH: IT_LINE2.
+    "- Quotation Remarks
+    CALL FUNCTION 'READ_TEXT'
+      EXPORTING
+*       CLIENT                        = SY-MANDT
+        ID                            = 'Z102'
+        LANGUAGE                      = SY-LANGU
+        NAME                          = V_VBELN
+        OBJECT                        = 'VBBK'
+*       ARCHIVE_HANDLE                = 0
+*       LOCAL_CAT                     = ' '
+*     IMPORTING
+*       HEADER                        =
+*       OLD_LINE_COUNTER              =
+      TABLES
+        LINES                         = IT_LINE2
+     EXCEPTIONS
+       ID                            = 1
+       LANGUAGE                      = 2
+       NAME                          = 3
+       NOT_FOUND                     = 4
+       OBJECT                        = 5
+       REFERENCE_CHECK               = 6
+       WRONG_ACCESS_TO_ARCHIVE       = 7
+       OTHERS                        = 8
+              .
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+
+    READ TABLE IT_LINE2 INDEX 1.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZQUOT_REMARKS = IT_LINE2-TDLINE.
+    ENDIF.
+
+    CLEAR: IT_LINE2.
+    REFRESH: IT_LINE2.
+    "- End User
+    CALL FUNCTION 'READ_TEXT'
+      EXPORTING
+*       CLIENT                        = SY-MANDT
+        ID                            = 'Z134'
+        LANGUAGE                      = SY-LANGU
+        NAME                          = V_VBELN
+        OBJECT                        = 'VBBK'
+*       ARCHIVE_HANDLE                = 0
+*       LOCAL_CAT                     = ' '
+*     IMPORTING
+*       HEADER                        =
+*       OLD_LINE_COUNTER              =
+      TABLES
+        LINES                         = IT_LINE2
+     EXCEPTIONS
+       ID                            = 1
+       LANGUAGE                      = 2
+       NAME                          = 3
+       NOT_FOUND                     = 4
+       OBJECT                        = 5
+       REFERENCE_CHECK               = 6
+       WRONG_ACCESS_TO_ARCHIVE       = 7
+       OTHERS                        = 8
+              .
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+
+
+    READ TABLE IT_LINE2 INDEX 1.
+    IF SY-SUBRC = 0.
+      IT_QUOT-ZEND = IT_LINE2-TDLINE.
+    ENDIF.
+
+
+
+
+    "- Employee Responsible
+    DATA: V_ER TYPE VBPA-PERNR,
+          V_SE TYPE VBPA-PERNR,
+          V_ITEM TYPE VBPA-POSNR.
+
+    SELECT SINGLE VBPA~POSNR
+      INTO V_ITEM FROM VBPA
+      WHERE VBPA~VBELN = IT_QUOT-VBELN
+      AND VBPA~POSNR = IT_QUOT-POSNR
+      AND VBPA~PARVW EQ 'ZM'.
+
+    IF V_ITEM NE '000000'.
+      SELECT SINGLE VBPA~PERNR
+        INTO IT_QUOT-Z_ER FROM VBPA
+        WHERE VBPA~VBELN = IT_QUOT-VBELN
+        AND VBPA~POSNR = IT_QUOT-POSNR.
+
+    ELSE.
+      SELECT SINGLE VBPA~PERNR
+      INTO IT_QUOT-Z_ER FROM VBPA
+      WHERE VBPA~VBELN = IT_QUOT-VBELN
+      AND VBPA~PARVW EQ 'ZM'.
+
+    ENDIF.
+
+    SELECT SINGLE PA0001~ENAME
+      INTO IT_QUOT-ZEMPRES FROM PA0001
+      WHERE PA0001~PERNR = IT_QUOT-Z_ER.
+
+*    "- Sales Employee
+*    SELECT SINGLE VBPA~POSNR
+*     INTO V_ITEM FROM VBPA
+*     WHERE VBPA~VBELN = IT_QUOT-VBELN
+*     AND VBPA~POSNR = IT_QUOT-POSNR
+*     AND VBPA~PARVW EQ 'VE'.
+
+    "- Sales Employee
+    IF V_ITEM NE '000000'.
+      SELECT SINGLE VBPA~PERNR
+        INTO IT_QUOT-Z_SE FROM VBPA
+        WHERE VBPA~VBELN = IT_QUOT-VBELN
+        AND VBPA~POSNR = IT_QUOT-POSNR.
+
+    ELSE.
+
+      SELECT SINGLE VBPA~PERNR
+      INTO IT_QUOT-Z_SE FROM VBPA
+      WHERE VBPA~VBELN = IT_QUOT-VBELN
+      AND VBPA~PARVW = 'VE'.
+
+    ENDIF.
+
+    SELECT SINGLE PA0001~ENAME
+      INTO IT_QUOT-ZSLSEMP FROM PA0001
+      WHERE PA0001~PERNR = IT_QUOT-Z_SE.
+
+    "- Pricing
+    DATA: Z_KNUMV TYPE VBAK-KNUMV,
+          Z_KBETR TYPE KONV-KBETR,
+          Z_KWERT TYPE KONV-KBETR,
+          Z_KPEIN TYPE KONV-KPEIN,
+          Z_KURS TYPE KONV-KKURS,
+          Z_CURRL TYPE KONV-WAERS.
+
+    DATA: Z_CURR LIKE TCURC-WAERS,
+          Z_AMOUNT LIKE WMTO_S-AMOUNT,
+          Z_AMOUNT2 LIKE WMTO_S-AMOUNT.
+    DATA: V_RESULT TYPE P LENGTH 13 DECIMALS 10.
+
+    CLEAR: Z_KNUMV, Z_KBETR, Z_KPEIN, Z_KWERT.
+    CLEAR: Z_CURR, Z_AMOUNT, V_RESULT, Z_KWERT, Z_AMOUNT2.
+
+    SELECT SINGLE VBAK~KNUMV
+      INTO Z_KNUMV
+    FROM VBAK WHERE VBAK~VBELN = IT_QUOT-VBELN.
+
+    "- Unit Price
+    IF IT_QUOT-AUART EQ 'ZEQT'.
+      SELECT SINGLE KONV~KBETR KONV~KPEIN KONV~KKURS KONV~WAERS KONV~KWERT
+        INTO (Z_KBETR, Z_KPEIN, Z_KURS, Z_CURRL, Z_KWERT) FROM KONV
+        WHERE KONV~KNUMV = Z_KNUMV
+        AND KONV~KSCHL EQ 'ZE00' AND
+        KONV~KPOSN = IT_QUOT-POSNR.
+    ELSEIF IT_QUOT-AUART EQ 'ZDQT'.
+      SELECT SINGLE KONV~KBETR KONV~KPEIN KONV~KKURS KONV~WAERS KONV~KWERT
+        INTO (Z_KBETR, Z_KPEIN, Z_KURS, Z_CURRL, Z_KWERT) FROM KONV
+        WHERE KONV~KNUMV = Z_KNUMV
+        AND KONV~KSCHL EQ 'ZD00' AND
+        KONV~KPOSN = IT_QUOT-POSNR.
+    ENDIF.
+
+    Z_CURR = IT_QUOT-WAERK.
+
+    Z_AMOUNT = Z_KBETR.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IF Z_KPEIN NE 0.
+      V_RESULT = Z_AMOUNT / Z_KPEIN.
+    ELSE.
+      V_RESULT = Z_AMOUNT.
+    ENDIF.
+
+    IF Z_CURRL NE  Z_CURR.
+      V_RESULT = V_RESULT * Z_KURS.
+    ENDIF.
+
+    IT_QUOT-KBETR = V_RESULT.
+
+    "- Total Price
+
+    Z_AMOUNT2 = Z_KWERT.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT2
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT2
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IT_QUOT-ZTOTPRICE = Z_AMOUNT2.
+
+
+    "- Shortage Payment
+    CLEAR: Z_KBETR, Z_KPEIN.
+    CLEAR: Z_CURR, Z_AMOUNT, V_RESULT.
+
+    SELECT SINGLE KONV~KWERT KONV~KPEIN KONV~KKURS KONV~WAERS
+     INTO (Z_KBETR, Z_KPEIN, Z_KURS, Z_CURRL) FROM KONV
+     WHERE KONV~KNUMV = Z_KNUMV
+     AND KONV~KSCHL EQ 'ZSHP' AND
+     KONV~KPOSN = IT_QUOT-POSNR.
+
+    Z_AMOUNT = Z_KBETR.
+    Z_CURRL = IT_QUOT-WAERK.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IF Z_KPEIN NE 0.
+      V_RESULT = Z_AMOUNT / Z_KPEIN.
+    ELSE.
+      V_RESULT = Z_AMOUNT.
+    ENDIF.
+
+    IT_QUOT-ZSHP = V_RESULT.
+
+    "- Deposit
+    CLEAR: Z_KBETR, Z_KPEIN.
+    CLEAR: Z_CURR, Z_AMOUNT, V_RESULT.
+
+    SELECT SINGLE KONV~KWERT KONV~KPEIN KONV~KKURS KONV~WAERS
+     INTO (Z_KBETR, Z_KPEIN, Z_KURS, Z_CURRL) FROM KONV
+     WHERE KONV~KNUMV = Z_KNUMV
+     AND KONV~KSCHL EQ 'ZDPS' AND
+     KONV~KPOSN = IT_QUOT-POSNR.
+
+    Z_AMOUNT = Z_KBETR.
+    Z_CURRL = IT_QUOT-WAERK.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IF Z_KPEIN NE 0.
+      V_RESULT = Z_AMOUNT / Z_KPEIN.
+    ELSE.
+      V_RESULT = Z_AMOUNT.
+    ENDIF.
+
+
+    IT_QUOT-ZDPS = V_RESULT.
+
+    "- Extra Cost
+    CLEAR: Z_KBETR, Z_KPEIN.
+    CLEAR: Z_CURR, Z_AMOUNT, V_RESULT.
+
+    SELECT SINGLE KONV~KWERT KONV~KPEIN KONV~KKURS KONV~WAERS
+     INTO (Z_KBETR, Z_KPEIN, Z_KURS, Z_CURRL) FROM KONV
+     WHERE KONV~KNUMV = Z_KNUMV
+     AND KONV~KSCHL EQ 'ZEXC' AND
+     KONV~KPOSN = IT_QUOT-POSNR.
+
+    Z_AMOUNT = Z_KBETR.
+    Z_CURRL = IT_QUOT-WAERK.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IF Z_KPEIN NE 0.
+      V_RESULT = Z_AMOUNT / Z_KPEIN.
+    ELSE.
+      V_RESULT = Z_AMOUNT.
+    ENDIF.
+
+
+    IT_QUOT-ZEXC = V_RESULT.
+
+    "- Discount
+    CLEAR: Z_KWERT, Z_KBETR, Z_KPEIN.
+    CLEAR: Z_CURR, Z_AMOUNT, V_RESULT.
+
+    SELECT SINGLE KONV~KWERT KONV~KBETR KONV~KPEIN KONV~KKURS KONV~WAERS
+     INTO (Z_KWERT, Z_KBETR, Z_KPEIN, Z_KURS, Z_CURRL) FROM KONV
+     WHERE KONV~KNUMV = Z_KNUMV
+     AND KONV~KSCHL EQ 'ZDSC' AND
+     KONV~KPOSN = IT_QUOT-POSNR.
+
+    Z_KBETR = Z_KBETR / -1000.
+    IT_QUOT-ZDSCPERCENT = Z_KBETR.
+
+    Z_AMOUNT = Z_KWERT.
+    Z_CURRL = IT_QUOT-WAERK.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IF Z_KPEIN NE 0.
+      V_RESULT = Z_AMOUNT / Z_KPEIN.
+    ELSE.
+      V_RESULT = Z_AMOUNT.
+    ENDIF.
+
+
+    IT_QUOT-ZDSC = V_RESULT.
+
+    "- Discount (Value)
+    CLEAR: Z_KWERT, Z_KPEIN.
+    CLEAR: Z_CURR, Z_AMOUNT, V_RESULT.
+
+    SELECT SINGLE KONV~KWERT KONV~KPEIN KONV~KKURS KONV~WAERS
+     INTO (Z_KWERT, Z_KPEIN, Z_KURS, Z_CURRL) FROM KONV
+     WHERE KONV~KNUMV = Z_KNUMV
+     AND KONV~KSCHL EQ 'ZDSV' AND
+     KONV~KPOSN = IT_QUOT-POSNR.
+
+    Z_AMOUNT = Z_KWERT.
+    Z_CURRL = IT_QUOT-WAERK.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IF Z_KPEIN NE 0.
+      V_RESULT = Z_AMOUNT / Z_KPEIN.
+    ELSE.
+      V_RESULT = Z_AMOUNT.
+    ENDIF.
+
+    IT_QUOT-ZDSV = V_RESULT.
+
+    "- Insurance
+    CLEAR: Z_KWERT, Z_KPEIN.
+    CLEAR: Z_CURR, Z_AMOUNT, V_RESULT.
+
+    SELECT SINGLE KONV~KWERT KONV~KPEIN KONV~KKURS KONV~WAERS
+     INTO (Z_KWERT, Z_KPEIN, Z_KURS, Z_CURRL) FROM KONV
+     WHERE KONV~KNUMV = Z_KNUMV
+     AND KONV~KSCHL EQ 'ZIN1' AND
+     KONV~KPOSN = IT_QUOT-POSNR.
+
+    Z_AMOUNT = Z_KWERT.
+    Z_CURRL = IT_QUOT-WAERK.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IF Z_KPEIN NE 0.
+      V_RESULT = Z_AMOUNT / Z_KPEIN.
+    ELSE.
+      V_RESULT = Z_AMOUNT.
+    ENDIF.
+
+    IT_QUOT-ZIN1 = V_RESULT.
+
+    "- Insurance Stat
+    CLEAR: Z_KWERT, Z_KPEIN.
+    CLEAR: Z_CURR, Z_AMOUNT, V_RESULT.
+
+    SELECT SINGLE KONV~KWERT KONV~KPEIN KONV~KKURS KONV~WAERS
+     INTO (Z_KWERT, Z_KPEIN, Z_KURS, Z_CURRL) FROM KONV
+     WHERE KONV~KNUMV = Z_KNUMV
+     AND KONV~KSCHL EQ 'ZIN2' AND
+     KONV~KPOSN = IT_QUOT-POSNR.
+
+    Z_AMOUNT = Z_KWERT.
+    Z_CURRL = IT_QUOT-WAERK.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IF Z_KPEIN NE 0.
+      V_RESULT = Z_AMOUNT / Z_KPEIN.
+    ELSE.
+      V_RESULT = Z_AMOUNT.
+    ENDIF.
+
+    IT_QUOT-ZIN2 = V_RESULT.
+
+    "- Freight
+    CLEAR: Z_KWERT, Z_KPEIN.
+    CLEAR: Z_CURR, Z_AMOUNT, V_RESULT.
+
+    SELECT SINGLE KONV~KWERT KONV~KPEIN KONV~KKURS KONV~WAERS
+     INTO (Z_KWERT, Z_KPEIN, Z_KURS, Z_CURRL) FROM KONV
+     WHERE KONV~KNUMV = Z_KNUMV
+     AND KONV~KSCHL EQ 'ZFR1' AND
+     KONV~KPOSN = IT_QUOT-POSNR.
+
+    Z_AMOUNT = Z_KWERT.
+    Z_CURRL = IT_QUOT-WAERK.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IF Z_KPEIN NE 0.
+      V_RESULT = Z_AMOUNT / Z_KPEIN.
+    ELSE.
+      V_RESULT = Z_AMOUNT.
+    ENDIF.
+
+    IT_QUOT-ZFR1 = V_RESULT.
+
+    "- Freight Stat
+    CLEAR: Z_KBETR, Z_KPEIN.
+    CLEAR: Z_CURR, Z_AMOUNT, V_RESULT.
+
+    SELECT SINGLE KONV~KWERT KONV~KPEIN KONV~KKURS KONV~WAERS
+     INTO (Z_KWERT, Z_KPEIN, Z_KURS, Z_CURRL) FROM KONV
+     WHERE KONV~KNUMV = Z_KNUMV
+     AND KONV~KSCHL EQ 'ZFR2' AND
+     KONV~KPOSN = IT_QUOT-POSNR.
+
+    Z_AMOUNT = Z_KWERT.
+    Z_CURRL = IT_QUOT-WAERK.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IF Z_KPEIN NE 0.
+      V_RESULT = Z_AMOUNT / Z_KPEIN.
+    ELSE.
+      V_RESULT = Z_AMOUNT.
+    ENDIF.
+
+    IT_QUOT-ZFR2 = V_RESULT.
+
+    "- Tax
+    CLEAR: Z_KWERT, Z_KPEIN.
+    CLEAR: Z_CURR, Z_AMOUNT, V_RESULT.
+
+    SELECT SINGLE KONV~KWERT KONV~KPEIN KONV~KKURS KONV~WAERS
+     INTO (Z_KWERT, Z_KPEIN, Z_KURS, Z_CURRL) FROM KONV
+     WHERE KONV~KNUMV = Z_KNUMV
+     AND KONV~KSCHL EQ 'ZPPN' AND
+     KONV~KPOSN = IT_QUOT-POSNR.
+
+    Z_AMOUNT = Z_KWERT.
+    Z_CURRL = IT_QUOT-WAERK.
+
+    IF Z_AMOUNT NE 0.
+      CALL FUNCTION 'CURRENCY_AMOUNT_SAP_TO_DISPLAY'
+        EXPORTING
+          CURRENCY        = Z_CURRL
+          AMOUNT_INTERNAL = Z_AMOUNT
+        IMPORTING
+          AMOUNT_DISPLAY  = Z_AMOUNT
+        EXCEPTIONS
+          INTERNAL_ERROR  = 1
+          OTHERS          = 2.
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    ENDIF.
+
+    IF Z_KPEIN NE 0.
+      V_RESULT = Z_AMOUNT / Z_KPEIN.
+    ELSE.
+      V_RESULT = Z_AMOUNT.
+    ENDIF.
+
+    IT_QUOT-ZTAX = V_RESULT.
+
+    IT_QUOT-ZDSC = -1 * IT_QUOT-ZDSC.
+
+    IT_QUOT-ZDSV = -1 * IT_QUOT-ZDSV.
+
+    "- Amount Paid
+*    IF IT_QUOT-ZFR2 NE '0.00' AND IT_QUOT-ZIN2 NE '0.00'.
+*      IF IT_QUOT-ZFR1 EQ '0.00' OR IT_QUOT-ZIN1 EQ '0.00'.
+*        IT_QUOT-ZPAID = IT_QUOT-ZTOTPRICE + IT_QUOT-ZIN1 + IT_QUOT-ZIN2 + IT_QUOT-ZFR1 + IT_QUOT-ZFR2 + IT_QUOT-ZEXC + IT_QUOT-ZTAX - IT_QUOT-ZSHP - IT_QUOT-ZDPS - IT_QUOT-ZDSC - IT_QUOT-ZDSV .
+*      ELSE.
+*        IT_QUOT-ZPAID = IT_QUOT-ZTOTPRICE + IT_QUOT-ZIN1 + IT_QUOT-ZIN2 + IT_QUOT-ZFR1 + IT_QUOT-ZFR2 + IT_QUOT-ZEXC + IT_QUOT-ZTAX - IT_QUOT-ZSHP - IT_QUOT-ZDPS - IT_QUOT-ZDSC - IT_QUOT-ZDSV - IT_QUOT-ZFR2 - IT_QUOT-ZIN2 .
+*      ENDIF.
+*    ELSE.
+*      IT_QUOT-ZPAID = IT_QUOT-ZTOTPRICE + IT_QUOT-ZIN1 + IT_QUOT-ZIN2 + IT_QUOT-ZFR1 + IT_QUOT-ZFR2 + IT_QUOT-ZEXC + IT_QUOT-ZTAX - IT_QUOT-ZSHP - IT_QUOT-ZDPS - IT_QUOT-ZDSC - IT_QUOT-ZDSV .
+*    ENDIF.
+
+    DATA: ZDISCOUNTVALUE TYPE KONV-KBETR.
+    IT_QUOT-ZPAID =  IT_QUOT-ZTOTPRICE + IT_QUOT-ZIN1 + IT_QUOT-ZIN2 + IT_QUOT-ZFR1 + IT_QUOT-ZFR2 + IT_QUOT-ZEXC + IT_QUOT-ZTAX - IT_QUOT-ZSHP - IT_QUOT-ZDPS .
+    ZDISCOUNTVALUE = IT_QUOT-ZPAID * IT_QUOT-ZDSCPERCENT.
+    IT_QUOT-ZPAID = IT_QUOT-ZPAID - ZDISCOUNTVALUE - IT_QUOT-ZDSV.
+
+
+    "- Status Quotation
+    " Order qty quotation = IT_QUOT-KWMENG
+
+    " Order qty SO
+    DATA: Z_KWMENG TYPE VBAP-KWMENG.
+    SELECT SINGLE VBAP~KWMENG FROM VBAP
+      INTO Z_KWMENG WHERE
+      VBAP~VBELN = IT_QUOT-ZSO AND
+      VBAP~POSNR = IT_QUOT-ZSOITEM.
+
+    IF IT_QUOT-ABGRU NE ''.
+      IT_QUOT-ZSOREF = 'Rejected'.
+    ELSEIF Z_KWMENG = 0.
+      IT_QUOT-ZSOREF = 'Open'.
+    ELSEIF Z_KWMENG = IT_QUOT-KWMENG.
+      IT_QUOT-ZSOREF = 'Completed'.
+    ELSEIF IT_QUOT-KWMENG < Z_KWMENG.
+      IT_QUOT-ZSOREF = 'Over Referenced'.
+    ELSEIF IT_QUOT-KWMENG > Z_KWMENG.
+      IT_QUOT-ZSOREF = 'Partially Referenced'.
+    ENDIF.
+
+    "- Material Group 1-5
+    DATA: V_MVGR(35).
+    CLEAR:V_MVGR.
+    SELECT SINGLE TVM1T~BEZEI FROM TVM1T
+      INTO V_MVGR
+      WHERE TVM1T~MVGR1 = IT_QUOT-MVGR1
+      AND SPRAS EQ 'E'.
+
+*    IF IT_QUOT-MVGR1 NE ''.
+*      CONCATENATE IT_QUOT-MVGR1 V_MVGR INTO IT_QUOT-MVGR1 SEPARATED BY ' - ' .
+*    ENDIF.
+    IT_QUOT-MVGR1 = V_MVGR.
+
+    CLEAR: V_MVGR.
+    SELECT  SINGLE  TVM2T~BEZEI FROM TVM2T
+      INTO V_MVGR
+      WHERE TVM2T~MVGR2 = IT_QUOT-MVGR2
+      AND SPRAS EQ 'E'.
+
+*    IF IT_QUOT-MVGR2 NE ''.
+*      CONCATENATE IT_QUOT-MVGR2 V_MVGR INTO IT_QUOT-MVGR2 SEPARATED BY ' - ' .
+*    ENDIF.
+    IT_QUOT-MVGR2 = V_MVGR.
+
+    CLEAR: V_MVGR.
+    SELECT  SINGLE  TVM3T~BEZEI FROM TVM3T
+      INTO V_MVGR
+      WHERE TVM3T~MVGR3 = IT_QUOT-MVGR3
+      AND SPRAS EQ 'E'.
+
+*    IF IT_QUOT-MVGR3 NE ''.
+*      CONCATENATE IT_QUOT-MVGR3 V_MVGR INTO IT_QUOT-MVGR3 SEPARATED BY ' - ' .
+*    ENDIF.
+    IT_QUOT-MVGR3 = V_MVGR.
+
+    CLEAR: V_MVGR.
+    SELECT  SINGLE TVM4T~BEZEI FROM TVM4T
+      INTO V_MVGR
+      WHERE TVM4T~MVGR4 = IT_QUOT-MVGR4
+      AND SPRAS EQ 'E'.
+
+*    IF IT_QUOT-MVGR4 NE ''.
+*      CONCATENATE IT_QUOT-MVGR4 V_MVGR INTO IT_QUOT-MVGR4 SEPARATED BY ' - ' .
+*    ENDIF.
+    IT_QUOT-MVGR4 = V_MVGR.
+
+    CLEAR: V_MVGR.
+    SELECT  SINGLE TVM5T~BEZEI FROM TVM5T
+      INTO V_MVGR
+      WHERE TVM5T~MVGR5 = IT_QUOT-MVGR5
+      AND SPRAS EQ 'E'.
+
+*    IF IT_QUOT-MVGR5 NE ''.
+*      CONCATENATE IT_QUOT-MVGR5 V_MVGR INTO IT_QUOT-MVGR5 SEPARATED BY ' - ' .
+*    ENDIF.
+    IT_QUOT-MVGR5 = V_MVGR.
+
+    "- Product Hierarchy
+    DATA: V_COUNT TYPE P,
+          V_PROD1(5),
+          V_PROD2(10),
+          Z_PROD1(60),
+          Z_PROD2(60),
+          Z_PROD3(60),
+          Z_TEMP(200).
+
+    CLEAR: V_COUNT.
+    V_COUNT = STRLEN( IT_QUOT-PRODH ).
+
+    IF ( V_COUNT = 5 ).
+
+      CLEAR Z_PROD1.
+      SELECT SINGLE T179T~VTEXT FROM T179T
+        INTO Z_PROD1
+        WHERE PRODH = IT_QUOT-PRODH AND SPRAS EQ 'E'.
+
+*      CONCATENATE IT_QUOT-PRODH V_TEXT INTO IT_QUOT-PRODH SEPARATED BY ' - '.
+      IT_QUOT-PRODH = V_TEXT.
+
+    ELSEIF ( V_COUNT = 10 ).
+
+      CLEAR: V_PROD1, V_PROD2, Z_PROD1, Z_PROD2, Z_TEMP.
+      V_PROD1 = IT_QUOT-PRODH(5).
+      V_PROD2 = IT_QUOT-PRODH(10).
+
+      SELECT SINGLE T179T~VTEXT FROM T179T
+        INTO Z_PROD1
+        WHERE PRODH = V_PROD1 AND SPRAS EQ 'E'.
+
+      SELECT SINGLE T179T~VTEXT FROM T179T
+        INTO Z_PROD2
+        WHERE PRODH = V_PROD2 AND SPRAS EQ 'E'.
+
+*      CONCATENATE Z_PROD1 Z_PROD2 INTO Z_TEMP SEPARATED BY ' / '.
+*      CONCATENATE IT_QUOT-PRODH Z_TEMP INTO IT_QUOT-PRODH SEPARATED BY ' - '.
+      IT_QUOT-PRODH = Z_PROD1.
+      IT_QUOT-PRODH2 = Z_PROD2.
+
+
+    ELSEIF ( V_COUNT = 18 ).
+
+      CLEAR: V_PROD1, V_PROD2, Z_PROD1, Z_PROD2, Z_PROD3, Z_TEMP.
+      V_PROD1 = IT_QUOT-PRODH(5).
+      V_PROD2 = IT_QUOT-PRODH(10).
+
+      SELECT SINGLE T179T~VTEXT FROM T179T
+        INTO Z_PROD1
+        WHERE PRODH = V_PROD1 AND SPRAS EQ 'E'.
+
+      SELECT SINGLE T179T~VTEXT FROM T179T
+        INTO Z_PROD2
+        WHERE PRODH = V_PROD2 AND SPRAS EQ 'E'.
+
+      SELECT SINGLE T179T~VTEXT FROM T179T
+        INTO Z_PROD3
+        WHERE PRODH = IT_QUOT-PRODH AND SPRAS EQ 'E'.
+
+      CONCATENATE Z_PROD1 Z_PROD2 Z_PROD3 INTO Z_TEMP SEPARATED BY ' / '.
+      CONCATENATE IT_QUOT-PRODH Z_TEMP INTO IT_QUOT-PRODH SEPARATED BY ' - '.
+
+      IT_QUOT-PRODH = Z_PROD1.
+      IT_QUOT-PRODH2 = Z_PROD2.
+      IT_QUOT-PRODH3 = Z_PROD3.
+    ENDIF.
+
+    "- Upload Date
+    CLEAR: IT_LINE.
+    REFRESH: IT_LINE.
+    CALL FUNCTION 'READ_TEXT'
+      EXPORTING
+*       CLIENT                        = SY-MANDT
+        ID                            = 'Z109'
+        LANGUAGE                      = SY-LANGU
+        NAME                          = V_VBELN
+        OBJECT                        = 'VBBK'
+*       ARCHIVE_HANDLE                = 0
+*       LOCAL_CAT                     = ' '
+*     IMPORTING
+*       HEADER                        =
+*       OLD_LINE_COUNTER              =
+      TABLES
+        LINES                         = IT_LINE
+     EXCEPTIONS
+       ID                            = 1
+       LANGUAGE                      = 2
+       NAME                          = 3
+       NOT_FOUND                     = 4
+       OBJECT                        = 5
+       REFERENCE_CHECK               = 6
+       WRONG_ACCESS_TO_ARCHIVE       = 7
+       OTHERS                        = 8
+              .
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+
+    DATA: DD(2), MM(2), YYYY(4), ZDATE(10).
+    CLEAR: DD, MM, YYYY, ZDATE.
+
+    READ TABLE IT_LINE INDEX 1.
+    IF SY-SUBRC = 0.
+      ZDATE = IT_LINE-TDLINE.
+    ENDIF.
+
+    SPLIT ZDATE AT '.' INTO DD MM YYYY.
+
+    CONCATENATE YYYY MM DD INTO IT_QUOT-ZUPLOAD.
+
+
+
+    "- Untuk Filter dari Selection Screen
+    IF S_AUART[] IS NOT INITIAL.
+      IF IT_QUOT-AUART NOT IN S_AUART.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_VBELN[] IS NOT INITIAL.
+      IF IT_QUOT-VBELN NOT IN S_VBELN.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_KUNNR[] IS NOT INITIAL.
+      IF IT_QUOT-KUNNR NOT IN S_KUNNR.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_ZZTYPE[] IS NOT INITIAL.
+      IF IT_QUOT-ZZTYPE NOT IN S_ZZTYPE.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+
+    IF S_SEARCH[] IS NOT INITIAL.
+      IF IT_QUOT-SORTL NOT IN S_SEARCH.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_EDATU[] IS NOT INITIAL.
+      IF IT_QUOT-EDATU NOT IN S_EDATU.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_AUDAT[] IS NOT INITIAL.
+      IF IT_QUOT-AUDAT NOT IN S_AUDAT.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_MATNR[] IS NOT INITIAL.
+      IF IT_QUOT-MATNR NOT IN S_MATNR.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_VALIDF[] IS NOT INITIAL.
+      IF IT_QUOT-ZVALF NOT IN S_VALIDF.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_VALIDT[] IS NOT INITIAL.
+      IF IT_QUOT-ZVALT NOT IN S_VALIDT.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_PO[] IS NOT INITIAL.
+      IF IT_QUOT-BSTNK NOT IN S_PO.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_SLSEMP[] IS NOT INITIAL.
+      IF IT_QUOT-Z_SE NOT IN S_SLSEMP.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_EMPRES[] IS NOT INITIAL.
+      IF IT_QUOT-Z_ER NOT IN S_EMPRES.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_CRTDBY[] IS NOT INITIAL.
+      IF IT_QUOT-ERNAM NOT IN S_CRTDBY.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_VTWEG[] IS NOT INITIAL.
+      IF IT_QUOT-VTWEG NOT IN S_VTWEG.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_SPART[] IS NOT INITIAL.
+      IF IT_QUOT-SPART NOT IN S_SPART.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    IF S_SOFF[] IS NOT INITIAL.
+      IF IT_QUOT-VKBUR NOT IN S_SOFF.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+
+    IF S_UPLOAD[] IS NOT INITIAL.
+      IF IT_QUOT-ZUPLOAD NOT IN S_UPLOAD.
+        DELETE IT_QUOT.
+        CONTINUE.
+      ENDIF.
+    ENDIF.
+
+    "-Quotation Number
+*    SHIFT IT_QUOT-VBELN LEFT DELETING LEADING '0'.
+    CALL FUNCTION 'CONVERSION_EXIT_ALPHA_OUTPUT'
+      EXPORTING
+        INPUT  = IT_QUOT-VBELN
+      IMPORTING
+        OUTPUT = IT_QUOT-VBELN.
+
+    "- SO Number
+*    SHIFT IT_QUOT-ZSO LEFT DELETING LEADING '0'.
+    CALL FUNCTION 'CONVERSION_EXIT_ALPHA_OUTPUT'
+      EXPORTING
+        INPUT  = IT_QUOT-ZSO
+      IMPORTING
+        OUTPUT = IT_QUOT-ZSO.
+
+    "- PO Item
+    CALL FUNCTION 'CONVERSION_EXIT_ALPHA_OUTPUT'
+      EXPORTING
+        INPUT  = IT_QUOT-POSEX
+      IMPORTING
+        OUTPUT = IT_QUOT-POSEX.
+
+    TRANSLATE IT_QUOT-ZSLSEMP TO UPPER CASE.
+    TRANSLATE IT_QUOT-ZEMPRES TO UPPER CASE.
+    TRANSLATE IT_QUOT-VTWEG TO UPPER CASE.
+
+    MODIFY IT_QUOT.
+
+  ENDLOOP.
+
+
+  IF P2 = 'X'.
+    DELETE IT_QUOT WHERE ZSOREF NE 'Partially Referenced'.
+  ELSEIF P3 = 'X'.
+    DELETE IT_QUOT WHERE ZSOREF NE 'Open'.
+  ELSEIF P4 = 'X'.
+    DELETE IT_QUOT WHERE ZSOREF NE 'Completed'
+     AND ZSOREF NE 'Over Referenced'.
+  ELSEIF P5 = 'X'.
+    DELETE IT_QUOT WHERE ZSOREF NE 'Rejected'.
+  ENDIF.
+
+  IF P_CHECK1 = 'X' AND P_CHECK2 NE 'X' AND P_CHECK3 NE 'X'.
+    SORT  IT_QUOT ASCENDING BY KUNNR.
+  ELSEIF P_CHECK1 = 'X' AND P_CHECK2 = 'X' AND P_CHECK3 NE 'X'.
+    SORT  IT_QUOT ASCENDING BY ZZTYPE KUNNR.
+  ELSEIF P_CHECK1 = 'X' AND P_CHECK2 = 'X' AND P_CHECK3 = 'X'.
+    SORT IT_QUOT ASCENDING BY KUNNR ZZTYPE VBELN POSNR ZSO ZSOITEM.
+  ELSEIF P_CHECK1 NE 'X' AND P_CHECK2 = 'X' AND P_CHECK3 NE 'X'.
+    SORT IT_QUOT ASCENDING BY ZZTYPE.
+  ELSEIF P_CHECK1 NE 'X' AND P_CHECK2 = 'X' AND P_CHECK3 = 'X'.
+    SORT IT_QUOT ASCENDING BY ZZTYPE VBELN POSNR.
+  ELSEIF P_CHECK1 NE 'X' AND P_CHECK2 NE 'X' AND P_CHECK3 = 'X'.
+    SORT IT_QUOT ASCENDING BY VBELN POSNR.
+  ELSEIF P_CHECK1 = 'X' AND P_CHECK2 NE 'X' AND P_CHECK3 = 'X'.
+    SORT IT_QUOT ASCENDING BY KUNNR VBELN POSNR.
+  ENDIF.
+
+
+
+
+ENDFORM.                    " GET_DATA
+
+
+*&---------------------------------------------------------------------*
+*&      Form  DISPLAY_DATA
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM DISPLAY_DATA .
+  IF IT_QUOT[] IS INITIAL.
+    MESSAGE 'No Data Selected' TYPE 'I'.
+    EXIT.
+  ENDIF.
+
+  PERFORM F_FIELD_CATALOG.
+  PERFORM F_LAYOUT.
+  PERFORM F_LIST_DETAIL.
+
+ENDFORM.                    " DISPLAY_DATA
+
+
+*&---------------------------------------------------------------------*
+*&      Form  F_FIELD_CATALOG
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM F_FIELD_CATALOG .
+  REFRESH : T_FIELDCAT.
+  PERFORM F_ALV_FIELDCATG_ICON2 USING 'IT_QUOT' :
+       'AUDAT'   ''  ''  ''  10   'Doc. Date'    ''   ''  ''  '',
+       'VBELN'   ''  ''  ''  15   'Quotation Number'    ''   ''  ''  '',
+       'ABRVW'   ''  ''  ''  25   'Status Quotation'    ''   ''  ''  '',
+       'POSNR'   ''  ''  ''  10   'Quotation Item'    ''   ''  ''  '',
+       'ZPINO'   ''  ''  ''  35   'PI Number'    ''   ''  ''  '',
+       'ZORDER'   ''  ''  '' 15   'Order Indicator'    ''   ''  ''  '',
+       'ZSO'   ''  ''  ''  10   'SO'    ''   ''  ''  '',
+       'ZSOITEM'   ''  ''  ''  10   'SO Item'    ''   ''  ''  '',
+       'ZSOREF'   ''  ''  ''  20   'Reference Status'    ''   ''  ''  '',
+       'KUNNR'   ''  ''  ''  10   'Sold-to-Party'    ''   ''  ''  '',
+       'ZCUST'   ''  ''  ''  20   'Customer Name'    ''   ''  ''  '',
+       'ZKUNNR2'   ''  ''  ''  20   'Ship-to-Party'    ''   ''  ''  '',
+       'ZCUST2'   ''  ''  ''  20   'Ship-to-Party Name'    ''   ''  ''  '',
+       'SORTL'   ''  ''  ''  20   'Search Term'    ''   ''  ''  '',
+       'EDATU'   ''  ''  ''  15   'Delivery Date'    ''   ''  ''  '',
+       'ZREQDLV'   ''  ''  ''  15   'Delivery Date (in week)'    ''   ''  ''  '',
+       'AUART'   ''  ''  ''  10   'Quotation Type'    ''   ''  ''  '',
+       'PSTYV'   ''  ''  ''  5   'ItCa'    ''   ''  ''  '',
+       'MATNR'   ''  ''  ''  10   'Material'    ''   ''  ''  '',
+       'ARKTX'   ''  ''  ''  25   'Material Description'    ''   ''  ''  '',
+       'ZZTYPE'   ''  ''  ''  10   'Type Film'    ''   ''  ''  '',
+       'ZZCODE'   ''  ''  ''  10   'Kode Film'    ''   ''  ''  '',
+       'ZZCODEDESC'   ''  ''  ''  25   'Deskripsi Kode Film'    ''   ''  ''  '',
+       'ZZTHICKNESS'   ''  ''  ''  10   'Thickness Film (Micron)'    ''   ''  ''  '',
+       'ZZWIDTH'   ''  ''  ''  20   'Lebar Film(mm)'    ''   ''  ''  '',
+       'ZZLENGTH'   ''  ''  ''  20   'Panjang Film Rol(m)'    ''   ''  ''  '',
+       'ZZLENGTHSHT'   ''  ''  ''  20   'Panjang Sheet(mm)'    ''   ''  ''  '',
+       'ZZCORE'   ''  ''  ''  10   'Diameter Core'    ''   ''  ''  '',
+       'ZZTREATMENT'   ''  ''  ''  20   'Treatment'    ''   ''  ''  '',
+       'ZZGRADE'   ''  ''  ''  35   'Grade'    ''   ''  ''  '',
+       'ZZNUMBEROFROLL'   ''  ''  ''  20   'Jumlah Roll'    ''   ''  ''  '',
+       'ZJUMLAHSHEET'   ''  ''  ''  20   'Jumlah Sheet'    ''   ''  ''  '',
+       'ZZEXPIREDLIVE'   ''  ''  ''  10   'Expired Life'    ''   ''  ''  '',
+       'ZZCRITERIA'   ''  ''  ''  10   'Kriteria Grade'    ''   ''  ''  '',
+       'ZZDENSITY'   ''  ''  ''  15   'Density (g/cm3)'    ''   ''  ''  '',
+       'ZZGRAMMAGE'   ''  ''  ''  10   'Grammage'    ''   ''  ''  '',
+       'ZZLABEL'   ''  ''  ''  20   'Type Label'    ''   ''  ''  '',
+       'ZZPACKING'   ''  ''  ''  20   'Packing'    ''   ''  ''  '',
+       'ZZWEIGHTOTAL'   ''  ''  ''  15   'Total Weight (Kg)'    ''   ''  ''  '',
+       'MVGR1'   ''  ''  ''  20   'Mat.Grp.1'    ''   ''  ''  '',
+       'MVGR2'   ''  ''  ''  20   'Mat.Grp.2'    ''   ''  ''  '',
+       'MVGR3'   ''  ''  ''  20   'Mat.Grp.3'    ''   ''  ''  '',
+       'MVGR4'   ''  ''  ''  20   'Mat.Grp.4'    ''   ''  ''  '',
+       'MVGR5'   ''  ''  ''  20   'Mat.Grp.5'    ''   ''  ''  '',
+       'PRODH'   ''  ''  ''  20   'Prod Hie. 1'    ''   ''  ''  '',
+       'PRODH2'   ''  ''  ''  20   'Prod Hie. 2'    ''   ''  ''  '',
+       'PRODH3'   ''  ''  ''  20   'Prod Hie. 3'    ''   ''  ''  '',
+       'KWMENG'   ''  ''  ''  10   'Order Qty'    ''   ''  ''  '',
+       'VRKME'   ''  ''  ''  10   'UoM'    ''   ''  ''  '',
+       'NTGEW'   ''  ''  ''  15   'Net Weight (Kg)'    ''   ''  ''  '',
+       'BRGEW'   ''  ''  ''  15   'Gross Weight (Kg)'    ''   ''  ''  '',
+       'ZTOTPRICE'   ''  ''  ''  15   'Total Unit Price'    ''   ''  ''  '',
+       'KBETR'   ''  ''  ''  10   'Unit Price'    ''   ''  ''  '',
+       'ZSHP'   ''  ''  ''  15   'Shortage Payment (-)'    ''   ''  ''  '',
+       'ZIN1'   ''  ''  ''  15   'Insurance(+)'    ''   ''  ''  '',
+       'ZIN2'   ''  ''  ''  15   'Insurance Stat(+)'    ''   ''  ''  '',
+       'ZFR1'   ''  ''  ''  15   'Freight(+)'    ''   ''  ''  '',
+       'ZFR2'   ''  ''  ''  15   'Freight Stat(+)'    ''   ''  ''  '',
+       'ZDPS'   ''  ''  ''  15   'Deposit(-)'    ''   ''  ''  '',
+       'ZEXC'   ''  ''  ''  15   'Extra Cost(+)'    ''   ''  ''  '',
+       'ZDSC'   ''  ''  ''  15   'Discount (%) (-)'    ''   ''  ''  '',
+       'ZDSV'   ''  ''  ''  15   'Discount (Amount) (-)'    ''   ''  ''  '',
+       'ZTAX'   ''  ''  ''  15   'Tax'    ''   ''  ''  '',
+       'NETWR'   ''  ''  ''  20   'Net Value (SAP)'    ''   ''  ''  '',
+       'ZPAID'   ''  ''  ''  20   'Total Amount Should be Paid'    ''   ''  ''  '',
+       'WAERK'   ''  ''  ''  10   'Currency'    ''   ''  ''  '',
+       'BSTNK'   ''  ''  ''  25   'PO Number'    ''   ''  ''  '',
+       'POSEX'   ''  ''  ''  10   'PO Item'    ''   ''  ''  '',
+       'ABGRU'   ''  ''  ''  20   'Reason Reject'    ''   ''  ''  '',
+       'AUGRU'   ''  ''  ''  25   'Order Reason'    ''   ''  ''  '',
+       'ZQUOT_REMARKS'   ''  ''  ''  40   'Quotation Remarks'    ''   ''  ''  '',
+       'ZEND'   ''  ''  ''  30   'End User'    ''   ''  ''  '',
+       'VKBUR'   ''  ''  ''  25   'Sales Office'    ''   ''  ''  '',
+       'BZIRK'   ''  ''  ''  20   'Sales District'    ''   ''  ''  '',
+       'KDGRP'   ''  ''  ''  20   'Customer Group'    ''   ''  ''  '',
+       'BRSCH'   ''  ''  ''  20   'Industry of Customer'    ''   ''  ''  '',
+       'KVGR1'   ''  ''  ''  20   'Cust. Group 1'    ''   ''  ''  '',
+       'KVGR2'   ''  ''  ''  20   'Cust. Group 2'    ''   ''  ''  '',
+       'KVGR3'   ''  ''  ''  20   'Cust. Group 3'    ''   ''  ''  '',
+       'KVGR4'   ''  ''  ''  20   'Cust. Group 4'    ''   ''  ''  '',
+       'KVGR5'   ''  ''  ''  20   'Cust. Group 5'    ''   ''  ''  '',
+       'VKORG'   ''  ''  ''  20   'Sales Organization'    ''   ''  ''  '',
+       'VTWEG'   ''  ''  ''  20   'Dist. Channel'    ''   ''  ''  '',
+       'SPART'   ''  ''  ''  20   'Division'    ''   ''  ''  '',
+       'ZEMPRES'   ''  ''  ''  30   'Employee Responsible'    ''   ''  ''  '',
+       'ZSLSEMP'   ''  ''  ''  30   'Sales Employee'    ''   ''  ''  '',
+       'ERNAM'   ''  ''  ''  10   'Created By'    ''   ''  ''  '',
+       'ERDAT'   ''  ''  ''  10   'Created On'    ''   ''  ''  '',
+       'ZUPLOAD'   ''  ''  ''  10   'Upload Date'    ''   ''  ''  '',
+       'ZVALF'   ''  ''  ''  10   'Valid From'    ''   ''  ''  '',
+       'ZVALT'   ''  ''  ''  10   'Valid To'    ''   ''  ''  ''
+       .
+
+
+ENDFORM.                    " F_FIELD_CATALOG
+
+
+*&---------------------------------------------------------------------*
+*&      Form  F_LAYOUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM F_LAYOUT .
+  CLEAR WA_LAYOUT.
+  "WA_LAYOUT-ZEBRA = 'X'.
+  WA_LAYOUT-CONFIRMATION_PROMPT = 'X'.
+  WA_LAYOUT-SUBTOTALS_TEXT = 'Sub Total'.
+  WA_LAYOUT-TOTALS_TEXT = 'Total'.
+*  WA_LAYOUT-BOX_FIELDNAME = 'BOX'.
+
+ENDFORM.                    " F_LAYOUT
+
+
+*&---------------------------------------------------------------------*
+*&      Form  F_LIST_DETAIL
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM F_LIST_DETAIL .
+  D_REPID = SY-REPID.
+  T_PRINT-NO_PRINT_LISTINFOS = 'X'.
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      I_CALLBACK_PROGRAM       = D_REPID
+      I_CALLBACK_USER_COMMAND  = 'F_USER_COMMAND'
+      I_CALLBACK_PF_STATUS_SET = 'F_GUI_STATUS'
+      IS_LAYOUT                = WA_LAYOUT
+      IT_FIELDCAT              = T_FIELDCAT[]
+      IT_EVENTS                = T_EVENTS[]
+      IT_EVENT_EXIT            = T_EVENT_EXIT[]
+      I_DEFAULT                = 'X'
+      I_SAVE                   = 'A'
+      IS_VARIANT               = WA_VARIANTE
+      IS_PRINT                 = T_PRINT
+      IT_SORT                  = T_SORT[]
+      IT_EXCLUDING             = T_EXCLUDING[]
+      I_BYPASSING_BUFFER       = 'X'
+    TABLES
+      T_OUTTAB                 = IT_QUOT
+    EXCEPTIONS
+      PROGRAM_ERROR            = 1
+      OTHERS                   = 2.
+ENDFORM.                    " F_LIST_DETAIL
+
+*&---------------------------------------------------------------------
+*&      Form  F_GUI_STATUS
+*&---------------------------------------------------------------------
+FORM F_GUI_STATUS USING FT_EXTAB TYPE SLIS_T_EXTAB.
+  SET PF-STATUS 'ZSTDR_QUOT'.
+ENDFORM.                    " F_ALV_STATUS
+
+
+*&---------------------------------------------------------------------*
+*&      Form  F_USER_COMMAND
+*&---------------------------------------------------------------------*
+FORM F_USER_COMMAND USING FU_UCOMM LIKE SY-UCOMM
+                          FU_SELFIELD TYPE SLIS_SELFIELD.
+  CASE FU_UCOMM.
+    WHEN '&IC1'.
+      CLEAR : WA_QUOT.
+      READ TABLE IT_QUOT INTO WA_QUOT INDEX FU_SELFIELD-TABINDEX.
+      CASE FU_SELFIELD-SEL_TAB_FIELD.
+        WHEN 'IT_QUOT-VBELN'.
+          IF WA_QUOT-VBELN NE ''.
+            SET PARAMETER ID 'AGN' FIELD WA_QUOT-VBELN.
+            CALL TRANSACTION 'VA22' AND SKIP FIRST SCREEN.
+          ENDIF.
+      ENDCASE.
+  ENDCASE.
+ENDFORM.                    "F_USER_COMMAND
+
+*&---------------------------------------------------------------------*
+*&      Form  f_alv_fieldcatg_icon
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM F_ALV_FIELDCATG_ICON2 USING FU_TYPES
+                                FU_FNAME
+                                FU_REFTB
+                                FU_REFLD
+                                FU_NOOUT
+                                FU_OUTLN
+                                FU_FLTXT
+                                FU_DOSUM
+                                FU_HOTSP
+                                FU_JUST
+                                FU_ICON.
+
+
+  CLEAR: T_FIELDCAT.
+  T_FIELDCAT-TABNAME       = FU_TYPES.
+  T_FIELDCAT-FIELDNAME     = FU_FNAME.
+  T_FIELDCAT-REF_TABNAME   = FU_REFTB.
+  T_FIELDCAT-REF_FIELDNAME = FU_REFLD.
+  T_FIELDCAT-NO_OUT        = FU_NOOUT.
+  T_FIELDCAT-OUTPUTLEN     = FU_OUTLN.
+  T_FIELDCAT-SELTEXT_L     = FU_FLTXT.
+  T_FIELDCAT-SELTEXT_M     = FU_FLTXT.
+  T_FIELDCAT-SELTEXT_S     = FU_FLTXT.
+  T_FIELDCAT-REPTEXT_DDIC  = FU_FLTXT.
+  T_FIELDCAT-DO_SUM        = FU_DOSUM.
+  T_FIELDCAT-HOTSPOT       = FU_HOTSP.
+  T_FIELDCAT-JUST          = FU_JUST.
+  T_FIELDCAT-ICON          = FU_ICON.
+  T_FIELDCAT-NO_ZERO       = ''.
+  APPEND T_FIELDCAT.
+  CLEAR T_FIELDCAT.
+
+ENDFORM.                    " f_alv_fieldcatg_icon
+
+
+*&---------------------------------------------------------------------*
+*&      Form  TO_OLAP
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM TO_OLAP.
+  SELECT SINGLE DBMS
+         FROM DBCON
+         INTO DBTYPE
+         WHERE CON_NAME = LV_DBS_CONNECTION.
+
+  IF DBTYPE = 'MSS'.
+    TRY.
+
+      EXEC SQL.
+        CONNECT TO :LV_DBS_CONNECTION
+
+      ENDEXEC.
+      IF SY-SUBRC <> 0.
+        RAISE EXCEPTION TYPE CX_SY_NATIVE_SQL_ERROR.
+      ENDIF.
+
+      EXEC SQL.
+        DELETE FROM XZSD500
+      ENDEXEC.
+
+      EXEC SQL.
+        COMMIT WORK
+      ENDEXEC.
+
+      LOOP AT IT_QUOT.
+        EXEC SQL.
+          INSERT INTO
+            XZSD500(COL001, COL002, COL003, COL004,
+      COL005, COL006, COL007, COL008, COL009, COL010, COL011, COL012,
+      COL013, COL014, COL015, COL016, COL017, COL018, COL019, COL020,
+      COL021, COL022, COL023, COL024, COL025, COL026, COL027, COL028,
+      COL029, COL030, COL031, COL032, COL033, COL034, COL035, COL036,
+      COL037, COL038, COL039, COL040, COL041, COL042, COL043, COL044,
+      COL045, COL046, COL047, COL048, COL049, COL050, COL051, COL052,
+      COL053, COL054, COL055, COL056, COL057, COL058, COL059, COL060,
+      COL061, COL062, COL063, COL064, COL065, COL066, COL067, COL068,
+      COL069, COL070, COL071, COL072, COL073, COL074, COL075, COL076,
+      COL077, COL078, COL079, COL080, COL081, COL082, COL083, COL084,
+      COL085, COL086, COL087, COL088, COL089, COL090, COL091)
+
+      VALUES(:IT_QUOT-AUDAT, :IT_QUOT-VBELN, :IT_QUOT-ABRVW, :IT_QUOT-POSNR, :IT_QUOT-ZPINO,
+             :IT_QUOT-ZORDER, :IT_QUOT-ZSO, :IT_QUOT-ZSOITEM, :IT_QUOT-ZSOREF, :IT_QUOT-KUNNR, :IT_QUOT-ZCUST,
+             :IT_QUOT-ZKUNNR2, :IT_QUOT-ZCUST2, :IT_QUOT-SORTL, :IT_QUOT-EDATU, :IT_QUOT-ZREQDLV, :IT_QUOT-AUART,
+             :IT_QUOT-PSTYV, :IT_QUOT-MATNR, :IT_QUOT-ARKTX, :IT_QUOT-ZZTYPE, :IT_QUOT-ZZCODE, :IT_QUOT-ZZCODEDESC,
+             :IT_QUOT-ZZTHICKNESS, :IT_QUOT-ZZWIDTH, :IT_QUOT-ZZLENGTH, :IT_QUOT-ZZLENGTHSHT, :IT_QUOT-ZZCORE, :IT_QUOT-ZZTREATMENT,
+             :IT_QUOT-ZZGRADE, :IT_QUOT-ZZNUMBEROFROLL, :IT_QUOT-ZJUMLAHSHEET, :IT_QUOT-ZZEXPIREDLIVE, :IT_QUOT-ZZCRITERIA, :IT_QUOT-ZZDENSITY,
+             :IT_QUOT-ZZGRAMMAGE, :IT_QUOT-ZZLABEL, :IT_QUOT-ZZPACKING, :IT_QUOT-ZZWEIGHTOTAL, :IT_QUOT-MVGR1, :IT_QUOT-MVGR2,
+             :IT_QUOT-MVGR3, :IT_QUOT-MVGR4, :IT_QUOT-MVGR5, :IT_QUOT-PRODH, :IT_QUOT-PRODH2, :IT_QUOT-PRODH3,
+             :IT_QUOT-KWMENG, :IT_QUOT-VRKME, :IT_QUOT-NTGEW, :IT_QUOT-BRGEW, :IT_QUOT-ZTOTPRICE, :IT_QUOT-KBETR,
+             :IT_QUOT-ZSHP, :IT_QUOT-ZIN1, :IT_QUOT-ZIN2, :IT_QUOT-ZFR1, :IT_QUOT-ZFR2, :IT_QUOT-ZDPS,
+             :IT_QUOT-ZEXC, :IT_QUOT-ZDSC, :IT_QUOT-ZDSV, :IT_QUOT-ZTAX, :IT_QUOT-NETWR, :IT_QUOT-ZPAID,
+             :IT_QUOT-WAERK, :IT_QUOT-BSTNK, :IT_QUOT-POSEX, :IT_QUOT-ABGRU, :IT_QUOT-AUGRU, :IT_QUOT-ZQUOT_REMARKS,
+             :IT_QUOT-ZEND, :IT_QUOT-VKBUR, :IT_QUOT-BZIRK, :IT_QUOT-KDGRP, :IT_QUOT-BRSCH, :IT_QUOT-KVGR1,
+             :IT_QUOT-KVGR2, :IT_QUOT-KVGR3, :IT_QUOT-KVGR4, :IT_QUOT-KVGR5, :IT_QUOT-VKORG, :IT_QUOT-VTWEG,
+             :IT_QUOT-SPART, :IT_QUOT-ZEMPRES, :IT_QUOT-ZSLSEMP, :IT_QUOT-ERNAM, :IT_QUOT-ERDAT, :IT_QUOT-ZUPLOAD, :IT_QUOT-ZVALF, :IT_QUOT-ZVALT)
+        ENDEXEC.
+      ENDLOOP.
+
+      EXEC SQL.
+        COMMIT WORK.
+      ENDEXEC.
+
+      EXEC SQL.
+        DISCONNECT :LV_CURRENT_CONNECTION
+      ENDEXEC.
+    ENDTRY.
+  ENDIF.
+ENDFORM.                    "TO_OLAP

@@ -1,0 +1,225 @@
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZQMI_COA_F01.abap
+  Baris 11 | Field DDIC | QPMK-MKMNR
+  Baris 12 | Field DDIC | QPMK-WERKS
+  Baris 13 | Field DDIC | QPMK-STELLEN
+  Baris 14 | Field DDIC | QPMK-MASSEINHSW
+  Baris 19 | Field DDIC | QPMK-MASSEINHSW
+  Baris 23 | Field DDIC | QALS-PRUEFLOS
+  Baris 24 | Field DDIC | QAMV-VERWMERKM
+  Baris 26 | Field DDIC | QAMR-MITTELWERT
+  Baris 32 | Field DDIC | LIPS-VBELN
+  Baris 33 | Field DDIC | QAMV-VERWMERKM
+  Baris 34 | Field DDIC | QAMR-MITTELWERT
+  Baris 41 | Field DDIC | QALS-PRUEFLOS
+  Baris 42 | Field DDIC | QAMR-MERKNR
+  Baris 43 | Field DDIC | QAMR-MITTELWERT
+  Baris 44 | Field DDIC | QAMR-ANZWERTG
+  Baris 48 | Field DDIC | QALS-PRUEFLOS
+  Baris 123 | Layar dan GUI | CALL SCREEN 0100.
+  Baris 134 | Field DDIC | BAPI2045L2-INSPOPER
+  Baris 136 | Field DDIC | ZMAP_COA-KUNNR
+  Baris 300 | Field DDIC | SY-SUBRC
+  Baris 406 | Field DDIC | QAMR-MITTELWERT
+  Baris 441 | Field DDIC | QAMR-MITTELWERT
+  Baris 460 | Field DDIC | QAMR-MITTELWERT
+  Baris 496 | Field DDIC | QAMR-ANZWERTG
+  Baris 576 | Field DDIC | QAMR-MITTELWERT
+  Baris 713 | Field DDIC | IT_DATA-MICMIN
+  Baris 731 | Field DDIC | QALS-PRUEFLOS
+  Baris 745 | Field DDIC | QALS-PRUEFLOS
+  Baris 749 | Field DDIC | QALS-PRUEFLOS
+  Baris 755 | Field DDIC | QAMR-MITTELWERT
+  Baris 954 | Tipe DDIC | RLGRAP
+  Baris 956 | Field DDIC | RLGRAP-FILENAME
+  Baris 957 | Field DDIC | RLGRAP-FILENAME
+  Baris 1027 | Teks Seleksi | TEXT-011
+  Baris 1099 | Field DDIC | RLGRAP-FILENAME
+  Baris 1100 | Field DDIC | RLGRAP-FILENAME
+  Baris 1136 | Teks Seleksi | TEXT-011
+  Baris 1182 | Field DDIC | LIKP-VBELN
+  Baris 1291 | Class dan Interface | CL_GUI_FRONTEND_SERVICES
+  Baris 1306 | Class dan Interface | CL_GUI_FRONTEND_SERVICES
+  Baris 1480 | Class dan Interface | CL_GUI_FRONTEND_SERVICES
+  Baris 1572 | Field DDIC | LIPS-VBELN
+  Baris 1573 | Field DDIC | LIPS-POSNR
+  Baris 1574 | Field DDIC | LIPS-CHARG
+  Baris 1575 | Field DDIC | LIPS-NTGEW
+  Baris 1583 | Field DDIC | LIPS-VBELN
+  Baris 1777 | Field DDIC | LIPS-WERKS
+  Baris 1778 | Field DDIC | LIPS-VBELN
+  Baris 1804 | Field DDIC | QALS-PRUEFLOS
+  Baris 1805 | Field DDIC | QALS-PRUEFLOS
+  Baris 1806 | Field DDIC | QALS-PRUEFLOS
+  Baris 1807 | Field DDIC | MCH1-CHARG
+  Baris 1808 | Field DDIC | MCH1-CHARG
+  Baris 1809 | Field DDIC | MCH1-CHARG
+  Baris 1810 | Field DDIC | QALS-PRUEFLOS
+  Baris 1811 | Field DDIC | QALS-PRUEFLOS
+  Baris 1822 | Field DDIC | AFPO-AUFNR
+  Baris 1823 | Field DDIC | MSEG-MBLNR
+  Baris 1824 | Field DDIC | MSEG-MATNR
+  Baris 1825 | Field DDIC | MSEG-CHARG
+  Baris 1826 | Field DDIC | MCH1-LICHA
+  Baris 1829 | Field DDIC | MCH1-CHARG
+  Baris 1830 | Field DDIC | MCH1-CHARG
+  Baris 1831 | Field DDIC | MCH1-CHARG
+  Baris 1844 | Field DDIC | MSEG-AUFNR
+  Baris 1845 | Field DDIC | MSEG-CHARG
+  Baris 1846 | Field DDIC | MSEG-AUFNR
+  Baris 1847 | Field DDIC | MSEG-CHARG
+  Baris 1933 | Field DDIC | QALS-PRUEFLOS
+  Baris 2186 | Field DDIC | QALS-PRUEFLOS
+  Baris 2187 | Field DDIC | MCH1-CUOBJ_BM
+  Baris 2188 | Field DDIC | AUSP-OBJEK
+  Baris 2189 | Field DDIC | AUSP-ATWRT
+  Baris 2205 | Field DDIC | AUSP-ATWRT
+  Baris 2208 | Field DDIC | AUSP-ATWRT
+  Baris 2212 | Field DDIC | AUSP-OBJEK
+  Baris 2216 | Field DDIC | MCH1-CUOBJ_BM
+  Baris 2220 | Field DDIC | MCH1-CHARG
+  Baris 2224 | Field DDIC | QALS-PRUEFLOS
+  Baris 2225 | Field DDIC | QALS-CHARG
+  Baris 2363 | Field DDIC | MKPF-BKTXT
+  Baris 2376 | Field DDIC | AFPO-AUFNR
+  Baris 2426 | Field DDIC | MKPF-MBLNR
+  Baris 2427 | Field DDIC | MKPF-MJAHR
+  Baris 2428 | Field DDIC | MKPF-BKTXT
+  Baris 2498 | Field DDIC | QAMR-MITTELWERT
+  Baris 2500 | Field DDIC | QALS-ART
+  Baris 2501 | Field DDIC | QALS-CHARG
+  Baris 2502 | Field DDIC | MSEG-AUFNR
+  Baris 2503 | Field DDIC | QAMV-MERKNR
+  Baris 2504 | Field DDIC | QAMR-MITTELWERT
+  Baris 2504 | Field DDIC | QAMR-ANZWERTG
+  Baris 2505 | Field DDIC | QAMR-MITTELWERT
+  Baris 2507 | Field DDIC | MSEG-CHARG
+  Baris 2510 | Field DDIC | QALS-PRUEFLOS
+  Baris 2556 | Field DDIC | AUSP-ATINN
+  Baris 2560 | Field DDIC | QALS-PRUEFLOS
+  Baris 2561 | Field DDIC | QAMV-MERKNR
+  Baris 2562 | Field DDIC | QAMR-MITTELWERT
+  Baris 2563 | Field DDIC | QAMR-ANZWERTG
+  Baris 2626 | Field DDIC | MCH1-CUOBJ_BM
+  Baris 2627 | Field DDIC | AUSP-OBJEK
+  Baris 2628 | Field DDIC | AUSP-ATWRT
+  Baris 2680 | Field DDIC | QAMR-MITTELWERT
+  Baris 2682 | Field DDIC | QALS-PRUEFLOS
+  Baris 2683 | Field DDIC | QAMV-MERKNR
+  Baris 2683 | Field DDIC | QAMV-VERWMERKM
+  Baris 2684 | Field DDIC | QASE-MESSWERT
+  Baris 2684 | Field DDIC | QAMR-MITTELWERT
+  Baris 2686 | Field DDIC | LIPS-CHARG
+  Baris 2689 | Field DDIC | QALS-PRUEFLOS
+  Baris 2823 | Field DDIC | LIPS-VBELN
+  Baris 2832 | Field DDIC | LIKP-VBELN
+  Baris 2945 | Field DDIC | LIPS-VGBEL
+  Baris 2946 | Field DDIC | LIPS-VGPOS
+  Baris 2947 | Field DDIC | VBAK-BSTNK
+  Baris 2951 | Field DDIC | AUSP-ATWRT
+  Baris 2952 | Field DDIC | CAWN-ATZHL
+  Baris 2953 | Field DDIC | CAWNT-ATWTB
+  Baris 2955 | Field DDIC | LIPS-NTGEW
+  Baris 2956 | Field DDIC | LIPS-VGBEL
+  Baris 2961 | Field DDIC | MCH1-CUOBJ_BM
+  Baris 2962 | Field DDIC | VBAP-KDMAT
+  Baris 2963 | Field DDIC | LIKP-KUNAG
+  Baris 3368 | Field DDIC | LIPS-VBELN
+  Baris 3372 | Field DDIC | LIPS-VBELN
+  Baris 3378 | Field DDIC | LIPS-CHARG
+  Baris 3388 | Field DDIC | VEPO-VENUM
+  Baris 3389 | Field DDIC | VEPO-CHARG
+  Baris 3390 | Field DDIC | VEPO-VEMNG
+  Baris 3403 | Field DDIC | LIPS-CHARG
+  Baris 3425 | Field DDIC | VEKP-VENUM
+  Baris 3435 | Field DDIC | VEKP-VENUM
+  Baris 3436 | Field DDIC | VEKP-EXIDV
+  Baris 3437 | Field DDIC | VEKP-UEVEL
+  Baris 3438 | Field DDIC | VEKP-NTGEW
+  Baris 3441 | Field DDIC | VEKP-VENUM
+  Baris 3468 | Field DDIC | ZPALLETR-EXIDV
+  Baris 3471 | Field DDIC | ZPALLETR-EXIDV
+  Baris 3472 | Field DDIC | ZPALLETR-DOCNO
+  Baris 3473 | Field DDIC | ZPALLETR-STATUS
+  Baris 3474 | Field DDIC | ZPALLETR-PALID
+  Baris 3477 | Field DDIC | ZHMS-EXIDV
+  Baris 3478 | Field DDIC | ZHMS-PALID
+  Baris 3480 | Field DDIC | ZPALLETR-EXIDV
+  Baris 3522 | Field DDIC | VEKP-VENUM
+  Baris 3539 | Field DDIC | ZPALLETR-EXIDV
+  Baris 3608 | Field DDIC | LIPS-VBELN
+  Baris 3609 | Field DDIC | LIPS-CHARG
+  Baris 3626 | Field DDIC | LIPS-VBELN
+  Baris 3627 | Field DDIC | LIPS-CHARG
+  Baris 3640 | Field DDIC | LIPS-VBELN
+  Baris 3641 | Field DDIC | LIPS-CHARG
+  Baris 3652 | Field DDIC | ZPALLETR-EXIDV
+  Baris 3686 | Field DDIC | LIKP-KUNAG
+  Baris 3687 | Field DDIC | VBAP-KDMAT
+  Baris 3688 | Field DDIC | LIPS-VGBEL
+  Baris 3689 | Field DDIC | LIPS-VGPOS
+  Baris 3693 | Field DDIC | VEKP-EXIDV
+  Baris 3694 | Field DDIC | ZHMS-PALID
+  Baris 3815 | Field DDIC | SY-DATUM
+  Baris 3816 | Field DDIC | SY-DATUM
+  Baris 3861 | Field DDIC | MCH1-MATNR
+  Baris 3862 | Field DDIC | SY-DATUM
+  Baris 3863 | Field DDIC | SY-DATUM
+  Baris 3997 | Field DDIC | CABN-ATINN
+  Baris 3998 | Field DDIC | AUSP-ATWRT
+  Baris 4001 | Field DDIC | CABN-ATINN
+  Baris 4002 | Field DDIC | AUSP-ATWRT
+  Baris 4003 | Field DDIC | CAWNT-ATWTB
+  Baris 4008 | Field DDIC | CAWN-ATZHL
+  Baris 4009 | Field DDIC | CAWNT-ATWTB
+  Baris 4072 | Class dan Interface | CL_GUI_FRONTEND_SERVICES
+  Baris 4090 | Class dan Interface | CL_GUI_FRONTEND_SERVICES
+  Baris 4110 | Class dan Interface | CL_GUI_FRONTEND_SERVICES
+  Baris 146 | Sumber data pada SELECT atau JOIN | ZMAP_TYPE
+  Baris 161 | Sumber data pada SELECT atau JOIN | AUSP
+  Baris 174 | Sumber data pada SELECT atau JOIN | INOB
+  Baris 185 | Sumber data pada SELECT atau JOIN | LIPS
+  Baris 334 | Sumber data pada SELECT atau JOIN | LIKP
+  Baris 339 | Sumber data pada SELECT atau JOIN | ZMAP_COA
+  Baris 425 | Sumber data pada SELECT atau JOIN | QAMR
+  Baris 688 | Sumber data pada SELECT atau JOIN | ZLOG_COA
+  Baris 759 | Sumber data pada SELECT atau JOIN | QALS
+  Baris 837 | Sumber data pada SELECT atau JOIN | QAMV
+  Baris 902 | Sumber data pada SELECT atau JOIN | QPMT
+  Baris 909 | Sumber data pada SELECT atau JOIN | QPMK
+  Baris 1232 | Sumber data pada SELECT atau JOIN | ZQM_COA_CUST_COL
+  Baris 1792 | Sumber data pada SELECT atau JOIN | T001
+  Baris 1792 | Sumber data pada SELECT atau JOIN | T001K
+  Baris 2001 | Sumber data pada SELECT atau JOIN | MCH1
+  Baris 2148 | Sumber data pada SELECT atau JOIN | ZBATCHISTORY
+  Baris 2378 | Sumber data pada SELECT atau JOIN | MSEG
+  Baris 2401 | Sumber data pada SELECT atau JOIN | MKPF
+  Baris 2411 | Sumber data pada SELECT atau JOIN | AFPO
+  Baris 2565 | Sumber data pada SELECT atau JOIN | CABN
+  Baris 2753 | Sumber data pada SELECT atau JOIN | QASE
+  Baris 2991 | Sumber data pada SELECT atau JOIN | MSKA
+  Baris 2995 | Sumber data pada SELECT atau JOIN | VBFA
+  Baris 3000 | Sumber data pada SELECT atau JOIN | VBAK
+  Baris 3003 | Sumber data pada SELECT atau JOIN | VBKD
+  Baris 3062 | Sumber data pada SELECT atau JOIN | MCHA
+  Baris 3072 | Sumber data pada SELECT atau JOIN | CAWN
+  Baris 3075 | Sumber data pada SELECT atau JOIN | CAWNT
+  Baris 3326 | Sumber data pada SELECT atau JOIN | VBAP
+  Baris 3348 | Sumber data pada SELECT atau JOIN | KNMT
+  Baris 3394 | Sumber data pada SELECT atau JOIN | VEPO
+  Baris 3447 | Sumber data pada SELECT atau JOIN | VEKP
+  Baris 3502 | Sumber data pada SELECT atau JOIN | ZPALLETR
+  Baris 3511 | Sumber data pada SELECT atau JOIN | ZHMS
+  Baris 56 | Function module | CONVERSION_EXIT_ATINN_INPUT
+  Baris 764 | Function module | ZQM_GET_BATCH_JR_BY_SR
+  Baris 770 | Function module | ZQM_GET_BATCH_SR_BY_JR
+  Baris 1021 | Function module | WS_FILENAME_GET
+  Baris 1043 | Function module | GUI_DOWNLOAD
+  Baris 1218 | Function module | CONVERSION_EXIT_ALPHA_INPUT
+  Baris 1271 | Function module | POPUP_TO_DECIDE_LIST
+  Baris 1635 | Function module | SSF_FUNCTION_MODULE_NAME
+  Baris 1674 | Function module | SSF_OPEN
+  Baris 1721 | Function module | SSF_CLOSE
+  Baris 3817 | Function module | Z_GET_PRODUCTION_DATE
+  Baris 4104 | Function module | SCMS_XSTRING_TO_BINARY
