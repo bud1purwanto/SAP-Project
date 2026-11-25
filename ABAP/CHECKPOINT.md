@@ -2,17 +2,22 @@
 
 | Atribut | Isi |
 |---|---|
-| Waktu | 2026-11-24 16:35 |
-| AI / device | Antigravity / Windows & Remote Linux |
-| Sub-project | ZJR_EXEC |
-| Pekerjaan | Migrasi TUNTAS 100% program ZPP041 ke S/4HANA dengan TCode ZJR_EXEC. Seluruh 7 DTEL, 9 Tabel Z, FM Z_MMUR_ROUND_FOR_FRACT5, 6 Includes & Main Program ZPPI_JR_EXEC (dengan PCR dynamic SQL), 5 Dynpros, CUA Status/Titlebar, dan Transaksi baru ZJR_EXEC aktif dan terverifikasi live di SAP GUI tanpa runtime dump (ST22: 0 dump) |
-| Status | Selesai Penuh (100% OK & Verified Live) |
-| Next step | Handover ke Baginda |
-| Backup | subproject/ZJR_EXEC/CHECKPOINT.md |
+| 2026-11-25 08:44 | Antigravity / RFC | ZJR_EXEC | Pembuatan & aktivasi FM Remote-Enabled Z_RFC_PROGRAM_UPDATE di Function Group ZTOOLS (LZTOOLSU06) S/4HANA ADB 130 sesuai referensi Sandbox. Syntax SAPLZTOOLS 0 error & verified live via PyRFC (EV_SUCCESS=X) | Selesai (OK) | Siap digunakan untuk testing conversion tools |
+| Waktu | 2026-11-25 |
+| AI / device | Claude / Linux |
+| Sub-project | ABAP_INTERVIEW_STUDY_CASE |
+| Pekerjaan | Study case interview ABAP (permintaan Pak Adi Yuda): analisa DEV read-only ZMM052 (ALV), ZSD113 (BAPI), BAdI BADI_SLS_ITEM_SCR_CUS/ZBADI_ADD_TAB_SO, MV45AFZZ/ZB (kosong), SmartForm ZMMF_PO_LOCAL; docs 00-05 di subproject baru |
+| Status | Dokumen + uji sandbox-new/S4 (GUI belum) |
+| Next step | Review Baginda; hands-on di sandbox-new; IDoc & OO ABAP menyusul |
+| Backup | subproject/ABAP_INTERVIEW_STUDY_CASE/CHECKPOINT.md |
 
 ## Log (terbaru di atas)
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
+| 2026-11-25 | Claude / Linux | ABAP_INTERVIEW_STUDY_CASE | Dokumen study case IDoc (07) dan OData (08); ECC tanpa Gateway → OData di S/4; IDoc dibangun dari nol di sandbox | Selesai (dokumen) | Hands-on perlu izin config |
+| 2026-11-25 | Claude / Linux GUI :99 | ABAP_INTERVIEW_STUDY_CASE | Uji GUI sandbox (ALV B/C/D OK, fix filter PO & currency) dan S/4 (syntax 5 OK/3 error field custom, ALV B/D OK, ME23N S/4 dump DDIC); logout keduanya | Selesai | Review Baginda |
+| 2026-11-25 | Claude / Linux | ABAP_INTERVIEW_STUDY_CASE | Uji program latihan: sandbox-new 6 ZTRAIN_* $TMP (syntax 8/8, ALV background OK, BAPI test & SO 5683), S/4 ADB 8 ZTRAIN_* $TMP (syntax tak bisa via gateway); temuan 8 implicit enhancement SAPMV45A, doc 04 dikoreksi | Selesai sebagian | Uji GUI (butuh password) |
+| 2026-11-25 | Claude / Linux | ABAP_INTERVIEW_STUDY_CASE | Subproject baru + docs study case ALV/BAPI/BAdI/User Exit/SmartForms dari program nyata DEV (read-only) | Selesai (v1) | Review Baginda, IDoc & OO ABAP menyusul |
 | 2026-11-24 16:35 | Antigravity / RFC & GUI | ZJR_EXEC | Migrasi TUNTAS 100% ZPP041 -> ZJR_EXEC di S/4HANA (ADB 130): 7 DTEL, 9 Tabel Z, FM Z_MMUR_ROUND_FOR_FRACT5, 6 Includes & ZPPI_JR_EXEC (PCR), 5 Dynpros (0800-1300), CUA, TCode ZJR_EXEC verified live di GUI tanpa dump ST22 | Selesai Penuh | Handover ke Baginda |
 |---|---|---|---|---|---|
 | 2026-11-24 12:15 | Claude / Linux GUI :99 | EXPIRED_DATE_IMPACT | Excel impact Expired Date + screenshot 8 T-code di DEV (ZBMBC, ZBMBC2, ZSD012N, ZSD024, ZSD024TTE, ZQM001P, ZEQM001P, ZQM002) | Selesai (DEV) | Setor ke Mbak Alfa |

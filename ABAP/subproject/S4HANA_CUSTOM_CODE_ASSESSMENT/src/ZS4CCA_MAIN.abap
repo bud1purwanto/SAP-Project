@@ -13,26 +13,45 @@ INCLUDE zs4cca_core.
 
 INITIALIZATION.
   gv_t1 = 'Sumber source'.
-  gv_c1 = 'RB_FILE: upload file .abap dari PC (baseline Alfa, utama + include)'.
-  gv_c2 = 'RB_RFC : baca dari ECC via P_DEST (S_PROG = nama program, EQ)'.
-  gv_c3 = 'RB_ADB : program yang sudah ada di ADB (S_PROG boleh pola Z*)'.
-  gv_t2 = 'Lapis deteksi'.
-  gv_c4 = 'P_L1 = diff DDIC (isi P_DEST untuk banding ECC) | P_L2 = syntax S/4'.
+  gv_r1 = 'Upload file .abap dari PC (baseline Alfa: program utama + include)'.
+  gv_r2 = 'Baca dari ECC lewat RFC (isi RFC destination dan nama program)'.
+  gv_r3 = 'Baca dari program yang sudah ada di ADB (boleh pola Z*)'.
+  gv_l1 = 'Nama program'.
+  gv_t2 = 'Perbandingan dengan ECC'.
+  gv_l2 = 'RFC destination ECC'.
+  gv_t3 = 'Lapis deteksi'.
+  gv_l3 = 'L1  Diff DDIC (S/4; dibanding ECC bila RFC destination diisi)'.
+  gv_l4 = 'L2  Syntax check dengan compiler S/4'.
+  gv_l5 = 'Konversi otomatis ke S/4 (hint Oracle, tabel lama ke view pengganti SAP)'.
+  gv_l6 = '    Simulasi saja (salinan _ECC6 tidak ditulis ke ADB)'.
+
+AT SELECTION-SCREEN OUTPUT.
+  " nama program hanya relevan untuk mode RFC dan ADB
+  LOOP AT SCREEN.
+    IF screen-group1 = 'PRG' AND rb_file = abap_true.
+      screen-active = 0.
+      MODIFY SCREEN.
+    ENDIF.
+  ENDLOOP.
 
 AT SELECTION-SCREEN.
   IF sy-ucomm = 'ONLI' OR sy-ucomm = 'PRIN' OR sy-ucomm = 'SJOB'.
     IF rb_rfc = abap_true AND p_dest IS INITIAL.
-      MESSAGE 'Mode RFC: isi P_DEST (RFC destination ke ECC)' TYPE 'E'.
+      MESSAGE 'Mode RFC: isi RFC destination ECC' TYPE 'E'.
     ENDIF.
     IF ( rb_rfc = abap_true OR rb_adb = abap_true ) AND s_prog[] IS INITIAL.
-      MESSAGE 'Isi S_PROG (nama program)' TYPE 'E'.
+      MESSAGE 'Isi nama program' TYPE 'E'.
     ENDIF.
     IF p_l1 = abap_false AND p_l2 = abap_false.
-      MESSAGE 'Pilih minimal satu lapis (P_L1/P_L2)' TYPE 'E'.
+      MESSAGE 'Pilih minimal satu lapis deteksi (L1 atau L2)' TYPE 'E'.
     ENDIF.
   ENDIF.
 
 START-OF-SELECTION.
   DATA(go_run) = NEW lcl_runner( ).
   go_run->run( ).
-  go_run->display( ).
+  IF p_fix = abap_true.
+    go_run->convert( ).
+  ELSE.
+    go_run->display( ).
+  ENDIF.

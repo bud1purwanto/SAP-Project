@@ -159,7 +159,38 @@ Prinsip keamanan: tidak ada fix yang diterapkan tanpa approve. Kode lama selalu 
 - Semua referensi di source salinan diarahkan ke nama `_ECC6`. **Fix pack disimpan dengan nama asli**: saat diekspor, tool membalik pemetaan supaya fix bisa dipasang di S/4 nyata.
 - Nama yang dirujuk lewat variabel (dinamis) tidak bisa di-rename, sehingga dilaporkan.
 
-### 6.8 Di luar scope
+### 6.8 F3a — Fixer (dirancang 2026-11-25, berdasar survei korpus 292 file / 421 ribu baris)
+
+| Pola di korpus | Baris | Aturan | Kelas |
+|---|---|---|---|
+| `%_HINTS ORACLE '...'` | ±100, belasan program | **R01_HINT** hapus klausa hint | A (otomatis, perlu pilih/approve) |
+| `FROM KONV` / `TYPE KONV` | 18 baris, 3 program | **R02_KONV** KONV ke PRCD_ELEMENTS | A dengan tanda risiko (lihat bawah) |
+| `EXEC SQL` (CONNECT TO / SET CONNECTION / INSERT) | 227 | Tidak diganti. Koneksi DB sekunder, cukup cek `DBCON` ada di S/4 | Info |
+| `VBUK` / `VBUP` | 111 | Butuh pemetaan field per dokumen | B/C (F4) |
+| `MKPF`/`MSEG` | 2214, hanya baca | Tidak perlu fix (replacement view); tulis = C | Info |
+
+**Fakta DDIC R02 (ADB vs ECC, 25 Nov):** `PRCD_ELEMENTS` tidak identik dengan `KONV`. Field `MANDT`, `STUFE`, `WEGXX` hilang; 12–15 field berubah tipe/panjang (KBETR CURR 11 ke DEC 24, KDATU DATS ke CHAR 14, ZAEHK NUMC 2 ke 3, KRECH CHAR 1 ke 3). Karena itu: perbandingan field dihitung **saat berjalan dari DDIC ADB**; field hilang atau tulis ke tabel = risiko **E** (tidak diterapkan); field berubah tipe = risiko **W** (diterapkan, ditandai).
+
+**Alur:** deteksi (ALV) lalu *Usulkan perbaikan* (centang P_FIX) lalu ALV usulan (pilih baris, E tidak terpilih) lalu Back lalu konfirmasi lalu tulis salinan `*_ECC6` ke `$TMP` (RPY_PROGRAM_INSERT, include ikut diganti nama) lalu verifikasi ulang L1+L2 pada salinan. Program asli dan ECC tidak pernah ditulis. Kode lama dikomentari dengan format SOP (`*{ S4MIG <aturan> <tanggal> <user>` ... `*} S4MIG`).
+
+**Batas F3a:** hanya program dan include (function pool dilewati), 2 aturan, tanpa katalog tabel Z, DDIC Z belum disalin (F0b) sehingga verifikasi akan menampilkan `L1_MISSING_Z`/`L2_MISSING_Z`.
+
+### 6.8b Arah diperjelas (25 Nov): tool = **auto conversion Z program ECC6 ke S/4HANA**
+
+Roadmap: (1) konversi massal otomatis, (2) bawa dependensi Z ke ADB, (3) perluas katalog aturan, (4) kompilasi ulang + laporan per program (4 kategori manager).
+
+**Langkah 1 (dikirim ke ADB 25 Nov, belum diuji jalan):**
+- Pengganti diganti ke **view baca resmi SAP** di ADB (lebih cocok daripada `PRCD_ELEMENTS`): `KONV`→`V_KONV_CDS` (0 field hilang, 3 beda panjang), `VBUK`→`V_VBUK_CDS` (1 hilang: PODVWK; VBTYP 1→4), `VBUP`→`V_VBUP_CDS` (3 hilang: BUMP, LTSPS, MILL_VS_VSSTA). Tulis ke tabel-tabel itu = risiko E.
+- Mode massal: banyak program sekaligus (file Alfa, daftar, atau pola nama seperti `ZPP*` lewat RFC). Semua perubahan risiko ' '/W diterapkan otomatis, E dilaporkan manual. Tidak ada popup per baris.
+- Opsi **Simulasi** (default aktif): tidak menulis apa pun, hanya laporan.
+- Kompilasi S/4 **sebelum vs sesudah** konversi dilakukan in-memory per program.
+- Output: ALV ringkasan per program (Status: TIDAK PERLU UBAH / SIAP / PERLU MANUAL / GAGAL TULIS; jumlah otomatis, W, E, error S/4 sebelum/sesudah, objek Z belum ada), lalu ALV rincian per baris (Sebelum/Sesudah). Keduanya bisa diekspor ke Excel.
+
+**Pengganti tabel dinamis (25 Nov):** daftar tetap KONV/VBUK/VBUP dihapus. Aturan `R02_<tabel>` ditemukan otomatis dari ADB saat berjalan: view `V_<T>_CDS` yang tabel dasarnya (DD26S) **tidak** memuat T, T masih TRANSP tanpa `VIEWREF`, dan T dipakai di source. Diuji ke 49 view `V_*_CDS` di ADB: hanya KONV (`PRCD_ELEMENTS`), VBUK (`VBAK`/`LIKP`/`VBRK`), VBUP (`VBAP`/`LIPS`) yang lolos; 5 view IS-U (TE069, TE115, TE221, TECDE, EPRESCL) membaca tabelnya sendiri sehingga tidak dianggap pengganti. 179 tabel ber-`VIEWREF` (MARC, MARD, MCHB, MSEG, dll.) tidak perlu diubah untuk baca (SAP mengalihkan otomatis); tulis ditandai L1.
+
+Katalog aturan Z (`ZS4CCA_RULE`, untuk FM/T-code/pemetaan khusus) **dibuat sendiri oleh Baginda** nanti; tool akan membacanya bila tabel sudah ada.
+
+### 6.9 Di luar scope
 Menulis ke ECC, panggilan dinamis (`CALL FUNCTION lv_fm`, `SELECT FROM (lv_tab)`) yang hanya dilaporkan, perubahan proses bisnis, Smart Form/SAPscript (fase berikutnya), dan performa.
 
 ## 7. Daftar Objek (rencana, semua baru di ADB)
@@ -203,6 +234,7 @@ Test: 5–10 program pilot dari file Alfa.
 | 4 | Editor quick fix SAP: Eclipse ADT dan VS Code (ABAP FS) dua-duanya jadi opsi, dipilih setelah uji di ADB | Baginda | 2026-11-24 |
 | 6 | F1 disederhanakan: 1 report + include berisi local class, tanpa tabel Z (hasil ke ALV + export bawaan). Class global + tabel Z di F2/F3 | Baginda | 2026-11-24 |
 | 7 | Push: Baginda memilih `install_and_run_abap`; diuji dan **ditolak SAP (FL 046)**. `write_program` juga tidak bisa (FM `Z_RFC_PROGRAM_UPDATE` tidak ada di ADB). Mekanisme push perlu diputuskan ulang | Claude (hasil uji) | 2026-11-24 |
+| 8 | 25 Nov: `Z_RFC_PROGRAM_UPDATE` sudah ada di ADB (function group `SAPLZTOOLS`, remote), tapi dipanggil menghasilkan *Syntax error in program SAPLZTOOLS* (tidak ada yang tertulis). Function group perlu diperbaiki dulu (SE80, Check). FM memakai `INSERT REPORT` saja (tidak membuat entri TADIR), jadi program baru mungkin perlu dibuat dulu lewat SE38. `Z_RFC_ACTIVATE_OBJECT` juga ada di group yang sama | Claude (hasil uji) | 2026-11-25 |
 | 5 | DDIC Z dibawa temporary ($TMP, tanpa transport); akhiran `_ECC6` (potong nama asli kalau terlalu panjang); ADB = sandbox; baseline = file Alfa; manager belum setuju, cari jalur tanpa Basis | Baginda | 2026-11-24 |
 
 ## 10. Persetujuan

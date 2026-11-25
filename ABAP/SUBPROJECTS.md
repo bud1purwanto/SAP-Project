@@ -71,6 +71,7 @@ Prinsip: **1 TCODE / program = 1 sub-project** (program + include + Smart Form +
 | `subproject/ZSMS/` | `ZSMS` | Utilitas broadcast pesan instan antar user aktif SAP GUI via C-kernel & TH_POPUP, replikasi dari DEV AIX ke S/4HANA 1909 | zsms, messaging, popup message, broadcast user, th_popup, send message, program messaging |
 | `subproject/ZJR_EXEC/` | `ZPPI_JR_EXEC` | Replikasi transaksi Jumbo Roll Execution (ZPP041) dari DEV AIX ke S/4HANA dengan TCode baru ZJR_EXEC, mencakup 6 includes, 6 dynpro, CUA, 9 tabel Z, dan FM Z_MMUR_ROUND_FOR_FRACT5 | zpp041, zjr_exec, zppi_jr_exec, jumbo roll execution, jr exec |
 | `subproject/EXPIRED_DATE_IMPACT/` | `Z_GET_PRODUCTION_DATE` + karakteristik `ZZEXPIREDLIVE` (label roll, ZQM001P, ZBMBC, ZSD012N, ZSD024, COA) | Impact analysis perubahan perhitungan Expired Date / Best Used roll (aturan tanggal ≥15 pakai bulan berikutnya) | expired date, best used, zzexpiredlive, z_get_production_date, shelf life roll, tanggal kadaluarsa |
+| `subproject/ABAP_INTERVIEW_STUDY_CASE/` | Materi belajar (ZMM052, ZSD113, BAdI `ZBADI_ADD_TAB_SO`, `MV45AFZZ`, SmartForm `ZMMF_PO_LOCAL`) | Study case hands-on teknik ABAP ECC 6 untuk interview: ALV, BAPI vs BDC, BAdI, user exit, SmartForms, IDoc, OData (OO ABAP menyusul) | study case abap, interview abap, belajar alv, bapi vs bdc, contoh badi, user exit va01, latihan smartforms, latihan idoc, latihan odata, segw, adi yuda |
 
 
 ## Folder Non-Sub-Project

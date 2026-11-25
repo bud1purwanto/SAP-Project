@@ -1,0 +1,35 @@
+// Pembanding: OData dari CDS (S/4 1909). Buat di ADT (Eclipse) sebagai DUA DDL source terpisah: ZTRN_I_POITEM lalu ZTRN_I_PO
+// 1) item
+@AbapCatalog.sqlViewName: 'ZTRNIPOITM'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Latihan PO item'
+define view ZTRN_I_POITEM as select from ekpo
+{
+  key ebeln as Ebeln,
+  key ebelp as Ebelp,
+      matnr as Matnr,
+      txz01 as Txz01,
+      @Semantics.quantity.unitOfMeasure: 'Meins'
+      menge as Menge,
+      @Semantics.unitOfMeasure: true
+      meins as Meins,
+      netwr as Netwr
+}
+where loekz = ''
+
+// 2) header + association, langsung dipublikasikan sebagai OData
+@AbapCatalog.sqlViewName: 'ZTRNIPO'
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Latihan PO header'
+@OData.publish: true
+define view ZTRN_I_PO as select from ekko
+  association [0..*] to ZTRN_I_POITEM as _Item on $projection.Ebeln = _Item.Ebeln
+{
+  key ebeln as Ebeln,
+      bsart as Bsart,
+      lifnr as Lifnr,
+      bedat as Bedat,
+      waers as Waers,
+      _Item
+}
+where bstyp = 'F'

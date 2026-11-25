@@ -35,7 +35,7 @@
 | Program | `ZQMI_COA` (Executable, dynpro awal 1000), package `ZTRD` |
 | Include | `Z_PROG_INFO`, `ZQMI_COA_TOP`, `ZQMI_COA_F01`, `ZQMI_COA_F02`, `ZQMI_COA_ALV` |
 | TCODE saudara | `ZQM003` (*Report COA*, program sama, mode ALV — cabang `SY-TCODE`), `ZQM001` (*Mapping COA*, program `ZMAP_COA`) |
-| Smart Forms | `ZQMF_COA` (Domestic, Page 1), `ZQMF_COA_EXPORT` (Export, Page 1), `ZQMF_COA_BATCH` (Lampiran Batch List 1–7 kolom) |
+| Smart Forms | `ZQMF_COA` (Domestic, Page 1), `ZQMF_COA_EXPORT` (Export, Page 1). Batch List tidak dicetak di Smart Form, hanya Excel (keputusan functional 25 Nov 2026) |
 | Custom Table | `ZMAP_COA`, `ZLOG_COA`, `ZQM_COA_CUST_COL`, `ZBATCHISTORY`, `ZMAP_TYPE` |
 | Custom FM | `ZQM_GET_BATCH_JR_BY_SR`, `ZQM_GET_BATCH_SR_BY_JR` |
 | Struktur DDIC | `ZQM_COA_DYN_ROLL` (COL01–COL14), `ZQM_COA_DYN_HDR` (HDR01–HDR14), `ZQMSAP` (baris roll) |
@@ -66,8 +66,8 @@ Change Grade (re-batching via `ZBATCHISTORY`, movement 309/311) dapat memutus ra
 2. Sistem menampilkan daftar MIC per DO/material sesuai mapping `ZMAP_COA` (generic + customer-specific).
 3. Nilai MIC diambil dari Inspection Lot sesuai mapping sumber (JR/SR Base Film/Converting), termasuk fallback change grade, sibling, dan rata-rata.
 4. User dapat mengoreksi nilai (preview) dan menyimpannya dengan jejak audit (`ZLOG_COA`).
-5. User mencetak COA (Smart Form) plus lampiran Batch List dengan kolom dinamis per customer.
-6. User dapat export daftar MIC dan Batch List ke Excel.
+5. User mencetak COA (Smart Form).
+6. User dapat export daftar MIC ke Excel, dan Batch List (kolom dinamis per customer) hanya ke Excel.
 
 ### 2.3 Lingkup
 
@@ -77,7 +77,7 @@ Change Grade (re-batching via `ZBATCHISTORY`, movement 309/311) dapat memutus ra
 | Mapping MIC dan sumber lot | Maintenance mapping (ditangani `ZQM001` / `ZMAP_COA`) |
 | Trace silsilah batch dan fallback | Desain layout detail Smart Form (dikelola via `SMARTFORMS`) |
 | Override nilai + log audit | Mode report ALV (`ZQM003`) — hanya disinggung |
-| Print Domestic/Export + Batch List, export Excel | Pengiriman email/arsip COA |
+| Print Domestic/Export, export Excel (termasuk Batch List) | Pengiriman email/arsip COA |
 
 ---
 
@@ -98,7 +98,7 @@ flowchart TD
   I -->|EXEC| J[Validasi 1 DO, 1 material, tidak campur kualitatif/kuantitatif]
   J --> K[Screen 0200: detail COA]
   K -->|PRNT| L[Validasi kosong & limit]
-  L --> M[F_PRINT: ZQMF_COA / ZQMF_COA_EXPORT + ZQMF_COA_BATCH]
+  L --> M[F_PRINT: ZQMF_COA / ZQMF_COA_EXPORT]
   K -->|DLOAD / BATLIST| N[Export Excel]
 ```
 
@@ -138,7 +138,7 @@ Validasi `EXEC`:
 1. Nilai yang diubah wajib di-Save dulu. Jika tidak: *"Harap Save perubahan nilai (Preview) terlebih dahulu!"* (TYPE E).
 2. Hanya 1 DO terpilih. Jika tidak: *"Pilih 1 ODO!"*.
 3. Hanya 1 material (tipe film). Jika tidak: *"Tipe film tidak boleh berbeda!"*.
-4. Satu MIC tidak boleh campur nilai kualitatif dan kuantitatif. Jika campur: *"Value mic tidak dapat qualitatif dan quantitatif!"*.
+4. Satu MIC tidak boleh campur nilai kualitatif dan kuantitatif. Jika campur: *"Nilai MIC tercampur kualitatif dan kuantitatif. Silakan hubungi Tim QA."*.
 
 Saat `EXEC`, program juga menyusun header:
 
@@ -160,8 +160,8 @@ Kolom: Properties (MIC Desc), UoM, Testing Method, Lower Limit, Upper Limit, Val
 
 Validasi `PRNT` (blokir cetak):
 
-1. Ada Value kosong / `-` / `0` / `0.00` / `0.000` / `00000000`: *"Ada data MIC yang belum di-record (kosong), tidak bisa cetak COA!"*.
-2. Ada value kuantitatif di luar Lower/Upper Limit: *"Ada value MIC yang keluar dari Lower/Upper Limit. Ubah value & Save (kembali ke layar sebelumnya) sebelum Print!"*.
+1. Ada Value kosong / `-` / `0` / `0.00` / `0.000` / `00000000`: *"Ada hasil MIC yang belum di-record, COA tidak bisa dicetak. Silakan hubungi Tim QA."*.
+2. Ada value kuantitatif di luar Lower/Upper Limit: *"Ada value MIC di luar Lower/Upper Limit. Ubah value & Save sebelum Print, atau hubungi Tim QA."*.
 
 ### 3.5 Aturan Mapping MIC (`ZMAP_COA`)
 
@@ -171,7 +171,7 @@ Validasi `PRNT` (blokir cetak):
 | Generic vs customer | Baca generic (`KUNNR` kosong) dan customer (`KUNNR = LIKP-KUNAG`). Merge per MIC. |
 | Override customer | `METHOD`, `KUNNR`, `MAPPING`, `UOM`, `MIC_DESC` selalu menimpa. `LOWER_LIMIT`, `UPPER_LIMIT`, `SEQ_NO` menimpa hanya bila terisi. |
 | MIC khusus customer | Ditambahkan ke daftar. |
-| Mapping kosong | Pesan *"Material belum dimapping di ZMAP_COA..."* lalu `STOP` (seluruh proses berhenti). |
+| Mapping kosong | Pesan *"Material COA belum dimapping di ZMAP_COA. Silakan hubungi Tim QA."* lalu `STOP` (seluruh proses berhenti). |
 | Limit | `ZMAP_COA-LOWER_LIMIT/UPPER_LIMIT` (CHAR20) menimpa limit QAMV bila terisi. |
 | Urutan | `SEQ_NO` menentukan urutan tampil & cetak. |
 
@@ -197,8 +197,8 @@ Nilai `MAPPING` dan lot sumber:
 
 | Kondisi `LIKP-LFART` | Form halaman 1 | Lampiran Batch List | Header |
 |---|---|---|---|
-| `ZELF` (Export) | `ZQMF_COA_EXPORT` | Tidak dicetak di spool | Popup Selection Screen 9000 *"Export COA Header"* |
-| Selain `ZELF` (Domestic, termasuk `ZDLF`) | `ZQMF_COA` | `ZQMF_COA_BATCH` bila jumlah kolom 1–7 | Customer, DO, Product, Quantity, Width |
+| `ZELF` (Export) | `ZQMF_COA_EXPORT` | Tidak dicetak, hanya Excel | Popup Selection Screen 9000 *"Export COA Header"* |
+| Selain `ZELF` (Domestic, termasuk `ZDLF`) | `ZQMF_COA` | Tidak dicetak, hanya Excel | Customer, DO, Product, Quantity, Width |
 
 - Output: `TDDEST = 'LOCL'`, `TDIMMED = 'X'`, `TDNEWID = 'X'`. Satu spool via `SSF_OPEN` / `SSF_CLOSE` (`NO_OPEN`/`NO_CLOSE`/`NO_DIALOG`).
 - Company name: `T001-BUTXT` via `T001K-BWKEY = LIPS-WERKS`.
@@ -221,7 +221,7 @@ Toolbar 9000 menyembunyikan Check, Save/Get/Delete/Show Variant, Print, Backgrou
 
 1. Konfigurasi dibaca per `KUNNR = LIKP-KUNAG`, `ACTIVE = 'X'`, urut `SEQ_NO`.
 2. Bila kosong: fallback `KUNNR = 'DOMESTIC'` (`ZDLF`/lainnya) atau `'EXPORT'` (`ZELF`).
-3. Maksimum 14 kolom. Lebih dari itu: error *"Konfigurasi kolom COA maksimum 14 kolom"*.
+3. Maksimum 14 kolom. Lebih dari itu: error *"Kolom Batch List lebih dari 14. Silakan hubungi Tim QA."*.
 4. Header dari `FIELD_LABEL`, data per batch dari `GET_COA_COL_VALUE`.
 
 Field yang didukung `GET_COA_COL_VALUE`:
@@ -381,16 +381,15 @@ Aturan khusus:
 
 ### 4.7 Interface Smart Form
 
-| Parameter | Tipe | `ZQMF_COA` | `ZQMF_COA_EXPORT` | `ZQMF_COA_BATCH` |
-|---|---|---|---|---|
-| CUSTOMER / DELIVERY / PRODUCT / QUANTITY / WIDTH | CHAR | Nama, DO, Product, Qty, Width | Diisi label export (Cust, PO, PI, Prod, Qty) | Sama dengan Domestic |
-| COMPANYTXT | STRING | X | X | X |
-| GS_DYN_HDR | `ZQM_COA_DYN_HDR` | X | X | X |
-| H_LABEL1..5, EXTRA_LABEL1..11, EXTRA_VALUE1..11 | CHAR | — | X | — |
-| IV_COL_COUNT | I | — | — | X |
-| IT_QAMV (TABLES) | `QAMV` | X | X | X |
-| IT_ROLL (TABLES) | `ZQMSAP` | X | X | X |
-| GT_DYN_ROLL (TABLES) | `ZQM_COA_DYN_ROLL` | X | X | X |
+| Parameter | Tipe | `ZQMF_COA` | `ZQMF_COA_EXPORT` |
+|---|---|---|---|
+| CUSTOMER / DELIVERY / PRODUCT / QUANTITY / WIDTH | CHAR | Nama, DO, Product, Qty, Width | Diisi label export (Cust, PO, PI, Prod, Qty) |
+| COMPANYTXT | STRING | X | X |
+| GS_DYN_HDR | `ZQM_COA_DYN_HDR` | X | X |
+| H_LABEL1..5, EXTRA_LABEL1..11, EXTRA_VALUE1..11 | CHAR | — | X |
+| IT_QAMV (TABLES) | `QAMV` | X | X |
+| IT_ROLL (TABLES) | `ZQMSAP` | X | X |
+| GT_DYN_ROLL (TABLES) | `ZQM_COA_DYN_ROLL` | X | X |
 
 ### 4.8 Messages Utama
 
@@ -398,15 +397,16 @@ Aturan khusus:
 |---|---|---|
 | Nomor ODO (Delivery) WAJIB diisi! ... | I | `P_VBELN` kosong |
 | DO tidak ditemukan atau tidak ada item sesuai filter. | S/E | `IT_DATA` kosong |
-| Material belum dimapping di ZMAP_COA. ... | S/E + STOP | Mapping kosong |
+| Material COA belum dimapping di ZMAP_COA. Silakan hubungi Tim QA. | S/E + STOP | Mapping kosong |
 | Harap Save perubahan nilai (Preview) terlebih dahulu! | E | EXEC sebelum Save |
 | Pilih 1 ODO! / Tipe film tidak boleh berbeda! | I | EXEC multi DO/material |
-| Value mic tidak dapat qualitatif dan quantitatif! | I | MIC campur tipe |
-| Ada data MIC yang belum di-record ... | I/E | Print dengan nilai kosong |
-| Ada value MIC yang keluar dari Lower/Upper Limit ... | I/E | Print di luar limit |
-| Smartform ZQMF_COA belum aktif / ZQMF_COA_BATCH belum aktif | E | FM Smart Form tidak ditemukan |
+| Nilai MIC tercampur kualitatif dan kuantitatif. Silakan hubungi Tim QA. | I | MIC campur tipe |
+| Ada hasil MIC yang belum di-record, COA tidak bisa dicetak. Silakan hubungi Tim QA. | I/E | Print dengan nilai kosong |
+| Ada value MIC di luar Lower/Upper Limit. Ubah value & Save sebelum Print, atau hubungi Tim QA. | I/E | Print di luar limit |
+| Smartform ZQMF_COA belum aktif | E | FM Smart Form tidak ditemukan |
 | Gagal membuka/mencetak/menutup Smart Forms ... | E | Error SSF |
-| Konfigurasi kolom COA maksimum 14 kolom | E | `ZQM_COA_CUST_COL` > 14 aktif |
+| Kolom Batch List lebih dari 14. Silakan hubungi Tim QA. | E | Konfigurasi kolom customer > 14 |
+| Kolom Batch List untuk customer ini belum diatur. Silakan hubungi Tim QA. | I | Tombol Batch List, konfigurasi kolom customer tidak ada |
 
 ---
 
@@ -460,9 +460,9 @@ Uji layout Smart Form:
 
 | DO | Kolom Batch List | Ekspektasi |
 |---|---|---|
-| 85004908 | 6 (DOMESTIC default) | `ZQMF_COA` + Batch List portrait |
-| 0084000047 | 7 (SRAABI) | `ZQMF_COA` + Batch List portrait |
-| 0085000140 | 10 (SRACLI) | Page 1 portrait + Batch List landscape (lihat G-01) |
+| 85004908 | 6 (DOMESTIC default) | `ZQMF_COA` saja; Batch List via Excel |
+| 0084000047 | 7 (SRAABI) | `ZQMF_COA` saja; Batch List via Excel |
+| 0085000140 | 10 (SRACLI) | `ZQMF_COA` saja; Batch List via Excel |
 
 Uji negatif tambahan:
 
@@ -493,7 +493,6 @@ TCODE terkait: `ZQM002`, `ZQM003`, `ZQM001`, `SE38`, `SE80`, `SE11`, `SE16N`, `S
 
 | ID | Temuan | Dampak | Rekomendasi |
 |---|---|---|---|
-| G-01 | `ARCHITECTURE_COA_DYNAMIC.md` / `AGENTS.md` menyebut `ZQMF_COA_BATCH_POTRAIT` & `ZQMF_COA_BATCH_LANDSCAPE` (tier P1–P8 / L9–L14). Di TRD kedua form **tidak ada**; kode memanggil `ZQMF_COA_BATCH` hanya bila Domestic dan 1–7 kolom. | Batch List 8–14 kolom dan seluruh Export tidak tercetak di spool. Hanya tersedia via XLSX `BATLIST`. | Selaraskan dokumen arsitektur dengan kode, atau lanjutkan implementasi form landscape. |
 | G-02 | Mapping kosong untuk 1 material memicu `STOP`. | Seluruh DO tidak tampil walau material lain sudah dimapping. | Pertimbangkan skip material + pesan per material. |
 | G-03 | `CANCEL_UD` (BDC `QA12`) ada tetapi tidak dipanggil. | Dead code; risiko bila diaktifkan tanpa kontrol. | Hapus atau dokumentasikan alasan dipertahankan. |
 | G-04 | Tidak ada `AUTHORITY-CHECK` (Plant/Sales Org) sebelum tampil & Save. | Override nilai COA bisa dilakukan user dengan akses TCODE saja. | Tambah `AUTHORITY-CHECK` level `WERKS` (auth object standar hasil review SU24, atau custom via SU21). |

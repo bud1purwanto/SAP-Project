@@ -1,0 +1,70 @@
+*&---------------------------------------------------------------------*
+*& Include ZS4CCA_TOP
+*& Tipe data, data global, dan layar seleksi tool ZS4CCA (F1)
+*& Brief: subproject/S4HANA_CUSTOM_CODE_ASSESSMENT/docs/
+*&        BRIEF_TOOL_DETEKSI_PERBAIKAN_S4.md
+*&---------------------------------------------------------------------*
+
+TYPES TY_MODE TYPE C LENGTH 3.
+TYPES TY_SEV  TYPE C LENGTH 1.
+
+" Satu unit source = satu program / include
+TYPES: BEGIN OF TY_UNIT,
+         NAME  TYPE PROGNAME,
+         LINES TYPE STRING_TABLE,
+       END OF TY_UNIT,
+       TT_UNIT TYPE SORTED TABLE OF TY_UNIT WITH UNIQUE KEY NAME.
+
+" Referensi objek yang ditemukan scanner
+" KIND: TABR baca tabel | TABW tulis tabel | TABS stmt TABLES
+"       FLD  field DDIC (NAME=tabel, SUB=field) | FM | TCODE | PROG
+"       CLAS class/interface | ZTYP tipe Z | NSQL | HINT | DYN | LCLS
+TYPES: BEGIN OF TY_REF,
+         UNIT TYPE PROGNAME,
+         LINE TYPE I,
+         KIND TYPE C LENGTH 5,
+         NAME TYPE STRING,
+         SUB  TYPE STRING,
+       END OF TY_REF,
+       TT_REF TYPE STANDARD TABLE OF TY_REF WITH EMPTY KEY.
+
+" Satu temuan (baris ALV)
+TYPES: BEGIN OF TY_FIND,
+         MAIN     TYPE PROGNAME,
+         UNIT     TYPE PROGNAME,
+         LINE     TYPE I,
+         LAYER    TYPE C LENGTH 2,
+         SEVERITY TYPE C LENGTH 1,
+         CODE     TYPE C LENGTH 24,
+         REF_OBJ  TYPE C LENGTH 70,
+         DETAIL   TYPE STRING,
+         ACTION   TYPE STRING,
+       END OF TY_FIND,
+       TT_FIND TYPE STANDARD TABLE OF TY_FIND WITH EMPTY KEY.
+
+" Peta baris source gabungan (L2) ke unit + baris asal
+TYPES: BEGIN OF TY_MAP,
+         UNIT TYPE PROGNAME,
+         LINE TYPE I,
+       END OF TY_MAP,
+       TT_MAP TYPE STANDARD TABLE OF TY_MAP WITH EMPTY KEY.
+
+DATA GV_PROG TYPE PROGNAME.
+DATA GT_FIND TYPE TT_FIND.
+
+SELECTION-SCREEN BEGIN OF BLOCK B1 WITH FRAME TITLE GV_T1.
+  SELECTION-SCREEN COMMENT /1(79) GV_C1.
+  SELECTION-SCREEN COMMENT /1(79) GV_C2.
+  SELECTION-SCREEN COMMENT /1(79) GV_C3.
+  PARAMETERS: RB_FILE RADIOBUTTON GROUP SRC DEFAULT 'X',
+              RB_RFC  RADIOBUTTON GROUP SRC,
+              RB_ADB  RADIOBUTTON GROUP SRC.
+  SELECT-OPTIONS S_PROG FOR GV_PROG NO INTERVALS.
+  PARAMETERS P_DEST TYPE RFCDEST.
+SELECTION-SCREEN END OF BLOCK B1.
+
+SELECTION-SCREEN BEGIN OF BLOCK B2 WITH FRAME TITLE GV_T2.
+  SELECTION-SCREEN COMMENT /1(79) GV_C4.
+  PARAMETERS: P_L1 AS CHECKBOX DEFAULT 'X',
+              P_L2 AS CHECKBOX DEFAULT 'X'.
+SELECTION-SCREEN END OF BLOCK B2.

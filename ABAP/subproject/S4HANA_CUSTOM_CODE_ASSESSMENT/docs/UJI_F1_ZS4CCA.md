@@ -5,9 +5,16 @@
 | Tanggal | 2026-11-24 |
 | Server | S/4 ADB (192.168.1.199, client 130), package `$TMP` |
 | Source | `src/ZS4CCA_MAIN.abap`, `src/ZS4CCA_TOP.abap`, `src/ZS4CCA_CORE.abap`, fixture `src/ZS4CCA_TESTSRC.abap` |
-| Status | Source siap, **belum terpasang**. Push lewat gateway tidak bisa (`install_and_run_abap` FL 046, `write_program` tanpa `Z_RFC_PROGRAM_UPDATE`); abaplint lokal ditolak pengaman, jadi cek sintaks resmi = aktivasi di ADB |
+| Status | 25 Nov: 4 objek **terkirim** ke ADB lewat `Z_RFC_PROGRAM_UPDATE` (EV_SUCCESS=X), pull ulang cocok 100% (abaikan huruf besar/kecil). **Belum diaktivasi dan belum dicek sintaks**: TOP dan CORE masih bertipe executable (SUBC 1, harus Include), semua belum punya package (TADIR kosong) |
 
-## 1. Pasang lewat VS Code (ABAP FS) ke ADB
+## 1. Langkah sisa di SAP GUI (SE38) setelah push dari Claude
+
+1. Buka `ZS4CCA_TOP` → **Goto → Attributes** → ubah **Type** menjadi *I – Include program* → Save (pilih *Local Object* / `$TMP` bila diminta). Ulangi untuk `ZS4CCA_CORE`.
+2. Untuk `ZS4CCA_MAIN` dan `ZS4CCA_TESTSRC`: **Goto → Object Directory Entry** → *Local Object* (`$TMP`).
+3. **Aktivasi `ZS4CCA_MAIN`** (Ctrl+F3). Jangan aktifkan `ZS4CCA_TESTSRC`.
+4. Kirim pesan error aktivasi (baris + teks) bila ada.
+
+## 1b. (Cadangan) Pasang manual lewat VS Code (ABAP FS) ke ADB
 
 | # | Objek | Jenis | Isi dari | Aktivasi |
 |---|---|---|---|---|

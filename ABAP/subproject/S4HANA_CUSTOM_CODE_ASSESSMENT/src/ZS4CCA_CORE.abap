@@ -113,6 +113,10 @@ CLASS lcl_source DEFINITION FINAL.
     METHODS has
       IMPORTING iv_name       TYPE progname
       RETURNING VALUE(rv_yes) TYPE abap_bool.
+    METHODS put
+      IMPORTING iv_name    TYPE progname
+                it_lines   TYPE string_table
+                iv_is_main TYPE abap_bool DEFAULT abap_false.
   PRIVATE SECTION.
     DATA mv_mode TYPE ty_mode.
     DATA mv_dest TYPE rfcdest.
@@ -132,6 +136,21 @@ CLASS lcl_source IMPLEMENTATION.
 
   METHOD has.
     rv_yes = xsdbool( line_exists( mt_units[ name = iv_name ] ) ).
+  ENDMETHOD.
+
+  METHOD put.
+    " sumber in-memory (hasil konversi)
+    INSERT VALUE #( name = iv_name lines = it_lines ) INTO TABLE mt_units.
+    IF sy-subrc <> 0.
+      READ TABLE mt_units ASSIGNING FIELD-SYMBOL(<ls_unit>) WITH TABLE KEY name = iv_name.
+      IF sy-subrc = 0.
+        <ls_unit>-lines = it_lines.
+      ENDIF.
+    ENDIF.
+    DATA(lv_name) = condense( CONV string( iv_name ) ).
+    IF iv_is_main = abap_true AND NOT line_exists( mt_mains[ table_line = lv_name ] ).
+      APPEND lv_name TO mt_mains.
+    ENDIF.
   ENDMETHOD.
 
   METHOD lines_of.
@@ -958,7 +977,10 @@ CLASS lcl_syntax DEFINITION FINAL.
       IMPORTING iv_main        TYPE progname
       RETURNING VALUE(rt_find) TYPE tt_find.
   PRIVATE SECTION.
-    CONSTANTS c_max_errors TYPE i VALUE 80.
+    CONSTANTS c_max_errors TYPE i VALUE 120.
+    " kalimat yang kalau dikomentari membuat error berantai di bawahnya
+    CONSTANTS c_struct TYPE string VALUE
+      `|DATA|TYPES|CONSTANTS|STATICS|FIELD-SYMBOLS|TABLES|PARAMETERS|SELECT-OPTIONS|RANGES|CLASS|INTERFACE|FORM|FUNCTION|METHOD|LOOP|IF|CASE|DO|WHILE|TRY|AT|ELSE|ELSEIF|WHEN|CATCH|`.
     DATA mo_src TYPE REF TO lcl_source.
     METHODS expand
       IMPORTING iv_name  TYPE progname
@@ -967,6 +989,7 @@ CLASS lcl_syntax DEFINITION FINAL.
                 ct_map   TYPE tt_map.
     METHODS comment_out
       IMPORTING iv_line TYPE i
+      EXPORTING ev_kw   TYPE string
       CHANGING  ct_src  TYPE string_table.
 ENDCLASS.
 
@@ -1017,6 +1040,16 @@ CLASS lcl_syntax IMPLEMENTATION.
       ENDIF.
       lv_to = lv_to + 1.
     ENDWHILE.
+    " kata pertama kalimat (untuk deteksi error berantai)
+    CLEAR ev_kw.
+    LOOP AT ct_src INTO DATA(lv_text) FROM lv_from TO lv_to.
+      DATA(lv_cp) = lcl_util=>code_part( lv_text ).
+      IF lv_cp IS NOT INITIAL.
+        FIND FIRST OCCURRENCE OF REGEX `^\s*([A-Za-z0-9_\-]+)` IN lv_cp SUBMATCHES ev_kw.
+        EXIT.
+      ENDIF.
+    ENDLOOP.
+    ev_kw = to_upper( ev_kw ).
     LOOP AT ct_src ASSIGNING FIELD-SYMBOL(<lv_src>) FROM lv_from TO lv_to.
       <lv_src> = |*{ <lv_src> }|.
     ENDLOOP.
@@ -1028,7 +1061,14 @@ CLASS lcl_syntax IMPLEMENTATION.
           lv_msg  TYPE string,
           lv_line TYPE i,
           lv_word TYPE string,
-          lv_last TYPE i VALUE -1.
+          lv_last TYPE i VALUE -1,
+          lv_kw   TYPE string,
+          lv_stru TYPE string,
+          lv_root TYPE string,
+          lv_casc TYPE abap_bool,
+          lv_code TYPE string,
+          lv_sev  TYPE ty_sev,
+          lv_act  TYPE string.
 
     expand( EXPORTING iv_name = iv_main iv_depth = 0
             CHANGING  ct_src = lt_src ct_map = lt_map ).
@@ -1039,7 +1079,7 @@ CLASS lcl_syntax IMPLEMENTATION.
     DATA(ls_dir) = VALUE trdir( name = 'ZS4CCA_SYNCHK' subc = '1'
                                 uccheck = abap_true fixpt = abap_true ).
     DO c_max_errors TIMES.
-      CLEAR: lv_msg, lv_line, lv_word.
+      CLEAR: lv_msg, lv_line, lv_word, lv_stru.
       SYNTAX-CHECK FOR lt_src MESSAGE lv_msg LINE lv_line WORD lv_word
                    DIRECTORY ENTRY ls_dir.
       IF sy-subrc = 0 OR lv_line <= 0 OR lv_line > lines( lt_src ) OR lv_line = lv_last.
@@ -1049,18 +1089,588 @@ CLASS lcl_syntax IMPLEMENTATION.
       DATA(ls_map) = lt_map[ lv_line ].
       DATA(lv_is_z) = xsdbool( lv_word IS NOT INITIAL
                                AND lcl_util=>is_custom( lv_word ) = abap_true ).
+      lv_code = 'L2_SYNTAX'.
+      lv_sev  = 'E'.
+      lv_act  = `Error kompilasi di S/4: perbaiki kode sesuai pesan`.
+      IF lv_is_z = abap_true.
+        lv_code = 'L2_MISSING_Z'.
+        lv_sev  = 'I'.
+        lv_act  = `Objek Z belum ada di ADB: bawa DDIC/objek Z (F0b), scan ulang`.
+      ELSEIF lv_msg CS 'Inconsistency in the dictionary'.
+        FIND FIRST OCCURRENCE OF REGEX `structure\s+([A-Za-z0-9_/]+)` IN lv_msg SUBMATCHES lv_stru.
+        lv_code = 'L2_ADB_DDIC'.
+        lv_sev  = 'I'.
+        lv_act  = |Dictionary ADB tidak konsisten (bukan salah program): cek dan aktifkan struktur { lv_stru } di SE11 ADB|.
+      ELSEIF lv_casc = abap_true.
+        lv_code = 'L2_CASCADE'.
+        lv_sev  = 'I'.
+        lv_act  = |Kemungkinan akibat error di { lv_root }: periksa lagi setelah error utama diperbaiki|.
+      ENDIF.
       APPEND VALUE #( main = iv_main unit = ls_map-unit line = ls_map-line layer = 'L2'
-                      severity = COND #( WHEN lv_is_z = abap_true THEN 'I' ELSE 'E' )
-                      code     = COND #( WHEN lv_is_z = abap_true THEN 'L2_MISSING_Z'
-                                         ELSE 'L2_SYNTAX' )
-                      ref_obj  = lv_word
+                      severity = lv_sev
+                      code     = lv_code
+                      ref_obj  = COND string( WHEN lv_stru IS NOT INITIAL THEN lv_stru ELSE lv_word )
                       detail   = lv_msg
-                      action   = COND #( WHEN lv_is_z = abap_true
-                                         THEN `Objek Z belum ada di ADB: bawa DDIC/objek Z (F0b), scan ulang`
-                                         ELSE `Error kompilasi di S/4: perbaiki kode sesuai pesan` ) )
+                      action   = lv_act )
              TO rt_find.
-      comment_out( EXPORTING iv_line = lv_line CHANGING ct_src = lt_src ).
+      comment_out( EXPORTING iv_line = lv_line
+                   IMPORTING ev_kw   = lv_kw
+                   CHANGING  ct_src  = lt_src ).
+      " kalimat deklarasi/blok yang dikomentari: error berikutnya kemungkinan berantai
+      DATA(lv_probe) = |\|{ lv_kw }\||.
+      IF lv_casc = abap_false AND lv_kw IS NOT INITIAL AND c_struct CS lv_probe.
+        lv_casc = abap_true.
+        lv_root = |{ ls_map-unit }:{ ls_map-line }|.
+      ENDIF.
     ENDDO.
+  ENDMETHOD.
+
+ENDCLASS.
+
+*----------------------------------------------------------------------*
+* F3: Konverter - ubah source ECC agar valid di S/4HANA (tanpa AI)
+* Aturan (deterministik):
+*   R01_HINT  hapus %_HINTS <DB> '...'
+*   R02_<T>   tabel lama T -> view pengganti resmi SAP, DITEMUKAN OTOMATIS
+*             dari ADB: view V_<T>_CDS yang tabel dasarnya (DD26S) tidak
+*             memuat T, T masih TRANSP tanpa VIEWREF, dan T dipakai di source.
+*             (di ADB 1909: KONV, VBUK, VBUP)
+* Perbandingan field tabel lama vs pengganti dihitung dari DDIC ADB.
+* Risiko: ' ' aman | W diterapkan, periksa | E tidak diterapkan (manual)
+* Hasil: source baru in-memory (nama asli) + salinan *_ECC6 di $TMP.
+* Program asli dan ECC tidak pernah ditulis. Remark mengikuti SOP-ABAP-06.
+*----------------------------------------------------------------------*
+CLASS lcl_fixer DEFINITION FINAL.
+  PUBLIC SECTION.
+    CONSTANTS c_suffix TYPE string VALUE `_ECC6`.
+    TYPES: BEGIN OF ty_wres,
+             unit TYPE progname,
+             copy TYPE progname,
+             ok   TYPE abap_bool,
+             msg  TYPE string,
+           END OF ty_wres,
+           tt_wres TYPE STANDARD TABLE OF ty_wres WITH EMPTY KEY.
+    CLASS-METHODS copy_name
+      IMPORTING iv_name        TYPE csequence
+      RETURNING VALUE(rv_name) TYPE progname.
+    METHODS constructor
+      IMPORTING io_src TYPE REF TO lcl_source.
+    METHODS convert
+      EXPORTING et_chg  TYPE tt_chg
+                eo_conv TYPE REF TO lcl_source.
+    METHODS write_copies
+      IMPORTING io_conv       TYPE REF TO lcl_source
+      RETURNING VALUE(rt_res) TYPE tt_wres.
+  PRIVATE SECTION.
+    TYPES tt_tok TYPE STANDARD TABLE OF stokes WITH EMPTY KEY.
+    TYPES tt_stm TYPE STANDARD TABLE OF sstmnt WITH EMPTY KEY.
+    TYPES: BEGIN OF ty_edit,
+             unit TYPE progname,
+             row  TYPE i,
+             col  TYPE i,
+             len  TYPE i,
+             new  TYPE string,
+             rule TYPE c LENGTH 12,
+             risk TYPE c LENGTH 1,
+             note TYPE string,
+           END OF ty_edit,
+           tt_edit TYPE STANDARD TABLE OF ty_edit WITH EMPTY KEY.
+    TYPES: BEGIN OF ty_repl,
+             old  TYPE tabname,
+             new  TYPE tabname,
+             rule TYPE c LENGTH 12,
+           END OF ty_repl,
+           tt_repl TYPE STANDARD TABLE OF ty_repl WITH EMPTY KEY.
+    TYPES: BEGIN OF ty_fld,
+             tabname   TYPE tabname,
+             fieldname TYPE fieldname,
+             datatype  TYPE dd03l-datatype,
+             leng      TYPE dd03l-leng,
+           END OF ty_fld,
+           tt_fld TYPE STANDARD TABLE OF ty_fld WITH EMPTY KEY.
+    TYPES: BEGIN OF ty_pair,
+             rule  TYPE c LENGTH 12,
+             field TYPE fieldname,
+           END OF ty_pair,
+           tt_pair TYPE SORTED TABLE OF ty_pair WITH UNIQUE KEY rule field.
+
+    DATA mo_src  TYPE REF TO lcl_source.
+    DATA mt_repl TYPE tt_repl.
+    DATA mt_miss TYPE tt_pair.
+    DATA mt_chgd TYPE tt_pair.
+
+    METHODS discover.
+    METHODS used
+      IMPORTING iv_name       TYPE string
+      RETURNING VALUE(rv_yes) TYPE abap_bool.
+    METHODS load_ddic.
+    METHODS edits_of
+      IMPORTING iv_unit        TYPE progname
+                it_lines       TYPE string_table
+      RETURNING VALUE(rt_edit) TYPE tt_edit.
+    METHODS rule_hints
+      IMPORTING iv_unit TYPE progname
+                it_tok  TYPE tt_tok
+                it_stm  TYPE tt_stm
+      CHANGING  ct_edit TYPE tt_edit.
+    METHODS rule_replace
+      IMPORTING iv_unit TYPE progname
+                it_tok  TYPE tt_tok
+                it_stm  TYPE tt_stm
+      CHANGING  ct_edit TYPE tt_edit.
+    METHODS apply_edits
+      IMPORTING iv_line       TYPE string
+                it_edit       TYPE tt_edit
+      RETURNING VALUE(rv_new) TYPE string.
+    METHODS build_lines
+      IMPORTING it_lines        TYPE string_table
+                it_edit         TYPE tt_edit
+      RETURNING VALUE(rt_lines) TYPE string_table.
+    METHODS write_unit
+      IMPORTING iv_name  TYPE progname
+                iv_orig  TYPE progname
+                iv_type  TYPE c
+                it_lines TYPE string_table
+      EXPORTING ev_ok    TYPE abap_bool
+                ev_msg   TYPE string.
+ENDCLASS.
+
+CLASS lcl_fixer IMPLEMENTATION.
+
+  METHOD copy_name.
+    DATA(lv_n) = to_upper( condense( CONV string( iv_name ) ) ).
+    IF strlen( lv_n ) >= strlen( c_suffix )
+       AND substring( val = lv_n off = strlen( lv_n ) - strlen( c_suffix ) ) = c_suffix.
+      rv_name = lv_n.
+      RETURN.
+    ENDIF.
+    IF strlen( lv_n ) + strlen( c_suffix ) > 40.
+      lv_n = substring( val = lv_n off = 0 len = 40 - strlen( c_suffix ) ).
+    ENDIF.
+    rv_name = lv_n && c_suffix.
+  ENDMETHOD.
+
+  METHOD constructor.
+    mo_src = io_src.
+    discover( ).
+    load_ddic( ).
+  ENDMETHOD.
+
+  METHOD used.
+    " nama tabel muncul sebagai kata utuh di salah satu source
+    DATA(lv_re) = |\\<{ iv_name }\\>|.
+    LOOP AT mo_src->mt_units INTO DATA(ls_u).
+      FIND FIRST OCCURRENCE OF REGEX lv_re IN TABLE ls_u-lines IGNORING CASE.
+      IF sy-subrc = 0.
+        rv_yes = abap_true.
+        RETURN.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD discover.
+    " view pengganti resmi SAP dibaca dari ADB, bukan daftar tetap
+    DATA: lt_view TYPE STANDARD TABLE OF tabname WITH EMPTY KEY,
+          lt_base TYPE STANDARD TABLE OF tabname WITH EMPTY KEY.
+    CLEAR mt_repl.
+    SELECT tabname FROM dd02l
+      WHERE tabname LIKE 'V#_%#_CDS' ESCAPE '#'
+        AND tabclass = 'VIEW' AND as4local = 'A'
+      INTO TABLE @lt_view.
+    LOOP AT lt_view INTO DATA(lv_view).
+      DATA(lv_v) = condense( CONV string( lv_view ) ).
+      IF strlen( lv_v ) <= 6.
+        CONTINUE.
+      ENDIF.
+      DATA(lv_old) = substring( val = lv_v off = 2 len = strlen( lv_v ) - 6 ).
+      IF used( lv_old ) = abap_false.
+        CONTINUE.
+      ENDIF.
+      " tabel lama harus masih ada, transparan, dan belum dialihkan SAP (VIEWREF)
+      SELECT SINGLE tabclass, viewref FROM dd02l
+        WHERE tabname = @lv_old AND as4local = 'A' AND as4vers = '0000'
+        INTO @DATA(ls_old).
+      IF sy-subrc <> 0 OR ls_old-tabclass <> 'TRANSP' OR ls_old-viewref IS NOT INITIAL.
+        CONTINUE.
+      ENDIF.
+      " view harus membaca dari tabel lain (bukan view biasa di atas tabel itu)
+      SELECT tabname FROM dd26s
+        WHERE viewname = @lv_view AND as4local = 'A'
+        INTO TABLE @lt_base.
+      IF lt_base IS INITIAL OR line_exists( lt_base[ table_line = lv_old ] ).
+        CONTINUE.
+      ENDIF.
+      APPEND VALUE #( old = lv_old new = lv_view rule = |R02_{ lv_old }| ) TO mt_repl.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD load_ddic.
+    DATA lt_f TYPE tt_fld.
+    LOOP AT mt_repl INTO DATA(ls_r).
+      CLEAR lt_f.
+      SELECT tabname, fieldname, datatype, leng FROM dd03l
+        WHERE ( tabname = @ls_r-old OR tabname = @ls_r-new )
+          AND as4local = 'A' AND as4vers = '0000'
+          AND fieldname NOT LIKE '.%'
+        INTO CORRESPONDING FIELDS OF TABLE @lt_f.
+      SORT lt_f BY tabname fieldname.
+      LOOP AT lt_f INTO DATA(ls_o) WHERE tabname = ls_r-old.
+        READ TABLE lt_f INTO DATA(ls_n)
+             WITH KEY tabname = ls_r-new fieldname = ls_o-fieldname BINARY SEARCH.
+        IF sy-subrc <> 0.
+          IF ls_o-fieldname <> 'MANDT'.
+            INSERT VALUE #( rule = ls_r-rule field = ls_o-fieldname ) INTO TABLE mt_miss.
+          ENDIF.
+        ELSEIF ls_n-datatype <> ls_o-datatype OR ls_n-leng <> ls_o-leng.
+          INSERT VALUE #( rule = ls_r-rule field = ls_o-fieldname ) INTO TABLE mt_chgd.
+        ENDIF.
+      ENDLOOP.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD edits_of.
+    DATA: lt_tok TYPE tt_tok,
+          lt_stm TYPE tt_stm.
+    SCAN ABAP-SOURCE it_lines TOKENS INTO lt_tok STATEMENTS INTO lt_stm.
+    IF lt_stm IS INITIAL.
+      RETURN.
+    ENDIF.
+    rule_hints( EXPORTING iv_unit = iv_unit it_tok = lt_tok it_stm = lt_stm
+                CHANGING  ct_edit = rt_edit ).
+    rule_replace( EXPORTING iv_unit = iv_unit it_tok = lt_tok it_stm = lt_stm
+                  CHANGING  ct_edit = rt_edit ).
+  ENDMETHOD.
+
+  METHOD rule_hints.
+    " %_HINTS <DB> '<teks hint>'  -> hapus ketiga token (harus satu baris)
+    LOOP AT it_stm INTO DATA(ls_stm).
+      DATA(lv_i) = ls_stm-from.
+      WHILE lv_i + 2 <= ls_stm-to.
+        IF to_upper( it_tok[ lv_i ]-str ) = '%_HINTS'.
+          DATA(ls_a) = it_tok[ lv_i ].
+          DATA(ls_c) = it_tok[ lv_i + 2 ].
+          IF ls_a-row = ls_c-row AND lcl_util=>is_literal( ls_c-str ) = abap_true.
+            APPEND VALUE #( unit = iv_unit row = ls_a-row col = ls_a-col
+                            len  = ls_c-col + strlen( ls_c-str ) - ls_a-col
+                            new  = `` rule = 'R01_HINT' risk = ' '
+                            note = `Hint database Oracle tidak berlaku di HANA: dihapus` )
+                   TO ct_edit.
+            lv_i = lv_i + 3.
+            CONTINUE.
+          ELSE.
+            APPEND VALUE #( unit = iv_unit row = ls_a-row col = ls_a-col len = 0
+                            new  = `` rule = 'R01_HINT' risk = 'E'
+                            note = `Hint multi-baris / bentuk tidak dikenal: hapus manual` )
+                   TO ct_edit.
+          ENDIF.
+        ENDIF.
+        lv_i = lv_i + 1.
+      ENDWHILE.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD rule_replace.
+    " nama tabel lama -> view pengganti; field dibandingkan dari DDIC ADB
+    DATA: lv_fld  TYPE string,
+          lv_rest TYPE string,
+          lv_dum  TYPE string,
+          lt_new  TYPE tt_edit,
+          lv_risk TYPE c LENGTH 1,
+          lv_note TYPE string.
+    LOOP AT it_stm INTO DATA(ls_stm).
+      IF ls_stm-from > ls_stm-to.
+        CONTINUE.
+      ENDIF.
+      DATA(lv_first) = to_upper( it_tok[ ls_stm-from ]-str ).
+      DATA(lv_write) = xsdbool( lv_first = 'INSERT' OR lv_first = 'UPDATE'
+                             OR lv_first = 'MODIFY' OR lv_first = 'DELETE' ).
+      LOOP AT mt_repl INTO DATA(ls_r).
+        DATA(lv_old)  = condense( CONV string( ls_r-old ) ).
+        DATA(lv_olen) = strlen( lv_old ).
+        DATA(lv_diff) = xsdbool( line_exists( mt_miss[ rule = ls_r-rule ] )
+                              OR line_exists( mt_chgd[ rule = ls_r-rule ] ) ).
+        DATA(lv_hits) = 0.
+        CLEAR lt_new.
+        DATA(lv_idx) = ls_stm-from.
+        WHILE lv_idx <= ls_stm-to.
+          DATA(ls_tok) = it_tok[ lv_idx ].
+          lv_idx = lv_idx + 1.
+          IF lcl_util=>is_literal( ls_tok-str ) = abap_true.
+            CONTINUE.
+          ENDIF.
+          DATA(lv_up) = to_upper( ls_tok-str ).
+          CLEAR: lv_fld, lv_rest.
+          IF lv_up = lv_old.
+            " token nama tabel saja
+          ELSEIF strlen( lv_up ) > lv_olen
+             AND substring( val = lv_up off = 0 len = lv_olen ) = lv_old
+             AND ( substring( val = lv_up off = lv_olen len = 1 ) = '-'
+                OR substring( val = lv_up off = lv_olen len = 1 ) = '~' ).
+            lv_rest = substring( val = ls_tok-str off = lv_olen ).
+            lv_fld  = substring( val = lv_up off = lv_olen + 1 ).
+            SPLIT lv_fld AT '-' INTO lv_fld lv_dum.
+          ELSE.
+            CONTINUE.
+          ENDIF.
+          lv_hits = lv_hits + 1.
+
+          lv_risk = ' '.
+          lv_note = |{ ls_r-old } diganti view baca resmi SAP { ls_r-new }|.
+          IF lv_fld IS INITIAL AND lv_diff = abap_true.
+            lv_risk = 'W'.
+            lv_note = |{ ls_r-old } diganti { ls_r-new }: ada field hilang/berubah tipe, periksa pemakaian|.
+          ELSEIF lv_fld IS NOT INITIAL
+             AND line_exists( mt_miss[ rule = ls_r-rule field = lv_fld ] ).
+            lv_risk = 'E'.
+            lv_note = |Field { ls_r-old }-{ lv_fld } tidak ada di { ls_r-new }|.
+          ELSEIF lv_fld IS NOT INITIAL
+             AND line_exists( mt_chgd[ rule = ls_r-rule field = lv_fld ] ).
+            lv_risk = 'W'.
+            lv_note = |Tipe/panjang { lv_fld } berubah di { ls_r-new }: periksa variabel penampung|.
+          ENDIF.
+          IF lv_write = abap_true AND lv_idx - 1 > ls_stm-from.
+            lv_risk = 'E'.
+            lv_note = |Tulis ke { ls_r-old }: view tidak bisa ditulis, pakai BAPI/API (manual)|.
+          ENDIF.
+          APPEND VALUE #( unit = iv_unit row = ls_tok-row col = ls_tok-col
+                          len  = strlen( ls_tok-str )
+                          new  = |{ ls_r-new }{ lv_rest }|
+                          rule = ls_r-rule risk = lv_risk note = lv_note ) TO lt_new.
+        ENDWHILE.
+
+        IF lv_hits = 0.
+          CONTINUE.
+        ENDIF.
+        APPEND LINES OF lt_new TO ct_edit.
+
+        " field yang hilang di pengganti, ditulis tanpa awalan, di kalimat yang sama
+        lv_idx = ls_stm-from.
+        WHILE lv_idx <= ls_stm-to.
+          DATA(ls_t2) = it_tok[ lv_idx ].
+          lv_idx = lv_idx + 1.
+          IF lcl_util=>is_literal( ls_t2-str ) = abap_true.
+            CONTINUE.
+          ENDIF.
+          DATA(lv_up2) = to_upper( ls_t2-str ).
+          IF line_exists( mt_miss[ rule = ls_r-rule field = lv_up2 ] ).
+            APPEND VALUE #( unit = iv_unit row = ls_t2-row col = ls_t2-col len = 0
+                            new = `` rule = ls_r-rule risk = 'E'
+                            note = |Field { lv_up2 } tidak ada di { ls_r-new }| ) TO ct_edit.
+          ENDIF.
+        ENDWHILE.
+      ENDLOOP.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD apply_edits.
+    DATA(lt_e) = it_edit.
+    SORT lt_e BY col DESCENDING.
+    rv_new = iv_line.
+    LOOP AT lt_e INTO DATA(ls_e) WHERE risk <> 'E'.
+      DATA(lv_len) = strlen( rv_new ).
+      IF ls_e-col > lv_len.
+        CONTINUE.
+      ENDIF.
+      DATA(lv_left)  = substring( val = rv_new off = 0 len = ls_e-col ).
+      DATA(lv_end)   = ls_e-col + ls_e-len.
+      DATA(lv_right) = COND string( WHEN lv_end < lv_len THEN substring( val = rv_new off = lv_end ) ).
+      DATA(lv_lefttxt) = condense( lv_left ).
+      IF ls_e-new IS INITIAL AND lv_lefttxt IS NOT INITIAL.
+        lv_left = replace( val = lv_left regex = `\s+$` with = `` ).
+      ENDIF.
+      rv_new = lv_left && ls_e-new && lv_right.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD build_lines.
+    " terapkan edit (tanpa risiko E), kode lama dikomentari (format SOP)
+    DATA: lt_row TYPE tt_edit,
+          lt_rul TYPE string_table.
+    LOOP AT it_lines INTO DATA(lv_line).
+      DATA(lv_row) = sy-tabix.
+      lt_row = VALUE #( FOR e IN it_edit WHERE ( row = lv_row AND risk <> 'E' ) ( e ) ).
+      IF lt_row IS INITIAL.
+        APPEND lv_line TO rt_lines.
+        CONTINUE.
+      ENDIF.
+      DATA(lv_new) = apply_edits( iv_line = lv_line it_edit = lt_row ).
+      CLEAR lt_rul.
+      LOOP AT lt_row INTO DATA(ls_r).
+        IF NOT line_exists( lt_rul[ table_line = CONV string( ls_r-rule ) ] ).
+          APPEND CONV string( ls_r-rule ) TO lt_rul.
+        ENDIF.
+      ENDLOOP.
+      DATA(lv_rules) = concat_lines_of( table = lt_rul sep = `,` ).
+      APPEND |*\{ S4MIG { lv_rules } { sy-datum } { sy-uname }| TO rt_lines.
+      APPEND |*{ lv_line }| TO rt_lines.
+      DATA(lv_newtxt) = condense( lv_new ).
+      IF lv_newtxt IS NOT INITIAL.
+        APPEND lv_new TO rt_lines.
+      ENDIF.
+      APPEND `*} S4MIG` TO rt_lines.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD convert.
+    CLEAR et_chg.
+    eo_conv = NEW lcl_source( iv_mode = 'MEM' ).
+    LOOP AT mo_src->mt_units INTO DATA(ls_unit).
+      DATA(lv_main) = xsdbool( line_exists( mo_src->mt_mains[ table_line = CONV string( ls_unit-name ) ] ) ).
+      DATA(lt_edit) = edits_of( iv_unit = ls_unit-name it_lines = ls_unit-lines ).
+      IF lt_edit IS INITIAL.
+        eo_conv->put( iv_name = ls_unit-name it_lines = ls_unit-lines iv_is_main = lv_main ).
+        CONTINUE.
+      ENDIF.
+
+      " satu baris usulan per (baris source, aturan)
+      DATA(lt_key) = lt_edit.
+      SORT lt_key BY row rule.
+      DELETE ADJACENT DUPLICATES FROM lt_key COMPARING row rule.
+      LOOP AT lt_key INTO DATA(ls_key).
+        DATA(lt_same) = VALUE tt_edit( FOR e IN lt_edit
+                                       WHERE ( row = ls_key-row AND rule = ls_key-rule ) ( e ) ).
+        DATA(lv_before) = ls_unit-lines[ ls_key-row ].
+        DATA lv_risk TYPE c LENGTH 1.
+        lv_risk = ' '.
+        DATA(lv_note) = lt_same[ 1 ]-note.
+        LOOP AT lt_same INTO DATA(ls_s).
+          IF ls_s-risk = 'E'.
+            lv_risk = 'E'.
+            lv_note = ls_s-note.
+          ELSEIF ls_s-risk = 'W' AND lv_risk = ' '.
+            lv_risk = 'W'.
+            lv_note = ls_s-note.
+          ENDIF.
+        ENDLOOP.
+        APPEND VALUE #( unit = ls_unit-name line = ls_key-row rule = ls_key-rule
+                        risk = lv_risk applied = xsdbool( lv_risk <> 'E' )
+                        before = lv_before
+                        after = apply_edits( iv_line = lv_before it_edit = lt_same )
+                        note = lv_note ) TO et_chg.
+      ENDLOOP.
+
+      eo_conv->put( iv_name = ls_unit-name
+                    it_lines = build_lines( it_lines = ls_unit-lines it_edit = lt_edit )
+                    iv_is_main = lv_main ).
+    ENDLOOP.
+    SORT et_chg BY unit line rule.
+  ENDMETHOD.
+
+  METHOD write_unit.
+    DATA: lt_src   TYPE STANDARD TABLE OF abaptxt255 WITH EMPTY KEY,
+          lv_title TYPE c LENGTH 70.
+    ev_ok = abap_false.
+    lt_src = VALUE #( FOR l IN it_lines ( line = l ) ).
+
+    SELECT SINGLE name FROM trdir WHERE name = @iv_name INTO @DATA(lv_exist).
+    IF sy-subrc = 0.
+      INSERT REPORT iv_name FROM it_lines.
+      IF sy-subrc = 0.
+        ev_ok  = abap_true.
+        ev_msg = `salinan sudah ada, source diperbarui`.
+      ELSE.
+        ev_msg = `INSERT REPORT gagal`.
+      ENDIF.
+      RETURN.
+    ENDIF.
+
+    lv_title = |S4 salinan { iv_orig }|.
+    CALL FUNCTION 'RPY_PROGRAM_INSERT'
+      EXPORTING
+        program_name        = iv_name
+        title_string        = lv_title
+        status              = 'K'
+        application         = 'S'
+        suppress_dialog     = 'X'
+        save_inactive       = 'A'
+        authorization_group = ' '
+        development_class   = '$TMP'
+        edit_lock           = ' '
+        program_type        = iv_type
+        temporary           = ' '
+        transport_number    = ' '
+        uccheck             = 'X'
+      TABLES
+        source_extended     = lt_src
+      EXCEPTIONS
+        already_exists      = 1
+        cancelled           = 2
+        name_not_allowed    = 3
+        permission_error    = 4
+        OTHERS              = 5.
+    CASE sy-subrc.
+      WHEN 0.
+        ev_ok  = abap_true.
+        ev_msg = `salinan baru dibuat di $TMP`.
+      WHEN 1.
+        ev_msg = `sudah ada`.
+      WHEN 3.
+        ev_msg = `nama tidak diizinkan`.
+      WHEN 4.
+        ev_msg = `tidak ada otorisasi`.
+      WHEN OTHERS.
+        ev_msg = |gagal (subrc { sy-subrc })|.
+    ENDCASE.
+  ENDMETHOD.
+
+  METHOD write_copies.
+    DATA: lt_out TYPE string_table,
+          lv_typ TYPE c LENGTH 1,
+          lv_ok  TYPE abap_bool,
+          lv_msg TYPE string.
+
+    LOOP AT io_conv->mt_units INTO DATA(ls_unit).
+      lt_out = ls_unit-lines.
+
+      " tipe objek dari kalimat pertama
+      lv_typ = 'I'.
+      LOOP AT lt_out INTO DATA(lv_t1).
+        DATA(lv_cp) = to_upper( lcl_util=>code_part( lv_t1 ) ).
+        IF lv_cp IS INITIAL.
+          CONTINUE.
+        ENDIF.
+        IF lv_cp CP 'REPORT*' OR lv_cp CP 'PROGRAM*'.
+          lv_typ = '1'.
+        ELSEIF lv_cp CP 'FUNCTION-POOL*'.
+          lv_typ = 'F'.
+        ENDIF.
+        EXIT.
+      ENDLOOP.
+      IF lv_typ = 'F'.
+        APPEND VALUE #( unit = ls_unit-name ok = abap_false
+                        msg = `function pool belum didukung, dilewati` ) TO rt_res.
+        CONTINUE.
+      ENDIF.
+
+      " ganti nama INCLUDE dan REPORT ke *_ECC6
+      DATA(lv_seen) = abap_false.
+      LOOP AT lt_out ASSIGNING FIELD-SYMBOL(<lv_o>).
+        IF <lv_o> IS INITIAL OR substring( val = <lv_o> off = 0 len = 1 ) = '*'.
+          CONTINUE.
+        ENDIF.
+        DATA(lv_inc) = lcl_util=>include_of( <lv_o> ).
+        IF lv_inc IS NOT INITIAL AND io_conv->has( lv_inc ) = abap_true.
+          DATA(lv_incs) = condense( CONV string( lv_inc ) ).
+          DATA(lv_incn) = condense( CONV string( copy_name( lv_inc ) ) ).
+          REPLACE FIRST OCCURRENCE OF lv_incs IN <lv_o> WITH lv_incn IGNORING CASE.
+        ENDIF.
+        IF lv_seen = abap_false AND lv_typ = '1'.
+          DATA(lv_c2) = to_upper( lcl_util=>code_part( <lv_o> ) ).
+          IF lv_c2 CP 'REPORT*' OR lv_c2 CP 'PROGRAM*'.
+            DATA(lv_orig) = condense( CONV string( ls_unit-name ) ).
+            DATA(lv_newn) = condense( CONV string( copy_name( ls_unit-name ) ) ).
+            REPLACE FIRST OCCURRENCE OF lv_orig IN <lv_o> WITH lv_newn IGNORING CASE.
+            lv_seen = abap_true.
+          ENDIF.
+        ENDIF.
+      ENDLOOP.
+
+      DATA(lv_name) = copy_name( ls_unit-name ).
+      write_unit( EXPORTING iv_name = lv_name iv_orig = ls_unit-name iv_type = lv_typ
+                            it_lines = lt_out
+                  IMPORTING ev_ok = lv_ok ev_msg = lv_msg ).
+      APPEND VALUE #( unit = ls_unit-name copy = lv_name ok = lv_ok msg = lv_msg ) TO rt_res.
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.
@@ -1070,8 +1680,12 @@ ENDCLASS.
 *----------------------------------------------------------------------*
 CLASS lcl_runner DEFINITION FINAL.
   PUBLIC SECTION.
+    DATA mv_title TYPE string.
     METHODS run.
+    METHODS analyze
+      IMPORTING io_src TYPE REF TO lcl_source.
     METHODS display.
+    METHODS convert.
   PRIVATE SECTION.
     TYPES: BEGIN OF ty_owner,
              unit TYPE progname,
@@ -1083,6 +1697,9 @@ CLASS lcl_runner DEFINITION FINAL.
     DATA mt_owner TYPE tt_owner.
     METHODS layer1.
     METHODS layer2.
+    METHODS rfc_programs
+      IMPORTING iv_pattern      TYPE csequence
+      RETURNING VALUE(rt_names) TYPE string_table.
     METHODS set_owner
       IMPORTING iv_unit  TYPE progname
                 iv_main  TYPE progname
@@ -1109,8 +1726,16 @@ CLASS lcl_runner IMPLEMENTATION.
       WHEN 'FIL'.
         mo_src->load_from_files( ).
       WHEN 'RFC'.
-        LOOP AT s_prog INTO DATA(ls_prog) WHERE sign = 'I' AND option = 'EQ'.
-          mo_src->load_program( iv_name = ls_prog-low iv_is_main = abap_true ).
+        LOOP AT s_prog INTO DATA(ls_prog) WHERE sign = 'I'.
+          IF ls_prog-option = 'EQ'.
+            mo_src->load_program( iv_name = ls_prog-low iv_is_main = abap_true ).
+          ELSEIF ls_prog-option = 'CP'.
+            " pola (mis. ZPP*): daftar program executable dari ECC
+            DATA(lt_rfc) = rfc_programs( ls_prog-low ).
+            LOOP AT lt_rfc INTO DATA(lv_rfc).
+              mo_src->load_program( iv_name = CONV #( lv_rfc ) iv_is_main = abap_true ).
+            ENDLOOP.
+          ENDIF.
         ENDLOOP.
       WHEN 'ADB'.
         SELECT name FROM trdir
@@ -1121,6 +1746,11 @@ CLASS lcl_runner IMPLEMENTATION.
         ENDLOOP.
     ENDCASE.
 
+    analyze( mo_src ).
+  ENDMETHOD.
+
+  METHOD analyze.
+    mo_src = io_src.
     IF mo_src->mt_units IS INITIAL.
       MESSAGE 'Tidak ada source yang terbaca' TYPE 'S' DISPLAY LIKE 'E'.
       RETURN.
@@ -1239,10 +1869,185 @@ CLASS lcl_runner IMPLEMENTATION.
         set_col( io_cols = lo_cols iv_name = 'DETAIL'   iv_text = `Detail` ).
         set_col( io_cols = lo_cols iv_name = 'ACTION'   iv_text = `Saran tindakan` ).
         lo_alv->get_display_settings( )->set_list_header(
-          CONV #( |ZS4CCA - { lines( gt_find ) } temuan (L1 diff DDIC, L2 syntax S/4)| ) ).
+          CONV #( COND string( WHEN mv_title IS NOT INITIAL
+                               THEN |{ mv_title }: { lines( gt_find ) } temuan|
+                               ELSE |ZS4CCA - { lines( gt_find ) } temuan (L1 diff DDIC, L2 syntax S/4)| ) ) ).
         lo_alv->display( ).
       CATCH cx_salv_msg INTO DATA(lx_salv).
         MESSAGE lx_salv TYPE 'I'.
+    ENDTRY.
+  ENDMETHOD.
+
+  METHOD rfc_programs.
+    DATA: lt_opt TYPE STANDARD TABLE OF rfc_db_opt WITH EMPTY KEY,
+          lt_fld TYPE STANDARD TABLE OF rfc_db_fld WITH EMPTY KEY,
+          lt_dat TYPE STANDARD TABLE OF tab512 WITH EMPTY KEY,
+          lv_msg TYPE c LENGTH 200.
+    DATA(lv_like) = to_upper( CONV string( iv_pattern ) ).
+    REPLACE ALL OCCURRENCES OF '*' IN lv_like WITH '%'.
+    REPLACE ALL OCCURRENCES OF '+' IN lv_like WITH '_'.
+    CONDENSE lv_like NO-GAPS.
+    lt_opt = VALUE #( ( text = |NAME LIKE '{ lv_like }' AND SUBC = '1'| ) ).
+    lt_fld = VALUE #( ( fieldname = 'NAME' ) ).
+    CALL FUNCTION 'RFC_READ_TABLE'
+      DESTINATION p_dest
+      EXPORTING
+        query_table           = 'TRDIR'
+        rowcount              = 500
+      TABLES
+        options               = lt_opt
+        fields                = lt_fld
+        data                  = lt_dat
+      EXCEPTIONS
+        system_failure        = 1 MESSAGE lv_msg
+        communication_failure = 2 MESSAGE lv_msg
+        OTHERS                = 3.
+    IF sy-subrc = 0.
+      rt_names = VALUE #( FOR ls_dat IN lt_dat ( condense( CONV string( ls_dat-wa ) ) ) ).
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD convert.
+    DATA: lt_chg    TYPE tt_chg,
+          lo_conv   TYPE REF TO lcl_source,
+          lt_res    TYPE lcl_fixer=>tt_wres,
+          lt_before TYPE tt_find,
+          lt_after  TYPE tt_find,
+          ls_sum    TYPE ty_sum.
+
+    IF mo_src IS NOT BOUND OR mo_src->mt_mains IS INITIAL.
+      MESSAGE 'Tidak ada program utama untuk dikonversi' TYPE 'S' DISPLAY LIKE 'E'.
+      RETURN.
+    ENDIF.
+
+    DATA(lo_fix) = NEW lcl_fixer( mo_src ).
+    lo_fix->convert( IMPORTING et_chg = lt_chg eo_conv = lo_conv ).
+    LOOP AT lt_chg ASSIGNING FIELD-SYMBOL(<ls_c>).
+      <ls_c>-main = owner_of( <ls_c>-unit ).
+    ENDLOOP.
+
+    IF p_sim = abap_false.
+      lt_res = lo_fix->write_copies( lo_conv ).
+    ENDIF.
+
+    " compiler S/4: sebelum vs sesudah konversi (in-memory, nama asli)
+    DATA(lo_syn_b) = NEW lcl_syntax( mo_src ).
+    DATA(lo_syn_a) = NEW lcl_syntax( lo_conv ).
+    CLEAR gt_sum.
+    LOOP AT mo_src->mt_mains INTO DATA(lv_m).
+      DATA(lv_main) = CONV progname( lv_m ).
+      lt_before = lo_syn_b->check( lv_main ).
+      lt_after  = lo_syn_a->check( lv_main ).
+      CLEAR ls_sum.
+      ls_sum-main       = lv_main.
+      ls_sum-copy       = lcl_fixer=>copy_name( lv_main ).
+      ls_sum-n_auto     = REDUCE i( INIT n = 0 FOR c1 IN lt_chg
+                                    WHERE ( main = lv_main AND applied = abap_true ) NEXT n = n + 1 ).
+      ls_sum-n_warn     = REDUCE i( INIT n = 0 FOR c2 IN lt_chg
+                                    WHERE ( main = lv_main AND risk = 'W' ) NEXT n = n + 1 ).
+      ls_sum-n_manual   = REDUCE i( INIT n = 0 FOR c3 IN lt_chg
+                                    WHERE ( main = lv_main AND risk = 'E' ) NEXT n = n + 1 ).
+      ls_sum-err_before = REDUCE i( INIT n = 0 FOR f1 IN lt_before
+                                    WHERE ( severity = 'E' ) NEXT n = n + 1 ).
+      ls_sum-err_after  = REDUCE i( INIT n = 0 FOR f2 IN lt_after
+                                    WHERE ( severity = 'E' ) NEXT n = n + 1 ).
+      ls_sum-z_missing  = REDUCE i( INIT n = 0 FOR f3 IN lt_after
+                                    WHERE ( code = 'L2_MISSING_Z' ) NEXT n = n + 1 ).
+
+      IF p_sim = abap_false.
+        READ TABLE lt_res INTO DATA(ls_res) WITH KEY unit = lv_main.
+        IF sy-subrc = 0 AND ls_res-ok = abap_false.
+          ls_sum-status = 'GAGAL TULIS'.
+          ls_sum-note   = ls_res-msg.
+        ENDIF.
+      ENDIF.
+      " kompilasi belum tuntas bila ada dictionary ADB rusak, error berantai, atau objek Z belum ada
+      DATA(lv_ddic) = REDUCE i( INIT n = 0 FOR f4 IN lt_after
+                                WHERE ( code = 'L2_ADB_DDIC' ) NEXT n = n + 1 ).
+      DATA(lv_casc) = REDUCE i( INIT n = 0 FOR f5 IN lt_after
+                                WHERE ( code = 'L2_CASCADE' ) NEXT n = n + 1 ).
+      DATA(lv_unver) = lv_ddic + lv_casc + ls_sum-z_missing.
+      IF ls_sum-status IS INITIAL.
+        IF ls_sum-err_after > 0 OR ls_sum-n_manual > 0.
+          ls_sum-status = 'PERLU MANUAL'.
+        ELSEIF lv_unver > 0.
+          ls_sum-status = 'BELUM VERIFIKASI'.
+        ELSEIF ls_sum-n_auto = 0.
+          ls_sum-status = 'TIDAK PERLU UBAH'.
+        ELSE.
+          ls_sum-status = 'SIAP'.
+        ENDIF.
+      ENDIF.
+      IF lv_ddic > 0.
+        DATA lt_stru TYPE string_table.
+        CLEAR lt_stru.
+        LOOP AT lt_after INTO DATA(ls_dd) WHERE code = 'L2_ADB_DDIC'.
+          DATA(lv_stru) = condense( CONV string( ls_dd-ref_obj ) ).
+          IF NOT line_exists( lt_stru[ table_line = lv_stru ] ).
+            APPEND lv_stru TO lt_stru.
+          ENDIF.
+        ENDLOOP.
+        ls_sum-note = |{ ls_sum-note } Kompilasi terhenti: dictionary ADB rusak ({ concat_lines_of( table = lt_stru sep = `, ` ) }), perbaiki di SE11 ADB. { lv_casc } error berantai belum bisa dinilai.|.
+      ENDIF.
+      IF ls_sum-z_missing > 0.
+        ls_sum-note = |{ ls_sum-note } { ls_sum-z_missing } error karena objek Z belum ada di ADB (langkah 2).|.
+      ENDIF.
+      IF p_sim = abap_true.
+        ls_sum-note = |Simulasi, salinan tidak ditulis. { ls_sum-note }|.
+      ENDIF.
+      CONDENSE ls_sum-note.
+      APPEND ls_sum TO gt_sum.
+    ENDLOOP.
+
+    " 1) ringkasan per program
+    TRY.
+        cl_salv_table=>factory( IMPORTING r_salv_table = DATA(lo_sum)
+                                CHANGING  t_table      = gt_sum ).
+        lo_sum->get_functions( )->set_all( abap_true ).
+        DATA(lo_cs) = lo_sum->get_columns( ).
+        lo_cs->set_optimize( abap_true ).
+        set_col( io_cols = lo_cs iv_name = 'MAIN'       iv_text = `Program` ).
+        set_col( io_cols = lo_cs iv_name = 'COPY'       iv_text = `Salinan S/4` ).
+        set_col( io_cols = lo_cs iv_name = 'STATUS'     iv_text = `Status` ).
+        set_col( io_cols = lo_cs iv_name = 'N_AUTO'     iv_text = `Otomatis` ).
+        set_col( io_cols = lo_cs iv_name = 'N_WARN'     iv_text = `Periksa (W)` ).
+        set_col( io_cols = lo_cs iv_name = 'N_MANUAL'   iv_text = `Manual (E)` ).
+        set_col( io_cols = lo_cs iv_name = 'ERR_BEFORE' iv_text = `Error S/4 sebelum` ).
+        set_col( io_cols = lo_cs iv_name = 'ERR_AFTER'  iv_text = `Error S/4 sesudah` ).
+        set_col( io_cols = lo_cs iv_name = 'Z_MISSING'  iv_text = `Objek Z belum ada` ).
+        set_col( io_cols = lo_cs iv_name = 'NOTE'       iv_text = `Catatan` ).
+        lo_sum->get_display_settings( )->set_list_header(
+          CONV #( |ZS4CCA konversi - { lines( gt_sum ) } program (Back = rincian)| ) ).
+        lo_sum->display( ).
+      CATCH cx_salv_msg INTO DATA(lx_sum).
+        MESSAGE lx_sum TYPE 'I'.
+    ENDTRY.
+
+    " 2) rincian perubahan per baris
+    IF lt_chg IS INITIAL.
+      RETURN.
+    ENDIF.
+    gt_chg = lt_chg.
+    TRY.
+        cl_salv_table=>factory( IMPORTING r_salv_table = DATA(lo_det)
+                                CHANGING  t_table      = gt_chg ).
+        lo_det->get_functions( )->set_all( abap_true ).
+        DATA(lo_cd) = lo_det->get_columns( ).
+        lo_cd->set_optimize( abap_true ).
+        set_col( io_cols = lo_cd iv_name = 'MAIN'    iv_text = `Program` ).
+        set_col( io_cols = lo_cd iv_name = 'UNIT'    iv_text = `Include/unit` ).
+        set_col( io_cols = lo_cd iv_name = 'LINE'    iv_text = `Baris` ).
+        set_col( io_cols = lo_cd iv_name = 'RULE'    iv_text = `Aturan` ).
+        set_col( io_cols = lo_cd iv_name = 'RISK'    iv_text = `Risiko` ).
+        set_col( io_cols = lo_cd iv_name = 'APPLIED' iv_text = `Diterapkan` ).
+        set_col( io_cols = lo_cd iv_name = 'BEFORE'  iv_text = `Sebelum` ).
+        set_col( io_cols = lo_cd iv_name = 'AFTER'   iv_text = `Sesudah` ).
+        set_col( io_cols = lo_cd iv_name = 'NOTE'    iv_text = `Catatan` ).
+        lo_det->get_display_settings( )->set_list_header(
+          CONV #( |ZS4CCA rincian - { lines( gt_chg ) } perubahan (E = manual)| ) ).
+        lo_det->display( ).
+      CATCH cx_salv_msg INTO DATA(lx_det).
+        MESSAGE lx_det TYPE 'I'.
     ENDTRY.
   ENDMETHOD.
 
