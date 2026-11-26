@@ -1,0 +1,431 @@
+*&---------------------------------------------------------------------*
+*& Report  ZTMMR_STOCK_RM
+*&
+*&---------------------------------------------------------------------*
+*&
+*&
+*&---------------------------------------------------------------------*
+
+REPORT  ZTMMR_STOCK_RM.
+INCLUDE ZINCL_ERP_SQL.
+TABLES : MARA, T001L,MCHA.
+
+TYPE-POOLS: SLIS.
+
+DATA : BEGIN OF IT_MARC OCCURS 0, "PLANT LEVEL
+        MATNR LIKE MARC-MATNR,
+        WERKS LIKE MARC-WERKS,
+        TRAME LIKE MARC-TRAME,
+        MEINS LIKE MARA-MEINS,
+        MTART LIKE MARA-MTART,
+        MATKL LIKE MARA-MATKL,
+        GLGMG LIKE MARC-GLGMG,
+       END OF IT_MARC.
+
+DATA : BEGIN OF IT_MARD OCCURS 0,   "SLOC STOCK
+        MATNR LIKE MARD-MATNR,  "MATERIAL
+        WERKS LIKE MARD-WERKS,  "PLANT
+        LGORT LIKE MARD-LGORT,  "SLOC
+        LABST LIKE MARD-LABST,  "UNRESTRICTED
+        UMLME LIKE MARD-UMLME,  "STOCK IN TRF
+        INSME LIKE MARD-INSME,  "IN QUAL INSP
+        EINME LIKE MARD-EINME,  "RESTRICTED USE
+        SPEME LIKE MARD-SPEME,  "BLOCKED
+        MEINS LIKE MARA-MEINS,
+        RETME LIKE MARD-RETME, "RETURN
+        VMUML LIKE MARD-VMUML,
+        MATKL LIKE MARA-MATKL,
+        MTART LIKE MARA-MTART,
+      END OF IT_MARD.
+
+DATA : BEGIN OF IT_MCHB OCCURS 0, "BATCH STOCK
+         MATNR LIKE MCHB-MATNR, "MATERIAL
+         WERKS LIKE MCHB-WERKS, "PLANT
+         LGORT LIKE MCHB-LGORT, "SLOC
+         CHARG LIKE MCHB-CHARG, "BATCH
+         CLABS LIKE MCHB-CLABS, "UNRESTRICTED
+         CUMLM LIKE MCHB-CUMLM, "STOCK IN TRF
+         CINSM LIKE MCHB-CINSM, "IN QUAL INSP
+         CEINM LIKE MCHB-CEINM, "RESTRICTED USE
+         CSPEM LIKE MCHB-CSPEM, "BLOCKED
+         MEINS LIKE MARA-MEINS,
+         CRETM LIKE MCHB-CRETM, "RETURN
+         CVMUM LIKE MCHB-CVMUM, "IN TRANSFER
+         MATKL LIKE MARA-MATKL,
+         MTART LIKE MARA-MTART,
+      END OF IT_MCHB.
+
+DATA:   BEGIN OF HTEXT,                   "Struktur für Textparameter
+            TDOBJECT LIKE THEAD-TDOBJECT,
+            TDID     LIKE THEAD-TDID,
+            TDNAME   LIKE THEAD-TDNAME,
+            TDSPRAS  LIKE THEAD-TDSPRAS,
+          END OF  HTEXT.
+
+DATA: FINLINE_COUNT  LIKE SY-STEPL,
+      IT_INLINES LIKE TLINE OCCURS 0 WITH HEADER LINE,
+      IT_LINES LIKE TLINE OCCURS 0.
+
+DATA: FNAME TYPE STRING.
+
+DATA : BEGIN OF IT_DISPLAY OCCURS 0,
+          MATNR TYPE MARD-MATNR, "MATERIAL
+          WERKS TYPE MARD-WERKS,  "PLANT
+          LGORT TYPE MARD-LGORT,  "S LOG
+          CHARG TYPE MCHA-CHARG,  "BATCH
+          ZDESCRIPTION(40) TYPE C, "DESCRIPTION
+          MTART LIKE MARA-MTART,
+          MATKL LIKE MARA-MATKL,
+          MEINS TYPE MARA-MEINS,  "BASE UNIT
+          WAERS(5) TYPE C,  "CURRENCY
+          CLABS LIKE MCHB-CLABS, 	"Unrestricted
+          CUMLM LIKE MCHB-CUMLM, "STOCK IN TRF
+          CINSM LIKE MCHB-CINSM, "IN QUAL INSP
+          CEINM LIKE MCHB-CEINM, "RESTRICTED USE
+          CSPEM LIKE MCHB-CSPEM, "BLOCKED
+          CRETM LIKE MCHB-CRETM, "RETURN
+          GLGMG LIKE MARC-GLGMG, "Tied Empt.
+          TRAME LIKE MARC-TRAME, "Transit
+          CVMUM LIKE MCHB-CVMUM, "IN TRANSFER
+          VCLABS LIKE MCHB-CLABS, "Value Unrestricted
+          VCUMLM LIKE MCHB-CUMLM, "Value STOCK IN TRF
+          VCINSM LIKE MCHB-CINSM, "Value IN QUAL INSP
+          VCEINM LIKE MCHB-CEINM, "Value RESTRICTED USE
+          VCSPEM LIKE MCHB-CSPEM, "Value BLOCKED
+          VCRETM LIKE MCHB-CRETM, "VALUE RETURN
+          VGLGMG LIKE MARC-GLGMG, "VALUE Tied Empt.
+*          VTRAME LIKE MARC-TRAME, "Transit
+*          VCVMUM LIKE MCHB-CVMUM, "VALUE IN TRANSFER
+       END OF IT_DISPLAY.
+
+DATA : BEGIN OF IT_VAL OCCURS 0,
+        MATNR TYPE MBEW-MATNR,
+        BWKEY TYPE MBEW-BWKEY,
+        LBKUM TYPE MBEW-LBKUM,
+        SALK3 TYPE MBEW-SALK3,
+       END OF IT_VAL.
+
+DATA : BEGIN OF IT_TOTAL,
+          CLABS LIKE MCHB-CLABS, 	"Unrestricted
+          CUMLM LIKE MCHB-CUMLM, "STOCK IN TRF
+          CINSM LIKE MCHB-CINSM, "IN QUAL INSP
+          CEINM LIKE MCHB-CEINM, "RESTRICTED USE
+          CSPEM LIKE MCHB-CSPEM, "BLOCKED
+       END OF IT_TOTAL,
+       STATS TYPE I,
+       COUNT TYPE I.
+
+RANGES : R_CHGJR FOR MCHA-CHARG.
+
+FIELD-SYMBOLS : <FS_DISPLAY> LIKE LINE OF IT_DISPLAY.
+
+SELECTION-SCREEN BEGIN OF BLOCK PLANT WITH FRAME TITLE TEXT-001.
+
+SELECT-OPTIONS : S_MTART FOR MARA-MTART DEFAULT 'ZRAW' NO INTERVALS OBLIGATORY.
+SELECT-OPTIONS : S_MATKL FOR MARA-MATKL.
+
+SELECTION-SCREEN END OF BLOCK PLANT.
+
+START-OF-SELECTION.
+  PERFORM CHECK_SERVER.
+  PERFORM GET_DATA.
+  INSERT_LOG_SQL IT_DISPLAY MTART 'ZTMB52_RM'.
+
+  IF IT_DISPLAY[] IS INITIAL.
+    VARSTATUS = '0'. "VARMSG = ''.
+    PERFORM UPDATE_LOG_SQL.
+  ELSE.
+    PERFORM INSERT_SQL.
+    PERFORM UPDATE_LOG_SQL.
+
+    CLEAR :R_CHGJR, R_CHGJR[].
+    LOOP AT IT_DISPLAY WHERE MTART = 'ZSFG'.
+      IF IT_DISPLAY-MATNR CP 'JR*'.
+        R_CHGJR-SIGN = 'I'.
+        R_CHGJR-OPTION = 'EQ'.
+        R_CHGJR-LOW = IT_DISPLAY-CHARG.
+        APPEND R_CHGJR.
+        CLEAR R_CHGJR.
+      ENDIF.
+    ENDLOOP.
+
+    IF R_CHGJR[] IS NOT INITIAL.
+      SUBMIT ZTPPR_NEW_LIST_JR WITH S_CHARG IN R_CHGJR AND RETURN.
+    ENDIF.
+
+  ENDIF.
+
+END-OF-SELECTION.
+
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_DATA
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM GET_DATA.
+*  LV =  100 / 0.
+  CLEAR : IT_MARC , IT_MARD , IT_MCHB , IT_DISPLAY.
+  REFRESH : IT_MARC , IT_MARD , IT_MCHB , IT_DISPLAY.
+
+  "SELECT AND FILL LEVEL PLANT
+
+  SELECT MC~MATNR MC~WERKS MC~TRAME MA~MEINS MA~MTART MA~MATKL MC~GLGMG
+  INTO CORRESPONDING FIELDS OF TABLE IT_MARC
+  FROM MARC AS MC
+  INNER JOIN MARA AS MA ON MC~MATNR = MA~MATNR
+  WHERE MA~MTART IN S_MTART AND
+        MA~MATKL IN S_MATKL AND
+        MC~TRAME > 0.
+
+  LOOP AT IT_MARC.
+    MOVE-CORRESPONDING IT_MARC TO IT_DISPLAY.
+    IT_DISPLAY-CUMLM = IT_MARC-TRAME.
+
+    APPEND IT_DISPLAY.
+  ENDLOOP.
+
+
+  "SELECT LEVEL S.LOC
+  SELECT MD~MATNR MD~WERKS MD~LGORT MD~LABST MD~UMLME MD~INSME MD~EINME MD~SPEME MR~MEINS MD~RETME MD~VMUML MR~MATKL MR~MTART
+  INTO CORRESPONDING FIELDS OF TABLE IT_MARD
+  FROM MARD AS MD
+  INNER JOIN MARA AS MR ON MD~MATNR = MR~MATNR
+  WHERE MR~MTART IN S_MTART AND
+        MR~MATKL IN S_MATKL AND
+        ( MD~LABST > 0 OR
+          MD~UMLME > 0 OR
+          MD~INSME > 0 OR
+          MD~EINME > 0 OR
+          MD~SPEME > 0 OR
+          MD~RETME > 0 OR
+          MD~VMUML > 0 ).
+
+  IF SY-SUBRC EQ 0.
+    "SELECT LEVEL BATCH STOCK
+    SELECT MB~MATNR MB~WERKS MB~LGORT MB~CHARG MB~CLABS MB~CUMLM MB~CINSM MB~CEINM MB~CSPEM MA~MEINS MB~CRETM MB~CVMUM MA~MATKL MA~MTART
+    INTO CORRESPONDING FIELDS OF TABLE IT_MCHB
+    FROM MCHB AS MB
+    INNER JOIN MARA AS MA ON MB~MATNR = MA~MATNR
+    WHERE MA~MTART IN S_MTART AND
+          MA~MATKL IN S_MATKL AND
+          ( MB~CLABS > 0 OR
+            MB~CUMLM > 0 OR
+            MB~CINSM > 0 OR
+            MB~CEINM > 0 OR
+            MB~CSPEM > 0 OR
+            MB~CRETM > 0 OR
+            MB~CVMUM > 0 ).
+
+    IF SY-SUBRC EQ 0.
+      "FILL FROM BATCH STOCK LEVEL
+      LOOP AT IT_MCHB.
+
+        MOVE-CORRESPONDING IT_MCHB TO IT_DISPLAY.
+        HTEXT-TDNAME = IT_MCHB-MATNR.
+        HTEXT-TDNAME+22(10) = IT_MCHB-CHARG.
+
+        CLEAR: IT_INLINES, IT_LINES.
+        REFRESH: IT_INLINES, IT_LINES.
+        CALL FUNCTION 'READ_TEXT_INLINE'
+          EXPORTING
+            ID              = 'VERM'
+            INLINE_COUNT    = '1'
+            LANGUAGE        = SY-LANGU
+            NAME            = HTEXT-TDNAME
+            OBJECT          = 'CHARGE'
+          TABLES
+            INLINES         = IT_INLINES
+            LINES           = IT_LINES
+          EXCEPTIONS
+            ID              = 1
+            LANGUAGE        = 2
+            NAME            = 3
+            NOT_FOUND       = 4
+            OBJECT          = 5
+            REFERENCE_CHECK = 6
+            OTHERS          = 7.
+
+        READ TABLE IT_INLINES INDEX 1.
+        IT_DISPLAY-ZDESCRIPTION = IT_INLINES-TDLINE.
+        APPEND IT_DISPLAY.
+      ENDLOOP.
+    ENDIF.
+
+    CLEAR STATS.
+*    IF P_CHARG IS INITIAL.
+    STATS = 0.
+*    ELSE.
+*      STATS = 1.
+**      DESCRIBE TABLE IT_MCHB LINES COUNT.
+**      IF COUNT = 0.
+**        STATS = 1.
+**      ELSE.
+**        STATS = 0.
+**      ENDIF.
+*    ENDIF.
+
+    "IF STATS = 0 THEN FILL FROM S.LOC
+    IF STATS = 0.
+      "FILL FROM S.LOC LEVEL
+      CLEAR IT_DISPLAY.
+      LOOP AT IT_MARD.
+        READ TABLE IT_MCHB WITH KEY MATNR = IT_MARD-MATNR
+                                    WERKS = IT_MARD-WERKS
+                                    LGORT = IT_MARD-LGORT.
+
+        IF SY-SUBRC NE 0.
+          MOVE-CORRESPONDING IT_MARD TO IT_DISPLAY.
+          IT_DISPLAY-CLABS = IT_MARD-LABST.
+          IT_DISPLAY-CUMLM = IT_MARD-UMLME.
+          IT_DISPLAY-CINSM = IT_MARD-INSME.
+          IT_DISPLAY-CEINM = IT_MARD-EINME.
+          IT_DISPLAY-CSPEM = IT_MARD-SPEME.
+          IT_DISPLAY-CRETM = IT_MARD-RETME.
+          IT_DISPLAY-CVMUM = IT_MARD-VMUML.
+          APPEND IT_DISPLAY.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+
+    SELECT MATNR BWKEY LBKUM SALK3
+      INTO TABLE IT_VAL
+      FROM MBEW
+      FOR ALL ENTRIES IN IT_DISPLAY
+      WHERE MBEW~MATNR = IT_DISPLAY-MATNR.
+
+
+    UNASSIGN <FS_DISPLAY>.
+    LOOP AT IT_DISPLAY ASSIGNING <FS_DISPLAY>.
+      CLEAR IT_VAL.
+      <FS_DISPLAY>-WAERS = 'IDR'.
+
+      CALL FUNCTION 'CONVERSION_EXIT_CUNIT_OUTPUT'
+        EXPORTING
+          INPUT  = <FS_DISPLAY>-MEINS
+        IMPORTING
+          OUTPUT = <FS_DISPLAY>-MEINS.
+
+
+      READ TABLE IT_VAL WITH KEY MATNR = <FS_DISPLAY>-MATNR
+                                 BWKEY = <FS_DISPLAY>-WERKS.
+
+      IF SY-SUBRC = 0.
+        IF <FS_DISPLAY>-CLABS GT 0.
+          <FS_DISPLAY>-VCLABS = <FS_DISPLAY>-CLABS * ( IT_VAL-SALK3 / IT_VAL-LBKUM / 10 ).
+        ENDIF.
+
+        IF <FS_DISPLAY>-CUMLM GT 0.
+          <FS_DISPLAY>-VCUMLM = <FS_DISPLAY>-CUMLM * ( IT_VAL-SALK3 / IT_VAL-LBKUM / 10 ).
+        ENDIF.
+
+        IF <FS_DISPLAY>-CINSM GT 0.
+          <FS_DISPLAY>-VCINSM = <FS_DISPLAY>-CINSM * ( IT_VAL-SALK3 / IT_VAL-LBKUM / 10 ).
+        ENDIF.
+
+        IF <FS_DISPLAY>-CEINM GT 0.
+          <FS_DISPLAY>-VCEINM = <FS_DISPLAY>-CEINM * ( IT_VAL-SALK3 / IT_VAL-LBKUM / 10 ).
+        ENDIF.
+
+        IF <FS_DISPLAY>-CSPEM GT 0.
+          <FS_DISPLAY>-VCSPEM = <FS_DISPLAY>-CSPEM * ( IT_VAL-SALK3 / IT_VAL-LBKUM / 10 ).
+        ENDIF.
+
+        IF <FS_DISPLAY>-CRETM GT 0.
+          <FS_DISPLAY>-VCRETM = <FS_DISPLAY>-CRETM * ( IT_VAL-SALK3 / IT_VAL-LBKUM / 10 ).
+        ENDIF.
+
+        IF <FS_DISPLAY>-GLGMG GT 0.
+          <FS_DISPLAY>-VGLGMG = <FS_DISPLAY>-GLGMG * ( IT_VAL-SALK3 / IT_VAL-LBKUM / 10 ).
+        ENDIF.
+
+*        IF <FS_DISPLAY>-TRAME GT 0.
+*          <FS_DISPLAY>-VTRAME = <FS_DISPLAY>-TRAME * ( IT_VAL-SALK3 / IT_VAL-LBKUM / 10 ).
+*        ENDIF.
+
+*        IF <FS_DISPLAY>-CVMUM GT 0.
+*          <FS_DISPLAY>-VCVMUM = <FS_DISPLAY>-CVMUM * ( IT_VAL-SALK3 / IT_VAL-LBKUM / 10 ).
+*        ENDIF.
+
+      ENDIF.
+    ENDLOOP.
+    UNASSIGN <FS_DISPLAY>.
+
+  ENDIF.
+ENDFORM.                    "GET_DATA
+
+*&---------------------------------------------------------------------*
+*&      Form  INSERT_SQL
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM INSERT_SQL.
+
+  LOOP AT IT_DISPLAY.
+    EXEC SQL.
+      INSERT INTO TMP.RPT_ZMB52_RM
+      (
+        Material,
+        Plant,
+        StorLoc,
+        Batch,
+        BatchDescription,
+        MatlType,
+        MatlGroup,
+        Unit,
+        Currency,
+        Unrestr,
+        TotalVal1,
+        QualInsp,
+        TotalVal2,
+        Blocked,
+        TotalVal3,
+        Restricted,
+        TotalVal4,
+        [Returns],
+        TotalVal5,
+        StockInTfr,
+        TotalVal6,
+        TiedEmpt,
+        TotalVal7,
+        LastUpdated
+      )
+     VALUES(
+      :IT_DISPLAY-MATNR,
+      :IT_DISPLAY-WERKS,
+      :IT_DISPLAY-LGORT,
+      :IT_DISPLAY-CHARG,
+      :IT_DISPLAY-ZDESCRIPTION,
+      :IT_DISPLAY-MTART,
+      :IT_DISPLAY-MATKL,
+      :IT_DISPLAY-MEINS,
+      :IT_DISPLAY-WAERS,
+      :IT_DISPLAY-CLABS,
+      :IT_DISPLAY-VCLABS,
+      :IT_DISPLAY-CINSM,
+      :IT_DISPLAY-VCINSM,
+      :IT_DISPLAY-CSPEM,
+      :IT_DISPLAY-VCSPEM,
+      :IT_DISPLAY-CEINM,
+      :IT_DISPLAY-VCEINM,
+      :IT_DISPLAY-CRETM,
+      :IT_DISPLAY-VCRETM,
+      :IT_DISPLAY-CUMLM,
+      :IT_DISPLAY-VCUMLM,
+      :IT_DISPLAY-GLGMG,
+      :IT_DISPLAY-VGLGMG,
+      :VARDATETIME
+     )
+    ENDEXEC.
+  ENDLOOP.
+
+  IF SY-SUBRC = 0.
+    EXEC SQL.
+      COMMIT WORK
+    ENDEXEC.
+    VARSTATUS = '1'. VARMSG = ''.
+  ELSE.
+    VARSTATUS = '0'. VARMSG = ''.
+  ENDIF.
+
+ENDFORM.                    "INSERT_SQL

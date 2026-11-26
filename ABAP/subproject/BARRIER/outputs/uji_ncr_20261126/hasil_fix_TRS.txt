@@ -1,0 +1,5 @@
+T1 BELUM APPROVED, UD L LEBIH BARU (HARUS KOSONG) JUDG=            NCR=
+                SHIP=
+T2 APPROVED, UD L LEBIH BARU (HARUS NCR APPROVED O) JUDG= NCR        NCR=
+Approved        SHIP= O
+SISA DUMMY:          0

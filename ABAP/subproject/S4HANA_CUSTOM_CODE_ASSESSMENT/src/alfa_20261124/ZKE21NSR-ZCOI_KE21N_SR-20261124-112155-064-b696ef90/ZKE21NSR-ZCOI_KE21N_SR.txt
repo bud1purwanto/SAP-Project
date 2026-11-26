@@ -1,0 +1,249 @@
+﻿Input: ZKE21NSR
+Source SAP development (RFC baca-saja): ZCOI_KE21N_SR
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZCOI_KE21N_SR:71 | AT SELECTION-SCREEN > IF SY-UCOMM = 'INFO'. | PERFORM F_PROG_INFO USING V_PROG. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:117 | END-OF-SELECTION | PERFORM GET_DATE. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:119 | END-OF-SELECTION | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:120 | END-OF-SELECTION | PERFORM DISPLAY_ALV. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:221 | FORM GET_DATA | PERFORM GET_TERMINAL. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:284 | FORM RUN_KE21N | PERFORM BDC_DYNPRO      USING 'SAPMKEI2'          '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:285 | FORM RUN_KE21N | PERFORM BDC_FIELD       USING 'BDC_OKCODE'        '=NEXT'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:286 | FORM RUN_KE21N | PERFORM BDC_FIELD       USING 'CEST1-VRGAR'       'F'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:287 | FORM RUN_KE21N | PERFORM BDC_FIELD       USING 'CEST1-BUDAT'       V_BUDAT. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:289 | FORM RUN_KE21N | PERFORM BDC_FIELD       USING 'CEST0-BELNR'       IT_SO-BELNR. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:291 | FORM RUN_KE21N | PERFORM BDC_DYNPRO      USING 'SAPMKEI2'         '0200'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:292 | FORM RUN_KE21N | PERFORM BDC_FIELD       USING 'BDC_OKCODE'       '=BUCH'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:294 | FORM RUN_KE21N | CALL TRANSACTION 'KE21N' USING BDCDATA OPTIONS FROM S_OPTIONS MESSAGES INTO IT_MSG. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:343 | FORM RUN_KE21N2 | PERFORM BDC_DYNPRO      USING 'SAPMKEI2'          '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:344 | FORM RUN_KE21N2 | PERFORM BDC_FIELD       USING 'BDC_OKCODE'        '=NEXT'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:345 | FORM RUN_KE21N2 | PERFORM BDC_FIELD       USING 'CEST1-VRGAR'       'F'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:346 | FORM RUN_KE21N2 | PERFORM BDC_FIELD       USING 'CEST1-BUDAT'       V_BUDAT. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:348 | FORM RUN_KE21N2 | PERFORM BDC_FIELD       USING 'CEST0-BELNR'       IT_SO-BELNR. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:350 | FORM RUN_KE21N2 | PERFORM BDC_DYNPRO      USING 'SAPMKEI2' '0200'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:351 | FORM RUN_KE21N2 | PERFORM BDC_FIELD       USING 'BDC_OKCODE'                              '=TAB2'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:353 | FORM RUN_KE21N2 | PERFORM BDC_DYNPRO      USING 'SAPMKEI2' '0200'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:354 | FORM RUN_KE21N2 | PERFORM BDC_FIELD       USING 'BDC_OKCODE'                              '=BUCHx'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:355 | FORM RUN_KE21N2 | PERFORM BDC_FIELD       USING 'GT_LINES_VAL-VALUE(01)'  V_KCMENG. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:356 | FORM RUN_KE21N2 | PERFORM BDC_FIELD       USING 'GT_LINES_VAL-VALUE(02)'  V_KCMENG2. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR:357 | FORM RUN_KE21N2 | CALL TRANSACTION 'KE21N' USING BDCDATA OPTIONS FROM S_OPTIONS MESSAGES INTO IT_MSG. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR_INCL:32 | FORM DISPLAY_ALV | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR_INCL:33 | FORM DISPLAY_ALV | PERFORM PREPARE_LAYOUT CHANGING GS_LAYOUT . | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR_INCL:34 | FORM DISPLAY_ALV | PERFORM EXCLUDE_TB_FUNCTIONS CHANGING LT_EXCLUDE. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR_INCL:70 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG_01A USING 'it_so' : | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR_INCL:211 | WHEN 'KE21N'. | PERFORM SELECT_LINES. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR_INCL:212 | WHEN 'KE21N'. | PERFORM RUN_KE21N. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR_INCL:214 | WHEN 'KE21N2'. | PERFORM SELECT_LINES. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KE21N_SR_INCL:215 | WHEN 'KE21N2'. | PERFORM RUN_KE21N2. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZCOI_KE21N_SR (385 baris)
+  8 | Tipe DDIC | LIKP
+  11 | Field DDIC | LIPS-VBELN
+  12 | Field DDIC | LIPS-POSNR
+  13 | Field DDIC | LIPS-VBELV
+  14 | Field DDIC | LIPS-POSNV
+  15 | Field DDIC | LIPS-KCMENG
+  17 | Field DDIC | LIPS-VRKME
+  18 | Field DDIC | LIPS-SHKZG
+  19 | Field DDIC | LIPS-MATNR
+  20 | Field DDIC | LIPS-UMVKZ
+  21 | Field DDIC | LIPS-UMVKN
+  22 | Field DDIC | LIPS-WERKS
+  26 | Field DDIC | LIPS-MATNR
+  27 | Field DDIC | LIPS-VBELN
+  28 | Field DDIC | LIPS-POSNR
+  29 | Field DDIC | LIPS-KCMENG
+  30 | Field DDIC | LIPS-KCMENG
+  31 | Field DDIC | LIPS-VRKME
+  32 | Field DDIC | CE18888-VVSQT
+  33 | Field DDIC | LIPS-KCMENG
+  34 | Field DDIC | CE18888-BELNR
+  37 | Field DDIC | ZTLOG-TEXT
+  40 | Field DDIC | LIPS-WERKS
+  50 | Field DDIC | LIKP-WADAT_IST
+  52 | Field DDIC | CE18888-BELNR
+  53 | Field DDIC | USR41-TERMINAL
+  59 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLK1 WITH FRAME TITLE TEXT-001.
+  59 | Teks Seleksi | TEXT-001
+  60 | Layar Seleksi | SELECT-OPTIONS: S_PLANT FOR LIPS-WERKS NO INTERVALS OBLIGATORY.
+  60 | Field DDIC | LIPS-WERKS
+  61 | Layar Seleksi | PARAMETERS: P_PERIO LIKE SY-DATUM.
+  61 | Field DDIC | SY-DATUM
+  63 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLK1.
+  78 | Class dan Interface | CL_GUI_ALV_GRID
+  107 | Layar dan GUI | CALL SCREEN 100.
+  130 | Field DDIC | CE18888-PERIO
+  282 | BDC | BDCDATA
+  294 | BDC | BDCDATA
+  294 | BDC | CALL TRANSACTION 'KE21N' USING BDCDATA OPTIONS FROM S_OPTIONS MESSAGES INTO IT_MSG.
+  338 | BDC | BDCDATA
+  357 | BDC | BDCDATA
+  357 | BDC | CALL TRANSACTION 'KE21N' USING BDCDATA OPTIONS FROM S_OPTIONS MESSAGES INTO IT_MSG.
+  55 | includes | ZCOI_KE21N_SR_INCL
+  56 | includes | ZBDCRECX
+  57 | includes | Z_PROG_INFO
+  234 | callFunctions | SG_PS_GET_LAST_DAY_OF_MONTH
+  254 | callFunctions | TERMINAL_ID_GET
+  294 | callTransactions | KE21N
+  133 | tableReads | LIKP
+  133 | tableReads | VBUK
+  156 | tableReads | CE18888
+  312 | databaseWrites | ZTLOG
+
+Objek Z_PROG_INFO (88 baris)
+  6 | Field DDIC | ZPROGINFO-PGMNA
+  15 | Field DDIC | RSNEWLENG-FCODE
+  77 | callFunctions | HELP_DOCULINES_SHOW
+  60 | tableReads | ZPROGINFO
+
+Objek ZBDCRECX (66 baris)
+  5 | BDC | bdcdata
+  5 | BDC | bdcdata
+  42 | BDC | bdcdata
+  43 | BDC | bdcdata
+  44 | BDC | bdcdata
+  45 | BDC | bdcdata
+  46 | BDC | bdcdata
+  54 | BDC | bdcdata
+  55 | BDC | bdcdata
+  56 | BDC | bdcdata
+  57 | BDC | bdcdata
+
+Objek ZCOI_KE21N_SR_INCL (288 baris)
+  6 | Field DDIC | ZPROGINFO-PGMNA
+  9 | Field DDIC | SY-UCOMM
+  10 | Field DDIC | SY-UCOMM
+  11 | Class dan Interface | CL_GUI_DIALOGBOX_CONTAINER
+  12 | Class dan Interface | CL_GUI_ALV_GRID
+  13 | Class dan Interface | CL_GUI_CUSTOM_CONTAINER
+  209 | Layar dan GUI | SET SCREEN 0.
+  227 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN'.
+  228 | Layar dan GUI | SET TITLEBAR 'MAIN_100'.
+  268 | Class dan Interface | CL_GUI_ALV_GRID
+  270 | Class dan Interface | CL_GUI_ALV_GRID
+  272 | Class dan Interface | CL_GUI_ALV_GRID
+  274 | Class dan Interface | CL_GUI_ALV_GRID
+  276 | Class dan Interface | CL_GUI_ALV_GRID
+  278 | Class dan Interface | CL_GUI_ALV_GRID
+  280 | Class dan Interface | CL_GUI_ALV_GRID
+  282 | Class dan Interface | CL_GUI_ALV_GRID
+  284 | Class dan Interface | CL_GUI_ALV_GRID
+  286 | Class dan Interface | CL_GUI_ALV_GRID
+  4 | includes | ZABAPALV
+
+Objek ZABAPALV (660 baris)
+  7 | Field DDIC | SY-REPID
+  27 | Field DDIC | SY-DATUM
+  28 | Field DDIC | SY-DATUM
+  559 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+Jumlah source terbaca: 5
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZCOI_KE21N_SR.abap
+  Baris 8 | Tipe DDIC | LIKP
+  Baris 11 | Field DDIC | LIPS-VBELN
+  Baris 12 | Field DDIC | LIPS-POSNR
+  Baris 13 | Field DDIC | LIPS-VBELV
+  Baris 14 | Field DDIC | LIPS-POSNV
+  Baris 15 | Field DDIC | LIPS-KCMENG
+  Baris 17 | Field DDIC | LIPS-VRKME
+  Baris 18 | Field DDIC | LIPS-SHKZG
+  Baris 19 | Field DDIC | LIPS-MATNR
+  Baris 20 | Field DDIC | LIPS-UMVKZ
+  Baris 21 | Field DDIC | LIPS-UMVKN
+  Baris 22 | Field DDIC | LIPS-WERKS
+  Baris 26 | Field DDIC | LIPS-MATNR
+  Baris 27 | Field DDIC | LIPS-VBELN
+  Baris 28 | Field DDIC | LIPS-POSNR
+  Baris 29 | Field DDIC | LIPS-KCMENG
+  Baris 30 | Field DDIC | LIPS-KCMENG
+  Baris 31 | Field DDIC | LIPS-VRKME
+  Baris 32 | Field DDIC | CE18888-VVSQT
+  Baris 33 | Field DDIC | LIPS-KCMENG
+  Baris 34 | Field DDIC | CE18888-BELNR
+  Baris 37 | Field DDIC | ZTLOG-TEXT
+  Baris 40 | Field DDIC | LIPS-WERKS
+  Baris 50 | Field DDIC | LIKP-WADAT_IST
+  Baris 52 | Field DDIC | CE18888-BELNR
+  Baris 53 | Field DDIC | USR41-TERMINAL
+  Baris 59 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLK1 WITH FRAME TITLE TEXT-001.
+  Baris 59 | Teks Seleksi | TEXT-001
+  Baris 60 | Layar Seleksi | SELECT-OPTIONS: S_PLANT FOR LIPS-WERKS NO INTERVALS OBLIGATORY.
+  Baris 60 | Field DDIC | LIPS-WERKS
+  Baris 61 | Layar Seleksi | PARAMETERS: P_PERIO LIKE SY-DATUM.
+  Baris 61 | Field DDIC | SY-DATUM
+  Baris 63 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLK1.
+  Baris 78 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 107 | Layar dan GUI | CALL SCREEN 100.
+  Baris 130 | Field DDIC | CE18888-PERIO
+  Baris 282 | BDC | BDCDATA
+  Baris 294 | BDC | BDCDATA
+  Baris 294 | BDC | CALL TRANSACTION 'KE21N' USING BDCDATA OPTIONS FROM S_OPTIONS MESSAGES INTO IT_MSG.
+  Baris 338 | BDC | BDCDATA
+  Baris 357 | BDC | BDCDATA
+  Baris 357 | BDC | CALL TRANSACTION 'KE21N' USING BDCDATA OPTIONS FROM S_OPTIONS MESSAGES INTO IT_MSG.
+  Baris 55 | INCLUDE | ZCOI_KE21N_SR_INCL
+  Baris 56 | INCLUDE | ZBDCRECX
+  Baris 57 | INCLUDE | Z_PROG_INFO
+  Baris 133 | Sumber data pada SELECT atau JOIN | LIKP
+  Baris 133 | Sumber data pada SELECT atau JOIN | VBUK
+  Baris 156 | Sumber data pada SELECT atau JOIN | CE18888
+  Baris 234 | Function module | SG_PS_GET_LAST_DAY_OF_MONTH
+  Baris 254 | Function module | TERMINAL_ID_GET
+  Baris 294 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | KE21N
+  Baris 312 | Indikasi penulisan data (perlu konfirmasi) | ZTLOG
+  Baris 313 | Kontrol transaksi | COMMIT_WORK
+  Baris 381 | Kontrol transaksi | COMMIT_WORK
+
+ZCOI_KE21N_SR_INCL.abap
+  Baris 6 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 9 | Field DDIC | SY-UCOMM
+  Baris 10 | Field DDIC | SY-UCOMM
+  Baris 11 | Class dan Interface | CL_GUI_DIALOGBOX_CONTAINER
+  Baris 12 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 13 | Class dan Interface | CL_GUI_CUSTOM_CONTAINER
+  Baris 209 | Layar dan GUI | SET SCREEN 0.
+  Baris 227 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN'.
+  Baris 228 | Layar dan GUI | SET TITLEBAR 'MAIN_100'.
+  Baris 268 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 270 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 272 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 274 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 276 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 278 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 280 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 282 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 284 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 286 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 4 | INCLUDE | ZABAPALV
+
+ZABAPALV.abap
+  Baris 7 | Field DDIC | SY-REPID
+  Baris 27 | Field DDIC | SY-DATUM
+  Baris 28 | Field DDIC | SY-DATUM
+  Baris 559 | Function module | REUSE_ALV_COMMENTARY_WRITE
+
+ZBDCRECX.abap
+  Baris 5 | BDC | bdcdata
+  Baris 5 | BDC | bdcdata
+  Baris 42 | BDC | bdcdata
+  Baris 43 | BDC | bdcdata
+  Baris 44 | BDC | bdcdata
+  Baris 45 | BDC | bdcdata
+  Baris 46 | BDC | bdcdata
+  Baris 54 | BDC | bdcdata
+  Baris 55 | BDC | bdcdata
+  Baris 56 | BDC | bdcdata
+  Baris 57 | BDC | bdcdata
+
+Z_PROG_INFO.abap
+  Baris 6 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 15 | Field DDIC | RSNEWLENG-FCODE
+  Baris 60 | Sumber data pada SELECT atau JOIN | ZPROGINFO
+  Baris 77 | Function module | HELP_DOCULINES_SHOW

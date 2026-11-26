@@ -1,0 +1,80 @@
+***********************************************************************
+*  Unterroutinen RV-Versand alphabetisch sortiert:                    *
+*  -----------------------------------------------                    *
+*  Buchstabe T:                                                       *
+*                                                                     *
+***********************************************************************
+
+include mv50af0t_tlgr_select.
+include mv50af0t_tmfgt_select.
+include mv50af0t_tpaer_select.
+include mv50af0t_tqcom_select.
+include mv50af0t_taxi_activate_tab.
+include mv50af0t_taxi_change_subscreen.
+include mv50af0t_taxi_filter_and_conve."rt_fcode
+include mv50af0t_taxi_initialize_carri."erscreen
+include mv50af0t_taxi_insert_cust_tabs.
+include mv50af0t_taxi_read_location.
+include mv50af0t_taxi_screengroups_ini."t
+include mv50af0t_text_data_init.
+include mv50af0t_text_head_set_data.
+include mv50af0t_text_item_set_data.
+include mv50af0t_text_head_get_data.
+include mv50af0t_text_item_get_data.
+include mv50af0t_tracking_subscreen_ge."T_DATA
+include mv50af0t_tracking_subscreen_se."T_DATA
+include mv50af0t_transaktion_init.
+include mv50af0t_transaktmenu_init.
+include mv50af0t_transform_doubleclick.
+include mv50af0t_transform_fcode.
+include mv50af0t_transform_tc_fcode.
+include mv50af0t_transform_view_fcode.
+include mv50af0t_tprit_select.
+include mv50af0t_tspa_select.
+include mv50af0t_ttgr_select.
+include mv50af0t_ttsgt_select.
+include mv50af0t_tvak_select.
+include mv50af0t_tvap_select.
+include mv50af0t_tvcom_fill_simulmode.
+include mv50af0t_tvcpl_select.
+include mv50af0t_tvep_select.
+include mv50af0t_tvepz_select.
+include mv50af0t_tvfsp_select.
+INCLUDE MV50AF0T_TVKBT_SELECT.                                 "n_679719
+INCLUDE MV50AF0T_TVKGR_SELECT.
+include mv50af0t_tvko_select.
+include mv50af0t_tvkov_select.
+include mv50af0t_tvkwz_select.
+include mv50af0t_tvla_select.
+include mv50af0t_tvlb_select.
+include mv50af0t_tvlg_select.
+include mv50af0t_tvlk_select.
+include mv50af0t_tvlp_select.
+include mv50af0t_tvls_select.
+include mv50af0t_tvro_select.
+INCLUDE MV50AF0T_TVSAK_SELECT.
+include mv50af0t_tvst_select.
+include mv50af0t_tvta_select.
+include mv50af0t_tvtw_select.
+include mv50af0t_tvty_select.
+include mv50af0t_txt_insmk_select.
+include mv50af0t_txt_vbtyp_select.
+include mv50af0t_txt_checkstatus.
+include mv50af0t_t001k_select.
+include mv50af0t_t001l_select.
+include mv50af0t_t001w_select.
+include mv50af0t_t005t_select.
+include mv50af0t_t142_select.
+include mv50af0t_t143_select.
+include mv50af0t_t157e_select.
+include mv50af0t_t173_select.
+include mv50af0t_t180_interpretieren.
+include mv50af0t_t30b_select.
+include mv50af0t_t30c_select.
+include mv50af0t_t30bt_select.
+include mv50af0t_t300t_select.
+include mv50af0t_t301t_select.
+include mv50af0t_t377_select.
+include mv50af0t_t459a_select.
+include mv50af0t_t683c_select.
+include mv50af0t_t691l_select.

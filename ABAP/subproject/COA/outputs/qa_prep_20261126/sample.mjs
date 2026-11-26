@@ -1,0 +1,17 @@
+import { serverManager } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/server-manager.js';
+import { read_table } from 'file:///var/www/MCP/MCP%20SAP/sap-leader-mcp/src/tools/query-tools.js';
+const rt=async(t,f,w,n=50)=>{try{const r=await read_table({table:t,fields:f,where:w,rowcount:n});return r.data||r.rows||r;}catch(e){return 'ERR '+e.message}};
+await serverManager.loadConfig(); await serverManager.setActiveServer('QA');
+const p=(l,x)=>console.log(l,JSON.stringify(x));
+p('LIKP',await rt('LIKP',['VBELN','LFART','VKORG','VSTEL','KUNNR','KUNAG','ERNAM','ERDAT'],["VBELN = '0085051525'"]));
+const li=await rt('LIPS',['POSNR','UECHA','MATNR','CHARG','WERKS','LGORT','PSTYV','LFIMG','MEINS','VGBEL','VGPOS','VTWEG','SPART'],["VBELN = '0085051525'"]);
+p('LIPS',li);
+const so=li.find(x=>x.VGBEL)?.VGBEL;
+p('VBAK',await rt('VBAK',['VBELN','AUART','VKORG','VTWEG','SPART','VKBUR','KUNNR','ERNAM','AUDAT','WAERK'],[`VBELN = '${so}'`]));
+p('VBAP',await rt('VBAP',['POSNR','UEPOS','MATNR','CHARG','WERKS','LGORT','PSTYV','KWMENG','VRKME','ZZALIAS'],[`VBELN = '${so}'`]).then(r=>typeof r==='string'?r:r));
+p('VBPA',await rt('VBPA',['PARVW','KUNNR'],[`VBELN = '${so}'`]));
+p('VBKD',await rt('VBKD',['POSNR','ZTERM','INCO1','BSTKD'],[`VBELN = '${so}'`]));
+p('KNVV 584',await rt('KNVV',['KUNNR','VKORG','VTWEG','SPART','VKBUR'],["KUNNR = '1141000584'"]));
+for(const k of ['1141000585','1141100516','1141000004','1141000026','1141000131','1141000265','1141100081','1141100236','1141100239','1800000002']) p('KNVV '+k,await rt('KNVV',['VKORG','VTWEG','SPART'],[`KUNNR = '${k}'`]));
+p('TVAK ZOR',await rt('TVAK',['AUART','VBTYP'],["AUART LIKE 'Z%'"],40));
+p('DD ZZALIAS',await rt('DD03L',['TABNAME','FIELDNAME'],["FIELDNAME LIKE '%ALIAS%'"],20));

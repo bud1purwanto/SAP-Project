@@ -1,0 +1,1027 @@
+﻿Input: ZPP_RE
+Source SAP development (RFC baca-saja): ZPPI_REC_EXEC
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZBDCREX4:214 | FORM BDC_TRANSACTION > ELSE. | CALL TRANSACTION TCODE USING BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:45 | FORM USER_OK_TC > WHEN 'INSR'. | PERFORM FCODE_INSERT_ROW USING    P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:50 | FORM USER_OK_TC > WHEN 'DELE'. | PERFORM FCODE_DELETE_ROW USING    P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:59 | FORM USER_OK_TC > WHEN 'P--' OR | PERFORM COMPUTE_SCROLLING_IN_TC USING P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:75 | FORM USER_OK_TC > WHEN 'MARK'. | PERFORM FCODE_TC_MARK_LINES USING P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:81 | FORM USER_OK_TC > WHEN 'DMRK'. | PERFORM FCODE_TC_DEMARK_LINES USING P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:354 | FORM PREPARATION > IF VARBPL IS INITIAL. | MESSAGE MSG_ERROR TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:367 | FORM PREPARATION > ELSE. > IF VOBJID IS INITIAL. | MESSAGE MSG_ERROR TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:386 | FORM PREPARATION > ELSE. > ELSE. > IF VMATNR IS NOT INITIAL. > IF VMATNR IS INITIAL. | MESSAGE  MSG_ERROR TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:395 | FORM PREPARATION > ELSE. > ELSE. > IF VMATNR IS NOT INITIAL. > ELSE. > IF IT_RECYCLE01[] IS INITIAL. | MESSAGE MSG_ERROR  TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:449 | FORM PREPARATION > ELSE. > ELSE. > ELSE. | MESSAGE MSG_ERROR TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:478 | FORM EXECUTION > IF VALIDATION EQ 'Y'. | MESSAGE 'Masih ada data yang belum diisi' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:504 | FORM EXECUTION > ELSE. > IF VARBPL IS INITIAL. | MESSAGE MSG_ERROR TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:515 | FORM EXECUTION > ELSE. > ELSE. > IF VMATNR EQ SPACE. | MESSAGE  MSG_ERROR TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:524 | FORM EXECUTION > ELSE. > ELSE. > ELSE. > IF VTOTAL = 0. | MESSAGE 'Please Select Raw Material Recycle before Execution' TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:526 | FORM EXECUTION > ELSE. > ELSE. > ELSE. > ELSEIF VTOTAL NE ZQTY. | MESSAGE 'Quantity Raw Recycle <> Quantity Order' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:851 | FORM EXECUTION > ELSE. > ELSE. > ELSE. > ELSE. > ELSEIF ZRETURN IS NOT INITIAL. | MESSAGE ZRETURN-MESSAGE TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:866 | FORM EXECUTION > ELSE. > ELSE. > ELSE. > ELSE. > IF ZRETURN-MESSAGE IS INITIAL OR VMATNR IS NOT INITIAL. > IF FLAG = ''. > IF SY-SUBRC = 0. | SUBMIT ZMMF_SCARP WITH MBLNR = <FS_DISPLAY>-MBLNR | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:873 | FORM EXECUTION > ELSE. > ELSE. > ELSE. > ELSE. > IF ZRETURN-MESSAGE IS INITIAL OR VMATNR IS NOT INITIAL. > IF IT_DISPLAY[] IS NOT INITIAL. | PERFORM INSERT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:876 | FORM EXECUTION > ELSE. > ELSE. > ELSE. > ELSE. > IF ZRETURN-MESSAGE IS INITIAL OR VMATNR IS NOT INITIAL. | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:915 | FORM LOAD_ERROR > IF VOBJID IS INITIAL. | MESSAGE MSG_ERROR TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:919 | FORM LOAD_ERROR > ELSEIF VLGORT IS INITIAL AND SO_LGORT-LOW IS NOT INITIAL. | MESSAGE MSG_ERROR TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:988 | FORM EXECUTION_ERROR > IF MSG_ERROR IS INITIAL. | MESSAGE 'Please Select Order Number' TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1137 | FORM EXECUTION_ERROR > ELSE. > IF IT_DISPLAY[] IS NOT INITIAL. | PERFORM INSERT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1140 | FORM EXECUTION_ERROR > ELSE. | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1141 | FORM EXECUTION_ERROR > ELSE. | PERFORM LOAD_ERROR. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1168 | FORM TESTRUN_ERROR > IF MSG_ERROR IS INITIAL. | MESSAGE 'Please Select Order Number' TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1291 | FORM TESTRUN_ERROR > ELSE. | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1292 | FORM TESTRUN_ERROR > ELSE. | PERFORM LOAD_ERROR. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1318 | FORM LOAD_CANCEL > IF SO_RES-LOW IS NOT INITIAL AND VARBPL IS INITIAL. | MESSAGE MSG_ERROR TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1442 | FORM REVOKE_TECO | PERFORM OPEN_GROUP. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1444 | FORM REVOKE_TECO | PERFORM BDC_DYNPRO      USING 'SAPLCOKO' '5110'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1445 | FORM REVOKE_TECO | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1447 | FORM REVOKE_TECO | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1449 | FORM REVOKE_TECO | PERFORM BDC_FIELD       USING 'CAUFVD-AUFNR' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1453 | FORM REVOKE_TECO | PERFORM BDC_DYNPRO      USING 'SAPLCOKO' '5115'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1454 | FORM REVOKE_TECO | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1456 | FORM REVOKE_TECO | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1458 | FORM REVOKE_TECO | PERFORM BDC_DYNPRO      USING 'SAPLCOKO' '5115'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1459 | FORM REVOKE_TECO | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1461 | FORM REVOKE_TECO | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1463 | FORM REVOKE_TECO | PERFORM BDC_TRANSACTION USING 'COR2'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1465 | FORM REVOKE_TECO | PERFORM CLOSE_GROUP. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1495 | FORM REVOKE_TECO > IF IT_CANCEL01[] IS NOT INITIAL. | PERFORM INSERT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1555 | FORM CANCEL_POSTING > IF IT_CANCELGR[] IS NOT INITIAL. > IF SY-SUBRC NE 0. | MESSAGE MSG_ERROR TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1560 | FORM CANCEL_POSTING > IF IT_CANCELGR[] IS NOT INITIAL. > ELSEIF IT_CANCELGR-QUANT > IT_MARD-LABST. | MESSAGE MSG_ERROR TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1574 | FORM CANCEL_POSTING > IF IT_CANCEL01-STTXT EQ 'TECO'. | MESSAGE MSG_ERROR TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1712 | FORM CANCEL_POSTING > IF MSG_ERROR IS INITIAL. > IF IT_DISPLAY[] IS NOT INITIAL. | PERFORM INSERT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1715 | FORM CANCEL_POSTING > IF MSG_ERROR IS INITIAL. | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1716 | FORM CANCEL_POSTING > IF MSG_ERROR IS INITIAL. | PERFORM LOAD_CANCEL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1733 | FORM DISPLAY | PERFORM LAYOUT_INIT USING GS_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1734 | FORM DISPLAY | PERFORM EVENTTAB_BUILD USING GT_EVENTS[]. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1740 | FORM DISPLAY > IF VDISPLAY = 'C'. | PERFORM BUILD_FIELDCATALOG3. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1743 | FORM DISPLAY > ELSE. | PERFORM BUILD_FIELDCATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:1745 | FORM DISPLAY | PERFORM COMMENT_BUILD USING GT_LIST_TOP_OF_PAGE[]. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:2241 | FORM F_GET_VALUES_REQUEST > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:2291 | FORM F_GET_LGORT > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:2342 | FORM F_GET_LGORT_GI > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:2390 | FORM INSERT_SQL | SUBMIT ZTPPR_REC_EXEC_REPORT WITH ZAUFNR IN R_AUFNR AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:2392 | FORM INSERT_SQL | SUBMIT ZTPPR_LOG_ERROR WITH S_AUFNR IN R_AUFNR AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_F01:2394 | FORM INSERT_SQL | SUBMIT ZTMMR_STOCK_RM WITH S_MTART IN R_MTART WITH S_MATKL IN R_MATKL AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  ZTMMR_STOCK_RM:130 | START-OF-SELECTION | PERFORM CHECK_SERVER. | Tinjau kondisi dan hasil di ECC.
+  ZTMMR_STOCK_RM:131 | START-OF-SELECTION | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZTMMR_STOCK_RM:136 | START-OF-SELECTION > IF IT_DISPLAY[] IS INITIAL. | PERFORM UPDATE_LOG_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTMMR_STOCK_RM:138 | START-OF-SELECTION > ELSE. | PERFORM INSERT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTMMR_STOCK_RM:139 | START-OF-SELECTION > ELSE. | PERFORM UPDATE_LOG_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTMMR_STOCK_RM:153 | START-OF-SELECTION > ELSE. > IF R_CHGJR[] IS NOT INITIAL. | SUBMIT ZTPPR_NEW_LIST_JR WITH S_CHARG IN R_CHGJR AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_NEW_LIST_JR:112 | START-OF-SELECTION | PERFORM CHECK_SERVER. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_NEW_LIST_JR:113 | START-OF-SELECTION | PERFORM GT_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_NEW_LIST_JR:117 | START-OF-SELECTION > IF IT_JR[] IS INITIAL. | PERFORM UPDATE_LOG_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_NEW_LIST_JR:119 | START-OF-SELECTION > ELSE. | PERFORM INSERT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_NEW_LIST_JR:120 | START-OF-SELECTION > ELSE. | PERFORM UPDATE_LOG_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_NEW_LIST_JR:193 | FORM GT_DATA > IF SY-SUBRC = 0. > IF SY-SUBRC = 0. | PERFORM GT_CHR_VAL USING 'ZZGRADEJR' IT_JR-ZGRADEJR CHANGING IT_JR-ZGRADEJR. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_NEW_LIST_JR:209 | FORM GT_DATA > IF SY-SUBRC = 0. > IF SY-SUBRC = 0. | PERFORM GT_CHR_VAL USING 'ZZPRODLINE' IT_JR-ZPRDLN CHANGING IT_JR-ZPRDLN. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_NEW_LIST_JR:214 | FORM GT_DATA > IF SY-SUBRC = 0. > IF SY-SUBRC = 0. | PERFORM GT_CHR_VAL USING 'ZZINSIDE' IT_JR-ZINSD CHANGING IT_JR-ZINSD. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_NEW_LIST_JR:219 | FORM GT_DATA > IF SY-SUBRC = 0. > IF SY-SUBRC = 0. | PERFORM GT_CHR_VAL USING 'ZZOUTSIDE' IT_JR-ZOTSD CHANGING IT_JR-ZOTSD. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_NEW_LIST_JR:285 | FORM GT_DATA | PERFORM GT_WINDER USING 'VERM' 'CHARGE' IT_JR-CHARG IT_JR-MATNR CHANGING IT_JR-KETWIN. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_NEW_LIST_JR:286 | FORM GT_DATA | PERFORM GT_LAB_INF USING 'QAVE' 'QPRUEFLOS' IT_JR-ZPRUFLOS CHANGING IT_JR-LABINF. | Tinjau kondisi dan hasil di ECC.
+  ZINCL_ERP_SQL:70 | Konteks perlu ditinjau | PERFORM CONNECT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZINCL_ERP_SQL:71 | Konteks perlu ditinjau | PERFORM INSERT_LOG USING VARSTATUS VARMSG. | Tinjau kondisi dan hasil di ECC.
+  ZINCL_ERP_SQL:93 | FORM INSERT_LOG | MESSAGE LEX_ROOT TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZINCL_ERP_SQL:134 | FORM UPDATE_LOG_SQL | MESSAGE LEX_ROOT TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_LOG_ERROR:23 | START-OF-SELECTION | PERFORM CHECK_SERVER. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_LOG_ERROR:24 | START-OF-SELECTION | PERFORM GETDATA. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_LOG_ERROR:29 | START-OF-SELECTION > IF IT_DATA[] IS INITIAL. | PERFORM UPDATE_LOG_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_LOG_ERROR:31 | START-OF-SELECTION > ELSE. | PERFORM INSERT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_LOG_ERROR:32 | START-OF-SELECTION > ELSE. | PERFORM UPDATE_LOG_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_REC_EXEC_REPORT:111 | START-OF-SELECTION | PERFORM CHECK_SERVER. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_REC_EXEC_REPORT:112 | START-OF-SELECTION | PERFORM GET_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_REC_EXEC_REPORT:117 | START-OF-SELECTION > IF IT_DISPLAY2[] IS INITIAL. | PERFORM UPDATE_LOG_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_REC_EXEC_REPORT:119 | START-OF-SELECTION > ELSE. | PERFORM INSERT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_REC_EXEC_REPORT:120 | START-OF-SELECTION > ELSE. | PERFORM UPDATE_LOG_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_REC_EXEC_REPORT:242 | FORM GET_DETAIL > ELSEIF ZBWART-LOW EQ '101'  OR ZBWART-LOW EQ '102' OR ZBWART-LOW EQ '261' OR ZBWART-LOW EQ '262' OR ZBWART-LOW EQ ' '. > ELSE. | MESSAGE 'Please Input Movement Type 101, 102, 261, 262' TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_REC_EXEC_REPORT:247 | FORM GET_DETAIL > ELSE. | MESSAGE 'Please Input Movement Type 101, 102, 261, 262' TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:14 | WHEN 'REPORTL'. | SUBMIT ZPPR_REC_EXEC_REPORT | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:24 | WHEN 'BTNGO'. > IF RB_CRTD = 'X'. | MESSAGE 'Create Order & Execution' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:30 | WHEN 'BTNGO'. > ELSEIF RB_CNCL = 'X'. | MESSAGE 'Cancel Order' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:36 | WHEN 'BTNGO'. > ELSEIF RB_ERROR = 'X'. | MESSAGE 'Error Handling' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:100 | IF IT_RECYCLE01[] IS NOT INITIAL. > IF IT_RECYCLE01-GRUND IS NOT INITIAL. > IF VGRUND IS INITIAL. | MESSAGE 'Asal does not exists' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:110 | IF IT_RECYCLE01[] IS NOT INITIAL. > IF IT_RECYCLE01-FILM IS NOT INITIAL. > IF MSG_ERROR IS INITIAL. | MESSAGE 'Film does not exists' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:121 | IF IT_RECYCLE01[] IS NOT INITIAL. > IF IT_RECYCLE01-LINE IS NOT INITIAL. > IF MSG_ERROR IS INITIAL. | MESSAGE 'Line does not exists' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:154 | Konteks perlu ditinjau | PERFORM USER_OK_TC USING    'ZTC_RECYCLE01' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:172 | WHEN 'BTNGORD'. > IF SY-SUBRC NE 0. | MESSAGE 'No Authorization to process data' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:177 | WHEN 'BTNGORD'. > IF ZOPERATOR = ' '. | MESSAGE 'Please Input NIK!!' TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:179 | WHEN 'BTNGORD'. > ELSEIF ZOPERATOR <> ' '. | PERFORM PREPARATION. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:182 | WHEN 'EXECUTION'. | PERFORM EXECUTION. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:189 | WHEN 'REFRESH'. > IF SY-SUBRC NE 0. | MESSAGE 'No Authorization to process data' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:192 | WHEN 'REFRESH'. | PERFORM PREPARATION. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:237 | Konteks perlu ditinjau | PERFORM USER_OK_TC USING    'ZTC_CANCEL01' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:256 | WHEN 'BTN_CGO'. > IF SY-SUBRC NE 0. | MESSAGE 'No Authorization to process data' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:259 | WHEN 'BTN_CGO'. | PERFORM LOAD_CANCEL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:261 | WHEN 'RTECO'. | PERFORM REVOKE_TECO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:264 | WHEN 'CPOST'. | PERFORM author. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:266 | WHEN 'CPOST'. > IF SY-SUBRC EQ 0. | PERFORM CANCEL_POSTING. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:268 | WHEN 'CPOST'. > ELSE. | MESSAGE 'No authorization' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:274 | WHEN 'REFRESH'. > IF SY-SUBRC NE 0. | MESSAGE 'No Authorization to process data' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:277 | WHEN 'REFRESH'. | PERFORM LOAD_CANCEL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:313 | WHEN 'BTNEXEC'. > IF SY-SUBRC NE 0. | MESSAGE 'No Authorization to process data' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:316 | WHEN 'BTNEXEC'. | PERFORM LOAD_ERROR. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:318 | WHEN 'EXECUTION'. | PERFORM EXECUTION_ERROR. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:320 | WHEN 'TESTRUN'. | PERFORM TESTRUN_ERROR. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:329 | WHEN 'REFRESH'. > IF SY-SUBRC NE 0. | MESSAGE 'No Authorization to process data' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:332 | WHEN 'REFRESH'. | PERFORM LOAD_ERROR. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:376 | Konteks perlu ditinjau | PERFORM USER_OK_TC USING    'ZTC_ERRHAND' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:389 | Konteks perlu ditinjau | PERFORM f_get_values_request USING 'ZZCODE' CHANGING d_charval. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:392 | IF d_charval IS NOT INITIAL. | PERFORM f_update_ztc USING 'WA_RECYCLE01-FILM' d_charval. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:405 | Konteks perlu ditinjau | PERFORM f_get_values_request USING 'ZZPRODLINE' CHANGING d_charval. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:408 | IF d_charval IS NOT INITIAL. | PERFORM f_update_ztc USING 'WA_RECYCLE01-LINE' d_charval. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:419 | Konteks perlu ditinjau | PERFORM f_get_lgort CHANGING d_charval. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:420 | Konteks perlu ditinjau | PERFORM f_update_ztc USING 'WA_RECYCLE01-LGORT2' d_charval. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:616 | Konteks perlu ditinjau | PERFORM f_get_lgort_gi CHANGING d_charval. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_I01:617 | Konteks perlu ditinjau | PERFORM f_update_ztc USING 'WA_RECYCLE01-LGORT' d_charval. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:131 | AT SELECTION-SCREEN | PERFORM GET_BWART. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:134 | AT SELECTION-SCREEN | PERFORM GET_BWART. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:137 | AT SELECTION-SCREEN | PERFORM GET_FILM. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:140 | AT SELECTION-SCREEN | PERFORM GET_LINE. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:143 | AT SELECTION-SCREEN | PERFORM GET_ZWEMPF. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:146 | AT SELECTION-SCREEN | PERFORM GET_SO_LGORT. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:152 | INITIALIZATION | PERFORM LAYOUT_INIT USING GS_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:159 | START-OF-SELECTION > IF ZPOSDT[] IS INITIAL. | MESSAGE 'Masukan parameter posting date...!' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:164 | START-OF-SELECTION > IF ZPLANT[] IS INITIAL. | MESSAGE 'Masukan parameter plant...!' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:170 | START-OF-SELECTION > IF RB2 = 'X' . > IF S_CONN IS INITIAL. | MESSAGE 'Masukan DBCO Connection name...!' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:175 | START-OF-SELECTION > IF RB2 = 'X' . > ELSE. > IF SY-SUBRC NE 0. | MESSAGE 'DBCO Connection not found..!!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:181 | START-OF-SELECTION | PERFORM GET_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:190 | FORM DISPLAY | PERFORM BUILD_FIELDCATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:238 | FORM F_USER_COMMAND > WHEN  'PRINT'. > IF SY-SUBRC = 0. | SUBMIT ZMMF_SCARP WITH MBLNR = <FS_DISPLAY2>-MBLNR | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPR_REC_EXEC_REPORT:593 | FORM GET_DETAIL > IF ZBWART-LOW EQ ' ' AND ZBWART-HIGH EQ ' '. | PERFORM SCREEN_OR_OLAPS. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:594 | FORM GET_DETAIL > IF ZBWART-LOW EQ ' ' AND ZBWART-HIGH EQ ' '. | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:650 | FORM GET_DETAIL > ELSEIF ZBWART-LOW EQ '101'  OR ZBWART-LOW EQ '102' OR ZBWART-LOW EQ '261' OR ZBWART-LOW EQ '262' OR ZBWART-LOW EQ ' '. > IF ZBWART-HIGH EQ '101' OR ZBWART-HIGH EQ '102' OR ZBWART-HIGH EQ'261' OR ZBWART-HIGH EQ '262' OR ZBWART-HIGH EQ ' '. | PERFORM SCREEN_OR_OLAPS. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:653 | FORM GET_DETAIL > ELSEIF ZBWART-LOW EQ '101'  OR ZBWART-LOW EQ '102' OR ZBWART-LOW EQ '261' OR ZBWART-LOW EQ '262' OR ZBWART-LOW EQ ' '. > IF ZBWART-HIGH EQ '101' OR ZBWART-HIGH EQ '102' OR ZBWART-HIGH EQ'261' OR ZBWART-HIGH EQ '262' OR ZBWART-HIGH EQ ' '. > IF RB2 NE 'X'. | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:657 | FORM GET_DETAIL > ELSEIF ZBWART-LOW EQ '101'  OR ZBWART-LOW EQ '102' OR ZBWART-LOW EQ '261' OR ZBWART-LOW EQ '262' OR ZBWART-LOW EQ ' '. > ELSE. | MESSAGE 'Please Input Movement Type 101, 102, 261, 262' TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:662 | FORM GET_DETAIL > ELSE. | MESSAGE 'Please Input Movement Type 101, 102, 261, 262' TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:678 | FORM SCREEN_OR_OLAPS > IF RB2 EQ 'X'. > IF SY-SUBRC NE 0. | MESSAGE I000(0K) WITH 'No Authorization to process data OLAP'. | Tinjau kondisi dan hasil di ECC.
+  ZPPR_REC_EXEC_REPORT:704 | FORM SCREEN_OR_OLAPS > IF RB2 EQ 'X'. | MESSAGE 'Penyimpanan Data ke SQL sukses!!!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_TOP:314 | AT SELECTION-SCREEN | PERFORM GET_RESOURCE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_TOP:317 | AT SELECTION-SCREEN | PERFORM GET_RESOURCE2. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_REC_EXEC_TOP:320 | AT SELECTION-SCREEN | PERFORM GET_SO_LGORT. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZPPI_REC_EXEC (26 baris)
+  25 | Layar dan GUI | CALL SCREEN 7000.
+  17 | includes | ZPPI_REC_EXEC_TOP
+  19 | includes | ZPPI_REC_EXEC_O01
+  20 | includes | ZPPI_REC_EXEC_I01
+  21 | includes | ZPPI_REC_EXEC_F01
+  26 | includes | ZBDCREX4
+
+Objek ZBDCREX4 (291 baris)
+  17 | Field DDIC | sy-datum
+  110 | BDC | BDCDATA
+  110 | BDC | BDCDATA
+  116 | Tipe DDIC | T100
+  137 | Teks Seleksi | TEXT-E00
+  159 | BDC | BDC_OPEN_GROUP
+  165 | BDC | BDC_OPEN_GROUP
+  178 | BDC | BDC_CLOSE_GROUP
+  179 | BDC | BDC_CLOSE_GROUP
+  184 | BDC | BDC_CLOSE_GROUP
+  197 | Field DDIC | SY-SUBRC
+  200 | BDC | BDC_INSERT
+  202 | Tipe DDIC | DYNPROTAB
+  202 | BDC | BDCDATA
+  204 | BDC | BDC_INSERT
+  214 | BDC | BDCDATA
+  214 | BDC | CALL TRANSACTION TCODE USING BDCDATA
+  254 | BDC | BDC_OPEN_GROUP
+  262 | BDC | BDC_INSERT
+  264 | Tipe DDIC | DYNPROTAB
+  264 | BDC | BDCDATA
+  267 | BDC | BDCDATA
+  274 | BDC | BDCDATA
+  275 | BDC | BDCDATA
+  276 | BDC | BDCDATA
+  277 | BDC | BDCDATA
+  278 | BDC | BDCDATA
+  286 | BDC | BDCDATA
+  287 | BDC | BDCDATA
+  288 | BDC | BDCDATA
+  289 | BDC | BDCDATA
+  159 | callFunctions | BDC_OPEN_GROUP
+  178 | callFunctions | BDC_CLOSE_GROUP
+  200 | callFunctions | BDC_INSERT
+  214 | callTransactions | TCODE
+
+Objek ZPPI_REC_EXEC_F01 (2401 baris)
+  27 | Field DDIC | SY-UCOMM
+  30 | Field DDIC | SY-UCOMM
+  103 | Field DDIC | FELD-NAME
+  104 | Field DDIC | SY-STEPL
+  107 | Field DDIC | FELD-NAME
+  157 | Field DDIC | FELD-NAME
+  201 | Field DDIC | FELD-NAME
+  202 | Field DDIC | FELD-NAME
+  203 | Field DDIC | FELD-NAME
+  267 | Field DDIC | FELD-NAME
+  302 | Field DDIC | FELD-NAME
+  332 | Field DDIC | MARA-MEINS
+  2241 | Field DDIC | SY-MSGTY
+  2291 | Field DDIC | SY-MSGTY
+  2342 | Field DDIC | SY-MSGTY
+  2358 | Field DDIC | AUFK-AUFNR
+  2359 | Field DDIC | MARA-MTART
+  2360 | Field DDIC | MARA-MATKL
+  866 | submitPrograms | ZMMF_SCARP
+  2390 | submitPrograms | ZTPPR_REC_EXEC_REPORT
+  2392 | submitPrograms | ZTPPR_LOG_ERROR
+  2394 | submitPrograms | ZTMMR_STOCK_RM
+  221 | callFunctions | SCROLLING_IN_TABLE
+  439 | callFunctions | VRM_SET_VALUES
+  490 | callFunctions | POC_GET_COMPUTER_NAME
+  543 | callFunctions | BAPI_PROCORD_CREATE
+  555 | callFunctions | ENQUEUE_ESORDER
+  565 | callFunctions | DEQUEUE_ESORDER
+  576 | callFunctions | BAPI_PROCORD_RELEASE
+  585 | callFunctions | DEQUEUE_ALL
+  618 | callFunctions | BAPI_GOODSMVT_CREATE
+  665 | callFunctions | BAPI_TRANSACTION_COMMIT
+  751 | callFunctions | BAPI_PROCORD_COMPLETE_TECH
+  1408 | callFunctions | STATUS_TEXT_EDIT
+  1582 | callFunctions | BAPI_GOODSMVT_CANCEL
+  1750 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  2107 | callFunctions | REUSE_ALV_EVENTS_GET
+  2173 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  2200 | callFunctions | BAPI_CHARACT_GETDETAIL
+  2225 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  336 | tableReads | CRHD
+  341 | tableReads | ZTMAP_SLOCREC
+  357 | tableReads | HRP1001
+  370 | tableReads | MARC
+  378 | tableReads | MARA
+  388 | tableReads | ZTMAP_RECYCLE
+  400 | tableReads | MAKT
+  922 | tableReads | ZERROR_LOG
+  952 | tableReads | MARD
+  1322 | tableReads | MSEG
+  1322 | tableReads | MKPF
+  1322 | tableReads | AUFK
+  795 | databaseWrites | ZERROR_LOG
+
+Objek ZTMMR_STOCK_RM (431 baris)
+  11 | Tipe DDIC | MARA
+  16 | Field DDIC | MARC-MATNR
+  17 | Field DDIC | MARC-WERKS
+  18 | Field DDIC | MARC-TRAME
+  19 | Field DDIC | MARA-MEINS
+  20 | Field DDIC | MARA-MTART
+  21 | Field DDIC | MARA-MATKL
+  22 | Field DDIC | MARC-GLGMG
+  26 | Field DDIC | MARD-MATNR
+  27 | Field DDIC | MARD-WERKS
+  28 | Field DDIC | MARD-LGORT
+  29 | Field DDIC | MARD-LABST
+  30 | Field DDIC | MARD-UMLME
+  31 | Field DDIC | MARD-INSME
+  32 | Field DDIC | MARD-EINME
+  33 | Field DDIC | MARD-SPEME
+  34 | Field DDIC | MARA-MEINS
+  35 | Field DDIC | MARD-RETME
+  36 | Field DDIC | MARD-VMUML
+  37 | Field DDIC | MARA-MATKL
+  38 | Field DDIC | MARA-MTART
+  42 | Field DDIC | MCHB-MATNR
+  43 | Field DDIC | MCHB-WERKS
+  44 | Field DDIC | MCHB-LGORT
+  45 | Field DDIC | MCHB-CHARG
+  46 | Field DDIC | MCHB-CLABS
+  47 | Field DDIC | MCHB-CUMLM
+  48 | Field DDIC | MCHB-CINSM
+  49 | Field DDIC | MCHB-CEINM
+  50 | Field DDIC | MCHB-CSPEM
+  51 | Field DDIC | MARA-MEINS
+  52 | Field DDIC | MCHB-CRETM
+  53 | Field DDIC | MCHB-CVMUM
+  54 | Field DDIC | MARA-MATKL
+  55 | Field DDIC | MARA-MTART
+  59 | Field DDIC | THEAD-TDOBJECT
+  60 | Field DDIC | THEAD-TDID
+  61 | Field DDIC | THEAD-TDNAME
+  62 | Field DDIC | THEAD-TDSPRAS
+  65 | Field DDIC | SY-STEPL
+  72 | Field DDIC | MARD-MATNR
+  73 | Field DDIC | MARD-WERKS
+  74 | Field DDIC | MARD-LGORT
+  75 | Field DDIC | MCHA-CHARG
+  77 | Field DDIC | MARA-MTART
+  78 | Field DDIC | MARA-MATKL
+  79 | Field DDIC | MARA-MEINS
+  81 | Field DDIC | MCHB-CLABS
+  82 | Field DDIC | MCHB-CUMLM
+  83 | Field DDIC | MCHB-CINSM
+  84 | Field DDIC | MCHB-CEINM
+  85 | Field DDIC | MCHB-CSPEM
+  86 | Field DDIC | MCHB-CRETM
+  87 | Field DDIC | MARC-GLGMG
+  88 | Field DDIC | MARC-TRAME
+  89 | Field DDIC | MCHB-CVMUM
+  90 | Field DDIC | MCHB-CLABS
+  91 | Field DDIC | MCHB-CUMLM
+  92 | Field DDIC | MCHB-CINSM
+  93 | Field DDIC | MCHB-CEINM
+  94 | Field DDIC | MCHB-CSPEM
+  95 | Field DDIC | MCHB-CRETM
+  96 | Field DDIC | MARC-GLGMG
+  102 | Field DDIC | MBEW-MATNR
+  103 | Field DDIC | MBEW-BWKEY
+  104 | Field DDIC | MBEW-LBKUM
+  105 | Field DDIC | MBEW-SALK3
+  109 | Field DDIC | MCHB-CLABS
+  110 | Field DDIC | MCHB-CUMLM
+  111 | Field DDIC | MCHB-CINSM
+  112 | Field DDIC | MCHB-CEINM
+  113 | Field DDIC | MCHB-CSPEM
+  118 | Field DDIC | MCHA-CHARG
+  122 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK PLANT WITH FRAME TITLE TEXT-001.
+  122 | Teks Seleksi | TEXT-001
+  124 | Layar Seleksi | SELECT-OPTIONS : S_MTART FOR MARA-MTART DEFAULT 'ZRAW' NO INTERVALS OBLIGATORY.
+  124 | Field DDIC | MARA-MTART
+  125 | Layar Seleksi | SELECT-OPTIONS : S_MATKL FOR MARA-MATKL.
+  125 | Field DDIC | MARA-MATKL
+  127 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK PLANT.
+  10 | includes | ZINCL_ERP_SQL
+  153 | submitPrograms | ZTPPR_NEW_LIST_JR
+  230 | callFunctions | READ_TEXT_INLINE
+  303 | callFunctions | CONVERSION_EXIT_CUNIT_OUTPUT
+  173 | tableReads | MARC
+  173 | tableReads | MARA
+  190 | tableReads | MARD
+  206 | tableReads | MCHB
+  291 | tableReads | MBEW
+
+Objek ZTPPR_NEW_LIST_JR (563 baris)
+  33 | Tipe DDIC | MCHB
+  36 | Field DDIC | MCH1-LWEDT
+  37 | Field DDIC | MCHB-MATNR
+  38 | Field DDIC | MCHB-WERKS
+  39 | Field DDIC | MCHB-CHARG
+  40 | Field DDIC | API_VALI-ATWRT
+  41 | Field DDIC | API_VALI-ATWRT
+  42 | Field DDIC | MCHB-LGORT
+  44 | Field DDIC | API_VALI-ATWRT
+  45 | Field DDIC | API_VALI-ATWRT
+  46 | Field DDIC | API_VALI-ATWRT
+  47 | Field DDIC | API_VALI-ATWRT
+  48 | Field DDIC | API_VALI-ATWRT
+  49 | Field DDIC | API_VALI-ATWRT
+  51 | Field DDIC | API_VALI-ATWRT
+  52 | Field DDIC | API_VALI-ATWRT
+  53 | Field DDIC | QALS-PRUEFLOS
+  57 | Field DDIC | MCHB-CLABS
+  58 | Field DDIC | MCHB-CUMLM
+  59 | Field DDIC | MCHB-CINSM
+  60 | Field DDIC | MCHB-CEINM
+  61 | Field DDIC | MCHB-CSPEM
+  62 | Field DDIC | MCHB-CRETM
+  63 | Field DDIC | QAVE-VCODE
+  65 | Field DDIC | MKPF-CPUTM
+  84 | Field DDIC | SY-UZEIT
+  85 | Field DDIC | SY-DATLO
+  86 | Field DDIC | TTZDATA-TZONE
+  89 | Field DDIC | KNA1-NAME1
+  91 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK SEL WITH FRAME TITLE TEXT-001.
+  91 | Teks Seleksi | TEXT-001
+  92 | Layar Seleksi | SELECT-OPTIONS: S_MATNR FOR MCHB-MATNR NO-DISPLAY.
+  92 | Field DDIC | MCHB-MATNR
+  93 | Layar Seleksi | SELECT-OPTIONS: S_WERKS FOR MCHB-WERKS NO-DISPLAY.
+  93 | Field DDIC | MCHB-WERKS
+  94 | Layar Seleksi | SELECT-OPTIONS: S_LGORT FOR MCHB-LGORT NO-DISPLAY.
+  94 | Field DDIC | MCHB-LGORT
+  95 | Layar Seleksi | SELECT-OPTIONS: S_BUDAT FOR MCH1-LWEDT NO-DISPLAY.
+  95 | Field DDIC | MCH1-LWEDT
+  96 | Layar Seleksi | SELECT-OPTIONS: S_MATKL FOR MARA-MATKL DEFAULT '400001' TO '400099' NO-DISPLAY.
+  96 | Field DDIC | MARA-MATKL
+  97 | Layar Seleksi | SELECT-OPTIONS: S_CHARG FOR MCHB-CHARG OBLIGATORY.
+  97 | Field DDIC | MCHB-CHARG
+  98 | Layar Seleksi | PARAMETERS : R_ZERO AS CHECKBOX.
+  99 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK SEL.
+  331 | Class dan Interface | CL_ABAP_TSTMP
+  354 | Field DDIC | THEAD-TDNAME
+  405 | Field DDIC | THEAD-TDNAME
+  450 | Field DDIC | CAWN-ATINN
+  18 | includes | ZINCL_ERP_SQL
+  160 | callFunctions | QC01_BATCH_VALUES_READ
+  365 | callFunctions | READ_TEXT
+  451 | callFunctions | CONVERSION_EXIT_ATINN_INPUT
+  130 | tableReads | MCHB
+  130 | tableReads | MCH1
+  130 | tableReads | MARA
+  232 | tableReads | KNA1
+  265 | tableReads | QAVE
+  265 | tableReads | QALS
+  290 | tableReads | MSEG
+  457 | tableReads | CAWN
+  457 | tableReads | CAWNT
+
+Objek ZINCL_ERP_SQL (163 baris)
+  5 | Field DDIC | SY-DATUM
+  47 | callFunctions | GUI_GET_DESKTOP_INFO
+  126 | databaseWrites | RPT
+
+Objek ZTPPR_LOG_ERROR (123 baris)
+  12 | Tipe DDIC | ZERROR_LOG
+  18 | Layar Seleksi | SELECT-OPTIONS: S_AUFNR FOR ZERROR_LOG-AUFNR OBLIGATORY.
+  18 | Field DDIC | ZERROR_LOG-AUFNR
+  10 | includes | ZINCL_ERP_SQL
+  44 | tableReads | ZERROR_LOG
+
+Objek ZTPPR_REC_EXEC_REPORT (607 baris)
+  11 | Tipe DDIC | MSEG
+  15 | Field DDIC | AUFK-AUFNR
+  16 | Field DDIC | MARA-MATNR
+  17 | Field DDIC | MSEG-BWART
+  18 | Field DDIC | MKPF-BUDAT
+  19 | Field DDIC | MKPF-BLDAT
+  20 | Field DDIC | MKPF-CPUDT
+  21 | Field DDIC | MKPF-CPUTM
+  23 | Field DDIC | MSEG-WERKS
+  24 | Field DDIC | MSEG-LGORT
+  25 | Field DDIC | MSEG-MENGE
+  26 | Field DDIC | MSEG-MEINS
+  31 | Field DDIC | MSEG-MBLNR
+  32 | Field DDIC | MSEG-MJAHR
+  33 | Field DDIC | MSEG-SMBLN
+  34 | Field DDIC | MSEG-ABLAD
+  35 | Field DDIC | MSEG-SGTXT
+  36 | Field DDIC | MKPF-BKTXT
+  37 | Field DDIC | MSEG-GRUND
+  39 | Field DDIC | ZGROUP-ZZGROUP
+  60 | Field DDIC | SY-REPID
+  75 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOCK1 WITH FRAME TITLE TEXT-001.
+  75 | Teks Seleksi | TEXT-001
+  76 | Layar Seleksi | SELECT-OPTIONS :   ZAUFNR FOR MSEG-AUFNR OBLIGATORY,
+  76 | Field DDIC | MSEG-AUFNR
+  77 | Field DDIC | MKPF-BUDAT
+  78 | Field DDIC | MSEG-BWART
+  79 | Field DDIC | MSEG-USNAM_MKPF
+  80 | Field DDIC | MSEG-MATNR
+  81 | Field DDIC | MSEG-WERKS
+  82 | Field DDIC | MSEG-LGORT
+  83 | Field DDIC | MSEG-WEMPF
+  84 | Field DDIC | MSEG-MBLNR
+  85 | Field DDIC | MSEG-MJAHR
+  86 | Field DDIC | ZERROR_LOG-FILM
+  87 | Field DDIC | ZERROR_LOG-LINE
+  88 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOCK1.
+  280 | Field DDIC | MSEG-BWART
+  281 | Field DDIC | MAKT-MAKTX
+  403 | Field DDIC | CRHD-WERKS
+  404 | Field DDIC | CRHD-ARBPL
+  465 | Field DDIC | CRHD-WERKS
+  466 | Field DDIC | CRHD-ARBPL
+  10 | includes | ZINCL_ERP_SQL
+  297 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  320 | callFunctions | BAPI_CHARACT_GETDETAIL
+  412 | callFunctions | DYNP_VALUES_READ
+  132 | tableReads | MSEG
+  132 | tableReads | MKPF
+  132 | tableReads | AUFK
+  253 | tableReads | ZGROUP
+  436 | tableReads | ZTMAP_SLOCREC
+
+Objek ZMMF_SCARP (181 baris)
+  18 | Tipe DDIC | MSEG
+  28 | Field DDIC | MSEG-MBLNR
+  29 | Field DDIC | MSEG-ZEILE
+  30 | Field DDIC | MSEG-MJAHR
+  31 | Field DDIC | MSEG-MATNR
+  32 | Field DDIC | MSEG-MEINS
+  33 | Field DDIC | MSEG-ABLAD
+  34 | Field DDIC | MSEG-WERKS
+  35 | Field DDIC | MSEG-WEMPF
+  36 | Field DDIC | MSEG-BUDAT_MKPF
+  39 | Field DDIC | MSEG-MATNR
+  40 | Field DDIC | MSEG-MATNR
+  41 | Field DDIC | MSEG-MENGE
+  45 | Field DDIC | MSEG-WERKS
+  46 | Field DDIC | MSEG-WEMPF
+  47 | Field DDIC | MKPF-CPUTM
+  48 | Field DDIC | MKPF-CPUDT
+  53 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOCK1 WITH FRAME TITLE TEXT-001.
+  53 | Teks Seleksi | TEXT-001
+  54 | Layar Seleksi | PARAMETERS : MBLNR TYPE MSEG-MBLNR OBLIGATORY.
+  54 | Field DDIC | MSEG-MBLNR
+  55 | Layar Seleksi | PARAMETERS : MJAHR TYPE MSEG-MJAHR OBLIGATORY.
+  55 | Field DDIC | MSEG-MJAHR
+  56 | Layar Seleksi | SELECT-OPTIONS : ZEILE FOR MSEG-ZEILE.
+  56 | Field DDIC | MSEG-ZEILE
+  57 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOCK1.
+  152 | callFunctions | SSF_FUNCTION_MODULE_NAME
+  63 | tableReads | MSEG
+  127 | tableReads | MKPF
+  142 | tableReads | ZGROUP
+
+Objek ZPPI_REC_EXEC_I01 (626 baris)
+  23 | Layar dan GUI | call screen 7100.
+  29 | Layar dan GUI | call screen 7200.
+  35 | Layar dan GUI | call screen 7300.
+  209 | Layar dan GUI | LEAVE TO SCREEN 7000.
+  299 | Layar dan GUI | LEAVE TO SCREEN 7000.
+  348 | Layar dan GUI | LEAVE TO SCREEN 7000.
+  435 | Field DDIC | sy-stepl
+  481 | Field DDIC | CRHD-WERKS
+  482 | Field DDIC | CRHD-ARBPL
+  483 | Field DDIC | CRTX-KTEXT
+  548 | Field DDIC | CRHD-WERKS
+  549 | Field DDIC | CRHD-ARBPL
+  14 | submitPrograms | ZPPR_REC_EXEC_REPORT
+  54 | callFunctions | BAPI_CHARACT_GETDETAIL
+  262 | callFunctions | DEQUEUE_ALL
+  438 | callFunctions | DYNP_GET_STEPL
+  455 | callFunctions | DYNP_VALUES_UPDATE
+  491 | callFunctions | DYNP_VALUES_READ
+  531 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  94 | tableReads | T157D
+  515 | tableReads | ZTMAP_SLOCREC
+  521 | tableReads | CRTX
+  521 | tableReads | CRHD
+
+Objek ZPPR_REC_EXEC_REPORT (968 baris)
+  11 | Tipe DDIC | MSEG
+  14 | Field DDIC | AUFK-AUFNR
+  15 | Field DDIC | MARA-MATNR
+  16 | Field DDIC | MSEG-BWART
+  17 | Field DDIC | MKPF-BUDAT
+  18 | Field DDIC | MKPF-BLDAT
+  19 | Field DDIC | MKPF-CPUDT
+  20 | Field DDIC | MKPF-CPUTM
+  22 | Field DDIC | MSEG-WERKS
+  23 | Field DDIC | MSEG-LGORT
+  24 | Field DDIC | MSEG-MENGE
+  25 | Field DDIC | MSEG-MEINS
+  30 | Field DDIC | MSEG-MBLNR
+  31 | Field DDIC | MSEG-MJAHR
+  32 | Field DDIC | MSEG-SMBLN
+  33 | Field DDIC | MSEG-ABLAD
+  34 | Field DDIC | MSEG-SGTXT
+  35 | Field DDIC | MKPF-BKTXT
+  36 | Field DDIC | MSEG-GRUND
+  58 | Field DDIC | SY-REPID
+  74 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOCK1 WITH FRAME TITLE TEXT-001.
+  74 | Teks Seleksi | TEXT-001
+  75 | Layar Seleksi | SELECT-OPTIONS :   ZAUFNR FOR MSEG-AUFNR,
+  75 | Field DDIC | MSEG-AUFNR
+  76 | Field DDIC | MKPF-BUDAT
+  77 | Field DDIC | MSEG-BWART
+  78 | Field DDIC | MSEG-USNAM_MKPF
+  79 | Field DDIC | MSEG-MATNR
+  80 | Field DDIC | MSEG-WERKS
+  81 | Field DDIC | MSEG-LGORT
+  82 | Field DDIC | MSEG-WEMPF
+  83 | Field DDIC | MSEG-MBLNR
+  84 | Field DDIC | MSEG-MJAHR
+  85 | Field DDIC | ZERROR_LOG-FILM
+  86 | Field DDIC | ZERROR_LOG-LINE
+  88 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOCK1.
+  90 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOCK2 WITH FRAME TITLE TEXT-002.
+  90 | Teks Seleksi | TEXT-002
+  91 | Layar Seleksi | PARAMETERS: S_CONN LIKE MSEG-SGTXT   MODIF ID CON.
+  91 | Field DDIC | MSEG-SGTXT
+  92 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOCK2.
+  94 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOCK3 WITH FRAME TITLE TEXT-003.
+  94 | Teks Seleksi | TEXT-003
+  95 | Layar Seleksi | PARAMETERS : RB1 TYPE C RADIOBUTTON GROUP A USER-COMMAND AC DEFAULT 'X',
+  97 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOCK3.
+  130 | Field DDIC | ZBWART-LOW
+  133 | Field DDIC | ZBWART-HIGH
+  136 | Field DDIC | ZFILM-LOW
+  139 | Field DDIC | ZLINE-LOW
+  142 | Field DDIC | ZWEMPF-LOW
+  145 | Field DDIC | ZLGORT-LOW
+  222 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN'.
+  228 | Field DDIC | SY-UCOMM
+  717 | Field DDIC | MSEG-BWART
+  718 | Field DDIC | MAKT-MAKTX
+  840 | Field DDIC | CRHD-WERKS
+  841 | Field DDIC | CRHD-ARBPL
+  902 | Field DDIC | CRHD-WERKS
+  903 | Field DDIC | CRHD-ARBPL
+  238 | submitPrograms | ZMMF_SCARP
+  196 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  483 | callFunctions | REUSE_ALV_EVENTS_GET
+  525 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  734 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  757 | callFunctions | BAPI_CHARACT_GETDETAIL
+  849 | callFunctions | DYNP_VALUES_READ
+  173 | tableReads | DBCON
+  540 | tableReads | MSEG
+  540 | tableReads | MKPF
+  540 | tableReads | AUFK
+  873 | tableReads | ZTMAP_SLOCREC
+  691 | databaseWrites | XMP_PP_RECYCLE
+
+Objek ZPPI_REC_EXEC_O01 (186 baris)
+  10 | Layar dan GUI | SET PF-STATUS 'PFST_7000'.
+  11 | Layar dan GUI | SET TITLEBAR  'TB_7000'.
+  34 | Layar dan GUI | SET PF-STATUS 'PFST_7100'.
+  35 | Layar dan GUI | SET TITLEBAR  'TB_7100'.
+  100 | Layar dan GUI | SET PF-STATUS 'PFST_7200'.
+  101 | Layar dan GUI | SET TITLEBAR  'TB_7200'.
+  172 | Layar dan GUI | SET PF-STATUS 'PFST_7300'.
+  173 | Layar dan GUI | SET TITLEBAR  'TB_7300'.
+
+Objek ZPPI_REC_EXEC_TOP (495 baris)
+  18 | Tipe DDIC | AUFK
+  21 | Field DDIC | SY-UCOMM
+  37 | Field DDIC | cawn-atwrt
+  38 | Field DDIC | cawn-atwrt
+  45 | Field DDIC | MKPF-BUDAT
+  46 | Field DDIC | RCRDE-RESOURCE
+  47 | Field DDIC | T001W-WERKS
+  48 | Field DDIC | MARA-MATNR
+  49 | Field DDIC | MSEG-MENGE
+  53 | Field DDIC | MARA-MATNR
+  58 | Field DDIC | CRHD-ARBPL
+  59 | Field DDIC | T157D-GRUND
+  63 | Field DDIC | HRP1001-OBJID
+  75 | Field DDIC | rcrde-resource
+  108 | Field DDIC | cawn-atwrt
+  109 | Field DDIC | cawn-atwrt
+  111 | Field DDIC | aufk-aufnr
+  129 | Field DDIC | AUFK-AUFNR
+  130 | Field DDIC | MARA-MATNR
+  131 | Field DDIC | MSEG-BWART
+  133 | Field DDIC | MKPF-BUDAT
+  134 | Field DDIC | MKPF-BLDAT
+  135 | Field DDIC | MKPF-CPUDT
+  136 | Field DDIC | MKPF-CPUTM
+  138 | Field DDIC | MSEG-WERKS
+  139 | Field DDIC | MSEG-LGORT
+  140 | Field DDIC | MSEG-MENGE
+  141 | Field DDIC | MSEG-MEINS
+  146 | Field DDIC | MSEG-MBLNR
+  147 | Field DDIC | MSEG-MJAHR
+  163 | Field DDIC | BAPI_ORDER_KEY-ORDER_NUMBER
+  175 | Field DDIC | BAPI2017_GM_HEAD_RET-MAT_DOC
+  176 | Field DDIC | BAPI2017_GM_HEAD_RET-DOC_YEAR
+  180 | Field DDIC | AUFK-AUART
+  182 | Field DDIC | MAKT-MAKTX
+  183 | Field DDIC | MAKT-MAKTX
+  185 | Field DDIC | MKPF-MBLNR
+  186 | Field DDIC | cawn-atwrt
+  187 | Field DDIC | MSEG-MENGE
+  188 | Field DDIC | MKPF-BKTXT
+  196 | Field DDIC | SY-LOOPC
+  202 | Field DDIC | SY-LOOPC
+  208 | Field DDIC | SY-LOOPC
+  215 | Field DDIC | sy-repid
+  234 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 7310 AS SUBSCREEN.
+  235 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK spr_error WITH FRAME TITLE FRMT7310.
+  237 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  238 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT6.
+  239 | Layar Seleksi | SELECT-OPTIONS: so_plnt2 FOR afpo-dwerk OBLIGATORY NO INTERVALS NO-EXTENSION.
+  239 | Field DDIC | afpo-dwerk
+  240 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  242 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  243 | Layar Seleksi | SELECTION-SCREEN COMMENT (15) TXT11.
+  244 | Layar Seleksi | PARAMETERS: znik type c length 13 OBLIGATORY.
+  245 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  247 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  248 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT7.
+  249 | Layar Seleksi | SELECT-OPTIONS: so_res2  FOR rcrde-resource NO INTERVALS NO-EXTENSION.
+  249 | Field DDIC | rcrde-resource
+  250 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  252 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  253 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT8.
+  254 | Layar Seleksi | SELECT-OPTIONS: so_psdt2 FOR aufk-erdat NO INTERVALS NO-EXTENSION OBLIGATORY DEFAULT SY-DATUM.
+  254 | Field DDIC | aufk-erdat
+  255 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  257 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  258 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT13.
+  259 | Layar Seleksi | SELECT-OPTIONS: so_bldat FOR aufk-erdat OBLIGATORY DEFAULT SY-DATUM.
+  259 | Field DDIC | aufk-erdat
+  260 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  262 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  263 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT9.
+  264 | Layar Seleksi | SELECT-OPTIONS: so_mtnr2 FOR afpo-matnr NO INTERVALS NO-EXTENSION.
+  264 | Field DDIC | afpo-matnr
+  265 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  267 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  268 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT10.
+  269 | Layar Seleksi | SELECT-OPTIONS: so_lgort FOR afpo-lgort NO INTERVALS NO-EXTENSION.
+  269 | Field DDIC | afpo-lgort
+  270 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  272 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  273 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT12.
+  274 | Layar Seleksi | SELECT-OPTIONS: zaufnr FOR aufk-aufnr NO INTERVALS NO-EXTENSION.
+  274 | Field DDIC | aufk-aufnr
+  275 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  277 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK spr_error.
+  278 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 7310.
+  281 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 7210 AS SUBSCREEN.
+  282 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK spr_cancel WITH FRAME TITLE FRMT7210.
+  284 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  285 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT1.
+  286 | Layar Seleksi | SELECT-OPTIONS: so_plant FOR afpo-dwerk OBLIGATORY.
+  286 | Field DDIC | afpo-dwerk
+  287 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  289 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  290 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT2.
+  291 | Layar Seleksi | SELECT-OPTIONS: so_matnr FOR afpo-matnr.
+  291 | Field DDIC | afpo-matnr
+  292 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  294 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  295 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT3.
+  296 | Layar Seleksi | SELECT-OPTIONS: so_aufnr FOR afpo-aufnr.
+  296 | Field DDIC | afpo-aufnr
+  297 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  299 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  300 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT4.
+  301 | Layar Seleksi | SELECT-OPTIONS: so_res   FOR rcrde-resource NO INTERVALS NO-EXTENSION.
+  301 | Field DDIC | rcrde-resource
+  302 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  304 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  305 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT5.
+  306 | Layar Seleksi | SELECT-OPTIONS: so_posdt FOR aufk-erdat NO INTERVALS NO-EXTENSION OBLIGATORY DEFAULT SY-DATUM.
+  306 | Field DDIC | aufk-erdat
+  307 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  309 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK spr_cancel.
+  310 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 7210.
+  313 | Field DDIC | SO_RES2-LOW
+  316 | Field DDIC | SO_RES-LOW
+  319 | Field DDIC | SO_LGORT-LOW
+  325 | Field DDIC | CRHD-WERKS
+  326 | Field DDIC | CRHD-ARBPL
+  382 | Field DDIC | CRHD-WERKS
+  383 | Field DDIC | CRHD-ARBPL
+  439 | Field DDIC | CRHD-WERKS
+  440 | Field DDIC | CRHD-ARBPL
+  334 | callFunctions | DYNP_VALUES_READ
+  365 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  358 | tableReads | ZTMAP_SLOCREC
+Jumlah source terbaca: 13
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZPPI_REC_EXEC.abap
+  Baris 25 | Layar dan GUI | CALL SCREEN 7000.
+  Baris 17 | INCLUDE | ZPPI_REC_EXEC_TOP
+  Baris 19 | INCLUDE | ZPPI_REC_EXEC_O01
+  Baris 20 | INCLUDE | ZPPI_REC_EXEC_I01
+  Baris 21 | INCLUDE | ZPPI_REC_EXEC_F01
+  Baris 26 | INCLUDE | ZBDCREX4
+
+ZPPI_REC_EXEC_TOP.abap
+  Baris 18 | Tipe DDIC | AUFK
+  Baris 21 | Field DDIC | SY-UCOMM
+  Baris 37 | Field DDIC | cawn-atwrt
+  Baris 38 | Field DDIC | cawn-atwrt
+  Baris 45 | Field DDIC | MKPF-BUDAT
+  Baris 46 | Field DDIC | RCRDE-RESOURCE
+  Baris 47 | Field DDIC | T001W-WERKS
+  Baris 48 | Field DDIC | MARA-MATNR
+  Baris 49 | Field DDIC | MSEG-MENGE
+  Baris 53 | Field DDIC | MARA-MATNR
+  Baris 58 | Field DDIC | CRHD-ARBPL
+  Baris 59 | Field DDIC | T157D-GRUND
+  Baris 63 | Field DDIC | HRP1001-OBJID
+  Baris 75 | Field DDIC | rcrde-resource
+  Baris 108 | Field DDIC | cawn-atwrt
+  Baris 109 | Field DDIC | cawn-atwrt
+  Baris 111 | Field DDIC | aufk-aufnr
+  Baris 129 | Field DDIC | AUFK-AUFNR
+  Baris 130 | Field DDIC | MARA-MATNR
+  Baris 131 | Field DDIC | MSEG-BWART
+  Baris 133 | Field DDIC | MKPF-BUDAT
+  Baris 134 | Field DDIC | MKPF-BLDAT
+  Baris 135 | Field DDIC | MKPF-CPUDT
+  Baris 136 | Field DDIC | MKPF-CPUTM
+  Baris 138 | Field DDIC | MSEG-WERKS
+  Baris 139 | Field DDIC | MSEG-LGORT
+  Baris 140 | Field DDIC | MSEG-MENGE
+  Baris 141 | Field DDIC | MSEG-MEINS
+  Baris 146 | Field DDIC | MSEG-MBLNR
+  Baris 147 | Field DDIC | MSEG-MJAHR
+  Baris 163 | Field DDIC | BAPI_ORDER_KEY-ORDER_NUMBER
+  Baris 175 | Field DDIC | BAPI2017_GM_HEAD_RET-MAT_DOC
+  Baris 176 | Field DDIC | BAPI2017_GM_HEAD_RET-DOC_YEAR
+  Baris 180 | Field DDIC | AUFK-AUART
+  Baris 182 | Field DDIC | MAKT-MAKTX
+  Baris 183 | Field DDIC | MAKT-MAKTX
+  Baris 185 | Field DDIC | MKPF-MBLNR
+  Baris 186 | Field DDIC | cawn-atwrt
+  Baris 187 | Field DDIC | MSEG-MENGE
+  Baris 188 | Field DDIC | MKPF-BKTXT
+  Baris 196 | Field DDIC | SY-LOOPC
+  Baris 202 | Field DDIC | SY-LOOPC
+  Baris 208 | Field DDIC | SY-LOOPC
+  Baris 215 | Field DDIC | sy-repid
+  Baris 234 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 7310 AS SUBSCREEN.
+  Baris 235 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK spr_error WITH FRAME TITLE FRMT7310.
+  Baris 237 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 238 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT6.
+  Baris 239 | Layar Seleksi | SELECT-OPTIONS: so_plnt2 FOR afpo-dwerk OBLIGATORY NO INTERVALS NO-EXTENSION.
+  Baris 239 | Field DDIC | afpo-dwerk
+  Baris 240 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 242 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 243 | Layar Seleksi | SELECTION-SCREEN COMMENT (15) TXT11.
+  Baris 244 | Layar Seleksi | PARAMETERS: znik type c length 13 OBLIGATORY.
+  Baris 245 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 247 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 248 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT7.
+  Baris 249 | Layar Seleksi | SELECT-OPTIONS: so_res2  FOR rcrde-resource NO INTERVALS NO-EXTENSION.
+  Baris 249 | Field DDIC | rcrde-resource
+  Baris 250 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 252 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 253 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT8.
+  Baris 254 | Layar Seleksi | SELECT-OPTIONS: so_psdt2 FOR aufk-erdat NO INTERVALS NO-EXTENSION OBLIGATORY DEFAULT SY-DATUM.
+  Baris 254 | Field DDIC | aufk-erdat
+  Baris 255 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 257 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 258 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT13.
+  Baris 259 | Layar Seleksi | SELECT-OPTIONS: so_bldat FOR aufk-erdat OBLIGATORY DEFAULT SY-DATUM.
+  Baris 259 | Field DDIC | aufk-erdat
+  Baris 260 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 262 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 263 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT9.
+  Baris 264 | Layar Seleksi | SELECT-OPTIONS: so_mtnr2 FOR afpo-matnr NO INTERVALS NO-EXTENSION.
+  Baris 264 | Field DDIC | afpo-matnr
+  Baris 265 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 267 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 268 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT10.
+  Baris 269 | Layar Seleksi | SELECT-OPTIONS: so_lgort FOR afpo-lgort NO INTERVALS NO-EXTENSION.
+  Baris 269 | Field DDIC | afpo-lgort
+  Baris 270 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 272 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 273 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT12.
+  Baris 274 | Layar Seleksi | SELECT-OPTIONS: zaufnr FOR aufk-aufnr NO INTERVALS NO-EXTENSION.
+  Baris 274 | Field DDIC | aufk-aufnr
+  Baris 275 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 277 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK spr_error.
+  Baris 278 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 7310.
+  Baris 281 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 7210 AS SUBSCREEN.
+  Baris 282 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK spr_cancel WITH FRAME TITLE FRMT7210.
+  Baris 284 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 285 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT1.
+  Baris 286 | Layar Seleksi | SELECT-OPTIONS: so_plant FOR afpo-dwerk OBLIGATORY.
+  Baris 286 | Field DDIC | afpo-dwerk
+  Baris 287 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 289 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 290 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT2.
+  Baris 291 | Layar Seleksi | SELECT-OPTIONS: so_matnr FOR afpo-matnr.
+  Baris 291 | Field DDIC | afpo-matnr
+  Baris 292 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 294 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 295 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT3.
+  Baris 296 | Layar Seleksi | SELECT-OPTIONS: so_aufnr FOR afpo-aufnr.
+  Baris 296 | Field DDIC | afpo-aufnr
+  Baris 297 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 299 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 300 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT4.
+  Baris 301 | Layar Seleksi | SELECT-OPTIONS: so_res   FOR rcrde-resource NO INTERVALS NO-EXTENSION.
+  Baris 301 | Field DDIC | rcrde-resource
+  Baris 302 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 304 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 305 | Layar Seleksi | SELECTION-SCREEN COMMENT (12) TXT5.
+  Baris 306 | Layar Seleksi | SELECT-OPTIONS: so_posdt FOR aufk-erdat NO INTERVALS NO-EXTENSION OBLIGATORY DEFAULT SY-DATUM.
+  Baris 306 | Field DDIC | aufk-erdat
+  Baris 307 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 309 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK spr_cancel.
+  Baris 310 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 7210.
+  Baris 313 | Field DDIC | SO_RES2-LOW
+  Baris 316 | Field DDIC | SO_RES-LOW
+  Baris 319 | Field DDIC | SO_LGORT-LOW
+  Baris 325 | Field DDIC | CRHD-WERKS
+  Baris 326 | Field DDIC | CRHD-ARBPL
+  Baris 382 | Field DDIC | CRHD-WERKS
+  Baris 383 | Field DDIC | CRHD-ARBPL
+  Baris 439 | Field DDIC | CRHD-WERKS
+  Baris 440 | Field DDIC | CRHD-ARBPL
+  Baris 358 | Sumber data pada SELECT atau JOIN | ZTMAP_SLOCREC
+  Baris 334 | Function module | DYNP_VALUES_READ
+  Baris 365 | Function module | F4IF_INT_TABLE_VALUE_REQUEST
+
+ZPPI_REC_EXEC_O01.abap
+  Baris 10 | Layar dan GUI | SET PF-STATUS 'PFST_7000'.
+  Baris 11 | Layar dan GUI | SET TITLEBAR  'TB_7000'.
+  Baris 34 | Layar dan GUI | SET PF-STATUS 'PFST_7100'.
+  Baris 35 | Layar dan GUI | SET TITLEBAR  'TB_7100'.
+  Baris 100 | Layar dan GUI | SET PF-STATUS 'PFST_7200'.
+  Baris 101 | Layar dan GUI | SET TITLEBAR  'TB_7200'.
+  Baris 172 | Layar dan GUI | SET PF-STATUS 'PFST_7300'.
+  Baris 173 | Layar dan GUI | SET TITLEBAR  'TB_7300'.
+
+ZPPI_REC_EXEC_I01.abap
+  Baris 23 | Layar dan GUI | call screen 7100.
+  Baris 29 | Layar dan GUI | call screen 7200.
+  Baris 35 | Layar dan GUI | call screen 7300.
+  Baris 209 | Layar dan GUI | LEAVE TO SCREEN 7000.
+  Baris 299 | Layar dan GUI | LEAVE TO SCREEN 7000.
+  Baris 348 | Layar dan GUI | LEAVE TO SCREEN 7000.
+  Baris 435 | Field DDIC | sy-stepl
+  Baris 481 | Field DDIC | CRHD-WERKS
+  Baris 482 | Field DDIC | CRHD-ARBPL
+  Baris 483 | Field DDIC | CRTX-KTEXT
+  Baris 548 | Field DDIC | CRHD-WERKS
+  Baris 549 | Field DDIC | CRHD-ARBPL
+  Baris 94 | Sumber data pada SELECT atau JOIN | T157D
+  Baris 515 | Sumber data pada SELECT atau JOIN | ZTMAP_SLOCREC
+  Baris 521 | Sumber data pada SELECT atau JOIN | CRTX
+  Baris 521 | Sumber data pada SELECT atau JOIN | CRHD
+  Baris 54 | Function module | BAPI_CHARACT_GETDETAIL
+  Baris 262 | Function module | DEQUEUE_ALL
+  Baris 438 | Function module | DYNP_GET_STEPL
+  Baris 455 | Function module | DYNP_VALUES_UPDATE
+  Baris 491 | Function module | DYNP_VALUES_READ
+  Baris 531 | Function module | F4IF_INT_TABLE_VALUE_REQUEST
+  Baris 14 | Program yang dirujuk SUBMIT | ZPPR_REC_EXEC_REPORT
+
+ZPPI_REC_EXEC_F01.abap
+  Baris 27 | Field DDIC | SY-UCOMM
+  Baris 30 | Field DDIC | SY-UCOMM
+  Baris 103 | Field DDIC | FELD-NAME
+  Baris 104 | Field DDIC | SY-STEPL
+  Baris 107 | Field DDIC | FELD-NAME
+  Baris 157 | Field DDIC | FELD-NAME
+  Baris 201 | Field DDIC | FELD-NAME
+  Baris 202 | Field DDIC | FELD-NAME
+  Baris 203 | Field DDIC | FELD-NAME
+  Baris 267 | Field DDIC | FELD-NAME
+  Baris 302 | Field DDIC | FELD-NAME
+  Baris 332 | Field DDIC | MARA-MEINS
+  Baris 2241 | Field DDIC | SY-MSGTY
+  Baris 2291 | Field DDIC | SY-MSGTY
+  Baris 2342 | Field DDIC | SY-MSGTY
+  Baris 2358 | Field DDIC | AUFK-AUFNR
+  Baris 2359 | Field DDIC | MARA-MTART
+  Baris 2360 | Field DDIC | MARA-MATKL
+  Baris 336 | Sumber data pada SELECT atau JOIN | CRHD
+  Baris 341 | Sumber data pada SELECT atau JOIN | ZTMAP_SLOCREC
+  Baris 357 | Sumber data pada SELECT atau JOIN | HRP1001
+  Baris 370 | Sumber data pada SELECT atau JOIN | MARC
+  Baris 378 | Sumber data pada SELECT atau JOIN | MARA
+  Baris 388 | Sumber data pada SELECT atau JOIN | ZTMAP_RECYCLE
+  Baris 400 | Sumber data pada SELECT atau JOIN | MAKT
+  Baris 922 | Sumber data pada SELECT atau JOIN | ZERROR_LOG
+  Baris 952 | Sumber data pada SELECT atau JOIN | MARD
+  Baris 1322 | Sumber data pada SELECT atau JOIN | MSEG
+  Baris 1322 | Sumber data pada SELECT atau JOIN | MKPF
+  Baris 1322 | Sumber data pada SELECT atau JOIN | AUFK
+  Baris 221 | Function module | SCROLLING_IN_TABLE
+  Baris 439 | Function module | VRM_SET_VALUES
+  Baris 490 | Function module | POC_GET_COMPUTER_NAME
+  Baris 543 | Function module | BAPI_PROCORD_CREATE
+  Baris 555 | Function module | ENQUEUE_ESORDER
+  Baris 565 | Function module | DEQUEUE_ESORDER
+  Baris 576 | Function module | BAPI_PROCORD_RELEASE
+  Baris 585 | Function module | DEQUEUE_ALL
+  Baris 618 | Function module | BAPI_GOODSMVT_CREATE
+  Baris 665 | Function module | BAPI_TRANSACTION_COMMIT
+  Baris 751 | Function module | BAPI_PROCORD_COMPLETE_TECH
+  Baris 1408 | Function module | STATUS_TEXT_EDIT
+  Baris 1582 | Function module | BAPI_GOODSMVT_CANCEL
+  Baris 1750 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 2107 | Function module | REUSE_ALV_EVENTS_GET
+  Baris 2173 | Function module | REUSE_ALV_COMMENTARY_WRITE
+  Baris 2200 | Function module | BAPI_CHARACT_GETDETAIL
+  Baris 2225 | Function module | F4IF_INT_TABLE_VALUE_REQUEST
+  Baris 866 | Program yang dirujuk SUBMIT | ZMMF_SCARP
+  Baris 2390 | Program yang dirujuk SUBMIT | ZTPPR_REC_EXEC_REPORT
+  Baris 2392 | Program yang dirujuk SUBMIT | ZTPPR_LOG_ERROR
+  Baris 2394 | Program yang dirujuk SUBMIT | ZTMMR_STOCK_RM
+  Baris 795 | Indikasi penulisan data (perlu konfirmasi) | ZERROR_LOG
+  Baris 1470 | Kontrol transaksi | COMMIT_WORK
+
+ZBDCREX4.abap
+  Baris 17 | Field DDIC | sy-datum
+  Baris 110 | BDC | BDCDATA
+  Baris 110 | BDC | BDCDATA
+  Baris 116 | Tipe DDIC | T100
+  Baris 137 | Teks Seleksi | TEXT-E00
+  Baris 159 | BDC | BDC_OPEN_GROUP
+  Baris 165 | BDC | BDC_OPEN_GROUP
+  Baris 178 | BDC | BDC_CLOSE_GROUP
+  Baris 179 | BDC | BDC_CLOSE_GROUP
+  Baris 184 | BDC | BDC_CLOSE_GROUP
+  Baris 197 | Field DDIC | SY-SUBRC
+  Baris 200 | BDC | BDC_INSERT
+  Baris 202 | Tipe DDIC | DYNPROTAB
+  Baris 202 | BDC | BDCDATA
+  Baris 204 | BDC | BDC_INSERT
+  Baris 214 | BDC | BDCDATA
+  Baris 214 | BDC | CALL TRANSACTION TCODE USING BDCDATA
+  Baris 254 | BDC | BDC_OPEN_GROUP
+  Baris 262 | BDC | BDC_INSERT
+  Baris 264 | Tipe DDIC | DYNPROTAB
+  Baris 264 | BDC | BDCDATA
+  Baris 267 | BDC | BDCDATA
+  Baris 274 | BDC | BDCDATA
+  Baris 275 | BDC | BDCDATA
+  Baris 276 | BDC | BDCDATA
+  Baris 277 | BDC | BDCDATA
+  Baris 278 | BDC | BDCDATA
+  Baris 286 | BDC | BDCDATA
+  Baris 287 | BDC | BDCDATA
+  Baris 288 | BDC | BDCDATA
+  Baris 289 | BDC | BDCDATA
+  Baris 159 | Function module | BDC_OPEN_GROUP
+  Baris 178 | Function module | BDC_CLOSE_GROUP
+  Baris 200 | Function module | BDC_INSERT
+  Baris 214 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | TCODE

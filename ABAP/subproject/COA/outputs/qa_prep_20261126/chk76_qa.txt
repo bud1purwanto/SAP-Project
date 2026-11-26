@@ -1,0 +1,23 @@
+SK          0  SRAABI             0003885659 2000 2302           240.240  blok
+            0.000
+    DO 85051573   ZB   wbstk A
+    DO 85051582   ZB   wbstk A
+SK          0  SRAABI             0003885660 2000 2302           240.240  blok
+            0.000
+    DO 85051573   ZB   wbstk A
+SK          0  SRAABI             0003885661 2000 2302           240.240  blok
+            0.000
+    DO 85051577   ZB   wbstk A
+SK          0  SRAABI             0003885662 2000 2302           240.240  blok
+            0.000
+    DO 85051577   ZB   wbstk A
+SK          0  SRAABI             0003885663 2000 2302           240.240  blok
+            0.000
+SK          0  SRAABI             0003885664 2000 2302           240.240  blok
+            0.000
+SK          0  SRAABI             0003885665 2000 2302           117.940  blok
+            0.000
+SK          0  SRAABI             0003885666 2000 2302           117.940  blok
+            0.000
+SK          0  SRAABI             0003885667 2000 2302           117.940  blok
+            0.000

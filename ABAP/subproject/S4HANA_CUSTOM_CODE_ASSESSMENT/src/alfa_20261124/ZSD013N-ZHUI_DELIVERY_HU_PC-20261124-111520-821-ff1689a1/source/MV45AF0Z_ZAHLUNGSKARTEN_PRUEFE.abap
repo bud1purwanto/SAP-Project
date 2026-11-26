@@ -1,0 +1,65 @@
+*---------------------------------------------------------------------*
+*       FORM ZAHLUNGSKARTEN_PRUEFEN                                   *
+*---------------------------------------------------------------------*
+FORM ZAHLUNGSKARTEN_PRUEFEN.
+  DATA: DA_CCDATA LIKE CCDATA,
+        DA_VCNUM  LIKE VCNUM,
+        DA_VCKUN  LIKE VCKUN.
+  DATA: DA_SUBRC LIKE SY-SUBRC.
+
+* Alle Felder oder kein Feld füllen
+  CHECK NOT CCDATA-CCINS IS INITIAL OR
+        NOT CCDATA-CCNUM IS INITIAL OR
+        NOT CCDATA-DATBI IS INITIAL OR
+        NOT CCARD_CVV-CVVAL IS INITIAL.
+* Okay ?
+  IF CCDATA-CCINS IS INITIAL.
+    SET CURSOR FIELD 'CCDATA-CCINS'.
+    MESSAGE E105(V/).
+  ENDIF.
+  IF CCDATA-CCNUM IS INITIAL.
+    SET CURSOR FIELD 'CCDATA-CCNUM'.
+    MESSAGE E106(V/).
+  ENDIF.
+* Kartennummer prüfen
+  CALL FUNCTION 'CCARD_CHECK_NUMBER'
+       EXPORTING
+            CCINS_I = CCDATA-CCINS
+            CCNUM_I = CCDATA-CCNUM.
+* Stammdaten lesen
+  CALL FUNCTION 'CCARD_ENHANCE_FROM_MASTERDATA'
+       EXPORTING
+            CCINS_I      = CCDATA-CCINS
+            CCNUM_I      = CCDATA-CCNUM
+            KUNNR_I      = KURGV-KUNNR
+       IMPORTING
+            VCNUM_E      = DA_VCNUM
+            VCKUN_E      = DA_VCKUN
+       EXCEPTIONS
+            CC_NOT_FOUND = 1.
+  DA_SUBRC = SY-SUBRC.
+* Move me
+  IF CCDATA-DATBI IS INITIAL.
+     CCDATA-DATBI = DA_VCNUM-DATBI.
+  ENDIF.
+  IF   CCDATA-DATBI IS INITIAL OR
+     ( CCDATA-DATBI NE DA_VCNUM-DATBI AND DA_SUBRC EQ 0 ).
+* Convert me
+    CALL FUNCTION 'CCARD_DATE_CONVERT_OUTPUT'
+         EXPORTING
+              CCINS_I         = CCDATA-CCINS
+              INTERNAL_DATE_I = CCDATA-DATBI
+         IMPORTING
+              EXTERNAL_DATE_E = CCDATE-EXDATBI.
+  ENDIF.
+* Move me too
+  IF   CCDATA-CCNAME IS INITIAL.
+    CCDATA-CCNAME = DA_VCNUM-CCNAME.
+  ENDIF.
+* Okay ?
+  IF CCDATA-DATBI IS INITIAL.
+    SET CURSOR FIELD 'CCDATE-EXDATBI'.
+    MESSAGE E107(V/).
+  ENDIF.
+
+ENDFORM.                   " ZAHLUNGSKARTEN_PRUEFEN     INPUT

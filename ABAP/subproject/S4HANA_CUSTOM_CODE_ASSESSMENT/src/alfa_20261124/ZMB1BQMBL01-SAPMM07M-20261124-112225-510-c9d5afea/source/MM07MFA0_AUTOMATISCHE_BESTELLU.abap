@@ -1,0 +1,120 @@
+*eject
+*---------------------------------------------------------------------*
+*       FORM AUTOMATISCHE_BESTELLUNG                                  *
+*---------------------------------------------------------------------*
+*       Die Daten für die zu erzeugende Bestellung werden generiert.  *
+*---------------------------------------------------------------------*
+FORM AUTOMATISCHE_BESTELLUNG.
+
+  REFRESH: XEKBNK, XEKBNK_CR.
+  CLEAR: XEKBNK, XEKBNK_CR.
+  clear: xebefu, xebefu_cr.                               "note 482530
+  refresh: xebefu, xebefu_cr.                             "note 482530
+  DATA: EBELN LIKE MSEG-EBELN.
+  LOOP AT XDBEFU.
+    IF NOT XDBEFU-UPTYP IS INITIAL AND XDBEFU-UEBPO IS INITIAL.
+      CLEAR XDBEFU-UPTYP.
+      MODIFY XDBEFU.
+    ENDIF.
+  ENDLOOP.
+  CALL FUNCTION 'ME_SET_PO_ITEMS'
+       EXPORTING
+            FC_CALL       = XMBWL
+       IMPORTING
+            PO_EBELN      = EBELN
+       TABLES
+            IT_DBEFU      = XDBEFU
+            ITO_EKBNK     = XEKBNK
+            ITO_EKBNK_CR  = XEKBNK_CR
+            ITO_EBEFU_CR  = XEBEFU_CR
+       EXCEPTIONS
+            ERROR_MESSAGE = 1.
+  IF NOT SY-SUBRC IS INITIAL.
+    MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+            WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+  LOOP AT YEKBNK_CR WHERE EBELN = EBELN.
+    DELETE YEKBNK_CR.
+  ENDLOOP.
+  DELETE YEBEFU_CR WHERE EBELN = EBELN.          "0438401
+  LOOP AT XDBEFU.
+    DATA ML00. CLEAR ML00.
+    DATA ML10. CLEAR ML10.
+    READ TABLE ZMSEG INDEX XDBEFU-ZEILE.
+    IF NOT SY-SUBRC IS INITIAL.
+      MESSAGE E001 WITH 'ZMSEG' XDBEFU-ZEILE.
+    ENDIF.
+    READ TABLE ZVM07M INDEX XDBEFU-ZEILE.
+    IF NOT SY-SUBRC IS INITIAL.
+      MESSAGE E001 WITH 'ZVM07M' XDBEFU-ZEILE.
+    ENDIF.
+    READ TABLE ZDM07M INDEX XDBEFU-ZEILE.
+    IF NOT SY-SUBRC IS INITIAL.
+      MESSAGE E001 WITH 'ZDM07M' XDBEFU-ZEILE.
+    ENDIF.
+    ZMSEG-EBELN = EBELN.
+    ZMSEG-EBELP = XDBEFU-EBELP.
+    ZMSEG-WAERS = XDBEFU-HWAER.
+    ZMSEG-XBEAU = X.
+    MODIFY ZMSEG INDEX ZMSEG-ZEILE.
+    ZVM07M-WEBRE = XDBEFU-WEBRE.
+    ZVM07M-RETPO = XDBEFU-RETPO.
+    READ TABLE XEBEFU_CR WITH KEY EBELP = XDBEFU-EBELP
+                              BINARY SEARCH
+                              TRANSPORTING NO FIELDS.
+    LOOP AT XEBEFU_CR FROM SY-TABIX.
+      IF XEBEFU_CR-EBELP NE XDBEFU-EBELP.
+        EXIT.
+      ENDIF.
+      YEBEFU_CR = XEBEFU_CR.
+      IF NOT XVM07M-WEBRE IS INITIAL.
+        YEBEFU_CR-REWRT = YEBEFU_CR-AREWR = YEBEFU_CR-WEWRT.
+      ENDIF.
+      IF NOT XDBEFU-ZBD1P IS INITIAL AND NOT T003-XNETB IS INITIAL
+         AND XDBEFU-SKTOF IS INITIAL.
+        YEBEFU_CR-NETWR = YEBEFU_CR-NETWR
+                        - ( XDBEFU-ZBD1P * YEBEFU_CR-NETWR / 100000 ).
+      ENDIF.
+      YEBEFU_CR-EBELN = EBELN.
+      READ TABLE YEBEFU_CR WITH KEY EBELN = YEBEFU_CR-EBELN
+                               EBELP = YEBEFU_CR-EBELP
+                               LFBJA = YEBEFU_CR-LFBJA
+                               LFBNR = YEBEFU_CR-LFBNR
+                               LFPOS = YEBEFU_CR-LFPOS
+                               CURTP = YEBEFU_CR-CURTP
+                               BINARY SEARCH
+                               TRANSPORTING NO FIELDS.
+      INSERT YEBEFU_CR INDEX SY-TABIX.
+      IF YEBEFU_CR-CURTP = CURTP00.
+        ML00 = X.
+      ELSEIF YEBEFU_CR-CURTP = CURTP10.
+        ML10 = X.
+      ENDIF.
+    ENDLOOP.
+    IF NOT SY-SUBRC IS INITIAL.
+      MESSAGE E001 WITH 'YEBEFU_CR' SPACE AUTO_BEST XDBEFU-EBELP.
+    ELSEIF ML00 IS INITIAL.
+      MESSAGE E001 WITH 'YEBEFU_CR' '00' AUTO_BEST XDBEFU-EBELP.
+    ELSEIF ML10 IS INITIAL.
+      MESSAGE E001 WITH 'YEBEFU_CR' '10' AUTO_BEST XDBEFU-EBELP.
+    ENDIF.
+    IF NOT XDBEFU-ZBD1P IS INITIAL AND NOT T003-XNETB IS INITIAL
+       AND XDBEFU-SKTOF IS INITIAL.
+      XDBEFU-NETWR = XDBEFU-NETWR
+                     - ( XDBEFU-ZBD1P * XDBEFU-NETWR / 100000 ).
+      XDBEFU-NETWW = XDBEFU-NETWW
+                     - ( XDBEFU-ZBD1P * XDBEFU-NETWW / 100000 ).
+    ENDIF.
+    ZVM07M-NETWR = XDBEFU-NETWR.
+    ZVM07M-NETWW = XDBEFU-NETWW.
+    ZVM07M-BWAER = XDBEFU-WAERS.
+    MODIFY ZVM07M INDEX ZVM07M-ZEILV.
+    MODIFY ZDM07M INDEX ZDM07M-ZEILD.
+    PERFORM BEZUGSNEBENKOSTEN_UEBERNEHMEN USING ZMSEG-EBELN
+                                                ZMSEG-EBELP
+                                                ZMSEG-WEUNB
+                                                ZMSEG-KZBEW
+                                               ZVM07M-XNEBE.
+  ENDLOOP.
+
+ENDFORM.

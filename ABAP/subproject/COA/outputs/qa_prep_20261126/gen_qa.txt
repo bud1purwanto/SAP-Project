@@ -1,0 +1,485 @@
+JR 040000139819 JRAABI     0003880871 100000777144 28.08.2025
+  IN RPC                0003858761
+  IN RPM                3000000069
+  IN RPV                1000000011
+JR 040000140418 JRAABI     0003883652 100000777985 11.03.2026
+  ORD 100000778212 nKomp          1  ref P29000054815 nOrdGab          1
+   SR SRAABI     0003884165 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+   SR SRAABI     0003884166 stk            87.360  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140419 JRAABI     0003883653 100000777985 11.03.2026
+JR 040000140420 JRAABI     0003883654 100000777332 12.03.2026
+  ORD 100000777987 nKomp          1  ref P29000054788 nOrdGab          1
+   SR SRAABI     0003883662 stk           178.520  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883663 stk           178.520  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883665 stk           167.630  lot 100000088734 Z05      res
+         0  used          0  cg          0
+   SR SRAABI     0003883666 stk           177.630  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883667 stk           177.630  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000777988 nKomp          1  ref P29000054789 nOrdGab          1
+   SR SRAABI     0003883670 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883671 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883672 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883673 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883674 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883675 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000777989 nKomp          1  ref P29000054790 nOrdGab          1
+   SR SRAABI     0003883676 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883677 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883678 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883679 stk           166.810  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883680 stk           166.810  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883681 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883682 stk           166.810  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000777990 nKomp          1  ref P29000054791 nOrdGab          1
+   SR SRAABI     0003883726 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883727 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883728 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883729 stk           165.980  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883730 stk           165.980  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883731 stk           166.810  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883732 stk           166.810  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000777992 nKomp          1  ref P29000054793 nOrdGab          1
+   SR SRAABI     0003883740 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883741 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883742 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883743 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883744 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883745 stk           166.810  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003883746 stk           165.980  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140447 JRAABI     0003884196 100000777985 11.05.2026
+  ORD 100000778226 nKomp          1  ref P29000054816 nOrdGab          1
+   SR SRAABI     0003884197 stk           165.980  lot 050000165733 Z04      res
+         3  used          0  cg          0
+JR 040000140448 JRAC2I     0003884225 100000778231 12.05.2026
+  ORD 100000778233 nKomp          1  ref P29000054830 nOrdGab          1
+   SR SRAC2I     0003884211 stk             0.000  lot 050000165735 Z04      res
+        16  used          0  cg          0
+   SR SRAC2I     0003884212 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884213 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884214 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884215 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884216 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884217 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778287 nKomp          1  ref P29000054831 nOrdGab          1
+   SR SRAC2I     0003884267 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884268 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884269 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884270 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884271 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884272 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884273 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884274 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884275 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884276 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884277 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884278 stk             3.960  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778288 nKomp          1  ref P29000054832 nOrdGab          1
+   SR SRAC2I     0003884279 stk             1.870  lot 000000000000          res
+         0  used          1  cg          0
+   SR SRAC2I     0003884280 stk            37.350  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884281 stk            37.350  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884282 stk            37.350  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884283 stk            37.350  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884284 stk            37.350  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAC2I     0003884285 stk            37.350  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140449 JRCGAI     0003884226 100000778232 12.05.2026
+  ORD 100000778238 nKomp          1  ref E29000157394 nOrdGab          1
+   SR SRCGAI     0003884234 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+   SR SRCGAI     0003884235 stk           922.280  lot 000000000000          res
+         0  used          6  cg          0
+   SR SRCGAI     0003884236 stk           902.600  lot 000000000000          res
+         0  used          3  cg          0
+   SR SRCGAI     0003884237 stk         1,763.480  lot 000000000000          res
+         0  used          1  cg          0
+   SR SRCGAI     0003884238 stk         1,763.480  lot 000000000000          res
+         0  used          1  cg          0
+   SR SRCGAI     0003884239 stk         1,763.480  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRCGAI     0003884240 stk         1,763.480  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140500 JREWEI     0003884248 100000778236 12.05.2026
+  IN SREWEA             0003884255
+  IN SREWEA             0003884255
+  IN SREWEA             0003884247
+  IN SREWEA             0003884247
+  IN SREWEA             0003884249
+  IN SREWEA             0003884249
+  IN SREWEA             0003884251
+  IN SREWEA             0003884251
+  IN SREWEA             0003884253
+  IN SREWEA             0003884253
+  ORD 100000778239 nKomp          1  ref Z27000001807 nOrdGab          1
+   SR SREWEI     0003884241 stk             0.000  lot 050000165736 Z04      res
+        21  used          0  cg          0
+   SR SREWEI     0003884241 stk             0.000  lot 050000165736 Z04      res
+        21  used          0  cg          0
+  ORD 100000778240 nKomp          1  ref Z27000001808 nOrdGab          1
+   SR SREWEI     0003884242 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778241 nKomp          1  ref Z27000001809 nOrdGab          1
+   SR SREWEI     0003884243 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778242 nKomp          1  ref Z27000001810 nOrdGab          1
+   SR SREWEI     0003884244 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778243 nKomp          1  ref Z27000001811 nOrdGab          1
+   SR SREWEI     0003884245 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778244 nKomp          1  ref Z27000001812 nOrdGab          1
+   SR SREWEI     0003884246 stk             0.000  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140690 JRAABI     0003884597 100000778536 20.08.2026
+JR 040000140709 JRAKSI     0003884624 100000778542 20.08.2026
+  ORD 100000778578 nKomp          1  ref P29000054856 nOrdGab          1
+   SR SRAKSI     0003884724 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+   SR SRAKSI     0003884725 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+JR 040000140701 JRALZI     0003884608 100000778539 20.08.2026
+  ORD 100000778562 nKomp          1  ref P29000054846 nOrdGab          1
+   SR SRALZI     0003884692 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+   SR SRALZI     0003884693 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+JR 040000140719 JRCADI     0003884634 100000778537 20.08.2026
+JR 040000140729 JRCGAI     0003884644 100000778540 20.08.2026
+  ORD 100000778568 nKomp          1  ref E29000157421 nOrdGab          1
+   SR SRCGAI     0003884704 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+   SR SRCGAI     0003884705 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+JR 040000140735 JRVC2I     0003884650 100000778538 20.08.2026
+JR 040000140741 JRAH8I     0003884673 100000778555 21.08.2026
+  ORD 100000778574 nKomp          1  ref P29000054852 nOrdGab          1
+   SR SRAH8I     0003884716 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+   SR SRAH8I     0003884717 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+JR 040000140762 JREASI     0003884762 100000778549 26.08.2026
+  IN SREASA             0003884757
+  IN SREASA             0003884757
+  IN SREASA             0003884759
+  IN SREASA             0003884759
+  IN SREASA             0003884761
+  IN SREASA             0003884761
+  IN SREASA             0003884763
+  IN SREASA             0003884763
+  IN SREASA             0003884765
+  IN SREASA             0003884765
+  IN SREASA             0003884767
+  IN SREASA             0003884767
+  IN SREASA             0003884769
+  IN SREASA             0003884769
+  IN SREASA             0003884771
+  IN SREASA             0003884771
+  IN SREASA             0003884773
+  IN SREASA             0003884773
+  IN SREASA             0003884775
+  IN SREASA             0003884775
+  ORD 100000778754 nKomp          1  ref Z28000001147 nOrdGab          1
+   SR SREASI     0003885210 stk           546.000  lot 000000000000          res
+         0  used          0  cg          0
+   SR SREASI     0003885211 stk           546.000  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778755 nKomp          1  ref Z28000001148 nOrdGab          1
+   SR SREASI     0003885212 stk           551.460  lot 000000000000          res
+         0  used          0  cg          0
+   SR SREASI     0003885213 stk           551.460  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778756 nKomp          1  ref Z28000001149 nOrdGab          1
+   SR SREASI     0003885214 stk           546.000  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140749 JREWEI     0003884735 100000778544 26.08.2026
+  IN SREWEA             0003884734
+  IN SREWEA             0003884734
+  IN SREWEA             0003884736
+  IN SREWEA             0003884736
+  IN SREWEA             0003884738
+  IN SREWEA             0003884738
+  IN SREWEA             0003884740
+  IN SREWEA             0003884740
+  IN SREWEA             0003884742
+  IN SREWEA             0003884742
+  IN SREWEA             0003884744
+  IN SREWEA             0003884744
+  IN SREWEA             0003884746
+  IN SREWEA             0003884746
+  IN SREWEA             0003884748
+  IN SREWEA             0003884748
+  IN SREWEA             0003884750
+  IN SREWEA             0003884750
+  IN SREWEA             0003884752
+  IN SREWEA             0003884752
+  IN SREWEA             0003884754
+  IN SREWEA             0003884754
+  IN SREWEA             0003884732
+  IN SREWEA             0003884732
+  ORD 100000778712 nKomp          1  ref Z27000001822 nOrdGab          1
+   SR SREWEI     0003885126 stk           317.520  lot 000000000000          res
+         0  used          0  cg          0
+   SR SREWEI     0003885127 stk           317.520  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778713 nKomp          1  ref Z27000001823 nOrdGab          1
+   SR SREWEI     0003885128 stk           317.520  lot 000000000000          res
+         0  used          0  cg          0
+   SR SREWEI     0003885129 stk           317.520  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140782 JRGKAI     0003884836 100000778550 26.08.2026
+  IN SRGKAA             0003884837
+  IN SRGKAA             0003884839
+  IN SRGKAA             0003884839
+  IN SRGKAA             0003884841
+  IN SRGKAA             0003884841
+  IN SRGKAA             0003884831
+  IN SRGKAA             0003884831
+  IN SRGKAA             0003884833
+  IN SRGKAA             0003884833
+  IN SRGKAA             0003884835
+  IN SRGKAA             0003884835
+  IN SRGKAA             0003884837
+  ORD 100000778641 nKomp          1  ref A26000003119 nOrdGab          1
+   SR SRGKAI     0003884878 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+  ORD 100000778642 nKomp          1  ref A26000003120 nOrdGab          1
+   SR SRGKAI     0003884879 stk             0.000  lot 000000000000          res
+         0  used          1  cg          0
+JR 040000140774 JRIA5I     0003884786 100000778553 26.08.2026
+  IN SRIA5A             0003884777
+  IN SRIA5A             0003884777
+  IN SRIA5A             0003884779
+  IN SRIA5A             0003884779
+  IN SRIA5A             0003884781
+  IN SRIA5A             0003884781
+  IN SRIA5A             0003884783
+  IN SRIA5A             0003884783
+  IN SRIA5A             0003884785
+  IN SRIA5A             0003884785
+  IN SRIA5A             0003884787
+  IN SRIA5A             0003884787
+  IN SRIA5A             0003884789
+  IN SRIA5A             0003884789
+  IN SRIA5A             0003884791
+  IN SRIA5A             0003884791
+  IN SRIA5A             0003884793
+  IN SRIA5A             0003884793
+  IN SRIA5A             0003884795
+  IN SRIA5A             0003884795
+  ORD 100000778820 nKomp          1  ref T21000000452 nOrdGab          1
+   SR SRIA5I     0003885348 stk            67.560  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRIA5I     0003885349 stk            67.560  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778821 nKomp          1  ref T21000000453 nOrdGab          1
+   SR SRIA5I     0003885350 stk            67.560  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRIA5I     0003885351 stk            67.560  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778822 nKomp          1  ref T21000000454 nOrdGab          1
+   SR SRIA5I     0003885352 stk            67.560  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRIA5I     0003885353 stk            68.240  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778823 nKomp          1  ref T21000000455 nOrdGab          1
+   SR SRIA5I     0003885354 stk            67.560  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRIA5I     0003885355 stk            67.560  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778824 nKomp          1  ref T21000000456 nOrdGab          1
+   SR SRIA5I     0003885356 stk            67.560  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRIA5I     0003885357 stk            67.560  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778825 nKomp          1  ref T21000000457 nOrdGab          1
+   SR SRIA5I     0003885358 stk            67.560  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRIA5I     0003885359 stk            68.240  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140803 JRGIDI     0003884918 100000778545 29.08.2026
+  IN SRGIDA             0003884911
+  IN SRGIDA             0003884911
+  IN SRGIDA             0003884913
+  IN SRGIDA             0003884913
+  IN SRGIDA             0003884915
+  IN SRGIDA             0003884915
+  IN SRGIDA             0003884917
+  IN SRGIDA             0003884917
+  IN SRGIDA             0003884919
+  IN SRGIDA             0003884919
+  IN SRGIDA             0003884921
+  IN SRGIDA             0003884921
+  IN SRGIDA             0003884923
+  IN SRGIDA             0003884923
+  IN SRGIDA             0003884925
+  IN SRGIDA             0003884925
+  IN SRGIDA             0003884927
+  IN SRGIDA             0003884927
+  IN SRGIDA             0003884929
+  IN SRGIDA             0003884929
+  ORD 100000778698 nKomp          1  ref A26000003140 nOrdGab          1
+   SR SRGIDI     0003885098 stk           531.220  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRGIDI     0003885099 stk           531.220  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778699 nKomp          1  ref A26000003141 nOrdGab          1
+   SR SRGIDI     0003885100 stk           531.220  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRGIDI     0003885101 stk           531.220  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778700 nKomp          1  ref A26000003142 nOrdGab          1
+  ORD 100000778701 nKomp          1  ref A26000003143 nOrdGab          1
+   SR SRGIDI     0003885104 stk           213.530  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRGIDI     0003885105 stk           213.530  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140791 JRGLAI     0003884894 100000778551 29.08.2026
+  IN SRGLAA             0003884901
+  IN SRGLAA             0003884901
+  IN SRGLAA             0003884903
+  IN SRGLAA             0003884903
+  IN SRGLAA             0003884905
+  IN SRGLAA             0003884905
+  IN SRGLAA             0003884907
+  IN SRGLAA             0003884907
+  IN SRGLAA             0003884909
+  IN SRGLAA             0003884909
+  IN SRGLAA             0003884887
+  IN SRGLAA             0003884887
+  IN SRGLAA             0003884889
+  IN SRGLAA             0003884889
+  IN SRGLAA             0003884891
+  IN SRGLAA             0003884891
+  IN SRGLAA             0003884893
+  IN SRGLAA             0003884893
+  IN SRGLAA             0003884895
+  IN SRGLAA             0003884895
+  IN SRGLAA             0003884897
+  IN SRGLAA             0003884897
+  IN SRGLAA             0003884899
+  IN SRGLAA             0003884899
+  ORD 100000778770 nKomp          1  ref Z28000001163 nOrdGab          1
+   SR SRGLAI     0003885242 stk           556.920  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRGLAI     0003885243 stk           556.920  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778771 nKomp          1  ref Z28000001164 nOrdGab          1
+   SR SRGLAI     0003885244 stk           556.920  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778772 nKomp          1  ref Z28000001165 nOrdGab          1
+   SR SRGLAI     0003885246 stk           556.920  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRGLAI     0003885247 stk           556.920  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778811 nKomp          1  ref Z28000001176 nOrdGab          1
+   SR SRGLAI     0003885330 stk           278.460  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRGLAI     0003885331 stk           278.460  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140842 JRAABI     0003885615 100000778905 10.11.2026
+  ORD 100000778914 nKomp          1  ref P29000054931 nOrdGab          1
+   SR SRAABI     0003885659 stk           240.240  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003885660 stk           240.240  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778915 nKomp          1  ref P29000054932 nOrdGab          1
+   SR SRAABI     0003885661 stk           240.240  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003885662 stk           240.240  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778916 nKomp          1  ref P29000054933 nOrdGab          1
+   SR SRAABI     0003885663 stk           240.240  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003885664 stk           240.240  lot 000000000000          res
+         0  used          0  cg          0
+  ORD 100000778917 nKomp          1  ref P29000054934 nOrdGab          1
+   SR SRAABI     0003885665 stk           117.940  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003885666 stk           117.940  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRAABI     0003885667 stk           117.940  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140835 JRACBI     0003885608 100000778904 10.11.2026
+  ORD 100000778959 nKomp          1  ref P29000054976 nOrdGab          1
+   SR SRACBI     0003885794 stk           304.500  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRACBI     0003885795 stk           304.500  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRACBI     0003885796 stk           305.440  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRACBI     0003885797 stk           304.500  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRACBI     0003885798 stk           304.500  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRACBI     0003885799 stk           304.500  lot 000000000000          res
+         0  used          0  cg          0
+JR 040000140852 JRACBI     0003885625 100000778904 10.11.2026
+  ORD 100000778963 nKomp          1  ref P29000054980 nOrdGab          1
+   SR SRACBI     0003885818 stk           304.500  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRACBI     0003885819 stk           304.500  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRACBI     0003885820 stk           304.500  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRACBI     0003885821 stk           304.500  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRACBI     0003885822 stk           304.500  lot 000000000000          res
+         0  used          0  cg          0
+   SR SRACBI     0003885823 stk           304.500  lot 000000000000          res
+         0  used          0  cg          0

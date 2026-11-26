@@ -118,3 +118,11 @@ Catatan tambahan:
 - [ ] ALV C di S/4 — perlu screen 0100 + status S100 dibuat di S/4.
 - [ ] (Opsional, perlu izin) 1 SO dengan material SR untuk membuktikan ZDATE/ZLINE tersimpan.
 - [ ] Bersih-bersih (hanya atas perintah Baginda): `ZTRAIN_PROBE` di S/4.
+
+## 7. IDoc (25–26 Nov 2026)
+
+Detail lengkap: [07_IDOC.md §3](07_IDOC.md). Ringkasnya:
+- Outbound **IDoc 199012** → status 03, file `/tmp/ZTRN_PO_00199012`.
+- Inbound **199016** → 53; **199019** → 51, lalu diedit (69) dan diproses ulang → 53.
+- Bug FM ditemukan dan diperbaiki: IDoc error tidak lagi meninggalkan data di `ZTRN_PO_LOG`. Backup include sebelum perbaikan: `outputs/LZTRN_IDOCU01_before_fix_20261126.abap`.
+- Transport request latihan: TRDK921884, TRDK921886 (jangan di-release).

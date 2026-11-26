@@ -1,0 +1,270 @@
+{
+ "QA": {
+  "t000": [
+   {
+    "MANDT": "000",
+    "MTEXT": "SAP AG",
+    "CCCATEGORY": "S",
+    "CHANGEDATE": "20130303"
+   },
+   {
+    "MANDT": "001",
+    "MTEXT": "SAP AG Konzern",
+    "CCCATEGORY": "C",
+    "CHANGEDATE": "20120725"
+   },
+   {
+    "MANDT": "066",
+    "MTEXT": "EarlyWatch",
+    "CCCATEGORY": "S",
+    "CHANGEDATE": "20020721"
+   },
+   {
+    "MANDT": "320",
+    "MTEXT": "QAS System Training",
+    "CCCATEGORY": "T",
+    "CHANGEDATE": "20250404"
+   },
+   {
+    "MANDT": "360",
+    "MTEXT": "Copy Client from TRP999",
+    "CCCATEGORY": "T",
+    "CHANGEDATE": "20231116"
+   }
+  ],
+  "mara": {
+   "SRAAAI": "1000,2000",
+   "SRAABI": "1000,2000",
+   "SRABDI": "1000,2000",
+   "SRACBI": "1000,2000",
+   "SRCADI": "1000,2000,TTA2",
+   "SRCBUX": "1000,2000",
+   "SREASI": "1000,2000",
+   "SREC7I": "2000",
+   "SREWEI": "1000,2000",
+   "SREYAI": "1000,2000",
+   "SRGIDI": "1000,2000",
+   "SRGJBI": "1000,2000",
+   "SRGLBI": "1000,2000",
+   "SRVC2I": "2000"
+  },
+  "kna1": {
+   "1141000004": "AJINOMOTO INDONESIA, PT.",
+   "1141000026": "ATLANTIC BIRURAYA, PT.",
+   "1141000131": "JASUINDO TIGA PERKASA TBK, PT.",
+   "1141000265": "SARIGUNA PRIMATIRTA, PT.",
+   "1141000512": "-",
+   "1141000514": "PT. TOYOBO TRIAS ECOSYAR",
+   "1141100081": "UPM RAFLATAC (CHANGSHU) CO., LTD.",
+   "1141100236": "AMCOR FLEXIBLES PHETCHABURI, CO., L",
+   "1141100239": "HUHTAMAKI (VIETNAM) LIMITED",
+   "1141100304": "JOLIVETTE INC.",
+   "1800000002": "NAVIS INDUSTRIES"
+  },
+  "tabs": {
+   "ZMAP_COA": "-",
+   "ZMAP_COA_MIC": "-",
+   "ZMAP_COA_BATCH": "-",
+   "ZMAP_COA_GRP_COL": "-",
+   "ZMAP_COA_GRP_CST": "-",
+   "ZLOG_COA": "-",
+   "ZQM_LOG_GS": "20130114"
+  },
+  "batch": {
+   "hit": 0,
+   "miss": 266,
+   "ex": [
+    "0000362398",
+    "0000361460",
+    "0000361563",
+    "0000361723",
+    "0000395789"
+   ]
+  },
+  "likp_last": [
+   {
+    "VBELN": "0025006393",
+    "ERDAT": "20261106"
+   },
+   {
+    "VBELN": "0080004602",
+    "ERDAT": "20260101"
+   },
+   {
+    "VBELN": "0080004603",
+    "ERDAT": "20260127"
+   }
+  ],
+  "qals_2026": [
+   {
+    "PRUEFLOS": "010000061374",
+    "ENSTEHDAT": "20260101",
+    "MATNR": "CPV"
+   },
+   {
+    "PRUEFLOS": "010000061383",
+    "ENSTEHDAT": "20260101",
+    "MATNR": "CPV"
+   },
+   {
+    "PRUEFLOS": "010000061384",
+    "ENSTEHDAT": "20260101",
+    "MATNR": "CPV"
+   }
+  ],
+  "qals_2025": [
+   {
+    "PRUEFLOS": "100000088356",
+    "ENSTEHDAT": "20250115",
+    "MATNR": "SRAABI"
+   },
+   {
+    "PRUEFLOS": "010000061066",
+    "ENSTEHDAT": "20250117",
+    "MATNR": "PBBT028002800200"
+   },
+   {
+    "PRUEFLOS": "010000061068",
+    "ENSTEHDAT": "20250117",
+    "MATNR": "PBBT028002800400"
+   }
+  ]
+ },
+ "Development AIX": {
+  "t000": [
+   {
+    "MANDT": "000",
+    "MTEXT": "SAP AG",
+    "CCCATEGORY": "S",
+    "CHANGEDATE": "20120724"
+   },
+   {
+    "MANDT": "001",
+    "MTEXT": "SAP AG Konzern",
+    "CCCATEGORY": "T",
+    "CHANGEDATE": "20121015"
+   },
+   {
+    "MANDT": "066",
+    "MTEXT": "EarlyWatch",
+    "CCCATEGORY": "S",
+    "CHANGEDATE": "20120724"
+   },
+   {
+    "MANDT": "100",
+    "MTEXT": "TRD Configuration Client",
+    "CCCATEGORY": "C",
+    "CHANGEDATE": "20181130"
+   },
+   {
+    "MANDT": "110",
+    "MTEXT": "TRD Unit Testing Abap",
+    "CCCATEGORY": "T",
+    "CHANGEDATE": "20190125"
+   },
+   {
+    "MANDT": "130",
+    "MTEXT": "TRD  Sand  Box",
+    "CCCATEGORY": "C",
+    "CHANGEDATE": "20190125"
+   },
+   {
+    "MANDT": "701",
+    "MTEXT": "TRD 701 SBU",
+    "CCCATEGORY": "T",
+    "CHANGEDATE": "20231101"
+   }
+  ],
+  "mara": {
+   "SRAAAI": "1000,2000",
+   "SRAABI": "1000,2000",
+   "SRABDI": "1000,2000",
+   "SRACBI": "1000,2000",
+   "SRCADI": "1000,2000",
+   "SRCBUX": "1000,2000",
+   "SREASI": "1000,2000",
+   "SREC7I": "2000",
+   "SREWEI": "1000,2000",
+   "SREYAI": "1000,2000",
+   "SRGIDI": "1000,2000",
+   "SRGJBI": "1000,2000",
+   "SRGLBI": "1000,2000",
+   "SRVC2I": "1000,2000"
+  },
+  "kna1": {
+   "1141000004": "AJINOMOTO INDONESIA, PT.",
+   "1141000026": "ATLANTIC BIRURAYA, PT.",
+   "1141000131": "JASUINDO TIGA PERKASA TBK, PT.",
+   "1141000265": "SARIGUNA PRIMATIRTA, PT.",
+   "1141000512": "PT. CANOPUS KONVERTA INDUSTRI",
+   "1141000514": "PT. CANOPUS KONVERTA INDUSTRI",
+   "1141100081": "UPM RAFLATAC (CHANGSHU) CO., LTD.",
+   "1141100236": "AMCOR FLEXIBLES PHETCHABURI, CO., L",
+   "1141100239": "HUHTAMAKI (VIETNAM) LIMITED",
+   "1141100304": "KT&G TÜTÜN MAMULLERI",
+   "1800000002": "NAVIS INDUSTRIES"
+  },
+  "tabs": {
+   "ZMAP_COA": "20261019",
+   "ZMAP_COA_MIC": "-",
+   "ZMAP_COA_BATCH": "-",
+   "ZMAP_COA_GRP_COL": "20261111",
+   "ZMAP_COA_GRP_CST": "20261111",
+   "ZLOG_COA": "20261015",
+   "ZQM_LOG_GS": "20130110"
+  },
+  "batch": {
+   "hit": 266,
+   "miss": 0,
+   "ex": []
+  },
+  "likp_last": [
+   {
+    "VBELN": "0085006195",
+    "ERDAT": "20260114"
+   },
+   {
+    "VBELN": "0160003829",
+    "ERDAT": "20260115"
+   },
+   {
+    "VBELN": "0160003833",
+    "ERDAT": "20260115"
+   }
+  ],
+  "qals_2026": [
+   {
+    "PRUEFLOS": "100000010265",
+    "ENSTEHDAT": "20260102",
+    "MATNR": "SRAZEI"
+   },
+   {
+    "PRUEFLOS": "100000010266",
+    "ENSTEHDAT": "20260102",
+    "MATNR": "SRAZEI"
+   },
+   {
+    "PRUEFLOS": "100000010267",
+    "ENSTEHDAT": "20260102",
+    "MATNR": "SRAZEI"
+   }
+  ],
+  "qals_2025": [
+   {
+    "PRUEFLOS": "100000010079",
+    "ENSTEHDAT": "20250102",
+    "MATNR": "EP-12"
+   },
+   {
+    "PRUEFLOS": "100000010080",
+    "ENSTEHDAT": "20250102",
+    "MATNR": "EP-12"
+   },
+   {
+    "PRUEFLOS": "100000010081",
+    "ENSTEHDAT": "20250102",
+    "MATNR": "EP-12"
+   }
+  ]
+ }
+}

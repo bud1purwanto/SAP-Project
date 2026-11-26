@@ -1,0 +1,86 @@
+﻿Input: ZCOIKEU5
+Source SAP development (RFC baca-saja): ZCOI_ALLO_PACK_COST
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZCOI_ALLO_PACK_COST:63 | AT SELECTION-SCREEN > IF sy-uCOMM = 'INFO'. | perform f_PROG_INFO using v_prog. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_ALLO_PACK_COST:65 | AT SELECTION-SCREEN > elseif sy-ucomm = 'KEU5'. | call transaction 'KEU5'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_ALLO_PACK_COST:67 | AT SELECTION-SCREEN > elseif sy-ucomm = 'UPLD'. | perform process. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_ALLO_PACK_COST:100 | FORM PROCESS | PERFORM CEK_CYCLE. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_ALLO_PACK_COST:102 | FORM PROCESS > IF VMSG IS NOT INITIAL. | MESSAGE VMSG TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_ALLO_PACK_COST:122 | FORM PROCESS | perform update_data. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_ALLO_PACK_COST:123 | FORM PROCESS | perform cek_data. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_ALLO_PACK_COST:157 | FORM PROCESS > IF ls_SUBRC EQ 0. | message 'Data has been uploaded succesfuly..!' type 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_ALLO_PACK_COST:160 | FORM PROCESS > ELSE. | message 'Upload Failed' type 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_ALLO_PACK_COST:204 | FORM CEK_DATA > if sy-subrc = 0. | message 'Salah SO number ( out of range)...!' type 'E'. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZCOI_ALLO_PACK_COST (237 baris)
+  18 | Field DDIC | IT_T811F-CYCLE
+  21 | Field DDIC | IBIPPARMS-PATH
+  37 | Field DDIC | Zproginfo-PGMNA
+  40 | Layar Seleksi | selection-screen begin of block block1 with frame title text-001.
+  40 | Teks Seleksi | text-001
+  45 | Layar Seleksi | SELECTION-SCREEN skip.
+  46 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /17(70) upld USER-COMMAND UPLD.
+  47 | Layar Seleksi | SELECTION-SCREEN skip.
+  48 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /17(70) keu5 USER-COMMAND KEU5.
+  49 | Layar Seleksi | SELECTION-SCREEN skip.
+  50 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /17(70) info USER-COMMAND INFO.
+  51 | Layar Seleksi | selection-screen end of block block1.
+  137 | Field DDIC | sy-subrc
+  38 | includes | Z_PROG_INFO
+  82 | callFunctions | F4_FILENAME
+  92 | callFunctions | GUI_UPLOAD
+  125 | callFunctions | KGAL_CHANGE_SEGMENT
+  153 | callFunctions | BAPI_TRANSACTION_COMMIT
+  65 | callTransactions | KEU5
+  106 | tableReads | T811C
+  109 | tableReads | T811S
+  112 | tableReads | T811K
+  115 | tableReads | T811L
+  119 | tableReads | T811F
+
+Objek Z_PROG_INFO (88 baris)
+  6 | Field DDIC | ZPROGINFO-PGMNA
+  15 | Field DDIC | RSNEWLENG-FCODE
+  77 | callFunctions | HELP_DOCULINES_SHOW
+  60 | tableReads | ZPROGINFO
+Jumlah source terbaca: 2
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZCOI_ALLO_PACK_COST.abap
+  Baris 18 | Field DDIC | IT_T811F-CYCLE
+  Baris 21 | Field DDIC | IBIPPARMS-PATH
+  Baris 37 | Field DDIC | Zproginfo-PGMNA
+  Baris 40 | Layar Seleksi | selection-screen begin of block block1 with frame title text-001.
+  Baris 40 | Teks Seleksi | text-001
+  Baris 45 | Layar Seleksi | SELECTION-SCREEN skip.
+  Baris 46 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /17(70) upld USER-COMMAND UPLD.
+  Baris 47 | Layar Seleksi | SELECTION-SCREEN skip.
+  Baris 48 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /17(70) keu5 USER-COMMAND KEU5.
+  Baris 49 | Layar Seleksi | SELECTION-SCREEN skip.
+  Baris 50 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /17(70) info USER-COMMAND INFO.
+  Baris 51 | Layar Seleksi | selection-screen end of block block1.
+  Baris 137 | Field DDIC | sy-subrc
+  Baris 38 | INCLUDE | Z_PROG_INFO
+  Baris 106 | Sumber data pada SELECT atau JOIN | T811C
+  Baris 109 | Sumber data pada SELECT atau JOIN | T811S
+  Baris 112 | Sumber data pada SELECT atau JOIN | T811K
+  Baris 115 | Sumber data pada SELECT atau JOIN | T811L
+  Baris 119 | Sumber data pada SELECT atau JOIN | T811F
+  Baris 82 | Function module | F4_FILENAME
+  Baris 92 | Function module | GUI_UPLOAD
+  Baris 125 | Function module | KGAL_CHANGE_SEGMENT
+  Baris 153 | Function module | BAPI_TRANSACTION_COMMIT
+  Baris 65 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | KEU5
+
+Z_PROG_INFO.abap
+  Baris 6 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 15 | Field DDIC | RSNEWLENG-FCODE
+  Baris 60 | Sumber data pada SELECT atau JOIN | ZPROGINFO
+  Baris 77 | Function module | HELP_DOCULINES_SHOW

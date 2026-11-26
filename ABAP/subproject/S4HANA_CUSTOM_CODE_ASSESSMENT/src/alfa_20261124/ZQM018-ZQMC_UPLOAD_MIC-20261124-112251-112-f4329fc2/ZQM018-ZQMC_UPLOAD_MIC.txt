@@ -1,0 +1,744 @@
+﻿Input: ZQM018
+Source SAP development (RFC baca-saja): ZQMC_UPLOAD_MIC
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZQMC_UPLOAD_MIC_F01:12 | AT SELECTION-SCREEN > WHEN 'INFO'. | PERFORM F_PROG_INFO USING V_PROG. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:14 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:16 | AT SELECTION-SCREEN > WHEN OTHERS. > IF RB1 = 'X'. | PERFORM UPLOADDATACREATE. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:18 | AT SELECTION-SCREEN > WHEN OTHERS. > ELSEIF RB2 = 'X'. | PERFORM UPLOADDATAVERSION. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:20 | AT SELECTION-SCREEN > WHEN OTHERS. > ELSEIF RB3 = 'X'. | PERFORM UPLOADDATACHANGE. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:22 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM DISPLAYREPORT. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:55 | FORM GET_DATA > IF SY-SUBRC <> 0. | MESSAGE I000(0K) WITH 'File cannot be opened'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:64 | FORM UPLOADDATACREATE | MESSAGE LIKE BAPIRET2-MESSAGE, | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:84 | FORM UPLOADDATACREATE > IF IT_MIC-QUANTITAET EQ 'X'. | PERFORM BDC_ZQM_QS21_QT. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:86 | FORM UPLOADDATACREATE > ELSEIF IT_MIC-QUALITAET EQ 'X'. | PERFORM BDC_ZQM_QS21_QL. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:124 | FORM UPLOADDATACREATE > IF WA_MSGS-MSGTYP NE ''. | MESSAGE    = MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:142 | FORM UPLOADDATAVERSION | MESSAGE LIKE BAPIRET2-MESSAGE, | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:161 | FORM UPLOADDATAVERSION > IF IT_MIC-QUANTITAET EQ 'X'. | PERFORM BDC_ZQM_QS22_QT. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:163 | FORM UPLOADDATAVERSION > ELSEIF IT_MIC-QUALITAET EQ 'X'. | PERFORM BDC_ZQM_QS22_QL. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:201 | FORM UPLOADDATAVERSION > IF WA_MSGS-MSGTYP NE ''. | MESSAGE    = MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:203 | FORM UPLOADDATAVERSION > IF WA_MSGS-MSGTYP NE ''. > IF MESSAGE EQ ''. | MESSAGE = 'Quantitative Data incorrect'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:222 | FORM UPLOADDATACHANGE | MESSAGE LIKE BAPIRET2-MESSAGE, | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:241 | FORM UPLOADDATACHANGE > IF IT_MIC-QUANTITAET EQ 'X'. | PERFORM BDC_ZQM_QS23_QT. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:243 | FORM UPLOADDATACHANGE > ELSEIF IT_MIC-QUALITAET EQ 'X'. | PERFORM BDC_ZQM_QS23_QL. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:281 | FORM UPLOADDATACHANGE > IF WA_MSGS-MSGTYP NE ''. | MESSAGE    = MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:296 | FORM DISPLAYREPORT | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:297 | FORM DISPLAYREPORT | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:298 | FORM DISPLAYREPORT | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:302 | FORM BDC_ZQM_QS21_QT | perform bdc_dynpro      using 'SAPMQSDA' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:303 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:305 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:307 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'QPMK-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:309 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'QPMK-MKMNR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:311 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'QPMK-GUELTIGAB' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:314 | FORM BDC_ZQM_QS21_QT | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:315 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:317 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:319 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RMQSD-QUANTITAET' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:321 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'QPMK-LOEKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:323 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'QPMK-KONSISTENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:325 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'VSKT-KURZTEXT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:327 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'QPMK-SORTFELD' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:332 | FORM BDC_ZQM_QS21_QT | perform bdc_dynpro      using 'SAPLQSS0' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:333 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:335 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:337 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-TOLERUNTEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:339 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-TOLEROBEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:341 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-SOLLPRUEF' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:343 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-STICHPR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:345 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-ADDPRO' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:347 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-QSPCMK' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:349 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-ZERSTPRF' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:351 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-ESTUKZ5' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:353 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-RZWANG4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:355 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-RZWANG1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:357 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-ESTUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:359 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-ESTUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:361 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-ESTUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:363 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-FEHLREC' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:365 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-RZWANG2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:367 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-RZWANG3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:371 | FORM BDC_ZQM_QS21_QT | perform bdc_dynpro      using 'SAPLQSS0' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:372 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:374 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:376 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-PUMFKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:378 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-DOKUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:380 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-PUMFKZ4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:382 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-PUMFKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:384 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-PUMFKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:386 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-DOKUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:388 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-DOKUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:390 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-LZEITKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:392 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-AUSSLOS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:394 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-AENDBELEG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:396 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-PMMZWANG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:398 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-MESSWERTE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:400 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-FORMELMK' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:402 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-DRUCK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:404 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-KEINEFORMEL' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:406 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-DRUCK3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:408 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RQMST-DRUCK2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:412 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ 'X' OR IT_MIC-TOLEROBEN EQ 'X'. | perform bdc_dynpro      using 'SAPMQSDA' '0110'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:413 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ 'X' OR IT_MIC-TOLEROBEN EQ 'X'. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:415 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ 'X' OR IT_MIC-TOLEROBEN EQ 'X'. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:418 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ 'X' OR IT_MIC-TOLEROBEN EQ 'X'. | perform bdc_dynpro      using 'SAPMQSDA' '0108'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:421 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ 'X' OR IT_MIC-TOLEROBEN EQ 'X'. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:423 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ 'X' OR IT_MIC-TOLEROBEN EQ 'X'. | perform bdc_field       using 'QPMK-STELLEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:425 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ 'X' OR IT_MIC-TOLEROBEN EQ 'X'. | perform bdc_field       using 'RMQSD-MASSEINHSW' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:427 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ 'X' OR IT_MIC-TOLEROBEN EQ 'X'. | perform bdc_field       using 'QFLTP-SOLLWERT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:430 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ 'X' OR IT_MIC-TOLEROBEN EQ 'X'. > IF IT_MIC-TOLERUNTEN EQ 'X'. | perform bdc_field       using 'QFLTP-TOLERANZUN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:434 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ 'X' OR IT_MIC-TOLEROBEN EQ 'X'. > IF IT_MIC-TOLEROBEN EQ 'X'. | perform bdc_field       using 'QFLTP-TOLERANZOB' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:440 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. | perform bdc_dynpro      using 'SAPMQSDA' '0108'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:441 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:443 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:445 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. | perform bdc_field       using 'QPMK-STELLEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:447 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. | perform bdc_field       using 'RMQSD-MASSEINHSW' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:449 | FORM BDC_ZQM_QS21_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. | perform bdc_field       using 'QFLTP-SOLLWERT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:452 | FORM BDC_ZQM_QS21_QT > ELSEIF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. | perform bdc_dynpro      using 'SAPMQSDA' '0108'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:453 | FORM BDC_ZQM_QS21_QT > ELSEIF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:455 | FORM BDC_ZQM_QS21_QT > ELSEIF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:457 | FORM BDC_ZQM_QS21_QT > ELSEIF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. | perform bdc_field       using 'QPMK-STELLEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:459 | FORM BDC_ZQM_QS21_QT > ELSEIF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. | perform bdc_field       using 'RMQSD-MASSEINHSW' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:461 | FORM BDC_ZQM_QS21_QT > ELSEIF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. | perform bdc_field       using 'QFLTP-SOLLWERT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:466 | FORM BDC_ZQM_QS21_QT | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:467 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:469 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:471 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'RMQSD-QUANTITAET' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:473 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'QPMK-LOEKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:475 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'QPMK-KONSISTENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:477 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'VSKT-KURZTEXT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:479 | FORM BDC_ZQM_QS21_QT | perform bdc_field       using 'QPMK-SORTFELD' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:482 | FORM BDC_ZQM_QS21_QT | CALL TRANSACTION 'QS21' USING BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:490 | FORM BDC_ZQM_QS21_QL | perform bdc_dynpro      using 'SAPMQSDA' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:491 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:493 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:495 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'QPMK-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:497 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'QPMK-MKMNR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:499 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'QPMK-GUELTIGAB' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:503 | FORM BDC_ZQM_QS21_QL | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:504 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:506 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:508 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RMQSD-QUALITAET' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:510 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'QPMK-LOEKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:512 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'QPMK-KONSISTENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:514 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'VSKT-KURZTEXT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:516 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'QPMK-SORTFELD' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:520 | FORM BDC_ZQM_QS21_QL | perform bdc_dynpro      using 'SAPLQSS0' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:521 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:523 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:525 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-PRUEFKAT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:527 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-STICHPR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:529 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-ADDPRO' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:531 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-QSPCMK' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:533 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-ZERSTPRF' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:535 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-ESTUKZ5' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:537 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-RZWANG4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:539 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-ESTUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:541 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-ESTUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:543 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-ESTUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:545 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-RZWANG3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:547 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-RZWANG2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:549 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-RZWANG1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:553 | FORM BDC_ZQM_QS21_QL | perform bdc_dynpro      using 'SAPLQSS0' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:554 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:556 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:558 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-DOKUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:560 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-DOKUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:562 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-DOKUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:564 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-PUMFKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:566 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-PUMFKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:568 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-PUMFKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:570 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-PUMFKZ4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:572 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-LZEITKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:574 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-AUSSLOS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:576 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-AENDBELEG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:578 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-PMMZWANG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:580 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-DRUCK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:582 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-DRUCK2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:584 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RQMST-DRUCK3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:677 | FORM BDC_ZQM_QS21_QL | perform bdc_dynpro      using 'SAPMQSDA' '0106'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:678 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:680 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:682 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'QPMZ-AUSWMENGE1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:684 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'QPMZ-AUSWMGWRK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:687 | FORM BDC_ZQM_QS21_QL | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:688 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:690 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:692 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'RMQSD-QUALITAET' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:694 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'QPMK-LOEKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:696 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'QPMK-KONSISTENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:698 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'VSKT-KURZTEXT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:700 | FORM BDC_ZQM_QS21_QL | perform bdc_field       using 'QPMK-SORTFELD' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:704 | FORM BDC_ZQM_QS21_QL | CALL TRANSACTION 'QS21' USING BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:760 | FORM BDC_ZQM_QS22_QT | perform bdc_dynpro      using 'SAPMQSDA' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:761 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:763 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:765 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'QPMK-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:767 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'QPMK-MKMNR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:769 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'QPMK-GUELTIGAB' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:772 | FORM BDC_ZQM_QS22_QT | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:773 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:775 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:777 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RMQSD-QUANTITAET' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:779 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'QPMK-LOEKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:781 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'QPMK-KONSISTENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:783 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'VSKT-KURZTEXT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:785 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'QPMK-SORTFELD' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:787 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'QPMK-DUMMY40' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:792 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-ZVERSION NE '' AND IT_MIC-MASSEINHSW IS INITIAL. | perform bdc_dynpro      using 'SAPMQSDA' '0108'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:793 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-ZVERSION NE '' AND IT_MIC-MASSEINHSW IS INITIAL. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:795 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-ZVERSION NE '' AND IT_MIC-MASSEINHSW IS INITIAL. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:797 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-ZVERSION NE '' AND IT_MIC-MASSEINHSW IS INITIAL. | perform bdc_field       using 'RMQSD-MASSEINHSW' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:802 | FORM BDC_ZQM_QS22_QT | perform bdc_dynpro      using 'SAPLQSS0' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:803 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:805 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:807 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-TOLERUNTEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:809 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-TOLEROBEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:811 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-SOLLPRUEF' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:813 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-STICHPR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:815 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-ADDPRO' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:817 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-QSPCMK' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:819 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-ZERSTPRF' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:821 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-ESTUKZ5' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:823 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-RZWANG4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:825 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-RZWANG1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:827 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-ESTUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:829 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-ESTUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:831 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-ESTUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:833 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-FEHLREC' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:835 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-RZWANG2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:837 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-RZWANG3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:840 | FORM BDC_ZQM_QS22_QT | perform bdc_dynpro      using 'SAPLQSS0' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:841 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:843 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:845 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-PUMFKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:847 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-DOKUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:849 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-PUMFKZ4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:851 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-PUMFKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:853 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-PUMFKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:855 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-DOKUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:857 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-DOKUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:859 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-LZEITKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:861 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-AUSSLOS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:863 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-AENDBELEG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:865 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-PMMZWANG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:867 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-MESSWERTE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:869 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-FORMELMK' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:871 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-DRUCK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:873 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-KEINEFORMEL' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:875 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-DRUCK3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:877 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RQMST-DRUCK2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:884 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. | perform bdc_dynpro      using 'SAPMQSDA' '0110'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:885 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:887 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:890 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_dynpro      using 'SAPMQSDA' '0108'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:891 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:893 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:895 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'QPMK-STELLEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:897 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'RMQSD-MASSEINHSW' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:899 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'QFLTP-SOLLWERT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:901 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'QFLTP-TOLERANZUN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:903 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'QFLTP-TOLERANZOB' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:912 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_dynpro      using 'SAPMQSDA' '0110'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:913 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:915 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:918 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_dynpro      using 'SAPMQSDA' '0108'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:919 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:921 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:923 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'QPMK-STELLEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:925 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'RMQSD-MASSEINHSW' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:927 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'QFLTP-TOLERANZUN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:929 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'QFLTP-TOLERANZOB' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:938 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_dynpro      using 'SAPMQSDA' '0110'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:939 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:941 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:944 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_dynpro      using 'SAPMQSDA' '0108'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:945 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:947 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:949 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'QPMK-STELLEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:951 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'RMQSD-MASSEINHSW' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:953 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ 'X' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'QFLTP-TOLERANZUN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:962 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_dynpro      using 'SAPMQSDA' '0110'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:963 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:965 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:968 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_dynpro      using 'SAPMQSDA' '0108'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:969 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:971 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:973 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'QPMK-STELLEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:975 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'RMQSD-MASSEINHSW' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:977 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ 'X' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. > IF IT_MIC-MASSEINHSW EQ ''. | perform bdc_field       using 'QFLTP-TOLERANZOB' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:986 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. | perform bdc_dynpro      using 'SAPMQSDA' '0108'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:987 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:989 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:991 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. | perform bdc_field       using 'QPMK-STELLEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:993 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. | perform bdc_field       using 'RMQSD-MASSEINHSW' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:995 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ 'X'. > ELSE. | perform bdc_field       using 'QFLTP-SOLLWERT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1003 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_dynpro      using 'SAPMQSDA' '0108'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1004 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1006 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1008 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_field       using 'QPMK-STELLEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1010 | FORM BDC_ZQM_QS22_QT > IF IT_MIC-TOLERUNTEN EQ '' AND IT_MIC-TOLEROBEN EQ '' AND IT_MIC-SOLLPRUEF EQ ''. > ELSE. | perform bdc_field       using 'RMQSD-MASSEINHSW' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1015 | FORM BDC_ZQM_QS22_QT | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1016 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1018 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1020 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'RMQSD-QUANTITAET' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1022 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'QPMK-LOEKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1024 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'QPMK-KONSISTENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1026 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'VSKT-KURZTEXT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1028 | FORM BDC_ZQM_QS22_QT | perform bdc_field       using 'QPMK-SORTFELD' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1031 | FORM BDC_ZQM_QS22_QT | CALL TRANSACTION 'QS22' USING BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1060 | FORM BDC_ZQM_QS22_QL | perform bdc_dynpro      using 'SAPMQSDA' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1061 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1063 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1065 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'QPMK-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1067 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'QPMK-MKMNR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1069 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'QPMK-GUELTIGAB' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1073 | FORM BDC_ZQM_QS22_QL | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1074 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1076 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1078 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RMQSD-QUALITAET' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1080 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'QPMK-LOEKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1082 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'QPMK-KONSISTENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1084 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'VSKT-KURZTEXT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1086 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'QPMK-SORTFELD' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1088 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'QPMK-DUMMY40' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1093 | FORM BDC_ZQM_QS22_QL > ELSE. | perform bdc_dynpro      using 'SAPMQSDA' '0106'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1094 | FORM BDC_ZQM_QS22_QL > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1096 | FORM BDC_ZQM_QS22_QL > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1098 | FORM BDC_ZQM_QS22_QL > ELSE. | perform bdc_field       using 'QPMZ-AUSWMENGE1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1100 | FORM BDC_ZQM_QS22_QL > ELSE. | perform bdc_field       using 'QPMZ-AUSWMGWRK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1104 | FORM BDC_ZQM_QS22_QL | perform bdc_dynpro      using 'SAPLQSS0' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1105 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1107 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1109 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-PRUEFKAT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1111 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-STICHPR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1113 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-ADDPRO' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1115 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-QSPCMK' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1117 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-ZERSTPRF' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1119 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-ESTUKZ5' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1121 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-RZWANG4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1123 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-ESTUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1125 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-ESTUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1127 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-ESTUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1129 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-RZWANG3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1131 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-RZWANG2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1133 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-RZWANG1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1137 | FORM BDC_ZQM_QS22_QL | perform bdc_dynpro      using 'SAPLQSS0' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1138 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1140 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1142 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-DOKUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1144 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-DOKUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1146 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-DOKUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1148 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-PUMFKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1150 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-PUMFKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1152 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-PUMFKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1154 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-PUMFKZ4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1156 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-LZEITKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1158 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-AUSSLOS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1160 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-AENDBELEG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1162 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-PMMZWANG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1164 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-DRUCK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1166 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-DRUCK2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1168 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RQMST-DRUCK3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1174 | FORM BDC_ZQM_QS22_QL > IF IT_MIC-QUAL2 NE ''. | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1175 | FORM BDC_ZQM_QS22_QL > IF IT_MIC-QUAL2 NE ''. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1177 | FORM BDC_ZQM_QS22_QL > IF IT_MIC-QUAL2 NE ''. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1179 | FORM BDC_ZQM_QS22_QL > IF IT_MIC-QUAL2 NE ''. | perform bdc_dynpro      using 'SAPMQSDA' '0106'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1180 | FORM BDC_ZQM_QS22_QL > IF IT_MIC-QUAL2 NE ''. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1182 | FORM BDC_ZQM_QS22_QL > IF IT_MIC-QUAL2 NE ''. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1185 | FORM BDC_ZQM_QS22_QL > IF IT_MIC-QUAL2 NE ''. | perform bdc_field       using 'QPMZ-AUSWMENGE1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1187 | FORM BDC_ZQM_QS22_QL > IF IT_MIC-QUAL2 NE ''. | perform bdc_field       using 'QPMZ-AUSWMGWRK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1190 | FORM BDC_ZQM_QS22_QL > ELSE. | perform bdc_dynpro      using 'SAPMQSDA' '0106'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1191 | FORM BDC_ZQM_QS22_QL > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1193 | FORM BDC_ZQM_QS22_QL > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1196 | FORM BDC_ZQM_QS22_QL > ELSE. | perform bdc_field       using 'QPMZ-AUSWMENGE1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1198 | FORM BDC_ZQM_QS22_QL > ELSE. | perform bdc_field       using 'QPMZ-AUSWMGWRK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1202 | FORM BDC_ZQM_QS22_QL | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1203 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1205 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1207 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'RMQSD-QUALITAET' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1209 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'QPMK-LOEKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1211 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'QPMK-KONSISTENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1213 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'VSKT-KURZTEXT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1215 | FORM BDC_ZQM_QS22_QL | perform bdc_field       using 'QPMK-SORTFELD' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1219 | FORM BDC_ZQM_QS22_QL | CALL TRANSACTION 'QS22' USING BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1248 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_dynpro      using 'SAPMQSDA' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1249 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1251 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1253 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'QPMK-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1255 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'QPMK-MKMNR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1259 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1260 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1262 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1266 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_dynpro      using 'SAPLSDH4' '0200'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1267 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1269 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1271 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'G_SELFLD_TAB-LOW(03)' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1275 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1276 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1278 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1281 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1283 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1285 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'QPMK-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1287 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'QPMK-MKMNR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1291 | FORM BDC_ZQM_QS23_QL | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1292 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1294 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1296 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RMQSD-QUALITAET' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1298 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'QPMK-LOEKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1300 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'QPMK-KONSISTENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1302 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'VSKT-KURZTEXT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1304 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'QPMK-SORTFELD' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1306 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'QPMK-DUMMY40' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1311 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_dynpro      using 'SAPMQSDA' '0106'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1312 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1314 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1316 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'QPMZ-AUSWMENGE1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1318 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'QPMZ-AUSWMGWRK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1322 | FORM BDC_ZQM_QS23_QL | perform bdc_dynpro      using 'SAPLQSS0' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1323 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1325 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1327 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-PRUEFKAT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1329 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-STICHPR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1331 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-ADDPRO' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1333 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-QSPCMK' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1335 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-ZERSTPRF' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1337 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-ESTUKZ5' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1339 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-RZWANG4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1341 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-ESTUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1343 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-ESTUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1345 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-ESTUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1347 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-RZWANG3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1349 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-RZWANG2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1351 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-RZWANG1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1355 | FORM BDC_ZQM_QS23_QL | perform bdc_dynpro      using 'SAPLQSS0' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1356 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1358 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1360 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-DOKUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1362 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-DOKUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1364 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-DOKUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1366 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-PUMFKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1368 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-PUMFKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1370 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-PUMFKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1372 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-PUMFKZ4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1374 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-LZEITKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1376 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-AUSSLOS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1378 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-AENDBELEG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1380 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-PMMZWANG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1382 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-DRUCK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1384 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-DRUCK2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1386 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'RQMST-DRUCK3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1391 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-QUAL NE ''. | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1392 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-QUAL NE ''. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1394 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-QUAL NE ''. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1396 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-QUAL NE ''. | perform bdc_dynpro      using 'SAPMQSDA' '0106'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1397 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-QUAL NE ''. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1399 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-QUAL NE ''. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1402 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-QUAL NE ''. | perform bdc_field       using 'QPMZ-AUSWMENGE1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1404 | FORM BDC_ZQM_QS23_QL > IF IT_MIC-QUAL NE ''. | perform bdc_field       using 'QPMZ-AUSWMGWRK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1407 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_dynpro      using 'SAPMQSDA' '0106'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1408 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1410 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1413 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'QPMZ-AUSWMENGE1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1415 | FORM BDC_ZQM_QS23_QL > ELSE. | perform bdc_field       using 'QPMZ-AUSWMGWRK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1420 | FORM BDC_ZQM_QS23_QL | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1421 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1423 | FORM BDC_ZQM_QS23_QL | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1426 | FORM BDC_ZQM_QS23_QL | CALL TRANSACTION 'QS23' USING BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1438 | FORM BDC_ZQM_QS23_QT | perform bdc_dynpro      using 'SAPMQSDA' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1439 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1441 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1443 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'QPMK-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1445 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'QPMK-MKMNR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1449 | FORM BDC_ZQM_QS23_QT > IF IT_MIC-ZVER > 1. | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1450 | FORM BDC_ZQM_QS23_QT > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1452 | FORM BDC_ZQM_QS23_QT > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1455 | FORM BDC_ZQM_QS23_QT > IF IT_MIC-ZVER > 1. | perform bdc_dynpro      using 'SAPLSDH4' '0200'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1456 | FORM BDC_ZQM_QS23_QT > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1458 | FORM BDC_ZQM_QS23_QT > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1460 | FORM BDC_ZQM_QS23_QT > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'G_SELFLD_TAB-LOW(03)' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1464 | FORM BDC_ZQM_QS23_QT > IF IT_MIC-ZVER > 1. | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1465 | FORM BDC_ZQM_QS23_QT > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1467 | FORM BDC_ZQM_QS23_QT > IF IT_MIC-ZVER > 1. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1470 | FORM BDC_ZQM_QS23_QT > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1472 | FORM BDC_ZQM_QS23_QT > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1474 | FORM BDC_ZQM_QS23_QT > ELSE. | perform bdc_field       using 'QPMK-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1476 | FORM BDC_ZQM_QS23_QT > ELSE. | perform bdc_field       using 'QPMK-MKMNR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1480 | FORM BDC_ZQM_QS23_QT | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1481 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1483 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1485 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RMQSD-QUANTITAET' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1487 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'QPMK-LOEKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1489 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'QPMK-KONSISTENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1491 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'VSKT-KURZTEXT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1493 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'QPMK-SORTFELD' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1495 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'QPMK-DUMMY40' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1501 | FORM BDC_ZQM_QS23_QT | perform bdc_dynpro      using 'SAPLQSS0' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1502 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1504 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1506 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-TOLERUNTEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1508 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-TOLEROBEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1510 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-SOLLPRUEF' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1512 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-STICHPR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1514 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-ADDPRO' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1516 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-QSPCMK' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1518 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-ZERSTPRF' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1520 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-ESTUKZ5' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1522 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-RZWANG4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1524 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-RZWANG1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1526 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-ESTUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1528 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-ESTUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1530 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-ESTUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1532 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-FEHLREC' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1534 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-RZWANG2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1536 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-RZWANG3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1540 | FORM BDC_ZQM_QS23_QT | perform bdc_dynpro      using 'SAPLQSS0' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1541 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1543 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1545 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-PUMFKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1547 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-DOKUKZ1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1549 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-PUMFKZ4' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1551 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-PUMFKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1553 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-PUMFKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1555 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-DOKUKZ2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1557 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-DOKUKZ3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1559 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-LZEITKZ' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1561 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-AUSSLOS' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1563 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-AENDBELEG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1565 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-PMMZWANG' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1567 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-MESSWERTE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1569 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-FORMELMK' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1571 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-DRUCK1' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1573 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-KEINEFORMEL' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1575 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-DRUCK3' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1577 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RQMST-DRUCK2' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1581 | FORM BDC_ZQM_QS23_QT | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1582 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1584 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1588 | FORM BDC_ZQM_QS23_QT | perform bdc_dynpro      using 'SAPMQSDA' '0108'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1589 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1591 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1593 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'QPMK-STELLEN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1595 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'RMQSD-MASSEINHSW' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1597 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'QFLTP-SOLLWERT' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1599 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'QFLTP-TOLERANZUN' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1601 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'QFLTP-TOLERANZOB' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1605 | FORM BDC_ZQM_QS23_QT | perform bdc_dynpro      using 'SAPMQSDA' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1606 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1608 | FORM BDC_ZQM_QS23_QT | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1611 | FORM BDC_ZQM_QS23_QT | CALL TRANSACTION 'QS23' USING BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZQMC_UPLOAD_MIC_F01:1648 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG_ICON USING 'IT_REPORT' : | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZQMC_UPLOAD_MIC (12 baris)
+  11 | includes | ZQMC_UPLOAD_MIC_TOP
+  12 | includes | ZQMC_UPLOAD_MIC_F01
+
+Objek ZQMC_UPLOAD_MIC_F01 (1748 baris)
+  56 | Layar dan GUI | LEAVE TO SCREEN 0.
+  64 | Field DDIC | BAPIRET2-MESSAGE
+  65 | Field DDIC | BAPIRET2-MESSAGE_V1
+  66 | Field DDIC | BAPIRET2-MESSAGE_V2
+  67 | Field DDIC | BAPIRET2-MESSAGE_V3
+  68 | Field DDIC | BAPIRET2-MESSAGE_V4
+  69 | Field DDIC | BAPIRET2-ID
+  70 | Field DDIC | BAPIRET2-NUMBER
+  73 | Field DDIC | MARA-SATNR
+  74 | Field DDIC | MARC-STDPD
+  79 | BDC | BDCDATA
+  80 | BDC | BDCDATA
+  142 | Field DDIC | BAPIRET2-MESSAGE
+  143 | Field DDIC | BAPIRET2-MESSAGE_V1
+  144 | Field DDIC | BAPIRET2-MESSAGE_V2
+  145 | Field DDIC | BAPIRET2-MESSAGE_V3
+  146 | Field DDIC | BAPIRET2-MESSAGE_V4
+  147 | Field DDIC | BAPIRET2-ID
+  148 | Field DDIC | BAPIRET2-NUMBER
+  151 | Field DDIC | MARA-SATNR
+  152 | Field DDIC | MARC-STDPD
+  157 | BDC | BDCDATA
+  158 | BDC | BDCDATA
+  222 | Field DDIC | BAPIRET2-MESSAGE
+  223 | Field DDIC | BAPIRET2-MESSAGE_V1
+  224 | Field DDIC | BAPIRET2-MESSAGE_V2
+  225 | Field DDIC | BAPIRET2-MESSAGE_V3
+  226 | Field DDIC | BAPIRET2-MESSAGE_V4
+  227 | Field DDIC | BAPIRET2-ID
+  228 | Field DDIC | BAPIRET2-NUMBER
+  231 | Field DDIC | MARA-SATNR
+  232 | Field DDIC | MARC-STDPD
+  237 | BDC | BDCDATA
+  238 | BDC | BDCDATA
+  482 | BDC | BDCDATA
+  482 | BDC | CALL TRANSACTION 'QS21' USING BDCDATA
+  704 | BDC | BDCDATA
+  704 | BDC | CALL TRANSACTION 'QS21' USING BDCDATA
+  1031 | BDC | BDCDATA
+  1031 | BDC | CALL TRANSACTION 'QS22' USING BDCDATA
+  1219 | BDC | BDCDATA
+  1219 | BDC | CALL TRANSACTION 'QS22' USING BDCDATA
+  1426 | BDC | BDCDATA
+  1426 | BDC | CALL TRANSACTION 'QS23' USING BDCDATA
+  1611 | BDC | BDCDATA
+  1611 | BDC | CALL TRANSACTION 'QS23' USING BDCDATA
+  1621 | BDC | BDCDATA
+  1622 | BDC | BDCDATA
+  1623 | BDC | BDCDATA
+  1624 | BDC | BDCDATA
+  1625 | BDC | BDCDATA
+  1632 | BDC | BDCDATA
+  1633 | BDC | BDCDATA
+  1634 | BDC | BDCDATA
+  1635 | BDC | BDCDATA
+  6 | includes | Z_PROG_INFO
+  37 | callFunctions | GUI_UPLOAD
+  113 | callFunctions | BAPI_MESSAGE_GETDETAIL
+  1686 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  482 | callTransactions | QS21
+  1031 | callTransactions | QS22
+  1426 | callTransactions | QS23
+  753 | tableReads | QPMK
+  1046 | tableReads | QPMZ
+
+Objek Z_PROG_INFO (88 baris)
+  6 | Field DDIC | ZPROGINFO-PGMNA
+  15 | Field DDIC | RSNEWLENG-FCODE
+  77 | callFunctions | HELP_DOCULINES_SHOW
+  60 | tableReads | ZPROGINFO
+
+Objek ZQMC_UPLOAD_MIC_TOP (153 baris)
+  63 | Field DDIC | QPMK-MASSEINHSW
+  66 | Field DDIC | QPMZ-AUSWMENGE1
+  67 | Field DDIC | QPMZ-AUSWMENGE1
+  81 | Field DDIC | ZPROGINFO-PGMNA
+  84 | Field DDIC | SY-REPID
+  105 | BDC | BDCDATA
+  105 | BDC | BDCDATA
+  113 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1001 WITH FRAME TITLE TEXT-100.
+  113 | Teks Seleksi | TEXT-100
+  114 | Layar Seleksi | PARAMETERS: FILENAME LIKE RLGRAP-FILENAME
+  114 | Field DDIC | RLGRAP-FILENAME
+  117 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1001.
+  119 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1002 WITH FRAME TITLE TEXT-150.
+  119 | Teks Seleksi | TEXT-150
+  120 | Layar Seleksi | PARAMETERS: CTUMODE LIKE CTU_PARAMS-DISMODE DEFAULT 'N'.
+  120 | Field DDIC | CTU_PARAMS-DISMODE
+  121 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1002.
+  123 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1004 WITH FRAME TITLE TEXT-200.
+  123 | Teks Seleksi | TEXT-200
+  124 | Layar Seleksi | PARAMETERS: RB1 RADIOBUTTON GROUP AB MODIF ID BL2,
+  127 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1004.
+  129 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1003 WITH FRAME.
+  130 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  131 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1003.
+  139 | callFunctions | WS_FILENAME_GET
+Jumlah source terbaca: 4
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZQMC_UPLOAD_MIC.abap
+  Baris 11 | INCLUDE | ZQMC_UPLOAD_MIC_TOP
+  Baris 12 | INCLUDE | ZQMC_UPLOAD_MIC_F01
+
+ZQMC_UPLOAD_MIC_TOP.abap
+  Baris 63 | Field DDIC | QPMK-MASSEINHSW
+  Baris 66 | Field DDIC | QPMZ-AUSWMENGE1
+  Baris 67 | Field DDIC | QPMZ-AUSWMENGE1
+  Baris 81 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 84 | Field DDIC | SY-REPID
+  Baris 105 | BDC | BDCDATA
+  Baris 105 | BDC | BDCDATA
+  Baris 113 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1001 WITH FRAME TITLE TEXT-100.
+  Baris 113 | Teks Seleksi | TEXT-100
+  Baris 114 | Layar Seleksi | PARAMETERS: FILENAME LIKE RLGRAP-FILENAME
+  Baris 114 | Field DDIC | RLGRAP-FILENAME
+  Baris 117 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1001.
+  Baris 119 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1002 WITH FRAME TITLE TEXT-150.
+  Baris 119 | Teks Seleksi | TEXT-150
+  Baris 120 | Layar Seleksi | PARAMETERS: CTUMODE LIKE CTU_PARAMS-DISMODE DEFAULT 'N'.
+  Baris 120 | Field DDIC | CTU_PARAMS-DISMODE
+  Baris 121 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1002.
+  Baris 123 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1004 WITH FRAME TITLE TEXT-200.
+  Baris 123 | Teks Seleksi | TEXT-200
+  Baris 124 | Layar Seleksi | PARAMETERS: RB1 RADIOBUTTON GROUP AB MODIF ID BL2,
+  Baris 127 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1004.
+  Baris 129 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1003 WITH FRAME.
+  Baris 130 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  Baris 131 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1003.
+  Baris 139 | Function module | WS_FILENAME_GET
+
+ZQMC_UPLOAD_MIC_F01.abap
+  Baris 56 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 64 | Field DDIC | BAPIRET2-MESSAGE
+  Baris 65 | Field DDIC | BAPIRET2-MESSAGE_V1
+  Baris 66 | Field DDIC | BAPIRET2-MESSAGE_V2
+  Baris 67 | Field DDIC | BAPIRET2-MESSAGE_V3
+  Baris 68 | Field DDIC | BAPIRET2-MESSAGE_V4
+  Baris 69 | Field DDIC | BAPIRET2-ID
+  Baris 70 | Field DDIC | BAPIRET2-NUMBER
+  Baris 73 | Field DDIC | MARA-SATNR
+  Baris 74 | Field DDIC | MARC-STDPD
+  Baris 79 | BDC | BDCDATA
+  Baris 80 | BDC | BDCDATA
+  Baris 142 | Field DDIC | BAPIRET2-MESSAGE
+  Baris 143 | Field DDIC | BAPIRET2-MESSAGE_V1
+  Baris 144 | Field DDIC | BAPIRET2-MESSAGE_V2
+  Baris 145 | Field DDIC | BAPIRET2-MESSAGE_V3
+  Baris 146 | Field DDIC | BAPIRET2-MESSAGE_V4
+  Baris 147 | Field DDIC | BAPIRET2-ID
+  Baris 148 | Field DDIC | BAPIRET2-NUMBER
+  Baris 151 | Field DDIC | MARA-SATNR
+  Baris 152 | Field DDIC | MARC-STDPD
+  Baris 157 | BDC | BDCDATA
+  Baris 158 | BDC | BDCDATA
+  Baris 222 | Field DDIC | BAPIRET2-MESSAGE
+  Baris 223 | Field DDIC | BAPIRET2-MESSAGE_V1
+  Baris 224 | Field DDIC | BAPIRET2-MESSAGE_V2
+  Baris 225 | Field DDIC | BAPIRET2-MESSAGE_V3
+  Baris 226 | Field DDIC | BAPIRET2-MESSAGE_V4
+  Baris 227 | Field DDIC | BAPIRET2-ID
+  Baris 228 | Field DDIC | BAPIRET2-NUMBER
+  Baris 231 | Field DDIC | MARA-SATNR
+  Baris 232 | Field DDIC | MARC-STDPD
+  Baris 237 | BDC | BDCDATA
+  Baris 238 | BDC | BDCDATA
+  Baris 482 | BDC | BDCDATA
+  Baris 482 | BDC | CALL TRANSACTION 'QS21' USING BDCDATA
+  Baris 704 | BDC | BDCDATA
+  Baris 704 | BDC | CALL TRANSACTION 'QS21' USING BDCDATA
+  Baris 1031 | BDC | BDCDATA
+  Baris 1031 | BDC | CALL TRANSACTION 'QS22' USING BDCDATA
+  Baris 1219 | BDC | BDCDATA
+  Baris 1219 | BDC | CALL TRANSACTION 'QS22' USING BDCDATA
+  Baris 1426 | BDC | BDCDATA
+  Baris 1426 | BDC | CALL TRANSACTION 'QS23' USING BDCDATA
+  Baris 1611 | BDC | BDCDATA
+  Baris 1611 | BDC | CALL TRANSACTION 'QS23' USING BDCDATA
+  Baris 1621 | BDC | BDCDATA
+  Baris 1622 | BDC | BDCDATA
+  Baris 1623 | BDC | BDCDATA
+  Baris 1624 | BDC | BDCDATA
+  Baris 1625 | BDC | BDCDATA
+  Baris 1632 | BDC | BDCDATA
+  Baris 1633 | BDC | BDCDATA
+  Baris 1634 | BDC | BDCDATA
+  Baris 1635 | BDC | BDCDATA
+  Baris 6 | INCLUDE | Z_PROG_INFO
+  Baris 753 | Sumber data pada SELECT atau JOIN | QPMK
+  Baris 1046 | Sumber data pada SELECT atau JOIN | QPMZ
+  Baris 37 | Function module | GUI_UPLOAD
+  Baris 113 | Function module | BAPI_MESSAGE_GETDETAIL
+  Baris 1686 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 482 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | QS21
+  Baris 1031 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | QS22
+  Baris 1426 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | QS23
+
+Z_PROG_INFO.abap
+  Baris 6 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 15 | Field DDIC | RSNEWLENG-FCODE
+  Baris 60 | Sumber data pada SELECT atau JOIN | ZPROGINFO
+  Baris 77 | Function module | HELP_DOCULINES_SHOW

@@ -1161,6 +1161,10 @@ CLASS lcl_fixer DEFINITION FINAL.
     METHODS write_copies
       IMPORTING io_conv       TYPE REF TO lcl_source
       RETURNING VALUE(rt_res) TYPE tt_wres.
+    METHODS activate
+      IMPORTING iv_name TYPE progname
+      EXPORTING ev_ok   TYPE abap_bool
+                ev_msg  TYPE string.
   PRIVATE SECTION.
     TYPES tt_tok TYPE STANDARD TABLE OF stokes WITH EMPTY KEY.
     TYPES tt_stm TYPE STANDARD TABLE OF sstmnt WITH EMPTY KEY.
@@ -1613,6 +1617,36 @@ CLASS lcl_fixer IMPLEMENTATION.
     ENDCASE.
   ENDMETHOD.
 
+  METHOD activate.
+    " salinan sudah tersimpan versi aktif; cek syntax salinan asli di ADB lalu generate load
+    DATA: lt_src  TYPE string_table,
+          lv_smsg TYPE string,
+          lv_line TYPE i,
+          lv_word TYPE string,
+          lv_inc  TYPE progname,
+          lv_gmsg TYPE string,
+          lv_gln  TYPE i.
+    ev_ok = abap_false.
+    READ REPORT iv_name INTO lt_src.
+    IF sy-subrc <> 0.
+      ev_msg = |Salinan { iv_name } tidak terbaca, generate dilewati.|.
+      RETURN.
+    ENDIF.
+    SYNTAX-CHECK FOR lt_src PROGRAM iv_name MESSAGE lv_smsg LINE lv_line WORD lv_word
+                 INCLUDE lv_inc.
+    IF sy-subrc <> 0.
+      ev_msg = |Belum di-generate: syntax error { lv_inc } baris { lv_line }: { lv_smsg }|.
+      RETURN.
+    ENDIF.
+    GENERATE REPORT iv_name MESSAGE lv_gmsg LINE lv_gln.
+    IF sy-subrc = 0.
+      ev_ok  = abap_true.
+      ev_msg = `Salinan aktif dan sudah di-generate.`.
+    ELSE.
+      ev_msg = |Generate gagal baris { lv_gln }: { lv_gmsg }|.
+    ENDIF.
+  ENDMETHOD.
+
   METHOD write_copies.
     DATA: lt_out TYPE string_table,
           lv_typ TYPE c LENGTH 1,
@@ -1991,6 +2025,20 @@ CLASS lcl_runner IMPLEMENTATION.
       ENDIF.
       IF ls_sum-z_missing > 0.
         ls_sum-note = |{ ls_sum-note } { ls_sum-z_missing } error karena objek Z belum ada di ADB (langkah 2).|.
+      ENDIF.
+      " generate salinan yang tertulis dan tanpa error/aturan manual
+      IF p_sim = abap_false AND ls_sum-status <> 'GAGAL TULIS' AND ls_sum-status <> 'PERLU MANUAL'.
+        DATA lv_gok  TYPE abap_bool.
+        DATA lv_gmsg TYPE string.
+        lo_fix->activate( EXPORTING iv_name = ls_sum-copy
+                          IMPORTING ev_ok   = lv_gok ev_msg = lv_gmsg ).
+        IF lv_gok = abap_true.
+          " kompilasi nyata salinan lolos: status tidak lagi menunggu verifikasi
+          ls_sum-status = COND #( WHEN ls_sum-n_auto = 0 THEN 'TIDAK PERLU UBAH' ELSE 'SIAP' ).
+          ls_sum-note   = lv_gmsg.
+        ELSE.
+          ls_sum-note = |{ ls_sum-note } { lv_gmsg }|.
+        ENDIF.
       ENDIF.
       IF p_sim = abap_true.
         ls_sum-note = |Simulasi, salinan tidak ditulis. { ls_sum-note }|.

@@ -1,0 +1,27 @@
+*
+"Variance Calculation (Background processing)
+*
+*
+
+REPORT RKKKS1N0
+  MESSAGE-ID KV
+  NO STANDARD PAGE HEADING
+  LINE-SIZE 250.
+ENHANCEMENT-POINT RKKKS1N0_G4 SPOTS ES_RKKKS1N0 STATIC.
+ENHANCEMENT-POINT RKKKS1N0_G5 SPOTS ES_RKKKS1N0.
+ENHANCEMENT-POINT RKKKS1N0_G6 SPOTS ES_RKKKS1N0 STATIC.
+ENHANCEMENT-POINT RKKKS1N0_G7 SPOTS ES_RKKKS1N0.
+
+
+*KASS-Eventframework
+include rkassefw.
+* Data-Definition...
+include rkkkstop.
+* Sub screen...
+INCLUDE RKCOSEI1.
+* Main screen...
+include rkkks0d1.
+* PBO
+include rkkks0o1.
+* PAI
+include rkkks0i1.

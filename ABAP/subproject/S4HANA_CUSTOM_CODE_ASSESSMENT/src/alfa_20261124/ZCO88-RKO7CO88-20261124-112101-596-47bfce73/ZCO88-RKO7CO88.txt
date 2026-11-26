@@ -1,0 +1,762 @@
+﻿Input: ZCO88
+Source SAP development (RFC baca-saja): RKO7CO88
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  RKO74001:84 | INITIALIZATION | perform initialization. | Tinjau kondisi dan hasil di ECC.
+  RKO74001:91 | START-OF-SELECTION | perform start_of_selection. | Tinjau kondisi dan hasil di ECC.
+  RKO74001:98 | AT SELECTION-SCREEN | perform value_request_vaart. | Tinjau kondisi dan hasil di ECC.
+  RKO74001:105 | AT SELECTION-SCREEN | perform check_wsdat. | Tinjau kondisi dan hasil di ECC.
+  RKO74001:108 | AT SELECTION-SCREEN | perform check_parameter. | Tinjau kondisi dan hasil di ECC.
+  RKO74001:112 | AT SELECTION-SCREEN > if not ( count > 0 and count <= 999 ). | message id 'KD' type 'E' number '601'. | Tinjau kondisi dan hasil di ECC.
+  RKO74001:116 | AT SELECTION-SCREEN | perform check_vaart. | Tinjau kondisi dan hasil di ECC.
+  RKO74001:122 | FORM AT_SELSCREEN | perform pushbottons. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKO74001:131 | FORM AT_SELSCREEN_OUTPUT | perform modify_fields. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKO74001:132 | FORM AT_SELSCREEN_OUTPUT | perform change_icons. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKO74001:133 | FORM AT_SELSCREEN_OUTPUT | perform check_vaart. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKO74001:175 | FORM START_OF_SELECTION | perform sender_selection tables    it_sender | Tinjau kondisi dan hasil di ECC.
+  RKO74001:186 | FORM START_OF_SELECTION | perform append_selpa tables it_selpa. | Tinjau kondisi dan hasil di ECC.
+  RKO74001:228 | FORM INITIALIZATION | perform kass_fw_init | Tinjau kondisi dan hasil di ECC.
+  RKO74001:231 | FORM INITIALIZATION | perform kass_fw_event_register using | Tinjau kondisi dan hasil di ECC.
+  RKO74001:237 | FORM INITIALIZATION | perform kass_fw_event_register using: | Tinjau kondisi dan hasil di ECC.
+  RKO74001:253 | FORM INITIALIZATION | perform sender_initialization. | Tinjau kondisi dan hasil di ECC.
+  RKO74001:267 | FORM INITIALIZATION > if sy-batch is initial. | perform vaart_excl_get in program saplko71 | Tinjau kondisi dan hasil di ECC.
+  RKO74001:275 | FORM INITIALIZATION | perform vaart_text_get in program saplko71 | Tinjau kondisi dan hasil di ECC.
+  RKO74001:329 | FORM CHECK_WSDAT > if buperio < perio and not buperio is initial. | message e293(kd). | Tinjau kondisi dan hasil di ECC.
+  RKO74001:414 | FORM PUSHBOTTONS > when 'LIST'. > if list is initial. | message e244(kd). | Tinjau kondisi dan hasil di ECC.
+  RKO74001:473 | FORM CHECK_VAART > if gd_vaart_excl is initial. | perform vaart_excl_get in program saplko71 | Tinjau kondisi dan hasil di ECC.
+  RKO74001:479 | FORM CHECK_VAART | perform vaart_text_get in program saplko71 | Tinjau kondisi dan hasil di ECC.
+  RKRFCGROUPINC_EVENTS:127 | FORM RFCGRP_SELSCREEN > WHEN 0. > IF NOT rfcproc IS INITIAL > IF sy-ucomm = 'RFCPROC'. | MESSAGE s002(spta). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:129 | FORM RFCGRP_SELSCREEN > WHEN 0. > IF NOT rfcproc IS INITIAL > ELSE. | MESSAGE e002(spta). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:135 | FORM RFCGRP_SELSCREEN > WHEN 0. > IF NOT ld_invalid_rfcgrp IS INITIAL | MESSAGE e004(spta) WITH rfcgroup. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:147 | FORM RFCGRP_SELSCREEN > WHEN 1. > IF sy-ucomm = 'RFCPBT1'. | PERFORM rfcgrp_selection_list | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:153 | FORM RFCGRP_SELSCREEN > WHEN 1. > ELSEIF NOT rfcproc IS INITIAL. > IF ld_rfcgr IS INITIAL. | PERFORM rfcgrp_selection_list | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:159 | FORM RFCGRP_SELSCREEN > WHEN 1. > ELSEIF NOT rfcproc IS INITIAL. > IF ld_rfcgr IS INITIAL. > IF sy-ucomm = 'RFCPROC'. | MESSAGE s002(spta). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:161 | FORM RFCGRP_SELSCREEN > WHEN 1. > ELSEIF NOT rfcproc IS INITIAL. > IF ld_rfcgr IS INITIAL. > ELSE. | MESSAGE e002(spta). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:190 | FORM RFCGRP_INIT | PERFORM kass_fw_event_register | Tinjau kondisi dan hasil di ECC.
+  RKRFCGROUPINC_EVENTS:196 | FORM RFCGRP_INIT | PERFORM kass_fw_event_register | Tinjau kondisi dan hasil di ECC.
+  RKRFCGROUPINC_EVENTS:202 | FORM RFCGRP_INIT | PERFORM kass_fw_event_register | Tinjau kondisi dan hasil di ECC.
+  RKRFCGROUPINC_EVENTS:262 | INITIALIZATION | PERFORM rfcgrp_init. | Tinjau kondisi dan hasil di ECC.
+  RKCOSEI4:158 | FORM SENDER_INITIALIZATION | perform select_options_restrict. | Tinjau kondisi dan hasil di ECC.
+  RKCOSEI4:159 | FORM SENDER_INITIALIZATION | perform kass_fw_event_register using: | Tinjau kondisi dan hasil di ECC.
+  RKCOSEI4:203 | FORM SENDER_SELSCREEN_OUTPUT | perform kass_fw_activity_get | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKCOSEI4:277 | FORM SENDER_SELSCREEN | perform kokrs_adjust using werks[]. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKCOSEI4:302 | FORM WERKS_TEXT_GET > if not p_werks is initial. > else. > if not p_chk_input is initial. | message id 'KD' type 'E' number '600'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKCOSEI4:407 | FORM KOKRS_ADJUST > if sy-subrc <> 0. | message id 'KO' type 'E' number '133' with ld_werksel-low. | Tinjau kondisi dan hasil di ECC.
+  RKCOSEI4:433 | FORM KOKRS_ADJUST > if ld_no_of_plants > 1. > if sy-subrc <> 0. | message id 'KO' type 'E' number '133' with ld_werksel-low . | Tinjau kondisi dan hasil di ECC.
+  RKCOSEI4:437 | FORM KOKRS_ADJUST > if ld_no_of_plants > 1. > if ld_kokrs_sav <> ld_kokrs. | message id '61' type 'E' number '824' | Tinjau kondisi dan hasil di ECC.
+  RKCOSEI3:13 | AT SELECTION-SCREEN | perform kokrs_adjust using werks[]. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:31 | AT SELECTION-SCREEN | PERFORM kass_fw_kokrs_online_init. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:32 | AT SELECTION-SCREEN | PERFORM kass_fw_display_adjust. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:33 | AT SELECTION-SCREEN | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:39 | AT SELECTION-SCREEN | PERFORM kass_fw_set_kokrs. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:40 | AT SELECTION-SCREEN | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:46 | AT SELECTION-SCREEN | PERFORM kass_fw_check_kokrs_edited. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:49 | START-OF-SELECTION | PERFORM kass_fw_kokrs_batch_init. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:50 | START-OF-SELECTION | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:56 | END-OF-SELECTION | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek RKO7CO88 (20 baris)
+  8 | Field DDIC | SY-TCODE
+  11 | includes | RKASSEFW
+  14 | includes | RKO74000
+  17 | includes | RKCOSEI1
+  20 | includes | RKO74001
+
+Objek RKO74001 (628 baris)
+  18 | Layar Seleksi | selection-screen begin of block parameter
+  19 | Teks Seleksi | text-101
+  20 | Layar Seleksi | parameters: perio    like auak-perio memory id 74p obligatory,
+  20 | Field DDIC | auak-perio
+  21 | Field DDIC | auak-gjahr
+  22 | Field DDIC | lko74-vaart
+  23 | Layar Seleksi | selection-screen comment 50(30) txtvaart for field vaart.
+  24 | Layar Seleksi | selection-screen end of block parameter.
+  26 | Layar Seleksi | selection-screen begin of block function
+  27 | Teks Seleksi | text-200
+  28 | Layar Seleksi | selection-screen begin of line.
+  29 | Layar Seleksi | parameters: ausf default 'X' radiobutton group fkt.
+  31 | Layar Seleksi | selection-screen comment 4(40) text-a01 for field ausf.
+  31 | Teks Seleksi | text-a01
+  32 | Layar Seleksi | selection-screen end of line.
+  33 | Layar Seleksi | selection-screen begin of line.
+  34 | Layar Seleksi | parameters: stor radiobutton group fkt.
+  36 | Layar Seleksi | selection-screen comment 4(40) text-a02 for field stor.
+  36 | Teks Seleksi | text-a02
+  37 | Layar Seleksi | selection-screen end of line.
+  38 | Layar Seleksi | selection-screen end of block function.
+  40 | Layar Seleksi | selection-screen begin of block ablauf
+  41 | Teks Seleksi | text-102
+  42 | Layar Seleksi | parameters: testlauf like lko74-testlauf default 'X'.
+  42 | Field DDIC | lko74-testlauf
+  44 | Layar Seleksi | parameters: tdcheck  like lko74-tdcheck.
+  44 | Field DDIC | lko74-tdcheck
+  45 | Layar Seleksi | selection-screen end of block ablauf.
+  47 | Layar Seleksi | selection-screen begin of block list
+  48 | Teks Seleksi | text-103
+  49 | Layar Seleksi | parameters: grndlist like lko74-grnd_liste default 'X' no-display.
+  49 | Field DDIC | lko74-grnd_liste
+  50 | Layar Seleksi | parameters: list     like lko74-list.
+  50 | Field DDIC | lko74-list
+  51 | Layar Seleksi | selection-screen pushbutton 33(30) pu_list user-command list.
+  52 | Layar Seleksi | selection-screen end of block list.
+  55 | Layar Seleksi | selection-screen begin of block wsdat
+  56 | Teks Seleksi | text-104
+  57 | Layar Seleksi | parameters: buperio  like auak-buperio memory id 74b,
+  57 | Field DDIC | auak-buperio
+  58 | Field DDIC | auak-budat
+  59 | Field DDIC | auak-bzdat
+  60 | Field DDIC | lko74-wsdat
+  61 | Layar Seleksi | selection-screen end of block wsdat.
+  64 | Layar Seleksi | selection-screen pushbutton 1(30) pu_tech user-command tech.
+  68 | Layar Seleksi | selection-screen begin of block felder with frame.
+  69 | Layar Seleksi | parameters: count like lko74-count_com
+  69 | Field DDIC | lko74-count_com
+  71 | Layar Seleksi | parameters: errgr    like lko74-aufgr no-display.
+  71 | Field DDIC | lko74-aufgr
+  72 | Layar Seleksi | parameters: rfc_no like lko74-rfc_no no-display.
+  72 | Field DDIC | lko74-rfc_no
+  73 | Layar Seleksi | parameters: var_cos like lko74-variant_cos no-display,
+  73 | Field DDIC | lko74-variant_cos
+  74 | Field DDIC | lko74-variant_wip
+  75 | Layar Seleksi | selection-screen end of block felder.
+  144 | Field DDIC | dd07v-ddtext
+  162 | Field DDIC | sy-repid
+  222 | Field DDIC | auak-perio
+  223 | Field DDIC | auak-buperio
+  224 | Field DDIC | dd07v-ddtext
+  292 | Field DDIC | dokil-object
+  293 | Field DDIC | dokhl-object
+  325 | Field DDIC | auak-perio
+  389 | Teks Seleksi | text-pu1
+  392 | Teks Seleksi | text-pu1
+  396 | Teks Seleksi | text-pu2
+  399 | Teks Seleksi | text-pu2
+  9 | includes | RKO74TOP
+  43 | includes | RKRFCGROUPINC_PARAMS
+  78 | includes | RKRFCGROUPINC_EVENTS
+  145 | callFunctions | K_SETTLEMENT_VAART_F4
+  166 | callFunctions | DB_COMMIT
+  198 | callFunctions | K_SETTLEMENT_EXTERN_START
+  295 | callFunctions | DOCU_OBJECT_NAME_CONCATENATE
+  306 | callFunctions | DOCU_CALL
+  334 | callFunctions | K_PERIOD_CHECK_IN_KOKRS
+  348 | callFunctions | K_POSTING_DATE_CHECK
+  416 | callFunctions | K_SETTLEMENT_LISTVARIANTS_GET
+  433 | callFunctions | K_SETTLEMENT_TECHINFO_GET
+
+Objek RKRFCGROUPINC_EVENTS (262 baris)
+  223 | Field DDIC | sy-tabix
+  49 | callFunctions | ICON_CREATE
+  246 | callFunctions | HELP_VALUES_GET_WITH_TABLE
+  111 | tableReads | RZLLITAB
+
+Objek RKRFCGROUPINC_PARAMS (20 baris)
+  5 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK _rfcgroup.
+  6 | Layar Seleksi | SELECTION-SCREEN   BEGIN OF LINE.
+  7 | Layar Seleksi | PARAMETERS:  rfcproc TYPE co_para_processing  AS CHECKBOX
+  9 | Layar Seleksi | SELECTION-SCREEN     COMMENT 3(28) rfcproct FOR FIELD rfcproc.
+  10 | Layar Seleksi | SELECTION-SCREEN POSITION pos_low.
+  11 | Layar Seleksi | SELECTION-SCREEN   PUSHBUTTON (40) rfcpbt1
+  14 | Layar Seleksi | SELECTION-SCREEN   END OF LINE.
+  15 | Layar Seleksi | SELECTION-SCREEN   BEGIN OF LINE.
+  16 | Layar Seleksi | SELECTION-SCREEN COMMENT 4(28) rfcgrt FOR FIELD rfcgroup.
+  17 | Layar Seleksi | SELECTION-SCREEN POSITION pos_low.
+  18 | Layar Seleksi | PARAMETERS:  rfcgroup TYPE spta_rfcgr.
+  19 | Layar Seleksi | SELECTION-SCREEN   END OF LINE.
+  20 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK _rfcgroup.
+
+Objek RKO74TOP (19 baris)
+  8 | Field DDIC | DD07V-DDTEXT
+  9 | Tipe DDIC | LKO74
+  10 | Field DDIC | SY-MSGV1
+  13 | includes | RKAWRTTP
+
+Objek RKAWRTTP (49 baris)
+  6 | Field DDIC | COSP-WRTTP
+  7 | Field DDIC | COSP-WRTTP
+  8 | Field DDIC | COSP-WRTTP
+  9 | Field DDIC | COSP-WRTTP
+  10 | Field DDIC | COSP-WRTTP
+  11 | Field DDIC | COSP-WRTTP
+  12 | Field DDIC | COSP-WRTTP
+  13 | Field DDIC | COSP-WRTTP
+  14 | Field DDIC | COSP-WRTTP
+  15 | Field DDIC | COSP-WRTTP
+  16 | Field DDIC | COSP-WRTTP
+  17 | Field DDIC | COSP-WRTTP
+  18 | Field DDIC | COSP-WRTTP
+  19 | Field DDIC | COSP-WRTTP
+  20 | Field DDIC | COSP-WRTTP
+  21 | Field DDIC | COSP-WRTTP
+  22 | Field DDIC | COSP-WRTTP
+  23 | Field DDIC | COSP-WRTTP
+  24 | Field DDIC | COSP-WRTTP
+  25 | Field DDIC | COSP-WRTTP
+  26 | Field DDIC | COSP-WRTTP
+  27 | Field DDIC | COSP-WRTTP
+  28 | Field DDIC | COSP-WRTTP
+  29 | Field DDIC | COSP-WRTTP
+  30 | Field DDIC | COSP-WRTTP
+  31 | Field DDIC | COSP-WRTTP
+  32 | Field DDIC | COSP-WRTTP
+  33 | Field DDIC | COSP-WRTTP
+  34 | Field DDIC | COSP-WRTTP
+  35 | Field DDIC | COSP-WRTTP
+  36 | Field DDIC | COSP-WRTTP
+  37 | Field DDIC | COSP-WRTTP
+  38 | Field DDIC | COSP-WRTTP
+  39 | Field DDIC | COSP-WRTTP
+  40 | Field DDIC | COSP-WRTTP
+  41 | Field DDIC | COSP-WRTTP
+  42 | Field DDIC | COSP-WRTTP
+  43 | Field DDIC | COSP-WRTTP
+  44 | Field DDIC | COSP-WRTTP
+  45 | Field DDIC | COSP-WRTTP
+  46 | Field DDIC | COSP-WRTTP
+  47 | Field DDIC | COSP-WRTTP
+  48 | Field DDIC | COSP-WRTTP
+  49 | Field DDIC | COSP-WRTTP
+
+Objek RKCOSEI1 (32 baris)
+  4 | includes | RKCOSEI2
+  6 | includes | RKCOSEI3
+  8 | includes | RKCOSEI4
+
+Objek RKCOSEI4 (475 baris)
+  22 | Field DDIC | rsvar-variant
+  25 | Field DDIC | lko74-kokrs
+  189 | Field DDIC | tj01-vrgng
+  266 | Field DDIC | tka01-kokrs
+  267 | Field DDIC | tka01-kokrs
+  268 | Field DDIC | aufk-werks
+  289 | Field DDIC | lko74-werks
+  292 | Tipe DDIC | t001w
+  326 | Field DDIC | tka01-kokrs
+  379 | Field DDIC | tka01-kokrs
+  380 | Field DDIC | tka01-kokrs
+  381 | Field DDIC | aufk-werks
+  26 | callFunctions | K_KOKRS_SET
+  217 | callFunctions | ICON_CREATE
+  351 | callFunctions | HELP_VALUES_GET_WITH_TABLE
+  386 | callFunctions | SPTA_RFC_CONTEXT_DETECT
+  398 | callFunctions | RM_KOKRS_TO_PLANT_FIND
+  470 | callFunctions | SELECT_OPTIONS_RESTRICT
+  297 | tableReads | T001W
+
+Objek RKCOSEI3 (15 baris)
+
+Objek RKCOSEI2 (42 baris)
+  9 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  10 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK sender_selection.
+  11 | Layar Seleksi | PARAMETERS: selexp TYPE xflag NO-DISPLAY.
+  13 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /1(40) subscexp USER-COMMAND subscexp.
+  14 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  15 | Layar Seleksi | SELECT-OPTIONS:
+  18 | Layar Seleksi | SELECT-OPTIONS:
+  23 | Layar Seleksi | PARAMETERS:
+  24 | Field DDIC | lko74-incl_fauf
+  26 | Field DDIC | lko74-incl_piauf
+  28 | Field DDIC | lko74-incl_pkosa
+  30 | Field DDIC | lko74-incl_qmauf
+  32 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  33 | Layar Seleksi | PARAMETERS:
+  34 | Field DDIC | lko74-incl_proj
+  36 | Field DDIC | lko74-incl_kstrg
+  39 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  40 | Layar Seleksi | PARAMETERS:
+  41 | Field DDIC | lko74-aufgr
+  42 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK sender_selection.
+
+Objek RKO74000 (60 baris)
+  21 | Field DDIC | COBK-KWAER
+  23 | Field DDIC | RSVAR-VARIANT
+  3 | includes | RBONRART
+  48 | callFunctions | DD_DOMVALUE_TEXT_GET
+
+Objek RBONRART (119 baris)
+  8 | Field DDIC | IONR-OBART
+  9 | Field DDIC | IONR-OBART
+  10 | Field DDIC | IONR-OBART
+  11 | Field DDIC | IONR-OBART
+  12 | Field DDIC | IONR-OBART
+  13 | Field DDIC | IONR-OBART
+  14 | Field DDIC | IONR-OBART
+  15 | Field DDIC | IONR-OBART
+  16 | Field DDIC | IONR-OBART
+  17 | Field DDIC | IONR-OBART
+  18 | Field DDIC | IONR-OBART
+  19 | Field DDIC | IONR-OBART
+  20 | Field DDIC | IONR-OBART
+  21 | Field DDIC | IONR-OBART
+  22 | Field DDIC | IONR-OBART
+  23 | Field DDIC | IONR-OBART
+  24 | Field DDIC | IONR-OBART
+  25 | Field DDIC | IONR-OBART
+  26 | Field DDIC | IONR-OBART
+  27 | Field DDIC | IONR-OBART
+  28 | Field DDIC | IONR-OBART
+  29 | Field DDIC | IONR-OBART
+  30 | Field DDIC | IONR-OBART
+  31 | Field DDIC | IONR-OBART
+  32 | Field DDIC | IONR-OBART
+  33 | Field DDIC | IONR-OBART
+  34 | Field DDIC | IONR-OBART
+  35 | Field DDIC | IONR-OBART
+  36 | Field DDIC | IONR-OBART
+  37 | Field DDIC | IONR-OBART
+  38 | Field DDIC | IONR-OBART
+  39 | Field DDIC | IONR-OBART
+  40 | Field DDIC | IONR-OBART
+  41 | Field DDIC | IONR-OBART
+  42 | Field DDIC | IONR-OBART
+  43 | Field DDIC | IONR-OBART
+  44 | Field DDIC | IONR-OBART
+  45 | Field DDIC | IONR-OBART
+  46 | Field DDIC | IONR-OBART
+  47 | Field DDIC | IONR-OBART
+  48 | Field DDIC | IONR-OBART
+  49 | Field DDIC | IONR-OBART
+  50 | Field DDIC | IONR-OBART
+  51 | Field DDIC | IONR-OBART
+  52 | Field DDIC | IONR-OBART
+  53 | Field DDIC | IONR-OBART
+  54 | Field DDIC | IONR-OBART
+  55 | Field DDIC | IONR-OBART
+  56 | Field DDIC | IONR-OBART
+  57 | Field DDIC | IONR-OBART
+  58 | Field DDIC | IONR-OBART
+  59 | Field DDIC | IONR-OBART
+  60 | Field DDIC | IONR-OBART
+  61 | Field DDIC | IONR-OBART
+  62 | Field DDIC | IONR-OBART
+  63 | Field DDIC | IONR-OBART
+  64 | Field DDIC | IONR-OBART
+  65 | Field DDIC | IONR-OBART
+  66 | Field DDIC | IONR-OBART
+  67 | Field DDIC | IONR-OBART
+  68 | Field DDIC | IONR-OBART
+  69 | Field DDIC | IONR-OBART
+  70 | Field DDIC | IONR-OBART
+  71 | Field DDIC | IONR-OBART
+  72 | Field DDIC | IONR-OBART
+  73 | Field DDIC | IONR-OBART
+  74 | Field DDIC | IONR-OBART
+  75 | Field DDIC | IONR-OBART
+  76 | Field DDIC | IONR-OBART
+  77 | Field DDIC | IONR-OBART
+  78 | Field DDIC | IONR-OBART
+  79 | Field DDIC | IONR-OBART
+  80 | Field DDIC | IONR-OBART
+  81 | Field DDIC | IONR-OBART
+  82 | Field DDIC | IONR-OBART
+  83 | Field DDIC | IONR-OBART
+  84 | Field DDIC | IONR-OBART
+  85 | Field DDIC | IONR-OBART
+  86 | Field DDIC | IONR-OBART
+  87 | Field DDIC | IONR-OBART
+  88 | Field DDIC | IONR-OBART
+  89 | Field DDIC | IONR-OBART
+  90 | Field DDIC | IONR-OBART
+  91 | Field DDIC | IONR-OBART
+  92 | Field DDIC | IONR-OBART
+  93 | Field DDIC | IONR-OBART
+  94 | Field DDIC | IONR-OBART
+  95 | Field DDIC | IONR-OBART
+  96 | Field DDIC | IONR-OBART
+  97 | Field DDIC | IONR-OBART
+  98 | Field DDIC | IONR-OBART
+  99 | Field DDIC | IONR-OBART
+  100 | Field DDIC | IONR-OBART
+  101 | Field DDIC | IONR-OBART
+  102 | Field DDIC | IONR-OBART
+  103 | Field DDIC | IONR-OBART
+  104 | Field DDIC | IONR-OBART
+  105 | Field DDIC | IONR-OBART
+  106 | Field DDIC | IONR-OBART
+  107 | Field DDIC | IONR-OBART
+  108 | Field DDIC | IONR-OBART
+  109 | Field DDIC | IONR-OBART
+  110 | Field DDIC | IONR-OBART
+  111 | Field DDIC | IONR-OBART
+  112 | Field DDIC | IONR-OBART
+  115 | Field DDIC | IONR-OBART
+  116 | Field DDIC | IONR-OBART
+  117 | Field DDIC | IONR-OBART
+  118 | Field DDIC | IONR-OBART
+
+Objek RKASSEFW (324 baris)
+  4 | Tipe DDIC | sscrfields
+  6 | Layar Seleksi | PARAMETERS kokrs TYPE tka01-kokrs MODIF ID cac.
+  6 | Field DDIC | tka01-kokrs
+  18 | Field DDIC | tj01-vrgng
+  73 | Field DDIC | tj01-vrgng
+  105 | Field DDIC | tj01-vrgng
+  118 | Field DDIC | tj01-vrgng
+  3 | includes | RKASSELA
+  9 | includes | RKASMAWF
+  86 | callFunctions | K_KOKRS_SET
+  231 | callFunctions | RS_EXTERNAL_SELSCREEN_STATUS
+
+Objek RKASMAWF (9 baris)
+  5 | Field DDIC | SCMA_WITEM-WF_WITEM
+  7 | Field DDIC | SWOTOBJID-OBJKEY
+  9 | Field DDIC | SCMA_WITEM-WF_WLIST
+
+Objek RKASSELA (59 baris)
+Jumlah source terbaca: 15
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+RKO7CO88.abap
+  Baris 8 | Field DDIC | SY-TCODE
+  Baris 11 | INCLUDE | RKASSEFW
+  Baris 14 | INCLUDE | RKO74000
+  Baris 17 | INCLUDE | RKCOSEI1
+  Baris 20 | INCLUDE | RKO74001
+
+RKASSEFW.abap
+  Baris 4 | Tipe DDIC | sscrfields
+  Baris 6 | Layar Seleksi | PARAMETERS kokrs TYPE tka01-kokrs MODIF ID cac.
+  Baris 6 | Field DDIC | tka01-kokrs
+  Baris 18 | Field DDIC | tj01-vrgng
+  Baris 73 | Field DDIC | tj01-vrgng
+  Baris 105 | Field DDIC | tj01-vrgng
+  Baris 118 | Field DDIC | tj01-vrgng
+  Baris 3 | INCLUDE | RKASSELA
+  Baris 9 | INCLUDE | RKASMAWF
+  Baris 86 | Function module | K_KOKRS_SET
+  Baris 231 | Function module | RS_EXTERNAL_SELSCREEN_STATUS
+
+RKASSELA.abap
+
+RKASMAWF.abap
+  Baris 5 | Field DDIC | SCMA_WITEM-WF_WITEM
+  Baris 7 | Field DDIC | SWOTOBJID-OBJKEY
+  Baris 9 | Field DDIC | SCMA_WITEM-WF_WLIST
+
+RKO74000.abap
+  Baris 21 | Field DDIC | COBK-KWAER
+  Baris 23 | Field DDIC | RSVAR-VARIANT
+  Baris 3 | INCLUDE | RBONRART
+  Baris 48 | Function module | DD_DOMVALUE_TEXT_GET
+
+RBONRART.abap
+  Baris 8 | Field DDIC | IONR-OBART
+  Baris 9 | Field DDIC | IONR-OBART
+  Baris 10 | Field DDIC | IONR-OBART
+  Baris 11 | Field DDIC | IONR-OBART
+  Baris 12 | Field DDIC | IONR-OBART
+  Baris 13 | Field DDIC | IONR-OBART
+  Baris 14 | Field DDIC | IONR-OBART
+  Baris 15 | Field DDIC | IONR-OBART
+  Baris 16 | Field DDIC | IONR-OBART
+  Baris 17 | Field DDIC | IONR-OBART
+  Baris 18 | Field DDIC | IONR-OBART
+  Baris 19 | Field DDIC | IONR-OBART
+  Baris 20 | Field DDIC | IONR-OBART
+  Baris 21 | Field DDIC | IONR-OBART
+  Baris 22 | Field DDIC | IONR-OBART
+  Baris 23 | Field DDIC | IONR-OBART
+  Baris 24 | Field DDIC | IONR-OBART
+  Baris 25 | Field DDIC | IONR-OBART
+  Baris 26 | Field DDIC | IONR-OBART
+  Baris 27 | Field DDIC | IONR-OBART
+  Baris 28 | Field DDIC | IONR-OBART
+  Baris 29 | Field DDIC | IONR-OBART
+  Baris 30 | Field DDIC | IONR-OBART
+  Baris 31 | Field DDIC | IONR-OBART
+  Baris 32 | Field DDIC | IONR-OBART
+  Baris 33 | Field DDIC | IONR-OBART
+  Baris 34 | Field DDIC | IONR-OBART
+  Baris 35 | Field DDIC | IONR-OBART
+  Baris 36 | Field DDIC | IONR-OBART
+  Baris 37 | Field DDIC | IONR-OBART
+  Baris 38 | Field DDIC | IONR-OBART
+  Baris 39 | Field DDIC | IONR-OBART
+  Baris 40 | Field DDIC | IONR-OBART
+  Baris 41 | Field DDIC | IONR-OBART
+  Baris 42 | Field DDIC | IONR-OBART
+  Baris 43 | Field DDIC | IONR-OBART
+  Baris 44 | Field DDIC | IONR-OBART
+  Baris 45 | Field DDIC | IONR-OBART
+  Baris 46 | Field DDIC | IONR-OBART
+  Baris 47 | Field DDIC | IONR-OBART
+  Baris 48 | Field DDIC | IONR-OBART
+  Baris 49 | Field DDIC | IONR-OBART
+  Baris 50 | Field DDIC | IONR-OBART
+  Baris 51 | Field DDIC | IONR-OBART
+  Baris 52 | Field DDIC | IONR-OBART
+  Baris 53 | Field DDIC | IONR-OBART
+  Baris 54 | Field DDIC | IONR-OBART
+  Baris 55 | Field DDIC | IONR-OBART
+  Baris 56 | Field DDIC | IONR-OBART
+  Baris 57 | Field DDIC | IONR-OBART
+  Baris 58 | Field DDIC | IONR-OBART
+  Baris 59 | Field DDIC | IONR-OBART
+  Baris 60 | Field DDIC | IONR-OBART
+  Baris 61 | Field DDIC | IONR-OBART
+  Baris 62 | Field DDIC | IONR-OBART
+  Baris 63 | Field DDIC | IONR-OBART
+  Baris 64 | Field DDIC | IONR-OBART
+  Baris 65 | Field DDIC | IONR-OBART
+  Baris 66 | Field DDIC | IONR-OBART
+  Baris 67 | Field DDIC | IONR-OBART
+  Baris 68 | Field DDIC | IONR-OBART
+  Baris 69 | Field DDIC | IONR-OBART
+  Baris 70 | Field DDIC | IONR-OBART
+  Baris 71 | Field DDIC | IONR-OBART
+  Baris 72 | Field DDIC | IONR-OBART
+  Baris 73 | Field DDIC | IONR-OBART
+  Baris 74 | Field DDIC | IONR-OBART
+  Baris 75 | Field DDIC | IONR-OBART
+  Baris 76 | Field DDIC | IONR-OBART
+  Baris 77 | Field DDIC | IONR-OBART
+  Baris 78 | Field DDIC | IONR-OBART
+  Baris 79 | Field DDIC | IONR-OBART
+  Baris 80 | Field DDIC | IONR-OBART
+  Baris 81 | Field DDIC | IONR-OBART
+  Baris 82 | Field DDIC | IONR-OBART
+  Baris 83 | Field DDIC | IONR-OBART
+  Baris 84 | Field DDIC | IONR-OBART
+  Baris 85 | Field DDIC | IONR-OBART
+  Baris 86 | Field DDIC | IONR-OBART
+  Baris 87 | Field DDIC | IONR-OBART
+  Baris 88 | Field DDIC | IONR-OBART
+  Baris 89 | Field DDIC | IONR-OBART
+  Baris 90 | Field DDIC | IONR-OBART
+  Baris 91 | Field DDIC | IONR-OBART
+  Baris 92 | Field DDIC | IONR-OBART
+  Baris 93 | Field DDIC | IONR-OBART
+  Baris 94 | Field DDIC | IONR-OBART
+  Baris 95 | Field DDIC | IONR-OBART
+  Baris 96 | Field DDIC | IONR-OBART
+  Baris 97 | Field DDIC | IONR-OBART
+  Baris 98 | Field DDIC | IONR-OBART
+  Baris 99 | Field DDIC | IONR-OBART
+  Baris 100 | Field DDIC | IONR-OBART
+  Baris 101 | Field DDIC | IONR-OBART
+  Baris 102 | Field DDIC | IONR-OBART
+  Baris 103 | Field DDIC | IONR-OBART
+  Baris 104 | Field DDIC | IONR-OBART
+  Baris 105 | Field DDIC | IONR-OBART
+  Baris 106 | Field DDIC | IONR-OBART
+  Baris 107 | Field DDIC | IONR-OBART
+  Baris 108 | Field DDIC | IONR-OBART
+  Baris 109 | Field DDIC | IONR-OBART
+  Baris 110 | Field DDIC | IONR-OBART
+  Baris 111 | Field DDIC | IONR-OBART
+  Baris 112 | Field DDIC | IONR-OBART
+  Baris 115 | Field DDIC | IONR-OBART
+  Baris 116 | Field DDIC | IONR-OBART
+  Baris 117 | Field DDIC | IONR-OBART
+  Baris 118 | Field DDIC | IONR-OBART
+
+RKCOSEI1.abap
+  Baris 4 | INCLUDE | RKCOSEI2
+  Baris 6 | INCLUDE | RKCOSEI3
+  Baris 8 | INCLUDE | RKCOSEI4
+
+RKCOSEI2.abap
+  Baris 9 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  Baris 10 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK sender_selection.
+  Baris 11 | Layar Seleksi | PARAMETERS: selexp TYPE xflag NO-DISPLAY.
+  Baris 13 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /1(40) subscexp USER-COMMAND subscexp.
+  Baris 14 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  Baris 15 | Layar Seleksi | SELECT-OPTIONS:
+  Baris 18 | Layar Seleksi | SELECT-OPTIONS:
+  Baris 23 | Layar Seleksi | PARAMETERS:
+  Baris 24 | Field DDIC | lko74-incl_fauf
+  Baris 26 | Field DDIC | lko74-incl_piauf
+  Baris 28 | Field DDIC | lko74-incl_pkosa
+  Baris 30 | Field DDIC | lko74-incl_qmauf
+  Baris 32 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  Baris 33 | Layar Seleksi | PARAMETERS:
+  Baris 34 | Field DDIC | lko74-incl_proj
+  Baris 36 | Field DDIC | lko74-incl_kstrg
+  Baris 39 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  Baris 40 | Layar Seleksi | PARAMETERS:
+  Baris 41 | Field DDIC | lko74-aufgr
+  Baris 42 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK sender_selection.
+
+RKCOSEI3.abap
+
+RKCOSEI4.abap
+  Baris 22 | Field DDIC | rsvar-variant
+  Baris 25 | Field DDIC | lko74-kokrs
+  Baris 189 | Field DDIC | tj01-vrgng
+  Baris 266 | Field DDIC | tka01-kokrs
+  Baris 267 | Field DDIC | tka01-kokrs
+  Baris 268 | Field DDIC | aufk-werks
+  Baris 289 | Field DDIC | lko74-werks
+  Baris 292 | Tipe DDIC | t001w
+  Baris 326 | Field DDIC | tka01-kokrs
+  Baris 379 | Field DDIC | tka01-kokrs
+  Baris 380 | Field DDIC | tka01-kokrs
+  Baris 381 | Field DDIC | aufk-werks
+  Baris 297 | Sumber data pada SELECT atau JOIN | T001W
+  Baris 26 | Function module | K_KOKRS_SET
+  Baris 217 | Function module | ICON_CREATE
+  Baris 351 | Function module | HELP_VALUES_GET_WITH_TABLE
+  Baris 386 | Function module | SPTA_RFC_CONTEXT_DETECT
+  Baris 398 | Function module | RM_KOKRS_TO_PLANT_FIND
+  Baris 470 | Function module | SELECT_OPTIONS_RESTRICT
+
+RKO74001.abap
+  Baris 18 | Layar Seleksi | selection-screen begin of block parameter
+  Baris 19 | Teks Seleksi | text-101
+  Baris 20 | Layar Seleksi | parameters: perio    like auak-perio memory id 74p obligatory,
+  Baris 20 | Field DDIC | auak-perio
+  Baris 21 | Field DDIC | auak-gjahr
+  Baris 22 | Field DDIC | lko74-vaart
+  Baris 23 | Layar Seleksi | selection-screen comment 50(30) txtvaart for field vaart.
+  Baris 24 | Layar Seleksi | selection-screen end of block parameter.
+  Baris 26 | Layar Seleksi | selection-screen begin of block function
+  Baris 27 | Teks Seleksi | text-200
+  Baris 28 | Layar Seleksi | selection-screen begin of line.
+  Baris 29 | Layar Seleksi | parameters: ausf default 'X' radiobutton group fkt.
+  Baris 31 | Layar Seleksi | selection-screen comment 4(40) text-a01 for field ausf.
+  Baris 31 | Teks Seleksi | text-a01
+  Baris 32 | Layar Seleksi | selection-screen end of line.
+  Baris 33 | Layar Seleksi | selection-screen begin of line.
+  Baris 34 | Layar Seleksi | parameters: stor radiobutton group fkt.
+  Baris 36 | Layar Seleksi | selection-screen comment 4(40) text-a02 for field stor.
+  Baris 36 | Teks Seleksi | text-a02
+  Baris 37 | Layar Seleksi | selection-screen end of line.
+  Baris 38 | Layar Seleksi | selection-screen end of block function.
+  Baris 40 | Layar Seleksi | selection-screen begin of block ablauf
+  Baris 41 | Teks Seleksi | text-102
+  Baris 42 | Layar Seleksi | parameters: testlauf like lko74-testlauf default 'X'.
+  Baris 42 | Field DDIC | lko74-testlauf
+  Baris 44 | Layar Seleksi | parameters: tdcheck  like lko74-tdcheck.
+  Baris 44 | Field DDIC | lko74-tdcheck
+  Baris 45 | Layar Seleksi | selection-screen end of block ablauf.
+  Baris 47 | Layar Seleksi | selection-screen begin of block list
+  Baris 48 | Teks Seleksi | text-103
+  Baris 49 | Layar Seleksi | parameters: grndlist like lko74-grnd_liste default 'X' no-display.
+  Baris 49 | Field DDIC | lko74-grnd_liste
+  Baris 50 | Layar Seleksi | parameters: list     like lko74-list.
+  Baris 50 | Field DDIC | lko74-list
+  Baris 51 | Layar Seleksi | selection-screen pushbutton 33(30) pu_list user-command list.
+  Baris 52 | Layar Seleksi | selection-screen end of block list.
+  Baris 55 | Layar Seleksi | selection-screen begin of block wsdat
+  Baris 56 | Teks Seleksi | text-104
+  Baris 57 | Layar Seleksi | parameters: buperio  like auak-buperio memory id 74b,
+  Baris 57 | Field DDIC | auak-buperio
+  Baris 58 | Field DDIC | auak-budat
+  Baris 59 | Field DDIC | auak-bzdat
+  Baris 60 | Field DDIC | lko74-wsdat
+  Baris 61 | Layar Seleksi | selection-screen end of block wsdat.
+  Baris 64 | Layar Seleksi | selection-screen pushbutton 1(30) pu_tech user-command tech.
+  Baris 68 | Layar Seleksi | selection-screen begin of block felder with frame.
+  Baris 69 | Layar Seleksi | parameters: count like lko74-count_com
+  Baris 69 | Field DDIC | lko74-count_com
+  Baris 71 | Layar Seleksi | parameters: errgr    like lko74-aufgr no-display.
+  Baris 71 | Field DDIC | lko74-aufgr
+  Baris 72 | Layar Seleksi | parameters: rfc_no like lko74-rfc_no no-display.
+  Baris 72 | Field DDIC | lko74-rfc_no
+  Baris 73 | Layar Seleksi | parameters: var_cos like lko74-variant_cos no-display,
+  Baris 73 | Field DDIC | lko74-variant_cos
+  Baris 74 | Field DDIC | lko74-variant_wip
+  Baris 75 | Layar Seleksi | selection-screen end of block felder.
+  Baris 144 | Field DDIC | dd07v-ddtext
+  Baris 162 | Field DDIC | sy-repid
+  Baris 222 | Field DDIC | auak-perio
+  Baris 223 | Field DDIC | auak-buperio
+  Baris 224 | Field DDIC | dd07v-ddtext
+  Baris 292 | Field DDIC | dokil-object
+  Baris 293 | Field DDIC | dokhl-object
+  Baris 325 | Field DDIC | auak-perio
+  Baris 389 | Teks Seleksi | text-pu1
+  Baris 392 | Teks Seleksi | text-pu1
+  Baris 396 | Teks Seleksi | text-pu2
+  Baris 399 | Teks Seleksi | text-pu2
+  Baris 9 | INCLUDE | RKO74TOP
+  Baris 43 | INCLUDE | RKRFCGROUPINC_PARAMS
+  Baris 78 | INCLUDE | RKRFCGROUPINC_EVENTS
+  Baris 145 | Function module | K_SETTLEMENT_VAART_F4
+  Baris 166 | Function module | DB_COMMIT
+  Baris 198 | Function module | K_SETTLEMENT_EXTERN_START
+  Baris 295 | Function module | DOCU_OBJECT_NAME_CONCATENATE
+  Baris 306 | Function module | DOCU_CALL
+  Baris 334 | Function module | K_PERIOD_CHECK_IN_KOKRS
+  Baris 348 | Function module | K_POSTING_DATE_CHECK
+  Baris 416 | Function module | K_SETTLEMENT_LISTVARIANTS_GET
+  Baris 433 | Function module | K_SETTLEMENT_TECHINFO_GET
+
+RKO74TOP.abap
+  Baris 8 | Field DDIC | DD07V-DDTEXT
+  Baris 9 | Tipe DDIC | LKO74
+  Baris 10 | Field DDIC | SY-MSGV1
+  Baris 13 | INCLUDE | RKAWRTTP
+
+RKAWRTTP.abap
+  Baris 6 | Field DDIC | COSP-WRTTP
+  Baris 7 | Field DDIC | COSP-WRTTP
+  Baris 8 | Field DDIC | COSP-WRTTP
+  Baris 9 | Field DDIC | COSP-WRTTP
+  Baris 10 | Field DDIC | COSP-WRTTP
+  Baris 11 | Field DDIC | COSP-WRTTP
+  Baris 12 | Field DDIC | COSP-WRTTP
+  Baris 13 | Field DDIC | COSP-WRTTP
+  Baris 14 | Field DDIC | COSP-WRTTP
+  Baris 15 | Field DDIC | COSP-WRTTP
+  Baris 16 | Field DDIC | COSP-WRTTP
+  Baris 17 | Field DDIC | COSP-WRTTP
+  Baris 18 | Field DDIC | COSP-WRTTP
+  Baris 19 | Field DDIC | COSP-WRTTP
+  Baris 20 | Field DDIC | COSP-WRTTP
+  Baris 21 | Field DDIC | COSP-WRTTP
+  Baris 22 | Field DDIC | COSP-WRTTP
+  Baris 23 | Field DDIC | COSP-WRTTP
+  Baris 24 | Field DDIC | COSP-WRTTP
+  Baris 25 | Field DDIC | COSP-WRTTP
+  Baris 26 | Field DDIC | COSP-WRTTP
+  Baris 27 | Field DDIC | COSP-WRTTP
+  Baris 28 | Field DDIC | COSP-WRTTP
+  Baris 29 | Field DDIC | COSP-WRTTP
+  Baris 30 | Field DDIC | COSP-WRTTP
+  Baris 31 | Field DDIC | COSP-WRTTP
+  Baris 32 | Field DDIC | COSP-WRTTP
+  Baris 33 | Field DDIC | COSP-WRTTP
+  Baris 34 | Field DDIC | COSP-WRTTP
+  Baris 35 | Field DDIC | COSP-WRTTP
+  Baris 36 | Field DDIC | COSP-WRTTP
+  Baris 37 | Field DDIC | COSP-WRTTP
+  Baris 38 | Field DDIC | COSP-WRTTP
+  Baris 39 | Field DDIC | COSP-WRTTP
+  Baris 40 | Field DDIC | COSP-WRTTP
+  Baris 41 | Field DDIC | COSP-WRTTP
+  Baris 42 | Field DDIC | COSP-WRTTP
+  Baris 43 | Field DDIC | COSP-WRTTP
+  Baris 44 | Field DDIC | COSP-WRTTP
+  Baris 45 | Field DDIC | COSP-WRTTP
+  Baris 46 | Field DDIC | COSP-WRTTP
+  Baris 47 | Field DDIC | COSP-WRTTP
+  Baris 48 | Field DDIC | COSP-WRTTP
+  Baris 49 | Field DDIC | COSP-WRTTP
+
+RKRFCGROUPINC_PARAMS.abap
+  Baris 5 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK _rfcgroup.
+  Baris 6 | Layar Seleksi | SELECTION-SCREEN   BEGIN OF LINE.
+  Baris 7 | Layar Seleksi | PARAMETERS:  rfcproc TYPE co_para_processing  AS CHECKBOX
+  Baris 9 | Layar Seleksi | SELECTION-SCREEN     COMMENT 3(28) rfcproct FOR FIELD rfcproc.
+  Baris 10 | Layar Seleksi | SELECTION-SCREEN POSITION pos_low.
+  Baris 11 | Layar Seleksi | SELECTION-SCREEN   PUSHBUTTON (40) rfcpbt1
+  Baris 14 | Layar Seleksi | SELECTION-SCREEN   END OF LINE.
+  Baris 15 | Layar Seleksi | SELECTION-SCREEN   BEGIN OF LINE.
+  Baris 16 | Layar Seleksi | SELECTION-SCREEN COMMENT 4(28) rfcgrt FOR FIELD rfcgroup.
+  Baris 17 | Layar Seleksi | SELECTION-SCREEN POSITION pos_low.
+  Baris 18 | Layar Seleksi | PARAMETERS:  rfcgroup TYPE spta_rfcgr.
+  Baris 19 | Layar Seleksi | SELECTION-SCREEN   END OF LINE.
+  Baris 20 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK _rfcgroup.
+
+RKRFCGROUPINC_EVENTS.abap
+  Baris 223 | Field DDIC | sy-tabix
+  Baris 111 | Sumber data pada SELECT atau JOIN | RZLLITAB
+  Baris 49 | Function module | ICON_CREATE
+  Baris 246 | Function module | HELP_VALUES_GET_WITH_TABLE

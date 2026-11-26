@@ -14,7 +14,7 @@
 | 4 | **User Exit** | 8 implicit enhancement di `MV45AFZZ`/`MV45AFZB` (termasuk "Validasi Tab Prod Line") + validasi latihan | [04_USER_EXIT.md](04_USER_EXIT.md) | Siap (dikoreksi setelah uji) |
 | 5 | **SmartForms** | Print PO Local (`ZMMF_PO_LOCAL`, output type Z01) | [05_SMARTFORMS.md](05_SMARTFORMS.md) | Siap |
 | — | **Hasil uji** sandbox-new & S/4 | Semua program latihan | [06_HASIL_UJI.md](06_HASIL_UJI.md) | 25 Nov 2026 |
-| 6 | **IDoc** | Belum ada IDoc di DEV/sandbox → dibangun dari nol: IDoc custom `ZTRN_PO01` (outbound PO + inbound log), sandbox-new | [07_IDOC.md](07_IDOC.md) | Siap (kode lolos syntax check mock; konfigurasi belum dibuat) |
+| 6 | **IDoc** | Belum ada IDoc di DEV/sandbox → dibangun dari nol: IDoc custom `ZTRN_PO01` (outbound PO + inbound log), sandbox-new | [07_IDOC.md](07_IDOC.md) | **Dibangun & diuji** di sandbox (outbound 03, inbound 53/51/69→53) |
 | 7 | **OData** | ECC tidak punya Gateway → di S/4: SEGW `ZTRN_PO_SRV` + pembanding CDS `@OData.publish` | [08_ODATA.md](08_ODATA.md) | Siap (method Gateway dicek ada; belum dibangun) |
 | 8 | OO ABAP | — | — | Ditunda (permintaan Baginda) |
 

@@ -1,0 +1,34 @@
+*----------------------------------------------------------------------*
+*   INCLUDE FPLTCCON                                                   *
+*----------------------------------------------------------------------*
+
+* Fakturastatus
+CONSTANTS: FKSAF_CA_GUELTIG(1) VALUE 'A',
+           FKSAF_CA_UNGUELTIG(3) VALUE ' BC'.
+CONSTANTS: FKSAF_NICHT_REL   LIKE FPLT-FKSAF VALUE ' ',
+           FKSAF_NICHT_BEARB LIKE FPLT-FKSAF VALUE 'A',
+           FKSAF_VOLL_BEARB  LIKE FPLT-FKSAF VALUE 'C'.
+
+* Callstatus
+CONSTANTS: CCALL_CA_GUELTIG(1) VALUE 'C',
+           CCALL_CA_UNGUELTIG(3) VALUE ' AB'.
+CONSTANTS: CCALL_NICHT_REL LIKE FPLTC-CCALL VALUE ' ',
+           CCALL_NOT_CALL  LIKE FPLTC-CCALL VALUE 'A',
+           CCALL_CALLED    LIKE FPLTC-CCALL VALUE 'B',
+           CCALL_ANSWERED  LIKE FPLTC-CCALL VALUE 'C'.
+
+* FPLA-Status
+* Bedingung
+CONSTANTS: AUST1_CA_GUELTIG(2) VALUE ' B',
+           AUST1_CA_UNGUELTIG(1) VALUE 'A'.
+CONSTANTS: AUST1_NICHT_REL     LIKE FPLA-AUST1 VALUE ' ',
+           AUST1_NOT_FULFILLED LIKE FPLA-AUST1 VALUE 'A',
+           AUST1_FULFILLED     LIKE FPLA-AUST1 VALUE 'B'.
+
+* Reaktion
+CONSTANTS: REACT_CA_GUELTIG(1) VALUE 'A',
+           REACT_CA_UNGUELTIG(2) VALUE 'BC'.
+CONSTANTS: REACT_NICHT_REL LIKE FPLTC-CCALL VALUE ' ',
+           REACT_OKAY      LIKE FPLTC-CCALL VALUE 'A',
+           REACT_LATER     LIKE FPLTC-CCALL VALUE 'B',
+           REACT_STOP      LIKE FPLTC-CCALL VALUE 'C'.

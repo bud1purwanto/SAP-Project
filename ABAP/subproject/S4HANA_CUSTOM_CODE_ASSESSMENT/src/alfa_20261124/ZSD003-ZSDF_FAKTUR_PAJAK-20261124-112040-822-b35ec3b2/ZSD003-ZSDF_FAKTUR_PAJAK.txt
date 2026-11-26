@@ -1,0 +1,415 @@
+﻿Input: ZSD003
+Source SAP development (RFC baca-saja): ZSDF_FAKTUR_PAJAK
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZSDF_FAKTUR_PAJAK:31 | INITIALIZATION | PERFORM HEADER_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK:34 | INITIALIZATION | PERFORM HEADER_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK:37 | INITIALIZATION | PERFORM USER_COMMAND USING SY-UCOMM RS_SELFIELD. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK:45 | START-OF-SELECTION > IF SY-SUBRC NE 0. | MESSAGE 'No Authorization to process data' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK:50 | START-OF-SELECTION | PERFORM DATA_RETRIEVAL. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK:53 | START-OF-SELECTION > IF P_MODE1 = 'X'. | PERFORM DATA_DISPLAY USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK:55 | START-OF-SELECTION > ELSEIF P_MODE2 = 'X'. | PERFORM DOWNLOAD_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK:103 | AT SELECTION-SCREEN > IF SO_VKORG[] IS INITIAL. | MESSAGE 'Sales Organization. is required !!' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK:108 | AT SELECTION-SCREEN > WHEN 'FC01'. | CALL TRANSACTION 'ZZKMK'. | Tinjau kondisi dan hasil di ECC.
+  ZFII_MAINTAIN_KMK:57 | WHEN 'APPEND'. | PERFORM ADD_KMK. | Tinjau kondisi dan hasil di ECC.
+  ZFII_MAINTAIN_KMK:63 | WHEN 'DELETE'. | PERFORM DELETE_KMK. | Tinjau kondisi dan hasil di ECC.
+  ZFII_MAINTAIN_KMK:143 | FORM ADD_KMK > IF RETURNCODE NE 'A'. > IF SY-SUBRC = 0. > IF SY-SUBRC = 0. | MESSAGE 'Tanggal KMK tidak boleh lebih kecil dari yang sudah ada...!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZFII_MAINTAIN_KMK:161 | FORM ADD_KMK > IF RETURNCODE NE 'A'. > IF IT_KMK-DATEKMK = '' OR IT_KMK-DATERATE = '' OR IT_KMK-NOKMK = ''. | MESSAGE 'Data harus diisi semua...!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:210 | FORM DATA_RETRIEVAL | PERFORM IS_SHIP. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:302 | FORM DATA_RETRIEVAL > IF ITDATA-FKART EQ 'ZEG2'. | PERFORM READ_TEXT USING 'Z135' 'VBBK' V_VBELN. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:320 | FORM DATA_RETRIEVAL > ELSEIF ITDATA-FKART EQ 'ZERE' OR > IF V_VBELV EQ ''. | PERFORM READ_TEXT USING 'Z128' 'VBBK' V_VBELN. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:327 | FORM DATA_RETRIEVAL > ELSEIF ITDATA-FKART EQ 'ZERE' OR > IF V_VBELV EQ ''. > IF V_VBELV EQ ''. | PERFORM READ_TEXT USING 'Z128' 'VBBK' V_VBELN. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:496 | FORM DATA_DISPLAY > IF ITDATA[] IS INITIAL. | MESSAGE 'No data selected.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:575 | FORM USER_COMMAND > WHEN 'PRNT'. > IF P_FSTD = 'X'. | MESSAGE 'No print out for Faktur Pajak Standar....!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:577 | FORM USER_COMMAND > WHEN 'PRNT'. > ELSE. | PERFORM PRINT. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:581 | FORM USER_COMMAND > WHEN 'PRV'. > IF P_FSTD = 'X'. | MESSAGE 'No print out for Faktur Pajak Standar....!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:583 | FORM USER_COMMAND > WHEN 'PRV'. > ELSE. | PERFORM PREVIEW. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:587 | FORM USER_COMMAND > WHEN 'SELECT'. | PERFORM MODIF_MARK USING MARK01. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:591 | FORM USER_COMMAND > WHEN 'DESELECT'. | PERFORM MODIF_MARK USING MARK01. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:594 | FORM USER_COMMAND > WHEN 'REFRESH'. | PERFORM DATA_RETRIEVAL. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:595 | FORM USER_COMMAND > WHEN 'REFRESH'. | PERFORM DATA_DISPLAY USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:598 | FORM USER_COMMAND > WHEN 'DOCFLOW'. | PERFORM GET_SELECTED. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:599 | FORM USER_COMMAND > WHEN 'DOCFLOW'. | PERFORM DOC_FLOW. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:649 | FORM DOC_FLOW | CALL TRANSACTION 'VF03' AND SKIP FIRST SCREEN. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:664 | FORM PREVIEW | PERFORM GET_SELECTED. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:666 | FORM PREVIEW | PERFORM DATA_PRINT. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:667 | FORM PREVIEW | PERFORM DEFINE_FORM. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:668 | FORM PREVIEW | PERFORM CALL_FORM USING V_FORMNAME. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:678 | FORM PREVIEW > ELSE. | PERFORM GET_TOTAL. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:804 | FORM GET_CONF | PERFORM GET_PONO. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:842 | FORM GET_CONF > ELSEIF V_TYPE NE '' AND > IF SY-SUBRC = 0. | PERFORM ADD_CHAR. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:846 | FORM GET_CONF > ELSEIF V_TYPE NE '' AND > ELSE. | PERFORM ADD_CHAR. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:990 | FORM DATA_PRINT | PERFORM AMOUNT USING ZWAERS ZNETWR. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1017 | FORM DATA_PRINT | PERFORM GET_EXCHANGE_RATE USING V_WAERS ZWAERS. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1040 | FORM DATA_PRINT > ELSE. | PERFORM GET_EXCHANGE_RATE USING 'USD' V_WAERS. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1061 | FORM DATA_PRINT > ELSE. | PERFORM GET_EXCHANGE_RATE USING 'IDR' V_WAERS. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1077 | FORM DATA_PRINT | PERFORM GET_CONF. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1191 | FORM DATA_PRINT > WHEN 'C'. | PERFORM GET_PPN. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1265 | FORM DATA_PRINT | PERFORM GET_KMK. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1277 | FORM DATA_PRINT > IF V_FKART EQ 'ZEG2'. | PERFORM READ_TEXT USING 'Z135' 'VBBK' V_VBELN. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1295 | FORM DATA_PRINT > ELSEIF V_FKART EQ 'ZERE' OR > IF V_VBELV EQ ''. | PERFORM READ_TEXT USING 'Z128' 'VBBK' V_VBELN. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1302 | FORM DATA_PRINT > ELSEIF V_FKART EQ 'ZERE' OR > IF V_VBELV EQ ''. > IF V_VBELV EQ ''. | PERFORM READ_TEXT USING 'Z128' 'VBBK' V_VBELN. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1311 | FORM DATA_PRINT | PERFORM READ_TEXT USING 'Z119' 'VBBK' V_VBELN. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1469 | FORM PRINT | PERFORM GET_SELECTED. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1471 | FORM PRINT > IF ITDATATEMP[] IS INITIAL . | MESSAGE 'Select at least one data!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1475 | FORM PRINT | PERFORM DATA_PRINT. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1476 | FORM PRINT | PERFORM DEFINE_FORM. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1477 | FORM PRINT | PERFORM CALL_FORM USING V_FORMNAME. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1519 | FORM PRINT > ELSE. | PERFORM GET_TOTAL. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1583 | FORM PRINT | PERFORM COUNT_PRINT. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1716 | FORM GET_EXCHANGE_RATE > IF SY-SUBRC <> 0. | MESSAGE I000(0K) WITH 'Currency Exchange Rates  Error!'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1727 | FORM GET_EXCHANGE_RATE > ELSE. | MESSAGE I000(0K) WITH 'Currency Exchange Rates  Error!'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1906 | Konteks perlu ditinjau | PERFORM USER_OK_TC USING    'TCKMK' | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1941 | FORM USER_OK_TC > WHEN 'INSR'. | PERFORM FCODE_INSERT_ROW USING    P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1946 | FORM USER_OK_TC > WHEN 'DELE'. | PERFORM FCODE_DELETE_ROW USING    P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1955 | FORM USER_OK_TC > WHEN 'P--' OR | PERFORM COMPUTE_SCROLLING_IN_TC USING P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1971 | FORM USER_OK_TC > WHEN 'MARK'. | PERFORM FCODE_TC_MARK_LINES USING P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:1977 | FORM USER_OK_TC > WHEN 'DMRK'. | PERFORM FCODE_TC_DEMARK_LINES USING P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:2535 | FORM GET_TOTAL > IF VBRK-TAXK1 = '8'. | PERFORM GET_PPN_KNUMV. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:2585 | FORM DOWNLOAD_DATA > IF ITDATA[] IS NOT INITIAL. | PERFORM CONNECT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:2586 | FORM DOWNLOAD_DATA > IF ITDATA[] IS NOT INITIAL. | PERFORM INSERT_OLAP. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:2588 | FORM DOWNLOAD_DATA > ELSE. | MESSAGE 'No Data selected !!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:2605 | FORM CONNECT_SQL > IF S_CONN IS INITIAL. | MESSAGE 'Enter DBCO Connection name...!' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:2615 | FORM CONNECT_SQL > IF SY-SUBRC NE 0. | MESSAGE V_CX_MSG TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:2638 | FORM CONNECT_SQL | MESSAGE V_CX_MSG TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:2662 | FORM INSERT_OLAP > IF S_CONN IS NOT INITIAL. | MESSAGE `Error in procedure execution delete` TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:2688 | FORM INSERT_OLAP > IF S_CONN IS NOT INITIAL. | MESSAGE 'Data downloaded successfully!' TYPE 'S' DISPLAY LIKE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDF_FAKTUR_PAJAK_F01:2691 | FORM INSERT_OLAP > IF S_CONN IS NOT INITIAL. | MESSAGE 'Insert Error' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZSDF_FAKTUR_PAJAK (111 baris)
+  19 | includes | ZSDF_FAKTUR_PAJAK_TOP
+  20 | includes | ZABAPALV
+  21 | includes | ZSDF_FAKTUR_PAJAK_F01
+  108 | callTransactions | ZZKMK
+  40 | tableReads | TVKO
+
+Objek ZFII_MAINTAIN_KMK (198 baris)
+  11 | Tipe DDIC | ZZKMK
+  21 | Field DDIC | SY-UCOMM
+  22 | Field DDIC | SY-UCOMM
+  26 | Layar dan GUI | CALL SCREEN 100.
+  74 | Layar dan GUI | SET PF-STATUS 'SCREEN_100'.
+  75 | Layar dan GUI | SET TITLEBAR 'SCREEN_100'.
+  126 | callFunctions | POPUP_GET_VALUES
+  181 | callFunctions | TRINT_TCE_POPUP_TO_CONFIRM
+  24 | tableReads | ZZKMK
+  164 | databaseWrites | ZZKMK
+
+Objek ZSDF_FAKTUR_PAJAK_F01 (2695 baris)
+  501 | Layar dan GUI | SET PF-STATUS 'PFSTAT'.
+  1859 | Layar dan GUI | CALL SCREEN '0100'.
+  1923 | Field DDIC | SY-UCOMM
+  1926 | Field DDIC | SY-UCOMM
+  1999 | Field DDIC | FELD-NAME
+  2000 | Field DDIC | SY-STEPL
+  2003 | Field DDIC | FELD-NAME
+  2053 | Field DDIC | FELD-NAME
+  2097 | Field DDIC | FELD-NAME
+  2098 | Field DDIC | FELD-NAME
+  2099 | Field DDIC | FELD-NAME
+  2163 | Field DDIC | FELD-NAME
+  2198 | Field DDIC | FELD-NAME
+  2229 | Layar dan GUI | SET PF-STATUS 'ZMSTATUS'.
+  2230 | Layar dan GUI | SET TITLEBAR 'Maintain KMK Status'.
+  2408 | Field DDIC | SY-DATUM
+  2428 | Field DDIC | KONV-KBETR
+  2454 | Field DDIC | KNA1-DATLT
+  2528 | Field DDIC | VBRP-NETWR
+  2567 | Field DDIC | KONV-KWERT
+  2600 | Field DDIC | DBCON-CON_NAME
+  292 | callFunctions | CONVERSION_EXIT_ALPHA_OUTPUT
+  338 | callFunctions | CONVERSION_EXIT_ALPHA_INPUT
+  759 | callFunctions | VC_I_GET_CONFIGURATION
+  1479 | callFunctions | SSF_FUNCTION_MODULE_NAME
+  1643 | callFunctions | CURRENCY_AMOUNT_SAP_TO_DISPLAY
+  1672 | callFunctions | READ_TEXT
+  1707 | callFunctions | BAPI_EXCHANGERATE_GETDETAIL
+  1745 | callFunctions | CETA_USR01_READ
+  2117 | callFunctions | SCROLLING_IN_TABLE
+  649 | callTransactions | VF03
+  21 | tableReads | VBRK
+  21 | tableReads | VBRP
+  124 | tableReads | VBAK
+  141 | tableReads | ADRC
+  141 | tableReads | TVKO
+  154 | tableReads | T001Z
+  189 | tableReads | VBPA
+  228 | tableReads | KNA1
+  252 | tableReads | T005T
+  263 | tableReads | VBFA
+  351 | tableReads | BKPF
+  418 | tableReads | ZNAST
+  941 | tableReads | KONV
+  1140 | tableReads | MARA
+  1380 | tableReads | ZSIGN
+  1844 | tableReads | ZKMK
+  2411 | tableReads | ZZKMK
+  2488 | tableReads | VBAP
+  2609 | tableReads | DBCON
+  1823 | databaseWrites | ZNAST
+  2654 | databaseWrites | XSD003
+
+Objek ZABAPALV (660 baris)
+  7 | Field DDIC | SY-REPID
+  27 | Field DDIC | SY-DATUM
+  28 | Field DDIC | SY-DATUM
+  559 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+
+Objek ZSDF_FAKTUR_PAJAK_TOP (256 baris)
+  8 | Tipe DDIC | VBRK
+  13 | Field DDIC | VBRK-VKORG
+  22 | Field DDIC | BSEG-WRBTR
+  23 | Field DDIC | BSEG-DMBTR
+  24 | Field DDIC | VBRP-NETWR
+  25 | Field DDIC | VBRP-NETWR
+  26 | Field DDIC | VBRP-NETWR
+  27 | Field DDIC | VBRP-NETWR
+  28 | Field DDIC | VBRK-FKDAT
+  29 | Field DDIC | T001Z-PAVAL
+  30 | Field DDIC | T001Z-PAVAL
+  31 | Field DDIC | T001Z-PAVAL
+  32 | Field DDIC | BKPF-KURS2
+  33 | Field DDIC | KONV-KBETR
+  34 | Field DDIC | VBRP-NETWR
+  35 | Field DDIC | BSEG-DMBTR
+  42 | Field DDIC | VBRK-VBELN
+  43 | Field DDIC | VBRK-VBELN
+  44 | Field DDIC | VBRK-FKDAT
+  49 | Field DDIC | THEAD-TDNAME
+  60 | Field DDIC | SY-PAGNO
+  70 | Field DDIC | BKPF-BELNR
+  72 | Field DDIC | ADRC-NAME1
+  75 | Field DDIC | T001Z-PAVAL
+  79 | Field DDIC | KNA1-STCEG
+  85 | Field DDIC | ZFAKTUR_PAJAK-NETWR
+  88 | Field DDIC | KONV-KBETR
+  96 | Field DDIC | T001Z-PAVAL
+  97 | Field DDIC | T001Z-PAVAL
+  101 | Field DDIC | VBRK-FKDAT
+  102 | Field DDIC | VBRK-VBELN
+  103 | Field DDIC | VBRK-FKDAT
+  104 | Field DDIC | VBRK-FKART
+  107 | Field DDIC | THEAD-TDNAME
+  113 | Field DDIC | KNA1-PSTLZ
+  115 | Field DDIC | SY-DATUM
+  118 | Field DDIC | ZSIGN-NAMA
+  119 | Field DDIC | ZSIGN-JABATAN
+  124 | Field DDIC | BSEG-BELNR
+  125 | Field DDIC | VBFA-VBELV
+  126 | Field DDIC | VBAK-AUART
+  127 | Field DDIC | VBRK-KUNAG
+  128 | Field DDIC | VBRK-KUNAG
+  143 | Field DDIC | VBRP-CUOBJ
+  149 | Field DDIC | WMTO_S-AMOUNT
+  150 | Field DDIC | KONV-KNUMV
+  151 | Field DDIC | KONV-KBETR
+  152 | Field DDIC | KONV-KPEIN
+  154 | Field DDIC | KONV-WAERS
+  155 | Field DDIC | VBRP-NETWR
+  156 | Field DDIC | RKB1K-EXCHR
+  159 | Field DDIC | VBRP-NETWR
+  163 | Field DDIC | VBRK-XBLNR
+  164 | Field DDIC | VBRK-VBELN
+  170 | Field DDIC | ZNAST-COUNTER
+  197 | Field DDIC | BSEG-BELNR
+  198 | Field DDIC | VBRK-BUKRS
+  200 | Field DDIC | VBAP-CUOBJ
+  205 | Field DDIC | KONV-KNUMV
+  206 | Field DDIC | KONV-MWSK1
+  209 | BDC | BDCDATA
+  209 | BDC | BDCDATA
+  213 | Field DDIC | VBAP-KDMAT
+  218 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOK1 WITH FRAME TITLE TEXT-001.
+  218 | Teks Seleksi | TEXT-001
+  220 | Layar Seleksi | SELECT-OPTIONS:
+  221 | Field DDIC | VBRK-VKORG
+  222 | Field DDIC | VBRK-VBELN
+  223 | Field DDIC | VBRK-FKDAT
+  224 | Field DDIC | VBRK-FKSTO
+  226 | Layar Seleksi | SELECTION-SCREEN END   OF BLOCK BLOK1.
+  228 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOK2 WITH FRAME TITLE TEXT-002.
+  228 | Teks Seleksi | TEXT-002
+  229 | Layar Seleksi | PARAMETERS :
+  233 | Layar Seleksi | SELECTION-SCREEN END   OF BLOCK BLOK2.
+  235 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOK3 WITH FRAME TITLE TEXT-003.
+  235 | Teks Seleksi | TEXT-003
+  236 | Layar Seleksi | PARAMETERS: P_MODE1 RADIOBUTTON GROUP GRP1 USER-COMMAND AC DEFAULT 'X' MODIF ID MOD,
+  238 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOK3.
+  240 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOK4 WITH FRAME TITLE TEXT-004.
+  240 | Teks Seleksi | TEXT-004
+  241 | Layar Seleksi | PARAMETERS : S_CONN LIKE DBCON-CON_NAME MODIF ID CON.
+  241 | Field DDIC | DBCON-CON_NAME
+  242 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOK4.
+  244 | Layar Seleksi | SELECTION-SCREEN FUNCTION KEY 1.
+  250 | Field DDIC | SY-LOOPC
+  252 | Field DDIC | SY-UCOMM
+  255 | Field DDIC | TVKO-VKORG
+Jumlah source terbaca: 5
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZSDF_FAKTUR_PAJAK.abap
+  Baris 19 | INCLUDE | ZSDF_FAKTUR_PAJAK_TOP
+  Baris 20 | INCLUDE | ZABAPALV
+  Baris 21 | INCLUDE | ZSDF_FAKTUR_PAJAK_F01
+  Baris 40 | Sumber data pada SELECT atau JOIN | TVKO
+  Baris 108 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | ZZKMK
+
+ZSDF_FAKTUR_PAJAK_TOP.abap
+  Baris 8 | Tipe DDIC | VBRK
+  Baris 13 | Field DDIC | VBRK-VKORG
+  Baris 22 | Field DDIC | BSEG-WRBTR
+  Baris 23 | Field DDIC | BSEG-DMBTR
+  Baris 24 | Field DDIC | VBRP-NETWR
+  Baris 25 | Field DDIC | VBRP-NETWR
+  Baris 26 | Field DDIC | VBRP-NETWR
+  Baris 27 | Field DDIC | VBRP-NETWR
+  Baris 28 | Field DDIC | VBRK-FKDAT
+  Baris 29 | Field DDIC | T001Z-PAVAL
+  Baris 30 | Field DDIC | T001Z-PAVAL
+  Baris 31 | Field DDIC | T001Z-PAVAL
+  Baris 32 | Field DDIC | BKPF-KURS2
+  Baris 33 | Field DDIC | KONV-KBETR
+  Baris 34 | Field DDIC | VBRP-NETWR
+  Baris 35 | Field DDIC | BSEG-DMBTR
+  Baris 42 | Field DDIC | VBRK-VBELN
+  Baris 43 | Field DDIC | VBRK-VBELN
+  Baris 44 | Field DDIC | VBRK-FKDAT
+  Baris 49 | Field DDIC | THEAD-TDNAME
+  Baris 60 | Field DDIC | SY-PAGNO
+  Baris 70 | Field DDIC | BKPF-BELNR
+  Baris 72 | Field DDIC | ADRC-NAME1
+  Baris 75 | Field DDIC | T001Z-PAVAL
+  Baris 79 | Field DDIC | KNA1-STCEG
+  Baris 85 | Field DDIC | ZFAKTUR_PAJAK-NETWR
+  Baris 88 | Field DDIC | KONV-KBETR
+  Baris 96 | Field DDIC | T001Z-PAVAL
+  Baris 97 | Field DDIC | T001Z-PAVAL
+  Baris 101 | Field DDIC | VBRK-FKDAT
+  Baris 102 | Field DDIC | VBRK-VBELN
+  Baris 103 | Field DDIC | VBRK-FKDAT
+  Baris 104 | Field DDIC | VBRK-FKART
+  Baris 107 | Field DDIC | THEAD-TDNAME
+  Baris 113 | Field DDIC | KNA1-PSTLZ
+  Baris 115 | Field DDIC | SY-DATUM
+  Baris 118 | Field DDIC | ZSIGN-NAMA
+  Baris 119 | Field DDIC | ZSIGN-JABATAN
+  Baris 124 | Field DDIC | BSEG-BELNR
+  Baris 125 | Field DDIC | VBFA-VBELV
+  Baris 126 | Field DDIC | VBAK-AUART
+  Baris 127 | Field DDIC | VBRK-KUNAG
+  Baris 128 | Field DDIC | VBRK-KUNAG
+  Baris 143 | Field DDIC | VBRP-CUOBJ
+  Baris 149 | Field DDIC | WMTO_S-AMOUNT
+  Baris 150 | Field DDIC | KONV-KNUMV
+  Baris 151 | Field DDIC | KONV-KBETR
+  Baris 152 | Field DDIC | KONV-KPEIN
+  Baris 154 | Field DDIC | KONV-WAERS
+  Baris 155 | Field DDIC | VBRP-NETWR
+  Baris 156 | Field DDIC | RKB1K-EXCHR
+  Baris 159 | Field DDIC | VBRP-NETWR
+  Baris 163 | Field DDIC | VBRK-XBLNR
+  Baris 164 | Field DDIC | VBRK-VBELN
+  Baris 170 | Field DDIC | ZNAST-COUNTER
+  Baris 197 | Field DDIC | BSEG-BELNR
+  Baris 198 | Field DDIC | VBRK-BUKRS
+  Baris 200 | Field DDIC | VBAP-CUOBJ
+  Baris 205 | Field DDIC | KONV-KNUMV
+  Baris 206 | Field DDIC | KONV-MWSK1
+  Baris 209 | BDC | BDCDATA
+  Baris 209 | BDC | BDCDATA
+  Baris 213 | Field DDIC | VBAP-KDMAT
+  Baris 218 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOK1 WITH FRAME TITLE TEXT-001.
+  Baris 218 | Teks Seleksi | TEXT-001
+  Baris 220 | Layar Seleksi | SELECT-OPTIONS:
+  Baris 221 | Field DDIC | VBRK-VKORG
+  Baris 222 | Field DDIC | VBRK-VBELN
+  Baris 223 | Field DDIC | VBRK-FKDAT
+  Baris 224 | Field DDIC | VBRK-FKSTO
+  Baris 226 | Layar Seleksi | SELECTION-SCREEN END   OF BLOCK BLOK1.
+  Baris 228 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOK2 WITH FRAME TITLE TEXT-002.
+  Baris 228 | Teks Seleksi | TEXT-002
+  Baris 229 | Layar Seleksi | PARAMETERS :
+  Baris 233 | Layar Seleksi | SELECTION-SCREEN END   OF BLOCK BLOK2.
+  Baris 235 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOK3 WITH FRAME TITLE TEXT-003.
+  Baris 235 | Teks Seleksi | TEXT-003
+  Baris 236 | Layar Seleksi | PARAMETERS: P_MODE1 RADIOBUTTON GROUP GRP1 USER-COMMAND AC DEFAULT 'X' MODIF ID MOD,
+  Baris 238 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOK3.
+  Baris 240 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOK4 WITH FRAME TITLE TEXT-004.
+  Baris 240 | Teks Seleksi | TEXT-004
+  Baris 241 | Layar Seleksi | PARAMETERS : S_CONN LIKE DBCON-CON_NAME MODIF ID CON.
+  Baris 241 | Field DDIC | DBCON-CON_NAME
+  Baris 242 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOK4.
+  Baris 244 | Layar Seleksi | SELECTION-SCREEN FUNCTION KEY 1.
+  Baris 250 | Field DDIC | SY-LOOPC
+  Baris 252 | Field DDIC | SY-UCOMM
+  Baris 255 | Field DDIC | TVKO-VKORG
+
+ZABAPALV.abap
+  Baris 7 | Field DDIC | SY-REPID
+  Baris 27 | Field DDIC | SY-DATUM
+  Baris 28 | Field DDIC | SY-DATUM
+  Baris 559 | Function module | REUSE_ALV_COMMENTARY_WRITE
+
+ZSDF_FAKTUR_PAJAK_F01.abap
+  Baris 501 | Layar dan GUI | SET PF-STATUS 'PFSTAT'.
+  Baris 1859 | Layar dan GUI | CALL SCREEN '0100'.
+  Baris 1923 | Field DDIC | SY-UCOMM
+  Baris 1926 | Field DDIC | SY-UCOMM
+  Baris 1999 | Field DDIC | FELD-NAME
+  Baris 2000 | Field DDIC | SY-STEPL
+  Baris 2003 | Field DDIC | FELD-NAME
+  Baris 2053 | Field DDIC | FELD-NAME
+  Baris 2097 | Field DDIC | FELD-NAME
+  Baris 2098 | Field DDIC | FELD-NAME
+  Baris 2099 | Field DDIC | FELD-NAME
+  Baris 2163 | Field DDIC | FELD-NAME
+  Baris 2198 | Field DDIC | FELD-NAME
+  Baris 2229 | Layar dan GUI | SET PF-STATUS 'ZMSTATUS'.
+  Baris 2230 | Layar dan GUI | SET TITLEBAR 'Maintain KMK Status'.
+  Baris 2408 | Field DDIC | SY-DATUM
+  Baris 2428 | Field DDIC | KONV-KBETR
+  Baris 2454 | Field DDIC | KNA1-DATLT
+  Baris 2528 | Field DDIC | VBRP-NETWR
+  Baris 2567 | Field DDIC | KONV-KWERT
+  Baris 2600 | Field DDIC | DBCON-CON_NAME
+  Baris 21 | Sumber data pada SELECT atau JOIN | VBRK
+  Baris 21 | Sumber data pada SELECT atau JOIN | VBRP
+  Baris 124 | Sumber data pada SELECT atau JOIN | VBAK
+  Baris 141 | Sumber data pada SELECT atau JOIN | ADRC
+  Baris 141 | Sumber data pada SELECT atau JOIN | TVKO
+  Baris 154 | Sumber data pada SELECT atau JOIN | T001Z
+  Baris 189 | Sumber data pada SELECT atau JOIN | VBPA
+  Baris 228 | Sumber data pada SELECT atau JOIN | KNA1
+  Baris 252 | Sumber data pada SELECT atau JOIN | T005T
+  Baris 263 | Sumber data pada SELECT atau JOIN | VBFA
+  Baris 351 | Sumber data pada SELECT atau JOIN | BKPF
+  Baris 418 | Sumber data pada SELECT atau JOIN | ZNAST
+  Baris 941 | Sumber data pada SELECT atau JOIN | KONV
+  Baris 1140 | Sumber data pada SELECT atau JOIN | MARA
+  Baris 1380 | Sumber data pada SELECT atau JOIN | ZSIGN
+  Baris 1844 | Sumber data pada SELECT atau JOIN | ZKMK
+  Baris 2411 | Sumber data pada SELECT atau JOIN | ZZKMK
+  Baris 2488 | Sumber data pada SELECT atau JOIN | VBAP
+  Baris 2609 | Sumber data pada SELECT atau JOIN | DBCON
+  Baris 292 | Function module | CONVERSION_EXIT_ALPHA_OUTPUT
+  Baris 338 | Function module | CONVERSION_EXIT_ALPHA_INPUT
+  Baris 759 | Function module | VC_I_GET_CONFIGURATION
+  Baris 1479 | Function module | SSF_FUNCTION_MODULE_NAME
+  Baris 1643 | Function module | CURRENCY_AMOUNT_SAP_TO_DISPLAY
+  Baris 1672 | Function module | READ_TEXT
+  Baris 1707 | Function module | BAPI_EXCHANGERATE_GETDETAIL
+  Baris 1745 | Function module | CETA_USR01_READ
+  Baris 2117 | Function module | SCROLLING_IN_TABLE
+  Baris 649 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | VF03
+  Baris 1823 | Indikasi penulisan data (perlu konfirmasi) | ZNAST
+  Baris 2654 | Indikasi penulisan data (perlu konfirmasi) | XSD003
+  Baris 1827 | Kontrol transaksi | COMMIT_WORK
+  Baris 2658 | Kontrol transaksi | COMMIT_WORK
+  Baris 2677 | Kontrol transaksi | COMMIT_WORK
+  Baris 2685 | Kontrol transaksi | COMMIT_WORK

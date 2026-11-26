@@ -1,0 +1,197 @@
+﻿Input: ZBC001
+Source SAP development (RFC baca-saja): ZMMC_UP_MAT_MAS
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZMMC_UP_MAT_MAS_F01:28 | AT SELECTION-SCREEN > WHEN 'INFO'. | PERFORM F_PROG_INFO USING V_PROG. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:33 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM UPLOAD_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:42 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM CHK_MATNUMC. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:43 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM READ_INTERNALVALUE. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:108 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM INIT. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:109 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_HEADDATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:110 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_PLANTDATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:111 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_CLIENTDATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:112 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_STORAGELOCATIONDATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:113 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_TAXCLASSIFICATION. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:114 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_SALESDATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:115 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_WAREHOUSENUMBERDATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:116 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_VALUATIONDATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:117 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_MATERIALDESCRIPTION. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:118 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_UNITSOFMEASURE. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:119 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_STORAGETYPEDATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:120 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM FILL_PRTDATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:121 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM SAVE_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:206 | AT SELECTION-SCREEN > WHEN OTHERS. | PERFORM DISPLAY_REPORT. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:761 | FORM UPLOAD_DATA > IF SY-SUBRC <> 0. | MESSAGE I000(0K) WITH 'File cannot be opened'. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:766 | FORM UPLOAD_DATA | PERFORM CEK_DDESCRIPTION. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1136 | FORM READ_INTERNALVALUE | MESSAGE TYPE CHAR100. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1199 | FORM READ_INTERNALVALUE > IF MEINS NE ''. | MESSAGE        = MESSAGE | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1226 | FORM READ_INTERNALVALUE > IF GEWEI NE ''. | MESSAGE        = MESSAGE | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1254 | FORM READ_INTERNALVALUE > IF LRMEI NE ''. | MESSAGE        = MESSAGE | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1282 | FORM READ_INTERNALVALUE > IF VRKME NE ''. | MESSAGE        = MESSAGE | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1310 | FORM READ_INTERNALVALUE > IF BSTME NE ''. | MESSAGE        = MESSAGE | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1338 | FORM READ_INTERNALVALUE > IF AUSME NE ''. | MESSAGE        = MESSAGE | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1366 | FORM READ_INTERNALVALUE > IF FRTME NE ''. | MESSAGE        = MESSAGE | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1394 | FORM READ_INTERNALVALUE > IF LVSME NE ''. | MESSAGE        = MESSAGE | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1437 | FORM READ_INTERNALVALUE > IF WA_MATERIAL-MATNR EQ ''. > IF MATNR EQ '' OR MATNR EQ '000000000000000000'. > IF IT_MATERIAL-WERKS_D NE ''. > IF MATNR EQ ''. | PERFORM GET_MATERIAL USING MATNR MATLTYPE. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1510 | FORM CEK_DDESCRIPTION > IF CTR > 1. | MESSAGE 'Ada beberapa material dengan deskripsi yang sama!' TYPE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1527 | FORM CEK_DDESCRIPTION > IF CTR > 1. | MESSAGE 'Samakan material dengan nilai externalnya!' TYPE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1541 | FORM DISPLAY_REPORT | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1542 | FORM DISPLAY_REPORT | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1543 | FORM DISPLAY_REPORT | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_F01:1557 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG_ICON USING 'IT_MATERIALN' : | Tinjau kondisi dan hasil di ECC.
+  LZMM_CONVERSIONU01:24 | Konteks perlu ditinjau | PERFORM conversion_exit_cunit_input | Tinjau kondisi dan hasil di ECC.
+  LZMM_CONVERSIONU01:37 | IF lv_unit_found IS INITIAL. | PERFORM trans_to_upper_case | Tinjau kondisi dan hasil di ECC.
+  LZMM_CONVERSIONU01:39 | IF lv_unit_found IS INITIAL. | PERFORM conversion_exit_cunit_input | Tinjau kondisi dan hasil di ECC.
+  ZMMC_UP_MAT_MAS_TOP:147 | Konteks perlu ditinjau | MESSAGE LIKE BAPI_MATRETURN2-MESSAGE. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZMMC_UP_MAT_MAS (25 baris)
+  21 | includes | ZMMC_UP_MAT_MAS_TOP
+  23 | includes | Z_PROG_INFO
+  25 | includes | ZMMC_UP_MAT_MAS_F01
+
+Objek ZMMC_UP_MAT_MAS_F01 (1849 baris)
+  82 | Field DDIC | T001-BUKRS
+  762 | Layar dan GUI | LEAVE TO SCREEN 0.
+  1132 | Field DDIC | BAPIMATDOA-MATL_TYPE
+  1133 | Field DDIC | MARA-MBRSH
+  1134 | Field DDIC | MARA-MTART
+  1797 | Field DDIC | SY-UCOMM
+  1825 | Field DDIC | DD01V-DATATYPE
+  8 | callFunctions | WS_FILENAME_GET
+  130 | callFunctions | BAPI_TRANSACTION_COMMIT
+  214 | callFunctions | BAPI_MATERIAL_SAVEDATA
+  397 | callFunctions | CONVERSION_EXIT_ALPHA_INPUT
+  743 | callFunctions | GUI_UPLOAD
+  1106 | callFunctions | BAPI_MATERIAL_GETINTNUMBERRET
+  1159 | callFunctions | CONVERSION_EXIT_MATN1_INPUT
+  1176 | callFunctions | CONVERSION_EXIT_MATNL_INPUT
+  1193 | callFunctions | ZCONVERSION_EXIT_CUNIT_INPUT
+  1767 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  1830 | callFunctions | NUMERIC_CHECK
+  83 | tableReads | T001W
+  83 | tableReads | T001K
+  83 | tableReads | T001
+  147 | tableReads | MARC
+  1418 | tableReads | MAKT
+  1449 | tableReads | MARA
+
+Objek LZMM_CONVERSIONU01 (88 baris)
+
+Objek Z_PROG_INFO (88 baris)
+  6 | Field DDIC | ZPROGINFO-PGMNA
+  15 | Field DDIC | RSNEWLENG-FCODE
+  77 | callFunctions | HELP_DOCULINES_SHOW
+  60 | tableReads | ZPROGINFO
+
+Objek ZMMC_UP_MAT_MAS_TOP (283 baris)
+  147 | Field DDIC | BAPI_MATRETURN2-MESSAGE
+  173 | Field DDIC | BAPIE1GLOBAL_DATA-TESTRUN
+  174 | Field DDIC | BAPIE1GLOBAL_DATA-TESTRUN
+  175 | Field DDIC | BAPIE1GLOBAL_DATA-TESTRUN
+  176 | Field DDIC | BAPIE1GLOBAL_DATA-TESTRUN
+  203 | Field DDIC | MARA-MEINS
+  204 | Field DDIC | MARA-GEWEI
+  205 | Field DDIC | MARM-MEINH
+  206 | Field DDIC | MVKE-VRKME
+  207 | Field DDIC | MARA-BSTME
+  208 | Field DDIC | MARC-AUSME
+  209 | Field DDIC | MARC-FRTME
+  210 | Field DDIC | MLGN-LVSME
+  211 | Field DDIC | MARA-MATNR
+  212 | Field DDIC | MATERIALID-MATNR_EXT
+  227 | Field DDIC | MAKT-MAKTX
+  232 | Field DDIC | SY-REPID
+  252 | Field DDIC | SY-DATUM
+  253 | Field DDIC | SY-DATUM
+  262 | Field DDIC | BAPI_MATRETURN2-MESSAGE
+  263 | Field DDIC | BAPI_MATRETURN2-MESSAGE
+  265 | Field DDIC | ZPROGINFO-PGMNA
+  267 | Field DDIC | MARC-SSQSS
+  268 | Field DDIC | MARC-QZGTP
+  271 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK OT WITH FRAME TITLE TEXT-100.
+  271 | Teks Seleksi | TEXT-100
+  272 | Layar Seleksi | PARAMETERS: FILENAME LIKE RLGRAP-FILENAME
+  272 | Field DDIC | RLGRAP-FILENAME
+  275 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK OT.
+  277 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1002 WITH FRAME.
+  278 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  279 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1002.
+Jumlah source terbaca: 5
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZMMC_UP_MAT_MAS.abap
+  Baris 21 | INCLUDE | ZMMC_UP_MAT_MAS_TOP
+  Baris 23 | INCLUDE | Z_PROG_INFO
+  Baris 25 | INCLUDE | ZMMC_UP_MAT_MAS_F01
+
+ZMMC_UP_MAT_MAS_TOP.abap
+  Baris 147 | Field DDIC | BAPI_MATRETURN2-MESSAGE
+  Baris 173 | Field DDIC | BAPIE1GLOBAL_DATA-TESTRUN
+  Baris 174 | Field DDIC | BAPIE1GLOBAL_DATA-TESTRUN
+  Baris 175 | Field DDIC | BAPIE1GLOBAL_DATA-TESTRUN
+  Baris 176 | Field DDIC | BAPIE1GLOBAL_DATA-TESTRUN
+  Baris 203 | Field DDIC | MARA-MEINS
+  Baris 204 | Field DDIC | MARA-GEWEI
+  Baris 205 | Field DDIC | MARM-MEINH
+  Baris 206 | Field DDIC | MVKE-VRKME
+  Baris 207 | Field DDIC | MARA-BSTME
+  Baris 208 | Field DDIC | MARC-AUSME
+  Baris 209 | Field DDIC | MARC-FRTME
+  Baris 210 | Field DDIC | MLGN-LVSME
+  Baris 211 | Field DDIC | MARA-MATNR
+  Baris 212 | Field DDIC | MATERIALID-MATNR_EXT
+  Baris 227 | Field DDIC | MAKT-MAKTX
+  Baris 232 | Field DDIC | SY-REPID
+  Baris 252 | Field DDIC | SY-DATUM
+  Baris 253 | Field DDIC | SY-DATUM
+  Baris 262 | Field DDIC | BAPI_MATRETURN2-MESSAGE
+  Baris 263 | Field DDIC | BAPI_MATRETURN2-MESSAGE
+  Baris 265 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 267 | Field DDIC | MARC-SSQSS
+  Baris 268 | Field DDIC | MARC-QZGTP
+  Baris 271 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK OT WITH FRAME TITLE TEXT-100.
+  Baris 271 | Teks Seleksi | TEXT-100
+  Baris 272 | Layar Seleksi | PARAMETERS: FILENAME LIKE RLGRAP-FILENAME
+  Baris 272 | Field DDIC | RLGRAP-FILENAME
+  Baris 275 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK OT.
+  Baris 277 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1002 WITH FRAME.
+  Baris 278 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  Baris 279 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1002.
+
+Z_PROG_INFO.abap
+  Baris 6 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 15 | Field DDIC | RSNEWLENG-FCODE
+  Baris 60 | Sumber data pada SELECT atau JOIN | ZPROGINFO
+  Baris 77 | Function module | HELP_DOCULINES_SHOW
+
+ZMMC_UP_MAT_MAS_F01.abap
+  Baris 82 | Field DDIC | T001-BUKRS
+  Baris 762 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 1132 | Field DDIC | BAPIMATDOA-MATL_TYPE
+  Baris 1133 | Field DDIC | MARA-MBRSH
+  Baris 1134 | Field DDIC | MARA-MTART
+  Baris 1797 | Field DDIC | SY-UCOMM
+  Baris 1825 | Field DDIC | DD01V-DATATYPE
+  Baris 83 | Sumber data pada SELECT atau JOIN | T001W
+  Baris 83 | Sumber data pada SELECT atau JOIN | T001K
+  Baris 83 | Sumber data pada SELECT atau JOIN | T001
+  Baris 147 | Sumber data pada SELECT atau JOIN | MARC
+  Baris 1418 | Sumber data pada SELECT atau JOIN | MAKT
+  Baris 1449 | Sumber data pada SELECT atau JOIN | MARA
+  Baris 8 | Function module | WS_FILENAME_GET
+  Baris 130 | Function module | BAPI_TRANSACTION_COMMIT
+  Baris 214 | Function module | BAPI_MATERIAL_SAVEDATA
+  Baris 397 | Function module | CONVERSION_EXIT_ALPHA_INPUT
+  Baris 743 | Function module | GUI_UPLOAD
+  Baris 1106 | Function module | BAPI_MATERIAL_GETINTNUMBERRET
+  Baris 1159 | Function module | CONVERSION_EXIT_MATN1_INPUT
+  Baris 1176 | Function module | CONVERSION_EXIT_MATNL_INPUT
+  Baris 1193 | Function module | ZCONVERSION_EXIT_CUNIT_INPUT
+  Baris 1767 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 1830 | Function module | NUMERIC_CHECK

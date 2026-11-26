@@ -1,0 +1,179 @@
+﻿Input: ZBC003
+Source SAP development (RFC baca-saja): ZMMC_EXT_SLOC
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZMMC_EXT_SLOC_F01:11 | AT SELECTION-SCREEN > WHEN 'INFO'. | PERFORM F_PROG_INFO USING V_PROG. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:13 | AT SELECTION-SCREEN | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:14 | AT SELECTION-SCREEN | PERFORM UPLOADDATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:15 | AT SELECTION-SCREEN | PERFORM DISPLAYREPORT. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:47 | FORM GET_DATA > IF SY-SUBRC <> 0. | MESSAGE I000(0K) WITH 'File cannot be opened'. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:65 | FORM UPLOADDATA | MESSAGE LIKE BAPIRET2-MESSAGE, | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:106 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | perform bdc_dynpro      using 'SAPMM03M' '0105'. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:107 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:109 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:111 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | perform bdc_field       using 'RM03M-MATNR' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:113 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | perform bdc_field       using 'RM03M-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:115 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | perform bdc_field       using 'RM03M-LFLAG' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:117 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | perform bdc_field       using 'RM03M-NFLAG' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:119 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | perform bdc_dynpro      using 'SAPMM03M' '0195'. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:120 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:122 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:124 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | perform bdc_field       using 'RM03M-LGORT(09)' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:127 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF CTUMODE EQ 'A'. | CALL TRANSACTION 'MMSC' USING BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:133 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | perform bdc_dynpro      using 'SAPMM03M' '0105'. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:134 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:136 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:138 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | perform bdc_field       using 'RM03M-MATNR' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:140 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | perform bdc_field       using 'RM03M-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:142 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | perform bdc_field       using 'RM03M-LFLAG' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:144 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | perform bdc_field       using 'RM03M-NFLAG' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:146 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | perform bdc_dynpro      using 'SAPMM03M' '0195'. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:147 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:149 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:151 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | perform bdc_field       using 'RM03M-LGORT(09)' | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:154 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > ELSE. > IF LGORT EQ ''. | CALL TRANSACTION 'MMSC' USING BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:187 | FORM UPLOADDATA > IF ITAB[] IS NOT INITIAL. > IF MSGS[] IS NOT INITIAL. > IF WA_MSGS-MSGTYP NE ''. | MESSAGE    = MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:233 | FORM DISPLAYREPORT | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:234 | FORM DISPLAYREPORT | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:235 | FORM DISPLAYREPORT | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZMMC_EXT_SLOC_F01:248 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG_ICON USING 'IT_REPORT' : | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZMMC_EXT_SLOC (43 baris)
+  4 | includes | ZMMC_EXT_SLOC_TOP
+  6 | includes | ZMMC_EXT_SLOC_F01
+
+Objek ZMMC_EXT_SLOC_F01 (388 baris)
+  48 | Layar dan GUI | LEAVE TO SCREEN 0.
+  65 | Field DDIC | BAPIRET2-MESSAGE
+  66 | Field DDIC | BAPIRET2-MESSAGE_V1
+  67 | Field DDIC | BAPIRET2-MESSAGE_V2
+  68 | Field DDIC | BAPIRET2-MESSAGE_V3
+  69 | Field DDIC | BAPIRET2-MESSAGE_V4
+  70 | Field DDIC | BAPIRET2-ID
+  71 | Field DDIC | BAPIRET2-NUMBER
+  74 | Field DDIC | MARD-LGORT
+  80 | BDC | BDCDATA
+  81 | BDC | BDCDATA
+  127 | BDC | BDCDATA
+  127 | BDC | CALL TRANSACTION 'MMSC' USING BDCDATA
+  154 | BDC | BDCDATA
+  154 | BDC | CALL TRANSACTION 'MMSC' USING BDCDATA
+  357 | BDC | BDCDATA
+  358 | BDC | BDCDATA
+  359 | BDC | BDCDATA
+  360 | BDC | BDCDATA
+  361 | BDC | BDCDATA
+  367 | BDC | BDCDATA
+  368 | BDC | BDCDATA
+  369 | BDC | BDCDATA
+  370 | BDC | BDCDATA
+  373 | Field DDIC | SY-UCOMM
+  5 | includes | Z_PROG_INFO
+  29 | callFunctions | GUI_UPLOAD
+  85 | callFunctions | CONVERSION_EXIT_MATN1_INPUT
+  176 | callFunctions | BAPI_MESSAGE_GETDETAIL
+  331 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  127 | callTransactions | MMSC
+  98 | tableReads | MARD
+
+Objek Z_PROG_INFO (88 baris)
+  6 | Field DDIC | ZPROGINFO-PGMNA
+  15 | Field DDIC | RSNEWLENG-FCODE
+  77 | callFunctions | HELP_DOCULINES_SHOW
+  60 | tableReads | ZPROGINFO
+
+Objek ZMMC_EXT_SLOC_TOP (99 baris)
+  24 | Field DDIC | ZPROGINFO-PGMNA
+  27 | BDC | BDCDATA
+  27 | BDC | BDCDATA
+  40 | Field DDIC | SY-REPID
+  60 | Field DDIC | SY-DATUM
+  61 | Field DDIC | SY-DATUM
+  64 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1001 WITH FRAME TITLE TEXT-100.
+  64 | Teks Seleksi | TEXT-100
+  65 | Layar Seleksi | PARAMETERS: FILENAME LIKE RLGRAP-FILENAME
+  65 | Field DDIC | RLGRAP-FILENAME
+  68 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1001.
+  70 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1002 WITH FRAME TITLE TEXT-150.
+  70 | Teks Seleksi | TEXT-150
+  71 | Layar Seleksi | PARAMETERS: CTUMODE LIKE CTU_PARAMS-DISMODE DEFAULT 'N'.
+  71 | Field DDIC | CTU_PARAMS-DISMODE
+  72 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1002.
+  74 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1003 WITH FRAME.
+  75 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  76 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1003.
+  85 | callFunctions | WS_FILENAME_GET
+Jumlah source terbaca: 4
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZMMC_EXT_SLOC.abap
+  Baris 4 | INCLUDE | ZMMC_EXT_SLOC_TOP
+  Baris 6 | INCLUDE | ZMMC_EXT_SLOC_F01
+
+ZMMC_EXT_SLOC_TOP.abap
+  Baris 24 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 27 | BDC | BDCDATA
+  Baris 27 | BDC | BDCDATA
+  Baris 40 | Field DDIC | SY-REPID
+  Baris 60 | Field DDIC | SY-DATUM
+  Baris 61 | Field DDIC | SY-DATUM
+  Baris 64 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1001 WITH FRAME TITLE TEXT-100.
+  Baris 64 | Teks Seleksi | TEXT-100
+  Baris 65 | Layar Seleksi | PARAMETERS: FILENAME LIKE RLGRAP-FILENAME
+  Baris 65 | Field DDIC | RLGRAP-FILENAME
+  Baris 68 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1001.
+  Baris 70 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1002 WITH FRAME TITLE TEXT-150.
+  Baris 70 | Teks Seleksi | TEXT-150
+  Baris 71 | Layar Seleksi | PARAMETERS: CTUMODE LIKE CTU_PARAMS-DISMODE DEFAULT 'N'.
+  Baris 71 | Field DDIC | CTU_PARAMS-DISMODE
+  Baris 72 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1002.
+  Baris 74 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1003 WITH FRAME.
+  Baris 75 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  Baris 76 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1003.
+  Baris 85 | Function module | WS_FILENAME_GET
+
+ZMMC_EXT_SLOC_F01.abap
+  Baris 48 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 65 | Field DDIC | BAPIRET2-MESSAGE
+  Baris 66 | Field DDIC | BAPIRET2-MESSAGE_V1
+  Baris 67 | Field DDIC | BAPIRET2-MESSAGE_V2
+  Baris 68 | Field DDIC | BAPIRET2-MESSAGE_V3
+  Baris 69 | Field DDIC | BAPIRET2-MESSAGE_V4
+  Baris 70 | Field DDIC | BAPIRET2-ID
+  Baris 71 | Field DDIC | BAPIRET2-NUMBER
+  Baris 74 | Field DDIC | MARD-LGORT
+  Baris 80 | BDC | BDCDATA
+  Baris 81 | BDC | BDCDATA
+  Baris 127 | BDC | BDCDATA
+  Baris 127 | BDC | CALL TRANSACTION 'MMSC' USING BDCDATA
+  Baris 154 | BDC | BDCDATA
+  Baris 154 | BDC | CALL TRANSACTION 'MMSC' USING BDCDATA
+  Baris 357 | BDC | BDCDATA
+  Baris 358 | BDC | BDCDATA
+  Baris 359 | BDC | BDCDATA
+  Baris 360 | BDC | BDCDATA
+  Baris 361 | BDC | BDCDATA
+  Baris 367 | BDC | BDCDATA
+  Baris 368 | BDC | BDCDATA
+  Baris 369 | BDC | BDCDATA
+  Baris 370 | BDC | BDCDATA
+  Baris 373 | Field DDIC | SY-UCOMM
+  Baris 5 | INCLUDE | Z_PROG_INFO
+  Baris 98 | Sumber data pada SELECT atau JOIN | MARD
+  Baris 29 | Function module | GUI_UPLOAD
+  Baris 85 | Function module | CONVERSION_EXIT_MATN1_INPUT
+  Baris 176 | Function module | BAPI_MESSAGE_GETDETAIL
+  Baris 331 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 127 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | MMSC
+
+Z_PROG_INFO.abap
+  Baris 6 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 15 | Field DDIC | RSNEWLENG-FCODE
+  Baris 60 | Sumber data pada SELECT atau JOIN | ZPROGINFO
+  Baris 77 | Function module | HELP_DOCULINES_SHOW

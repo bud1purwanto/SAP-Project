@@ -1,0 +1,226 @@
+﻿Input: ZCOA5
+Source SAP development (RFC baca-saja): PRARCHP1
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  PRARCHP1:32 | INITIALIZATION | PERFORM initialization USING con_ordertype_prorder | Tinjau kondisi dan hasil di ECC.
+  PRARCHP1:36 | INITIALIZATION | PERFORM standard_opt_init. | Tinjau kondisi dan hasil di ECC.
+  PRARCHP1:42 | AT SELECTION-SCREEN | PERFORM at_selection_screen_output CHANGING p_pretst p_preprd. | Tinjau kondisi dan hasil di ECC.
+  PRARCHP1:48 | AT SELECTION-SCREEN | PERFORM check_selid. | Tinjau kondisi dan hasil di ECC.
+  PRARCHP1:54 | AT SELECTION-SCREEN | PERFORM check_selection_screen USING set_loev set_loek. | Tinjau kondisi dan hasil di ECC.
+  PRARCHP1:83 | START-OF-SELECTION | PERFORM orders_select USING con_ordertype_prorder. | Tinjau kondisi dan hasil di ECC.
+  PRARCHP1:86 | START-OF-SELECTION | PERFORM activities_on_order USING set_loev set_loek p_pretst space. | Tinjau kondisi dan hasil di ECC.
+  PRARCHP1:89 | START-OF-SELECTION | PERFORM write_protocoll_new. | Tinjau kondisi dan hasil di ECC.
+  PARCHI01:20 | FORM INITIALIZATION > IF NOT sy-subrc IS INITIAL. | MESSAGE a677(co). | Tinjau kondisi dan hasil di ECC.
+  PARCHI01:26 | FORM INITIALIZATION > IF sy-dbcnt = 0. | MESSAGE a058(00) WITH i_object space space 'ARCH_OBJ'. | Tinjau kondisi dan hasil di ECC.
+  PARCHI01:81 | FORM CHECK_SELECTION_SCREEN > IF     iv_loev IS INITIAL | MESSAGE e889(co) WITH text-004 '' '' ''. | Tinjau kondisi dan hasil di ECC.
+  PARCHI01:96 | FORM CHECK_SELID > IF sy-subrc <> 0. | MESSAGE e889(co) WITH text-005 '' '' ''. | Tinjau kondisi dan hasil di ECC.
+  PARCHI01:131 | FORM ACTIVITIES_ON_ORDER > IF NOT caufv_tab[] IS INITIAL. > IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  ARCH_PREPROC_RELOAD_PRG_FORMS:14 | FORM STANDARD_OPT_INIT | PERFORM processing_options_text_set. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek PRARCHP1 (91 baris)
+  12 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK bild WITH FRAME TITLE text-sel.
+  12 | Teks Seleksi | text-sel
+  13 | Layar Seleksi | SELECT-OPTIONS: aufnr FOR caufv-aufnr MATCHCODE OBJECT ordb,
+  13 | Field DDIC | caufv-aufnr
+  14 | Field DDIC | caufv-auart
+  15 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK bild.
+  58 | Field DDIC | auart-low
+  69 | Field DDIC | auart-high
+  18 | includes | PARCHI02
+  21 | includes | PARCHI01
+  22 | includes | PARCHI04
+  60 | callFunctions | CO_F4_AUART
+
+Objek PARCHI04 (234 baris)
+  13 | Field DDIC | jest-objnr
+  16 | Field DDIC | caufv-auart
+  17 | Field DDIC | caufv-werks
+  187 | callFunctions | CO_ZF_AUTHORITY_CHECK
+  74 | tableReads | CAUFV
+  74 | tableReads | AFPO
+  163 | tableReads | JEST
+
+Objek PARCHI01 (235 baris)
+  15 | Field DDIC | tact-actvt
+  39 | Field DDIC | sy-slset
+  81 | Teks Seleksi | text-004
+  96 | Teks Seleksi | text-005
+  131 | Field DDIC | sy-msgty
+  145 | Field DDIC | mess_tab-arbgb
+  146 | Field DDIC | mess_tab-msgty
+  147 | Field DDIC | mess_tab-msgnr
+  149 | Field DDIC | mess_tab-spras
+  150 | Field DDIC | mess_tab-phase
+  151 | Field DDIC | mess_tab-aufnr
+  169 | Field DDIC | sy-msgno
+  112 | callFunctions | ORDER_CHANGE_FOR_ACTIVITY
+  172 | callFunctions | ARCHIVE_PROTOCOL_INIT
+  196 | callFunctions | ARCHIVE_PROTOCOL_COLLECT_APPL
+  233 | callFunctions | ARCHIVE_PROTOCOL_WRITE_APPL
+  24 | tableReads | ARCH_OBJ
+  94 | tableReads | TJ48
+
+Objek PARCHI02 (26 baris)
+  5 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK bild_2 WITH FRAME TITLE text-res.
+  5 | Teks Seleksi | text-res
+  6 | Layar Seleksi | SELECT-OPTIONS:  werks    FOR  caufv-werks,
+  6 | Field DDIC | caufv-werks
+  7 | Field DDIC | caufv-dispo
+  8 | Field DDIC | caufv-fevor
+  9 | Layar Seleksi | PARAMETERS       selid    TYPE tj48-selid.
+  9 | Field DDIC | tj48-selid
+  10 | Layar Seleksi | SELECT-OPTIONS:  gstrp    FOR  caufv-gstrp,
+  10 | Field DDIC | caufv-gstrp
+  11 | Field DDIC | afpo-ltrmi
+  12 | Layar Seleksi | PARAMETERS       interval TYPE coarch-gltint DEFAULT 90.
+  12 | Field DDIC | coarch-gltint
+  13 | Layar Seleksi | SELECTION-SCREEN COMMENT  40(8) text-day.
+  13 | Teks Seleksi | text-day
+  15 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  16 | Layar Seleksi | PARAMETERS       maxnum   TYPE coarch-ordnum DEFAULT 99999.
+  16 | Field DDIC | coarch-ordnum
+  17 | Layar Seleksi | SELECTION-SCREEN END   OF BLOCK bild_2.
+  21 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK action WITH FRAME TITLE  text-act.
+  21 | Teks Seleksi | text-act
+  22 | Layar Seleksi | PARAMETERS:      set_loev TYPE rc27x-flg_sel DEFAULT 'X',
+  22 | Field DDIC | rc27x-flg_sel
+  23 | Field DDIC | rc27x-flg_sel
+  24 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK action.
+  26 | includes | ARCH_PREPROC_PRG_STANDARD2
+
+Objek ARCH_PREPROC_PRG_STANDARD2 (16 baris)
+  13 | Layar Seleksi | PARAMETERS: p_prot   TYPE arch_processing_options-detail_log
+  13 | Field DDIC | arch_processing_options-detail_log
+  15 | Layar Seleksi | PARAMETERS: p_prot_o TYPE arch_processing_options-OBJ_PROT_OUTPUT
+  15 | Field DDIC | arch_processing_options-OBJ_PROT_OUTPUT
+  10 | includes | ARCH_PREPROC_PRG_STANDARD1
+
+Objek ARCH_PREPROC_PRG_STANDARD1 (27 baris)
+  9 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK sb1
+  12 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  13 | Layar Seleksi | PARAMETERS p_pretst TYPE arch_processing_options-preproc_testmode
+  13 | Field DDIC | arch_processing_options-preproc_testmode
+  15 | Layar Seleksi | SELECTION-SCREEN COMMENT (30) FOR FIELD p_pretst.
+  16 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  19 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  20 | Layar Seleksi | PARAMETERS p_preprd TYPE arch_processing_options-preproc_prodmode
+  20 | Field DDIC | arch_processing_options-preproc_prodmode
+  22 | Layar Seleksi | SELECTION-SCREEN COMMENT (30) FOR FIELD p_preprd.
+  23 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  24 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK sb1.
+  27 | includes | ARCH_PREPROC_RELOAD_PRG_FORMS
+
+Objek ARCH_PREPROC_RELOAD_PRG_FORMS (21 baris)
+  6 | includes | ARCH_PRG_FORMS
+
+Objek ARCH_PRG_FORMS (63 baris)
+  35 | Class dan Interface | cl_sel_screen_standard
+  13 | callFunctions | DDIF_DTEL_GET
+Jumlah source terbaca: 8
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+PRARCHP1.abap
+  Baris 12 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK bild WITH FRAME TITLE text-sel.
+  Baris 12 | Teks Seleksi | text-sel
+  Baris 13 | Layar Seleksi | SELECT-OPTIONS: aufnr FOR caufv-aufnr MATCHCODE OBJECT ordb,
+  Baris 13 | Field DDIC | caufv-aufnr
+  Baris 14 | Field DDIC | caufv-auart
+  Baris 15 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK bild.
+  Baris 58 | Field DDIC | auart-low
+  Baris 69 | Field DDIC | auart-high
+  Baris 18 | INCLUDE | PARCHI02
+  Baris 21 | INCLUDE | PARCHI01
+  Baris 22 | INCLUDE | PARCHI04
+  Baris 60 | Function module | CO_F4_AUART
+
+PARCHI02.abap
+  Baris 5 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK bild_2 WITH FRAME TITLE text-res.
+  Baris 5 | Teks Seleksi | text-res
+  Baris 6 | Layar Seleksi | SELECT-OPTIONS:  werks    FOR  caufv-werks,
+  Baris 6 | Field DDIC | caufv-werks
+  Baris 7 | Field DDIC | caufv-dispo
+  Baris 8 | Field DDIC | caufv-fevor
+  Baris 9 | Layar Seleksi | PARAMETERS       selid    TYPE tj48-selid.
+  Baris 9 | Field DDIC | tj48-selid
+  Baris 10 | Layar Seleksi | SELECT-OPTIONS:  gstrp    FOR  caufv-gstrp,
+  Baris 10 | Field DDIC | caufv-gstrp
+  Baris 11 | Field DDIC | afpo-ltrmi
+  Baris 12 | Layar Seleksi | PARAMETERS       interval TYPE coarch-gltint DEFAULT 90.
+  Baris 12 | Field DDIC | coarch-gltint
+  Baris 13 | Layar Seleksi | SELECTION-SCREEN COMMENT  40(8) text-day.
+  Baris 13 | Teks Seleksi | text-day
+  Baris 15 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  Baris 16 | Layar Seleksi | PARAMETERS       maxnum   TYPE coarch-ordnum DEFAULT 99999.
+  Baris 16 | Field DDIC | coarch-ordnum
+  Baris 17 | Layar Seleksi | SELECTION-SCREEN END   OF BLOCK bild_2.
+  Baris 21 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK action WITH FRAME TITLE  text-act.
+  Baris 21 | Teks Seleksi | text-act
+  Baris 22 | Layar Seleksi | PARAMETERS:      set_loev TYPE rc27x-flg_sel DEFAULT 'X',
+  Baris 22 | Field DDIC | rc27x-flg_sel
+  Baris 23 | Field DDIC | rc27x-flg_sel
+  Baris 24 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK action.
+  Baris 26 | INCLUDE | ARCH_PREPROC_PRG_STANDARD2
+
+ARCH_PREPROC_PRG_STANDARD2.abap
+  Baris 13 | Layar Seleksi | PARAMETERS: p_prot   TYPE arch_processing_options-detail_log
+  Baris 13 | Field DDIC | arch_processing_options-detail_log
+  Baris 15 | Layar Seleksi | PARAMETERS: p_prot_o TYPE arch_processing_options-OBJ_PROT_OUTPUT
+  Baris 15 | Field DDIC | arch_processing_options-OBJ_PROT_OUTPUT
+  Baris 10 | INCLUDE | ARCH_PREPROC_PRG_STANDARD1
+
+ARCH_PREPROC_PRG_STANDARD1.abap
+  Baris 9 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK sb1
+  Baris 12 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 13 | Layar Seleksi | PARAMETERS p_pretst TYPE arch_processing_options-preproc_testmode
+  Baris 13 | Field DDIC | arch_processing_options-preproc_testmode
+  Baris 15 | Layar Seleksi | SELECTION-SCREEN COMMENT (30) FOR FIELD p_pretst.
+  Baris 16 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 19 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 20 | Layar Seleksi | PARAMETERS p_preprd TYPE arch_processing_options-preproc_prodmode
+  Baris 20 | Field DDIC | arch_processing_options-preproc_prodmode
+  Baris 22 | Layar Seleksi | SELECTION-SCREEN COMMENT (30) FOR FIELD p_preprd.
+  Baris 23 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 24 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK sb1.
+  Baris 27 | INCLUDE | ARCH_PREPROC_RELOAD_PRG_FORMS
+
+ARCH_PREPROC_RELOAD_PRG_FORMS.abap
+  Baris 6 | INCLUDE | ARCH_PRG_FORMS
+
+ARCH_PRG_FORMS.abap
+  Baris 35 | Class dan Interface | cl_sel_screen_standard
+  Baris 13 | Function module | DDIF_DTEL_GET
+
+PARCHI01.abap
+  Baris 15 | Field DDIC | tact-actvt
+  Baris 39 | Field DDIC | sy-slset
+  Baris 81 | Teks Seleksi | text-004
+  Baris 96 | Teks Seleksi | text-005
+  Baris 131 | Field DDIC | sy-msgty
+  Baris 145 | Field DDIC | mess_tab-arbgb
+  Baris 146 | Field DDIC | mess_tab-msgty
+  Baris 147 | Field DDIC | mess_tab-msgnr
+  Baris 149 | Field DDIC | mess_tab-spras
+  Baris 150 | Field DDIC | mess_tab-phase
+  Baris 151 | Field DDIC | mess_tab-aufnr
+  Baris 169 | Field DDIC | sy-msgno
+  Baris 24 | Sumber data pada SELECT atau JOIN | ARCH_OBJ
+  Baris 94 | Sumber data pada SELECT atau JOIN | TJ48
+  Baris 112 | Function module | ORDER_CHANGE_FOR_ACTIVITY
+  Baris 172 | Function module | ARCHIVE_PROTOCOL_INIT
+  Baris 196 | Function module | ARCHIVE_PROTOCOL_COLLECT_APPL
+  Baris 233 | Function module | ARCHIVE_PROTOCOL_WRITE_APPL
+
+PARCHI04.abap
+  Baris 13 | Field DDIC | jest-objnr
+  Baris 16 | Field DDIC | caufv-auart
+  Baris 17 | Field DDIC | caufv-werks
+  Baris 74 | Sumber data pada SELECT atau JOIN | CAUFV
+  Baris 74 | Sumber data pada SELECT atau JOIN | AFPO
+  Baris 163 | Sumber data pada SELECT atau JOIN | JEST
+  Baris 187 | Function module | CO_ZF_AUTHORITY_CHECK

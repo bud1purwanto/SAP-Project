@@ -19,10 +19,11 @@ FUNCTION z_idoc_input_ztrn_po.
   DATA: ls_hdr TYPE ztrn_e1pohdr,
         ls_itm TYPE ztrn_e1poitm,
         ls_log TYPE ztrn_po_log,
+        lt_log TYPE STANDARD TABLE OF ztrn_po_log,
         lv_err TYPE c.
 
   LOOP AT idoc_contrl.
-    CLEAR lv_err.
+    CLEAR: lv_err, lt_log, ls_hdr.
     LOOP AT idoc_data WHERE docnum = idoc_contrl-docnum.
       CASE idoc_data-segnam.
         WHEN 'ZTRN_E1POHDR'.
@@ -40,9 +41,14 @@ FUNCTION z_idoc_input_ztrn_po.
           ls_log-menge  = ls_itm-menge.
           ls_log-erdat  = sy-datum.
           ls_log-erzet  = sy-uzeit.
-          MODIFY ztrn_po_log FROM ls_log.     "tabel Z milik latihan
+          APPEND ls_log TO lt_log.            "tampung dulu, tulis setelah valid
       ENDCASE.
     ENDLOOP.
+
+* Validasi dulu, baru tulis DB: IDoc error tidak boleh meninggalkan data
+    IF lv_err IS INITIAL.
+      MODIFY ztrn_po_log FROM TABLE lt_log.   "tabel Z milik latihan
+    ENDIF.
 
     CLEAR idoc_status.
     idoc_status-docnum = idoc_contrl-docnum.

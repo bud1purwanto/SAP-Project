@@ -1,0 +1,145 @@
+<title>Konfirmasi Hitung JR COA</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: satu kolom laporan QA, kartu opsi berdampingan, tabel nilai MIC */
+:root{
+  --bg:#f6f7f5; --surface:#ffffff; --fg:#1d2420; --muted:#5d6862; --line:#d9dfdb;
+  --jr:#e9eef0; --jr-fg:#2b3a42;
+  --a:#0f6e56; --a-bg:#e1f2ec; --b:#8a4b12; --b-bg:#f8ecdc;
+  --empty:#9a3b2a; --empty-bg:#f9e6e1;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#131715; --surface:#1b201e; --fg:#e4e9e6; --muted:#9aa59f; --line:#2f3733;
+  --jr:#22303a; --jr-fg:#cfe0ea; --a:#6fd3b1; --a-bg:#123329; --b:#f0b878; --b-bg:#3a2712;
+  --empty:#f19a86; --empty-bg:#3b1e18; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#131715; --surface:#1b201e; --fg:#e4e9e6; --muted:#9aa59f; --line:#2f3733;
+  --jr:#22303a; --jr-fg:#cfe0ea; --a:#6fd3b1; --a-bg:#123329; --b:#f0b878; --b-bg:#3a2712;
+  --empty:#f19a86; --empty-bg:#3b1e18; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 48px}
+.wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1{font-size:26px;font-weight:600;margin:0;text-wrap:balance}
+h2{font-size:18px;font-weight:600;margin:0 0 10px;text-wrap:balance}
+p{margin:0}
+.meta{color:var(--muted);font-size:13px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.q strong{font-weight:600}
+code,.mono{font-family:var(--mono);font-size:13px}
+.jrrow{display:grid;grid-template-columns:minmax(150px,200px) 1fr;gap:10px 14px;align-items:center}
+.jr{background:var(--jr);color:var(--jr-fg);border-radius:6px;padding:8px 10px;font-family:var(--mono);font-size:13px}
+.jr small{display:block;font-family:var(--sans);font-size:12px;opacity:.85}
+.note{font-size:14px;color:var(--muted)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.opt{border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0;border:1px solid var(--line);background:var(--surface)}
+.opt .tag{align-self:flex-start;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px}
+.opt.a .tag{background:var(--a-bg);color:var(--a)} .opt.b .tag{background:var(--b-bg);color:var(--b)}
+.opt h3{margin:0;font-size:16px;font-weight:600}
+.flow{display:flex;flex-direction:column;gap:6px}
+.step{display:flex;gap:8px;align-items:baseline;font-size:14px}
+.step .k{font-family:var(--mono);font-size:12px;color:var(--muted);min-width:64px}
+.chip{display:inline-block;font-size:12px;padding:1px 7px;border-radius:4px;font-weight:500}
+.chip.ok{background:var(--a-bg);color:var(--a)} .chip.no{background:var(--empty-bg);color:var(--empty)} .chip.b{background:var(--b-bg);color:var(--b)}
+.result{border-top:1px solid var(--line);padding-top:10px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.result .v{font-family:var(--mono);font-size:22px;font-weight:500;font-variant-numeric:tabular-nums}
+.opt.a .result .v{color:var(--a)} .opt.b .result .v{color:var(--b)}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+tbody tr:last-child td{border-bottom:none}
+td.a{color:var(--a);font-weight:500} td.b{color:var(--b);font-weight:500}
+.ask{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.ask ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+@media (max-width:640px){.opts{grid-template-columns:1fr}.jrrow{grid-template-columns:1fr}}
+</style>
+
+<div class="wrap">
+  <header style="display:flex;flex-direction:column;gap:6px">
+    <h1>Konfirmasi hitung JR di COA (ZQM002)</h1>
+    <p class="meta">Data DEV AIX client 130, 26 Nov 2026. Contoh: DO 0085006270 (skenario L-QM11) dan DO 0085006279 (ML-QM04).</p>
+  </header>
+
+  <section class="q">
+    <h2>Pertanyaan</h2>
+    <p>Satu DO bisa berisi beberapa JR. Kalau <strong>sebagian JR tidak diinspeksi</strong> dan baru dapat nilai dari JR bulan sebelumnya, apakah JR itu <strong>ikut dihitung</strong> di nilai COA?</p>
+    <p>Atau <strong>cukup pakai JR yang sudah ada nilainya</strong> di DO itu, dan JR bulan lalu hanya dipakai kalau semua JR di DO kosong?</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <h2>Contoh: DO 0085006270, 2 JR</h2>
+    <div class="jrrow">
+      <div class="jr">4 AAB 086 022<small>Agustus, tidak diinspeksi</small></div>
+      <p>Ambil dari JR <code>4 AAB 086 006</code> (bulan sama). Thickness <strong>22.40</strong>. <span class="chip ok">ada nilai</span></p>
+      <div class="jr">4 AAB 086 003<small>Awal Agustus, tidak diinspeksi</small></div>
+      <p>002 dan 001 tidak diinspeksi. Bulan sama tidak ada nilai, jadi harus ke Juli: <code>4 AAB 076 009</code>, Thickness <strong>19.58</strong>. <span class="chip b">nilai dari bulan lalu</span></p>
+    </div>
+    <p class="note">JR 022 sudah memberi nilai untuk DO ini. Yang perlu diputuskan hanya JR 003: ikut dihitung atau tidak.</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <h2>Dua pilihan</h2>
+    <div class="opts">
+      <article class="opt a">
+        <span class="tag">Opsi A · program DEV sekarang</span>
+        <h3>Semua JR ikut dihitung</h3>
+        <div class="flow">
+          <div class="step"><span class="k">JR 022</span><span>22.40 <span class="chip ok">dihitung</span></span></div>
+          <div class="step"><span class="k">JR 003</span><span>19.58 dari Juli <span class="chip ok">dihitung</span></span></div>
+        </div>
+        <div class="result"><span>Thickness COA = rata-rata 2 JR</span><span class="v">20.99</span></div>
+      </article>
+      <article class="opt b">
+        <span class="tag">Opsi B</span>
+        <h3>Cukup JR yang sudah ada nilai</h3>
+        <div class="flow">
+          <div class="step"><span class="k">JR 022</span><span>22.40 <span class="chip ok">dihitung</span></span></div>
+          <div class="step"><span class="k">JR 003</span><span>Kosong <span class="chip no">tidak dihitung</span></span></div>
+        </div>
+        <div class="result"><span>Thickness COA = JR 022 saja</span><span class="v">22.40</span></div>
+      </article>
+    </div>
+    <p class="note">Di opsi B, JR bulan lalu tetap dipakai kalau semua JR di DO kosong, supaya COA tidak kosong.</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px">
+    <h2>Dampak ke nilai COA</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>MIC DO 6270</th><th>JR 022 (dari 006)</th><th>JR 003 (dari Juli)</th><th>Opsi A</th><th>Opsi B</th></tr></thead>
+      <tbody>
+        <tr><td>Thickness</td><td>22.40</td><td>19.58</td><td class="a">20.99</td><td class="b">22.40</td></tr>
+        <tr><td>Tensile MD</td><td>14.00</td><td>12.92</td><td class="a">13.46</td><td class="b">14.00</td></tr>
+        <tr><td>Tensile TD</td><td>26.90</td><td>27.71</td><td class="a">27.31</td><td class="b">26.90</td></tr>
+        <tr><td>Elongation MD</td><td>180</td><td>151</td><td class="a">166</td><td class="b">180</td></tr>
+        <tr><td>Elongation TD</td><td>65</td><td>46</td><td class="a">56</td><td class="b">65</td></tr>
+        <tr><td>Shrinkage MD</td><td>4.65</td><td>4.33</td><td class="a">4.49</td><td class="b">4.65</td></tr>
+        <tr><td>Shrinkage TD</td><td>1.78</td><td>2.05</td><td class="a">1.92</td><td class="b">1.78</td></tr>
+        <tr><td>Haze</td><td>1.00</td><td>1.75</td><td class="a">1.38</td><td class="b">1.00</td></tr>
+        <tr><td>Gloss 45°</td><td>89</td><td>97</td><td class="a">93</td><td class="b">89</td></tr>
+        <tr><td>COF untreated</td><td>0.450</td><td>0.265</td><td class="a">0.358</td><td class="b">0.450</td></tr>
+        <tr><td>COF treated</td><td>0.562</td><td>0.371</td><td class="a">0.467</td><td class="b">0.562</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tbl"><table>
+      <thead><tr><th>DO 6279, COF (PEC7FDCD)</th><th>Nilai</th><th>Opsi A</th><th>Opsi B</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">R EC7 116 001</span>, <span class="mono">002</span></td><td>0.540</td><td>dihitung</td><td>dihitung</td></tr>
+        <tr><td><span class="mono">V EC7 116 001</span>, <span class="mono">002</span> (awal Nov, dari Oktober)</td><td>0.400</td><td>dihitung</td><td>tidak dihitung</td></tr>
+        <tr><td><span class="mono">R EC7 106 001</span></td><td>kosong</td><td>tidak ada</td><td>tidak ada</td></tr>
+        <tr><td>Nilai COA</td><td></td><td class="a">0.470</td><td class="b">0.540</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="ask">
+    <h2>Yang perlu dikonfirmasi</h2>
+    <ul>
+      <li>Pilih <strong>opsi A</strong> (semua JR dihitung, termasuk yang dapat nilai dari bulan lalu) atau <strong>opsi B</strong> (cukup JR yang sudah ada nilai di DO).</li>
+      <li>Di 19 DO skenario lain hasilnya sama untuk kedua opsi. Yang terdampak hanya DO yang punya JR awal bulan tanpa inspeksi.</li>
+    </ul>
+  </section>
+</div>

@@ -280,6 +280,8 @@ Cabang `START-OF-SELECTION`:
 | `DOWNLOAD` / `DOWNLOAD_DETAIL` / `DOWNLOAD_BATCH_LIST_XLSX` | F01 | Export Excel. |
 | `SAVE_ADD_INFO` | F02 | Simpan override nilai ke `ZLOG_COA`. |
 | `SET_COA_RANGE_FLAG` | F02 | Tandai nilai di luar limit. |
+| `TCERTI_SET_ICON` (module PBO) | F02 | Isi `IT_DATA-OUT_ICON` = `ICON_LED_RED` bila `RANGE_FLAG = 'X'`, tampil di kolom Out Limit screen 0100 (layar utama Print COA). |
+| `TDETAIL_SET_ICON` (module PBO) | F02 | Isi `OUT_ICON` = `ICON_LED_RED` bila `RANGE_FLAG = 'X'`, tampil di kolom Out Limit screen 0200. |
 | `TOGGLE_DO_ITEM_CHECK` | F02 | Centang massal per DO + `UECHA`. |
 | `CANCEL_UD` + `BDC_DYNPRO`/`BDC_FIELD` | F02 | BDC `QA12` cancel UD. **Tidak dipanggil di mana pun (dead code).** |
 

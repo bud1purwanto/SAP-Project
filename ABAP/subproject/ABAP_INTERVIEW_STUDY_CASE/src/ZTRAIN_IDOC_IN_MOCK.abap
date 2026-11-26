@@ -28,10 +28,11 @@ FORM z_idoc_input_ztrn_po
   DATA: ls_hdr TYPE ztrn_e1pohdr,
         ls_itm TYPE ztrn_e1poitm,
         ls_log TYPE ztrn_po_log,
+        lt_log TYPE STANDARD TABLE OF ztrn_po_log,
         lv_err TYPE c.
 
   LOOP AT idoc_contrl.
-    CLEAR lv_err.
+    CLEAR: lv_err, lt_log, ls_hdr.
     LOOP AT idoc_data WHERE docnum = idoc_contrl-docnum.
       CASE idoc_data-segnam.
         WHEN 'ZTRN_E1POHDR'.
@@ -49,9 +50,13 @@ FORM z_idoc_input_ztrn_po
           ls_log-menge  = ls_itm-menge.
           ls_log-erdat  = sy-datum.
           ls_log-erzet  = sy-uzeit.
-          APPEND ls_log TO gt_log.           "mock: ganti MODIFY ztrn_po_log
+          APPEND ls_log TO lt_log.
       ENDCASE.
     ENDLOOP.
+
+    IF lv_err IS INITIAL.
+      APPEND LINES OF lt_log TO gt_log.
+    ENDIF.
 
     CLEAR idoc_status.
     idoc_status-docnum = idoc_contrl-docnum.

@@ -1,0 +1,509 @@
+﻿Input: ZHU4PI
+Source SAP development (RFC baca-saja): ZHUI_MENU
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZHUI_MENU:37 | START-OF-SELECTION > IF BUT1 = 'X'. | CALL TRANSACTION 'ZHU4SO'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_MENU:40 | START-OF-SELECTION > ELSEIF BUT2 = 'X'. | CALL TRANSACTION 'ZHU4FS'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:43 | FORM USER_OK_TC > WHEN 'INSR'. | PERFORM FCODE_INSERT_ROW USING    P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:48 | FORM USER_OK_TC > WHEN 'DELE'. | PERFORM FCODE_DELETE_ROW USING    P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:57 | FORM USER_OK_TC > WHEN 'P--' OR | PERFORM COMPUTE_SCROLLING_IN_TC USING P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:73 | FORM USER_OK_TC > WHEN 'MARK'. | PERFORM FCODE_TC_MARK_LINES USING P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:79 | FORM USER_OK_TC > WHEN 'DMRK'. | PERFORM FCODE_TC_DEMARK_LINES USING P_TC_NAME | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:336 | FORM F_SAVE > IF ZPACK_PCH-PINNR NE '000000000000' AND ZPACK_PCH-PINST = 'A'. | PERFORM F_UNLOCK. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:340 | FORM F_SAVE > IF D_DISPMODE = C_DISP_NEW. | PERFORM F_GETNEWID CHANGING LD_PINNR. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:349 | FORM F_SAVE > IF D_DISPMODE = C_DISP_NEW. | PERFORM F_PROCESS_DETAILS USING ZPACK_PCH-PINNR CHANGING LD_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:355 | FORM F_SAVE > IF D_DISPMODE = C_DISP_NEW. | PERFORM F_UNLOCK_SONUM. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:357 | FORM F_SAVE > IF D_DISPMODE = C_DISP_NEW. | MESSAGE S398(00) WITH 'Packing instruction' LD_PINNR 'created'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:360 | FORM F_SAVE > ELSE. | PERFORM F_PROCESS_DETAILS USING ZPACK_PCH-PINNR CHANGING LD_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:375 | FORM F_SAVE > ELSE. > IF LD_ERRNO EQ 0. | MESSAGE S398(00) WITH 'Packing instruction' ZPACK_PCH-PINNR | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:401 | FORM F_ACTIVATE | PERFORM F_CHECK_USAGE USING FUS_PINNR CHANGING FCN_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:409 | FORM F_ACTIVATE | PERFORM F_LOCK CHANGING FCN_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:425 | FORM F_ACTIVATE | PERFORM F_ADD_PCL | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:429 | FORM F_ACTIVATE | PERFORM F_ADD_CHILDREN | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:437 | FORM F_ACTIVATE | PERFORM F_UPDATE_PACKINGLIST TABLES ITAB_PCL. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:441 | FORM F_ACTIVATE | MESSAGE S398(00) WITH 'Activated.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:475 | FORM F_GETNEWID > IF SY-SUBRC <> 0 OR S_FOUND IS INITIAL. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:519 | FORM F_OKCODE_9001 > WHEN 'SAVE'. > IF SY-TCODE EQ 'ZHU4FS'. > ELSE. | MESSAGE 'HARUS PLANT 1000/2000' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:523 | FORM F_OKCODE_9001 > WHEN 'SAVE'. | PERFORM F_CHECK_CRITERIA CHANGING ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:527 | FORM F_OKCODE_9001 > WHEN 'SAVE'. | PERFORM F_SAVE. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:530 | FORM F_OKCODE_9001 > WHEN 'BACK'. | PERFORM F_UNLOCK. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:531 | FORM F_OKCODE_9001 > WHEN 'BACK'. | PERFORM F_UNLOCK_SONUM. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:537 | FORM F_OKCODE_9001 > WHEN 'EXIT' OR 'CANCEL'. | PERFORM F_UNLOCK. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:538 | FORM F_OKCODE_9001 > WHEN 'EXIT' OR 'CANCEL'. | PERFORM F_UNLOCK_SONUM. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:542 | FORM F_OKCODE_9001 > WHEN 'ACTIVATE'. | PERFORM F_ACTIVATE USING ZPACK_PCH-PINNR CHANGING LD_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:545 | FORM F_OKCODE_9001 > WHEN 'CHANGE'. | PERFORM F_SWITCH_DISPMODE. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:548 | FORM F_OKCODE_9001 > WHEN 'TRIM'. | PERFORM F_LOCK CHANGING LD_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:550 | FORM F_OKCODE_9001 > WHEN 'TRIM'. | PERFORM F_TRIM_PINS USING ZPACK_PCH-PINNR. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:551 | FORM F_OKCODE_9001 > WHEN 'TRIM'. | PERFORM F_RENUMBER TABLES ITAB_PCL. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:556 | FORM F_OKCODE_9001 > WHEN 'TRIM'. | PERFORM F_UNLOCK. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:558 | FORM F_OKCODE_9001 > WHEN 'TRIM'. | PERFORM F_LOAD_DOC CHANGING LD_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:561 | FORM F_OKCODE_9001 > WHEN 'ADD' OR 'CTL_TAB_PINS'. | PERFORM F_ADD_INSTRUCTION. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:564 | FORM F_OKCODE_9001 > WHEN OTHERS. | PERFORM F_PROCESS_DETAILS USING ZPACK_PCH-PINNR CHANGING LD_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:630 | FORM F_UNLOCK > IF D_ISFREESTOCK = C_NO. | PERFORM F_UNLOCK_SONUM. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:679 | FORM F_LOCK > IF FCN_ERRNO <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:684 | FORM F_LOCK > ELSE. | PERFORM F_LOCK_LIST CHANGING FCN_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:686 | FORM F_LOCK > ELSE. > IF FCN_ERRNO NE 0. | PERFORM F_UNLOCK. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:808 | FORM F_PROCESS_DETAILS | PERFORM F_PROCESS_DETAIL_LEVEL USING FU_PINNR. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:809 | FORM F_PROCESS_DETAILS | PERFORM F_CONSISTENCY_CHECK CHANGING FC_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:987 | FORM F_STATUS_9001 > IF ZPACK_PCH-WERKS IS NOT INITIAL. > ELSE. | MESSAGE S001(00) WITH 'Packing instruction not in TRIAS plant'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1072 | FORM F_ADD_CHILDREN | PERFORM F_ADD_PCL | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1143 | FORM F_PROCESS_DETAIL_LEVEL | PERFORM F_SET_CHILDLEVEL USING FU_PINNR ITAB_PINS-ZINS01. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1163 | FORM F_SAVE_CANCELED | MESSAGE S398(00) | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9001:1193 | FORM F_CONSISTENCY_CHECK > WHEN C_LEVEL_PALLET. | PERFORM F_CHECK_PALLET TABLES ITAB_MATERIAL USING ITAB_PINS | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1197 | FORM F_CONSISTENCY_CHECK > WHEN C_LEVEL_BOX. | PERFORM F_CHECK_BOX TABLES ITAB_MATERIAL USING ITAB_PINS | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1201 | FORM F_CONSISTENCY_CHECK > WHEN C_LEVEL_ROLL. | PERFORM F_CHECK_ROLL TABLES ITAB_MATERIAL USING ITAB_PINS | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1244 | FORM F_CHECK_PALLET > IF FCN_ERRNO NE 0. | MESSAGE S001(00) WITH S_MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1278 | FORM F_CHECK_BOX > IF FCN_ERRNO NE 0. | MESSAGE S001(00) WITH S_MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1311 | FORM F_CHECK_ROLL > ELSEIF FUWA_PINS-MATNR NE ZPACK_PCH-MATNR. | MESSAGE S001(00) WITH S_MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1343 | FORM F_CHECK_MATNR > IF N_ERRNO NE 0. | MESSAGE E001(00) WITH S_MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1418 | FORM F_LOCK_LIST > ELSE. | MESSAGE E001(00) WITH 'Pallet sedang diproses.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1427 | FORM F_LOCK_LIST > IF SY-SUBRC NE 0. | MESSAGE I001(00) WITH 'Cant apply lock to HU table.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1469 | FORM F_LOCK_SONUM > IF FCN_ERRNO NE 0. | MESSAGE E001(00) WITH 'SO Item tidak dapat di lock.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1506 | FORM F_TRIM_PINS > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1658 | FORM F_ADD_INSTRUCTION | CALL TRANSACTION 'ZHU4AD'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1662 | FORM F_ADD_INSTRUCTION | PERFORM F_LOAD_DOC CHANGING N_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9001:1800 | FORM F_CHECK_USAGE > IF N_COUNT GT 0. | MESSAGE I000(0K) WITH 'Packing instruction is already in use.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:72 | FORM F_ACTIVATE | PERFORM F_ADD_PCL | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:76 | FORM F_ACTIVATE | PERFORM F_ADD_CHILDREN | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:151 | FORM F_ADD_CHILDREN | PERFORM F_ADD_PCL | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:177 | FORM F_ADD_INSTRUCTION | PERFORM CHECK_MATPALT_PLANT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:184 | FORM F_ADD_INSTRUCTION > IF S_TCODE IS INITIAL. | PERFORM F_LOCK CHANGING N_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:197 | FORM F_ADD_INSTRUCTION > IF B_IS_REPLACE = 'X'. > IF N_QTY > 0. | MESSAGE I000(0K) WITH 'This pallet instruction is already used.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:290 | FORM F_ADD_INSTRUCTION > ELSE. | PERFORM F_ACTIVATE TABLES ITAB_PCL USING ITAB_PC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:297 | FORM F_ADD_INSTRUCTION > IF B_IS_REPLACE = 'X'. | MESSAGE S001(00) WITH 'Packing instruction untuk palet berhasil diubah.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:299 | FORM F_ADD_INSTRUCTION > ELSE. | MESSAGE S001(00) WITH 'Packing instruction selesai ditambahkan.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:303 | FORM F_ADD_INSTRUCTION > IF S_TCODE IS INITIAL. | PERFORM F_UNLOCK. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:321 | FORM F_ADD_INSTRUCTION | MESSAGE S001(00) WITH | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:343 | FORM F_CHECK_PALLET > IF N_PLTCN = 0. | MESSAGE E001(00) WITH 'Masukkan jumlah pallet'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:360 | FORM F_CHECK_PALLET > IF N_ERRNO NE 0. | MESSAGE E001(00) WITH 'Material ' S_PALET ' bukan pallet.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:380 | FORM F_CHECK_BOX > IF N_BOXCN = 0. | MESSAGE E001(00) WITH 'Masukkan jumlah box'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:398 | FORM F_CHECK_BOX > IF N_ERRNO NE 0. | MESSAGE E001(00) WITH 'Material ' S_BOX ' bukan untuk box'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:424 | FORM F_LOCK > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:429 | FORM F_LOCK > ELSE. | PERFORM F_LOCK_LIST CHANGING FCN_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:431 | FORM F_LOCK > ELSE. > IF FCN_ERRNO NE 0. | PERFORM F_UNLOCK. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:477 | FORM F_LOCK_LIST > ELSE. | MESSAGE E001(00) WITH 'Pallet sedang diproses.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:569 | FORM F_SEARCH_PACKING_INSTRUCTION > IF SY-SUBRC NE 0. | MESSAGE ID SY-MSGID TYPE 'S' NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:627 | FORM CHECK_MATPALT_PLANT > IF TCODE EQ 'ZHU4SO' OR TCODE EQ 'ZAHU4SO'. > IF PLANT_SO NOT IN PLANT_MAT. | MESSAGE 'Material Pallet Tidak Berada Pada Plant SO' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:646 | FORM CHECK_MATPALT_PLANT > IF TCODE EQ 'ZHU4SO' OR TCODE EQ 'ZAHU4SO'. > IF S_BOX IS NOT INITIAL. > IF PLANT_SO NOT IN PLANT_MAT. | MESSAGE 'Material Box Tidak Berada Pada Plant SO' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:667 | FORM CHECK_MATPALT_PLANT > ELSEIF TCODE EQ 'ZHU4FS' OR TCODE EQ 'ZAHU4FS'. > IF PLANT_SO NOT IN PLANT_MAT. | MESSAGE 'Material Pallet Tidak Berada Pada Plant' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD:686 | FORM CHECK_MATPALT_PLANT > ELSEIF TCODE EQ 'ZHU4FS' OR TCODE EQ 'ZAHU4FS'. > IF S_BOX IS NOT INITIAL. > IF PLANT_SO NOT IN PLANT_MAT. | MESSAGE 'Material Box Tidak Berada Pada Plant' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD_PAI:13 | IF ZPACK_PCH-PINNR IS INITIAL AND ZPACK_PCH-VBELN IS INITIAL. | MESSAGE E001(00) WITH | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD_PAI:22 | ELSE. > IF ZPACK_PCH-PINNR IS INITIAL. > IF SY-SUBRC NE 0. | MESSAGE E001(00) WITH | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD_PAI:50 | WHEN 'ENTE'. | PERFORM F_CHECK_REPLACE_PALLET USING ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD_PAI:53 | WHEN 'ENTE'. > IF ERRNO NE 0. | MESSAGE W002(ZMM) WITH 'Pallet Nomer' S_PLTNO 'Tidak ada'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD_PAI:55 | WHEN 'ENTE'. > ELSEIF ERRNO = 0. | PERFORM F_ADD_INSTRUCTION. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD_PAI:66 | Konteks perlu ditinjau | PERFORM F_CHECK_BOX. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD_PAI:76 | Konteks perlu ditinjau | PERFORM F_CHECK_PALLET. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD_PAI:85 | Konteks perlu ditinjau | PERFORM F_SEARCH_PACKING_INSTRUCTION. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD_PAI:107 | Konteks perlu ditinjau | PERFORM F_CHECK_REPLACE_PALLET CHANGING ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_ADD_PAI:110 | IF ERRNO NE 0. | MESSAGE W002(ZMM) WITH 'Pallet Nomer' S_PLTNO 'Tidak ada'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PAI9001:39 | Konteks perlu ditinjau | PERFORM USER_OK_TC USING    'CTLTAB_PINS' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PAI9001:53 | Konteks perlu ditinjau | PERFORM F_OKCODE_9001. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PAI9001:71 | IF D_ISFREESTOCK = C_YES. | PERFORM F_CHECK_MATNR TABLES ITAB_MATERIAL. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PAI9001:81 | Konteks perlu ditinjau | PERFORM F_CHECK_CRITERIA CHANGING ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PAI9001:124 | IF SY-SUBRC NE 0. | MESSAGE ID SY-MSGID TYPE 'S' NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PAI9001:156 | FORM F_CHECK_CRITERIA > IF COUNT > 1. | MESSAGE W009. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PAI9001:162 | FORM F_CHECK_CRITERIA > ELSEIF COUNT = 0. | MESSAGE W002 WITH 'Kriteria harus diisi'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PAI9001:180 | FORM F_CHECK_CRITERIA > IF LGOR1 NE ZPACK_PCH-LGORT. | MESSAGE W002 WITH 'Sloc tidak sesuai'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PBO9001:36 | Konteks perlu ditinjau | PERFORM F_DISPMODE_9001. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PBO9001:47 | Konteks perlu ditinjau | PERFORM F_STATUS_9001. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:31 | FORM F_OKCODE_9000 > IF SY-TCODE EQ 'ZHU4SO'. > IF FU_OKCODE EQ 'CREATE' OR FU_OKCODE EQ 'CHANGE' OR FU_OKCODE EQ 'DISPLAY'. > IF ZPACK_PCH-VBELN IS NOT INITIAL. > IF ZVKORG NE '1000'. > ELSE. | MESSAGE 'Harus SO Milik Trias' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:36 | FORM F_OKCODE_9000 > IF SY-TCODE EQ 'ZHU4SO'. > IF FU_OKCODE EQ 'CREATE' OR FU_OKCODE EQ 'CHANGE' OR FU_OKCODE EQ 'DISPLAY'. > ELSE. | MESSAGE 'Silahkan Input Data' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:54 | FORM F_OKCODE_9000 > IF SY-TCODE EQ 'ZHU4FS'. > IF FU_OKCODE EQ 'CHANGE' OR FU_OKCODE EQ 'DISPLAY' OR FU_OKCODE EQ 'COPY'. > ELSE. | MESSAGE 'Harus PI Milik Trias' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:90 | FORM F_NEW > IF D_ISFREESTOCK = C_NO. > IF ZPACK_PCH-POSNR IS INITIAL OR ZPACK_PCH-VBELN IS INITIAL. | MESSAGE I010. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:100 | FORM F_NEW > IF D_ISFREESTOCK = C_NO. > ELSE. > IF N_COUNT EQ 0. | MESSAGE I011. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:107 | FORM F_NEW > IF D_ISFREESTOCK = C_NO. > ELSE. | PERFORM F_LOCK_SONUM CHANGING N_ERRNO. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:109 | FORM F_NEW > IF D_ISFREESTOCK = C_NO. > ELSE. > IF N_ERRNO NE 0. | MESSAGE I012. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:112 | FORM F_NEW > IF D_ISFREESTOCK = C_NO. > ELSE. | PERFORM F_CHECK_DUPLICATES CHANGING B_IS_DUPLICATE. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:115 | FORM F_NEW > IF D_ISFREESTOCK = C_NO. > ELSE. > IF B_IS_DUPLICATE = C_YES. | MESSAGE I013. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:134 | FORM F_NEW > IF D_ISFREESTOCK = C_NO. > ELSE. > ELSE. | PERFORM F_LOAD_SO_PARTNER | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:139 | FORM F_NEW > IF D_ISFREESTOCK = C_NO. > ELSE. > ELSE. | PERFORM F_LOAD_SO_PARTNER | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:171 | FORM F_CHANGE | PERFORM F_LOAD_DOC CHANGING LD_ERRNO. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:173 | FORM F_CHANGE > IF LD_ERRNO EQ 0. | PERFORM F_LOCK CHANGING LD_ERRNO. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:192 | FORM F_DISPLAY | PERFORM F_LOAD_DOC CHANGING LD_ERRNO. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:207 | FORM F_LIST | CALL TRANSACTION 'ZHU4LS'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:225 | FORM F_COPY > IF SY-SUBRC NE 0. | MESSAGE E002 WITH 'Packing instruction' ZPACK_PCH-PINNR | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:323 | FORM F_CANCEL | PERFORM F_EXIT. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:371 | FORM F_LOAD_PINS_H > IF D_ISFREESTOCK = C_NO. | PERFORM F_LOCK_SONUM CHANGING FC_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:384 | FORM F_LOAD_PINS_H > IF D_ISFREESTOCK = C_NO. > ELSE. | PERFORM F_LOAD_SO_PARTNER | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:389 | FORM F_LOAD_PINS_H > IF D_ISFREESTOCK = C_NO. > ELSE. | PERFORM F_LOAD_SO_PARTNER | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:488 | FORM F_CHECK_SO > IF SY-UCOMM = 'DISPLAY' AND SY-TCODE = C_TCODE_SO. > IF ZPACK_PCH-VBELN IS INITIAL OR ZPACK_PCH-POSNR IS INITIAL. | MESSAGE E014. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:501 | FORM F_CHECK_SO > IF SY-UCOMM = 'DISPLAY' AND SY-TCODE = C_TCODE_SO. > ELSE. > IF SY-SUBRC NE 0. | MESSAGE E015 WITH 'Cant find Packing Instruction for Sales Document' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:524 | FORM F_CHECK_PINNR > IF ( SY-UCOMM = 'DISPLAY' OR SY-UCOMM = 'COPY' ) AND SY-TCODE = > IF ZPACK_PCH-PINNR IS INITIAL. | MESSAGE S016. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:535 | FORM F_CHECK_PINNR > IF ( SY-UCOMM = 'DISPLAY' OR SY-UCOMM = 'COPY' ) AND SY-TCODE = > ELSE. > IF SY-SUBRC NE 0. | MESSAGE S018 WITH ZPACK_PCH-PINNR. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:554 | FORM F_LOAD_DOC | PERFORM F_LOAD_PINS_H CHANGING FCN_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:557 | FORM F_LOAD_DOC > IF FCN_ERRNO NE 0. | MESSAGE S001(00) WITH 'Cant find the document.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:560 | FORM F_LOAD_DOC > ELSE. | PERFORM F_LOAD_PINS CHANGING FCN_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_SUB9000:646 | FORM F_LOAD_SPECIFICATION > IF SY-SUBRC <> 0. > IF SY-MSGTY IS INITIAL. | MESSAGE ID SY-MSGID TYPE 'E' NUMBER SY-MSGNO | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_SUB9000:649 | FORM F_LOAD_SPECIFICATION > IF SY-SUBRC <> 0. > ELSE. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_LIST:56 | START-OF-SELECTION > IF FLAG_OBLI EQ '1'. | PERFORM CHECK_PLANT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST:58 | START-OF-SELECTION > ELSEIF FLAG_OBLI EQ '2'. | PERFORM CHECK_SO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST:61 | START-OF-SELECTION | PERFORM F_PROCESS_REPORT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST:65 | END-OF-SELECTION > IF ITAB_OUTPUT[] IS NOT INITIAL. | PERFORM F_WRITE_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST:68 | END-OF-SELECTION > ELSE. | MESSAGE S000(0K) WITH 'Request returns zero result.'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_F01:293 | FORM F_WRITE_DATA | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_F01:294 | FORM F_WRITE_DATA | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_F01:295 | FORM F_WRITE_DATA | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_F01:307 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG_ICON USING 'ITAB_OUTPUT' : | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_F01:329 | FORM F_FIELD_CATALOG > IF GB_DISPLAY_ITEMS = C_YES. | PERFORM F_ALV_FIELDCATG_ICON USING 'ITAB_OUTPUT_ITEM' : | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_F01:455 | FORM F_USER_COMMAND > WHEN '&IC1'. > IF SY-SUBRC EQ 0. > IF ITAB_OUTPUT-VBELN  IS INITIAL. | PERFORM BDC_DYNPRO      USING 'ZHUI_PACKINST' '9000'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_LIST_F01:456 | FORM F_USER_COMMAND > WHEN '&IC1'. > IF SY-SUBRC EQ 0. > IF ITAB_OUTPUT-VBELN  IS INITIAL. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_LIST_F01:458 | FORM F_USER_COMMAND > WHEN '&IC1'. > IF SY-SUBRC EQ 0. > IF ITAB_OUTPUT-VBELN  IS INITIAL. | PERFORM BDC_FIELD       USING 'ZPACK_PCH-PINNR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_LIST_F01:461 | FORM F_USER_COMMAND > WHEN '&IC1'. > IF SY-SUBRC EQ 0. > IF ITAB_OUTPUT-VBELN  IS INITIAL. | CALL TRANSACTION 'ZHU4FS' USING ITAB_BDC OPTIONS FROM OPT. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_LIST_F01:464 | FORM F_USER_COMMAND > WHEN '&IC1'. > IF SY-SUBRC EQ 0. > ELSE. | PERFORM BDC_DYNPRO  USING 'ZHUI_PACKINST' '9000'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_LIST_F01:465 | FORM F_USER_COMMAND > WHEN '&IC1'. > IF SY-SUBRC EQ 0. > ELSE. | PERFORM BDC_FIELD   USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_LIST_F01:467 | FORM F_USER_COMMAND > WHEN '&IC1'. > IF SY-SUBRC EQ 0. > ELSE. | PERFORM BDC_FIELD   USING 'ZPACK_PCH-VBELN' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_LIST_F01:469 | FORM F_USER_COMMAND > WHEN '&IC1'. > IF SY-SUBRC EQ 0. > ELSE. | PERFORM BDC_FIELD   USING 'ZPACK_PCH-POSNR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_LIST_F01:472 | FORM F_USER_COMMAND > WHEN '&IC1'. > IF SY-SUBRC EQ 0. > ELSE. | CALL TRANSACTION 'ZHU4SO' USING ITAB_BDC OPTIONS FROM OPT. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_PACKINST_LIST_F01:621 | FORM CHECK_PLANT > IF TCODE EQ 'ZHU4FS' OR TCODE EQ 'ZHU4SO'. > IF S_VBELN IS NOT INITIAL. | PERFORM CHECK_SO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_F01:626 | FORM CHECK_PLANT > IF TCODE EQ 'ZHU4FS' OR TCODE EQ 'ZHU4SO'. > IF PLANT IN S_WERKS. | MESSAGE 'Plant TTA tidak sesuai dengan Tcode yang di gunakan!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_F01:664 | FORM CHECK_SO > IF SLSORG NE IT_VBAK-VKORG. | MESSAGE MSG TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_TOP:73 | AT SELECTION-SCREEN | PERFORM F4_SPOSNR . | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_TOP:76 | AT SELECTION-SCREEN | PERFORM F4_SPOSNR . | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_TOP:79 | AT SELECTION-SCREEN | PERFORM F4_SVBELN. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_LIST_TOP:82 | AT SELECTION-SCREEN | PERFORM F4_SVBELN. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PAI9000:11 | Konteks perlu ditinjau | PERFORM F_OKCODE_9000 USING SY-UCOMM. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PAI9000:21 | Konteks perlu ditinjau | PERFORM F_CHECK_PINNR. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PAI9000:32 | Konteks perlu ditinjau | PERFORM F_CHECK_SO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PBO9000:12 | Konteks perlu ditinjau | PERFORM F_CHECK_TCODE. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PBO9000:13 | Konteks perlu ditinjau | PERFORM F_STATUS_9000. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_PACKINST_PBO9000:26 | FORM F_CHECK_TCODE > IF FLAG_START = ''. | MESSAGE S002(ZMM) WITH 'Transaction' SY-TCODE 'does not exist'. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZHUI_MENU (41 baris)
+  20 | Layar Seleksi | SELECTION-SCREEN: SKIP,
+  21 | Teks Seleksi | TEXT-100
+  23 | Layar Seleksi | PARAMETERS:     BUT1  RADIOBUTTON GROUP GRP1.
+  24 | Layar Seleksi | SELECTION-SCREEN: POSITION 4, COMMENT (45) TEXT-110,
+  24 | Teks Seleksi | TEXT-110
+  26 | Layar Seleksi | SELECTION-SCREEN: END OF LINE,
+  28 | Layar Seleksi | PARAMETERS:     BUT2 RADIOBUTTON GROUP GRP1.
+  29 | Layar Seleksi | SELECTION-SCREEN: POSITION 4, COMMENT (50) TEXT-120,
+  29 | Teks Seleksi | TEXT-120
+  37 | callTransactions | ZHU4SO
+  40 | callTransactions | ZHU4FS
+
+Objek ZHUI_PACKINST (30 baris)
+  16 | includes | ZHUI_PACKINST_TOP
+  19 | includes | ZHUI_PACKINST_PBO9000
+  21 | includes | ZHUI_PACKINST_PAI9000
+  23 | includes | ZHUI_PACKINST_SUB9000
+  26 | includes | ZHUI_PACKINST_DAT9001
+  28 | includes | ZHUI_PACKINST_PBO9001
+  29 | includes | ZHUI_PACKINST_PAI9001
+  30 | includes | ZHUI_PACKINST_SUB9001
+
+Objek ZHUI_PACKINST_SUB9001 (1805 baris)
+  17 | BDC | BDCDATA
+  25 | Field DDIC | SY-UCOMM
+  28 | Field DDIC | SY-UCOMM
+  101 | Field DDIC | FELD-NAME
+  102 | Field DDIC | SY-STEPL
+  105 | Field DDIC | FELD-NAME
+  155 | Field DDIC | FELD-NAME
+  199 | Field DDIC | FELD-NAME
+  200 | Field DDIC | FELD-NAME
+  201 | Field DDIC | FELD-NAME
+  265 | Field DDIC | FELD-NAME
+  300 | Field DDIC | FELD-NAME
+  332 | Field DDIC | SY-SUBRC
+  426 | Tipe DDIC | ITAB_PCL
+  430 | Tipe DDIC | ITAB_PCL
+  475 | Field DDIC | SY-MSGTY
+  520 | Layar dan GUI | LEAVE TO SCREEN 0.
+  533 | Layar dan GUI | SET SCREEN 9000.
+  581 | Field DDIC | ZTLOCK-LOOBJ
+  642 | Field DDIC | ZTLOCK-LOOBJ
+  679 | Field DDIC | SY-MSGTY
+  825 | Field DDIC | SY-TABIX
+  826 | Field DDIC | ITAB_PINS-ZINS01
+  827 | Field DDIC | ITAB_PINS-ZINS02
+  988 | Layar dan GUI | SET SCREEN 9000.
+  994 | Layar dan GUI | SET PF-STATUS '9001' EXCLUDING ITAB_DISABLE.
+  999 | Layar dan GUI | SET TITLEBAR '9000A'.
+  1001 | Layar dan GUI | SET TITLEBAR '9000'.
+  1022 | Field DDIC | WA_PCL-HUSEQ
+  1073 | Tipe DDIC | FT_PCL
+  1091 | Tipe DDIC | FT_PCL
+  1132 | Field DDIC | SY-TABIX
+  1357 | Field DDIC | ZTLOCK-LOOBJ
+  1358 | Field DDIC | ZPACK_PCL-HUSEQ
+  1454 | Field DDIC | ZTLOCK-LOOBJ
+  1506 | Field DDIC | SY-MSGTY
+  219 | callFunctions | SCROLLING_IN_TABLE
+  457 | callFunctions | ENQUEUE_EZPACK_PCR
+  495 | callFunctions | DEQUEUE_EZPACK_PCR
+  588 | callFunctions | DEQUEUE_EZPACK_PCH
+  603 | callFunctions | DEQUEUE_EZPACK_PCL
+  664 | callFunctions | ENQUEUE_EZPACK_PCH
+  1379 | callFunctions | ENQUEUE_EZPACK_PCL
+  1491 | callFunctions | POPUP_TO_CONFIRM
+  1658 | callTransactions | ZHU4AD
+  479 | tableReads | ZPACK_PCR
+  595 | tableReads | ZPACK_PCL
+  1179 | tableReads | MARA
+  1179 | tableReads | MAKT
+  1537 | tableReads | ZPACK_PCH
+  1552 | tableReads | ZPACK_PC
+  351 | databaseWrites | ZPACK_PCH
+  352 | databaseWrites | ZPACK_PC
+  486 | databaseWrites | ZPACK_PCR
+  553 | databaseWrites | ZPACK_PCL
+  1772 | databaseWrites | ZPACK_PCH2
+  1773 | databaseWrites | ZPACK_PC2
+  1774 | databaseWrites | ZPACK_PCL2
+
+Objek ZHUI_PACKINST_ADD (695 baris)
+  19 | Tipe DDIC | ZPACK_PCH
+  51 | Tipe DDIC | ITAB_PCL
+  73 | Tipe DDIC | ITAB_PCL
+  77 | Tipe DDIC | ITAB_PCL
+  99 | Field DDIC | WA_PCL-HUSEQ
+  152 | Tipe DDIC | FT_PCL
+  174 | Field DDIC | SY-TCODE
+  424 | Field DDIC | SY-MSGTY
+  446 | Field DDIC | ZTLOCK-LOOBJ
+  447 | Field DDIC | ZPACK_PCL-HUSEQ
+  493 | Field DDIC | ZTLOCK-LOOBJ
+  597 | Field DDIC | VBAP-WERKS
+  598 | Field DDIC | SY-TCODE
+  600 | Field DDIC | MARC-WERKS
+  603 | Field DDIC | MARC-WERKS
+  628 | Layar dan GUI | LEAVE TO SCREEN 9000.
+  647 | Layar dan GUI | LEAVE TO SCREEN 9000.
+  668 | Layar dan GUI | LEAVE TO SCREEN 9000.
+  687 | Layar dan GUI | LEAVE TO SCREEN 9000.
+  45 | includes | ZHUI_PACKINST_CONSTANTS
+  46 | includes | ZHUI_PACKINST_ADD_PBO
+  47 | includes | ZHUI_PACKINST_ADD_PAI
+  412 | callFunctions | ENQUEUE_EZPACK_PCH
+  456 | callFunctions | ENQUEUE_EZPACK_PCL
+  472 | callFunctions | DEQUEUE_EZPACK_PCL
+  496 | callFunctions | DEQUEUE_EZPACK_PCH
+  556 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  58 | tableReads | ZPACK_PCL
+  226 | tableReads | ZPACK_PC
+  232 | tableReads | ZPACK_PCH
+  347 | tableReads | MARA
+  347 | tableReads | MAKT
+  612 | tableReads | VBAP
+  616 | tableReads | MARC
+  201 | databaseWrites | ZPACK_PC
+  206 | databaseWrites | ZPACK_PCL
+  281 | databaseWrites | ZPACK_PCH
+
+Objek ZHUI_PACKINST_ADD_PAI (135 baris)
+  47 | Field DDIC | SY-SUBRC
+  122 | Field DDIC | ZPACK_PC-ZINS01
+  17 | tableReads | ZPACK_PCH
+  128 | tableReads | ZPACK_PC
+
+Objek ZHUI_PACKINST_ADD_PBO (41 baris)
+  11 | Layar dan GUI | SET PF-STATUS '9000'.
+  12 | Layar dan GUI | SET TITLEBAR '9000'.
+  15 | Field DDIC | SY-TCODE
+
+Objek ZHUI_PACKINST_CONSTANTS (58 baris)
+
+Objek ZHUI_PACKINST_PAI9001 (184 baris)
+  98 | Field DDIC | T001L-WERKS
+  99 | Field DDIC | ZHU_MAPP-LGOR1
+  100 | Field DDIC | T001L-LGOBE
+  137 | Field DDIC | ZHU_MAPP-LGOR1
+  111 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  65 | tableReads | MARA
+  65 | tableReads | MAKT
+  103 | tableReads | ZHU_MAPP
+  103 | tableReads | T001L
+  25 | databaseWrites | ITAB_PINS
+
+Objek ZHUI_PACKINST_PBO9001 (50 baris)
+
+Objek ZHUI_PACKINST_DAT9001 (11 baris)
+  9 | Field DDIC | SY-LOOPC
+  11 | Field DDIC | SY-UCOMM
+
+Objek ZHUI_PACKINST_SUB9000 (668 baris)
+  13 | Field DDIC | VBAP-WERKS
+  14 | Field DDIC | VBAK-VKORG
+  15 | Field DDIC | VBAP-VBELN
+  16 | Field DDIC | VBAP-POSNR
+  32 | Layar dan GUI | LEAVE TO SCREEN 0.
+  55 | Layar dan GUI | LEAVE TO SCREEN 0.
+  143 | Layar dan GUI | LEAVE TO SCREEN 9001.
+  152 | Layar dan GUI | LEAVE TO SCREEN 9001.
+  168 | Field DDIC | SY-SUBRC
+  189 | Field DDIC | SY-SUBRC
+  252 | Layar dan GUI | LEAVE TO SCREEN 9001.
+  296 | Layar dan GUI | SET SCREEN 0.
+  434 | Layar dan GUI | SET TITLEBAR '9000A'.
+  436 | Layar dan GUI | SET PF-STATUS '9000'.
+  438 | Layar dan GUI | SET TITLEBAR '9000'.
+  440 | Layar dan GUI | SET PF-STATUS '9000' EXCLUDING 'COPY'.
+  617 | Field DDIC | VBAP-WERKS
+  618 | Field DDIC | VBAP-LGORT
+  619 | Field DDIC | VBAP-CHARG
+  649 | Field DDIC | SY-MSGTY
+  631 | callFunctions | QC01_BATCH_VALUES_READ
+  207 | callTransactions | ZHU4LS
+  24 | tableReads | VBAK
+  24 | tableReads | VBAP
+  44 | tableReads | ZPACK_PCH
+  242 | tableReads | ZPACK_PC
+  342 | tableReads | KNA1
+  342 | tableReads | VBPA
+
+Objek ZHUI_PACKINST_LIST (70 baris)
+  16 | includes | ZHUI_PACKINST_LIST_TOP
+  19 | includes | ZHU_PACKINST_LIST_O01
+  21 | includes | ZHUI_PACKINST_LIST_F01
+
+Objek ZHUI_PACKINST_LIST_F01 (668 baris)
+  5 | Field DDIC | INOB-CUOBJ
+  25 | Field DDIC | VBPA-VBELN
+  26 | Field DDIC | VBPA-PARVW
+  27 | Field DDIC | KNA1-NAME1
+  434 | Field DDIC | SY-UCOMM
+  461 | BDC | CALL TRANSACTION 'ZHU4FS' USING ITAB_BDC OPTIONS FROM OPT.
+  472 | BDC | CALL TRANSACTION 'ZHU4SO' USING ITAB_BDC OPTIONS FROM OPT.
+  488 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN' EXCLUDING FT_EXTAB.
+  615 | Field DDIC | VBAP-WERKS
+  650 | Field DDIC | VBAK-VKORG
+  653 | Field DDIC | VBAK-VBELN
+  654 | Field DDIC | VBAK-VKORG
+  158 | callFunctions | CARD_TABLE_READ_ENTRIES
+  189 | callFunctions | VC_I_GET_CONFIGURATION
+  377 | callFunctions | REUSE_ALV_HIERSEQ_LIST_DISPLAY
+  404 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  552 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  461 | callTransactions | ZHU4FS
+  472 | callTransactions | ZHU4SO
+  60 | tableReads | ZPACK_PCH
+  95 | tableReads | ZPACK_PC
+  95 | tableReads | MAKT
+  114 | tableReads | VBPA
+  114 | tableReads | KNA1
+  184 | tableReads | VBAP
+  658 | tableReads | VBAK
+
+Objek ZHU_PACKINST_LIST_O01 (43 baris)
+
+Objek ZHUI_PACKINST_LIST_TOP (159 baris)
+  26 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK PINST WITH FRAME TITLE TEXT-001.
+  26 | Teks Seleksi | TEXT-001
+  27 | Layar Seleksi | SELECT-OPTIONS:
+  28 | Field DDIC | ZPACK_PCH-PINNR
+  29 | Field DDIC | ZPACK_PCH-VBELN
+  30 | Field DDIC | ZPACK_PCH-POSNR
+  31 | Field DDIC | ZPACK_PCH-WERKS
+  32 | Field DDIC | T001L-LGORT
+  33 | Field DDIC | AUSP-ATWRT
+  34 | Field DDIC | AUSP-ATWRT
+  36 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  37 | Layar Seleksi | SELECTION-SCREEN COMMENT 1(10) TEXT.
+  38 | Layar Seleksi | SELECTION-SCREEN POSITION 1.
+  39 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  41 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  42 | Layar Seleksi | SELECTION-SCREEN COMMENT 12(11) TEXT1.
+  43 | Layar Seleksi | SELECTION-SCREEN POSITION 9.
+  44 | Layar Seleksi | PARAMETERS : R1 AS CHECKBOX.
+  45 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  47 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  48 | Layar Seleksi | SELECTION-SCREEN COMMENT 12(11) TEXT2.
+  49 | Layar Seleksi | SELECTION-SCREEN POSITION 9.
+  50 | Layar Seleksi | PARAMETERS : R2 AS CHECKBOX.
+  51 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  53 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  54 | Layar Seleksi | SELECTION-SCREEN COMMENT 12(11) TEXT3.
+  55 | Layar Seleksi | SELECTION-SCREEN POSITION 9.
+  56 | Layar Seleksi | PARAMETERS : R3 AS CHECKBOX.
+  57 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  59 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  60 | Layar Seleksi | SELECTION-SCREEN COMMENT 12(11) TEXT4.
+  61 | Layar Seleksi | SELECTION-SCREEN POSITION 9.
+  62 | Layar Seleksi | PARAMETERS : R4 AS CHECKBOX.
+  63 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  65 | Layar Seleksi | SELECT-OPTIONS:
+  66 | Field DDIC | ZPACK_PCH-PINST
+  67 | Field DDIC | ZPACK_PCH-CRNAM
+  68 | Field DDIC | ZPACK_PCH-CRDAT
+  70 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK PINST.
+  72 | Field DDIC | S_POSNR-LOW
+  75 | Field DDIC | S_POSNR-HIGH
+  78 | Field DDIC | S_VBELN-LOW
+  81 | Field DDIC | S_VBELN-HIGH
+  97 | Field DDIC | ZPACK_PCH-PINNR
+  98 | Field DDIC | ZPACK_PCH-VBELN
+  99 | Field DDIC | ZPACK_PCH-POSNR
+  100 | Field DDIC | ZPACK_PCH-WERKS
+  101 | Field DDIC | ZPACK_PCH-LGORT
+  102 | Field DDIC | ZPACK_PCH-DESCR
+  103 | Field DDIC | ZPACK_PCH-PINST
+  105 | Field DDIC | KNA1-NAME1
+  106 | Field DDIC | KNA1-NAME1
+  107 | Field DDIC | ZPACK_PCH-CRNAM
+  108 | Field DDIC | ZPACK_PCH-CRDAT
+  109 | Field DDIC | ZPACK_PCH-CRTIM
+  110 | Field DDIC | ZPACK_PCH-AENAM
+  111 | Field DDIC | ZPACK_PCH-AEDAT
+  112 | Field DDIC | ZPACK_PCH-AETIM
+  113 | Field DDIC | ZPACK_PCH-ZZCRITERIABF
+  114 | Field DDIC | ZPACK_PCH-ZZCRITERIA1
+  115 | Field DDIC | ZPACK_PCH-ZZCRITERIA2
+  116 | Field DDIC | ZPACK_PCH-ZZCRITERIAR
+  117 | Field DDIC | ZPACK_PCH-ZZCORE3
+  118 | Field DDIC | ZPACK_PCH-ZZCORE6
+  119 | Field DDIC | ZPACK_PCH-ZZSHEET
+  122 | Field DDIC | ZPACK_PC-MATNR
+  129 | Field DDIC | ZPACK_PC-PINNR
+  130 | Field DDIC | ZPACK_PC-ZINS01
+  131 | Field DDIC | ZPACK_PC-ZINS02
+  132 | Field DDIC | ZPACK_PC-ZINS03
+  133 | Field DDIC | ZPACK_PC-MATNR
+  134 | Field DDIC | MAKT-MAKTX
+  135 | Field DDIC | ZPACK_PC-ZMENG
+  136 | Field DDIC | ZPACK_PC-MEINS
+  142 | BDC | BDCDATA
+  154 | Field DDIC | ZPACK_PC-INILVL
+  155 | Field DDIC | ZPACK_PC-ZMENG
+  159 | Field DDIC | SY-TCODE
+  6 | includes | ZHUI_PACKINST_CONSTANTS
+  7 | includes | ZABAPALV
+
+Objek ZABAPALV (660 baris)
+  7 | Field DDIC | SY-REPID
+  27 | Field DDIC | SY-DATUM
+  28 | Field DDIC | SY-DATUM
+  559 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+
+Objek ZHUI_PACKINST_PAI9000 (34 baris)
+
+Objek ZHUI_PACKINST_PBO9000 (29 baris)
+
+Objek ZHUI_PACKINST_TOP (53 baris)
+  21 | Field DDIC | KNA1-NAME1
+  22 | Field DDIC | KNA1-NAME1
+  5 | includes | ZHU_PACKINST_CONSTANTS
+  51 | callFunctions | POC_GET_COMPUTER_NAME
+
+Objek ZHU_PACKINST_CONSTANTS (56 baris)
+Jumlah source terbaca: 20
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZHUI_MENU.abap
+  Baris 20 | Layar Seleksi | SELECTION-SCREEN: SKIP,
+  Baris 21 | Teks Seleksi | TEXT-100
+  Baris 23 | Layar Seleksi | PARAMETERS:     BUT1  RADIOBUTTON GROUP GRP1.
+  Baris 24 | Layar Seleksi | SELECTION-SCREEN: POSITION 4, COMMENT (45) TEXT-110,
+  Baris 24 | Teks Seleksi | TEXT-110
+  Baris 26 | Layar Seleksi | SELECTION-SCREEN: END OF LINE,
+  Baris 28 | Layar Seleksi | PARAMETERS:     BUT2 RADIOBUTTON GROUP GRP1.
+  Baris 29 | Layar Seleksi | SELECTION-SCREEN: POSITION 4, COMMENT (50) TEXT-120,
+  Baris 29 | Teks Seleksi | TEXT-120
+  Baris 37 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | ZHU4SO
+  Baris 40 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | ZHU4FS

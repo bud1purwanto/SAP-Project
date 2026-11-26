@@ -1,0 +1,596 @@
+*&---------------------------------------------------------------------*
+*& Report  ZCOPA_VS_FI
+*&
+*&---------------------------------------------------------------------*
+*&
+*&
+*&---------------------------------------------------------------------*
+
+REPORT  ZCOPA_VS_FI.
+
+TABLES : BSEG, BKPF, BSIS, K9RTRD1000001, TKEBA.
+
+DATA: BEGIN OF IT_DETAIL OCCURS 0,
+        BUKRS LIKE BSEG-BUKRS, "ADD FOR NEW COMPANY
+        GJAHR LIKE BSEG-GJAHR,
+        BELNR LIKE BSEG-BELNR,
+        BUZEI LIKE BSEG-BUZEI,
+        MATNR LIKE MARA-MATNR,
+        HKONT LIKE BSEG-HKONT,
+        SHKZG LIKE BSEG-SHKZG,
+        SALES LIKE BSEG-DMBE2,
+       ZSALES LIKE BSEG-DMBE2,
+        COGS  LIKE BSEG-DMBE2,
+       ZCOGS  LIKE BSEG-DMBE2,
+        VAR   LIKE BSEG-DMBE2,
+       ZVAR   LIKE BSEG-DMBE2,
+        GP    LIKE BSEG-DMBE2,
+       TYPE LIKE K9RTRD1000001-TARGET1,
+       GPPSN LIKE BSEG-DMBE2,
+      END OF IT_DETAIL.
+
+DATA: BEGIN OF IT_SELECT OCCURS 0,
+        BUKRS LIKE BSIS-BUKRS,
+        GJAHR LIKE BSIS-GJAHR,
+        BELNR LIKE BSIS-BELNR,
+        BUZEI LIKE BSIS-BUZEI,
+      END OF IT_SELECT.
+DATA: BEGIN OF IT_TYPE OCCURS 0,
+        SOUR1_FROM LIKE K9RTRD1000001-SOUR1_FROM,
+        SOUR1_TO LIKE K9RTRD1000001-SOUR1_TO,
+        VALID_FROM LIKE K9RTRD1000001-VALID_FROM,
+        TARGET1 LIKE K9RTRD1000001-TARGET1,
+        DELETE_FLG LIKE K9RTRD1000001-DELETE_FLG,
+        ADDED_BY LIKE K9RTRD1000001-ADDED_BY,
+        ADDED_ON LIKE K9RTRD1000001-ADDED_ON,
+      END OF IT_TYPE.
+
+
+DATA: IT_SALES  LIKE IT_DETAIL OCCURS 0 WITH HEADER LINE,
+      IT_SALES2 LIKE IT_DETAIL OCCURS 0 WITH HEADER LINE,
+      IT_COGS  LIKE IT_DETAIL OCCURS 0 WITH HEADER LINE,
+      IT_VAR   LIKE IT_DETAIL OCCURS 0 WITH HEADER LINE,
+      IT_SELECT2 LIKE IT_SELECT OCCURS 0 WITH HEADER LINE,
+      IT_SELECT3 LIKE IT_SELECT OCCURS 0 WITH HEADER LINE.
+
+TYPE-POOLS: SLIS.
+DATA: GS_LAYOUT TYPE SLIS_LAYOUT_ALV,
+      G_EXIT_CAUSED_BY_CALLER,
+      GS_EXIT_CAUSED_BY_USER TYPE SLIS_EXIT_BY_USER,
+      GT_FIELDCAT TYPE SLIS_T_FIELDCAT_ALV WITH HEADER LINE,
+      G_REPID LIKE SY-REPID,
+      Y_PRINT TYPE SLIS_PRINT_ALV.
+
+DATA:
+      GT_EVENTS TYPE SLIS_T_EVENT,
+      GT_LIST_TOP_OF_PAGE TYPE SLIS_T_LISTHEADER,
+      G_STATUS_SET TYPE SLIS_FORMNAME VALUE 'PF_STATUS_SET',
+      G_USER_COMMAND TYPE SLIS_FORMNAME VALUE 'USER_COMMAND',
+      G_TOP_OF_PAGE TYPE SLIS_FORMNAME VALUE 'TOP_OF_PAGE',
+      G_TOP_OF_LIST TYPE SLIS_FORMNAME VALUE 'TOP_OF_LIST',
+      G_END_OF_LIST TYPE SLIS_FORMNAME VALUE 'END_OF_LIST'.
+
+DATA : GS_VARIANT LIKE DISVARIANT, G_SAVE.
+
+DATA: BEGIN OF IT_TKEDRS OCCURS 0, "ADD FOR NEW COMPANY
+      STEP_NO LIKE TKEDRS-STEP_NO,
+      PARAM_1 LIKE TKEDRS-PARAM_1,
+      END OF IT_TKEDRS.
+
+"Add for new company
+DATA: BEGIN OF F4_TKEB OCCURS 0,
+        ERKRS TYPE TKEB-ERKRS,
+        ERKRS_BZ TYPE TKEBT-ERKRS_BZ,
+      END OF F4_TKEB.
+
+DATA: GT_RETURN  TYPE TABLE OF DDSHRETVAL,
+      GWA_RETURN TYPE DDSHRETVAL.
+
+"End add for new company
+
+SELECTION-SCREEN BEGIN OF BLOCK B1001 WITH FRAME TITLE TEXT-100.
+PARAMETERS : P_OPCONC LIKE TKEDRS-KEDRENV OBLIGATORY. "ADD FOR NEW COMPANY
+SELECT-OPTIONS : COMPANY FOR BKPF-BUKRS OBLIGATORY, "ADD FOR NEW COMPANY
+                 PERIOD FOR BKPF-BUDAT,
+                 FSCLYR FOR BSIS-GJAHR NO-EXTENSION,
+                 SALES  FOR BSEG-HKONT,
+                 COGS   FOR BSEG-HKONT,
+                 VAR    FOR BSEG-HKONT.
+SELECTION-SCREEN END OF BLOCK B1001.
+
+INITIALIZATION.
+  MOVE: 'I' TO SALES-SIGN,
+        'EQ' TO SALES-OPTION.
+  MOVE  '51100001' TO SALES-LOW.
+  MOVE  '56301003' TO SALES-HIGH.
+  APPEND SALES.
+
+  MOVE: 'I' TO COGS-SIGN,
+        'EQ' TO COGS-OPTION.
+  MOVE  '60101001' TO COGS-LOW.
+  MOVE  '60102015' TO COGS-HIGH.
+  APPEND COGS.
+
+  MOVE: 'I' TO VAR-SIGN,
+        'EQ' TO VAR-OPTION.
+  MOVE  '60401001' TO VAR-LOW.
+  MOVE  '60503001' TO VAR-HIGH.
+  APPEND VAR.
+*
+*    MOVE: 'I' TO VAR-SIGN,
+*          'EQ' TO VAR-OPTION.
+*    MOVE  '60802000' TO VAR-LOW.
+*    MOVE  '60803000' TO VAR-HIGH.
+*    APPEND VAR.
+INITIALIZATION.
+  G_REPID = SY-REPID. "call report id
+  Y_PRINT-NO_PRINT_SELINFOS = 'X'.
+  Y_PRINT-NO_PRINT_LISTINFOS = 'X'.
+  PERFORM LAYOUT_INIT USING GS_LAYOUT. "call ALV layout for report by gs_layout
+  PERFORM EVENTTAB_BUILD USING GT_EVENTS[].
+  GS_VARIANT-REPORT = G_REPID.
+  G_SAVE = 'A'.
+
+  "Add for new company
+
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR P_OPCONC.
+  REFRESH F4_TKEB.
+
+  SELECT TKEBA~ERKRS TKEBT~ERKRS_BZ
+    FROM TKEBA INNER JOIN TKEBT ON TKEBA~ERKRS = TKEBT~ERKRS
+    INTO CORRESPONDING FIELDS OF TABLE F4_TKEB.
+
+  CALL FUNCTION 'F4IF_INT_TABLE_VALUE_REQUEST'
+    EXPORTING
+      RETFIELD        = 'ERKRS'
+      VALUE_ORG       = 'S'
+      DYNPPROG        = SY-REPID
+      DYNPNR          = SY-DYNNR
+      DYNPROFIELD     = 'ERKRS'
+    TABLES
+      VALUE_TAB       = F4_TKEB
+    EXCEPTIONS
+      PARAMETER_ERROR = 1
+      NO_VALUES_FOUND = 2
+      OTHERS          = 3.
+  "End add for new company
+
+AT SELECTION-SCREEN.
+  PERFORM F_GET_FISCALYEAR.
+
+START-OF-SELECTION.
+
+  DATA: BEGIN OF IT_T001 OCCURS 0,
+        BUKRS LIKE T001-BUKRS,
+    END OF IT_T001.
+
+  SELECT BUKRS FROM T001 INTO TABLE IT_T001 WHERE BUKRS IN COMPANY AND LAND1 EQ 'ID' AND SPRAS EQ 'E'.
+
+  LOOP AT IT_T001.
+    AUTHORITY-CHECK OBJECT 'K_PCAR_REP' ID 'BUKRS' FIELD IT_T001-BUKRS.
+    IF SY-SUBRC NE 0.
+      MESSAGE 'No Authorization to process data' TYPE 'I'.
+      LEAVE LIST-PROCESSING.
+    ENDIF.
+  ENDLOOP.
+
+  AUTHORITY-CHECK OBJECT 'K_KEA_ERG' ID 'CEERKRS' FIELD P_OPCONC.
+  IF SY-SUBRC NE 0.
+    MESSAGE 'No Authorization to process data' TYPE 'I'.
+    LEAVE LIST-PROCESSING.
+  ENDIF.
+
+  PERFORM GET_DETAIL.
+  PERFORM DISPLAY.
+
+END-OF-SELECTION.
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_DETAIL
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM GET_DETAIL.
+
+  CALL FUNCTION 'SAPGUI_PROGRESS_INDICATOR'
+    EXPORTING
+      PERCENTAGE = 10
+      TEXT       = 'Data Selection..'.
+
+  SELECT * INTO CORRESPONDING FIELDS OF TABLE IT_TKEDRS FROM TKEDRS
+    WHERE APPLCLASS = 'KE' AND SUBCLASS = '01' AND KEDRSTRATID = 'DERI' AND
+          KEDRENV = P_OPCONC AND METHOD = 'DRULE'.
+
+  LOOP AT IT_TKEDRS.
+    SELECT * APPENDING CORRESPONDING FIELDS OF TABLE IT_TYPE
+    FROM (IT_TKEDRS-PARAM_1).
+  ENDLOOP.
+
+  READ TABLE SALES INDEX 1.
+  IF SY-SUBRC = 0.
+    SELECT BUKRS GJAHR BELNR BUZEI
+      INTO CORRESPONDING FIELDS OF TABLE IT_SELECT
+      FROM BSIS
+      WHERE HKONT IN SALES AND
+            BUDAT IN PERIOD AND
+            BUKRS IN COMPANY AND  "ADD FOR NEW COMPANY
+*            GJAHR EQ PERIOD-LOW+0(4).
+            GJAHR IN FSCLYR. "Modify by Afir 18-03-2021
+  ENDIF.
+  READ TABLE COGS INDEX 1.
+  IF SY-SUBRC = 0.
+    SELECT BUKRS GJAHR BELNR BUZEI
+      INTO CORRESPONDING FIELDS OF TABLE IT_SELECT2
+      FROM BSIS
+      WHERE HKONT IN COGS AND
+            BUDAT IN PERIOD AND
+            BUKRS IN COMPANY AND  "ADD FOR NEW COMPANY
+*            GJAHR EQ PERIOD-LOW+0(4).
+            GJAHR IN FSCLYR. "Modify by Afir 18-03-2021
+  ENDIF.
+  READ TABLE VAR INDEX 1.
+  IF SY-SUBRC = 0.
+    SELECT BUKRS GJAHR BELNR BUZEI
+      INTO CORRESPONDING FIELDS OF TABLE IT_SELECT3
+      FROM BSIS
+      WHERE HKONT IN VAR AND
+            BUDAT IN PERIOD AND
+            BUKRS IN COMPANY AND  "ADD FOR NEW COMPANY
+*            GJAHR EQ PERIOD-LOW+0(4).
+            GJAHR IN FSCLYR. "Modify by Afir 18-03-2021
+  ENDIF.
+  READ TABLE IT_SELECT INDEX 1.
+  IF SY-SUBRC = 0.
+    SELECT BUKRS GJAHR BELNR BUZEI BSEG~DMBE2 AS SALES BSEG~MATNR BSEG~SHKZG "ADD FOR NEW COMPANY
+           INTO CORRESPONDING FIELDS OF TABLE IT_SALES
+           FROM BSEG
+           FOR ALL ENTRIES IN IT_SELECT
+           WHERE BSEG~BUKRS EQ IT_SELECT-BUKRS
+           AND   BSEG~BELNR EQ IT_SELECT-BELNR
+           AND   BSEG~GJAHR EQ IT_SELECT-GJAHR
+           AND   BSEG~BUZEI EQ IT_SELECT-BUZEI.
+  ENDIF.
+  READ TABLE IT_SELECT2 INDEX 1.
+  IF SY-SUBRC = 0.
+    SELECT BUKRS GJAHR BELNR BUZEI BSEG~DMBE2 AS COGS BSEG~MATNR BSEG~SHKZG "ADD FOR NEW COMPANY
+           INTO CORRESPONDING FIELDS OF TABLE IT_COGS
+           FROM BSEG
+           FOR ALL ENTRIES IN IT_SELECT2
+           WHERE BSEG~BUKRS EQ IT_SELECT2-BUKRS
+           AND   BSEG~BELNR EQ IT_SELECT2-BELNR
+           AND   BSEG~GJAHR EQ IT_SELECT2-GJAHR
+           AND   BSEG~BUZEI EQ IT_SELECT2-BUZEI.
+  ENDIF.
+  READ TABLE IT_SELECT3 INDEX 1.
+  IF SY-SUBRC = 0.
+    SELECT BUKRS GJAHR BELNR BUZEI BSEG~DMBE2 AS VAR BSEG~MATNR BSEG~SHKZG "ADD FOR NEW COMPANY
+           INTO CORRESPONDING FIELDS OF TABLE IT_VAR
+           FROM BSEG
+           FOR ALL ENTRIES IN IT_SELECT3
+           WHERE BSEG~BUKRS EQ IT_SELECT3-BUKRS
+           AND   BSEG~BELNR EQ IT_SELECT3-BELNR
+           AND   BSEG~GJAHR EQ IT_SELECT3-GJAHR
+           AND   BSEG~BUZEI EQ IT_SELECT3-BUZEI.
+  ENDIF.
+
+  IT_SALES2[] = IT_SALES[].
+  APPEND LINES OF IT_COGS TO IT_SALES2.
+  APPEND LINES OF IT_VAR TO IT_SALES2.
+  SORT IT_SALES2 BY MATNR.
+  DELETE ADJACENT DUPLICATES FROM IT_SALES2 COMPARING MATNR.
+  SORT IT_SALES BY MATNR GJAHR BELNR BUZEI.
+  SORT IT_COGS BY MATNR GJAHR BELNR BUZEI.
+  SORT IT_VAR BY MATNR GJAHR BELNR BUZEI.
+
+  CALL FUNCTION 'SAPGUI_PROGRESS_INDICATOR'
+    EXPORTING
+      PERCENTAGE = 50
+      TEXT       = 'Calculating..'.
+
+  LOOP AT IT_SALES2.
+    READ TABLE IT_SALES INDEX 1.
+    IF SY-SUBRC = 0.
+      LOOP AT IT_SALES WHERE MATNR = IT_SALES2-MATNR AND BUKRS = IT_SALES2-BUKRS.
+        IF IT_SALES-SHKZG = 'S'.
+          IT_SALES2-ZSALES = IT_SALES2-ZSALES - IT_SALES-SALES.
+        ELSEIF IT_SALES-SHKZG = 'H'.
+          IT_SALES2-ZSALES = IT_SALES2-ZSALES + IT_SALES-SALES.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+
+    READ TABLE IT_COGS INDEX 1.
+    IF SY-SUBRC = 0.
+      LOOP AT IT_COGS WHERE MATNR = IT_SALES2-MATNR AND BUKRS = IT_SALES2-BUKRS.
+        IF IT_COGS-SHKZG = 'S'.
+          IT_SALES2-ZCOGS = IT_SALES2-ZCOGS + IT_COGS-COGS.
+        ELSEIF IT_COGS-SHKZG = 'H'.
+          IT_SALES2-ZCOGS = IT_SALES2-ZCOGS - IT_COGS-COGS.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+
+    READ TABLE IT_VAR INDEX 1.
+    IF SY-SUBRC = 0.
+      LOOP AT IT_VAR WHERE MATNR = IT_SALES2-MATNR AND BUKRS = IT_SALES2-BUKRS.
+        IF IT_VAR-SHKZG = 'S'.
+          IT_SALES2-ZVAR = IT_SALES2-ZVAR + IT_VAR-VAR.
+        ELSEIF IT_VAR-SHKZG = 'H'.
+          IT_SALES2-ZVAR = IT_SALES2-ZVAR - IT_VAR-VAR.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+    IT_SALES2-GP = IT_SALES2-ZSALES - IT_SALES2-ZCOGS - IT_SALES2-ZVAR.
+    IF IT_SALES2-ZSALES NE 0.
+      IT_SALES2-GPPSN = IT_SALES2-GP / IT_SALES2-ZSALES * 100.
+    ENDIF.
+    READ TABLE IT_TYPE WITH KEY SOUR1_FROM = IT_SALES2-MATNR.
+    IF SY-SUBRC EQ 0.
+      IT_SALES2-TYPE = IT_TYPE-TARGET1.
+    ENDIF.
+    MODIFY IT_SALES2.
+  ENDLOOP.
+
+  SORT IT_SALES2 BY BUKRS.
+ENDFORM.                    "GET_DETAIL
+
+*&---------------------------------------------------------------------*
+*&      Form  DISPLAY
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM DISPLAY.
+*tambahan untuk ALV
+  PERFORM BUILD_FIELDCATALOG.
+  PERFORM COMMENT_BUILD USING GT_LIST_TOP_OF_PAGE[].
+
+**call function that construct our ALV Report
+** Function Grid ALV
+
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      I_CALLBACK_PROGRAM = G_REPID
+      IS_LAYOUT          = GS_LAYOUT
+      IT_FIELDCAT        = GT_FIELDCAT[]
+      IS_PRINT           = Y_PRINT
+      I_SAVE             = G_SAVE
+      IS_VARIANT         = GS_VARIANT
+      IT_EVENTS          = GT_EVENTS[]
+    TABLES
+      T_OUTTAB           = IT_SALES2
+    EXCEPTIONS
+      PROGRAM_ERROR      = 1
+      OTHERS             = 2.
+  IF SY-SUBRC <> 0.
+*  message 'Sorry, Report cannot be generated' type i.
+  ENDIF.
+
+
+ENDFORM.                    "DISPLAY
+
+*&---------------------------------------------------------------------*
+*&      Form  build_fieldcatalog
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM BUILD_FIELDCATALOG.
+  DATA: XFIELDCAT TYPE SLIS_FIELDCAT_ALV,
+        N TYPE I.
+
+  REFRESH GT_FIELDCAT.
+  N = 0.
+  N = N + 1.
+
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'BUKRS'.  "ADD FOR NEW COMPANY
+  XFIELDCAT-SELTEXT_M = 'Company Code'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 12.
+  XFIELDCAT-FIX_COLUMN = 'X'.
+*  XFIELDCAT-EMPHASIZE = 'C110'.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'MATNR'.
+  XFIELDCAT-SELTEXT_M = 'Material'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 18.
+  XFIELDCAT-FIX_COLUMN = 'X'.
+  XFIELDCAT-EMPHASIZE = 'C110'.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'TYPE'.
+  XFIELDCAT-SELTEXT_M = 'Type'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 35.
+*  XFIELDCAT-FIX_COLUMN = 'X'.
+*  XFIELDCAT-EMPHASIZE = 'C110'.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'ZSALES'.
+  XFIELDCAT-SELTEXT_M = 'Sales'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 35.
+*  XFIELDCAT-FIX_COLUMN = 'X'.
+*  XFIELDCAT-EMPHASIZE = 'C110'.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'ZCOGS'.
+  XFIELDCAT-SELTEXT_M = 'COGS'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 15.
+  XFIELDCAT-FIX_COLUMN = 'X'.
+  "XFIELDCAT-EMPHASIZE = 'C110'.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'ZVAR'.
+  XFIELDCAT-SELTEXT_M = 'Variance'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 13.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'GP'.
+  XFIELDCAT-SELTEXT_M = 'Gross Profit'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 13.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'GPPSN'.
+  XFIELDCAT-SELTEXT_M = '% Gross Profit'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 13.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+
+ENDFORM. "build_fieldcatalog
+
+*&---------------------------------------------------------------------*
+*&      Form  layout_init
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->RS_LAYOUT  text
+*----------------------------------------------------------------------*
+FORM LAYOUT_INIT USING RS_LAYOUT TYPE SLIS_LAYOUT_ALV.
+  RS_LAYOUT-DETAIL_POPUP = 'X'.
+  RS_LAYOUT-INFO_FIELDNAME = 'LINE_COLOUR'.
+*  RS_LAYOUT-COLWIDTH_OPTIMIZE = 'X'.
+*  RS_LAYOUT-ZEBRA             = 'X'.
+ENDFORM.            "Layout_init
+
+*&---------------------------------------------------------------------*
+*&      Form  eventtab_build
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->RT_EVENTS  text
+*----------------------------------------------------------------------*
+FORM EVENTTAB_BUILD USING RT_EVENTS TYPE SLIS_T_EVENT.
+  DATA : LS_EVENT TYPE SLIS_ALV_EVENT.
+  CALL FUNCTION 'REUSE_ALV_EVENTS_GET'
+    EXPORTING
+      I_LIST_TYPE = 0
+    IMPORTING
+      ET_EVENTS   = RT_EVENTS.
+
+  READ TABLE RT_EVENTS WITH KEY NAME = SLIS_EV_TOP_OF_PAGE
+                            INTO LS_EVENT.
+
+  IF SY-SUBRC = 0.
+    MOVE G_TOP_OF_PAGE TO LS_EVENT-FORM.
+    APPEND LS_EVENT TO RT_EVENTS.
+  ENDIF.
+ENDFORM.              "eventtab_build
+
+*&---------------------------------------------------------------------*
+*&      Form  comment_build
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->LT_TOP_OF_PAGE  text
+*----------------------------------------------------------------------*
+FORM COMMENT_BUILD USING LT_TOP_OF_PAGE TYPE SLIS_T_LISTHEADER.
+  DATA: LS_LINE TYPE SLIS_LISTHEADER.
+
+*  CLEAR LS_LINE.
+*  REFRESH LT_TOP_OF_PAGE.
+*  LS_LINE-TYP = 'H'.
+*  LS_LINE-INFO = 'PT. Trias Sentosa, Tbk.'.
+*  APPEND LS_LINE TO LT_TOP_OF_PAGE.
+  CLEAR LS_LINE.
+  LS_LINE-TYP = 'H'. "'A'.
+  LS_LINE-INFO = 'Report COPA (FI)'.
+  APPEND LS_LINE TO LT_TOP_OF_PAGE.
+ENDFORM.                    "comment_build
+
+*&---------------------------------------------------------------------*
+*&      Form  top_of_page
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM TOP_OF_PAGE.
+  CALL FUNCTION 'REUSE_ALV_COMMENTARY_WRITE'
+    EXPORTING
+      I_LOGO             = ' '
+      IT_LIST_COMMENTARY = GT_LIST_TOP_OF_PAGE.
+ENDFORM.                    "top_of_page
+
+*&---------------------------------------------------------------------*
+*&      Form  F_GET_FISCALYEAR
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM F_GET_FISCALYEAR.
+
+  DATA: V_ERKRS TYPE TKA01-ERKRS,
+        V_BUKRS TYPE TKA02-BUKRS,
+        V_MSG(255).
+  RANGES: R_BUKRS FOR TKA02-BUKRS.
+
+  "Validate Operating Concern
+  SELECT BUKRS AS LOW FROM TKA02 INTO CORRESPONDING FIELDS OF TABLE R_BUKRS WHERE BUKRS IN COMPANY.
+  LOOP AT R_BUKRS.
+    CLEAR: V_ERKRS, V_BUKRS.
+    SELECT SINGLE TKA01~ERKRS TKA02~BUKRS INTO (V_ERKRS, V_BUKRS)
+      FROM TKA01 JOIN TKA02 ON TKA01~KOKRS EQ TKA02~KOKRS
+      WHERE TKA01~ERKRS EQ P_OPCONC
+        AND TKA02~BUKRS EQ R_BUKRS-LOW.
+
+    IF SY-SUBRC NE 0.
+      CONCATENATE 'Operating Concern' P_OPCONC  'dan Company Code' R_BUKRS-LOW 'tidak sesuai' INTO V_MSG SEPARATED BY SPACE.
+      MESSAGE V_MSG TYPE 'E' DISPLAY LIKE 'I'.
+    ENDIF.
+  ENDLOOP.
+
+  CLEAR FSCLYR. REFRESH FSCLYR.
+  IF '6500' IN COMPANY.
+    IF PERIOD-LOW+4(2) LT 04.
+      FSCLYR-LOW = PERIOD-LOW+0(4) - 1.
+    ELSE.
+      FSCLYR-LOW = PERIOD-LOW+0(4).
+    ENDIF.
+    IF PERIOD-LOW+0(4) NE PERIOD-HIGH+0(4).
+      IF PERIOD-HIGH+4(2) IS NOT INITIAL AND PERIOD-HIGH+4(2) LT 04.
+        FSCLYR-HIGH = PERIOD-HIGH+0(4) - 1.
+      ELSE.
+        FSCLYR-HIGH = PERIOD-HIGH+0(4).
+      ENDIF.
+    ELSEIF PERIOD-LOW+4(2) NE PERIOD-HIGH+4(2).
+      IF PERIOD-HIGH+4(2) IS NOT INITIAL AND PERIOD-HIGH+4(2) LT 04.
+        FSCLYR-HIGH = PERIOD-HIGH+0(4) - 1.
+      ELSE.
+        FSCLYR-HIGH = PERIOD-HIGH+0(4).
+      ENDIF.
+    ENDIF.
+  ELSE.
+    FSCLYR-LOW = PERIOD-LOW+0(4).
+    IF PERIOD-LOW+0(4) NE PERIOD-HIGH+0(4).
+      FSCLYR-HIGH = PERIOD-HIGH+0(4).
+    ENDIF.
+  ENDIF.
+
+  FSCLYR-SIGN = 'I'.
+  FSCLYR-OPTION = 'EQ'.
+  APPEND FSCLYR.
+
+ENDFORM.                    "F_GET_FISCALYEAR

@@ -1,0 +1,736 @@
+﻿Input: ZPP_TB
+Source SAP development (RFC baca-saja): ZPPI_TIMBANG_SCRAP
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZPPI_TIMBANG_SCRAP_ALV:15 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG_ICON USING 'ITAB_DIST' : | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_ALV:60 | FORM F_LIST_DETAILTIMBANG | PERFORM F_SET_QTY_DISPLAY USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_ALV:112 | FORM F_FIELD_CATALOG_LT > IF R_SUM IS NOT INITIAL. | PERFORM F_ALV_FIELDCATG_ICON USING 'ITLOGTIMBANG' : | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_ALV:125 | FORM F_FIELD_CATALOG_LT > ELSE. | PERFORM F_ALV_FIELDCATG_ICON USING 'ITLOGTIMBANG' : | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_ALV:259 | FORM F_USER_COMMAND_LOG > WHEN '&REFRESH'. | PERFORM F_GET_LOG_TIMBANG. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_TIMBANG_SCRAP_F01:65 | FORM F_GET_RANGE_SLOC > IF S_PLANT IS INITIAL. | MESSAGE 'Masukkan Plant terlebih dahulu' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:142 | FORM F_COPYDATA > IF SY-SUBRC NE 0. | MESSAGE DMESSAGE TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:148 | FORM F_COPYDATA | PERFORM F_CHECK_REQUIRED CHANGING L_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:152 | FORM F_COPYDATA | PERFORM F_CHECK_DATE CHANGING L_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:157 | FORM F_COPYDATA | PERFORM F_CHECK_PRODLINE CHANGING L_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:161 | FORM F_COPYDATA | PERFORM F_CHECK_NIK CHANGING L_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:175 | FORM F_COPYDATA > ELSE. | MESSAGE 'Material yang ditimbang Tidak memiliki Mapping Raw Recycle' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:181 | FORM F_COPYDATA > IF L_ERRNO = -1. | MESSAGE MESSAGE TYPE 'I' DISPLAY LIKE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:184 | FORM F_COPYDATA > ELSE. > IF IT_TIMBANG[] IS NOT INITIAL. | MESSAGE 'Data telah dicopy' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:189 | FORM F_COPYDATA > ELSE. > ELSE. > IF S_PLANT IS INITIAL. > IF S_MATNR IS INITIAL. > IF S_SLOCA IS INITIAL. | MESSAGE 'Isi Plant, Material, dan SLoc Asal !' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:191 | FORM F_COPYDATA > ELSE. > ELSE. > IF S_PLANT IS INITIAL. > IF S_MATNR IS INITIAL. > ELSE. | MESSAGE 'Isi Plant dan Material!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:194 | FORM F_COPYDATA > ELSE. > ELSE. > IF S_PLANT IS INITIAL. > ELSE. | MESSAGE 'Isi Plant !' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:199 | FORM F_COPYDATA > ELSE. > ELSE. > ELSE. > IF S_MATNR IS INITIAL. > IF S_SLOCA IS INITIAL. | MESSAGE 'Isi Material, dan SLoc Asal !' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:201 | FORM F_COPYDATA > ELSE. > ELSE. > ELSE. > IF S_MATNR IS INITIAL. > ELSE. | MESSAGE 'Isi Material!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:205 | FORM F_COPYDATA > ELSE. > ELSE. > ELSE. > ELSE. > IF S_SLOCA IS INITIAL.. | MESSAGE 'Isi SLoc Asal!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:208 | FORM F_COPYDATA > ELSE. > ELSE. > ELSE. > ELSE. > ELSE. | PERFORM F_GET_RANGE_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:213 | FORM F_COPYDATA > ELSE. > ELSE. > ELSE. > ELSE. > ELSE. > IF S_SLOCA NOT IN R_SLOCA. | MESSAGE VMSG TYPE 'I' DISPLAY LIKE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:215 | FORM F_COPYDATA > ELSE. > ELSE. > ELSE. > ELSE. > ELSE. > ELSE. | PERFORM F_CHECK_MATERIAL CHANGING L_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:247 | FORM F_COPYDATA | PERFORM ZPRODLINE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:270 | FORM F_DELETEDATA > IF IT_TIMBANG[] IS INITIAL. | MESSAGE 'Tidak ada data yang akan dihapus' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:286 | FORM F_VALIDATE_TIMBANG > IF S_MATNR = ''. | MESSAGE 'Material yang akan ditimbang tidak boleh kosong' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:290 | FORM F_VALIDATE_TIMBANG > ELSE. | PERFORM F_GET_RANGE_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:296 | FORM F_VALIDATE_TIMBANG > ELSE. > IF IT_TIMBANG-MATNR = ''. | MESSAGE 'Material yang akan ditimbang tidak boleh kosong' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:302 | FORM F_VALIDATE_TIMBANG > ELSE. > ELSE. > IF IT_TIMBANG-GROSS < IT_TIMBANG-WADAH. | MESSAGE 'Berat Wadah tidak boleh lebih besar dari Gross Qty' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:308 | FORM F_VALIDATE_TIMBANG > ELSE. > ELSE. > ELSE. > IF IT_TIMBANG-MENGE IS INITIAL. | MESSAGE 'Quantity tidak boleh nol' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:315 | FORM F_VALIDATE_TIMBANG > ELSE. > ELSE. > ELSE. > ELSE. > IF IT_TIMBANG-LGORA NOT IN R_SLOCA. | MESSAGE VMSG TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:321 | FORM F_VALIDATE_TIMBANG > ELSE. > ELSE. > ELSE. > ELSE. > ELSE. > IF IT_TIMBANG-BAGIAN IS INITIAL. | MESSAGE 'Bagian tidak boleh kosong' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:327 | FORM F_VALIDATE_TIMBANG > ELSE. > ELSE. > ELSE. > ELSE. > ELSE. > ELSE. > IF IT_TIMBANG-BAGIAN NOT IN R_BAGIAN. | MESSAGE 'Bagian harus diisi dengan SLT,PRS,RCL,OTH,RND, atau GUD' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:359 | FORM F_GET_DATA_ALLOCATION | PERFORM F_GET_SLOCA. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:362 | FORM F_GET_DATA_ALLOCATION | PERFORM F_DEFINE_AUART. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:480 | FORM F_GET_DATA_ALLOCATION > ELSE. | MESSAGE 'Tipe Film Tidak ditemukan' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:515 | FORM F_GET_DATA_ALLOCATION > IF ITAB_TIMBANG[] IS NOT INITIAL. | PERFORM F_GET_GR_RR. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:520 | FORM F_GET_DATA_ALLOCATION > ELSE. > IF ZCB_RR IS NOT INITIAL. | PERFORM F_GET_GR_JR. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:522 | FORM F_GET_DATA_ALLOCATION > ELSE. > ELSE. | MESSAGE 'Tipe Film Tidak ditemukan' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:715 | FORM F_GET_GR_RR > IF ITAB_TIMBANG[] IS INITIAL. > IF ZCB_RR IS NOT INITIAL. | PERFORM F_GET_GR_JR. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:717 | FORM F_GET_GR_RR > IF ITAB_TIMBANG[] IS INITIAL. > ELSE. | MESSAGE 'Tipe Film Tidak ditemukan' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:762 | FORM F_GET_GR_JR > IF SY-SUBRC NE 0. | MESSAGE 'Tipe Film Tidak ditemukan' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:894 | FORM F_GET_GR_JR > IF ITAB_TIMBANG[] IS INITIAL. | MESSAGE 'Tipe Film Tidak ditemukan' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1169 | FORM F_TESTRUN > IF IT_TIMBANG[] IS INITIAL. | MESSAGE 'Tidak ada data.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1171 | FORM F_TESTRUN > ELSE. | PERFORM F_EXECUTE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1174 | FORM F_TESTRUN > ELSE. > IF L_ERRNO = -1. | MESSAGE 'Data tidak tersedia.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1176 | FORM F_TESTRUN > ELSE. > ELSE. | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1177 | FORM F_TESTRUN > ELSE. > ELSE. | PERFORM F_LAYOUT_TIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1178 | FORM F_TESTRUN > ELSE. > ELSE. | PERFORM F_LIST_DETAILTIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1196 | FORM F_EXECUTE | PERFORM F_GET_DOC_TIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1205 | FORM F_EXECUTE | PERFORM F_CREATE_GMVS USING '531' '532' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1239 | FORM F_EXECUTE > IF SY-SUBRC = 0. | MESSAGE = 'Posting GI Material Timbang Gagal!'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1256 | FORM F_EXECUTE > ELSE. > IF MATDOC = '' AND IS_TEST_RUN IS INITIAL. | MESSAGE = 'Posting GI Material Timbang Gagal!'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1271 | FORM F_EXECUTE > ELSE. > ELSE. > IF IS_TEST_RUN IS INITIAL. | PERFORM F_INTRANSIT USING '313' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1304 | FORM F_EXECUTE > ELSE. > ELSE. > IF IS_TEST_RUN IS INITIAL. > IF SY-SUBRC = 0. | MESSAGE = 'Transfer Posting In Transit Material Timbang Gagal!'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1320 | FORM F_EXECUTE > ELSE. > ELSE. > IF IS_TEST_RUN IS INITIAL. | PERFORM F_CREATE_LOGTIMBANG USING '531' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1331 | FORM F_EXECUTE > ELSE. > ELSE. > IF IS_TEST_RUN IS INITIAL. | PERFORM F_CREATE_LOGTIMBANG USING '532' | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1386 | FORM F_EXECUTE > ELSE. > ELSE. > IF IS_TEST_RUN IS INITIAL. > ELSE. | PERFORM F_PRINT_DATA_TIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1561 | FORM F_GET_LOG_TIMBANG | PERFORM F_DEFINE_AUART. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1577 | FORM F_GET_LOG_TIMBANG > IF R_SUM IS NOT INITIAL. | PERFORM F_GETLOGSUMMARY. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1593 | FORM F_GET_LOG_TIMBANG > ELSEIF R_DET IS NOT INITIAL. | PERFORM F_GETLOGDETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1782 | FORM F_GETLOGSUMMARY > IF ITLOGTIMBANG[] IS NOT INITIAL. | PERFORM F_GETJR TABLES TEMPLOGTIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1821 | FORM F_GETLOGSUMMARY > IF ITLOGTIMBANG[] IS NOT INITIAL. | PERFORM F_SKIP_GETPRODLINE USING ITAB_JR-AUFNR | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:1933 | FORM F_GETLOGDETAIL > IF ITLOGTIMBANG[] IS NOT INITIAL. | PERFORM F_GETJR TABLES TEMPLOGTIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2071 | FORM F_CHECK_PRODLINE > IF SY-SUBRC <> 0. | MESSAGE = 'SLoc Asal dan Production Line tidak sesuai.'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2072 | FORM F_CHECK_PRODLINE > IF SY-SUBRC <> 0. | MESSAGE MESSAGE TYPE 'I' DISPLAY LIKE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2092 | FORM F_CHECK_REQUIRED > IF S_PLANT IS INITIAL OR | MESSAGE 'Pastikan field Plant / Material / NIK Penerima / NIK Pengirim terisi' TYPE 'I' DISPLAY LIKE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2110 | FORM F_CHECK_DATE > IF S_SDATE > S_EDATE. | MESSAGE 'Start date tidak boleh lebih dari End date' TYPE 'I' DISPLAY LIKE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2116 | FORM F_CHECK_DATE > IF S_SDATE+4(2) <> S_EDATE+4(2). | MESSAGE 'Start date dan End date tidak boleh beda bulan' TYPE 'I' DISPLAY LIKE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2122 | FORM F_CHECK_DATE > IF S_PDATE(6) < SY-DATUM(6). | MESSAGE 'Posting Date tidak boleh beda bulan' TYPE 'I' DISPLAY LIKE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2129 | FORM F_CHECK_DATE > IF S_SDATE(6) < SY-DATUM(6) | MESSAGE 'Start Date / End Date tidak boleh beda bulan' TYPE 'I' DISPLAY LIKE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2151 | FORM F_CHECK_NIK > IF SY-SUBRC <> 0. | MESSAGE =  'NIK Penerima Salah.' . | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2162 | FORM F_CHECK_NIK > IF SY-SUBRC <> 0. > IF SY-SUBRC <> 0. | MESSAGE = 'NIK Pengirim dan NIK Penerima Salah.' . | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2175 | FORM F_CHECK_NIK > ELSE. > IF SY-SUBRC <> 0. | MESSAGE = 'NIK Pengirim Salah.' . | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2187 | FORM F_CHECK_MATERIAL > IF S_MATNR = ''. | MESSAGE 'Isi Material' TYPE 'I' DISPLAY LIKE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2199 | FORM F_CHECK_MATERIAL > ELSE. > IF SY-SUBRC <> 0. | MESSAGE 'Material bukan merupakan FG-Sisa RcycleJual maupun FG-Waste Film Jual' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2213 | FORM F_CHECK_MATERIAL > ELSE. > ELSE. > IF SY-SUBRC <> 0. | MESSAGE VMSG TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2249 | FORM F_CEKSTOCKRR > IF SY-SUBRC = 0. > IF ITAB_STOCKRR-LABST < TOTALRR. | MESSAGE ZMSG TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2256 | FORM F_CEKSTOCKRR > ELSE. | MESSAGE ZMSG TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2343 | FORM F_GETDATA_PRINT | PERFORM F_PRINT_DATA_TIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2356 | FORM CHECK_AUTH_PLANT > IF SY-SUBRC NE 0. | MESSAGE 'No Plant found..!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2364 | FORM CHECK_AUTH_PLANT > IF SY-SUBRC NE 0. | MESSAGE DMESSAGE TYPE 'I' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2401 | FORM INSERT_OLAP > IF S_CONN IS NOT INITIAL. | MESSAGE `Error in procedure execution delete` TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2451 | FORM INSERT_OLAP > IF S_CONN IS NOT INITIAL. | MESSAGE 'Data downloaded successfully!' TYPE 'S' DISPLAY LIKE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2454 | FORM INSERT_OLAP > IF S_CONN IS NOT INITIAL. | MESSAGE 'Insert Error' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2600 | FORM CONNECT_SQL > IF S_CONN IS INITIAL. | MESSAGE 'Enter DBCO Connection name...!' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2610 | FORM CONNECT_SQL > IF SY-SUBRC NE 0. | MESSAGE V_CX_MSG TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_F01:2633 | FORM CONNECT_SQL | MESSAGE V_CX_MSG TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:32 | IF WA_TIMBANG-GROSS <> 0. > IF WA_TIMBANG-GROSS < WA_TIMBANG-WADAH. | MESSAGE 'Berat Wadah tidak boleh lebih besar dari Gross Qty' TYPE 'I' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:38 | IF WA_TIMBANG-GROSS <> 0. > ELSE. > IF WA_TIMBANG-MENGE = 0. | MESSAGE 'Quantity tidak boleh nol' TYPE 'I' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:76 | Konteks perlu ditinjau | PERFORM F_GET_RANGE_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:140 | IF S_PLANT IS INITIAL. | MESSAGE 'Masukkan Plant terlebih dahulu' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:198 | WHEN 'GETTIPE'. > IF WA_TIMBANG-MENGE IS INITIAL. | MESSAGE 'Net Qty tidak boleh kosong' TYPE 'I' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:204 | WHEN 'GETTIPE'. > IF S_SDATE IS INITIAL. | MESSAGE 'Start date tidak boleh kosong..!' TYPE 'I' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:208 | WHEN 'GETTIPE'. > IF S_EDATE IS INITIAL. | MESSAGE 'End date tidak boleh kosong..!' TYPE 'I' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:212 | WHEN 'GETTIPE'. > IF S_SDATE+4(2) <> S_EDATE+4(2). | MESSAGE 'Start date dan End date tidak boleh beda bulan' TYPE 'I' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:217 | WHEN 'GETTIPE'. > IF S_SDATE(6) < SY-DATUM(6) | MESSAGE 'Bulan Start Date / End Date tidak boleh mundur' TYPE 'I' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:222 | WHEN 'GETTIPE'. | PERFORM F_GET_DATA_ALLOCATION. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:223 | WHEN 'GETTIPE'. | PERFORM F_GETTIPE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:230 | WHEN 'GETORD'. > IF WA_TIMBANG-MENGE IS INITIAL. | MESSAGE 'Net Qty tidak boleh kosong..!' TYPE 'I' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:239 | WHEN 'GETORD'. > IF SY-SUBRC NE 0. | MESSAGE 'Tidak ada Tipe Film yang Mendapat Alokasi Pembebanan. Silahkan Cek Inputan Anda!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:243 | WHEN 'GETORD'. > ELSE. > IF PRSNTOTAL <> 100. | MESSAGE 'Total Persentase Alokasi Tipe Film Harus 100%. Silahkan Cek Inputan Anda!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:246 | WHEN 'GETORD'. > ELSE. > ELSE. | PERFORM F_CEKSTOCKRR CHANGING L_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:248 | WHEN 'GETORD'. > ELSE. > ELSE. > IF L_ERRNO <> -1. | PERFORM F_GETORDER. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:261 | WHEN 'TESTRUN'. > IF TOTALRR = WA_TIMBANG-MENGE. | PERFORM F_TESTRUN. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:263 | WHEN 'TESTRUN'. > ELSE. | MESSAGE 'Quantity Pembebanan Tidak Sama dengan Quantity Timbang. Silahkan Periksa Inputan Anda' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:291 | WHEN 'EXEC'. > IF MSG_ANSWER = '1'. > IF TOTALRR = WA_TIMBANG-MENGE. > IF IT_TIMBANG[] IS INITIAL. | MESSAGE 'Tidak ada data.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:293 | WHEN 'EXEC'. > IF MSG_ANSWER = '1'. > IF TOTALRR = WA_TIMBANG-MENGE. > ELSE. | PERFORM F_EXECUTE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:295 | WHEN 'EXEC'. > IF MSG_ANSWER = '1'. > IF TOTALRR = WA_TIMBANG-MENGE. > ELSE. > IF L_ERRNO = -1. | MESSAGE 'Data tidak tersedia.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:297 | WHEN 'EXEC'. > IF MSG_ANSWER = '1'. > IF TOTALRR = WA_TIMBANG-MENGE. > ELSE. > ELSE. | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:298 | WHEN 'EXEC'. > IF MSG_ANSWER = '1'. > IF TOTALRR = WA_TIMBANG-MENGE. > ELSE. > ELSE. | PERFORM F_LAYOUT_TIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:299 | WHEN 'EXEC'. > IF MSG_ANSWER = '1'. > IF TOTALRR = WA_TIMBANG-MENGE. > ELSE. > ELSE. | PERFORM F_LIST_DETAILTIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:305 | WHEN 'EXEC'. > IF MSG_ANSWER = '1'. > ELSE. | MESSAGE 'Quantity Pembebanan Tidak Sama dengan Quantity Timbang. Silahkan Periksa Inputan Anda' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:347 | WHEN 'COPY'. | PERFORM F_COPYDATA. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:350 | WHEN 'DEL'. | PERFORM F_DELETEDATA. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:355 | WHEN 'EXECUTE'. | PERFORM F_CHECK_DATE CHANGING L_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:360 | WHEN 'EXECUTE'. | PERFORM F_CHECK_PRODLINE CHANGING L_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:363 | WHEN 'EXECUTE'. | PERFORM F_CHECK_MATERIAL CHANGING L_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:364 | WHEN 'EXECUTE'. | PERFORM ZPRODLINE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:367 | WHEN 'EXECUTE'. > IF L_ERRNO <> -1. | PERFORM F_VALIDATE_TIMBANG CHANGING L_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:383 | IF WA_TIPE-PRSN > 100. | MESSAGE 'Persentase tidak boleh lebih dari 100%' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:432 | WHEN 'GO'. | PERFORM CHECK_AUTH_PLANT. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:433 | WHEN 'GO'. | PERFORM F_GET_LOG_TIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:438 | WHEN 'GO'. > IF ITLOGTIMBANG[] IS NOT INITIAL. > IF R_SCREEN IS NOT INITIAL. | PERFORM F_FIELD_CATALOG_LT. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:439 | WHEN 'GO'. > IF ITLOGTIMBANG[] IS NOT INITIAL. > IF R_SCREEN IS NOT INITIAL. | PERFORM F_LAYOUT_TIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:440 | WHEN 'GO'. > IF ITLOGTIMBANG[] IS NOT INITIAL. > IF R_SCREEN IS NOT INITIAL. | PERFORM F_LIST_DETAIL_LTIMBANG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:442 | WHEN 'GO'. > IF ITLOGTIMBANG[] IS NOT INITIAL. > ELSEIF R_OLAP IS NOT INITIAL. | PERFORM CONNECT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:444 | WHEN 'GO'. > IF ITLOGTIMBANG[] IS NOT INITIAL. > ELSEIF R_OLAP IS NOT INITIAL. > IF ITLOGTIMBANG[] IS NOT INITIAL. | PERFORM INSERT_OLAP. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:449 | WHEN 'GO'. > ELSE. | MESSAGE 'No Data Found' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_I01:465 | WHEN 'GO'. | PERFORM F_GETDATA_PRINT. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_O01:33 | Konteks perlu ditinjau | PERFORM INITIAL_LGORT. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_O01:82 | IF SY-UCOMM = 'YES'. | PERFORM F_SET_QTY_DISPLAY USING 'X'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_O01:133 | IF <FS_DIST>-MENGA > WA_TIMBANG-MENGE. | MESSAGE 'Quantity Pembebanan Tidak Sama dengan Quantity Timbang. Silahkan Periksa Inputan Anda' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_O01:148 | AT SELECTION-SCREEN | PERFORM F_GET_VALUES_REQUEST CHANGING S_PLINE-LOW. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_TIMBANG_SCRAP_O01:181 | FORM F_GET_VALUES_REQUEST > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZPPI_TIMBANG_SCRAP (28 baris)
+  27 | Layar dan GUI | CALL SCREEN 1000.
+  17 | includes | ZPPI_TIMBANG_SCRAP_TOP
+  19 | includes | ZABAPALV
+  21 | includes | ZPPI_TIMBANG_SCRAP_O01
+  22 | includes | ZPPI_TIMBANG_SCRAP_I01
+  23 | includes | ZPPI_TIMBANG_SCRAP_F01
+  24 | includes | ZPPI_TIMBANG_SCRAP_ALV
+
+Objek ZPPI_TIMBANG_SCRAP_ALV (263 baris)
+  191 | Layar dan GUI | SET PF-STATUS 'PROD_STAT1210' EXCLUDING ITAB_EXCLUDE.
+  197 | Field DDIC | SY-UCOMM
+  230 | Layar dan GUI | CALL SCREEN 1100.
+  244 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN'.
+  251 | Field DDIC | SY-UCOMM
+  82 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  204 | callFunctions | POPUP_TO_CONFIRM
+
+Objek ZPPI_TIMBANG_SCRAP_F01 (2636 baris)
+  30 | Field DDIC | D020S-PROG
+  143 | Layar dan GUI | CALL SCREEN 1100.
+  379 | Field DDIC | MSEG-MBLNR
+  380 | Field DDIC | MSEG-MBLNR
+  538 | Field DDIC | AUSP-ATWRT
+  539 | Field DDIC | AUSP-ATWRT
+  540 | Field DDIC | AUSP-ATWRT
+  732 | Field DDIC | AUSP-ATWRT
+  733 | Field DDIC | AUSP-ATWRT
+  734 | Field DDIC | AUSP-ATWRT
+  739 | Field DDIC | MKPF-BKTXT
+  1008 | Field DDIC | MSEG-MENGE
+  1189 | Field DDIC | ZTLOGTIMBANG-ZITEMLOG
+  1198 | Field DDIC | SY-SUBRC
+  1607 | Field DDIC | AUFK-AUFNR
+  1608 | Field DDIC | MSEG-BWART
+  1611 | Field DDIC | AUFK-AUART
+  1641 | Field DDIC | MKPF-MBLNR
+  1764 | Field DDIC | ZTLOGTIMBANG-ZAUFNR
+  1767 | Field DDIC | AUSP-ATWRT
+  1768 | Field DDIC | AUSP-ATWRT
+  1769 | Field DDIC | AUSP-ATWRT
+  1770 | Field DDIC | ZTLOGTIMBANG-ZAUFNR
+  1771 | Field DDIC | ZTLOGTIMBANG-ZNEWMD
+  1914 | Field DDIC | ZTLOGTIMBANG-ZAUFNR
+  1917 | Field DDIC | AUSP-ATWRT
+  1918 | Field DDIC | AUSP-ATWRT
+  1919 | Field DDIC | AUSP-ATWRT
+  1920 | Field DDIC | ZTLOGTIMBANG-ZAUFNR
+  1921 | Field DDIC | ZTLOGTIMBANG-ZNEWMD
+  2041 | Class dan Interface | IF_TIMBANG
+  2139 | Field DDIC | PA0001-PERNR
+  2227 | Field DDIC | MSEG-MENGE
+  2264 | Layar dan GUI | LEAVE TO SCREEN 1200.
+  2319 | Field DDIC | MKPF-BKTXT
+  2365 | Layar dan GUI | CALL SCREEN 2000.
+  2595 | Field DDIC | DBCON-CON_NAME
+  38 | callFunctions | DYNP_VALUES_READ
+  368 | callFunctions | CSCP_PARA1_GET_PERIODS
+  1222 | callFunctions | BAPI_GOODSMVT_CREATE
+  1260 | callFunctions | BAPI_TRANSACTION_COMMIT
+  1521 | callFunctions | CONVERSION_EXIT_ALPHA_INPUT
+  2027 | callFunctions | SSF_FUNCTION_MODULE_NAME
+  69 | tableReads | ZTMAP_SLOCRR
+  69 | tableReads | T001L
+  165 | tableReads | ZTMAP_FGRRECYCLE
+  225 | tableReads | MARA
+  230 | tableReads | MAKT
+  386 | tableReads | MSEG
+  386 | tableReads | MKPF
+  419 | tableReads | AFKO
+  443 | tableReads | AUFK
+  493 | tableReads | TJ02T
+  493 | tableReads | JEST
+  544 | tableReads | ZTLOGTIMBANG
+  665 | tableReads | AUSP
+  665 | tableReads | MCH1
+  665 | tableReads | CABN
+  673 | tableReads | CAWNT
+  673 | tableReads | CAWN
+  755 | tableReads | ZTMAP_MATRECYCLE
+  2061 | tableReads | ZTMAP_SLOCWASTE
+  2143 | tableReads | PA0001
+  2204 | tableReads | MARD
+  2354 | tableReads | T001W
+  2604 | tableReads | DBCON
+  1155 | databaseWrites | ITAB_DIST
+  1468 | databaseWrites | ZTLOGTIMBANG
+  1879 | databaseWrites | TEMPLOGTIMBANG2
+  1993 | databaseWrites | ITLOGTIMBANG
+  2382 | databaseWrites | XPP_TB_SUMM
+  2392 | databaseWrites | XPP_TB_DTL
+
+Objek ZPPI_TIMBANG_SCRAP_I01 (469 baris)
+  14 | Layar dan GUI | CALL SCREEN 1100.
+  16 | Layar dan GUI | CALL SCREEN 2000.
+  18 | Layar dan GUI | CALL SCREEN 3000.
+  104 | Field DDIC | D020S-PROG
+  322 | Layar dan GUI | LEAVE TO SCREEN 0.
+  344 | Layar dan GUI | LEAVE TO SCREEN 1000.
+  369 | Layar dan GUI | CALL SCREEN 1200.
+  428 | Layar dan GUI | LEAVE TO SCREEN 0.
+  463 | Layar dan GUI | LEAVE TO SCREEN 0.
+  79 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  112 | callFunctions | DYNP_VALUES_READ
+  268 | callFunctions | POPUP_TO_CONFIRM
+  144 | tableReads | MARA
+  144 | tableReads | MAKT
+  144 | tableReads | ZTMAP_FGRRECYCLE
+  173 | databaseWrites | ITLOGTIMBANG
+  389 | databaseWrites | ITAB_TIPE
+
+Objek ZPPI_TIMBANG_SCRAP_O01 (237 baris)
+  10 | Layar dan GUI | SET PF-STATUS 'PROD_STAT1000'.
+  11 | Layar dan GUI | SET TITLEBAR  'PROD_TITLE1000'.
+  30 | Layar dan GUI | SET PF-STATUS 'PROD_STAT1100' EXCLUDING IT_EXCLUDE.
+  31 | Layar dan GUI | SET TITLEBAR  'PROD_TITLE1100'.
+  44 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 1120  AS SUBSCREEN.
+  45 | Layar Seleksi | PARAMETERS :   S_PDATE TYPE SY-DATUM DEFAULT SY-DATUM.
+  45 | Field DDIC | SY-DATUM
+  46 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 1120 .
+  56 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 1110 AS SUBSCREEN.
+  57 | Layar Seleksi | PARAMETERS    :   S_SDATE TYPE SY-DATUM DEFAULT SY-DATUM OBLIGATORY.
+  57 | Field DDIC | SY-DATUM
+  58 | Layar Seleksi | PARAMETERS    :   S_EDATE TYPE SY-DATUM DEFAULT SY-DATUM OBLIGATORY.
+  58 | Field DDIC | SY-DATUM
+  59 | Layar Seleksi | SELECT-OPTIONS:   S_PLINE  FOR  CAWN-ATWRT NO INTERVALS OBLIGATORY.
+  59 | Field DDIC | CAWN-ATWRT
+  60 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 1110 .
+  70 | Layar dan GUI | SET PF-STATUS 'PROD_STAT1200'.
+  71 | Layar dan GUI | SET TITLEBAR  'PROD_TITLE1200'.
+  120 | Field DDIC | MSEG-MENGE
+  146 | Field DDIC | S_PLINE-LOW
+  181 | Field DDIC | SY-MSGTY
+  194 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 2010  AS SUBSCREEN.
+  195 | Layar Seleksi | SELECT-OPTIONS : L_BUDAT  FOR MKPF-BUDAT NO-EXTENSION DEFAULT SY-DATUM,
+  195 | Field DDIC | MKPF-BUDAT
+  196 | Field DDIC | MKPF-MBLNR
+  197 | Field DDIC | MSEG-WERKS
+  198 | Field DDIC | CAWN-ATWRT
+  199 | Field DDIC | MKPF-USNAM
+  200 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 2010 .
+  223 | Layar dan GUI | SET PF-STATUS 'PROD_STAT2000'.
+  224 | Layar dan GUI | SET TITLEBAR 'PROD_TITLE2000'.
+  235 | Layar dan GUI | SET PF-STATUS 'PROD_STAT3000'.
+  236 | Layar dan GUI | SET TITLEBAR 'PROD_TITLE3000'.
+  167 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  159 | tableReads | CAWN
+  159 | tableReads | CABN
+  159 | tableReads | CAWNT
+  115 | databaseWrites | ITAB_DIST
+
+Objek ZABAPALV (660 baris)
+  7 | Field DDIC | SY-REPID
+  27 | Field DDIC | SY-DATUM
+  28 | Field DDIC | SY-DATUM
+  559 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+
+Objek ZPPI_TIMBANG_SCRAP_TOP (342 baris)
+  9 | Tipe DDIC | LIKP
+  19 | Field DDIC | SY-UCOMM
+  24 | Field DDIC | MAKT-MATNR
+  25 | Field DDIC | MAKT-MAKTX
+  26 | Field DDIC | MSEG-WERKS
+  27 | Field DDIC | ZTLOG_TIMBANG-BAGIAN
+  28 | Field DDIC | MSEG-LGORT
+  29 | Field DDIC | MSEG-LGORT
+  30 | Field DDIC | MSEG-MENGE
+  31 | Field DDIC | MSEG-MENGE
+  32 | Field DDIC | MSEG-MENGE
+  33 | Field DDIC | MARM-MEINH
+  34 | Field DDIC | MSEG-MEINS
+  38 | Field DDIC | MSEG-MBLNR
+  39 | Field DDIC | MSEG-ZEILE
+  40 | Field DDIC | MSEG-MATNR
+  41 | Field DDIC | MSEG-BWART
+  42 | Field DDIC | MSEG-WERKS
+  43 | Field DDIC | MSEG-LGORT
+  44 | Field DDIC | MSEG-CHARG
+  45 | Field DDIC | MSEG-MENGE
+  46 | Field DDIC | MSEG-MEINS
+  47 | Field DDIC | MSEG-AUFNR
+  48 | Field DDIC | AUFK-AUART
+  49 | Field DDIC | MKPF-BKTXT
+  50 | Field DDIC | MKPF-BUDAT
+  51 | Field DDIC | MSEG-SMBLN
+  52 | Field DDIC | MSEG-SMBLP
+  53 | Field DDIC | MSEG-MATNR
+  54 | Field DDIC | MAKT-MAKTX
+  55 | Field DDIC | MSEG-CHARG
+  56 | Field DDIC | MSEG-MENGE
+  57 | Field DDIC | CAWN-ATWRT
+  58 | Field DDIC | CAWN-ATWRT
+  59 | Field DDIC | CAWN-ATWRT
+  60 | Field DDIC | AUFK-OBJNR
+  61 | Field DDIC | JEST-STAT
+  62 | Field DDIC | TJ02T-TXT30
+  63 | Field DDIC | TJ02T-TXT04
+  70 | Field DDIC | BAPIRET2-TYPE
+  71 | Field DDIC | BAPIRET2-ID
+  72 | Field DDIC | BAPIRET2-NUMBER
+  73 | Field DDIC | BAPIRET2-MESSAGE
+  74 | Field DDIC | CAWN-ATWRT
+  75 | Field DDIC | MAKT-MAKTX
+  80 | Field DDIC | AUFK-ZLINE
+  81 | Field DDIC | ZTLOGTIMBANG-ZNEWMD
+  82 | Field DDIC | ZTLOGTIMBANG-ZAUFNR
+  86 | Field DDIC | CAWN-ATWRT
+  87 | Field DDIC | CAWNT-ATWTB
+  91 | Field DDIC | MKPF-MBLNR
+  92 | Field DDIC | MKPF-BKTXT
+  93 | Field DDIC | MSEG-AUFNR
+  114 | Field DDIC | BAPI2017_GM_HEAD_RET-MAT_DOC
+  115 | Field DDIC | BAPI2017_GM_HEAD_RET-MAT_DOC
+  119 | Field DDIC | CAWN-ATWRT
+  120 | Field DDIC | CAWNT-ATWTB
+  121 | Field DDIC | MARA-MATNR
+  123 | Field DDIC | MSEG-MENGE
+  124 | Field DDIC | MSEG-MENGE
+  125 | Field DDIC | MSEG-MENGE
+  126 | Field DDIC | MSEG-MEINS
+  131 | Field DDIC | MARA-MATNR
+  132 | Field DDIC | MSEG-MENGE
+  133 | Field DDIC | MSEG-MBLNR
+  134 | Field DDIC | CAWN-ATWRT
+  135 | Field DDIC | MARA-MATNR
+  136 | Field DDIC | MAKT-MAKTX
+  137 | Field DDIC | AUFK-AUFNR
+  138 | Field DDIC | MSEG-CHARG
+  139 | Field DDIC | MSEG-BWART
+  140 | Field DDIC | MSEG-MENGE
+  141 | Field DDIC | MSEG-MENGE
+  142 | Field DDIC | MSEG-MEINS
+  143 | Field DDIC | MSEG-MENGE
+  144 | Field DDIC | MSEG-MATNR
+  145 | Field DDIC | CAWN-ATWRT
+  147 | Field DDIC | T001L-LGORT
+  148 | Field DDIC | MKPF-BKTXT
+  149 | Field DDIC | MSEG-MBLNR
+  151 | Field DDIC | BAPIRET2-TYPE
+  152 | Field DDIC | BAPIRET2-ID
+  153 | Field DDIC | BAPIRET2-NUMBER
+  154 | Field DDIC | BAPIRET2-MESSAGE
+  158 | Field DDIC | MSEG-MBLNR
+  159 | Field DDIC | MSEG-ZEILE
+  160 | Field DDIC | MSEG-MATNR
+  161 | Field DDIC | MSEG-BWART
+  162 | Field DDIC | MSEG-WERKS
+  163 | Field DDIC | MSEG-LGORT
+  164 | Field DDIC | MSEG-CHARG
+  165 | Field DDIC | MSEG-MENGE
+  166 | Field DDIC | MKPF-BKTXT
+  167 | Field DDIC | MKPF-BUDAT
+  168 | Field DDIC | MSEG-SMBLN
+  169 | Field DDIC | MSEG-SMBLP
+  170 | Field DDIC | MAKT-MAKTX
+  171 | Field DDIC | CAWN-ATWRT
+  172 | Field DDIC | MSEG-AUFNR
+  173 | Field DDIC | MSEG-MEINS
+  177 | Field DDIC | MARD-MATNR
+  178 | Field DDIC | MARD-WERKS
+  179 | Field DDIC | MARD-LGORT
+  180 | Field DDIC | MARD-LABST
+  184 | Field DDIC | T001L-LGORT
+  185 | Field DDIC | T001L-LGOBE
+  189 | Field DDIC | MARA-MATNR
+  190 | Field DDIC | MAKT-MAKTX
+  194 | Field DDIC | ZTMAP_SLOCRR-ZWPLGORT
+  199 | Field DDIC | MKPF-MBLNR
+  217 | Field DDIC | MSEG-WERKS
+  218 | Field DDIC | MARC-MATNR
+  219 | Field DDIC | MARD-LGORT
+  220 | Field DDIC | MARD-LGORT
+  221 | Field DDIC | MKPF-BKTXT
+  222 | Field DDIC | MKPF-BKTXT
+  224 | Field DDIC | ZTLOGTIMBANG-ZIDLOG
+  225 | Field DDIC | MARA-MATNR
+  226 | Field DDIC | MKPF-BUDAT
+  227 | Field DDIC | MKPF-CPUDT
+  228 | Field DDIC | MKPF-CPUTM
+  230 | Field DDIC | MSEG-MBLNR
+  232 | Class dan Interface | CL_GUI_ALV_GRID
+  248 | Field DDIC | MKPF-BKTXT
+  249 | Field DDIC | MSEG-MBLNR
+  250 | Field DDIC | AUFK-AUART
+  251 | Field DDIC | MARA-MATNR
+  252 | Field DDIC | MARA-MATNR
+  279 | Field DDIC | MSEG-MENGE
+  280 | Field DDIC | MSEG-MENGE
+  282 | Field DDIC | DBCON-CON_NAME
+  340 | Field DDIC | T001W-WERKS
+Jumlah source terbaca: 7
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZPPI_TIMBANG_SCRAP.abap
+  Baris 27 | Layar dan GUI | CALL SCREEN 1000.
+  Baris 17 | INCLUDE | ZPPI_TIMBANG_SCRAP_TOP
+  Baris 19 | INCLUDE | ZABAPALV
+  Baris 21 | INCLUDE | ZPPI_TIMBANG_SCRAP_O01
+  Baris 22 | INCLUDE | ZPPI_TIMBANG_SCRAP_I01
+  Baris 23 | INCLUDE | ZPPI_TIMBANG_SCRAP_F01
+  Baris 24 | INCLUDE | ZPPI_TIMBANG_SCRAP_ALV
+
+ZPPI_TIMBANG_SCRAP_TOP.abap
+  Baris 9 | Tipe DDIC | LIKP
+  Baris 19 | Field DDIC | SY-UCOMM
+  Baris 24 | Field DDIC | MAKT-MATNR
+  Baris 25 | Field DDIC | MAKT-MAKTX
+  Baris 26 | Field DDIC | MSEG-WERKS
+  Baris 27 | Field DDIC | ZTLOG_TIMBANG-BAGIAN
+  Baris 28 | Field DDIC | MSEG-LGORT
+  Baris 29 | Field DDIC | MSEG-LGORT
+  Baris 30 | Field DDIC | MSEG-MENGE
+  Baris 31 | Field DDIC | MSEG-MENGE
+  Baris 32 | Field DDIC | MSEG-MENGE
+  Baris 33 | Field DDIC | MARM-MEINH
+  Baris 34 | Field DDIC | MSEG-MEINS
+  Baris 38 | Field DDIC | MSEG-MBLNR
+  Baris 39 | Field DDIC | MSEG-ZEILE
+  Baris 40 | Field DDIC | MSEG-MATNR
+  Baris 41 | Field DDIC | MSEG-BWART
+  Baris 42 | Field DDIC | MSEG-WERKS
+  Baris 43 | Field DDIC | MSEG-LGORT
+  Baris 44 | Field DDIC | MSEG-CHARG
+  Baris 45 | Field DDIC | MSEG-MENGE
+  Baris 46 | Field DDIC | MSEG-MEINS
+  Baris 47 | Field DDIC | MSEG-AUFNR
+  Baris 48 | Field DDIC | AUFK-AUART
+  Baris 49 | Field DDIC | MKPF-BKTXT
+  Baris 50 | Field DDIC | MKPF-BUDAT
+  Baris 51 | Field DDIC | MSEG-SMBLN
+  Baris 52 | Field DDIC | MSEG-SMBLP
+  Baris 53 | Field DDIC | MSEG-MATNR
+  Baris 54 | Field DDIC | MAKT-MAKTX
+  Baris 55 | Field DDIC | MSEG-CHARG
+  Baris 56 | Field DDIC | MSEG-MENGE
+  Baris 57 | Field DDIC | CAWN-ATWRT
+  Baris 58 | Field DDIC | CAWN-ATWRT
+  Baris 59 | Field DDIC | CAWN-ATWRT
+  Baris 60 | Field DDIC | AUFK-OBJNR
+  Baris 61 | Field DDIC | JEST-STAT
+  Baris 62 | Field DDIC | TJ02T-TXT30
+  Baris 63 | Field DDIC | TJ02T-TXT04
+  Baris 70 | Field DDIC | BAPIRET2-TYPE
+  Baris 71 | Field DDIC | BAPIRET2-ID
+  Baris 72 | Field DDIC | BAPIRET2-NUMBER
+  Baris 73 | Field DDIC | BAPIRET2-MESSAGE
+  Baris 74 | Field DDIC | CAWN-ATWRT
+  Baris 75 | Field DDIC | MAKT-MAKTX
+  Baris 80 | Field DDIC | AUFK-ZLINE
+  Baris 81 | Field DDIC | ZTLOGTIMBANG-ZNEWMD
+  Baris 82 | Field DDIC | ZTLOGTIMBANG-ZAUFNR
+  Baris 86 | Field DDIC | CAWN-ATWRT
+  Baris 87 | Field DDIC | CAWNT-ATWTB
+  Baris 91 | Field DDIC | MKPF-MBLNR
+  Baris 92 | Field DDIC | MKPF-BKTXT
+  Baris 93 | Field DDIC | MSEG-AUFNR
+  Baris 114 | Field DDIC | BAPI2017_GM_HEAD_RET-MAT_DOC
+  Baris 115 | Field DDIC | BAPI2017_GM_HEAD_RET-MAT_DOC
+  Baris 119 | Field DDIC | CAWN-ATWRT
+  Baris 120 | Field DDIC | CAWNT-ATWTB
+  Baris 121 | Field DDIC | MARA-MATNR
+  Baris 123 | Field DDIC | MSEG-MENGE
+  Baris 124 | Field DDIC | MSEG-MENGE
+  Baris 125 | Field DDIC | MSEG-MENGE
+  Baris 126 | Field DDIC | MSEG-MEINS
+  Baris 131 | Field DDIC | MARA-MATNR
+  Baris 132 | Field DDIC | MSEG-MENGE
+  Baris 133 | Field DDIC | MSEG-MBLNR
+  Baris 134 | Field DDIC | CAWN-ATWRT
+  Baris 135 | Field DDIC | MARA-MATNR
+  Baris 136 | Field DDIC | MAKT-MAKTX
+  Baris 137 | Field DDIC | AUFK-AUFNR
+  Baris 138 | Field DDIC | MSEG-CHARG
+  Baris 139 | Field DDIC | MSEG-BWART
+  Baris 140 | Field DDIC | MSEG-MENGE
+  Baris 141 | Field DDIC | MSEG-MENGE
+  Baris 142 | Field DDIC | MSEG-MEINS
+  Baris 143 | Field DDIC | MSEG-MENGE
+  Baris 144 | Field DDIC | MSEG-MATNR
+  Baris 145 | Field DDIC | CAWN-ATWRT
+  Baris 147 | Field DDIC | T001L-LGORT
+  Baris 148 | Field DDIC | MKPF-BKTXT
+  Baris 149 | Field DDIC | MSEG-MBLNR
+  Baris 151 | Field DDIC | BAPIRET2-TYPE
+  Baris 152 | Field DDIC | BAPIRET2-ID
+  Baris 153 | Field DDIC | BAPIRET2-NUMBER
+  Baris 154 | Field DDIC | BAPIRET2-MESSAGE
+  Baris 158 | Field DDIC | MSEG-MBLNR
+  Baris 159 | Field DDIC | MSEG-ZEILE
+  Baris 160 | Field DDIC | MSEG-MATNR
+  Baris 161 | Field DDIC | MSEG-BWART
+  Baris 162 | Field DDIC | MSEG-WERKS
+  Baris 163 | Field DDIC | MSEG-LGORT
+  Baris 164 | Field DDIC | MSEG-CHARG
+  Baris 165 | Field DDIC | MSEG-MENGE
+  Baris 166 | Field DDIC | MKPF-BKTXT
+  Baris 167 | Field DDIC | MKPF-BUDAT
+  Baris 168 | Field DDIC | MSEG-SMBLN
+  Baris 169 | Field DDIC | MSEG-SMBLP
+  Baris 170 | Field DDIC | MAKT-MAKTX
+  Baris 171 | Field DDIC | CAWN-ATWRT
+  Baris 172 | Field DDIC | MSEG-AUFNR
+  Baris 173 | Field DDIC | MSEG-MEINS
+  Baris 177 | Field DDIC | MARD-MATNR
+  Baris 178 | Field DDIC | MARD-WERKS
+  Baris 179 | Field DDIC | MARD-LGORT
+  Baris 180 | Field DDIC | MARD-LABST
+  Baris 184 | Field DDIC | T001L-LGORT
+  Baris 185 | Field DDIC | T001L-LGOBE
+  Baris 189 | Field DDIC | MARA-MATNR
+  Baris 190 | Field DDIC | MAKT-MAKTX
+  Baris 194 | Field DDIC | ZTMAP_SLOCRR-ZWPLGORT
+  Baris 199 | Field DDIC | MKPF-MBLNR
+  Baris 217 | Field DDIC | MSEG-WERKS
+  Baris 218 | Field DDIC | MARC-MATNR
+  Baris 219 | Field DDIC | MARD-LGORT
+  Baris 220 | Field DDIC | MARD-LGORT
+  Baris 221 | Field DDIC | MKPF-BKTXT
+  Baris 222 | Field DDIC | MKPF-BKTXT
+  Baris 224 | Field DDIC | ZTLOGTIMBANG-ZIDLOG
+  Baris 225 | Field DDIC | MARA-MATNR
+  Baris 226 | Field DDIC | MKPF-BUDAT
+  Baris 227 | Field DDIC | MKPF-CPUDT
+  Baris 228 | Field DDIC | MKPF-CPUTM
+  Baris 230 | Field DDIC | MSEG-MBLNR
+  Baris 232 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 248 | Field DDIC | MKPF-BKTXT
+  Baris 249 | Field DDIC | MSEG-MBLNR
+  Baris 250 | Field DDIC | AUFK-AUART
+  Baris 251 | Field DDIC | MARA-MATNR
+  Baris 252 | Field DDIC | MARA-MATNR
+  Baris 279 | Field DDIC | MSEG-MENGE
+  Baris 280 | Field DDIC | MSEG-MENGE
+  Baris 282 | Field DDIC | DBCON-CON_NAME
+  Baris 340 | Field DDIC | T001W-WERKS
+
+ZABAPALV.abap
+  Baris 7 | Field DDIC | SY-REPID
+  Baris 27 | Field DDIC | SY-DATUM
+  Baris 28 | Field DDIC | SY-DATUM
+  Baris 559 | Function module | REUSE_ALV_COMMENTARY_WRITE
+
+ZPPI_TIMBANG_SCRAP_O01.abap
+  Baris 10 | Layar dan GUI | SET PF-STATUS 'PROD_STAT1000'.
+  Baris 11 | Layar dan GUI | SET TITLEBAR  'PROD_TITLE1000'.
+  Baris 30 | Layar dan GUI | SET PF-STATUS 'PROD_STAT1100' EXCLUDING IT_EXCLUDE.
+  Baris 31 | Layar dan GUI | SET TITLEBAR  'PROD_TITLE1100'.
+  Baris 44 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 1120  AS SUBSCREEN.
+  Baris 45 | Layar Seleksi | PARAMETERS :   S_PDATE TYPE SY-DATUM DEFAULT SY-DATUM.
+  Baris 45 | Field DDIC | SY-DATUM
+  Baris 46 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 1120 .
+  Baris 56 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 1110 AS SUBSCREEN.
+  Baris 57 | Layar Seleksi | PARAMETERS    :   S_SDATE TYPE SY-DATUM DEFAULT SY-DATUM OBLIGATORY.
+  Baris 57 | Field DDIC | SY-DATUM
+  Baris 58 | Layar Seleksi | PARAMETERS    :   S_EDATE TYPE SY-DATUM DEFAULT SY-DATUM OBLIGATORY.
+  Baris 58 | Field DDIC | SY-DATUM
+  Baris 59 | Layar Seleksi | SELECT-OPTIONS:   S_PLINE  FOR  CAWN-ATWRT NO INTERVALS OBLIGATORY.
+  Baris 59 | Field DDIC | CAWN-ATWRT
+  Baris 60 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 1110 .
+  Baris 70 | Layar dan GUI | SET PF-STATUS 'PROD_STAT1200'.
+  Baris 71 | Layar dan GUI | SET TITLEBAR  'PROD_TITLE1200'.
+  Baris 120 | Field DDIC | MSEG-MENGE
+  Baris 146 | Field DDIC | S_PLINE-LOW
+  Baris 181 | Field DDIC | SY-MSGTY
+  Baris 194 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 2010  AS SUBSCREEN.
+  Baris 195 | Layar Seleksi | SELECT-OPTIONS : L_BUDAT  FOR MKPF-BUDAT NO-EXTENSION DEFAULT SY-DATUM,
+  Baris 195 | Field DDIC | MKPF-BUDAT
+  Baris 196 | Field DDIC | MKPF-MBLNR
+  Baris 197 | Field DDIC | MSEG-WERKS
+  Baris 198 | Field DDIC | CAWN-ATWRT
+  Baris 199 | Field DDIC | MKPF-USNAM
+  Baris 200 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 2010 .
+  Baris 223 | Layar dan GUI | SET PF-STATUS 'PROD_STAT2000'.
+  Baris 224 | Layar dan GUI | SET TITLEBAR 'PROD_TITLE2000'.
+  Baris 235 | Layar dan GUI | SET PF-STATUS 'PROD_STAT3000'.
+  Baris 236 | Layar dan GUI | SET TITLEBAR 'PROD_TITLE3000'.
+  Baris 159 | Sumber data pada SELECT atau JOIN | CAWN
+  Baris 159 | Sumber data pada SELECT atau JOIN | CABN
+  Baris 159 | Sumber data pada SELECT atau JOIN | CAWNT
+  Baris 167 | Function module | F4IF_INT_TABLE_VALUE_REQUEST
+  Baris 115 | Indikasi penulisan data (perlu konfirmasi) | ITAB_DIST
+
+ZPPI_TIMBANG_SCRAP_I01.abap
+  Baris 14 | Layar dan GUI | CALL SCREEN 1100.
+  Baris 16 | Layar dan GUI | CALL SCREEN 2000.
+  Baris 18 | Layar dan GUI | CALL SCREEN 3000.
+  Baris 104 | Field DDIC | D020S-PROG
+  Baris 322 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 344 | Layar dan GUI | LEAVE TO SCREEN 1000.
+  Baris 369 | Layar dan GUI | CALL SCREEN 1200.
+  Baris 428 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 463 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 144 | Sumber data pada SELECT atau JOIN | MARA
+  Baris 144 | Sumber data pada SELECT atau JOIN | MAKT
+  Baris 144 | Sumber data pada SELECT atau JOIN | ZTMAP_FGRRECYCLE
+  Baris 79 | Function module | F4IF_INT_TABLE_VALUE_REQUEST
+  Baris 112 | Function module | DYNP_VALUES_READ
+  Baris 268 | Function module | POPUP_TO_CONFIRM
+  Baris 173 | Indikasi penulisan data (perlu konfirmasi) | ITLOGTIMBANG
+  Baris 389 | Indikasi penulisan data (perlu konfirmasi) | ITAB_TIPE
+
+ZPPI_TIMBANG_SCRAP_F01.abap
+  Baris 30 | Field DDIC | D020S-PROG
+  Baris 143 | Layar dan GUI | CALL SCREEN 1100.
+  Baris 379 | Field DDIC | MSEG-MBLNR
+  Baris 380 | Field DDIC | MSEG-MBLNR
+  Baris 538 | Field DDIC | AUSP-ATWRT
+  Baris 539 | Field DDIC | AUSP-ATWRT
+  Baris 540 | Field DDIC | AUSP-ATWRT
+  Baris 732 | Field DDIC | AUSP-ATWRT
+  Baris 733 | Field DDIC | AUSP-ATWRT
+  Baris 734 | Field DDIC | AUSP-ATWRT
+  Baris 739 | Field DDIC | MKPF-BKTXT
+  Baris 1008 | Field DDIC | MSEG-MENGE
+  Baris 1189 | Field DDIC | ZTLOGTIMBANG-ZITEMLOG
+  Baris 1198 | Field DDIC | SY-SUBRC
+  Baris 1607 | Field DDIC | AUFK-AUFNR
+  Baris 1608 | Field DDIC | MSEG-BWART
+  Baris 1611 | Field DDIC | AUFK-AUART
+  Baris 1641 | Field DDIC | MKPF-MBLNR
+  Baris 1764 | Field DDIC | ZTLOGTIMBANG-ZAUFNR
+  Baris 1767 | Field DDIC | AUSP-ATWRT
+  Baris 1768 | Field DDIC | AUSP-ATWRT
+  Baris 1769 | Field DDIC | AUSP-ATWRT
+  Baris 1770 | Field DDIC | ZTLOGTIMBANG-ZAUFNR
+  Baris 1771 | Field DDIC | ZTLOGTIMBANG-ZNEWMD
+  Baris 1914 | Field DDIC | ZTLOGTIMBANG-ZAUFNR
+  Baris 1917 | Field DDIC | AUSP-ATWRT
+  Baris 1918 | Field DDIC | AUSP-ATWRT
+  Baris 1919 | Field DDIC | AUSP-ATWRT
+  Baris 1920 | Field DDIC | ZTLOGTIMBANG-ZAUFNR
+  Baris 1921 | Field DDIC | ZTLOGTIMBANG-ZNEWMD
+  Baris 2041 | Class dan Interface | IF_TIMBANG
+  Baris 2139 | Field DDIC | PA0001-PERNR
+  Baris 2227 | Field DDIC | MSEG-MENGE
+  Baris 2264 | Layar dan GUI | LEAVE TO SCREEN 1200.
+  Baris 2319 | Field DDIC | MKPF-BKTXT
+  Baris 2365 | Layar dan GUI | CALL SCREEN 2000.
+  Baris 2595 | Field DDIC | DBCON-CON_NAME
+  Baris 69 | Sumber data pada SELECT atau JOIN | ZTMAP_SLOCRR
+  Baris 69 | Sumber data pada SELECT atau JOIN | T001L
+  Baris 165 | Sumber data pada SELECT atau JOIN | ZTMAP_FGRRECYCLE
+  Baris 225 | Sumber data pada SELECT atau JOIN | MARA
+  Baris 230 | Sumber data pada SELECT atau JOIN | MAKT
+  Baris 386 | Sumber data pada SELECT atau JOIN | MSEG
+  Baris 386 | Sumber data pada SELECT atau JOIN | MKPF
+  Baris 419 | Sumber data pada SELECT atau JOIN | AFKO
+  Baris 443 | Sumber data pada SELECT atau JOIN | AUFK
+  Baris 493 | Sumber data pada SELECT atau JOIN | TJ02T
+  Baris 493 | Sumber data pada SELECT atau JOIN | JEST
+  Baris 544 | Sumber data pada SELECT atau JOIN | ZTLOGTIMBANG
+  Baris 665 | Sumber data pada SELECT atau JOIN | AUSP
+  Baris 665 | Sumber data pada SELECT atau JOIN | MCH1
+  Baris 665 | Sumber data pada SELECT atau JOIN | CABN
+  Baris 673 | Sumber data pada SELECT atau JOIN | CAWNT
+  Baris 673 | Sumber data pada SELECT atau JOIN | CAWN
+  Baris 755 | Sumber data pada SELECT atau JOIN | ZTMAP_MATRECYCLE
+  Baris 2061 | Sumber data pada SELECT atau JOIN | ZTMAP_SLOCWASTE
+  Baris 2143 | Sumber data pada SELECT atau JOIN | PA0001
+  Baris 2204 | Sumber data pada SELECT atau JOIN | MARD
+  Baris 2354 | Sumber data pada SELECT atau JOIN | T001W
+  Baris 2604 | Sumber data pada SELECT atau JOIN | DBCON
+  Baris 38 | Function module | DYNP_VALUES_READ
+  Baris 368 | Function module | CSCP_PARA1_GET_PERIODS
+  Baris 1222 | Function module | BAPI_GOODSMVT_CREATE
+  Baris 1260 | Function module | BAPI_TRANSACTION_COMMIT
+  Baris 1521 | Function module | CONVERSION_EXIT_ALPHA_INPUT
+  Baris 2027 | Function module | SSF_FUNCTION_MODULE_NAME
+  Baris 1155 | Indikasi penulisan data (perlu konfirmasi) | ITAB_DIST
+  Baris 1468 | Indikasi penulisan data (perlu konfirmasi) | ZTLOGTIMBANG
+  Baris 1879 | Indikasi penulisan data (perlu konfirmasi) | TEMPLOGTIMBANG2
+  Baris 1993 | Indikasi penulisan data (perlu konfirmasi) | ITLOGTIMBANG
+  Baris 2382 | Indikasi penulisan data (perlu konfirmasi) | XPP_TB_SUMM
+  Baris 2392 | Indikasi penulisan data (perlu konfirmasi) | XPP_TB_DTL
+  Baris 1469 | Kontrol transaksi | COMMIT_WORK
+  Baris 2386 | Kontrol transaksi | COMMIT_WORK
+  Baris 2396 | Kontrol transaksi | COMMIT_WORK
+  Baris 2416 | Kontrol transaksi | COMMIT_WORK
+  Baris 2424 | Kontrol transaksi | COMMIT_WORK
+  Baris 2439 | Kontrol transaksi | COMMIT_WORK
+  Baris 2447 | Kontrol transaksi | COMMIT_WORK
+
+ZPPI_TIMBANG_SCRAP_ALV.abap
+  Baris 191 | Layar dan GUI | SET PF-STATUS 'PROD_STAT1210' EXCLUDING ITAB_EXCLUDE.
+  Baris 197 | Field DDIC | SY-UCOMM
+  Baris 230 | Layar dan GUI | CALL SCREEN 1100.
+  Baris 244 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN'.
+  Baris 251 | Field DDIC | SY-UCOMM
+  Baris 82 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 204 | Function module | POPUP_TO_CONFIRM

@@ -1,0 +1,43 @@
+ZQMI_COA                   | DEV: PROG:ZTRD                                | QA: -
+ZQMI_COA_TOP               | DEV: PROG:ZTRD                                | QA: -
+ZQMI_COA_F01               | DEV: PROG:ZTRD                                | QA: -
+ZQMI_COA_F02               | DEV: PROG:ZTRD                                | QA: -
+ZQMI_COA_ALV               | DEV: PROG:ZTRD                                | QA: -
+ZMAP_COA                   | DEV: PROG:ZTRD TABL:ZTRD                      | QA: -
+ZMAP_COA_GRP_COL           | DEV: TABL:ZTRD                                | QA: -
+ZMAP_COA_GRP_CST           | DEV: TABL:ZTRD                                | QA: -
+ZLOG_COA                   | DEV: TABL:ZTRD                                | QA: -
+ZQM_GET_BATCH_JR_BY_SR     | DEV:  FUNC:SAPLZBARRIER                       | QA:  FUNC:SAPLZBARRIER
+ZQM_GET_BATCH_SR_BY_JR     | DEV:  FUNC:SAPLZBARRIER                       | QA:  FUNC:SAPLZBARRIER
+ZQM_GET_BATCH_SR           | DEV: TABL:ZTRD                                | QA: TABL:ZTRD
+ZQM_COA_CUST_COL           | DEV: TABL:ZTRD                                | QA: -
+ZQM_COA_DYN_ROLL           | DEV: TABL:ZTRD                                | QA: -
+ZQM_COA_DYN_HDR            | DEV: TABL:ZTRD                                | QA: -
+ZQMF_COA                   | DEV: SSFO:ZTRD SSST:ZTRD                      | QA: SSFO:ZTRD SSST:ZTRD
+ZQMF_COA_BATCH             | DEV: SSFO:ZTRD                                | QA: -
+Z_GET_PRODUCTION_DATE      | DEV:  FUNC:SAPLZTRIAS                         | QA:  FUNC:SAPLZTRIAS
+ZBATCHISTORY               | DEV: TABL:ZTRD                                | QA: TABL:ZTRD
+ZEQM015                    | DEV: TRAN:ZTRD                                | QA: TRAN:ZTRD
+ZPROGINFO                  | DEV: TABL:ZTRD                                | QA: TABL:ZTRD
+ZBC_DOWNLOAD_TEMPLATE      | DEV:  FUNC:SAPLZABAP                          | QA:  FUNC:SAPLZABAP
+ZQMI_BARRIER_PASS_FAIL     | DEV: PROG:ZTRD                                | QA: PROG:ZTRD
+ZSDC_DJP_CONV              | DEV: PROG:ZTRD                                | QA: PROG:ZTRD
+ZHUR_LABELPACK             | DEV: PROG:ZTRD                                | QA: PROG:ZTRD
+ZMAP_LABEL                 | DEV: TABL:ZTRD                                | QA: TABL:ZTRD
+ZQM_LOG_GS                 | DEV: TABL:ZTRD                                | QA: TABL:ZTRD
+ZMAP_COA_BATCH             | DEV: PROG:ZTRD                                | QA: -
+ZMAP_COA_MIC               | DEV: PROG:ZTRD                                | QA: -
+ZQM001                     | DEV: TABL:ZTRD TRAN:ZTRD                      | QA: TABL:ZTRD
+ZQM002                     | DEV: TRAN:ZTRD                                | QA: TRAN:ZTRD
+ZQM003                     | DEV: TRAN:ZTRD                                | QA: -
+ZMAP_TYPE                  | DEV: PROG:ZTRD TABL:ZTRD                      | QA: PROG:ZTRD TABL:ZTRD
+ZDJP_CONV                  | DEV: TABL:ZTRD                                | QA: TABL:ZTRD
+ZQMI_CERTIFICATE           | DEV: PROG:ZTRD                                | QA: PROG:ZTRD
+VBAP-ZZALIAS               | DEV: -                                        | QA: -
+LIPS-ZZALIAS               | DEV: -                                        | QA: -
+MCH1-ZZALIAS               | DEV: -                                        | QA: -
+VBAK-ZZALIAS               | DEV: -                                        | QA: -
+CABN ZZALIAS               | DEV: 1                                        | QA: 1
+CABN ZZNOMORROLL           | DEV: 1                                        | QA: 1
+CABN ZZPRODLINE            | DEV: 1                                        | QA: 1
+CABN ZZTYPE                | DEV: 1                                        | QA: 1

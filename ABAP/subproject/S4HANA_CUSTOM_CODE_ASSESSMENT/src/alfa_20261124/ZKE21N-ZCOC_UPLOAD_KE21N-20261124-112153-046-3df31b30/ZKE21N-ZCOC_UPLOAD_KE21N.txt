@@ -1,0 +1,127 @@
+﻿Input: ZKE21N
+Source SAP development (RFC baca-saja): ZCOC_UPLOAD_KE21N
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZCOC_UPLOAD_KE21N:68 | INITIALIZATION | PERFORM LAYOUT_INIT USING GS_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZCOC_UPLOAD_KE21N:69 | INITIALIZATION | PERFORM EVENTTAB_BUILD USING GT_EVENTS[]. | Tinjau kondisi dan hasil di ECC.
+  ZCOC_UPLOAD_KE21N:119 | START-OF-SELECTION > IF sy-subrc <> 0. | message i000(0k) with 'File cannot be opened'. | Tinjau kondisi dan hasil di ECC.
+  ZCOC_UPLOAD_KE21N:183 | START-OF-SELECTION | PERFORM SET_INPUTDATA. | Tinjau kondisi dan hasil di ECC.
+  ZCOC_UPLOAD_KE21N:323 | START-OF-SELECTION | perform build_fieldcatalog. | Tinjau kondisi dan hasil di ECC.
+  ZCOC_UPLOAD_KE21N:324 | START-OF-SELECTION | perform comment_build using gt_list_top_of_page[]. | Tinjau kondisi dan hasil di ECC.
+  ZBDCREX3:214 | FORM BDC_TRANSACTION > ELSE. | CALL TRANSACTION TCODE USING BDCDATA | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZCOC_UPLOAD_KE21N (529 baris)
+  50 | Field DDIC | SY-REPID
+  74 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK 1 WITH FRAME TITLE text-001.
+  74 | Teks Seleksi | text-001
+  76 | Layar Seleksi | PARAMETERS: FPATH LIKE RLGRAP-FILENAME MEMORY ID pid LOWER CASE OBLIGATORY,
+  76 | Field DDIC | RLGRAP-FILENAME
+  78 | Field DDIC | MKPF-BUDAT
+  80 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK 1.
+  5 | includes | ZBDCREX3
+  83 | callFunctions | WS_FILENAME_GET
+  101 | callFunctions | GUI_UPLOAD
+  196 | callFunctions | BAPI_COPAACTUALS_POSTCOSTDATA
+  208 | callFunctions | BAPI_TRANSACTION_COMMIT
+  326 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  435 | callFunctions | REUSE_ALV_EVENTS_GET
+  465 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+
+Objek ZBDCREX3 (291 baris)
+  17 | Field DDIC | sy-datum
+  110 | BDC | BDCDATA
+  110 | BDC | BDCDATA
+  116 | Tipe DDIC | T100
+  137 | Teks Seleksi | TEXT-E00
+  159 | BDC | BDC_OPEN_GROUP
+  165 | BDC | BDC_OPEN_GROUP
+  178 | BDC | BDC_CLOSE_GROUP
+  179 | BDC | BDC_CLOSE_GROUP
+  184 | BDC | BDC_CLOSE_GROUP
+  197 | Field DDIC | SY-SUBRC
+  200 | BDC | BDC_INSERT
+  202 | Tipe DDIC | DYNPROTAB
+  202 | BDC | BDCDATA
+  204 | BDC | BDC_INSERT
+  214 | BDC | BDCDATA
+  214 | BDC | CALL TRANSACTION TCODE USING BDCDATA
+  254 | BDC | BDC_OPEN_GROUP
+  262 | BDC | BDC_INSERT
+  264 | Tipe DDIC | DYNPROTAB
+  264 | BDC | BDCDATA
+  267 | BDC | BDCDATA
+  274 | BDC | BDCDATA
+  275 | BDC | BDCDATA
+  276 | BDC | BDCDATA
+  277 | BDC | BDCDATA
+  278 | BDC | BDCDATA
+  286 | BDC | BDCDATA
+  287 | BDC | BDCDATA
+  288 | BDC | BDCDATA
+  289 | BDC | BDCDATA
+  159 | callFunctions | BDC_OPEN_GROUP
+  178 | callFunctions | BDC_CLOSE_GROUP
+  200 | callFunctions | BDC_INSERT
+  214 | callTransactions | TCODE
+Jumlah source terbaca: 2
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZCOC_UPLOAD_KE21N.abap
+  Baris 50 | Field DDIC | SY-REPID
+  Baris 74 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK 1 WITH FRAME TITLE text-001.
+  Baris 74 | Teks Seleksi | text-001
+  Baris 76 | Layar Seleksi | PARAMETERS: FPATH LIKE RLGRAP-FILENAME MEMORY ID pid LOWER CASE OBLIGATORY,
+  Baris 76 | Field DDIC | RLGRAP-FILENAME
+  Baris 78 | Field DDIC | MKPF-BUDAT
+  Baris 80 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK 1.
+  Baris 5 | INCLUDE | ZBDCREX3
+  Baris 83 | Function module | WS_FILENAME_GET
+  Baris 101 | Function module | GUI_UPLOAD
+  Baris 196 | Function module | BAPI_COPAACTUALS_POSTCOSTDATA
+  Baris 208 | Function module | BAPI_TRANSACTION_COMMIT
+  Baris 326 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 435 | Function module | REUSE_ALV_EVENTS_GET
+  Baris 465 | Function module | REUSE_ALV_COMMENTARY_WRITE
+
+ZBDCREX3.abap
+  Baris 17 | Field DDIC | sy-datum
+  Baris 110 | BDC | BDCDATA
+  Baris 110 | BDC | BDCDATA
+  Baris 116 | Tipe DDIC | T100
+  Baris 137 | Teks Seleksi | TEXT-E00
+  Baris 159 | BDC | BDC_OPEN_GROUP
+  Baris 165 | BDC | BDC_OPEN_GROUP
+  Baris 178 | BDC | BDC_CLOSE_GROUP
+  Baris 179 | BDC | BDC_CLOSE_GROUP
+  Baris 184 | BDC | BDC_CLOSE_GROUP
+  Baris 197 | Field DDIC | SY-SUBRC
+  Baris 200 | BDC | BDC_INSERT
+  Baris 202 | Tipe DDIC | DYNPROTAB
+  Baris 202 | BDC | BDCDATA
+  Baris 204 | BDC | BDC_INSERT
+  Baris 214 | BDC | BDCDATA
+  Baris 214 | BDC | CALL TRANSACTION TCODE USING BDCDATA
+  Baris 254 | BDC | BDC_OPEN_GROUP
+  Baris 262 | BDC | BDC_INSERT
+  Baris 264 | Tipe DDIC | DYNPROTAB
+  Baris 264 | BDC | BDCDATA
+  Baris 267 | BDC | BDCDATA
+  Baris 274 | BDC | BDCDATA
+  Baris 275 | BDC | BDCDATA
+  Baris 276 | BDC | BDCDATA
+  Baris 277 | BDC | BDCDATA
+  Baris 278 | BDC | BDCDATA
+  Baris 286 | BDC | BDCDATA
+  Baris 287 | BDC | BDCDATA
+  Baris 288 | BDC | BDCDATA
+  Baris 289 | BDC | BDCDATA
+  Baris 159 | Function module | BDC_OPEN_GROUP
+  Baris 178 | Function module | BDC_CLOSE_GROUP
+  Baris 200 | Function module | BDC_INSERT
+  Baris 214 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | TCODE

@@ -1,0 +1,61 @@
+*----------------------------------------------------------------------*
+*   INCLUDE MV50AF0F_FCODE_IBST_ND                                     *
+*----------------------------------------------------------------------*
+* Prepare call of transaction for showing the available quantities
+*
+
+FORM FCODE_IBST_ND.
+
+  DATA: LF_MATNR LIKE LIPS-MATNR,
+        LF_WERKS LIKE LIPS-WERKS,
+        LF_LGORT LIKE LIPS-LGORT,
+        LF_CHARG LIKE LIPS-CHARG.
+
+* Prepare the initial parameters depending on the current screen
+  CASE TAXI_SCREEN_GROUP(1).
+    WHEN C_TAXI_SCRGRP_OVERVIEW(1).
+      PERFORM XLIPS_DETAIL_ND(SAPFV50P).
+      LF_MATNR = GS_LIPS_MAIN-MATNR.
+      LF_WERKS = GS_LIPS_MAIN-WERKS.
+      LF_LGORT = GS_LIPS_MAIN-LGORT.
+      LF_CHARG = GS_LIPS_MAIN-CHARG.
+    WHEN C_TAXI_SCRGRP_ITEM(1).
+      IF TAXI_PANEL EQ GC_PANEL_CHSP.
+        PERFORM XLIPS_I0_TO_C0_CHSP(SAPFV50P).
+        LF_MATNR = GS_LIPS_CHSP-MATNR.
+        LF_WERKS = GS_LIPS_CHSP-WERKS.
+        LF_LGORT = GS_LIPS_CHSP-LGORT.
+        LF_CHARG = GS_LIPS_CHSP-CHARG.
+      ELSE.
+        LF_MATNR = GS_LIPS_MAIN-MATNR.
+        LF_WERKS = GS_LIPS_MAIN-WERKS.
+        LF_LGORT = GS_LIPS_MAIN-LGORT.
+        LF_CHARG = GS_LIPS_MAIN-CHARG.
+      ENDIF.
+    WHEN C_TAXI_SCRGRP_BATCH.
+      LF_MATNR = GS_LIPS_CHSP-MATNR.
+      LF_WERKS = GS_LIPS_CHSP-WERKS.
+      LF_LGORT = GS_LIPS_CHSP-LGORT.
+      LF_CHARG = GS_LIPS_CHSP-CHARG.
+  ENDCASE.
+
+  CHECK FCODE NE FCODE_GLEICHE_SEITE.                          "n_837818
+
+  SET PARAMETER ID 'MAT' FIELD LF_MATNR.
+  SET PARAMETER ID 'WRK' FIELD LF_WERKS.
+  SET PARAMETER ID 'LAG' FIELD LF_LGORT.
+  SET PARAMETER ID 'CHA' FIELD LF_CHARG.
+
+  CALL TRANSACTION 'MMBE'.
+
+* Proper back jump to the calling screen
+  CASE TAXI_SCREEN_GROUP(1).
+    WHEN C_TAXI_SCRGRP_OVERVIEW(1).
+      PERFORM XLIPS_DETAIL_BACK(SAPFV50P).
+    WHEN C_TAXI_SCRGRP_ITEM(1).
+      IF TAXI_PANEL EQ GC_PANEL_CHSP.
+        PERFORM XLIPS_C0_TO_I0_CHSP(SAPFV50P).
+      ENDIF.
+  ENDCASE.
+
+ENDFORM.

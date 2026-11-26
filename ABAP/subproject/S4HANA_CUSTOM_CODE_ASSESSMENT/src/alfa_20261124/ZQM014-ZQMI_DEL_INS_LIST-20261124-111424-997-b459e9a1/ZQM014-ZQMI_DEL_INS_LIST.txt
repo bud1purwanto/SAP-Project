@@ -1,0 +1,418 @@
+﻿Input: ZQM014
+Source SAP development (RFC baca-saja): ZQMI_DEL_INS_LIST
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZQMI_DEL_INS_LIST_F01:31 | AT SELECTION-SCREEN > IF SY-UCOMM = 'INFO'. | PERFORM F_PROG_INFO USING V_PROG. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:43 | START-OF-SELECTION | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:113 | FORM DATA_RETRIEVAL > IF R1 = 'X'. > IF IT_LIST[] IS INITIAL . | MESSAGE I000(0K) WITH 'No Data Selected.'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:117 | FORM DATA_RETRIEVAL > ELSEIF R2 = 'X'. | PERFORM INIT. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:413 | FORM DATA_RETRIEVAL > ELSEIF R2 = 'X'. > IF IT_EXEC[] IS INITIAL . | MESSAGE I000(0K) WITH 'No Data Selected.'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:449 | FORM DISPLAY_DATA > IF R1 = 'X'. | PERFORM DATA_RETRIEVAL. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:450 | FORM DISPLAY_DATA > IF R1 = 'X'. | PERFORM F_FIELD_CATALOG_LIST. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:451 | FORM DISPLAY_DATA > IF R1 = 'X'. | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:452 | FORM DISPLAY_DATA > IF R1 = 'X'. | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:455 | FORM DISPLAY_DATA > ELSEIF R2 = 'X'. > IF R NE 'X'. | PERFORM DATA_RETRIEVAL. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:520 | WHEN 'EEXEC'. > WHEN '1'. | PERFORM GET_NIK. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:522 | WHEN 'EEXEC'. > WHEN '1'. | PERFORM INSERT_ZTDELINSP. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:524 | WHEN 'EEXEC'. > WHEN '1'. | PERFORM INSERT_TO_TRANSACTION. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:525 | WHEN 'EEXEC'. > WHEN '1'. | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:530 | WHEN 'EREF'. | PERFORM INIT. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:533 | WHEN 'EREF'. | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:536 | WHEN 'ELIST'. | PERFORM INIT. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:539 | WHEN 'ELIST'. | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:544 | WHEN 'ETPDA'. > IF SY-SUBRC = 0. | PERFORM DOWNLOAD_TO_PDA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:558 | WHEN 'ETEXC'. > IF SY-SUBRC = 0. | PERFORM UPLOAD_FROM_PDA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:659 | FORM DOWNLOAD_TO_PDA > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:763 | FORM UPLOAD_FROM_PDA > IF SY-SUBRC = 0. | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:791 | FORM INSERT_ZTDELINSP > IF SY-SUBRC = 0. > IF CTR > 0. | MESSAGE 'There are some item have 2 result status.' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:799 | FORM INSERT_ZTDELINSP > IF SY-SUBRC = 0. > ELSE. | PERFORM FILL_USDEC. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:835 | FORM INSERT_ZTDELINSP > IF SY-SUBRC = 0. > ELSE. > IF CTR > 0. > WHEN OTHERS. | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:893 | FORM INSERT_TO_TRANSACTION | PERFORM CHECK_INSPECTOR. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:947 | FORM INSERT_TO_TRANSACTION > IF SY-SUBRC = 0. > IF CTR > 0. | PERFORM PARTIAL_PROCESS. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1091 | FORM INSERT_TO_TRANSACTION > IF SY-SUBRC = 0. > IF CTR > 0. | PERFORM BDC_VL02. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1126 | FORM INSERT_TO_TRANSACTION > IF SY-SUBRC = 0. > IF CTR > 0. > IF CTR > 0. | PERFORM CALL_POPUP. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1131 | FORM INSERT_TO_TRANSACTION > IF SY-SUBRC = 0. > IF CTR > 0. | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1137 | FORM INSERT_TO_TRANSACTION > ELSE. > IF CTR > 0. | PERFORM CALL_POPUP. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1143 | FORM INSERT_TO_TRANSACTION > ELSE. | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1429 | FORM BDC_VL02 | PERFORM BDC_DYNPRO      USING 'SAPMV50A' '4004'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1430 | FORM BDC_VL02 | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1432 | FORM BDC_VL02 | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1434 | FORM BDC_VL02 | PERFORM BDC_FIELD       USING 'LIKP-VBELN' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1436 | FORM BDC_VL02 | PERFORM BDC_DYNPRO      USING 'SAPMV50A' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1437 | FORM BDC_VL02 | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1439 | FORM BDC_VL02 | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1441 | FORM BDC_VL02 | PERFORM BDC_DYNPRO      USING 'SAPMV50A' '2000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1442 | FORM BDC_VL02 | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1444 | FORM BDC_VL02 | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1447 | FORM BDC_VL02 | PERFORM BDC_FIELD       USING 'LIKP-TRSPG' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1450 | FORM BDC_VL02 | CALL TRANSACTION 'VL02N' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1474 | FORM BDC_VL02 > IF CTR > 0. | PERFORM DISPLAY_ERROR. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1521 | FORM DISPLAY_ERROR | MESSAGE LIKE BAPIRET2-MESSAGE, | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1558 | FORM DISPLAY_ERROR | MESSAGE    = MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:1746 | FORM USER_OK_TC > WHEN 'INSR'. | PERFORM FCODE_INSERT_ROW USING    P_TC_NAME | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_DEL_INS_LIST_F01:1751 | FORM USER_OK_TC > WHEN 'DELE'. | PERFORM FCODE_DELETE_ROW USING    P_TC_NAME | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_DEL_INS_LIST_F01:1760 | FORM USER_OK_TC > WHEN 'P--' OR | PERFORM COMPUTE_SCROLLING_IN_TC USING P_TC_NAME | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_DEL_INS_LIST_F01:1776 | FORM USER_OK_TC > WHEN 'MARK'. | PERFORM FCODE_TC_MARK_LINES USING P_TC_NAME | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_DEL_INS_LIST_F01:1782 | FORM USER_OK_TC > WHEN 'DMRK'. | PERFORM FCODE_TC_DEMARK_LINES USING P_TC_NAME | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_DEL_INS_LIST_F01:2152 | FORM GET_NIK > IF LINE > 0. > IF SY-SUBRC <> 0 OR RETURNCODE EQ 'A'. | MESSAGE 'Transaction cancelled!' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_F01:2157 | FORM GET_NIK > IF LINE > 0. > ELSE. > IF INSPECTOR EQ ''. | MESSAGE 'Transaction cancelled, inspector is required!' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_ALV:16 | FORM F_FIELD_CATALOG_LIST | PERFORM F_ALV_FIELDCATG_ICON1 USING 'IT_LIST' : | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_ALV:119 | FORM F_USER_COMMAND > WHEN 'REF'. | PERFORM DISPLAY_DATA. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_DEL_INS_LIST_ALV:124 | FORM F_USER_COMMAND > WHEN 'LIS'. | PERFORM DISPLAY_DATA. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_DEL_INS_LIST_ALV:167 | FORM F_USER_COMMAND > WHEN '&EXEC'. | PERFORM DISPLAY_DATA. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_DEL_INS_LIST_ALV:170 | FORM F_USER_COMMAND > WHEN '&DWL'. | PERFORM DWL_PDA. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_DEL_INS_LIST_ALV:173 | FORM F_USER_COMMAND > WHEN '&DWLE'. | PERFORM DWL_EXCEL. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_DEL_INS_LIST_ALV:264 | FORM DWL_PDA > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZQMI_DEL_INS_LIST_ALV:353 | FORM DWL_EXCEL > IF SY-SUBRC <> 0. | MESSAGE I000(0K) WITH 'Download error'. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZQMI_DEL_INS_LIST (23 baris)
+  21 | includes | ZQMI_DEL_INS_LIST_TOP
+  23 | includes | ZQMI_DEL_INS_LIST_F01
+
+Objek ZQMI_DEL_INS_LIST_F01 (2184 baris)
+  10 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLK1 WITH FRAME TITLE TEXT-001.
+  10 | Teks Seleksi | TEXT-001
+  11 | Layar Seleksi | SELECT-OPTIONS: P_PRUEF  FOR QALS-PRUEFLOS ,
+  11 | Field DDIC | QALS-PRUEFLOS
+  12 | Field DDIC | LIPS-VBELN
+  13 | Field DDIC | QALS-ENSTEHDAT
+  14 | Field DDIC | VEPO-WERKS
+  15 | Layar Seleksi | SELECTION-SCREEN SKIP 2.
+  16 | Layar Seleksi | PARAMETERS :
+  20 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLK1.
+  21 | Layar Seleksi | SELECTION-SCREEN SKIP 2.
+  23 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  56 | Field DDIC | VEKP-MAGRV
+  456 | Layar dan GUI | CALL SCREEN '0100'.
+  458 | Layar dan GUI | SET PF-STATUS 'ESTATUS'.
+  459 | Layar dan GUI | CALL SCREEN '0100'.
+  462 | Layar dan GUI | CALL SCREEN '1000'.
+  475 | Layar dan GUI | SET PF-STATUS 'ESTATUS'.
+  476 | Layar dan GUI | SET TITLEBAR 'TL0100'.
+  601 | Class dan Interface | CL_ABAP_CHAR_UTILITIES
+  603 | Class dan Interface | CL_ABAP_CHAR_UTILITIES
+  636 | Teks Seleksi | TEXT-011
+  659 | Field DDIC | SY-MSGTY
+  863 | Field DDIC | BAPI2045D4-INSPLOT
+  864 | Field DDIC | BAPI2045D4-INSPOPER
+  865 | Field DDIC | BAPI2045D4-INSPCHAR
+  866 | Field DDIC | BAPI2045D4-INSPSAMPLE
+  878 | Field DDIC | BAPI2045UD-INSPLOT
+  879 | Field DDIC | BAPI2045UD-UD_PLANT
+  885 | Field DDIC | SY-TABIX
+  1222 | Field DDIC | BAPI2045D4-INSPOPER
+  1223 | Field DDIC | BAPI2045D4-INSPCHAR
+  1224 | Field DDIC | BAPI2045D4-INSPSAMPLE
+  1230 | Field DDIC | BAPI2045UD-INSPLOT
+  1234 | Field DDIC | BAPI2045D4-INSPLOT
+  1415 | Field DDIC | LIKP-VBELN
+  1416 | Field DDIC | LIKP-VBELN
+  1417 | Field DDIC | VBUK-TRSTA
+  1450 | BDC | CALL TRANSACTION 'VL02N' USING IT_BDCDATA
+  1521 | Field DDIC | BAPIRET2-MESSAGE
+  1524 | Field DDIC | BAPIRET2-MESSAGE
+  1669 | Layar dan GUI | CALL SCREEN 0150 STARTING AT 10 4 ENDING AT 90 16.
+  1677 | Layar dan GUI | SET PF-STATUS 'POPSTATUS'.
+  1678 | Layar dan GUI | SET TITLEBAR 'Log Status'.
+  1691 | Layar dan GUI | LEAVE TO SCREEN 0.
+  1728 | Field DDIC | SY-UCOMM
+  1731 | Field DDIC | SY-UCOMM
+  1804 | Field DDIC | FELD-NAME
+  1805 | Field DDIC | SY-STEPL
+  1808 | Field DDIC | FELD-NAME
+  1858 | Field DDIC | FELD-NAME
+  1902 | Field DDIC | FELD-NAME
+  1903 | Field DDIC | FELD-NAME
+  1904 | Field DDIC | FELD-NAME
+  1968 | Field DDIC | FELD-NAME
+  2003 | Field DDIC | FELD-NAME
+  2037 | Field DDIC | HRP1001-OBJID
+  2039 | Field DDIC | QAQEE-PRUEFER
+  2040 | Field DDIC | QAQEE-PRUEFER
+  2041 | Field DDIC | QAQEE-PRUEFER
+  2043 | Field DDIC | DD01V-DATATYPE
+  2045 | Field DDIC | QALS-PLNNR
+  2046 | Field DDIC | QALS-PLNAL
+  2047 | Field DDIC | PLPO-ARBID
+  2048 | Field DDIC | CRHD-OBJID
+  2049 | Field DDIC | CRHD-HROID
+  2050 | Field DDIC | HRP1001-OBJID
+  2051 | Field DDIC | CRHD-ARBPL
+  2118 | Field DDIC | QAQEE-PRUEFER
+  2119 | Field DDIC | QAQEE-PRUEFER
+  4 | includes | Z_PROG_INFO
+  5 | includes | ZABAPALV
+  45 | includes | ZQMI_DEL_INS_LIST_ALV
+  394 | callFunctions | CONVERSION_EXIT_ALPHA_OUTPUT
+  505 | callFunctions | POPUP_TO_CONFIRM
+  546 | callFunctions | POPUP_TO_INFORM
+  630 | callFunctions | WS_FILENAME_GET
+  651 | callFunctions | GUI_DOWNLOAD
+  673 | callFunctions | UPLOAD
+  974 | callFunctions | BAPI_INSPOPER_RECORDRESULTS
+  998 | callFunctions | BAPI_TRANSACTION_COMMIT
+  1029 | callFunctions | BAPI_INSPLOT_SETUSAGEDECISION
+  1547 | callFunctions | BAPI_MESSAGE_GETDETAIL
+  1922 | callFunctions | SCROLLING_IN_TABLE
+  2085 | callFunctions | CONVERSION_EXIT_ALPHA_INPUT
+  2137 | callFunctions | POPUP_GET_VALUES
+  1450 | callTransactions | VL02N
+  64 | tableReads | QALS
+  64 | tableReads | QAVE
+  120 | tableReads | JEST
+  120 | tableReads | VEPO
+  158 | tableReads | VEKP
+  260 | tableReads | ZTDELINSP_I
+  926 | tableReads | QALT
+  1257 | tableReads | QAPP
+  2065 | tableReads | PLPO
+  2071 | tableReads | CRHD
+  2077 | tableReads | HRP1001
+  27 | databaseWrites | ZTDELINSP_I
+  829 | databaseWrites | ZTDELINSP
+
+Objek ZQMI_DEL_INS_LIST_ALV (399 baris)
+  90 | Layar dan GUI | SET PF-STATUS 'LSTATUS'.
+  96 | Field DDIC | SY-UCOMM
+  177 | Layar dan GUI | LEAVE TO SCREEN '1000'.
+  215 | Class dan Interface | cl_abap_char_utilities
+  217 | Class dan Interface | cl_abap_char_utilities
+  245 | Teks Seleksi | TEXT-011
+  264 | Field DDIC | SY-MSGTY
+  274 | Tipe DDIC | RLGRAP
+  275 | Field DDIC | RLGRAP-FILENAME
+  276 | Field DDIC | RLGRAP-FILENAME
+  318 | Teks Seleksi | TEXT-011
+  60 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  103 | callFunctions | GET_GLOBALS_FROM_SLVC_FULLSCR
+  152 | callFunctions | POPUP_TO_SHOW_DB_DATA_IN_TABLE
+  239 | callFunctions | WS_FILENAME_GET
+  256 | callFunctions | GUI_DOWNLOAD
+  133 | tableReads | ZTDELINSP_I
+
+Objek ZABAPALV (660 baris)
+  7 | Field DDIC | SY-REPID
+  27 | Field DDIC | SY-DATUM
+  28 | Field DDIC | SY-DATUM
+  559 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+
+Objek Z_PROG_INFO (88 baris)
+  6 | Field DDIC | ZPROGINFO-PGMNA
+  15 | Field DDIC | RSNEWLENG-FCODE
+  77 | callFunctions | HELP_DOCULINES_SHOW
+  60 | tableReads | ZPROGINFO
+
+Objek ZQMI_DEL_INS_LIST_TOP (158 baris)
+  4 | Tipe DDIC | QALS
+  5 | Field DDIC | Zproginfo-PGMNA
+  6 | Class dan Interface | CL_GUI_ALV_GRID
+  7 | Field DDIC | SY-UCOMM
+  9 | Field DDIC | SY-LOOPC
+  10 | Field DDIC | SY-SUBRC
+  18 | Field DDIC | QALS-LS_VBELN
+  19 | Field DDIC | QALS-PRUEFLOS
+  20 | Field DDIC | QALS-ENSTEHDAT
+  22 | Field DDIC | QAVE-VCODE
+  23 | Field DDIC | QALS-WERK
+  28 | Field DDIC | QALS-LS_VBELN
+  29 | Field DDIC | QALS-PRUEFLOS
+  30 | Field DDIC | QALS-ENSTEHDAT
+  31 | Field DDIC | QAVE-VCODE
+  32 | Field DDIC | VEKP-EXIDV
+  33 | Field DDIC | VEKP-VENUM
+  34 | Field DDIC | QALS-STAT35
+  35 | Field DDIC | VEPO-POSNR
+  41 | Field DDIC | QALS-WERK
+  42 | Field DDIC | VEKP-MAGRV
+  56 | Field DDIC | QAVE-VCODE
+  57 | Field DDIC | RLGRAP-FILENAME
+  58 | Field DDIC | VEPO-VENUM
+  59 | Field DDIC | VEKP-EXIDV
+  60 | Field DDIC | QALS-WERK
+  84 | Field DDIC | VEKP-EXIDV
+  85 | Field DDIC | VEPO-VENUM
+  86 | Field DDIC | VEPO-UNVEL
+  92 | Field DDIC | VEKP-EXIDV
+  93 | Field DDIC | VEKP-VENUM
+  131 | BDC | BDCDATA
+  156 | Field DDIC | SY-LOOPC
+Jumlah source terbaca: 6
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZQMI_DEL_INS_LIST.abap
+  Baris 21 | INCLUDE | ZQMI_DEL_INS_LIST_TOP
+  Baris 23 | INCLUDE | ZQMI_DEL_INS_LIST_F01
+
+ZQMI_DEL_INS_LIST_TOP.abap
+  Baris 4 | Tipe DDIC | QALS
+  Baris 5 | Field DDIC | Zproginfo-PGMNA
+  Baris 6 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 7 | Field DDIC | SY-UCOMM
+  Baris 9 | Field DDIC | SY-LOOPC
+  Baris 10 | Field DDIC | SY-SUBRC
+  Baris 18 | Field DDIC | QALS-LS_VBELN
+  Baris 19 | Field DDIC | QALS-PRUEFLOS
+  Baris 20 | Field DDIC | QALS-ENSTEHDAT
+  Baris 22 | Field DDIC | QAVE-VCODE
+  Baris 23 | Field DDIC | QALS-WERK
+  Baris 28 | Field DDIC | QALS-LS_VBELN
+  Baris 29 | Field DDIC | QALS-PRUEFLOS
+  Baris 30 | Field DDIC | QALS-ENSTEHDAT
+  Baris 31 | Field DDIC | QAVE-VCODE
+  Baris 32 | Field DDIC | VEKP-EXIDV
+  Baris 33 | Field DDIC | VEKP-VENUM
+  Baris 34 | Field DDIC | QALS-STAT35
+  Baris 35 | Field DDIC | VEPO-POSNR
+  Baris 41 | Field DDIC | QALS-WERK
+  Baris 42 | Field DDIC | VEKP-MAGRV
+  Baris 56 | Field DDIC | QAVE-VCODE
+  Baris 57 | Field DDIC | RLGRAP-FILENAME
+  Baris 58 | Field DDIC | VEPO-VENUM
+  Baris 59 | Field DDIC | VEKP-EXIDV
+  Baris 60 | Field DDIC | QALS-WERK
+  Baris 84 | Field DDIC | VEKP-EXIDV
+  Baris 85 | Field DDIC | VEPO-VENUM
+  Baris 86 | Field DDIC | VEPO-UNVEL
+  Baris 92 | Field DDIC | VEKP-EXIDV
+  Baris 93 | Field DDIC | VEKP-VENUM
+  Baris 131 | BDC | BDCDATA
+  Baris 156 | Field DDIC | SY-LOOPC
+
+ZQMI_DEL_INS_LIST_F01.abap
+  Baris 10 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLK1 WITH FRAME TITLE TEXT-001.
+  Baris 10 | Teks Seleksi | TEXT-001
+  Baris 11 | Layar Seleksi | SELECT-OPTIONS: P_PRUEF  FOR QALS-PRUEFLOS ,
+  Baris 11 | Field DDIC | QALS-PRUEFLOS
+  Baris 12 | Field DDIC | LIPS-VBELN
+  Baris 13 | Field DDIC | QALS-ENSTEHDAT
+  Baris 14 | Field DDIC | VEPO-WERKS
+  Baris 15 | Layar Seleksi | SELECTION-SCREEN SKIP 2.
+  Baris 16 | Layar Seleksi | PARAMETERS :
+  Baris 20 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLK1.
+  Baris 21 | Layar Seleksi | SELECTION-SCREEN SKIP 2.
+  Baris 23 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  Baris 56 | Field DDIC | VEKP-MAGRV
+  Baris 456 | Layar dan GUI | CALL SCREEN '0100'.
+  Baris 458 | Layar dan GUI | SET PF-STATUS 'ESTATUS'.
+  Baris 459 | Layar dan GUI | CALL SCREEN '0100'.
+  Baris 462 | Layar dan GUI | CALL SCREEN '1000'.
+  Baris 475 | Layar dan GUI | SET PF-STATUS 'ESTATUS'.
+  Baris 476 | Layar dan GUI | SET TITLEBAR 'TL0100'.
+  Baris 601 | Class dan Interface | CL_ABAP_CHAR_UTILITIES
+  Baris 603 | Class dan Interface | CL_ABAP_CHAR_UTILITIES
+  Baris 636 | Teks Seleksi | TEXT-011
+  Baris 659 | Field DDIC | SY-MSGTY
+  Baris 863 | Field DDIC | BAPI2045D4-INSPLOT
+  Baris 864 | Field DDIC | BAPI2045D4-INSPOPER
+  Baris 865 | Field DDIC | BAPI2045D4-INSPCHAR
+  Baris 866 | Field DDIC | BAPI2045D4-INSPSAMPLE
+  Baris 878 | Field DDIC | BAPI2045UD-INSPLOT
+  Baris 879 | Field DDIC | BAPI2045UD-UD_PLANT
+  Baris 885 | Field DDIC | SY-TABIX
+  Baris 1222 | Field DDIC | BAPI2045D4-INSPOPER
+  Baris 1223 | Field DDIC | BAPI2045D4-INSPCHAR
+  Baris 1224 | Field DDIC | BAPI2045D4-INSPSAMPLE
+  Baris 1230 | Field DDIC | BAPI2045UD-INSPLOT
+  Baris 1234 | Field DDIC | BAPI2045D4-INSPLOT
+  Baris 1415 | Field DDIC | LIKP-VBELN
+  Baris 1416 | Field DDIC | LIKP-VBELN
+  Baris 1417 | Field DDIC | VBUK-TRSTA
+  Baris 1450 | BDC | CALL TRANSACTION 'VL02N' USING IT_BDCDATA
+  Baris 1521 | Field DDIC | BAPIRET2-MESSAGE
+  Baris 1524 | Field DDIC | BAPIRET2-MESSAGE
+  Baris 1669 | Layar dan GUI | CALL SCREEN 0150 STARTING AT 10 4 ENDING AT 90 16.
+  Baris 1677 | Layar dan GUI | SET PF-STATUS 'POPSTATUS'.
+  Baris 1678 | Layar dan GUI | SET TITLEBAR 'Log Status'.
+  Baris 1691 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 1728 | Field DDIC | SY-UCOMM
+  Baris 1731 | Field DDIC | SY-UCOMM
+  Baris 1804 | Field DDIC | FELD-NAME
+  Baris 1805 | Field DDIC | SY-STEPL
+  Baris 1808 | Field DDIC | FELD-NAME
+  Baris 1858 | Field DDIC | FELD-NAME
+  Baris 1902 | Field DDIC | FELD-NAME
+  Baris 1903 | Field DDIC | FELD-NAME
+  Baris 1904 | Field DDIC | FELD-NAME
+  Baris 1968 | Field DDIC | FELD-NAME
+  Baris 2003 | Field DDIC | FELD-NAME
+  Baris 2037 | Field DDIC | HRP1001-OBJID
+  Baris 2039 | Field DDIC | QAQEE-PRUEFER
+  Baris 2040 | Field DDIC | QAQEE-PRUEFER
+  Baris 2041 | Field DDIC | QAQEE-PRUEFER
+  Baris 2043 | Field DDIC | DD01V-DATATYPE
+  Baris 2045 | Field DDIC | QALS-PLNNR
+  Baris 2046 | Field DDIC | QALS-PLNAL
+  Baris 2047 | Field DDIC | PLPO-ARBID
+  Baris 2048 | Field DDIC | CRHD-OBJID
+  Baris 2049 | Field DDIC | CRHD-HROID
+  Baris 2050 | Field DDIC | HRP1001-OBJID
+  Baris 2051 | Field DDIC | CRHD-ARBPL
+  Baris 2118 | Field DDIC | QAQEE-PRUEFER
+  Baris 2119 | Field DDIC | QAQEE-PRUEFER
+  Baris 4 | INCLUDE | Z_PROG_INFO
+  Baris 5 | INCLUDE | ZABAPALV
+  Baris 45 | INCLUDE | ZQMI_DEL_INS_LIST_ALV
+  Baris 64 | Sumber data pada SELECT atau JOIN | QALS
+  Baris 64 | Sumber data pada SELECT atau JOIN | QAVE
+  Baris 120 | Sumber data pada SELECT atau JOIN | JEST
+  Baris 120 | Sumber data pada SELECT atau JOIN | VEPO
+  Baris 158 | Sumber data pada SELECT atau JOIN | VEKP
+  Baris 260 | Sumber data pada SELECT atau JOIN | ZTDELINSP_I
+  Baris 926 | Sumber data pada SELECT atau JOIN | QALT
+  Baris 1257 | Sumber data pada SELECT atau JOIN | QAPP
+  Baris 2065 | Sumber data pada SELECT atau JOIN | PLPO
+  Baris 2071 | Sumber data pada SELECT atau JOIN | CRHD
+  Baris 2077 | Sumber data pada SELECT atau JOIN | HRP1001
+  Baris 394 | Function module | CONVERSION_EXIT_ALPHA_OUTPUT
+  Baris 505 | Function module | POPUP_TO_CONFIRM
+  Baris 546 | Function module | POPUP_TO_INFORM
+  Baris 630 | Function module | WS_FILENAME_GET
+  Baris 651 | Function module | GUI_DOWNLOAD
+  Baris 673 | Function module | UPLOAD
+  Baris 974 | Function module | BAPI_INSPOPER_RECORDRESULTS
+  Baris 998 | Function module | BAPI_TRANSACTION_COMMIT
+  Baris 1029 | Function module | BAPI_INSPLOT_SETUSAGEDECISION
+  Baris 1547 | Function module | BAPI_MESSAGE_GETDETAIL
+  Baris 1922 | Function module | SCROLLING_IN_TABLE
+  Baris 2085 | Function module | CONVERSION_EXIT_ALPHA_INPUT
+  Baris 2137 | Function module | POPUP_GET_VALUES
+  Baris 1450 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | VL02N
+  Baris 27 | Indikasi penulisan data (perlu konfirmasi) | ZTDELINSP_I
+  Baris 829 | Indikasi penulisan data (perlu konfirmasi) | ZTDELINSP
+
+Z_PROG_INFO.abap
+  Baris 6 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 15 | Field DDIC | RSNEWLENG-FCODE
+  Baris 60 | Sumber data pada SELECT atau JOIN | ZPROGINFO
+  Baris 77 | Function module | HELP_DOCULINES_SHOW
+
+ZABAPALV.abap
+  Baris 7 | Field DDIC | SY-REPID
+  Baris 27 | Field DDIC | SY-DATUM
+  Baris 28 | Field DDIC | SY-DATUM
+  Baris 559 | Function module | REUSE_ALV_COMMENTARY_WRITE
+
+ZQMI_DEL_INS_LIST_ALV.abap
+  Baris 90 | Layar dan GUI | SET PF-STATUS 'LSTATUS'.
+  Baris 96 | Field DDIC | SY-UCOMM
+  Baris 177 | Layar dan GUI | LEAVE TO SCREEN '1000'.
+  Baris 215 | Class dan Interface | cl_abap_char_utilities
+  Baris 217 | Class dan Interface | cl_abap_char_utilities
+  Baris 245 | Teks Seleksi | TEXT-011
+  Baris 264 | Field DDIC | SY-MSGTY
+  Baris 274 | Tipe DDIC | RLGRAP
+  Baris 275 | Field DDIC | RLGRAP-FILENAME
+  Baris 276 | Field DDIC | RLGRAP-FILENAME
+  Baris 318 | Teks Seleksi | TEXT-011
+  Baris 133 | Sumber data pada SELECT atau JOIN | ZTDELINSP_I
+  Baris 60 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 103 | Function module | GET_GLOBALS_FROM_SLVC_FULLSCR
+  Baris 152 | Function module | POPUP_TO_SHOW_DB_DATA_IN_TABLE
+  Baris 239 | Function module | WS_FILENAME_GET
+  Baris 256 | Function module | GUI_DOWNLOAD

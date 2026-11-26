@@ -1,0 +1,18 @@
+*-------------- Dialogstruktur KOMKBME wird gefüllt -------------------*
+FORM KOPFDIALOGSTRUKTUR_FUELLEN USING XSIMU LIKE AM07M-XTEST.
+
+  IF NOT XSIMU IS INITIAL.
+    NMKPF = MKPF.
+  ELSE.
+    NMKPF = XMKPF.
+  ENDIF.
+
+  CALL FUNCTION 'COMMUNICATION_AREA_KOMKBME'
+       EXPORTING
+            MSG_MKPF     = NMKPF
+            MSG_T158     = T158
+            MSG_PR_UNAME = PRINT_UNAME
+       TABLES
+            TAB_PART = PART.
+
+ENDFORM.

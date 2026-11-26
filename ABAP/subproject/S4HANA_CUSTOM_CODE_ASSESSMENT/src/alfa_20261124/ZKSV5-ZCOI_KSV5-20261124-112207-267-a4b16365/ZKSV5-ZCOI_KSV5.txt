@@ -1,0 +1,193 @@
+﻿Input: ZKSV5
+Source SAP development (RFC baca-saja): ZCOI_KSV5
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZCOI_KSV5:57 | START-OF-SELECTION | PERFORM F_UPLOAD. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:58 | START-OF-SELECTION | PERFORM CEK_KOSTL. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:59 | START-OF-SELECTION | PERFORM BUILD_CYCLE_LIST. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:60 | START-OF-SELECTION | PERFORM CEK_CYCLE. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:77 | START-OF-SELECTION | PERFORM RESET_VALUE. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:78 | START-OF-SELECTION | PERFORM RUN_BDC. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:107 | FORM F_UPLOAD | PERFORM CEK_TEMPLATE. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:109 | FORM F_UPLOAD > IF VMSG IS NOT INITIAL. | MESSAGE VMSG TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:115 | FORM F_UPLOAD | PERFORM CONVERT_VALID_FROM USING ITAB-VALID_FROM | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:141 | FORM CEK_KOSTL > IF SY-SUBRC NE 0. | MESSAGE 'Cost center group TSPLIT tidak ditemukan' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:221 | FORM RUN_BDC | PERFORM BDC_DYNPRO      USING 'SAPMKGA2' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:222 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'BDC_OKCODE'                              '/ECHA'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:223 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'RKGA2U-TEST' ' '. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:225 | FORM RUN_BDC | PERFORM BDC_DYNPRO      USING 'SAPMKAL1' '0103'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:226 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'BDC_OKCODE'                              '=ENA'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:227 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'RKAL1-KSCYC'                             V_CYCLE. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:237 | FORM RUN_BDC > IF V_FIRST IS INITIAL. | PERFORM BDC_DYNPRO      USING 'SAPMKAL1' '0201'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:238 | FORM RUN_BDC > IF V_FIRST IS INITIAL. | PERFORM BDC_FIELD       USING 'BDC_OKCODE'            '=BIGS'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:240 | FORM RUN_BDC > IF V_FIRST IS INITIAL. | PERFORM BDC_FIELD       USING 'T811C-EDATE'           V_END_DATE. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:242 | FORM RUN_BDC > ELSE. | PERFORM BDC_DYNPRO      USING 'SAPMKAL1'                '0300'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:243 | FORM RUN_BDC > ELSE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE'              '=BIGS'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:246 | FORM RUN_BDC | PERFORM BDC_DYNPRO      USING 'SAPMKAL1'              '0333'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:247 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'BDC_CURSOR'            'RSTXP_TDFIND(02)'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:248 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'BDC_OKCODE'            '=GOON'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:251 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'RSTXP_TDFIND(02)'      T_KOSTL. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:252 | FORM RUN_BDC | PERFORM BDC_DYNPRO      USING 'SAPMKAL1' '0334'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:253 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'BDC_CURSOR'            'KGALS-NAME(01)'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:254 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'BDC_OKCODE'            '=PICK'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:256 | FORM RUN_BDC | PERFORM BDC_DYNPRO      USING 'SAPMKAL1'              '0300'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:257 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'BDC_OKCODE'            '=SAVE'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:259 | FORM RUN_BDC > IF ITAB-POBSRT = 0. | PERFORM BDC_FIELD       USING 'KGALS-ACTIVE'            'X'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:261 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'KGALS-SPERCENT'        ITAB-POBSRT. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:264 | FORM RUN_BDC | PERFORM BDC_DYNPRO      USING 'SAPMKAL1' '0300'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:265 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'BDC_OKCODE'                                '/EEND'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:267 | FORM RUN_BDC | PERFORM BDC_DYNPRO      USING 'SAPMKGA2' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:268 | FORM RUN_BDC | PERFORM BDC_FIELD       USING 'BDC_OKCODE'                                '/EF15'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:274 | FORM RUN_BDC > IF RB_KSU5 = 'X'. | CALL TRANSACTION 'KSU5' USING BDCDATA OPTIONS FROM S_OPTIONS. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:276 | FORM RUN_BDC > ELSE. | CALL TRANSACTION 'KSV5' USING BDCDATA OPTIONS FROM S_OPTIONS. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:291 | FORM RESET_VALUE | PERFORM BDC_DYNPRO      USING 'SAPMKGA2' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:292 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'BDC_OKCODE'                              '/ECHA'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:293 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'RKGA2U-TEST' ' '. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:295 | FORM RESET_VALUE | PERFORM BDC_DYNPRO      USING 'SAPMKAL1' '0103'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:296 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'BDC_OKCODE'                              '=ENA'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:297 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'RKAL1-KSCYC'                             V_CYCLE. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:307 | FORM RESET_VALUE > IF V_FIRST IS INITIAL. | PERFORM BDC_DYNPRO      USING 'SAPMKAL1' '0201'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:308 | FORM RESET_VALUE > IF V_FIRST IS INITIAL. | PERFORM BDC_FIELD       USING 'BDC_OKCODE'            '=BIGS'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:310 | FORM RESET_VALUE > IF V_FIRST IS INITIAL. | PERFORM BDC_FIELD       USING 'T811C-EDATE'           V_END_DATE. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:312 | FORM RESET_VALUE > ELSE. | PERFORM BDC_DYNPRO      USING 'SAPMKAL1'                '0300'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:313 | FORM RESET_VALUE > ELSE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE'              '=BIGS'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:316 | FORM RESET_VALUE | PERFORM BDC_DYNPRO      USING 'SAPMKAL1'              '0333'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:317 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'BDC_CURSOR'            'RSTXP_TDFIND(02)'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:318 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'BDC_OKCODE'            '=GOON'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:321 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'RSTXP_TDFIND(02)'      T_KOSTL. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:322 | FORM RESET_VALUE | PERFORM BDC_DYNPRO      USING 'SAPMKAL1' '0334'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:323 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'BDC_CURSOR'            'KGALS-NAME(01)'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:324 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'BDC_OKCODE'            '=PICK'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:326 | FORM RESET_VALUE | PERFORM BDC_DYNPRO      USING 'SAPMKAL1'              '0300'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:327 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'BDC_OKCODE'            '=SAVE'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:328 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'KGALS-ACTIVE'            ' '. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:329 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'KGALS-SPERCENT'        '0.01'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:333 | FORM RESET_VALUE | PERFORM BDC_DYNPRO      USING 'SAPMKAL1' '0300'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:334 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'BDC_OKCODE'                                '/EEND'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:336 | FORM RESET_VALUE | PERFORM BDC_DYNPRO      USING 'SAPMKGA2' '0101'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:337 | FORM RESET_VALUE | PERFORM BDC_FIELD       USING 'BDC_OKCODE'                                '/EF15'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:343 | FORM RESET_VALUE > IF RB_KSU5 = 'X'. | CALL TRANSACTION 'KSU5' USING BDCDATA OPTIONS FROM S_OPTIONS. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:345 | FORM RESET_VALUE > ELSE. | CALL TRANSACTION 'KSV5' USING BDCDATA OPTIONS FROM S_OPTIONS. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:409 | FORM CEK_CYCLE > IF SY-SUBRC <> 0. | MESSAGE VMSG TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:423 | FORM CONVERT_VALID_FROM > IF I_DATE+2(1) <> '.' OR I_DATE+5(1) <> '.'. | MESSAGE 'Valid From harus berformat DD.MM.YYYY' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZCOI_KSV5:437 | FORM CONVERT_VALID_FROM > IF SY-SUBRC <> 0. | MESSAGE 'Valid From bukan tanggal kalender yang valid' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZCOI_KSV5 (439 baris)
+  9 | Tipe DDIC | COSL
+  13 | Field DDIC | RKAL1-RKSCYC
+  18 | Field DDIC | T811C-SDATE
+  21 | Field DDIC | RKAL1-RKSCYC
+  22 | Field DDIC | T811C-SDATE
+  23 | Field DDIC | T811C-EDATE
+  28 | Field DDIC | RKAL1-RKSCYC
+  29 | Field DDIC | T811C-SDATE
+  30 | Field DDIC | T811C-EDATE
+  37 | Field DDIC | IBIPPARMS-PATH
+  40 | BDC | BDCDATA
+  40 | BDC | BDCDATA
+  46 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLK1 WITH FRAME TITLE TEXT-001.
+  46 | Teks Seleksi | TEXT-001
+  47 | Layar Seleksi | PARAMETERS: P_GJAHR LIKE COSL-GJAHR DEFAULT '2013'.
+  47 | Field DDIC | COSL-GJAHR
+  48 | Layar Seleksi | PARAMETERS: P_MONTH TYPE N LENGTH 2 DEFAULT '1'.
+  49 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLK1.
+  51 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLK2 WITH FRAME TITLE TEXT-002.
+  51 | Teks Seleksi | TEXT-002
+  52 | Layar Seleksi | PARAMETERS: RB_KSU5 RADIOBUTTON GROUP GRB.
+  53 | Layar Seleksi | PARAMETERS: RB_KSV5 RADIOBUTTON GROUP GRB.
+  54 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLK2.
+  193 | BDC | BDCDATA
+  194 | BDC | BDCDATA
+  195 | BDC | BDCDATA
+  196 | BDC | BDCDATA
+  197 | BDC | BDCDATA
+  204 | BDC | BDCDATA
+  205 | BDC | BDCDATA
+  206 | BDC | BDCDATA
+  207 | BDC | BDCDATA
+  218 | BDC | BDCDATA
+  219 | BDC | BDCDATA
+  274 | BDC | BDCDATA
+  274 | BDC | CALL TRANSACTION 'KSU5' USING BDCDATA OPTIONS FROM S_OPTIONS.
+  276 | BDC | BDCDATA
+  276 | BDC | CALL TRANSACTION 'KSV5' USING BDCDATA OPTIONS FROM S_OPTIONS.
+  289 | BDC | BDCDATA
+  290 | BDC | BDCDATA
+  343 | BDC | BDCDATA
+  343 | BDC | CALL TRANSACTION 'KSU5' USING BDCDATA OPTIONS FROM S_OPTIONS.
+  345 | BDC | BDCDATA
+  345 | BDC | CALL TRANSACTION 'KSV5' USING BDCDATA OPTIONS FROM S_OPTIONS.
+  395 | Field DDIC | RKAL1-RKSCYC
+  67 | callFunctions | CONVERT_DATE_TO_EXTERNAL
+  88 | callFunctions | F4_FILENAME
+  98 | callFunctions | GUI_UPLOAD
+  430 | callFunctions | DATE_CHECK_PLAUSIBILITY
+  274 | callTransactions | KSU5
+  276 | callTransactions | KSV5
+  139 | tableReads | SETNODE
+  171 | tableReads | SETLEAF
+  401 | tableReads | T811C
+Jumlah source terbaca: 1
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZCOI_KSV5.abap
+  Baris 9 | Tipe DDIC | COSL
+  Baris 13 | Field DDIC | RKAL1-RKSCYC
+  Baris 18 | Field DDIC | T811C-SDATE
+  Baris 21 | Field DDIC | RKAL1-RKSCYC
+  Baris 22 | Field DDIC | T811C-SDATE
+  Baris 23 | Field DDIC | T811C-EDATE
+  Baris 28 | Field DDIC | RKAL1-RKSCYC
+  Baris 29 | Field DDIC | T811C-SDATE
+  Baris 30 | Field DDIC | T811C-EDATE
+  Baris 37 | Field DDIC | IBIPPARMS-PATH
+  Baris 40 | BDC | BDCDATA
+  Baris 40 | BDC | BDCDATA
+  Baris 46 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLK1 WITH FRAME TITLE TEXT-001.
+  Baris 46 | Teks Seleksi | TEXT-001
+  Baris 47 | Layar Seleksi | PARAMETERS: P_GJAHR LIKE COSL-GJAHR DEFAULT '2013'.
+  Baris 47 | Field DDIC | COSL-GJAHR
+  Baris 48 | Layar Seleksi | PARAMETERS: P_MONTH TYPE N LENGTH 2 DEFAULT '1'.
+  Baris 49 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLK1.
+  Baris 51 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLK2 WITH FRAME TITLE TEXT-002.
+  Baris 51 | Teks Seleksi | TEXT-002
+  Baris 52 | Layar Seleksi | PARAMETERS: RB_KSU5 RADIOBUTTON GROUP GRB.
+  Baris 53 | Layar Seleksi | PARAMETERS: RB_KSV5 RADIOBUTTON GROUP GRB.
+  Baris 54 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLK2.
+  Baris 193 | BDC | BDCDATA
+  Baris 194 | BDC | BDCDATA
+  Baris 195 | BDC | BDCDATA
+  Baris 196 | BDC | BDCDATA
+  Baris 197 | BDC | BDCDATA
+  Baris 204 | BDC | BDCDATA
+  Baris 205 | BDC | BDCDATA
+  Baris 206 | BDC | BDCDATA
+  Baris 207 | BDC | BDCDATA
+  Baris 218 | BDC | BDCDATA
+  Baris 219 | BDC | BDCDATA
+  Baris 274 | BDC | BDCDATA
+  Baris 274 | BDC | CALL TRANSACTION 'KSU5' USING BDCDATA OPTIONS FROM S_OPTIONS.
+  Baris 276 | BDC | BDCDATA
+  Baris 276 | BDC | CALL TRANSACTION 'KSV5' USING BDCDATA OPTIONS FROM S_OPTIONS.
+  Baris 289 | BDC | BDCDATA
+  Baris 290 | BDC | BDCDATA
+  Baris 343 | BDC | BDCDATA
+  Baris 343 | BDC | CALL TRANSACTION 'KSU5' USING BDCDATA OPTIONS FROM S_OPTIONS.
+  Baris 345 | BDC | BDCDATA
+  Baris 345 | BDC | CALL TRANSACTION 'KSV5' USING BDCDATA OPTIONS FROM S_OPTIONS.
+  Baris 395 | Field DDIC | RKAL1-RKSCYC
+  Baris 139 | Sumber data pada SELECT atau JOIN | SETNODE
+  Baris 171 | Sumber data pada SELECT atau JOIN | SETLEAF
+  Baris 401 | Sumber data pada SELECT atau JOIN | T811C
+  Baris 67 | Function module | CONVERT_DATE_TO_EXTERNAL
+  Baris 88 | Function module | F4_FILENAME
+  Baris 98 | Function module | GUI_UPLOAD
+  Baris 430 | Function module | DATE_CHECK_PLAUSIBILITY
+  Baris 274 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | KSU5
+  Baris 276 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | KSV5

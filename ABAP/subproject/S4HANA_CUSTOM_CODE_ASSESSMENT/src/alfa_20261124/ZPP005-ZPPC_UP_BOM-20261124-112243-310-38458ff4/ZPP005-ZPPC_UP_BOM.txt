@@ -1,0 +1,247 @@
+﻿Input: ZPP005
+Source SAP development (RFC baca-saja): ZPPC_UP_BOM
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZPPC_UP_BOM_F01:20 | FORM F_UPLOAD_BOM > IF FPATH IS INITIAL. | MESSAGE 'Please input a file' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:41 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:68 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:69 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:71 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:73 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'RC29N-MATNR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:75 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'RC29N-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:77 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'RC29N-STLAN' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:79 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'RC29N-STLAL' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:86 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'RC29N-DATUV' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:89 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0110'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:90 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:92 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:94 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'RC29K-ZTEXT' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:96 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'RC29K-BMENG' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:98 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0111'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:99 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:101 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:118 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. > IF VLINE = 1. > IF IT_HBOM-IDNRK = ''. | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0140'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:119 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. > IF VLINE = 1. > IF IT_HBOM-IDNRK = ''. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:122 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. > IF VLINE = 1. > ELSE. | PERFORM F_UPLOAD_ITEM. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:125 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. > ELSE. | PERFORM F_UPLOAD_ITEM. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:127 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > ELSE. | CALL TRANSACTION 'CS01' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:147 | FORM F_UPLOAD_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM F_DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:151 | FORM F_UPLOAD_BOM > ELSE. > ELSE. | MESSAGE 'Please upload only .txt file' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:201 | FORM F_DISPLAY_DATA | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:202 | FORM F_DISPLAY_DATA | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:203 | FORM F_DISPLAY_DATA | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:217 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG_ICON USING 'IT_HBOM' : | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:290 | FORM F_CHANGE_BOM > IF FPATH IS INITIAL. | MESSAGE 'Please input a file' TYPE 'I'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:312 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:323 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM F_CHECK_CHANGE. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:326 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0100'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:327 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:329 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:331 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_FIELD       USING 'RC29N-MATNR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:333 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_FIELD       USING 'RC29N-WERKS' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:335 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_FIELD       USING 'RC29N-STLAN' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:337 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_FIELD       USING 'RC29N-STLAL' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:344 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_FIELD       USING 'RC29N-DATUV' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:348 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0150'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:349 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:351 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:360 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0140'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:361 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:363 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:371 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | CALL TRANSACTION 'CS02' USING IT_BDCDATA | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:386 | FORM F_CHANGE_BOM > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. | PERFORM F_DISPLAY_DATA. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:390 | FORM F_CHANGE_BOM > ELSE. > ELSE. | MESSAGE 'Please upload only .txt file' TYPE 'I'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:447 | FORM F_CHANGE_NORMAL | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0100'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:448 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:450 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:452 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29N-MATNR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:454 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29N-WERKS' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:456 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29N-STLAN' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:458 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29N-STLAL' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:464 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29N-DATUV' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:485 | FORM F_CHANGE_NORMAL | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0150'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:486 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:488 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:490 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-MENGE(02)' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:493 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING VIDNRK | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:495 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING VMENGE | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:497 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING VMEINS | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:500 | FORM F_CHANGE_NORMAL | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0130'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:501 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:503 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:505 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-POSNR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:507 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-IDNRK' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:509 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-MENGE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:511 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-MEINS' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:513 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-REKRS' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:516 | FORM F_CHANGE_NORMAL | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0131'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:517 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:519 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:521 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-LGORT' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:528 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29N-DATUV' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:532 | FORM F_CHANGE_NORMAL | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0150'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:533 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:535 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:565 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING VIDNRK | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:567 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING VMENGE | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:569 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING VMEINS | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:571 | FORM F_CHANGE_NORMAL | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0130'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:572 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:574 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:576 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-POSNR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:578 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-IDNRK' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:580 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-MENGE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:582 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-MEINS' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:584 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-REKRS' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:587 | FORM F_CHANGE_NORMAL | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0131'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:588 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:590 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:592 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29P-LGORT' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:597 | FORM F_CHANGE_NORMAL | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0150'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:599 | FORM F_CHANGE_NORMAL | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '2110'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:600 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:602 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:604 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29K-ZTEXT' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:606 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'RC29K-BMENG' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:609 | FORM F_CHANGE_NORMAL | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '2110'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:610 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:612 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:615 | FORM F_CHANGE_NORMAL | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0150'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:616 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:618 | FORM F_CHANGE_NORMAL | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPC_UP_BOM_F01:689 | FORM F_UPLOAD_ITEM | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0140'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:690 | FORM F_UPLOAD_ITEM | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:694 | FORM F_UPLOAD_ITEM > IF COUNTER = 1. | PERFORM BDC_FIELD       USING 'RC29P-IDNRK(01)' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:696 | FORM F_UPLOAD_ITEM > IF COUNTER = 1. | PERFORM BDC_FIELD       USING 'RC29P-MENGE(01)' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:698 | FORM F_UPLOAD_ITEM > IF COUNTER = 1. | PERFORM BDC_FIELD       USING 'RC29P-MEINS(01)' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:700 | FORM F_UPLOAD_ITEM > IF COUNTER = 1. | PERFORM BDC_FIELD       USING 'RC29P-POSTP(01)' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:703 | FORM F_UPLOAD_ITEM > ELSE. | PERFORM BDC_FIELD       USING 'RC29P-IDNRK(02)' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:705 | FORM F_UPLOAD_ITEM > ELSE. | PERFORM BDC_FIELD       USING 'RC29P-MENGE(02)' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:707 | FORM F_UPLOAD_ITEM > ELSE. | PERFORM BDC_FIELD       USING 'RC29P-MEINS(02)' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:709 | FORM F_UPLOAD_ITEM > ELSE. | PERFORM BDC_FIELD       USING 'RC29P-POSTP(02)' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:714 | FORM F_UPLOAD_ITEM | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0130'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:715 | FORM F_UPLOAD_ITEM | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:717 | FORM F_UPLOAD_ITEM | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:719 | FORM F_UPLOAD_ITEM | PERFORM BDC_FIELD       USING 'RC29P-IDNRK' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:721 | FORM F_UPLOAD_ITEM | PERFORM BDC_FIELD       USING 'RC29P-MENGE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:723 | FORM F_UPLOAD_ITEM | PERFORM BDC_FIELD       USING 'RC29P-MEINS' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:725 | FORM F_UPLOAD_ITEM | PERFORM BDC_FIELD       USING 'RC29P-REKRS' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:728 | FORM F_UPLOAD_ITEM | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0131'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:729 | FORM F_UPLOAD_ITEM | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:731 | FORM F_UPLOAD_ITEM | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:733 | FORM F_UPLOAD_ITEM | PERFORM BDC_FIELD       USING 'RC29P-LGORT' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:737 | FORM F_UPLOAD_ITEM > IF COUNTER = VLINE. | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0140'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:738 | FORM F_UPLOAD_ITEM > IF COUNTER = VLINE. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:740 | FORM F_UPLOAD_ITEM > IF COUNTER = VLINE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:743 | FORM F_UPLOAD_ITEM > ELSE. | PERFORM BDC_DYNPRO      USING 'SAPLCSDI' '0140'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:744 | FORM F_UPLOAD_ITEM > ELSE. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_F01:746 | FORM F_UPLOAD_ITEM > ELSE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UP_BOM_O01:21 | WHEN 'UPLOAD'. | PERFORM F_UPLOAD_BOM. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZPPC_UP_BOM (21 baris)
+  17 | includes | ZPPC_UP_BOM_TOP
+  18 | includes | ZABAPALV
+  19 | includes | ZPPC_UP_BOM_O01
+  20 | includes | ZPPC_UP_BOM_I01
+  21 | includes | ZPPC_UP_BOM_F01
+
+Objek ZPPC_UP_BOM_F01 (752 baris)
+  7 | Layar dan GUI | CALL SCREEN 100.
+  41 | Field DDIC | SY-MSGTY
+  127 | BDC | CALL TRANSACTION 'CS01' USING IT_BDCDATA
+  312 | Field DDIC | SY-MSGTY
+  371 | BDC | CALL TRANSACTION 'CS02' USING IT_BDCDATA
+  32 | callFunctions | GUI_UPLOAD
+  257 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  408 | callFunctions | CSAP_MAT_BOM_READ
+  545 | callFunctions | CONVERSION_EXIT_ALPHA_INPUT
+  127 | callTransactions | CS01
+  371 | callTransactions | CS02
+  53 | tableReads | MAST
+
+Objek ZPPC_UP_BOM_I01 (58 baris)
+  15 | Layar dan GUI | SET PF-STATUS 'PF100'.
+  16 | Layar dan GUI | SET TITLEBAR 'T100'.
+  52 | Layar dan GUI | CALL SCREEN 100.
+  27 | callFunctions | F4_FILENAME
+
+Objek ZPPC_UP_BOM_O01 (35 baris)
+  32 | Layar dan GUI | SET PF-STATUS 'PF200'.
+  33 | Layar dan GUI | SET TITLEBAR 'T200B'.
+
+Objek ZABAPALV (660 baris)
+  7 | Field DDIC | SY-REPID
+  27 | Field DDIC | SY-DATUM
+  28 | Field DDIC | SY-DATUM
+  559 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+
+Objek ZPPC_UP_BOM_TOP (83 baris)
+  45 | BDC | BDCDATA
+  48 | Field DDIC | CTU_PARAMS-DISMODE
+  49 | Field DDIC | CTU_PARAMS-UPDMODE
+  54 | Field DDIC | IBIPPARMS-PATH
+  69 | Field DDIC | RC29P-POSNR
+  73 | Field DDIC | MAST-MATNR
+  77 | Field DDIC | CSAP_MBOM-MATNR
+  78 | Field DDIC | CSAP_MBOM-WERKS
+  79 | Field DDIC | CSAP_MBOM-STLAN
+  80 | Field DDIC | CSAP_MBOM-STLAL
+Jumlah source terbaca: 6
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZPPC_UP_BOM.abap
+  Baris 17 | INCLUDE | ZPPC_UP_BOM_TOP
+  Baris 18 | INCLUDE | ZABAPALV
+  Baris 19 | INCLUDE | ZPPC_UP_BOM_O01
+  Baris 20 | INCLUDE | ZPPC_UP_BOM_I01
+  Baris 21 | INCLUDE | ZPPC_UP_BOM_F01
+
+ZPPC_UP_BOM_TOP.abap
+  Baris 45 | BDC | BDCDATA
+  Baris 48 | Field DDIC | CTU_PARAMS-DISMODE
+  Baris 49 | Field DDIC | CTU_PARAMS-UPDMODE
+  Baris 54 | Field DDIC | IBIPPARMS-PATH
+  Baris 69 | Field DDIC | RC29P-POSNR
+  Baris 73 | Field DDIC | MAST-MATNR
+  Baris 77 | Field DDIC | CSAP_MBOM-MATNR
+  Baris 78 | Field DDIC | CSAP_MBOM-WERKS
+  Baris 79 | Field DDIC | CSAP_MBOM-STLAN
+  Baris 80 | Field DDIC | CSAP_MBOM-STLAL
+
+ZABAPALV.abap
+  Baris 7 | Field DDIC | SY-REPID
+  Baris 27 | Field DDIC | SY-DATUM
+  Baris 28 | Field DDIC | SY-DATUM
+  Baris 559 | Function module | REUSE_ALV_COMMENTARY_WRITE
+
+ZPPC_UP_BOM_O01.abap
+  Baris 32 | Layar dan GUI | SET PF-STATUS 'PF200'.
+  Baris 33 | Layar dan GUI | SET TITLEBAR 'T200B'.
+
+ZPPC_UP_BOM_I01.abap
+  Baris 15 | Layar dan GUI | SET PF-STATUS 'PF100'.
+  Baris 16 | Layar dan GUI | SET TITLEBAR 'T100'.
+  Baris 52 | Layar dan GUI | CALL SCREEN 100.
+  Baris 27 | Function module | F4_FILENAME
+
+ZPPC_UP_BOM_F01.abap
+  Baris 7 | Layar dan GUI | CALL SCREEN 100.
+  Baris 41 | Field DDIC | SY-MSGTY
+  Baris 127 | BDC | CALL TRANSACTION 'CS01' USING IT_BDCDATA
+  Baris 312 | Field DDIC | SY-MSGTY
+  Baris 371 | BDC | CALL TRANSACTION 'CS02' USING IT_BDCDATA
+  Baris 53 | Sumber data pada SELECT atau JOIN | MAST
+  Baris 32 | Function module | GUI_UPLOAD
+  Baris 257 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 408 | Function module | CSAP_MAT_BOM_READ
+  Baris 545 | Function module | CONVERSION_EXIT_ALPHA_INPUT
+  Baris 127 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | CS01
+  Baris 371 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | CS02
+  Baris 134 | Kontrol transaksi | COMMIT_WORK
+  Baris 376 | Kontrol transaksi | COMMIT_WORK

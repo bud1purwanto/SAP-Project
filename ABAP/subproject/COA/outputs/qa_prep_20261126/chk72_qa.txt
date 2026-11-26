@@ -1,0 +1,368 @@
+OK 0003885613 JRAABI             D010             0.000  DO# 0 lot
+OK 0003885641 SRAABI             2302           240.240  DO# 1 lot P29000054923
+OK 0003885642 SRAABI             2302           240.240  DO# 1 lot P29000054923
+OK 0003885643 SRAABI             2302           240.240  DO# 0 lot P29000054924
+OK 0003885644 SRAABI             2302           240.240  DO# 0 lot P29000054924
+OK 0003885645 SRAABI             2302           240.240  DO# 0 lot P29000054925
+OK 0003885646 SRAABI             2302           240.240  DO# 0 lot P29000054925
+OK 0003885647 SRAABI             2302           117.940  DO# 0 lot P29000054926
+OK 0003885648 SRAABI             2302             0.000  DO# 0 lot P29000054926
+OK 0003885649 SRAABI             2302           117.940  DO# 0 lot P29000054926
+OK 0003885614 JRAABI             D010             0.000  DO# 0 lot
+OK 0003885650 SRAABI             2302           240.240  DO# 1 lot P29000054927
+OK 0003885651 SRAABI             2302           240.240  DO# 1 lot P29000054927
+OK 0003885652 SRAABI             2302           240.240  DO# 0 lot P29000054928
+OK 0003885653 SRAABI             2302           240.240  DO# 0 lot P29000054928
+OK 0003885654 SRAABI             2302           240.240  DO# 0 lot P29000054929
+OK 0003885655 SRAABI             2302           240.240  DO# 0 lot P29000054929
+OK 0003885656 SRAABI             2302           117.940  DO# 0 lot P29000054930
+OK 0003885657 SRAABI             2302           117.940  DO# 0 lot P29000054930
+OK 0003885658 SRAABI             2302           117.940  DO# 0 lot P29000054930
+OK 0003885615 JRAABI             D010             0.000  DO# 0 lot
+OK 0003885659 SRAABI             2302           240.240  DO# 2 lot P29000054931
+OK 0003885660 SRAABI             2302           240.240  DO# 1 lot P29000054931
+OK 0003885661 SRAABI             2302           240.240  DO# 1 lot P29000054932
+OK 0003885662 SRAABI             2302           240.240  DO# 1 lot P29000054932
+OK 0003885663 SRAABI             2302           240.240  DO# 0 lot P29000054933
+OK 0003885664 SRAABI             2302           240.240  DO# 0 lot P29000054933
+OK 0003885665 SRAABI             2302           117.940  DO# 0 lot P29000054934
+OK 0003885666 SRAABI             2302           117.940  DO# 0 lot P29000054934
+OK 0003885667 SRAABI             2302           117.940  DO# 0 lot P29000054934
+OK 0003885616 JRAABI             D010             0.000  DO# 0 lot
+OK 0003885668 SRAABI             2302           240.240  DO# 0 lot P29000054935
+OK 0003885669 SRAABI             2302           240.240  DO# 0 lot P29000054935
+OK 0003885670 SRAABI             2302           240.240  DO# 0 lot P29000054936
+OK 0003885671 SRAABI             2302           240.240  DO# 0 lot P29000054936
+OK 0003885672 SRAABI             2302           240.240  DO# 0 lot P29000054937
+OK 0003885673 SRAABI             2302           240.240  DO# 0 lot P29000054937
+OK 0003885674 SRAABI             2302           117.940  DO# 0 lot P29000054938
+OK 0003885675 SRAABI             2302           117.940  DO# 0 lot P29000054938
+OK 0003885676 SRAABI             2302           117.940  DO# 0 lot P29000054938
+OK 0003885618 JRAABI             D010             0.000  DO# 0 lot
+OK 0003885677 SRAABI             2302           240.240  DO# 0 lot P29000054939
+OK 0003885678 SRAABI             2302           240.240  DO# 0 lot P29000054939
+OK 0003885679 SRAABI             2302           240.240  DO# 0 lot P29000054940
+OK 0003885680 SRAABI             2302           240.240  DO# 0 lot P29000054940
+OK 0003885681 SRAABI             2302           240.240  DO# 0 lot P29000054941
+OK 0003885682 SRAABI             2302           240.240  DO# 0 lot P29000054941
+OK 0003885683 SRAABI             2302           117.940  DO# 0 lot P29000054942
+OK 0003885684 SRAABI             2302           117.940  DO# 0 lot P29000054942
+OK 0003885685 SRAABI             2302           117.940  DO# 0 lot P29000054942
+OK 0003885619 JRAABI             D010             0.000  DO# 0 lot
+OK 0003885686 SRAABI             2302           240.240  DO# 0 lot P29000054943
+OK 0003885687 SRAABI             2302           240.240  DO# 0 lot P29000054943
+OK 0003885688 SRAABI             2302           240.240  DO# 0 lot P29000054944
+OK 0003885689 SRAABI             2302           240.240  DO# 0 lot P29000054944
+OK 0003885690 SRAABI             2302           240.240  DO# 0 lot P29000054945
+OK 0003885691 SRAABI             2302           240.240  DO# 0 lot P29000054945
+OK 0003885692 SRAABI             2302           117.940  DO# 0 lot P29000054946
+OK 0003885693 SRAABI             2302           117.940  DO# 0 lot P29000054946
+OK 0003885694 SRAABI             2302           117.940  DO# 0 lot P29000054946
+OK 0003885620 JRAABI             D010             0.000  DO# 0 lot
+OK 0003885695 SRAABI             2302           240.240  DO# 0 lot P29000054947
+OK 0003885696 SRAABI             2302           240.240  DO# 0 lot P29000054947
+OK 0003885697 SRAABI             2302           240.240  DO# 0 lot P29000054948
+OK 0003885698 SRAABI             2302           240.240  DO# 0 lot P29000054948
+OK 0003885699 SRAABI             2302           240.240  DO# 0 lot P29000054949
+OK 0003885700 SRAABI             2302           240.240  DO# 0 lot P29000054949
+OK 0003885701 SRAABI             2302           117.940  DO# 0 lot P29000054950
+OK 0003885702 SRAABI             2302           117.940  DO# 0 lot P29000054950
+OK 0003885703 SRAABI             2302           117.940  DO# 0 lot P29000054950
+OK 0003885626 JRAABI             D010             0.000  DO# 0 lot
+OK 0003885704 SRAABI             2302           240.240  DO# 0 lot P29000054951
+OK 0003885705 SRAABI             2302           240.240  DO# 0 lot P29000054951
+OK 0003885706 SRAABI             2302           240.240  DO# 0 lot P29000054952
+OK 0003885707 SRAABI             2302           240.240  DO# 0 lot P29000054952
+OK 0003885708 SRAABI             2302           240.240  DO# 0 lot P29000054953
+OK 0003885709 SRAABI             2302           240.240  DO# 0 lot P29000054953
+OK 0003885710 SRAABI             2302           117.940  DO# 0 lot P29000054954
+OK 0003885711 SRAABI             2302           117.940  DO# 0 lot P29000054954
+OK 0003885712 SRAABI             2302           117.940  DO# 0 lot P29000054954
+OK 0003885627 JRAABI             D010             0.000  DO# 0 lot
+OK 0003885713 SRAABI             2302           240.240  DO# 0 lot P29000054955
+OK 0003885714 SRAABI             2302           240.240  DO# 0 lot P29000054955
+OK 0003885715 SRAABI             2302           240.240  DO# 0 lot P29000054956
+OK 0003885716 SRAABI             2302           240.240  DO# 0 lot P29000054956
+OK 0003885717 SRAABI             2302           240.240  DO# 0 lot P29000054957
+OK 0003885718 SRAABI             2302           240.240  DO# 0 lot P29000054957
+OK 0003885719 SRAABI             2302           117.940  DO# 0 lot P29000054958
+OK 0003885720 SRAABI             2302           117.940  DO# 0 lot P29000054958
+OK 0003885721 SRAABI             2302           117.940  DO# 0 lot P29000054958
+OK 0003885628 JRAABI             D010             0.000  DO# 0 lot
+OK 0003885722 SRAABI             2302           240.240  DO# 0 lot P29000054959
+OK 0003885723 SRAABI             2302           240.240  DO# 0 lot P29000054959
+OK 0003885724 SRAABI             2302           240.240  DO# 0 lot P29000054960
+OK 0003885725 SRAABI             2302           240.240  DO# 0 lot P29000054960
+OK 0003885726 SRAABI             2302           240.240  DO# 0 lot P29000054961
+OK 0003885727 SRAABI             2302           240.240  DO# 0 lot P29000054961
+OK 0003885728 SRAABI             2302           117.940  DO# 0 lot P29000054962
+OK 0003885729 SRAABI             2302           117.940  DO# 0 lot P29000054962
+OK 0003885730 SRAABI             2302           117.940  DO# 0 lot P29000054962
+OK 0003885629 JRAABI             D010         2,047.500  DO# 0 lot
+OK 0003885635 JRAABI             D010         2,047.500  DO# 0 lot
+OK 0003885636 JRAABI             D010             0.000  DO# 0 lot
+OK 0003885731 SRAABI             2302           240.240  DO# 0 lot P29000054963
+OK 0003885732 SRAABI             2302           240.240  DO# 0 lot P29000054963
+OK 0003885733 SRAABI             2302           240.240  DO# 0 lot P29000054964
+OK 0003885734 SRAABI             2302           240.240  DO# 0 lot P29000054964
+OK 0003885735 SRAABI             2302           240.240  DO# 0 lot P29000054965
+OK 0003885736 SRAABI             2302           240.240  DO# 0 lot P29000054965
+OK 0003885737 SRAABI             2302           117.940  DO# 0 lot P29000054966
+OK 0003885738 SRAABI             2302           117.940  DO# 0 lot P29000054966
+OK 0003885739 SRAABI             2302           117.940  DO# 0 lot P29000054966
+OK 0003884630 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884631 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884632 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884633 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884634 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884635 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884636 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884637 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884638 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884639 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884640 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884641 JRCADI             Z100         1,890.000  DO# 0 lot
+OK 0003884648 JRVC2I             K001         1,874.000  DO# 0 lot
+OK 0003884649 JRVC2I             K001         2,559.400  DO# 0 lot
+OK 0003884650 JRVC2I             K001         2,559.400  DO# 0 lot
+OK 0003884651 JRVC2I             K001         2,559.400  DO# 0 lot
+OK 0003884652 JRVC2I             K001         2,559.400  DO# 0 lot
+OK 0003884653 JRVC2I             K001         2,559.400  DO# 0 lot
+OK 0003884654 JRVC2I             K001         2,559.400  DO# 0 lot
+OK 0003885607 JRACBI             D010             0.000  DO# 0 lot
+OK 0003885788 SRACBI             2302           304.500  DO# 1 lot P29000054975
+OK 0003885789 SRACBI             2302           304.500  DO# 0 lot P29000054975
+OK 0003885790 SRACBI             2302           304.500  DO# 0 lot P29000054975
+OK 0003885791 SRACBI             2302           304.500  DO# 0 lot P29000054975
+OK 0003885792 SRACBI             2302           304.500  DO# 0 lot P29000054975
+OK 0003885793 SRACBI             2302           304.500  DO# 0 lot P29000054975
+OK 0003885608 JRACBI             D010           276.100  DO# 0 lot
+OK 0003885794 SRACBI             2302           304.500  DO# 0 lot P29000054976
+OK 0003885795 SRACBI             2302           304.500  DO# 0 lot P29000054976
+OK 0003885796 SRACBI             2302           305.440  DO# 0 lot P29000054976
+OK 0003885797 SRACBI             2302           304.500  DO# 0 lot P29000054976
+OK 0003885798 SRACBI             2302           304.500  DO# 0 lot P29000054976
+OK 0003885799 SRACBI             2302           304.500  DO# 0 lot P29000054976
+OK 0003885609 JRACBI             D010             0.000  DO# 0 lot
+OK 0003885800 SRACBI             2302           304.500  DO# 1 lot P29000054977
+OK 0003885801 SRACBI             2302           304.500  DO# 0 lot P29000054977
+OK 0003885802 SRACBI             2302           304.500  DO# 0 lot P29000054977
+OK 0003885803 SRACBI             2302           304.500  DO# 0 lot P29000054977
+OK 0003885804 SRACBI             2302           305.440  DO# 0 lot P29000054977
+OK 0003885805 SRACBI             2302           304.500  DO# 0 lot P29000054977
+OK 0003885610 JRACBI             D010             0.000  DO# 0 lot
+OK 0003885806 SRACBI             2302           304.500  DO# 0 lot P29000054978
+OK 0003885807 SRACBI             2302           304.500  DO# 0 lot P29000054978
+OK 0003885808 SRACBI             2302           304.500  DO# 0 lot P29000054978
+OK 0003885809 SRACBI             2302           304.500  DO# 0 lot P29000054978
+OK 0003885810 SRACBI             2302           304.500  DO# 0 lot P29000054978
+OK 0003885811 SRACBI             2302           304.500  DO# 0 lot P29000054978
+OK 0003885611 JRACBI             D010             0.000  DO# 0 lot
+OK 0003885812 SRACBI             2302           304.500  DO# 0 lot P29000054979
+OK 0003885813 SRACBI             2302           305.440  DO# 0 lot P29000054979
+OK 0003885814 SRACBI             2302           304.500  DO# 0 lot P29000054979
+OK 0003885815 SRACBI             2302           304.500  DO# 0 lot P29000054979
+OK 0003885816 SRACBI             2302           304.500  DO# 0 lot P29000054979
+OK 0003885817 SRACBI             2302           304.500  DO# 0 lot P29000054979
+OK 0003885617 JRACBI             D010         2,113.000  DO# 0 lot
+OK 0003885621 JRACBI             D010         2,113.000  DO# 0 lot
+OK 0003885622 JRACBI             D010         2,113.000  DO# 0 lot
+OK 0003885623 JRACBI             D010         2,113.000  DO# 0 lot
+OK 0003885624 JRACBI             D010         2,113.000  DO# 0 lot
+OK 0003885625 JRACBI             D010             0.000  DO# 0 lot
+OK 0003885818 SRACBI             2302           304.500  DO# 0 lot P29000054980
+OK 0003885819 SRACBI             2302           304.500  DO# 0 lot P29000054980
+OK 0003885820 SRACBI             2302           304.500  DO# 0 lot P29000054980
+OK 0003885821 SRACBI             2302           304.500  DO# 0 lot P29000054980
+OK 0003885822 SRACBI             2302           304.500  DO# 0 lot P29000054980
+OK 0003885823 SRACBI             2302           304.500  DO# 0 lot P29000054980
+OK 0003885630 JRACBI             D010             0.000  DO# 0 lot
+OK 0003885824 SRACBI             2302           304.500  DO# 0 lot P29000054981
+OK 0003885825 SRACBI             2302           304.500  DO# 0 lot P29000054981
+OK 0003885826 SRACBI             2302           305.440  DO# 0 lot P29000054981
+OK 0003885827 SRACBI             2302           304.500  DO# 0 lot P29000054981
+OK 0003885828 SRACBI             2302           305.440  DO# 0 lot P29000054981
+OK 0003885829 SRACBI             2302           304.500  DO# 0 lot P29000054981
+OK 0003885631 JRACBI             D010             0.000  DO# 0 lot
+OK 0003885830 SRACBI             2302           304.500  DO# 0 lot P29000054982
+OK 0003885831 SRACBI             2302           304.500  DO# 0 lot P29000054982
+OK 0003885832 SRACBI             2302           304.500  DO# 0 lot P29000054982
+OK 0003885833 SRACBI             2302           304.500  DO# 0 lot P29000054982
+OK 0003885834 SRACBI             2302           304.500  DO# 0 lot P29000054982
+OK 0003885835 SRACBI             2302           304.500  DO# 0 lot P29000054982
+OK 0003885632 JRACBI             D010             0.000  DO# 0 lot
+OK 0003885836 SRACBI             2302           304.500  DO# 0 lot P29000054983
+OK 0003885837 SRACBI             2302           304.500  DO# 0 lot P29000054983
+OK 0003885838 SRACBI             2302           304.500  DO# 0 lot P29000054983
+OK 0003885839 SRACBI             2302           304.500  DO# 0 lot P29000054983
+OK 0003885840 SRACBI             2302           305.440  DO# 0 lot P29000054983
+OK 0003885841 SRACBI             2302           304.500  DO# 0 lot P29000054983
+OK 0003885633 JRACBI             D010         2,113.000  DO# 0 lot
+OK 0003885634 JRACBI             D010         2,113.000  DO# 0 lot
+OK 0003885637 JRACBI             D010         2,113.000  DO# 0 lot
+OK 0003885638 JRACBI             D010         2,113.000  DO# 0 lot
+OK 0003885639 JRACBI             D010         2,113.000  DO# 0 lot
+OK 0003885640 JRACBI             D010         2,113.000  DO# 0 lot
+OK 0003884607 JRALZI             J002             0.000  DO# 0 lot
+OK 0003884690 SRALZI             2042             0.000  DO# 0 lot P29000054845
+OK 0003884691 SRALZI             2042             0.000  DO# 0 lot P29000054845
+OK 0003884912 JRGIDI             H001             0.000  DO# 0 lot
+OK 0003884914 JRGIDI             H001             0.000  DO# 0 lot
+OK 0003884608 JRALZI             J002             0.000  DO# 0 lot
+OK 0003884692 SRALZI             2042             0.000  DO# 0 lot P29000054846
+OK 0003884693 SRALZI             2042             0.000  DO# 0 lot P29000054846
+OK 0003884916 JRGIDI             H001             0.000  DO# 0 lot
+OK 0003884918 JRGIDI             H001             0.000  DO# 0 lot
+OK 0003884609 JRALZI             J002             0.000  DO# 0 lot
+OK 0003884694 SRALZI             2042             0.000  DO# 0 lot P29000054847
+OK 0003884695 SRALZI             2042             0.000  DO# 0 lot P29000054847
+OK 0003884920 JRGIDI             H001             0.000  DO# 0 lot
+OK 0003884922 JRGIDI             H001             0.000  DO# 0 lot
+OK 0003884617 JRALZI             J001             0.000  DO# 0 lot
+OK 0003884696 SRALZI             2042             0.000  DO# 0 lot P29000054848
+OK 0003884697 SRALZI             2042             0.000  DO# 0 lot P29000054848
+OK 0003884924 JRGIDI             H001         4,643.800  DO# 0 lot
+OK 0003884926 JRGIDI             H001         4,643.800  DO# 0 lot
+OK 0003884618 JRALZI             J001             0.000  DO# 0 lot
+OK 0003884698 SRALZI             2042             0.000  DO# 0 lot P29000054849
+OK 0003884699 SRALZI             2042             0.000  DO# 0 lot P29000054849
+OK 0003884928 JRGIDI             H001         4,643.800  DO# 0 lot
+OK 0003884930 JRGIDI             H001         4,643.800  DO# 0 lot
+OK 0003884642 JRCGAI             W100             0.000  DO# 0 lot
+OK 0003884700 SRCGAI             2054             0.000  DO# 0 lot E29000157419
+OK 0003884701 SRCGAI             2054             0.000  DO# 0 lot E29000157419
+OK 0003884733 JREWEI             2051             0.000  DO# 0 lot
+OK 0003884735 JREWEI             2051             0.000  DO# 0 lot
+OK 0003884643 JRCGAI             W100             0.000  DO# 0 lot
+OK 0003884702 SRCGAI             2054             0.000  DO# 0 lot E29000157420
+OK 0003884703 SRCGAI             2054             0.000  DO# 0 lot E29000157420
+OK 0003884737 JREWEI             2051             0.000  DO# 0 lot
+OK 0003884739 JREWEI             2051             0.000  DO# 0 lot
+OK 0003884644 JRCGAI             W100             0.000  DO# 0 lot
+OK 0003884704 SRCGAI             2054             0.000  DO# 0 lot E29000157421
+OK 0003884705 SRCGAI             2054             0.000  DO# 0 lot E29000157421
+OK 0003884741 JREWEI             2051         1,797.600  DO# 0 lot
+OK 0003884743 JREWEI             2051         1,797.600  DO# 0 lot
+OK 0003884645 JRCGAI             W100             0.000  DO# 0 lot
+OK 0003884706 SRCGAI             2054             0.000  DO# 0 lot E29000157422
+OK 0003884707 SRCGAI             2054             0.000  DO# 0 lot E29000157422
+OK 0003884745 JREWEI             2051         1,797.600  DO# 0 lot
+OK 0003884747 JREWEI             2051         1,797.600  DO# 0 lot
+OK 0003884646 JRCGAI             W100             0.000  DO# 0 lot
+OK 0003884708 SRCGAI             2054             0.000  DO# 0 lot E29000157423
+OK 0003884709 SRCGAI             2054             0.000  DO# 0 lot E29000157423
+OK 0003884749 JREWEI             2051         1,797.600  DO# 0 lot
+OK 0003884751 JREWEI             2051         1,797.600  DO# 0 lot
+OK 0003884647 JRCGAI             W100             0.000  DO# 0 lot
+OK 0003884710 SRCGAI             2054             0.000  DO# 0 lot E29000157424
+OK 0003884711 SRCGAI             2054             0.000  DO# 0 lot E29000157424
+OK 0003884753 JREWEI             2051         1,797.600  DO# 0 lot
+OK 0003884755 JREWEI             2051         1,797.600  DO# 0 lot
+OK 0003884678 JRAH8I             J001             0.000  DO# 0 lot
+OK 0003884714 SRAH8I             2054             0.000  DO# 0 lot P29000054851
+OK 0003884715 SRAH8I             2054             0.000  DO# 0 lot P29000054851
+OK 0003884758 JREASI             2052         4,868.500  DO# 0 lot
+OK 0003884760 JREASI             2052             0.000  DO# 0 lot
+OK 0003884672 JRAH8I             J001             0.000  DO# 0 lot
+OK 0003884712 SRAH8I             2054             0.000  DO# 0 lot P29000054850
+OK 0003884713 SRAH8I             2054             0.000  DO# 0 lot P29000054850
+OK 0003884762 JREASI             2052             0.000  DO# 0 lot
+OK 0003884764 JREASI             2052             0.000  DO# 0 lot
+OK 0003884673 JRAH8I             J001             0.000  DO# 0 lot
+OK 0003884716 SRAH8I             2054             0.000  DO# 0 lot P29000054852
+OK 0003884717 SRAH8I             2054             0.000  DO# 0 lot P29000054852
+OK 0003884766 JREASI             2052             0.000  DO# 0 lot
+OK 0003884768 JREASI             2052         4,868.500  DO# 0 lot
+OK 0003884674 JRAH8I             J001             0.000  DO# 0 lot
+OK 0003884718 SRAH8I             2054             0.000  DO# 0 lot P29000054853
+OK 0003884719 SRAH8I             2054             0.000  DO# 0 lot P29000054853
+OK 0003884770 JREASI             2052         4,868.500  DO# 0 lot
+OK 0003884772 JREASI             2052         4,868.500  DO# 0 lot
+OK 0003884675 JRAH8I             J001             0.000  DO# 0 lot
+OK 0003884720 SRAH8I             2054             0.000  DO# 0 lot P29000054854
+OK 0003884721 SRAH8I             2054             0.000  DO# 0 lot P29000054854
+OK 0003884774 JREASI             2052         4,868.500  DO# 0 lot
+OK 0003884776 JREASI             2052         4,868.500  DO# 0 lot
+OK 0003884676 JRAH8I             J001             0.000  DO# 0 lot
+OK 0003884821 SRAH8I             2048             0.000  DO# 0 lot P29000054878
+OK 0003884822 SRAH8I             2048             0.000  DO# 0 lot P29000054878
+OK 0003884832 JRGKAI             P100             0.000  DO# 0 lot
+OK 0003884834 JRGKAI             P100             0.000  DO# 0 lot
+OK 0003884858 SRGKAI             2054             0.000  DO# 0 lot A26000003104
+OK 0003884875 SRGKAI             2054             0.000  DO# 0 lot A26000003116
+OK 0003884876 SRGKAI             2054             0.000  DO# 0 lot A26000003117
+OK 0003884877 SRGKAI             2054             0.000  DO# 0 lot A26000003118
+OK 0003884888 JRGLAI             2053         4,868.500  DO# 0 lot
+OK 0003884890 JRGLAI             2053         4,868.500  DO# 0 lot
+OK 0003884892 JRGLAI             2053             0.000  DO# 0 lot
+OK 0003884894 JRGLAI             2053             0.000  DO# 0 lot
+OK 0003884677 JRAH8I             J001             0.000  DO# 0 lot
+OK 0003884823 SRAH8I             2048             0.000  DO# 0 lot P29000054879
+OK 0003884824 SRAH8I             2048             0.000  DO# 0 lot P29000054879
+OK 0003884836 JRGKAI             P100             0.000  DO# 0 lot
+OK 0003884838 JRGKAI             P100             0.000  DO# 0 lot
+OK 0003884878 SRGKAI             2054             0.000  DO# 0 lot A26000003119
+OK 0003884879 SRGKAI             2054             0.000  DO# 0 lot A26000003120
+OK 0003884880 SRGKAI             2054             0.000  DO# 0 lot A26000003121
+OK 0003884881 SRGKAI             2054             0.000  DO# 0 lot A26000003122
+OK 0003884896 JRGLAI             2053             0.000  DO# 0 lot
+OK 0003884898 JRGLAI             2053             0.000  DO# 0 lot
+OK 0003884900 JRGLAI             2053         4,868.500  DO# 0 lot
+OK 0003884902 JRGLAI             2053         4,868.500  DO# 0 lot
+OK 0003884679 JRAH8I             J001             0.000  DO# 0 lot
+OK 0003884825 SRAH8I             2048             0.000  DO# 0 lot P29000054880
+OK 0003884826 SRAH8I             2048             0.000  DO# 0 lot P29000054880
+OK 0003884840 JRGKAI             P100             0.000  DO# 0 lot
+OK 0003884842 JRGKAI             P100             0.000  DO# 0 lot
+OK 0003884882 SRGKAI             2054             0.000  DO# 0 lot A26000003123
+OK 0003884883 SRGKAI             2054             0.000  DO# 0 lot A26000003124
+OK 0003884884 SRGKAI             2054             0.000  DO# 0 lot A26000003125
+OK 0003884885 SRGKAI             2054             0.000  DO# 0 lot A26000003126
+OK 0003884904 JRGLAI             2053         4,868.500  DO# 0 lot
+OK 0003884906 JRGLAI             2053         4,868.500  DO# 0 lot
+OK 0003884908 JRGLAI             2053         4,868.500  DO# 0 lot
+OK 0003884910 JRGLAI             2053             0.000  DO# 0 lot
+OK 0003884623 JRAKSI             F001             0.000  DO# 0 lot
+OK 0003884722 SRAKSI             2074             0.000  DO# 0 lot P29000054855
+OK 0003884723 SRAKSI             2074             0.000  DO# 0 lot P29000054855
+OK 0003884778 JRIA5I             T100         1,771.920  DO# 0 lot
+OK 0003884780 JRIA5I             T100         1,771.920  DO# 0 lot
+OK 0003884624 JRAKSI             F001             0.000  DO# 0 lot
+OK 0003884724 SRAKSI             2074             0.000  DO# 0 lot P29000054856
+OK 0003884725 SRAKSI             2074             0.000  DO# 0 lot P29000054856
+OK 0003884782 JRIA5I             T100         1,771.920  DO# 0 lot
+OK 0003884784 JRIA5I             T100             0.000  DO# 0 lot
+OK 0003884625 JRAKSI             F001             0.000  DO# 0 lot
+OK 0003884726 SRAKSI             2074             0.000  DO# 0 lot P29000054857
+OK 0003884727 SRAKSI             2074             0.000  DO# 0 lot P29000054857
+OK 0003884786 JRIA5I             T100             0.000  DO# 0 lot
+OK 0003884788 JRIA5I             T100             0.000  DO# 0 lot
+OK 0003884626 JRAKSI             F001             0.000  DO# 0 lot
+OK 0003884728 SRAKSI             2074             0.000  DO# 0 lot P29000054858
+OK 0003884729 SRAKSI             2074             0.000  DO# 0 lot P29000054858
+OK 0003884790 JRIA5I             T100             0.000  DO# 0 lot
+OK 0003884792 JRIA5I             T100         1,771.920  DO# 0 lot
+OK 0003884627 JRAKSI             F001         4,695.600  DO# 0 lot
+OK 0003884730 SRAKSI             2074             0.000  DO# 0 lot P29000054859
+OK 0003884731 SRAKSI             2074             0.000  DO# 0 lot P29000054859
+OK 0003884794 JRIA5I             T100         1,771.920  DO# 0 lot
+OK 0003884796 JRIA5I             T100         1,771.920  DO# 0 lot
+OK 0003884628 JRAKSI             F001         4,695.600  DO# 0 lot
+OK 0003884629 JRAKSI             F001             0.000  DO# 0 lot
+OK 0003885843 SRVLCO             2804             0.000  DO# 0 lot
+XX 5000770663 tidak ada MCH1
+OK 0003885850 SRVLCX             2804           983.780  DO# 0 lot
+OK 0003885844 SRVLCO             2804             0.000  DO# 0 lot
+XX 5000770664 tidak ada MCH1
+OK 0003885851 SRVLCX             2804           983.780  DO# 0 lot
+OK 0003885845 SRVLCO             2804             0.000  DO# 0 lot
+XX 5000770665 tidak ada MCH1
+OK 0003885852 SRVLCX             2804           983.780  DO# 0 lot
+OK 0003885846 SRVLCO             2804             0.000  DO# 0 lot
+XX 5000770666 tidak ada MCH1
+OK 0003885847 SRVLCO             2804             0.000  DO# 0 lot
+XX 5000770667 tidak ada MCH1
+OK 0003885848 SRVLCO             2804             0.000  DO# 0 lot
+XX 5000770668 tidak ada MCH1
+OK 0003885849 SRVLCO             2804             0.000  DO# 0 lot
+XX 5000770669 tidak ada MCH1

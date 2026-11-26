@@ -2,6 +2,7 @@
 
 | Atribut | Isi |
 |---|---|
+| 2026-11-26 17:15 | Antigravity / RFC QA | COA | Duplikasi Data UAT & EUT COA ke QA (TRQ 320) via RFC: 18 SO (`0000015855`..`0000015872`), 18 DO (`0085051549`..`0085051583`, 52 item LIPS), 2 MatDoc `309` (`4903968712`/`4903968713`), 2 batch baru terklasifikasi (`0003885919`/`0003885920`), 4 `ZZALIAS` (`AUSP`), dan dokumentasi gap (`docs/DATA_UAT_EUT_QA_20261126.md`) | Selesai (Data QA Siap UAT/EUT) | Import TR COA ke QA & Jalankan UAT/EUT |
 | 2026-11-25 08:44 | Antigravity / RFC | ZJR_EXEC | Pembuatan & aktivasi FM Remote-Enabled Z_RFC_PROGRAM_UPDATE di Function Group ZTOOLS (LZTOOLSU06) S/4HANA ADB 130 sesuai referensi Sandbox. Syntax SAPLZTOOLS 0 error & verified live via PyRFC (EV_SUCCESS=X) | Selesai (OK) | Siap digunakan untuk testing conversion tools |
 | Waktu | 2026-11-25 |
 | AI / device | Claude / Linux |
@@ -14,12 +15,14 @@
 ## Log (terbaru di atas)
 
 | Waktu | AI / device | Sub-project | Pekerjaan | Status | Next step |
+| 2026-11-26 | Claude / Linux | ABAP_INTERVIEW_STUDY_CASE | IDoc dibangun & diuji penuh di sandbox (03, 53, 51→69→53; bug FM diperbaiki); dokumen digabung ke Word + PDF (docs/export) | Selesai | Review Baginda |
 | 2026-11-25 | Claude / Linux | ABAP_INTERVIEW_STUDY_CASE | Dokumen study case IDoc (07) dan OData (08); ECC tanpa Gateway → OData di S/4; IDoc dibangun dari nol di sandbox | Selesai (dokumen) | Hands-on perlu izin config |
 | 2026-11-25 | Claude / Linux GUI :99 | ABAP_INTERVIEW_STUDY_CASE | Uji GUI sandbox (ALV B/C/D OK, fix filter PO & currency) dan S/4 (syntax 5 OK/3 error field custom, ALV B/D OK, ME23N S/4 dump DDIC); logout keduanya | Selesai | Review Baginda |
 | 2026-11-25 | Claude / Linux | ABAP_INTERVIEW_STUDY_CASE | Uji program latihan: sandbox-new 6 ZTRAIN_* $TMP (syntax 8/8, ALV background OK, BAPI test & SO 5683), S/4 ADB 8 ZTRAIN_* $TMP (syntax tak bisa via gateway); temuan 8 implicit enhancement SAPMV45A, doc 04 dikoreksi | Selesai sebagian | Uji GUI (butuh password) |
 | 2026-11-25 | Claude / Linux | ABAP_INTERVIEW_STUDY_CASE | Subproject baru + docs study case ALV/BAPI/BAdI/User Exit/SmartForms dari program nyata DEV (read-only) | Selesai (v1) | Review Baginda, IDoc & OO ABAP menyusul |
 | 2026-11-24 16:35 | Antigravity / RFC & GUI | ZJR_EXEC | Migrasi TUNTAS 100% ZPP041 -> ZJR_EXEC di S/4HANA (ADB 130): 7 DTEL, 9 Tabel Z, FM Z_MMUR_ROUND_FOR_FRACT5, 6 Includes & ZPPI_JR_EXEC (PCR), 5 Dynpros (0800-1300), CUA, TCode ZJR_EXEC verified live di GUI tanpa dump ST22 | Selesai Penuh | Handover ke Baginda |
 |---|---|---|---|---|---|
+| 2026-11-26 17:39 | Antigravity / Windows | COA | Menyusun rancangan fitur penyimpanan centangan 16 checkbox header COA Export (`SELECTION-SCREEN 9000`) per Customer (`KUNNR`) di `subproject/COA/docs/RANCANGAN_SIMPAN_HEADER_COA_EXPORT.md` (Opsi 1 `ZMAP_COA_EXP_HDR` vs Opsi 2 `INDX`). | Selesai (Draft Rancangan) | Konfirmasi Baginda pilih Opsi 1 / Opsi 2 |
 | 2026-11-24 12:15 | Claude / Linux GUI :99 | EXPIRED_DATE_IMPACT | Excel impact Expired Date + screenshot 8 T-code di DEV (ZBMBC, ZBMBC2, ZSD012N, ZSD024, ZSD024TTE, ZQM001P, ZEQM001P, ZQM002) | Selesai (DEV) | Setor ke Mbak Alfa |
 | 2026-11-24 13:30 | Claude / Linux | EXPIRED_DATE_IMPACT | Impact analysis ABAP perubahan Expired Date (email Alfa): scan full-text 4.725 objek Z/Y + Smart Form DEV, 93 objek pakai ZZEXPIREDLIVE (±45 aktif, semua company/plant), laporan docs/IMPACT_ANALYSIS_ABAP_20261124.md | Analisis selesai (DEV) | Bandingkan PRD, kirim hasil ke Alfa |
 | 2026-11-24 11:00 | Antigravity / RFC | ZJR_EXEC | Analisis & ekstraksi lengkap objek program ZPP041 (ZPPI_JR_EXEC, 7.421 baris), CUA, dynpros, FM Z_MMUR_ROUND_FOR_FRACT5, 9 tabel Z & 7 DTEL ke remote project folder | Selesai (Fase Ekstraksi) | Replikasi DDIC & Program ke S/4HANA via TCode ZJR_EXEC |

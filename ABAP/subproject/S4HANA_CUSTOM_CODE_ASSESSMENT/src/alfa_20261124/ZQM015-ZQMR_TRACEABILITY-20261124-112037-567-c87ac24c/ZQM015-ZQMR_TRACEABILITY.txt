@@ -1,0 +1,579 @@
+﻿Input: ZQM015
+Source SAP development (RFC baca-saja): ZQMR_TRACEABILITY
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZQMR_TRACEABILITY:30 | INITIALIZATION | PERFORM LAYOUT_INIT USING GS_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY:31 | INITIALIZATION | PERFORM EVENTTAB_BUILD USING GT_EVENTS[]. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY:42 | START-OF-SELECTION > IF V_CHARG IS INITIAL AND V_ATWRT IS INITIAL. | MESSAGE 'Please enter only either Roll Number or Batch Number !' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY:44 | START-OF-SELECTION > ELSEIF V_CHARG IS NOT INITIAL AND V_ATWRT IS NOT INITIAL. | MESSAGE 'Please enter only either Roll Number or Batch Number !' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY:46 | START-OF-SELECTION > ELSEIF CHECK IS INITIAL AND V_ATWRT IS INITIAL. | MESSAGE 'Batch not found' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY:51 | START-OF-SELECTION > ELSE. > IF R2 EQ 'X'. | PERFORM GET_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY:52 | START-OF-SELECTION > ELSE. > IF R2 EQ 'X'. | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY:54 | START-OF-SELECTION > ELSE. > ELSEIF R1 EQ 'X'. | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY:55 | START-OF-SELECTION > ELSE. > ELSEIF R1 EQ 'X'. | PERFORM DISPLAY2. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY:70 | START-OF-SELECTION > ELSE. > ELSEIF R3 EQ 'X'. | SUBMIT ZPP_SR_INPUT WITH P_CHARG IN P_CHARG_TMP | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:63 | START-OF-SELECTION | PERFORM F_GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:66 | START-OF-SELECTION | PERFORM F_DISPLAY_ALV. | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:102 | FORM F_GET_DATA > IF P_ROLNO[] IS NOT INITIAL. > ELSE. | MESSAGE 'Data tidak ditemukan' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:122 | FORM F_GET_DATA > IF ITAB[] IS INITIAL. | MESSAGE 'Data tidak ditemukan...!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:141 | FORM F_GET_DATA > IF IT_AFPO[] IS INITIAL. | MESSAGE 'Production Order tidak ditemukan...!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:266 | FORM F_GET_DATA | MESSAGE MSG_TEXT TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:280 | FORM F_DISPLAY_ALV | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:281 | FORM F_DISPLAY_ALV | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:282 | FORM F_DISPLAY_ALV | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:299 | FORM F_FIELD_CATALOG > IF ITAB-AUART NE 'ZMM1'. | PERFORM F_ALV_FIELDCATG_ICON USING 'ITAB' : | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:318 | FORM F_FIELD_CATALOG > ELSE. | PERFORM F_ALV_FIELDCATG_ICON USING 'ITAB' : | Tinjau kondisi dan hasil di ECC.
+  ZPP_SR_INPUT:433 | FORM F_USER_COMMAND > WHEN '&IC1'. > WHEN 'ITAB-AUFNR'. | CALL TRANSACTION 'COR3' AND SKIP FIRST SCREEN. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPP_SR_INPUT:437 | FORM F_USER_COMMAND > WHEN '&IC1'. > WHEN 'ITAB-CHARG' OR 'ITAB-CHARG'. | CALL TRANSACTION 'MSC3N' AND SKIP FIRST SCREEN. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMR_TRACEABILITY_DATA:36 | FORM GET_DATA | PERFORM LEVEL_UP. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:37 | FORM GET_DATA | PERFORM UPDATEDATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:60 | FORM UPDATEDATA > IF <FS_DETAIL>-ATWRT IS INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:187 | FORM UPDATEDATA > IF <FS_PREBATCH>-CHARG IS NOT INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:339 | FORM GET_DETAIL > ELSE. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:477 | FORM GET_DETAIL > IF IT_FINAL3[] IS NOT INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:502 | FORM DISPLAY2 | PERFORM BUILD_FIELDCAT. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:503 | FORM DISPLAY2 | PERFORM COMMENT_BUILD USING GT_LIST_TOP_OF_PAGE[]. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:520 | FORM DISPLAY2 > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:715 | FORM DISPLAY | PERFORM BUILD_FIELDCATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:716 | FORM DISPLAY | PERFORM COMMENT_BUILD USING GT_LIST_TOP_OF_PAGE[]. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:736 | FORM DISPLAY > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:894 | FORM LEVEL_UP > IF IT_DETAIL-ATWRT IS INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:979 | FORM LEVEL_UP > IF <FS_DETAIL>-EBELN IS NOT INITIAL. > IF IT_MSEG[] IS NOT INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:1089 | FORM LEVEL_UP > ELSE. > IF IT_MSEG[] IS NOT INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_DATA:1206 | FORM SBU > IF SY-TCODE EQ 'ZQM015'. | SUBMIT ZQMR_TRACEABILITY_SBU VIA SELECTION-SCREEN. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMR_TRACEABILITY_DATA:1208 | FORM SBU > ELSEIF V_VAR IS NOT INITIAL. | SUBMIT ZQMR_TRACEABILITY_SBU VIA SELECTION-SCREEN USING SELECTION-SET SY-TCODE. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMR_TRACEABILITY_DATA:1210 | FORM SBU > ELSE. | MESSAGE I065(VO) WITH SY-TCODE. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMR_TRACEABILITY_SBU:31 | INITIALIZATION | PERFORM LAYOUT_INIT USING GS_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU:32 | INITIALIZATION | PERFORM EVENTTAB_BUILD USING GT_EVENTS[]. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU:43 | START-OF-SELECTION > IF V_CHARG IS INITIAL AND V_ATWRT IS INITIAL. | MESSAGE 'Please enter only either Roll Number or Batch Number !' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU:45 | START-OF-SELECTION > ELSEIF V_CHARG IS NOT INITIAL AND V_ATWRT IS NOT INITIAL. | MESSAGE 'Please enter only either Roll Number or Batch Number !' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU:47 | START-OF-SELECTION > ELSEIF CHECK IS INITIAL AND V_ATWRT IS INITIAL. | MESSAGE 'Batch not found' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU:52 | START-OF-SELECTION > ELSE. > IF R2 EQ 'X'. | PERFORM GET_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU:53 | START-OF-SELECTION > ELSE. > IF R2 EQ 'X'. | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU:55 | START-OF-SELECTION > ELSE. > ELSEIF R1 EQ 'X'. | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU:56 | START-OF-SELECTION > ELSE. > ELSEIF R1 EQ 'X'. | PERFORM DISPLAY2. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU:71 | START-OF-SELECTION > ELSE. > ELSEIF R3 EQ 'X'. | SUBMIT ZPP_SR_INPUT WITH P_CHARG IN P_CHARG_TMP | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:36 | FORM GET_DATA > IF V_ATWRT IS NOT INITIAL. > IF SY-SUBRC NE 0 . | MESSAGE 'Nomor Roll not found' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:49 | FORM GET_DATA | PERFORM LEVEL_UP. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:50 | FORM GET_DATA | PERFORM UPDATEDATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:80 | FORM UPDATEDATA > IF <FS_DETAIL>-ATWRT IS INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:261 | FORM UPDATEDATA > IF <FS_PREBATCH>-CHARG IS NOT INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:479 | FORM GET_DETAIL > ELSE. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:617 | FORM GET_DETAIL > IF IT_FINAL3[] IS NOT INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:642 | FORM DISPLAY2 | PERFORM BUILD_FIELDCAT. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:643 | FORM DISPLAY2 | PERFORM COMMENT_BUILD USING GT_LIST_TOP_OF_PAGE[]. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:660 | FORM DISPLAY2 > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:855 | FORM DISPLAY | PERFORM BUILD_FIELDCATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:856 | FORM DISPLAY | PERFORM COMMENT_BUILD USING GT_LIST_TOP_OF_PAGE[]. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:876 | FORM DISPLAY > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:1034 | FORM LEVEL_UP > IF IT_DETAIL-ATWRT IS INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:1159 | FORM LEVEL_UP > IF <FS_DETAIL>-EBELN IS NOT INITIAL. > IF IT_MSEG[] IS NOT INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:1254 | FORM LEVEL_UP > ELSEIF <FS_DETAIL>-AUFNR = 'MAT2MAT SBU'. > IF IT_MSEG[] IS NOT INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+  ZQMR_TRACEABILITY_SBU_DATA:1364 | FORM LEVEL_UP > ELSE. > IF IT_MSEG[] IS NOT INITIAL. | PERFORM GETNOMORROLL. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZQMR_TRACEABILITY (75 baris)
+  58 | Field DDIC | MCH1-CHARG
+  64 | Field DDIC | AUSP-ATWRT
+  20 | includes | ZQMR_TRACEABILITY_TOP
+  21 | includes | ZQMR_TRACEABILITY_DATA
+  70 | submitPrograms | ZPP_SR_INPUT
+  40 | tableReads | MCH1
+
+Objek ZPP_SR_INPUT (450 baris)
+  9 | Tipe DDIC | MSEG
+  12 | Field DDIC | MSEG-MBLNR
+  13 | Field DDIC | MSEG-MATNR
+  14 | Field DDIC | MCH1-CHARG
+  15 | Field DDIC | AFPO-AUFNR
+  16 | Field DDIC | MSEG-ZEILE
+  17 | Field DDIC | MSEG-XBLNR_MKPF
+  18 | Field DDIC | MSEG-SGTXT
+  19 | Field DDIC | AUSP-ATWRT
+  21 | Field DDIC | AFPO-AUFNR
+  22 | Field DDIC | MSEG-CHARG
+  24 | Field DDIC | AUSP-ATWRT
+  25 | Field DDIC | AUSP-ATWRT
+  26 | Field DDIC | MSEG-CHARG
+  28 | Field DDIC | MSEG-CHARG
+  29 | Field DDIC | AUSP-ATWRT
+  34 | Field DDIC | AUFK-AUART
+  40 | Field DDIC | MSEG-CHARG
+  41 | Field DDIC | MSEG-MBLNR
+  44 | Field DDIC | MSEG-SMBLN
+  48 | Field DDIC | AFPO-AUFNR
+  49 | Field DDIC | AFPO-MILL_OC_AUFNR_U
+  54 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLK1 WITH FRAME TITLE TEXT-001.
+  54 | Teks Seleksi | TEXT-001
+  55 | Layar Seleksi | SELECT-OPTIONS : P_CHARG FOR MSEG-CHARG.
+  55 | Field DDIC | MSEG-CHARG
+  56 | Layar Seleksi | SELECT-OPTIONS : P_ROLNO FOR AUSP-ATWRT NO INTERVALS.
+  56 | Field DDIC | AUSP-ATWRT
+  57 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLK1.
+  76 | Field DDIC | AUSP-ATINN
+  77 | Field DDIC | AUSP-ATINN
+  78 | Field DDIC | AUSP-ATINN
+  79 | Field DDIC | AUSP-ATINN
+  80 | Field DDIC | AUSP-ATINN
+  423 | Field DDIC | SY-UCOMM
+  449 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN'.
+  52 | includes | ZABAPALV
+  396 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  433 | callTransactions | COR3
+  437 | callTransactions | MSC3N
+  85 | tableReads | CABN
+  94 | tableReads | MCH1
+  94 | tableReads | AUSP
+  108 | tableReads | MSEG
+  108 | tableReads | AUFK
+  127 | tableReads | AFPO
+
+Objek ZABAPALV (660 baris)
+  7 | Field DDIC | SY-REPID
+  27 | Field DDIC | SY-DATUM
+  28 | Field DDIC | SY-DATUM
+  559 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+
+Objek ZQMR_TRACEABILITY_DATA (1212 baris)
+  520 | Field DDIC | SY-MSGTY
+  736 | Field DDIC | SY-MSGTY
+  832 | Field DDIC | MCHA-WERKS
+  1206 | submitPrograms | ZQMR_TRACEABILITY_SBU
+  9 | callFunctions | CONVERSION_EXIT_ATINN_INPUT
+  291 | callFunctions | VB_INIT
+  296 | callFunctions | VB_BATCH_GET_DETAIL
+  351 | callFunctions | SAPGUI_PROGRESS_INDICATOR
+  480 | callFunctions | CONVERSION_EXIT_ALPHA_OUTPUT
+  505 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  683 | callFunctions | REUSE_ALV_EVENTS_GET
+  702 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  15 | tableReads | MCH1
+  15 | tableReads | AUSP
+  71 | tableReads | MSEG
+  110 | tableReads | MKPF
+  124 | tableReads | AFPO
+  153 | tableReads | CRHD
+  153 | tableReads | AFRU
+  162 | tableReads | AUFM
+  462 | tableReads | VEPO
+  462 | tableReads | VEKP
+  462 | tableReads | KNA1
+  836 | tableReads | MCHA
+  1197 | tableReads | ZMAP_INDICATOR
+  1203 | tableReads | VARID
+
+Objek ZQMR_TRACEABILITY_SBU (76 baris)
+  59 | Field DDIC | MCH1-CHARG
+  65 | Field DDIC | AUSP-ATWRT
+  20 | includes | ZQMR_TRACEABILITY_SBU_TOP
+  22 | includes | ZQMR_TRACEABILITY_SBU_DATA
+  71 | submitPrograms | ZPP_SR_INPUT
+  41 | tableReads | MCH1
+
+Objek ZQMR_TRACEABILITY_SBU_DATA (1499 baris)
+  295 | Field DDIC | MCH1-CHARG
+  343 | Field DDIC | MCH1-CHARG
+  373 | Field DDIC | MCH1-CHARG
+  660 | Field DDIC | SY-MSGTY
+  876 | Field DDIC | SY-MSGTY
+  972 | Field DDIC | MCHA-WERKS
+  16 | callFunctions | CONVERSION_EXIT_ATINN_INPUT
+  432 | callFunctions | VB_INIT
+  436 | callFunctions | VB_BATCH_GET_DETAIL
+  491 | callFunctions | SAPGUI_PROGRESS_INDICATOR
+  620 | callFunctions | CONVERSION_EXIT_ALPHA_OUTPUT
+  645 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  823 | callFunctions | REUSE_ALV_EVENTS_GET
+  842 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  22 | tableReads | MCH1
+  22 | tableReads | AUSP
+  98 | tableReads | MSEG
+  144 | tableReads | MKPF
+  158 | tableReads | AFPO
+  187 | tableReads | CRHD
+  187 | tableReads | AFRU
+  196 | tableReads | AUFM
+  602 | tableReads | VEPO
+  602 | tableReads | VEKP
+  602 | tableReads | KNA1
+  976 | tableReads | MCHA
+
+Objek ZQMR_TRACEABILITY_SBU_TOP (206 baris)
+  4 | Tipe DDIC | MCH1
+  7 | Field DDIC | MCH1-MATNR
+  8 | Field DDIC | AUSP-ATWRT
+  9 | Field DDIC | MCH1-CHARG
+  10 | Field DDIC | AUFM-AUFNR
+  11 | Field DDIC | AUFM-MBLNR
+  12 | Field DDIC | AUFM-BWART
+  13 | Field DDIC | AUFM-ZEILE
+  14 | Field DDIC | AUFM-MJAHR
+  15 | Field DDIC | MKPF-CPUDT
+  16 | Field DDIC | MKPF-CPUTM
+  19 | Field DDIC | MCH1-MATNR
+  21 | Field DDIC | MKPF-CPUDT
+  22 | Field DDIC | MKPF-CPUTM
+  24 | Field DDIC | MSEG-EBELN
+  25 | Field DDIC | MSEG-EBELP
+  26 | Field DDIC | MKPF-BKTXT
+  30 | Field DDIC | AFPO-MILL_OC_AUFNR_U
+  34 | Field DDIC | MSEG-AUFNR
+  35 | Field DDIC | MSEG-MBLNR
+  36 | Field DDIC | MSEG-MJAHR
+  37 | Field DDIC | MSEG-ZEILE
+  38 | Field DDIC | MSEG-SMBLN
+  39 | Field DDIC | MSEG-SJAHR
+  40 | Field DDIC | MSEG-SMBLP
+  41 | Field DDIC | MSEG-CPUDT_MKPF
+  42 | Field DDIC | MSEG-CPUTM_MKPF
+  43 | Field DDIC | MSEG-EBELN
+  44 | Field DDIC | MSEG-EBELP
+  45 | Field DDIC | MSEG-MATNR
+  46 | Field DDIC | MSEG-LIFNR
+  47 | Field DDIC | MSEG-BWART
+  48 | Field DDIC | MSEG-CHARG
+  54 | Field DDIC | MCH1-CHARG
+  58 | Field DDIC | MCHA-MATNR
+  59 | Field DDIC | MCHA-CHARG
+  60 | Field DDIC | MCHA-WERKS
+  73 | Field DDIC | AUSP-ATINN
+  74 | Field DDIC | MSEG-MBLNR
+  75 | Field DDIC | AUFM-AUFNR
+  76 | Field DDIC | AUFM-CHARG
+  77 | Field DDIC | AUFM-CHARG
+  78 | Field DDIC | MCH1-MATNR
+  79 | Field DDIC | AUSP-ATWRT
+  80 | Field DDIC | AUFM-AUFNR
+  81 | Field DDIC | MKPF-BKTXT
+  89 | Field DDIC | MSEG-MBLNR
+  90 | Field DDIC | MSEG-MJAHR
+  91 | Field DDIC | MSEG-ZEILE
+  92 | Field DDIC | MSEG-MATNR
+  93 | Field DDIC | MSEG-CHARG
+  94 | Field DDIC | MSEG-KUNNR
+  95 | Field DDIC | KNA1-NAME1
+  96 | Field DDIC | MSEG-BUDAT_MKPF
+  97 | Field DDIC | MSEG-VBELN_IM
+  98 | Field DDIC | MSEG-VBELP_IM
+  99 | Field DDIC | VEKP-EXIDV
+  100 | Field DDIC | CAWNT-ATWTB
+  104 | Field DDIC | MSEG-MBLNR
+  105 | Field DDIC | MSEG-MJAHR
+  106 | Field DDIC | MSEG-ZEILE
+  107 | Field DDIC | MSEG-BWART
+  108 | Field DDIC | MSEG-MATNR
+  109 | Field DDIC | MSEG-CHARG
+  110 | Field DDIC | MSEG-SJAHR
+  111 | Field DDIC | MSEG-SMBLN
+  112 | Field DDIC | MSEG-SMBLP
+  116 | Field DDIC | MSEG-MBLNR
+  117 | Field DDIC | MSEG-MJAHR
+  118 | Field DDIC | MSEG-ZEILE
+  119 | Field DDIC | MSEG-LINE_ID
+  120 | Field DDIC | MSEG-PARENT_ID
+  121 | Field DDIC | MSEG-MATNR
+  122 | Field DDIC | MSEG-CHARG
+  123 | Field DDIC | MSEG-BWART
+  124 | Field DDIC | MSEG-AUFNR
+  125 | Field DDIC | MSEG-EBELN
+  126 | Field DDIC | MSEG-EBELP
+  127 | Field DDIC | MSEG-SJAHR
+  128 | Field DDIC | MSEG-SMBLN
+  129 | Field DDIC | MSEG-SMBLP
+  133 | Field DDIC | AFPO-AUFNR
+  134 | Field DDIC | AFPO-MILL_OC_AUFNR_U
+  138 | Field DDIC | AFPO-AUFNR
+  142 | Field DDIC | MSEG-MBLNR
+  143 | Field DDIC | MSEG-MJAHR
+  144 | Field DDIC | MSEG-ZEILE
+  145 | Field DDIC | MSEG-MATNR
+  146 | Field DDIC | MSEG-CHARG
+  147 | Field DDIC | MSEG-BWART
+  148 | Field DDIC | MSEG-AUFNR
+  149 | Field DDIC | MSEG-SJAHR
+  150 | Field DDIC | MSEG-SMBLN
+  151 | Field DDIC | MSEG-SMBLP
+  162 | Field DDIC | MCH1-CHARG
+  166 | Field DDIC | CRHD-ARBPL
+  173 | Field DDIC | SY-REPID
+  193 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK SELECTION WITH FRAME TITLE TEXT-001.
+  193 | Teks Seleksi | TEXT-001
+  194 | Layar Seleksi | PARAMETERS: V_ATWRT TYPE AUSP-ATWRT.
+  194 | Field DDIC | AUSP-ATWRT
+  195 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  196 | Layar Seleksi | SELECTION-SCREEN COMMENT 37(3) TEXT.
+  197 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  198 | Layar Seleksi | PARAMETERS: V_CHARG TYPE MCH1-CHARG.
+  198 | Field DDIC | MCH1-CHARG
+  199 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK SELECTION.
+  202 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1 WITH FRAME TITLE TEXT-002.
+  202 | Teks Seleksi | TEXT-002
+  203 | Layar Seleksi | PARAMETERS: R1 RADIOBUTTON GROUP RAD1 DEFAULT 'X'.
+  204 | Layar Seleksi | PARAMETERS: R2 RADIOBUTTON GROUP RAD1.
+  205 | Layar Seleksi | PARAMETERS: R3 RADIOBUTTON GROUP RAD1.
+  206 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1.
+
+Objek ZQMR_TRACEABILITY_TOP (193 baris)
+  4 | Tipe DDIC | MCH1
+  7 | Field DDIC | MCH1-MATNR
+  8 | Field DDIC | AUSP-ATWRT
+  9 | Field DDIC | MCH1-CHARG
+  10 | Field DDIC | AUFM-AUFNR
+  11 | Field DDIC | AUFM-MBLNR
+  12 | Field DDIC | AUFM-BWART
+  13 | Field DDIC | AUFM-ZEILE
+  14 | Field DDIC | AUFM-MJAHR
+  15 | Field DDIC | MKPF-CPUDT
+  16 | Field DDIC | MKPF-CPUTM
+  19 | Field DDIC | MCH1-MATNR
+  21 | Field DDIC | MKPF-CPUDT
+  22 | Field DDIC | MKPF-CPUTM
+  24 | Field DDIC | MSEG-EBELN
+  25 | Field DDIC | MSEG-EBELP
+  26 | Field DDIC | MKPF-BKTXT
+  30 | Field DDIC | AFPO-MILL_OC_AUFNR_U
+  34 | Field DDIC | MSEG-AUFNR
+  35 | Field DDIC | MSEG-MBLNR
+  36 | Field DDIC | MSEG-MJAHR
+  37 | Field DDIC | MSEG-ZEILE
+  38 | Field DDIC | MSEG-SMBLN
+  39 | Field DDIC | MSEG-SJAHR
+  40 | Field DDIC | MSEG-SMBLP
+  41 | Field DDIC | MSEG-CPUDT_MKPF
+  42 | Field DDIC | MSEG-CPUTM_MKPF
+  43 | Field DDIC | MSEG-EBELN
+  44 | Field DDIC | MSEG-EBELP
+  45 | Field DDIC | MSEG-MATNR
+  46 | Field DDIC | MSEG-LIFNR
+  47 | Field DDIC | MSEG-BWART
+  48 | Field DDIC | MSEG-CHARG
+  60 | Field DDIC | AUSP-ATINN
+  61 | Field DDIC | MSEG-MBLNR
+  62 | Field DDIC | AUFM-AUFNR
+  63 | Field DDIC | AUFM-CHARG
+  64 | Field DDIC | AUFM-CHARG
+  65 | Field DDIC | MCH1-MATNR
+  66 | Field DDIC | AUSP-ATWRT
+  67 | Field DDIC | AUFM-AUFNR
+  68 | Field DDIC | MKPF-BKTXT
+  76 | Field DDIC | MSEG-MBLNR
+  77 | Field DDIC | MSEG-MJAHR
+  78 | Field DDIC | MSEG-ZEILE
+  79 | Field DDIC | MSEG-MATNR
+  80 | Field DDIC | MSEG-CHARG
+  81 | Field DDIC | MSEG-KUNNR
+  82 | Field DDIC | KNA1-NAME1
+  83 | Field DDIC | MSEG-BUDAT_MKPF
+  84 | Field DDIC | MSEG-VBELN_IM
+  85 | Field DDIC | MSEG-VBELP_IM
+  86 | Field DDIC | VEKP-EXIDV
+  87 | Field DDIC | CAWNT-ATWTB
+  91 | Field DDIC | MSEG-MBLNR
+  92 | Field DDIC | MSEG-MJAHR
+  93 | Field DDIC | MSEG-ZEILE
+  94 | Field DDIC | MSEG-BWART
+  95 | Field DDIC | MSEG-MATNR
+  96 | Field DDIC | MSEG-CHARG
+  97 | Field DDIC | MSEG-SJAHR
+  98 | Field DDIC | MSEG-SMBLN
+  99 | Field DDIC | MSEG-SMBLP
+  103 | Field DDIC | MSEG-MBLNR
+  104 | Field DDIC | MSEG-MJAHR
+  105 | Field DDIC | MSEG-ZEILE
+  106 | Field DDIC | MSEG-LINE_ID
+  107 | Field DDIC | MSEG-PARENT_ID
+  108 | Field DDIC | MSEG-MATNR
+  109 | Field DDIC | MSEG-CHARG
+  110 | Field DDIC | MSEG-BWART
+  111 | Field DDIC | MSEG-AUFNR
+  112 | Field DDIC | MSEG-EBELN
+  113 | Field DDIC | MSEG-EBELP
+  114 | Field DDIC | MSEG-SJAHR
+  115 | Field DDIC | MSEG-SMBLN
+  116 | Field DDIC | MSEG-SMBLP
+  120 | Field DDIC | AFPO-AUFNR
+  121 | Field DDIC | AFPO-MILL_OC_AUFNR_U
+  125 | Field DDIC | AFPO-AUFNR
+  129 | Field DDIC | MSEG-MBLNR
+  130 | Field DDIC | MSEG-MJAHR
+  131 | Field DDIC | MSEG-ZEILE
+  132 | Field DDIC | MSEG-MATNR
+  133 | Field DDIC | MSEG-CHARG
+  134 | Field DDIC | MSEG-BWART
+  135 | Field DDIC | MSEG-AUFNR
+  136 | Field DDIC | MSEG-SJAHR
+  137 | Field DDIC | MSEG-SMBLN
+  138 | Field DDIC | MSEG-SMBLP
+  149 | Field DDIC | MCH1-CHARG
+  153 | Field DDIC | CRHD-ARBPL
+  160 | Field DDIC | SY-REPID
+  180 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK SELECTION WITH FRAME TITLE TEXT-001.
+  180 | Teks Seleksi | TEXT-001
+  181 | Layar Seleksi | PARAMETERS: V_ATWRT TYPE AUSP-ATWRT.
+  181 | Field DDIC | AUSP-ATWRT
+  182 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  183 | Layar Seleksi | SELECTION-SCREEN COMMENT 37(3) TEXT.
+  184 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  185 | Layar Seleksi | PARAMETERS: V_CHARG TYPE MCH1-CHARG.
+  185 | Field DDIC | MCH1-CHARG
+  186 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK SELECTION.
+  189 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1 WITH FRAME TITLE TEXT-002.
+  189 | Teks Seleksi | TEXT-002
+  190 | Layar Seleksi | PARAMETERS: R1 RADIOBUTTON GROUP RAD1 DEFAULT 'X'.
+  191 | Layar Seleksi | PARAMETERS: R2 RADIOBUTTON GROUP RAD1.
+  192 | Layar Seleksi | PARAMETERS: R3 RADIOBUTTON GROUP RAD1.
+  193 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1.
+Jumlah source terbaca: 8
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZQMR_TRACEABILITY.abap
+  Baris 58 | Field DDIC | MCH1-CHARG
+  Baris 64 | Field DDIC | AUSP-ATWRT
+  Baris 20 | INCLUDE | ZQMR_TRACEABILITY_TOP
+  Baris 21 | INCLUDE | ZQMR_TRACEABILITY_DATA
+  Baris 40 | Sumber data pada SELECT atau JOIN | MCH1
+  Baris 70 | Program yang dirujuk SUBMIT | ZPP_SR_INPUT
+
+ZQMR_TRACEABILITY_TOP.abap
+  Baris 4 | Tipe DDIC | MCH1
+  Baris 7 | Field DDIC | MCH1-MATNR
+  Baris 8 | Field DDIC | AUSP-ATWRT
+  Baris 9 | Field DDIC | MCH1-CHARG
+  Baris 10 | Field DDIC | AUFM-AUFNR
+  Baris 11 | Field DDIC | AUFM-MBLNR
+  Baris 12 | Field DDIC | AUFM-BWART
+  Baris 13 | Field DDIC | AUFM-ZEILE
+  Baris 14 | Field DDIC | AUFM-MJAHR
+  Baris 15 | Field DDIC | MKPF-CPUDT
+  Baris 16 | Field DDIC | MKPF-CPUTM
+  Baris 19 | Field DDIC | MCH1-MATNR
+  Baris 21 | Field DDIC | MKPF-CPUDT
+  Baris 22 | Field DDIC | MKPF-CPUTM
+  Baris 24 | Field DDIC | MSEG-EBELN
+  Baris 25 | Field DDIC | MSEG-EBELP
+  Baris 26 | Field DDIC | MKPF-BKTXT
+  Baris 30 | Field DDIC | AFPO-MILL_OC_AUFNR_U
+  Baris 34 | Field DDIC | MSEG-AUFNR
+  Baris 35 | Field DDIC | MSEG-MBLNR
+  Baris 36 | Field DDIC | MSEG-MJAHR
+  Baris 37 | Field DDIC | MSEG-ZEILE
+  Baris 38 | Field DDIC | MSEG-SMBLN
+  Baris 39 | Field DDIC | MSEG-SJAHR
+  Baris 40 | Field DDIC | MSEG-SMBLP
+  Baris 41 | Field DDIC | MSEG-CPUDT_MKPF
+  Baris 42 | Field DDIC | MSEG-CPUTM_MKPF
+  Baris 43 | Field DDIC | MSEG-EBELN
+  Baris 44 | Field DDIC | MSEG-EBELP
+  Baris 45 | Field DDIC | MSEG-MATNR
+  Baris 46 | Field DDIC | MSEG-LIFNR
+  Baris 47 | Field DDIC | MSEG-BWART
+  Baris 48 | Field DDIC | MSEG-CHARG
+  Baris 60 | Field DDIC | AUSP-ATINN
+  Baris 61 | Field DDIC | MSEG-MBLNR
+  Baris 62 | Field DDIC | AUFM-AUFNR
+  Baris 63 | Field DDIC | AUFM-CHARG
+  Baris 64 | Field DDIC | AUFM-CHARG
+  Baris 65 | Field DDIC | MCH1-MATNR
+  Baris 66 | Field DDIC | AUSP-ATWRT
+  Baris 67 | Field DDIC | AUFM-AUFNR
+  Baris 68 | Field DDIC | MKPF-BKTXT
+  Baris 76 | Field DDIC | MSEG-MBLNR
+  Baris 77 | Field DDIC | MSEG-MJAHR
+  Baris 78 | Field DDIC | MSEG-ZEILE
+  Baris 79 | Field DDIC | MSEG-MATNR
+  Baris 80 | Field DDIC | MSEG-CHARG
+  Baris 81 | Field DDIC | MSEG-KUNNR
+  Baris 82 | Field DDIC | KNA1-NAME1
+  Baris 83 | Field DDIC | MSEG-BUDAT_MKPF
+  Baris 84 | Field DDIC | MSEG-VBELN_IM
+  Baris 85 | Field DDIC | MSEG-VBELP_IM
+  Baris 86 | Field DDIC | VEKP-EXIDV
+  Baris 87 | Field DDIC | CAWNT-ATWTB
+  Baris 91 | Field DDIC | MSEG-MBLNR
+  Baris 92 | Field DDIC | MSEG-MJAHR
+  Baris 93 | Field DDIC | MSEG-ZEILE
+  Baris 94 | Field DDIC | MSEG-BWART
+  Baris 95 | Field DDIC | MSEG-MATNR
+  Baris 96 | Field DDIC | MSEG-CHARG
+  Baris 97 | Field DDIC | MSEG-SJAHR
+  Baris 98 | Field DDIC | MSEG-SMBLN
+  Baris 99 | Field DDIC | MSEG-SMBLP
+  Baris 103 | Field DDIC | MSEG-MBLNR
+  Baris 104 | Field DDIC | MSEG-MJAHR
+  Baris 105 | Field DDIC | MSEG-ZEILE
+  Baris 106 | Field DDIC | MSEG-LINE_ID
+  Baris 107 | Field DDIC | MSEG-PARENT_ID
+  Baris 108 | Field DDIC | MSEG-MATNR
+  Baris 109 | Field DDIC | MSEG-CHARG
+  Baris 110 | Field DDIC | MSEG-BWART
+  Baris 111 | Field DDIC | MSEG-AUFNR
+  Baris 112 | Field DDIC | MSEG-EBELN
+  Baris 113 | Field DDIC | MSEG-EBELP
+  Baris 114 | Field DDIC | MSEG-SJAHR
+  Baris 115 | Field DDIC | MSEG-SMBLN
+  Baris 116 | Field DDIC | MSEG-SMBLP
+  Baris 120 | Field DDIC | AFPO-AUFNR
+  Baris 121 | Field DDIC | AFPO-MILL_OC_AUFNR_U
+  Baris 125 | Field DDIC | AFPO-AUFNR
+  Baris 129 | Field DDIC | MSEG-MBLNR
+  Baris 130 | Field DDIC | MSEG-MJAHR
+  Baris 131 | Field DDIC | MSEG-ZEILE
+  Baris 132 | Field DDIC | MSEG-MATNR
+  Baris 133 | Field DDIC | MSEG-CHARG
+  Baris 134 | Field DDIC | MSEG-BWART
+  Baris 135 | Field DDIC | MSEG-AUFNR
+  Baris 136 | Field DDIC | MSEG-SJAHR
+  Baris 137 | Field DDIC | MSEG-SMBLN
+  Baris 138 | Field DDIC | MSEG-SMBLP
+  Baris 149 | Field DDIC | MCH1-CHARG
+  Baris 153 | Field DDIC | CRHD-ARBPL
+  Baris 160 | Field DDIC | SY-REPID
+  Baris 180 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK SELECTION WITH FRAME TITLE TEXT-001.
+  Baris 180 | Teks Seleksi | TEXT-001
+  Baris 181 | Layar Seleksi | PARAMETERS: V_ATWRT TYPE AUSP-ATWRT.
+  Baris 181 | Field DDIC | AUSP-ATWRT
+  Baris 182 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 183 | Layar Seleksi | SELECTION-SCREEN COMMENT 37(3) TEXT.
+  Baris 184 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 185 | Layar Seleksi | PARAMETERS: V_CHARG TYPE MCH1-CHARG.
+  Baris 185 | Field DDIC | MCH1-CHARG
+  Baris 186 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK SELECTION.
+  Baris 189 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1 WITH FRAME TITLE TEXT-002.
+  Baris 189 | Teks Seleksi | TEXT-002
+  Baris 190 | Layar Seleksi | PARAMETERS: R1 RADIOBUTTON GROUP RAD1 DEFAULT 'X'.
+  Baris 191 | Layar Seleksi | PARAMETERS: R2 RADIOBUTTON GROUP RAD1.
+  Baris 192 | Layar Seleksi | PARAMETERS: R3 RADIOBUTTON GROUP RAD1.
+  Baris 193 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1.
+
+ZQMR_TRACEABILITY_DATA.abap
+  Baris 520 | Field DDIC | SY-MSGTY
+  Baris 736 | Field DDIC | SY-MSGTY
+  Baris 832 | Field DDIC | MCHA-WERKS
+  Baris 15 | Sumber data pada SELECT atau JOIN | MCH1
+  Baris 15 | Sumber data pada SELECT atau JOIN | AUSP
+  Baris 71 | Sumber data pada SELECT atau JOIN | MSEG
+  Baris 110 | Sumber data pada SELECT atau JOIN | MKPF
+  Baris 124 | Sumber data pada SELECT atau JOIN | AFPO
+  Baris 153 | Sumber data pada SELECT atau JOIN | CRHD
+  Baris 153 | Sumber data pada SELECT atau JOIN | AFRU
+  Baris 162 | Sumber data pada SELECT atau JOIN | AUFM
+  Baris 462 | Sumber data pada SELECT atau JOIN | VEPO
+  Baris 462 | Sumber data pada SELECT atau JOIN | VEKP
+  Baris 462 | Sumber data pada SELECT atau JOIN | KNA1
+  Baris 836 | Sumber data pada SELECT atau JOIN | MCHA
+  Baris 1197 | Sumber data pada SELECT atau JOIN | ZMAP_INDICATOR
+  Baris 1203 | Sumber data pada SELECT atau JOIN | VARID
+  Baris 9 | Function module | CONVERSION_EXIT_ATINN_INPUT
+  Baris 291 | Function module | VB_INIT
+  Baris 296 | Function module | VB_BATCH_GET_DETAIL
+  Baris 351 | Function module | SAPGUI_PROGRESS_INDICATOR
+  Baris 480 | Function module | CONVERSION_EXIT_ALPHA_OUTPUT
+  Baris 505 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 683 | Function module | REUSE_ALV_EVENTS_GET
+  Baris 702 | Function module | REUSE_ALV_COMMENTARY_WRITE
+  Baris 1206 | Program yang dirujuk SUBMIT | ZQMR_TRACEABILITY_SBU

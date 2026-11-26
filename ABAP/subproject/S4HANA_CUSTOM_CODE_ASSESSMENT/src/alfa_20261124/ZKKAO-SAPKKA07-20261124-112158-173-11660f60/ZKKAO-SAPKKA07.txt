@@ -1,0 +1,1330 @@
+﻿Input: ZKKAO
+Source SAP development (RFC baca-saja): SAPKKA07
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  SAPKKA07:430 | INITIALIZATION | PERFORM KASS_FW_INIT | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:434 | INITIALIZATION | PERFORM KASS_FW_EVENT_REGISTER | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:468 | FORM START_OF_SELECTION | PERFORM BERECHTIGUNG_PRUEFEN USING '03' 'KABG'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:471 | FORM START_OF_SELECTION > IF AUSFUEHR EQ YES. | PERFORM BERECHTIGUNG_PRUEFEN USING '02' 'KABG'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:473 | FORM START_OF_SELECTION > ELSEIF SIMULATI EQ YES. | PERFORM BERECHTIGUNG_PRUEFEN USING '48' 'KABG'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:506 | FORM START_OF_SELECTION > IF SCMA = YES. | PERFORM INIT_RECORD_FOR_SCMA. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:551 | FORM START_OF_SELECTION > IF NOT ANZEIGEN IS INITIAL AND NOT PAR_STOR IS INITIAL. | MESSAGE I802(KJ). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:585 | FORM START_OF_SELECTION | PERFORM MESSAGE_INITIALIZE. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:598 | FORM START_OF_SELECTION > IF KASS = NO. > IF INCFAUFT IS INITIAL AND | MESSAGE E080(KV). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:686 | FORM START_OF_SELECTION > IF ( ABGR_PERIOD_NUM <= ABS_PERIOD_NUM ) | PERFORM CM_F_SET_OBJECT USING GS_PEP_AUFTRAG | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:734 | FORM START_OF_SELECTION > ELSE. > IF anzeigen IS INITIAL. > IF sy-subrc <> 0. > IF par_einz = no. | PERFORM CM_F_SET_OBJECT | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:752 | FORM START_OF_SELECTION > ELSE. > IF anzeigen IS INITIAL. > IF sy-subrc <> 0. > IF ld_msgty = 'E' AND scma IS INITIAL. | MESSAGE ID SY-MSGID TYPE ld_msgty NUMBER SY-MSGNO | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:873 | FORM START_OF_SELECTION > IF PAR_NPAR IS INITIAL OR AUSFUEHR EQ YES. > IF GD_CVACT EQ 'X'. | PERFORM GET_VALUTEXT USING <FS_VSNLINE>-VALUTYP | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:930 | FORM START_OF_SELECTION > IF KASS = YES. | PERFORM SELECT_OBJECTS_KASS. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1024 | FORM START_OF_SELECTION > elseif gd_abort_error = no. > IF SY-DBCNT EQ 0. > IF ld_select_for_all_entr = yes. | PERFORM CM_F_SET_OBJECT | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1051 | FORM START_OF_SELECTION > elseif gd_abort_error = no. > IF SY-DBCNT EQ 0. > ELSE. | PERFORM CM_F_SET_OBJECT | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1145 | FORM START_OF_SELECTION > if gd_abort_error = no. > IF NOT PARALLEL IS INITIAL. | PERFORM WIP_ERMITTELN_PARALLEL | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1169 | FORM START_OF_SELECTION > if gd_abort_error = no. > ELSE. | PERFORM AUFTRAG_LOOP | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1215 | FORM START_OF_SELECTION | MESSAGE S500 WITH LD_A_OBJ_TOTAL LD_A_OBJ_NOT_DONE. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1223 | FORM START_OF_SELECTION | perform AUTH_CHECK_PLANT_VALUTYP using | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1228 | FORM START_OF_SELECTION | PERFORM MESSAGE_INFO. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1230 | FORM START_OF_SELECTION > IF STOREMSG EQ YES. | PERFORM MESSAGE_STORE. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1235 | FORM START_OF_SELECTION > ELSEIF SY-BATCH EQ YES. > IF CATTNEU NE 'X' AND CATTAKTIV NE 'X'. | PERFORM MESSAGE_PRINT. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1302 | FORM START_OF_SELECTION > IF KASS = NO. | PERFORM GET_SEL_TAB | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1306 | FORM START_OF_SELECTION | PERFORM GET_PARAM_TAB | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1310 | FORM START_OF_SELECTION | PERFORM CREATE_GRUNDLISTE | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1322 | FORM START_OF_SELECTION > IF GD_SAVE_EXTRACT = YES. | PERFORM SAVE_BASE_LIST | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1336 | FORM START_OF_SELECTION | PERFORM DEFINIERE_LISTE | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1348 | FORM START_OF_SELECTION | PERFORM DEFINIERE_EVENTS | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1360 | FORM START_OF_SELECTION > IF NOT T_AUFTLST[] IS INITIAL AND | PERFORM SAVE_OBJECT_LIST | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1369 | FORM START_OF_SELECTION > IF SY-BATCH = YES. > IF sy-binpt IS INITIAL. | PERFORM DISPLAY_GRUNDLISTE. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1379 | FORM START_OF_SELECTION > IF SY-BATCH = YES. > IF ( NOT t_auftlst[] IS INITIAL OR sy-binpt = 'X' ) AND | PERFORM DISPLAY_OBJ_LIST | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1391 | FORM START_OF_SELECTION > IF SCMA = YES. | PERFORM CLOSE_RECORD_FOR_SCMA. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1398 | FORM START_OF_SELECTION > IF SY-BATCH <> YES. > IF sy-binpt = 'X'. > IF obj_lst = yes. | PERFORM DISPLAY_OBJ_LIST | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1405 | FORM START_OF_SELECTION > IF SY-BATCH <> YES. > ELSE. > IF T_AUFTLST[] IS INITIAL OR OBJ_LST = NO. | PERFORM DISPLAY_GRUNDLISTE. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1407 | FORM START_OF_SELECTION > IF SY-BATCH <> YES. > ELSE. > ELSE. | PERFORM DISPLAY_OBJ_LIST | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  SAPKKA07:1438 | IF NOT ( SY-SUBRC IS INITIAL ). > IF PD_AUSFUEHR EQ YES OR PD_SIMULATI EQ YES. | PERFORM EXCEPTION_HANDLING | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:1441 | IF NOT ( SY-SUBRC IS INITIAL ). | PERFORM FEHLERZEILE USING PD_FEHLERAUFTRAG | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:1571 | FORM AUFTRAG_LOOP | PERFORM LIES_MENGEN | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:1616 | FORM AUFTRAG_LOOP > IF PS_PARAMS-ANZEIGEN EQ NO. | PERFORM CM_F_SET_OBJECT | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:1627 | FORM AUFTRAG_LOOP > IF PS_PARAMS-AUSFUEHR EQ YES OR PS_PARAMS-SIMULATI EQ YES. > IF lf_isapo_pcc EQ no. | PERFORM AUFTRAG_ABGRENZEN | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:1706 | FORM AUFTRAG_LOOP > IF PS_PARAMS-AUSFUEHR EQ YES OR PS_PARAMS-SIMULATI EQ YES. > IF NOT PS_PARAMS-P_MAXNTA IS INITIAL OR | PERFORM SETZE_MAX_NT | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:1752 | FORM AUFTRAG_LOOP > ELSE. | PERFORM ABGR_DATEN_LESEN_UND_LISTEN | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:1763 | FORM AUFTRAG_LOOP > ELSE. | perform get_status using PS_AUFTRAG-objnr | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:1765 | FORM AUFTRAG_LOOP > ELSE. | perform get_bewart using PS_AUFTRAG-abgsl | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:1786 | FORM AUFTRAG_LOOP | PERFORM FUELLE_AUFTRAGSLISTE | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:1840 | FORM AUFTRAG_LOOP > IF NOT PS_AUFTRAG-FLG_MLTPS IS INITIAL AND | PERFORM HANDLE_MESSAGE | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:1859 | FORM AUFTRAG_LOOP > IF PS_PARAMS-SCMA_WORKLISTS_ACTIVE = YES. | PERFORM HANDLE_STATUS_WL | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:2024 | FORM AUFTRAG_ABGRENZEN | PERFORM ABGR_DATEN_HOLEN_UND_LISTEN | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:2228 | FORM MESSAGE_STORE > IF MSG_NR EQ 0 AND SCMA = NO. | MESSAGE S501. | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:2243 | FORM MESSAGE_STORE > ELSE. > IF SCMA = NO. | MESSAGE S502 WITH ABGR_MSG_STORE_NR. | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:2379 | FORM ABGR_DATEN_LESEN_UND_LISTEN > ELSE. | PERFORM FEHLERZEILE USING PD_FEHLERAUFTRAG | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:2387 | FORM ABGR_DATEN_LESEN_UND_LISTEN > ELSE. | MESSAGE S808(KJ) WITH PS_AUFTRAG-AUFNR PD_WAEHR. | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:2742 | FORM LIES_MENGEN > ELSEIF PS_AUFTRAG-AMEIN <> T_COSLA-MEINH. > IF PS_PARAMS-WITHIMSG = YES. | PERFORM HANDLE_MESSAGE | Tinjau kondisi dan hasil di ECC.
+  SAPKKA07:2753 | FORM LIES_MENGEN > IF SY-SUBRC = 1. > IF PS_PARAMS-WITHIMSG = YES. | PERFORM HANDLE_MESSAGE | Tinjau kondisi dan hasil di ECC.
+  KKA07F04:103 | FORM FUELLE_AUFTRAGSLISTE | PERFORM GET_VALUTEXT | Tinjau kondisi dan hasil di ECC.
+  KKA07F02:116 | FORM TOP_OF_PAGE_INLIST > IF gd_nr_opvers EQ 1. > IF NOT gd_cvact IS INITIAL. > IF abgr_vsn-versa EQ abgrvers-low. | PERFORM get_valutext | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:134 | FORM TOP_OF_PAGE_INLIST > IF gd_nr_opvers EQ 1. > IF NOT gd_cvact IS INITIAL. > IF abgr_vsn-versa NE abgrvers-low. | PERFORM get_valutext | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:163 | FORM TOP_OF_PAGE_INLIST > IF anzeigen IS INITIAL. > IF msg_nr GT 0. | PERFORM get_msgtyp_text | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:236 | FORM DISPLAY_GRUNDLISTE > IF sy-batch = yes. | PERFORM write_log(saplobj1_processing_log) USING grundliste_data. | Tinjau kondisi dan hasil di ECC.
+  KKA07F02:243 | FORM DISPLAY_GRUNDLISTE > IF sy-batch = yes. > IF sy-primm = 'X'. | MESSAGE s374(sy) WITH sy-spono sy-pdest. | Tinjau kondisi dan hasil di ECC.
+  KKA07F02:245 | FORM DISPLAY_GRUNDLISTE > IF sy-batch = yes. > ELSE. | MESSAGE s355(sy) WITH sy-spono. | Tinjau kondisi dan hasil di ECC.
+  KKA07F02:305 | FORM USER_COMMAND_INLIST > WHEN 'GRUND'. | PERFORM display_grundliste. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:326 | FORM USER_COMMAND_INLIST > WHEN 'PROTO'. > IF sy-subrc <> 0. | MESSAGE e039(0k). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:358 | FORM USER_COMMAND_INLIST > WHEN 'REPO'. > IF NOT simulati IS INITIAL. | MESSAGE i801(kj). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:366 | FORM USER_COMMAND_INLIST > WHEN 'REPO'. > IF sy-subrc = 0. > IF t_auftlst-no_auth_plant = 'X' OR | MESSAGE i825(kj). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:439 | FORM USER_COMMAND_INLIST > WHEN 'REPO'. > IF sy-subrc = 0. > IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:443 | FORM USER_COMMAND_INLIST > WHEN 'REPO'. > ELSE. | MESSAGE e039(0k). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:448 | FORM USER_COMMAND_INLIST > WHEN '3BEB'. > IF NOT simulati IS INITIAL. | MESSAGE i801(kj). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:459 | FORM USER_COMMAND_INLIST > WHEN 'ZWIP'. > IF sy-subrc IS INITIAL. > IF t_auftlst-no_auth_plant = 'X' OR | MESSAGE i825(kj). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:487 | FORM USER_COMMAND_INLIST > WHEN 'ZWIP'. > IF sy-subrc IS INITIAL. > IF t_auftlst-abart EQ 'S'. > IF sy-subrc <> 0. | MESSAGE e814(kj) WITH t_auftlst-objid. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:502 | FORM USER_COMMAND_INLIST > WHEN 'ZWIP'. > IF sy-subrc IS INITIAL. > ELSEIF t_auftlst-abart EQ 'F'. | MESSAGE e806(kj) WITH t_auftlst-objid. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:505 | FORM USER_COMMAND_INLIST > WHEN 'ZWIP'. > IF sy-subrc IS INITIAL. > ELSE. | MESSAGE e807(kj) WITH t_auftlst-objid. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:511 | FORM USER_COMMAND_INLIST > WHEN 'ZWIP'. > ELSE. | MESSAGE e039(0k). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F02:527 | FORM USER_COMMAND_INLIST > WHEN 'ZMLWIPDOC'. > IF badi_act_active = 'X'. > IF NOT ld_auftlst-objnr IS INITIAL. > IF ld_message = 'X'. | MESSAGE s850(kj). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:216 | FORM WIP_START_PARALLEL_TASK > IF     NOT SY-BATCH IS INITIAL | MESSAGE I002(RK) WITH MSGV1 ' ' ' ' ' '. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:297 | FORM WIP_PARA_RESULTS > IF     NOT SY-BATCH IS INITIAL | MESSAGE I002(RK) WITH MSGV1 ' ' ' ' ' '. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:299 | FORM WIP_PARA_RESULTS > IF     NOT SY-BATCH IS INITIAL > IF NOT LD_RFC_MSG IS INITIAL. | MESSAGE I002(RK) | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:361 | FORM WIP_PARA_RESULTS > WHEN 1. > IF LD_TABIX = 1. > IF ANZEIGEN NE YES. | PERFORM CM_F_SET_OBJECT | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:407 | FORM WIP_PARA_RESULTS > WHEN 1. > IF LD_TABIX = 1. > IF gd_scma_worklists_active = yes. | perform handle_status_wl | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:434 | FORM WIP_PARA_RESULTS > WHEN OTHERS. > IF LD_TABIX = 1. > IF ANZEIGEN NE YES. | PERFORM CM_F_SET_OBJECT | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:480 | FORM WIP_PARA_RESULTS > WHEN OTHERS. > IF LD_TABIX = 1. > IF gd_scma_worklists_active = yes. | perform handle_status_wl | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:564 | FORM WIP_PARA_CALC | PERFORM BERECHTIGUNG_PRUEFEN USING '03' 'KABG'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:565 | FORM WIP_PARA_CALC | PERFORM BERECHTIGUNG_PRUEFEN USING '03' 'KABM'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:567 | FORM WIP_PARA_CALC > IF P_PARAMS-AUSFUEHR EQ YES. | PERFORM BERECHTIGUNG_PRUEFEN USING '02' 'KABG'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:569 | FORM WIP_PARA_CALC > ELSEIF P_PARAMS-SIMULATI EQ YES. | PERFORM BERECHTIGUNG_PRUEFEN USING '48' 'KABG'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F01:598 | FORM WIP_PARA_CALC | PERFORM AUFTRAG_LOOP | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  KKA07F05:93 | FORM INIT_RECORD_FOR_SCMA | PERFORM get_param_tab | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:98 | FORM INIT_RECORD_FOR_SCMA | PERFORM get_sel_tab | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:296 | FORM SELECT_OBJECTS_KASS > IF objektart <> objektart_or AND objektart <> objektart_op. | PERFORM handle_not_rel_with_msg | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:366 | FORM SELECT_OBJECTS_KASS > IF NOT auftraege IS INITIAL. > IF objekt-abgsl = space OR objekt-pkosa <> space OR | PERFORM handle_not_relevant | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:385 | FORM SELECT_OBJECTS_KASS > IF NOT auftraege IS INITIAL. > IF objekt-abgsl = space OR objekt-pkosa <> space OR > IF objekt-flg_mltps <> space. | PERFORM handle_not_relevant | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:448 | FORM SELECT_OBJECTS_KASS > IF NOT positionen IS INITIAL. > IF sy-subrc = 0. > IF objekt-flg_mltps <> space AND objekt-posnr IS INITIAL. | PERFORM check_auftrag_bearbeiten | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:484 | FORM SELECT_OBJECTS_KASS > IF NOT positionen IS INITIAL. > ELSE. | PERFORM handle_message | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:498 | FORM SELECT_OBJECTS_KASS > IF NOT positionen IS INITIAL. > ELSE. > IF gd_scma_worklists_active = yes. > ELSE. | PERFORM handle_status_wl | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:558 | FORM HANDLE_MESSAGE | PERFORM cm_f_set_object | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:659 | FORM HANDLE_NOT_RELEVANT > IF objekt-flg_mltps <> space AND objekt-posnr IS INITIAL. | PERFORM check_auftrag_bearbeiten | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:695 | FORM HANDLE_NOT_RELEVANT | PERFORM handle_not_rel_with_msg | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:734 | FORM HANDLE_NOT_REL_WITH_MSG > IF NOT msgid IS INITIAL AND withimsg = yes. | PERFORM handle_message | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:743 | FORM HANDLE_NOT_REL_WITH_MSG | PERFORM handle_status_wl | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:1058 | FORM DISPLAY_OBJ_LIST > ELSE. > IF sy-subrc = 1. | MESSAGE s001(k_obj0) RAISING not_found. | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:1275 | FORM AUTH_CHECK_PLANT_VALUTYP > else. > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  KKA07F05:1319 | FORM AUTH_CHECK_PLANT_VALUTYP > if not l_t_auftlst_modified is initial. | MESSAGE i822(kj). | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:31 | AT SELECTION-SCREEN | PERFORM kass_fw_kokrs_online_init. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:32 | AT SELECTION-SCREEN | PERFORM kass_fw_display_adjust. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:33 | AT SELECTION-SCREEN | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:39 | AT SELECTION-SCREEN | PERFORM kass_fw_set_kokrs. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:40 | AT SELECTION-SCREEN | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:46 | AT SELECTION-SCREEN | PERFORM kass_fw_check_kokrs_edited. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:49 | START-OF-SELECTION | PERFORM kass_fw_kokrs_batch_init. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:50 | START-OF-SELECTION | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:56 | END-OF-SELECTION | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek SAPKKA07 (2848 baris)
+  43 | Tipe DDIC | AUFK
+  45 | Tipe DDIC | TKA01
+  47 | Tipe DDIC | KKAPARA_IN
+  54 | Layar Seleksi | PARAMETERS: WL_ACTIV TYPE KKA_YES_NO NO-DISPLAY.
+  55 | Layar Seleksi | PARAMETERS: SCMA TYPE KKA_YES_NO NO-DISPLAY,
+  58 | Field DDIC | RSVAR-VARIANT
+  60 | Layar Seleksi | SELECT-OPTIONS: SELPA FOR GT_SELPA-LOW NO-DISPLAY.
+  60 | Field DDIC | GT_SELPA-LOW
+  62 | Layar Seleksi | PARAMETERS: ORG_REP LIKE SY-REPID NO-DISPLAY,
+  62 | Field DDIC | SY-REPID
+  69 | Layar Seleksi | SELECT-OPTIONS: ABGRAUFA FOR AUFK-AUART.
+  69 | Field DDIC | AUFK-AUART
+  70 | Layar Seleksi | SELECT-OPTIONS: ABGRWERK FOR AUFK-WERKS.
+  70 | Field DDIC | AUFK-WERKS
+  72 | Layar Seleksi | PARAMETERS: INCFAUFT AS CHECKBOX,
+  82 | Layar Seleksi | SELECT-OPTIONS ABGRAUFN FOR AUFK-AUFNR MATCHCODE OBJECT ORDE.
+  82 | Field DDIC | AUFK-AUFNR
+  85 | Layar Seleksi | PARAMETERS: ABGRMONA LIKE KKA0100-BIS_ABGR_M MEMORY ID ACM OBLIGATORY,
+  85 | Field DDIC | KKA0100-BIS_ABGR_M
+  86 | Field DDIC | KKA0100-BIS_ABGR_J
+  88 | Layar Seleksi | PARAMETERS: VON_PER  LIKE KKBC-PERIO1 DEFAULT '001',
+  88 | Field DDIC | KKBC-PERIO1
+  89 | Field DDIC | KKBC-GJAHR1
+  90 | Field DDIC | KKBC-PERIO2
+  91 | Field DDIC | KKBC-GJAHR2
+  93 | Layar Seleksi | SELECT-OPTIONS: ABGRVERS FOR TKKAP-VERSA.
+  93 | Field DDIC | TKKAP-VERSA
+  96 | Layar Seleksi | SELECTION-SCREEN SKIP.
+  98 | Layar Seleksi | PARAMETERS OBJ_LST TYPE ERGEBNIS_LISTE.
+  99 | Layar Seleksi | PARAMETERS: FEHLAUFT AS CHECKBOX,
+  102 | Layar Seleksi | PARAMETERS: P_CCCURR AS CHECKBOX MEMORY ID KK2.
+  104 | Layar Seleksi | PARAMETERS: P_2_CURR LIKE KKA0100-2CURR.
+  104 | Field DDIC | KKA0100-2CURR
+  109 | Layar Seleksi | PARAMETERS: P_MAXNTA type KKA_MAXANZ.
+  112 | Layar Seleksi | PARAMETERS: NO_0_WIP AS CHECKBOX.
+  114 | Layar Seleksi | PARAMETERS: P_A_VARI LIKE DISVARIANT-VARIANT.
+  114 | Field DDIC | DISVARIANT-VARIANT
+  118 | Field DDIC | SY-DBCNT
+  123 | Layar Seleksi | PARAMETERS: P_RFCGRP  LIKE RZLLITAB-CLASSNAME.
+  123 | Field DDIC | RZLLITAB-CLASSNAME
+  124 | Layar Seleksi | PARAMETERS: PARDEBUG  AS CHECKBOX.
+  125 | Layar Seleksi | PARAMETERS: PARSINGL  AS CHECKBOX.
+  126 | Layar Seleksi | PARAMETERS: PAR_EINZ LIKE KKALKKAG-EINZEL_VERARB NO-DISPLAY.
+  126 | Field DDIC | KKALKKAG-EINZEL_VERARB
+  129 | Layar Seleksi | PARAMETERS: P_ALOG AS CHECKBOX.
+  131 | Layar Seleksi | SELECTION-SCREEN SKIP.
+  133 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK VERARB WITH FRAME TITLE TEXT-FR1.
+  133 | Teks Seleksi | TEXT-FR1
+  134 | Layar Seleksi | PARAMETERS: AUSFUEHR RADIOBUTTON GROUP ABGR,
+  137 | Layar Seleksi | PARAMETERS: PAR_STOR AS CHECKBOX.
+  138 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK VERARB.
+  140 | Layar Seleksi | PARAMETERS: PAR_BRK AS CHECKBOX.
+  141 | Layar Seleksi | PARAMETERS: PAR_NPAR AS CHECKBOX.
+  152 | Field DDIC | AUFK-AUTYP
+  177 | Field DDIC | COSB-LEDNR
+  178 | Field DDIC | tkkap-refva
+  180 | Field DDIC | TCMF6-APLID
+  182 | Field DDIC | TCMF5-OBJECT_ID
+  185 | Field DDIC | CMFP-NR
+  187 | Field DDIC | CMIMSG-MSGTY
+  188 | Field DDIC | CMIMSG-MSGNR
+  189 | Field DDIC | AUFK-AUFNR
+  215 | Field DDIC | PFLOG-ACTIVITY
+  216 | Field DDIC | PFLOG-TEST
+  217 | Field DDIC | SY-TCODE
+  218 | Field DDIC | SY-REPID
+  219 | Field DDIC | TKA01-LMONA
+  220 | Field DDIC | SY-DATUM
+  223 | Field DDIC | PFLOG-TIMESTMP
+  224 | Field DDIC | PFFLD-APLSTAT
+  246 | Field DDIC | TKA01-CVACT
+  249 | Field DDIC | KKAH2000-TWAER
+  252 | Field DDIC | KKAPARA_TA-WIPTYP
+  253 | Field DDIC | KKAPARA_TA-WIPTYP
+  254 | Teks Seleksi | TEXT-BST
+  255 | Teks Seleksi | TEXT-RST
+  260 | Teks Seleksi | TEXT-ROT
+  262 | Teks Seleksi | TEXT-GLB
+  264 | Teks Seleksi | TEXT-GRN
+  289 | Field DDIC | SY-REPID
+  292 | Field DDIC | BALHDRI-SUBOBJECT
+  293 | Field DDIC | BALHDRI-EXTNUMBER
+  295 | Field DDIC | BALMI-USEREXITP
+  296 | Field DDIC | BALMI-USEREXITF
+  297 | Field DDIC | SY-TCODE
+  312 | Field DDIC | TKKAT-TEXTA
+  325 | Field DDIC | SY-TCODE
+  326 | Field DDIC | SY-TCODE
+  327 | Field DDIC | SY-TCODE
+  328 | Field DDIC | SY-TCODE
+  329 | Field DDIC | SY-TCODE
+  330 | Field DDIC | SY-TCODE
+  331 | Field DDIC | SY-TCODE
+  332 | Field DDIC | SY-TCODE
+  360 | Field DDIC | TKKAP-VERSA
+  369 | Class dan Interface | if_ex_ckml_wip
+  383 | Field DDIC | ABGRVERS-LOW
+  566 | Teks Seleksi | TEXT-PI3
+  574 | Layar dan GUI | SET TITLEBAR 'ERM'.
+  575 | Layar dan GUI | SET PF-STATUS 'OBJEKTLISTE' EXCLUDING lt_extab.
+  577 | Layar dan GUI | SET TITLEBAR 'STO'.
+  580 | Layar dan GUI | SET TITLEBAR 'ANZ'.
+  581 | Layar dan GUI | SET PF-STATUS 'WIP_ANZ' EXCLUDING lt_extab.
+  704 | Field DDIC | sy-msgty
+  1105 | Teks Seleksi | TEXT-PI1
+  1146 | Tipe DDIC | T_AUFTRAG
+  1160 | Teks Seleksi | TEXT-PI2
+  1170 | Tipe DDIC | ABGR_VSN
+  1238 | Layar dan GUI | SET TITLEBAR 'PRO'.
+  1337 | Tipe DDIC | GT_FIELD
+  1349 | Tipe DDIC | GT_EVENTS
+  1370 | Layar dan GUI | SET TITLEBAR 'GRU'.
+  1382 | Layar dan GUI | SET TITLEBAR 'ERM'.
+  1491 | Layar dan GUI | SET SCREEN 0.
+  1501 | Layar dan GUI | SET SCREEN 0.
+  1511 | Layar dan GUI | SET SCREEN 0.
+  1538 | Field DDIC | SY-TABIX
+  1539 | Field DDIC | SY-TABIX
+  1540 | Field DDIC | SY-TABIX
+  1544 | Field DDIC | KKAH2000-TWAER
+  1545 | Field DDIC | KKA0100-AMPEL
+  1546 | Field DDIC | KKA0100-MSGMX
+  1548 | Field DDIC | KKAPARA_IN-NO_0_WIP
+  1549 | Field DDIC | TJ02T-ISTAT
+  1550 | Field DDIC | SY-DEBUG
+  1745 | Teks Seleksi | TEXT-WII
+  1748 | Teks Seleksi | TEXT-WIS
+  1787 | Tipe DDIC | PT_AUFTRAGSLISTE
+  1881 | Field DDIC | KKAPARA_VS-VERSA
+  1882 | Field DDIC | KKAPARA_IN-WAEHR
+  1883 | Field DDIC | KKAPARA_IN-ABGRMONA
+  1884 | Field DDIC | KKAPARA_IN-ABGRJAHR
+  1885 | Field DDIC | KKAPARA_IN-AUSFUEHR
+  1886 | Field DDIC | KKAPARA_IN-SIMULATI
+  1888 | Field DDIC | KKAPARA_IN-P_CCCURR
+  1889 | Field DDIC | KKAPARA_IN-P_C2CURR
+  1893 | Field DDIC | SY-DEBUG
+  1894 | Field DDIC | SY-DEBUG
+  1896 | Field DDIC | SY-TABIX
+  1900 | Field DDIC | AFPO-POSNR
+  2051 | Field DDIC | CMIMSG-MSGNR
+  2269 | Field DDIC | KKAPARA_VS-VERSA
+  2270 | Field DDIC | KKAPARA_IN-P_CCCURR
+  2271 | Field DDIC | T001-WAERS
+  2272 | Field DDIC | KKAPARA_IN-WAEHR
+  2273 | Field DDIC | KKA0100-AMPEL
+  2274 | Field DDIC | SY-DEBUG
+  2275 | Field DDIC | KKAPARA_IN-ABGRMONA
+  2276 | Field DDIC | KKAPARA_IN-ABGRJAHR
+  2278 | Field DDIC | TKKAABGR-WRT
+  2279 | Field DDIC | TKKAABGR-WRT
+  2282 | Field DDIC | AUFK-BUKRS
+  2284 | Field DDIC | JEST-STAT
+  2286 | Field DDIC | JEST-STAT
+  2397 | Field DDIC | KKAPARA_IN-ABGRMONA
+  2398 | Field DDIC | KKAPARA_IN-ABGRJAHR
+  2399 | Field DDIC | KKAPARA_IN-WAEHR
+  2402 | Tipe DDIC | KKAH2000
+  2413 | Field DDIC | TKKA2000-WRT
+  2414 | Field DDIC | TKKA2000-WRT
+  2415 | Field DDIC | TKKA2000-WRT
+  2489 | Field DDIC | KKA2000-WRT
+  2490 | Field DDIC | KKA2000-WRT
+  2491 | Field DDIC | KKA2000-WRT
+  2678 | Field DDIC | T_COSLA-LST001
+  2764 | Field DDIC | aufk-objnr
+  2765 | Field DDIC | KKAPARA_TA-STATTEXT
+  2768 | Field DDIC | SY-DATUM
+  2769 | Field DDIC | SY-DATUM
+  2770 | Field DDIC | T009B-BDATJ
+  2771 | Field DDIC | T009B-POPER
+  2787 | Field DDIC | TJ02T-ISTAT
+  2821 | Field DDIC | KKAPARA_TA-abgsl
+  2822 | Field DDIC | KKAPARA_TA-versn
+  2823 | Field DDIC | KKAPARA_TA-bewer
+  2824 | Tipe DDIC | tkkas
+  2836 | Teks Seleksi | TEXT-WII
+  2839 | Teks Seleksi | TEXT-WIS
+  50 | includes | RKASSEFW
+  159 | includes | LKKAGF89
+  160 | includes | LKKAGF88
+  374 | includes | KKA07F05
+  377 | includes | KKA07F01
+  2844 | includes | KKA07F02
+  2846 | includes | KKA07F04
+  2848 | includes | KKA07F03
+  415 | callFunctions | HELP_VALUES_GET_WITH_TABLE
+  490 | callFunctions | K_OBJECT_SELECTION_CRIT_FILL
+  518 | callFunctions | KKA_ABGR_PAUSEPOINTS_SETZEN
+  557 | callFunctions | CKMLWIP_BADI_GET_INSTANCE
+  567 | callFunctions | SAPGUI_PROGRESS_INDICATOR
+  643 | callFunctions | CM_F_MESSAGE
+  711 | callFunctions | KKA_CHECK_PERIOD_LOCK_INIT
+  712 | callFunctions | KKA_CHECK_PERIOD_LOCK
+  775 | callFunctions | G_POSTING_DATE_OF_PERIOD_GET
+  803 | callFunctions | MB_ALL_MOVEMENTS_VALUATED
+  916 | callFunctions | CM_F_INFO
+  1179 | callFunctions | CO_APPL_LOG_APPEND_AUFNR
+  1277 | callFunctions | CM_F_MESSAGES_GET
+  1292 | callFunctions | KPEP_WLA_ADD_MESSAGES
+  1420 | callFunctions | KKPA_PARA_DEBUG_LOG_WRITE
+  1447 | callFunctions | KKA_ABGR_DEQUEUE
+  1459 | callFunctions | CM_F_DISPLAY_LOG
+  1470 | callFunctions | K_KOKRS_SET
+  1562 | callFunctions | STATUS_BUFFER_REFRESH
+  1659 | callFunctions | KKA_ABGR_CHECK_RELEVANCE
+  1690 | callFunctions | KKA_ABGR_NACHRICHTEN_FUER_CM_F
+  1716 | callFunctions | KKA_ABGR_HOLE_DATEN
+  1727 | callFunctions | STATUS_NUMBER_CONVERSION
+  1770 | callFunctions | K_OBJECT_ID_GET
+  1919 | callFunctions | KKA_ABGR_INITIALISIEREN
+  1938 | callFunctions | KKA_ABGR_START_AUFTRAG
+  1953 | callFunctions | KKA_ABGR_START_SERIENAUFTRAG
+  1963 | callFunctions | KKA_ABGR_VORBEREITEN
+  1975 | callFunctions | KKA_ABGR_ENQUEUE
+  1982 | callFunctions | KKA_ABGR_KOSA_LESEN
+  1994 | callFunctions | KKA_ABGR_DURCHFUEHREN
+  2002 | callFunctions | KKA_ABGR_FORTSCHREIBEN
+  2114 | callFunctions | CM_F_PROTOCOL_PRINT
+  2133 | callFunctions | CM_F_INITIALIZE
+  2204 | callFunctions | CO_APPL_LOG_INIT
+  2233 | callFunctions | CM_F_STORE
+  2254 | callFunctions | CO_APPL_LOG_PUT
+  2310 | callFunctions | STATUS_CHECK
+  2345 | callFunctions | KKA_ABGR_LESEN_SUMMENSAETZE
+  2420 | callFunctions | KKA_ABGR_GET_DY2000
+  2431 | callFunctions | KKA_ABGR_HOLE_EINZELPOSTEN
+  2501 | callFunctions | K_VRGNG_AUTHORITY_CHECK
+  2600 | callFunctions | K_MONITOR_RECORD_OPEN
+  2649 | callFunctions | K_MONITOR_RECORD_CLOSE
+  2712 | callFunctions | K_COSLA_READ_MULTI
+  2788 | callFunctions | KKA_CO_STATUS_OF_ORDER
+  399 | tableReads | TKKAP
+  404 | tableReads | TKKAT
+  767 | tableReads | TKA01
+  940 | tableReads | AFPO
+  940 | tableReads | MAKT
+  1014 | tableReads | AUFK
+  2298 | tableReads | T001
+  2826 | tableReads | TKKAS
+
+Objek KKA07F03 (605 baris)
+  21 | Tipe DDIC | PT_FIELDCAT
+  32 | Field DDIC | KKAPARA_IN-ANZEIGEN
+  34 | Field DDIC | KKAPARA_IN-P_MAXNTA
+  107 | Teks Seleksi | text-001
+  199 | Teks Seleksi | text-002
+  249 | Teks Seleksi | TEXT-WKU
+  261 | Teks Seleksi | TEXT-WPE
+  275 | Teks Seleksi | TEXT-WWB
+  430 | Teks Seleksi | TEXT-PMG
+  577 | Tipe DDIC | PT_EVENTS
+
+Objek KKA07F04 (237 baris)
+  17 | Field DDIC | KKA0100-AMPEL
+  18 | Field DDIC | KKA0100-MSGMX
+  90 | Tipe DDIC | PT_AUFTRAGSLISTE
+  92 | Field DDIC | KKAPARA_IN-WAEHR
+  93 | Field DDIC | KKAPARA_IN-FEHLAUFT
+  94 | Field DDIC | SY-DEBUG
+  95 | Field DDIC | KKAPARA_IN-NO_0_WIP
+  96 | Field DDIC | KKA0100-AMPEL
+  97 | Field DDIC | KKA0100-MSGMX
+  99 | Teks Seleksi | TEXT-BST
+  100 | Teks Seleksi | TEXT-RST
+  204 | Field DDIC | KKA0100-MSGMX
+  209 | Teks Seleksi | TEXT-MSI
+  211 | Teks Seleksi | TEXT-MSW
+  213 | Teks Seleksi | TEXT-MSE
+  215 | Teks Seleksi | TEXT-MSA
+  226 | Field DDIC | TKKAP-VALUTYP
+  231 | Teks Seleksi | TEXT-BW0
+  233 | Teks Seleksi | TEXT-BW1
+  235 | Teks Seleksi | TEXT-BW2
+  25 | callFunctions | CM_F_INFO
+  155 | callFunctions | K_OBJECT_ID_GET
+  191 | callFunctions | CM_F_SET_OBJECT
+
+Objek KKA07F02 (662 baris)
+  11 | Class dan Interface | cl_obj_processing_log
+  28 | Layar dan GUI | SET TITLEBAR 'PRO'.
+  42 | Layar dan GUI | SET TITLEBAR 'GRU'.
+  46 | Layar dan GUI | SET PF-STATUS 'GRUNDLISTE' EXCLUDING extab.
+  50 | Layar dan GUI | SET TITLEBAR 'PRO'.
+  76 | Field DDIC | slis_listheader-info
+  77 | Field DDIC | slis_listheader-info
+  82 | Teks Seleksi | text-wip
+  82 | Teks Seleksi | text-grl
+  92 | Teks Seleksi | text-per
+  111 | Teks Seleksi | text-bwo
+  124 | Teks Seleksi | text-vrs
+  140 | Teks Seleksi | text-vrz
+  157 | Teks Seleksi | text-mnr
+  172 | Teks Seleksi | text-mmx
+  188 | Class dan Interface | cl_gui_custom_container
+  232 | Layar Seleksi | PARAMETERS         pri_para
+  276 | Field DDIC | sy-ucomm
+  308 | Layar dan GUI | SET TITLEBAR  'PRO'.
+  328 | Layar dan GUI | SET TITLEBAR  'PRO'.
+  439 | Field DDIC | sy-msgty
+  558 | Field DDIC | sy-pfkey
+  565 | Layar dan GUI | SET TITLEBAR 'ERM'.
+  572 | Layar dan GUI | SET TITLEBAR 'ANZ'.
+  577 | Layar dan GUI | SET PF-STATUS ld_pfkey EXCLUDING lt_extab.
+  606 | Field DDIC | dcobjdef-name
+  29 | callFunctions | CM_F_DISPLAY_LOG
+  179 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  205 | callFunctions | GET_PRINT_PARAMETERS
+  260 | callFunctions | OBJ_PROCESSING_LOG_DYNPRO
+  343 | callFunctions | K_KOKRS_SET
+  395 | callFunctions | KKA_CHECK_CC_CURR_IN_OBJ_CURR
+  422 | callFunctions | K_KKB_KKBCS_ORDER_REPORT
+  465 | callFunctions | K_WIP_OBJECT_CALC
+  489 | callFunctions | K_WIP_EXPLAIN
+  625 | callFunctions | OBJ_PROCESSING_SET_PARAMETERS
+  654 | callFunctions | OBJ_PROCESSING_SET_SELECTION
+
+Objek KKA07F01 (639 baris)
+  17 | Field DDIC | SY-TABIX
+  40 | Field DDIC | SY-REPID
+  103 | Field DDIC | SY-INDEX
+  104 | Field DDIC | SY-INDEX
+  107 | Field DDIC | SY-TABIX
+  256 | Field DDIC | SY-SUBRC
+  257 | Field DDIC | SY-TABIX
+  259 | Field DDIC | SY-TABIX
+  260 | Field DDIC | SY-TABIX
+  261 | Field DDIC | SY-TABIX
+  526 | Field DDIC | SY-TABIX
+  527 | Field DDIC | SY-TABIX
+  528 | Field DDIC | SY-TABIX
+  531 | Field DDIC | KKAPARA_IN-P_ALOG
+  534 | Field DDIC | T001-WAERS
+  599 | Tipe DDIC | PT_ABGRVERS
+  13 | includes | KKA07T01
+  63 | callFunctions | KKPA_PARA_PROCESS_START
+  181 | callFunctions | KPEP_WLA_RFC_CONTEXT_PREPARE
+  188 | callFunctions | KKA_PARA_ORDER_WIP
+  310 | callFunctions | CM_F_CMFMSG_MESSAGES_PUT
+  322 | callFunctions | CO_APPL_LOG_APPEND_AUFNR
+  330 | callFunctions | KPEP_WLA_RFC_CONTEXT_INTERPRET
+  365 | callFunctions | CM_F_MESSAGE
+  380 | callFunctions | CM_F_INFO
+  574 | callFunctions | KPEP_WLA_RFC_CONTEXT_INIT
+  583 | callFunctions | CM_F_INITIALIZE
+  618 | callFunctions | CM_F_MESSAGES_GET
+  632 | callFunctions | KPEP_WLA_RFC_CONTEXT_EXIT
+
+Objek KKA07T01 (28 baris)
+  24 | Field DDIC | KKPA_T_PARA_IMP-EOT_FORM
+  25 | Field DDIC | KKPA_T_PARA_IMP-EOT_PROG
+
+Objek KKA07F05 (1415 baris)
+  133 | Field DDIC | smmain-nr_of_objects
+  134 | Field DDIC | smmain-aplstat
+  210 | Field DDIC | afpo-aufnr
+  211 | Field DDIC | afpo-posnr
+  212 | Field DDIC | afpo-objnp
+  213 | Field DDIC | afpo-matnr
+  214 | Field DDIC | afpo-pwerk
+  215 | Field DDIC | afpo-wemng
+  216 | Field DDIC | afpo-psmng
+  217 | Field DDIC | afpo-amein
+  218 | Field DDIC | makt-maktx
+  223 | Field DDIC | ionra-obart
+  237 | Field DDIC | sy-tabix
+  285 | Field DDIC | tbo01-txt20
+  519 | Teks Seleksi | text-pi1
+  544 | Field DDIC | sy-msgid
+  545 | Field DDIC | sy-msgty
+  546 | Field DDIC | sy-msgno
+  556 | Field DDIC | cmimsg-msgnr
+  648 | Field DDIC | sy-msgid
+  649 | Field DDIC | sy-msgty
+  650 | Field DDIC | sy-msgno
+  720 | Field DDIC | sy-msgid
+  721 | Field DDIC | sy-msgty
+  722 | Field DDIC | sy-msgno
+  959 | Field DDIC | sy-repid
+  979 | Field DDIC | sy-repid
+  1023 | Field DDIC | sy-repid
+  1060 | Layar dan GUI | SET TITLEBAR 'REP' OF PROGRAM 'SAPKKA07'.
+  1138 | Field DDIC | TKKAP-VALUTYP
+  1155 | Field DDIC | sy-tabix
+  1275 | Field DDIC | SY-MSGTY
+  10 | includes | RBONRART
+  123 | includes | SCHEDMAN_EVENTS
+  108 | callFunctions | KPEP_MONI_INIT_RECORD
+  171 | callFunctions | KPEP_MONI_CLOSE_RECORD
+  243 | callFunctions | K_OBJECT_SELECTION_RUN
+  259 | callFunctions | CM_F_MESSAGE
+  277 | callFunctions | OBJECT_NUMBER_TYPE_GET
+  288 | callFunctions | OBJECT_IDENTIFICATION_GET
+  306 | callFunctions | OBJECT_KEY_GET_OR
+  319 | callFunctions | OBJECT_KEY_GET_OP
+  520 | callFunctions | SAPGUI_PROGRESS_INDICATOR
+  581 | callFunctions | CM_F_INFO
+  772 | callFunctions | CM_F_MESSAGES_GET
+  807 | callFunctions | K_OBJECT_KEY_FROM_PCOBJ_SET
+  820 | callFunctions | KPEP_WLA_SET_OBJECT_STATUS
+  832 | callFunctions | KPEP_WLA_SET_OBJECT_CHANGED
+  889 | callFunctions | K_OBJECT_SELECTION_CRIT_GET
+  962 | callFunctions | OBJ_PROCESSING_LOG_SAVE
+  983 | callFunctions | OBJ_EXTRACT_NAME_CALCULATE
+  994 | callFunctions | REUSE_ALV_EXTRACT_SAVE
+  1042 | callFunctions | REUSE_ALV_EXTRACT_LOAD
+  1065 | callFunctions | REUSE_ALV_LIST_DISPLAY
+  1086 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  1259 | callFunctions | TP_VALUATION_AUTHORITY
+  353 | tableReads | AUFK
+  416 | tableReads | AFPO
+  416 | tableReads | MAKT
+
+Objek SCHEDMAN_EVENTS (7 baris)
+
+Objek RBONRART (119 baris)
+  8 | Field DDIC | IONR-OBART
+  9 | Field DDIC | IONR-OBART
+  10 | Field DDIC | IONR-OBART
+  11 | Field DDIC | IONR-OBART
+  12 | Field DDIC | IONR-OBART
+  13 | Field DDIC | IONR-OBART
+  14 | Field DDIC | IONR-OBART
+  15 | Field DDIC | IONR-OBART
+  16 | Field DDIC | IONR-OBART
+  17 | Field DDIC | IONR-OBART
+  18 | Field DDIC | IONR-OBART
+  19 | Field DDIC | IONR-OBART
+  20 | Field DDIC | IONR-OBART
+  21 | Field DDIC | IONR-OBART
+  22 | Field DDIC | IONR-OBART
+  23 | Field DDIC | IONR-OBART
+  24 | Field DDIC | IONR-OBART
+  25 | Field DDIC | IONR-OBART
+  26 | Field DDIC | IONR-OBART
+  27 | Field DDIC | IONR-OBART
+  28 | Field DDIC | IONR-OBART
+  29 | Field DDIC | IONR-OBART
+  30 | Field DDIC | IONR-OBART
+  31 | Field DDIC | IONR-OBART
+  32 | Field DDIC | IONR-OBART
+  33 | Field DDIC | IONR-OBART
+  34 | Field DDIC | IONR-OBART
+  35 | Field DDIC | IONR-OBART
+  36 | Field DDIC | IONR-OBART
+  37 | Field DDIC | IONR-OBART
+  38 | Field DDIC | IONR-OBART
+  39 | Field DDIC | IONR-OBART
+  40 | Field DDIC | IONR-OBART
+  41 | Field DDIC | IONR-OBART
+  42 | Field DDIC | IONR-OBART
+  43 | Field DDIC | IONR-OBART
+  44 | Field DDIC | IONR-OBART
+  45 | Field DDIC | IONR-OBART
+  46 | Field DDIC | IONR-OBART
+  47 | Field DDIC | IONR-OBART
+  48 | Field DDIC | IONR-OBART
+  49 | Field DDIC | IONR-OBART
+  50 | Field DDIC | IONR-OBART
+  51 | Field DDIC | IONR-OBART
+  52 | Field DDIC | IONR-OBART
+  53 | Field DDIC | IONR-OBART
+  54 | Field DDIC | IONR-OBART
+  55 | Field DDIC | IONR-OBART
+  56 | Field DDIC | IONR-OBART
+  57 | Field DDIC | IONR-OBART
+  58 | Field DDIC | IONR-OBART
+  59 | Field DDIC | IONR-OBART
+  60 | Field DDIC | IONR-OBART
+  61 | Field DDIC | IONR-OBART
+  62 | Field DDIC | IONR-OBART
+  63 | Field DDIC | IONR-OBART
+  64 | Field DDIC | IONR-OBART
+  65 | Field DDIC | IONR-OBART
+  66 | Field DDIC | IONR-OBART
+  67 | Field DDIC | IONR-OBART
+  68 | Field DDIC | IONR-OBART
+  69 | Field DDIC | IONR-OBART
+  70 | Field DDIC | IONR-OBART
+  71 | Field DDIC | IONR-OBART
+  72 | Field DDIC | IONR-OBART
+  73 | Field DDIC | IONR-OBART
+  74 | Field DDIC | IONR-OBART
+  75 | Field DDIC | IONR-OBART
+  76 | Field DDIC | IONR-OBART
+  77 | Field DDIC | IONR-OBART
+  78 | Field DDIC | IONR-OBART
+  79 | Field DDIC | IONR-OBART
+  80 | Field DDIC | IONR-OBART
+  81 | Field DDIC | IONR-OBART
+  82 | Field DDIC | IONR-OBART
+  83 | Field DDIC | IONR-OBART
+  84 | Field DDIC | IONR-OBART
+  85 | Field DDIC | IONR-OBART
+  86 | Field DDIC | IONR-OBART
+  87 | Field DDIC | IONR-OBART
+  88 | Field DDIC | IONR-OBART
+  89 | Field DDIC | IONR-OBART
+  90 | Field DDIC | IONR-OBART
+  91 | Field DDIC | IONR-OBART
+  92 | Field DDIC | IONR-OBART
+  93 | Field DDIC | IONR-OBART
+  94 | Field DDIC | IONR-OBART
+  95 | Field DDIC | IONR-OBART
+  96 | Field DDIC | IONR-OBART
+  97 | Field DDIC | IONR-OBART
+  98 | Field DDIC | IONR-OBART
+  99 | Field DDIC | IONR-OBART
+  100 | Field DDIC | IONR-OBART
+  101 | Field DDIC | IONR-OBART
+  102 | Field DDIC | IONR-OBART
+  103 | Field DDIC | IONR-OBART
+  104 | Field DDIC | IONR-OBART
+  105 | Field DDIC | IONR-OBART
+  106 | Field DDIC | IONR-OBART
+  107 | Field DDIC | IONR-OBART
+  108 | Field DDIC | IONR-OBART
+  109 | Field DDIC | IONR-OBART
+  110 | Field DDIC | IONR-OBART
+  111 | Field DDIC | IONR-OBART
+  112 | Field DDIC | IONR-OBART
+  115 | Field DDIC | IONR-OBART
+  116 | Field DDIC | IONR-OBART
+  117 | Field DDIC | IONR-OBART
+  118 | Field DDIC | IONR-OBART
+
+Objek LKKAGF88 (21 baris)
+  5 | Field DDIC | T003O-AUTYP
+  6 | Field DDIC | T003O-AUTYP
+  7 | Field DDIC | T003O-AUTYP
+  8 | Field DDIC | T003O-AUTYP
+  10 | Field DDIC | T003O-AUTYP
+  12 | Field DDIC | T003O-AUTYP
+  13 | Field DDIC | T003O-AUTYP
+  14 | Field DDIC | T003O-AUTYP
+  15 | Field DDIC | T003O-AUTYP
+  17 | Field DDIC | T003O-AUTYP
+  18 | Field DDIC | T003O-AUTYP
+  19 | Field DDIC | T003O-AUTYP
+  20 | Field DDIC | T003O-AUTYP
+
+Objek LKKAGF89 (46 baris)
+  4 | Field DDIC | COSBA-ABKAT
+  7 | Field DDIC | COSBA-ABKAT
+  8 | Field DDIC | COSBA-ABKAT
+  9 | Field DDIC | COSBA-ABKAT
+  10 | Field DDIC | COSBA-ABKAT
+  11 | Field DDIC | COSBA-ABKAT
+  12 | Field DDIC | COSBA-ABKAT
+  13 | Field DDIC | COSBA-ABKAT
+  14 | Field DDIC | COSBA-ABKAT
+  15 | Field DDIC | COSBA-ABKAT
+  16 | Field DDIC | COSBA-ABKAT
+  17 | Field DDIC | COSBA-ABKAT
+  18 | Field DDIC | COSBA-ABKAT
+  19 | Field DDIC | COSBA-ABKAT
+  20 | Field DDIC | COSBA-ABKAT
+  21 | Field DDIC | COSBA-ABKAT
+  22 | Field DDIC | COSBA-ABKAT
+  23 | Field DDIC | COSBA-ABKAT
+  24 | Field DDIC | COSBA-ABKAT
+  25 | Field DDIC | COSBA-ABKAT
+  26 | Field DDIC | COSBA-ABKAT
+  27 | Field DDIC | COSBA-ABKAT
+  28 | Field DDIC | COSBA-ABKAT
+  29 | Field DDIC | COSBA-ABKAT
+  30 | Field DDIC | COSBA-ABKAT
+  31 | Field DDIC | COSBA-ABKAT
+  32 | Field DDIC | COSBA-ABKAT
+  33 | Field DDIC | COSBA-ABKAT
+  34 | Field DDIC | COSBA-ABKAT
+  35 | Field DDIC | COSBA-ABKAT
+  36 | Field DDIC | cosba-abkat
+  37 | Field DDIC | cosba-abkat
+  40 | Field DDIC | COSBA-ABKAT
+  41 | Field DDIC | COSBA-ABKAT
+  42 | Field DDIC | COSBA-ABKAT
+  45 | Field DDIC | COSBA-ABKAT
+  46 | Field DDIC | COSBA-ABKAT
+
+Objek RKASSEFW (324 baris)
+  4 | Tipe DDIC | sscrfields
+  6 | Layar Seleksi | PARAMETERS kokrs TYPE tka01-kokrs MODIF ID cac.
+  6 | Field DDIC | tka01-kokrs
+  18 | Field DDIC | tj01-vrgng
+  73 | Field DDIC | tj01-vrgng
+  105 | Field DDIC | tj01-vrgng
+  118 | Field DDIC | tj01-vrgng
+  3 | includes | RKASSELA
+  9 | includes | RKASMAWF
+  86 | callFunctions | K_KOKRS_SET
+  231 | callFunctions | RS_EXTERNAL_SELSCREEN_STATUS
+
+Objek RKASMAWF (9 baris)
+  5 | Field DDIC | SCMA_WITEM-WF_WITEM
+  7 | Field DDIC | SWOTOBJID-OBJKEY
+  9 | Field DDIC | SCMA_WITEM-WF_WLIST
+
+Objek RKASSELA (59 baris)
+Jumlah source terbaca: 14
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+SAPKKA07.abap
+  Baris 43 | Tipe DDIC | AUFK
+  Baris 45 | Tipe DDIC | TKA01
+  Baris 47 | Tipe DDIC | KKAPARA_IN
+  Baris 54 | Layar Seleksi | PARAMETERS: WL_ACTIV TYPE KKA_YES_NO NO-DISPLAY.
+  Baris 55 | Layar Seleksi | PARAMETERS: SCMA TYPE KKA_YES_NO NO-DISPLAY,
+  Baris 58 | Field DDIC | RSVAR-VARIANT
+  Baris 60 | Layar Seleksi | SELECT-OPTIONS: SELPA FOR GT_SELPA-LOW NO-DISPLAY.
+  Baris 60 | Field DDIC | GT_SELPA-LOW
+  Baris 62 | Layar Seleksi | PARAMETERS: ORG_REP LIKE SY-REPID NO-DISPLAY,
+  Baris 62 | Field DDIC | SY-REPID
+  Baris 69 | Layar Seleksi | SELECT-OPTIONS: ABGRAUFA FOR AUFK-AUART.
+  Baris 69 | Field DDIC | AUFK-AUART
+  Baris 70 | Layar Seleksi | SELECT-OPTIONS: ABGRWERK FOR AUFK-WERKS.
+  Baris 70 | Field DDIC | AUFK-WERKS
+  Baris 72 | Layar Seleksi | PARAMETERS: INCFAUFT AS CHECKBOX,
+  Baris 82 | Layar Seleksi | SELECT-OPTIONS ABGRAUFN FOR AUFK-AUFNR MATCHCODE OBJECT ORDE.
+  Baris 82 | Field DDIC | AUFK-AUFNR
+  Baris 85 | Layar Seleksi | PARAMETERS: ABGRMONA LIKE KKA0100-BIS_ABGR_M MEMORY ID ACM OBLIGATORY,
+  Baris 85 | Field DDIC | KKA0100-BIS_ABGR_M
+  Baris 86 | Field DDIC | KKA0100-BIS_ABGR_J
+  Baris 88 | Layar Seleksi | PARAMETERS: VON_PER  LIKE KKBC-PERIO1 DEFAULT '001',
+  Baris 88 | Field DDIC | KKBC-PERIO1
+  Baris 89 | Field DDIC | KKBC-GJAHR1
+  Baris 90 | Field DDIC | KKBC-PERIO2
+  Baris 91 | Field DDIC | KKBC-GJAHR2
+  Baris 93 | Layar Seleksi | SELECT-OPTIONS: ABGRVERS FOR TKKAP-VERSA.
+  Baris 93 | Field DDIC | TKKAP-VERSA
+  Baris 96 | Layar Seleksi | SELECTION-SCREEN SKIP.
+  Baris 98 | Layar Seleksi | PARAMETERS OBJ_LST TYPE ERGEBNIS_LISTE.
+  Baris 99 | Layar Seleksi | PARAMETERS: FEHLAUFT AS CHECKBOX,
+  Baris 102 | Layar Seleksi | PARAMETERS: P_CCCURR AS CHECKBOX MEMORY ID KK2.
+  Baris 104 | Layar Seleksi | PARAMETERS: P_2_CURR LIKE KKA0100-2CURR.
+  Baris 104 | Field DDIC | KKA0100-2CURR
+  Baris 109 | Layar Seleksi | PARAMETERS: P_MAXNTA type KKA_MAXANZ.
+  Baris 112 | Layar Seleksi | PARAMETERS: NO_0_WIP AS CHECKBOX.
+  Baris 114 | Layar Seleksi | PARAMETERS: P_A_VARI LIKE DISVARIANT-VARIANT.
+  Baris 114 | Field DDIC | DISVARIANT-VARIANT
+  Baris 118 | Field DDIC | SY-DBCNT
+  Baris 123 | Layar Seleksi | PARAMETERS: P_RFCGRP  LIKE RZLLITAB-CLASSNAME.
+  Baris 123 | Field DDIC | RZLLITAB-CLASSNAME
+  Baris 124 | Layar Seleksi | PARAMETERS: PARDEBUG  AS CHECKBOX.
+  Baris 125 | Layar Seleksi | PARAMETERS: PARSINGL  AS CHECKBOX.
+  Baris 126 | Layar Seleksi | PARAMETERS: PAR_EINZ LIKE KKALKKAG-EINZEL_VERARB NO-DISPLAY.
+  Baris 126 | Field DDIC | KKALKKAG-EINZEL_VERARB
+  Baris 129 | Layar Seleksi | PARAMETERS: P_ALOG AS CHECKBOX.
+  Baris 131 | Layar Seleksi | SELECTION-SCREEN SKIP.
+  Baris 133 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK VERARB WITH FRAME TITLE TEXT-FR1.
+  Baris 133 | Teks Seleksi | TEXT-FR1
+  Baris 134 | Layar Seleksi | PARAMETERS: AUSFUEHR RADIOBUTTON GROUP ABGR,
+  Baris 137 | Layar Seleksi | PARAMETERS: PAR_STOR AS CHECKBOX.
+  Baris 138 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK VERARB.
+  Baris 140 | Layar Seleksi | PARAMETERS: PAR_BRK AS CHECKBOX.
+  Baris 141 | Layar Seleksi | PARAMETERS: PAR_NPAR AS CHECKBOX.
+  Baris 152 | Field DDIC | AUFK-AUTYP
+  Baris 177 | Field DDIC | COSB-LEDNR
+  Baris 178 | Field DDIC | tkkap-refva
+  Baris 180 | Field DDIC | TCMF6-APLID
+  Baris 182 | Field DDIC | TCMF5-OBJECT_ID
+  Baris 185 | Field DDIC | CMFP-NR
+  Baris 187 | Field DDIC | CMIMSG-MSGTY
+  Baris 188 | Field DDIC | CMIMSG-MSGNR
+  Baris 189 | Field DDIC | AUFK-AUFNR
+  Baris 215 | Field DDIC | PFLOG-ACTIVITY
+  Baris 216 | Field DDIC | PFLOG-TEST
+  Baris 217 | Field DDIC | SY-TCODE
+  Baris 218 | Field DDIC | SY-REPID
+  Baris 219 | Field DDIC | TKA01-LMONA
+  Baris 220 | Field DDIC | SY-DATUM
+  Baris 223 | Field DDIC | PFLOG-TIMESTMP
+  Baris 224 | Field DDIC | PFFLD-APLSTAT
+  Baris 246 | Field DDIC | TKA01-CVACT
+  Baris 249 | Field DDIC | KKAH2000-TWAER
+  Baris 252 | Field DDIC | KKAPARA_TA-WIPTYP
+  Baris 253 | Field DDIC | KKAPARA_TA-WIPTYP
+  Baris 254 | Teks Seleksi | TEXT-BST
+  Baris 255 | Teks Seleksi | TEXT-RST
+  Baris 260 | Teks Seleksi | TEXT-ROT
+  Baris 262 | Teks Seleksi | TEXT-GLB
+  Baris 264 | Teks Seleksi | TEXT-GRN
+  Baris 289 | Field DDIC | SY-REPID
+  Baris 292 | Field DDIC | BALHDRI-SUBOBJECT
+  Baris 293 | Field DDIC | BALHDRI-EXTNUMBER
+  Baris 295 | Field DDIC | BALMI-USEREXITP
+  Baris 296 | Field DDIC | BALMI-USEREXITF
+  Baris 297 | Field DDIC | SY-TCODE
+  Baris 312 | Field DDIC | TKKAT-TEXTA
+  Baris 325 | Field DDIC | SY-TCODE
+  Baris 326 | Field DDIC | SY-TCODE
+  Baris 327 | Field DDIC | SY-TCODE
+  Baris 328 | Field DDIC | SY-TCODE
+  Baris 329 | Field DDIC | SY-TCODE
+  Baris 330 | Field DDIC | SY-TCODE
+  Baris 331 | Field DDIC | SY-TCODE
+  Baris 332 | Field DDIC | SY-TCODE
+  Baris 360 | Field DDIC | TKKAP-VERSA
+  Baris 369 | Class dan Interface | if_ex_ckml_wip
+  Baris 383 | Field DDIC | ABGRVERS-LOW
+  Baris 566 | Teks Seleksi | TEXT-PI3
+  Baris 574 | Layar dan GUI | SET TITLEBAR 'ERM'.
+  Baris 575 | Layar dan GUI | SET PF-STATUS 'OBJEKTLISTE' EXCLUDING lt_extab.
+  Baris 577 | Layar dan GUI | SET TITLEBAR 'STO'.
+  Baris 580 | Layar dan GUI | SET TITLEBAR 'ANZ'.
+  Baris 581 | Layar dan GUI | SET PF-STATUS 'WIP_ANZ' EXCLUDING lt_extab.
+  Baris 704 | Field DDIC | sy-msgty
+  Baris 1105 | Teks Seleksi | TEXT-PI1
+  Baris 1146 | Tipe DDIC | T_AUFTRAG
+  Baris 1160 | Teks Seleksi | TEXT-PI2
+  Baris 1170 | Tipe DDIC | ABGR_VSN
+  Baris 1238 | Layar dan GUI | SET TITLEBAR 'PRO'.
+  Baris 1337 | Tipe DDIC | GT_FIELD
+  Baris 1349 | Tipe DDIC | GT_EVENTS
+  Baris 1370 | Layar dan GUI | SET TITLEBAR 'GRU'.
+  Baris 1382 | Layar dan GUI | SET TITLEBAR 'ERM'.
+  Baris 1491 | Layar dan GUI | SET SCREEN 0.
+  Baris 1501 | Layar dan GUI | SET SCREEN 0.
+  Baris 1511 | Layar dan GUI | SET SCREEN 0.
+  Baris 1538 | Field DDIC | SY-TABIX
+  Baris 1539 | Field DDIC | SY-TABIX
+  Baris 1540 | Field DDIC | SY-TABIX
+  Baris 1544 | Field DDIC | KKAH2000-TWAER
+  Baris 1545 | Field DDIC | KKA0100-AMPEL
+  Baris 1546 | Field DDIC | KKA0100-MSGMX
+  Baris 1548 | Field DDIC | KKAPARA_IN-NO_0_WIP
+  Baris 1549 | Field DDIC | TJ02T-ISTAT
+  Baris 1550 | Field DDIC | SY-DEBUG
+  Baris 1745 | Teks Seleksi | TEXT-WII
+  Baris 1748 | Teks Seleksi | TEXT-WIS
+  Baris 1787 | Tipe DDIC | PT_AUFTRAGSLISTE
+  Baris 1881 | Field DDIC | KKAPARA_VS-VERSA
+  Baris 1882 | Field DDIC | KKAPARA_IN-WAEHR
+  Baris 1883 | Field DDIC | KKAPARA_IN-ABGRMONA
+  Baris 1884 | Field DDIC | KKAPARA_IN-ABGRJAHR
+  Baris 1885 | Field DDIC | KKAPARA_IN-AUSFUEHR
+  Baris 1886 | Field DDIC | KKAPARA_IN-SIMULATI
+  Baris 1888 | Field DDIC | KKAPARA_IN-P_CCCURR
+  Baris 1889 | Field DDIC | KKAPARA_IN-P_C2CURR
+  Baris 1893 | Field DDIC | SY-DEBUG
+  Baris 1894 | Field DDIC | SY-DEBUG
+  Baris 1896 | Field DDIC | SY-TABIX
+  Baris 1900 | Field DDIC | AFPO-POSNR
+  Baris 2051 | Field DDIC | CMIMSG-MSGNR
+  Baris 2269 | Field DDIC | KKAPARA_VS-VERSA
+  Baris 2270 | Field DDIC | KKAPARA_IN-P_CCCURR
+  Baris 2271 | Field DDIC | T001-WAERS
+  Baris 2272 | Field DDIC | KKAPARA_IN-WAEHR
+  Baris 2273 | Field DDIC | KKA0100-AMPEL
+  Baris 2274 | Field DDIC | SY-DEBUG
+  Baris 2275 | Field DDIC | KKAPARA_IN-ABGRMONA
+  Baris 2276 | Field DDIC | KKAPARA_IN-ABGRJAHR
+  Baris 2278 | Field DDIC | TKKAABGR-WRT
+  Baris 2279 | Field DDIC | TKKAABGR-WRT
+  Baris 2282 | Field DDIC | AUFK-BUKRS
+  Baris 2284 | Field DDIC | JEST-STAT
+  Baris 2286 | Field DDIC | JEST-STAT
+  Baris 2397 | Field DDIC | KKAPARA_IN-ABGRMONA
+  Baris 2398 | Field DDIC | KKAPARA_IN-ABGRJAHR
+  Baris 2399 | Field DDIC | KKAPARA_IN-WAEHR
+  Baris 2402 | Tipe DDIC | KKAH2000
+  Baris 2413 | Field DDIC | TKKA2000-WRT
+  Baris 2414 | Field DDIC | TKKA2000-WRT
+  Baris 2415 | Field DDIC | TKKA2000-WRT
+  Baris 2489 | Field DDIC | KKA2000-WRT
+  Baris 2490 | Field DDIC | KKA2000-WRT
+  Baris 2491 | Field DDIC | KKA2000-WRT
+  Baris 2678 | Field DDIC | T_COSLA-LST001
+  Baris 2764 | Field DDIC | aufk-objnr
+  Baris 2765 | Field DDIC | KKAPARA_TA-STATTEXT
+  Baris 2768 | Field DDIC | SY-DATUM
+  Baris 2769 | Field DDIC | SY-DATUM
+  Baris 2770 | Field DDIC | T009B-BDATJ
+  Baris 2771 | Field DDIC | T009B-POPER
+  Baris 2787 | Field DDIC | TJ02T-ISTAT
+  Baris 2821 | Field DDIC | KKAPARA_TA-abgsl
+  Baris 2822 | Field DDIC | KKAPARA_TA-versn
+  Baris 2823 | Field DDIC | KKAPARA_TA-bewer
+  Baris 2824 | Tipe DDIC | tkkas
+  Baris 2836 | Teks Seleksi | TEXT-WII
+  Baris 2839 | Teks Seleksi | TEXT-WIS
+  Baris 50 | INCLUDE | RKASSEFW
+  Baris 159 | INCLUDE | LKKAGF89
+  Baris 160 | INCLUDE | LKKAGF88
+  Baris 374 | INCLUDE | KKA07F05
+  Baris 377 | INCLUDE | KKA07F01
+  Baris 2844 | INCLUDE | KKA07F02
+  Baris 2846 | INCLUDE | KKA07F04
+  Baris 2848 | INCLUDE | KKA07F03
+  Baris 399 | Sumber data pada SELECT atau JOIN | TKKAP
+  Baris 404 | Sumber data pada SELECT atau JOIN | TKKAT
+  Baris 767 | Sumber data pada SELECT atau JOIN | TKA01
+  Baris 940 | Sumber data pada SELECT atau JOIN | AFPO
+  Baris 940 | Sumber data pada SELECT atau JOIN | MAKT
+  Baris 1014 | Sumber data pada SELECT atau JOIN | AUFK
+  Baris 2298 | Sumber data pada SELECT atau JOIN | T001
+  Baris 2826 | Sumber data pada SELECT atau JOIN | TKKAS
+  Baris 415 | Function module | HELP_VALUES_GET_WITH_TABLE
+  Baris 490 | Function module | K_OBJECT_SELECTION_CRIT_FILL
+  Baris 518 | Function module | KKA_ABGR_PAUSEPOINTS_SETZEN
+  Baris 557 | Function module | CKMLWIP_BADI_GET_INSTANCE
+  Baris 567 | Function module | SAPGUI_PROGRESS_INDICATOR
+  Baris 643 | Function module | CM_F_MESSAGE
+  Baris 711 | Function module | KKA_CHECK_PERIOD_LOCK_INIT
+  Baris 712 | Function module | KKA_CHECK_PERIOD_LOCK
+  Baris 775 | Function module | G_POSTING_DATE_OF_PERIOD_GET
+  Baris 803 | Function module | MB_ALL_MOVEMENTS_VALUATED
+  Baris 916 | Function module | CM_F_INFO
+  Baris 1179 | Function module | CO_APPL_LOG_APPEND_AUFNR
+  Baris 1277 | Function module | CM_F_MESSAGES_GET
+  Baris 1292 | Function module | KPEP_WLA_ADD_MESSAGES
+  Baris 1420 | Function module | KKPA_PARA_DEBUG_LOG_WRITE
+  Baris 1447 | Function module | KKA_ABGR_DEQUEUE
+  Baris 1459 | Function module | CM_F_DISPLAY_LOG
+  Baris 1470 | Function module | K_KOKRS_SET
+  Baris 1562 | Function module | STATUS_BUFFER_REFRESH
+  Baris 1659 | Function module | KKA_ABGR_CHECK_RELEVANCE
+  Baris 1690 | Function module | KKA_ABGR_NACHRICHTEN_FUER_CM_F
+  Baris 1716 | Function module | KKA_ABGR_HOLE_DATEN
+  Baris 1727 | Function module | STATUS_NUMBER_CONVERSION
+  Baris 1770 | Function module | K_OBJECT_ID_GET
+  Baris 1919 | Function module | KKA_ABGR_INITIALISIEREN
+  Baris 1938 | Function module | KKA_ABGR_START_AUFTRAG
+  Baris 1953 | Function module | KKA_ABGR_START_SERIENAUFTRAG
+  Baris 1963 | Function module | KKA_ABGR_VORBEREITEN
+  Baris 1975 | Function module | KKA_ABGR_ENQUEUE
+  Baris 1982 | Function module | KKA_ABGR_KOSA_LESEN
+  Baris 1994 | Function module | KKA_ABGR_DURCHFUEHREN
+  Baris 2002 | Function module | KKA_ABGR_FORTSCHREIBEN
+  Baris 2114 | Function module | CM_F_PROTOCOL_PRINT
+  Baris 2133 | Function module | CM_F_INITIALIZE
+  Baris 2204 | Function module | CO_APPL_LOG_INIT
+  Baris 2233 | Function module | CM_F_STORE
+  Baris 2254 | Function module | CO_APPL_LOG_PUT
+  Baris 2310 | Function module | STATUS_CHECK
+  Baris 2345 | Function module | KKA_ABGR_LESEN_SUMMENSAETZE
+  Baris 2420 | Function module | KKA_ABGR_GET_DY2000
+  Baris 2431 | Function module | KKA_ABGR_HOLE_EINZELPOSTEN
+  Baris 2501 | Function module | K_VRGNG_AUTHORITY_CHECK
+  Baris 2600 | Function module | K_MONITOR_RECORD_OPEN
+  Baris 2649 | Function module | K_MONITOR_RECORD_CLOSE
+  Baris 2712 | Function module | K_COSLA_READ_MULTI
+  Baris 2788 | Function module | KKA_CO_STATUS_OF_ORDER
+  Baris 1295 | Kontrol transaksi | COMMIT_WORK
+  Baris 2617 | Kontrol transaksi | COMMIT_WORK
+
+RKASSEFW.abap
+  Baris 4 | Tipe DDIC | sscrfields
+  Baris 6 | Layar Seleksi | PARAMETERS kokrs TYPE tka01-kokrs MODIF ID cac.
+  Baris 6 | Field DDIC | tka01-kokrs
+  Baris 18 | Field DDIC | tj01-vrgng
+  Baris 73 | Field DDIC | tj01-vrgng
+  Baris 105 | Field DDIC | tj01-vrgng
+  Baris 118 | Field DDIC | tj01-vrgng
+  Baris 3 | INCLUDE | RKASSELA
+  Baris 9 | INCLUDE | RKASMAWF
+  Baris 86 | Function module | K_KOKRS_SET
+  Baris 231 | Function module | RS_EXTERNAL_SELSCREEN_STATUS
+
+RKASSELA.abap
+
+RKASMAWF.abap
+  Baris 5 | Field DDIC | SCMA_WITEM-WF_WITEM
+  Baris 7 | Field DDIC | SWOTOBJID-OBJKEY
+  Baris 9 | Field DDIC | SCMA_WITEM-WF_WLIST
+
+LKKAGF89.abap
+  Baris 4 | Field DDIC | COSBA-ABKAT
+  Baris 7 | Field DDIC | COSBA-ABKAT
+  Baris 8 | Field DDIC | COSBA-ABKAT
+  Baris 9 | Field DDIC | COSBA-ABKAT
+  Baris 10 | Field DDIC | COSBA-ABKAT
+  Baris 11 | Field DDIC | COSBA-ABKAT
+  Baris 12 | Field DDIC | COSBA-ABKAT
+  Baris 13 | Field DDIC | COSBA-ABKAT
+  Baris 14 | Field DDIC | COSBA-ABKAT
+  Baris 15 | Field DDIC | COSBA-ABKAT
+  Baris 16 | Field DDIC | COSBA-ABKAT
+  Baris 17 | Field DDIC | COSBA-ABKAT
+  Baris 18 | Field DDIC | COSBA-ABKAT
+  Baris 19 | Field DDIC | COSBA-ABKAT
+  Baris 20 | Field DDIC | COSBA-ABKAT
+  Baris 21 | Field DDIC | COSBA-ABKAT
+  Baris 22 | Field DDIC | COSBA-ABKAT
+  Baris 23 | Field DDIC | COSBA-ABKAT
+  Baris 24 | Field DDIC | COSBA-ABKAT
+  Baris 25 | Field DDIC | COSBA-ABKAT
+  Baris 26 | Field DDIC | COSBA-ABKAT
+  Baris 27 | Field DDIC | COSBA-ABKAT
+  Baris 28 | Field DDIC | COSBA-ABKAT
+  Baris 29 | Field DDIC | COSBA-ABKAT
+  Baris 30 | Field DDIC | COSBA-ABKAT
+  Baris 31 | Field DDIC | COSBA-ABKAT
+  Baris 32 | Field DDIC | COSBA-ABKAT
+  Baris 33 | Field DDIC | COSBA-ABKAT
+  Baris 34 | Field DDIC | COSBA-ABKAT
+  Baris 35 | Field DDIC | COSBA-ABKAT
+  Baris 36 | Field DDIC | cosba-abkat
+  Baris 37 | Field DDIC | cosba-abkat
+  Baris 40 | Field DDIC | COSBA-ABKAT
+  Baris 41 | Field DDIC | COSBA-ABKAT
+  Baris 42 | Field DDIC | COSBA-ABKAT
+  Baris 45 | Field DDIC | COSBA-ABKAT
+  Baris 46 | Field DDIC | COSBA-ABKAT
+
+LKKAGF88.abap
+  Baris 5 | Field DDIC | T003O-AUTYP
+  Baris 6 | Field DDIC | T003O-AUTYP
+  Baris 7 | Field DDIC | T003O-AUTYP
+  Baris 8 | Field DDIC | T003O-AUTYP
+  Baris 10 | Field DDIC | T003O-AUTYP
+  Baris 12 | Field DDIC | T003O-AUTYP
+  Baris 13 | Field DDIC | T003O-AUTYP
+  Baris 14 | Field DDIC | T003O-AUTYP
+  Baris 15 | Field DDIC | T003O-AUTYP
+  Baris 17 | Field DDIC | T003O-AUTYP
+  Baris 18 | Field DDIC | T003O-AUTYP
+  Baris 19 | Field DDIC | T003O-AUTYP
+  Baris 20 | Field DDIC | T003O-AUTYP
+
+KKA07F05.abap
+  Baris 133 | Field DDIC | smmain-nr_of_objects
+  Baris 134 | Field DDIC | smmain-aplstat
+  Baris 210 | Field DDIC | afpo-aufnr
+  Baris 211 | Field DDIC | afpo-posnr
+  Baris 212 | Field DDIC | afpo-objnp
+  Baris 213 | Field DDIC | afpo-matnr
+  Baris 214 | Field DDIC | afpo-pwerk
+  Baris 215 | Field DDIC | afpo-wemng
+  Baris 216 | Field DDIC | afpo-psmng
+  Baris 217 | Field DDIC | afpo-amein
+  Baris 218 | Field DDIC | makt-maktx
+  Baris 223 | Field DDIC | ionra-obart
+  Baris 237 | Field DDIC | sy-tabix
+  Baris 285 | Field DDIC | tbo01-txt20
+  Baris 519 | Teks Seleksi | text-pi1
+  Baris 544 | Field DDIC | sy-msgid
+  Baris 545 | Field DDIC | sy-msgty
+  Baris 546 | Field DDIC | sy-msgno
+  Baris 556 | Field DDIC | cmimsg-msgnr
+  Baris 648 | Field DDIC | sy-msgid
+  Baris 649 | Field DDIC | sy-msgty
+  Baris 650 | Field DDIC | sy-msgno
+  Baris 720 | Field DDIC | sy-msgid
+  Baris 721 | Field DDIC | sy-msgty
+  Baris 722 | Field DDIC | sy-msgno
+  Baris 959 | Field DDIC | sy-repid
+  Baris 979 | Field DDIC | sy-repid
+  Baris 1023 | Field DDIC | sy-repid
+  Baris 1060 | Layar dan GUI | SET TITLEBAR 'REP' OF PROGRAM 'SAPKKA07'.
+  Baris 1138 | Field DDIC | TKKAP-VALUTYP
+  Baris 1155 | Field DDIC | sy-tabix
+  Baris 1275 | Field DDIC | SY-MSGTY
+  Baris 10 | INCLUDE | RBONRART
+  Baris 123 | INCLUDE | SCHEDMAN_EVENTS
+  Baris 353 | Sumber data pada SELECT atau JOIN | AUFK
+  Baris 416 | Sumber data pada SELECT atau JOIN | AFPO
+  Baris 416 | Sumber data pada SELECT atau JOIN | MAKT
+  Baris 108 | Function module | KPEP_MONI_INIT_RECORD
+  Baris 171 | Function module | KPEP_MONI_CLOSE_RECORD
+  Baris 243 | Function module | K_OBJECT_SELECTION_RUN
+  Baris 259 | Function module | CM_F_MESSAGE
+  Baris 277 | Function module | OBJECT_NUMBER_TYPE_GET
+  Baris 288 | Function module | OBJECT_IDENTIFICATION_GET
+  Baris 306 | Function module | OBJECT_KEY_GET_OR
+  Baris 319 | Function module | OBJECT_KEY_GET_OP
+  Baris 520 | Function module | SAPGUI_PROGRESS_INDICATOR
+  Baris 581 | Function module | CM_F_INFO
+  Baris 772 | Function module | CM_F_MESSAGES_GET
+  Baris 807 | Function module | K_OBJECT_KEY_FROM_PCOBJ_SET
+  Baris 820 | Function module | KPEP_WLA_SET_OBJECT_STATUS
+  Baris 832 | Function module | KPEP_WLA_SET_OBJECT_CHANGED
+  Baris 889 | Function module | K_OBJECT_SELECTION_CRIT_GET
+  Baris 962 | Function module | OBJ_PROCESSING_LOG_SAVE
+  Baris 983 | Function module | OBJ_EXTRACT_NAME_CALCULATE
+  Baris 994 | Function module | REUSE_ALV_EXTRACT_SAVE
+  Baris 1042 | Function module | REUSE_ALV_EXTRACT_LOAD
+  Baris 1065 | Function module | REUSE_ALV_LIST_DISPLAY
+  Baris 1086 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 1259 | Function module | TP_VALUATION_AUTHORITY
+  Baris 120 | Kontrol transaksi | COMMIT_WORK
+  Baris 187 | Kontrol transaksi | COMMIT_WORK
+
+RBONRART.abap
+  Baris 8 | Field DDIC | IONR-OBART
+  Baris 9 | Field DDIC | IONR-OBART
+  Baris 10 | Field DDIC | IONR-OBART
+  Baris 11 | Field DDIC | IONR-OBART
+  Baris 12 | Field DDIC | IONR-OBART
+  Baris 13 | Field DDIC | IONR-OBART
+  Baris 14 | Field DDIC | IONR-OBART
+  Baris 15 | Field DDIC | IONR-OBART
+  Baris 16 | Field DDIC | IONR-OBART
+  Baris 17 | Field DDIC | IONR-OBART
+  Baris 18 | Field DDIC | IONR-OBART
+  Baris 19 | Field DDIC | IONR-OBART
+  Baris 20 | Field DDIC | IONR-OBART
+  Baris 21 | Field DDIC | IONR-OBART
+  Baris 22 | Field DDIC | IONR-OBART
+  Baris 23 | Field DDIC | IONR-OBART
+  Baris 24 | Field DDIC | IONR-OBART
+  Baris 25 | Field DDIC | IONR-OBART
+  Baris 26 | Field DDIC | IONR-OBART
+  Baris 27 | Field DDIC | IONR-OBART
+  Baris 28 | Field DDIC | IONR-OBART
+  Baris 29 | Field DDIC | IONR-OBART
+  Baris 30 | Field DDIC | IONR-OBART
+  Baris 31 | Field DDIC | IONR-OBART
+  Baris 32 | Field DDIC | IONR-OBART
+  Baris 33 | Field DDIC | IONR-OBART
+  Baris 34 | Field DDIC | IONR-OBART
+  Baris 35 | Field DDIC | IONR-OBART
+  Baris 36 | Field DDIC | IONR-OBART
+  Baris 37 | Field DDIC | IONR-OBART
+  Baris 38 | Field DDIC | IONR-OBART
+  Baris 39 | Field DDIC | IONR-OBART
+  Baris 40 | Field DDIC | IONR-OBART
+  Baris 41 | Field DDIC | IONR-OBART
+  Baris 42 | Field DDIC | IONR-OBART
+  Baris 43 | Field DDIC | IONR-OBART
+  Baris 44 | Field DDIC | IONR-OBART
+  Baris 45 | Field DDIC | IONR-OBART
+  Baris 46 | Field DDIC | IONR-OBART
+  Baris 47 | Field DDIC | IONR-OBART
+  Baris 48 | Field DDIC | IONR-OBART
+  Baris 49 | Field DDIC | IONR-OBART
+  Baris 50 | Field DDIC | IONR-OBART
+  Baris 51 | Field DDIC | IONR-OBART
+  Baris 52 | Field DDIC | IONR-OBART
+  Baris 53 | Field DDIC | IONR-OBART
+  Baris 54 | Field DDIC | IONR-OBART
+  Baris 55 | Field DDIC | IONR-OBART
+  Baris 56 | Field DDIC | IONR-OBART
+  Baris 57 | Field DDIC | IONR-OBART
+  Baris 58 | Field DDIC | IONR-OBART
+  Baris 59 | Field DDIC | IONR-OBART
+  Baris 60 | Field DDIC | IONR-OBART
+  Baris 61 | Field DDIC | IONR-OBART
+  Baris 62 | Field DDIC | IONR-OBART
+  Baris 63 | Field DDIC | IONR-OBART
+  Baris 64 | Field DDIC | IONR-OBART
+  Baris 65 | Field DDIC | IONR-OBART
+  Baris 66 | Field DDIC | IONR-OBART
+  Baris 67 | Field DDIC | IONR-OBART
+  Baris 68 | Field DDIC | IONR-OBART
+  Baris 69 | Field DDIC | IONR-OBART
+  Baris 70 | Field DDIC | IONR-OBART
+  Baris 71 | Field DDIC | IONR-OBART
+  Baris 72 | Field DDIC | IONR-OBART
+  Baris 73 | Field DDIC | IONR-OBART
+  Baris 74 | Field DDIC | IONR-OBART
+  Baris 75 | Field DDIC | IONR-OBART
+  Baris 76 | Field DDIC | IONR-OBART
+  Baris 77 | Field DDIC | IONR-OBART
+  Baris 78 | Field DDIC | IONR-OBART
+  Baris 79 | Field DDIC | IONR-OBART
+  Baris 80 | Field DDIC | IONR-OBART
+  Baris 81 | Field DDIC | IONR-OBART
+  Baris 82 | Field DDIC | IONR-OBART
+  Baris 83 | Field DDIC | IONR-OBART
+  Baris 84 | Field DDIC | IONR-OBART
+  Baris 85 | Field DDIC | IONR-OBART
+  Baris 86 | Field DDIC | IONR-OBART
+  Baris 87 | Field DDIC | IONR-OBART
+  Baris 88 | Field DDIC | IONR-OBART
+  Baris 89 | Field DDIC | IONR-OBART
+  Baris 90 | Field DDIC | IONR-OBART
+  Baris 91 | Field DDIC | IONR-OBART
+  Baris 92 | Field DDIC | IONR-OBART
+  Baris 93 | Field DDIC | IONR-OBART
+  Baris 94 | Field DDIC | IONR-OBART
+  Baris 95 | Field DDIC | IONR-OBART
+  Baris 96 | Field DDIC | IONR-OBART
+  Baris 97 | Field DDIC | IONR-OBART
+  Baris 98 | Field DDIC | IONR-OBART
+  Baris 99 | Field DDIC | IONR-OBART
+  Baris 100 | Field DDIC | IONR-OBART
+  Baris 101 | Field DDIC | IONR-OBART
+  Baris 102 | Field DDIC | IONR-OBART
+  Baris 103 | Field DDIC | IONR-OBART
+  Baris 104 | Field DDIC | IONR-OBART
+  Baris 105 | Field DDIC | IONR-OBART
+  Baris 106 | Field DDIC | IONR-OBART
+  Baris 107 | Field DDIC | IONR-OBART
+  Baris 108 | Field DDIC | IONR-OBART
+  Baris 109 | Field DDIC | IONR-OBART
+  Baris 110 | Field DDIC | IONR-OBART
+  Baris 111 | Field DDIC | IONR-OBART
+  Baris 112 | Field DDIC | IONR-OBART
+  Baris 115 | Field DDIC | IONR-OBART
+  Baris 116 | Field DDIC | IONR-OBART
+  Baris 117 | Field DDIC | IONR-OBART
+  Baris 118 | Field DDIC | IONR-OBART
+
+SCHEDMAN_EVENTS.abap
+
+KKA07F01.abap
+  Baris 17 | Field DDIC | SY-TABIX
+  Baris 40 | Field DDIC | SY-REPID
+  Baris 103 | Field DDIC | SY-INDEX
+  Baris 104 | Field DDIC | SY-INDEX
+  Baris 107 | Field DDIC | SY-TABIX
+  Baris 256 | Field DDIC | SY-SUBRC
+  Baris 257 | Field DDIC | SY-TABIX
+  Baris 259 | Field DDIC | SY-TABIX
+  Baris 260 | Field DDIC | SY-TABIX
+  Baris 261 | Field DDIC | SY-TABIX
+  Baris 526 | Field DDIC | SY-TABIX
+  Baris 527 | Field DDIC | SY-TABIX
+  Baris 528 | Field DDIC | SY-TABIX
+  Baris 531 | Field DDIC | KKAPARA_IN-P_ALOG
+  Baris 534 | Field DDIC | T001-WAERS
+  Baris 599 | Tipe DDIC | PT_ABGRVERS
+  Baris 13 | INCLUDE | KKA07T01
+  Baris 63 | Function module | KKPA_PARA_PROCESS_START
+  Baris 181 | Function module | KPEP_WLA_RFC_CONTEXT_PREPARE
+  Baris 188 | Function module | KKA_PARA_ORDER_WIP
+  Baris 310 | Function module | CM_F_CMFMSG_MESSAGES_PUT
+  Baris 322 | Function module | CO_APPL_LOG_APPEND_AUFNR
+  Baris 330 | Function module | KPEP_WLA_RFC_CONTEXT_INTERPRET
+  Baris 365 | Function module | CM_F_MESSAGE
+  Baris 380 | Function module | CM_F_INFO
+  Baris 574 | Function module | KPEP_WLA_RFC_CONTEXT_INIT
+  Baris 583 | Function module | CM_F_INITIALIZE
+  Baris 618 | Function module | CM_F_MESSAGES_GET
+  Baris 632 | Function module | KPEP_WLA_RFC_CONTEXT_EXIT
+
+KKA07T01.abap
+  Baris 24 | Field DDIC | KKPA_T_PARA_IMP-EOT_FORM
+  Baris 25 | Field DDIC | KKPA_T_PARA_IMP-EOT_PROG
+
+KKA07F02.abap
+  Baris 11 | Class dan Interface | cl_obj_processing_log
+  Baris 28 | Layar dan GUI | SET TITLEBAR 'PRO'.
+  Baris 42 | Layar dan GUI | SET TITLEBAR 'GRU'.
+  Baris 46 | Layar dan GUI | SET PF-STATUS 'GRUNDLISTE' EXCLUDING extab.
+  Baris 50 | Layar dan GUI | SET TITLEBAR 'PRO'.
+  Baris 76 | Field DDIC | slis_listheader-info
+  Baris 77 | Field DDIC | slis_listheader-info
+  Baris 82 | Teks Seleksi | text-wip
+  Baris 82 | Teks Seleksi | text-grl
+  Baris 92 | Teks Seleksi | text-per
+  Baris 111 | Teks Seleksi | text-bwo
+  Baris 124 | Teks Seleksi | text-vrs
+  Baris 140 | Teks Seleksi | text-vrz
+  Baris 157 | Teks Seleksi | text-mnr
+  Baris 172 | Teks Seleksi | text-mmx
+  Baris 188 | Class dan Interface | cl_gui_custom_container
+  Baris 232 | Layar Seleksi | PARAMETERS         pri_para
+  Baris 276 | Field DDIC | sy-ucomm
+  Baris 308 | Layar dan GUI | SET TITLEBAR  'PRO'.
+  Baris 328 | Layar dan GUI | SET TITLEBAR  'PRO'.
+  Baris 439 | Field DDIC | sy-msgty
+  Baris 558 | Field DDIC | sy-pfkey
+  Baris 565 | Layar dan GUI | SET TITLEBAR 'ERM'.
+  Baris 572 | Layar dan GUI | SET TITLEBAR 'ANZ'.
+  Baris 577 | Layar dan GUI | SET PF-STATUS ld_pfkey EXCLUDING lt_extab.
+  Baris 606 | Field DDIC | dcobjdef-name
+  Baris 29 | Function module | CM_F_DISPLAY_LOG
+  Baris 179 | Function module | REUSE_ALV_COMMENTARY_WRITE
+  Baris 205 | Function module | GET_PRINT_PARAMETERS
+  Baris 260 | Function module | OBJ_PROCESSING_LOG_DYNPRO
+  Baris 343 | Function module | K_KOKRS_SET
+  Baris 395 | Function module | KKA_CHECK_CC_CURR_IN_OBJ_CURR
+  Baris 422 | Function module | K_KKB_KKBCS_ORDER_REPORT
+  Baris 465 | Function module | K_WIP_OBJECT_CALC
+  Baris 489 | Function module | K_WIP_EXPLAIN
+  Baris 625 | Function module | OBJ_PROCESSING_SET_PARAMETERS
+  Baris 654 | Function module | OBJ_PROCESSING_SET_SELECTION
+
+KKA07F04.abap
+  Baris 17 | Field DDIC | KKA0100-AMPEL
+  Baris 18 | Field DDIC | KKA0100-MSGMX
+  Baris 90 | Tipe DDIC | PT_AUFTRAGSLISTE
+  Baris 92 | Field DDIC | KKAPARA_IN-WAEHR
+  Baris 93 | Field DDIC | KKAPARA_IN-FEHLAUFT
+  Baris 94 | Field DDIC | SY-DEBUG
+  Baris 95 | Field DDIC | KKAPARA_IN-NO_0_WIP
+  Baris 96 | Field DDIC | KKA0100-AMPEL
+  Baris 97 | Field DDIC | KKA0100-MSGMX
+  Baris 99 | Teks Seleksi | TEXT-BST
+  Baris 100 | Teks Seleksi | TEXT-RST
+  Baris 204 | Field DDIC | KKA0100-MSGMX
+  Baris 209 | Teks Seleksi | TEXT-MSI
+  Baris 211 | Teks Seleksi | TEXT-MSW
+  Baris 213 | Teks Seleksi | TEXT-MSE
+  Baris 215 | Teks Seleksi | TEXT-MSA
+  Baris 226 | Field DDIC | TKKAP-VALUTYP
+  Baris 231 | Teks Seleksi | TEXT-BW0
+  Baris 233 | Teks Seleksi | TEXT-BW1
+  Baris 235 | Teks Seleksi | TEXT-BW2
+  Baris 25 | Function module | CM_F_INFO
+  Baris 155 | Function module | K_OBJECT_ID_GET
+  Baris 191 | Function module | CM_F_SET_OBJECT
+
+KKA07F03.abap
+  Baris 21 | Tipe DDIC | PT_FIELDCAT
+  Baris 32 | Field DDIC | KKAPARA_IN-ANZEIGEN
+  Baris 34 | Field DDIC | KKAPARA_IN-P_MAXNTA
+  Baris 107 | Teks Seleksi | text-001
+  Baris 199 | Teks Seleksi | text-002
+  Baris 249 | Teks Seleksi | TEXT-WKU
+  Baris 261 | Teks Seleksi | TEXT-WPE
+  Baris 275 | Teks Seleksi | TEXT-WWB
+  Baris 430 | Teks Seleksi | TEXT-PMG
+  Baris 577 | Tipe DDIC | PT_EVENTS

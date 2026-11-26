@@ -1,0 +1,301 @@
+﻿Input: ZQM025
+Source SAP development (RFC baca-saja): ZPPC_MASTER_U_INSPECTION
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZPPI_MASTER_U_INSPECTION_I01:13 | WHEN 'EXECUTE'. > IF RB2 EQ 'X'. | SUBMIT ZPPC_UPLOAD_INSPECTIONSETUP | Tinjau kondisi dan hasil di ECC.
+  ZPPI_MASTER_U_INSPECTION_I01:17 | WHEN 'EXECUTE'. > ELSEIF RB1 EQ 'X'. | SUBMIT ZPPC_UPLOAD_QMVIEW | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:60 | INITIALIZATION | PERFORM LAYOUT_INIT USING GS_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:61 | INITIALIZATION | PERFORM EVENTTAB_BUILD USING GT_EVENTS[]. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:109 | START-OF-SELECTION > IF sy-subrc <> 0. | message i000(0k) with 'File cannot be opened'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:113 | START-OF-SELECTION | perform open_group. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:115 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPMLSMW' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:116 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:118 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:120 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSSCREEN-PROJECT' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:122 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSSCREEN-SUBPROJ' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:124 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSSCREEN-OBJECT' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:126 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPLLSMW_OBJ_000' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:127 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:129 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:131 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:132 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:134 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:135 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:137 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:139 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPLLSMW_OBJ_060' '0210'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:140 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:142 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:144 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSFSCREEN-FILENAME' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:148 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSFSCREEN-FILETEXT' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:150 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSFSCREEN-X_FLATTAB' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:152 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSFSCREEN-X_DELTAB' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:154 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSFSCREEN-X_COLORDER' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:156 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSFSCREEN-X_ENDOFREC' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:158 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSFSCREEN-X_ASCII' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:160 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:161 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:163 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:165 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:166 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:168 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:170 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPLLSMW_OBJ_000' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:171 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:173 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:175 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:176 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:178 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:179 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:181 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:182 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:184 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPLLSMW_OBJ_000' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:185 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:187 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:189 | START-OF-SELECTION | perform bdc_dynpro      using '/1CADMC/SAP_LSMW_READ_00000007' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:190 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:192 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:194 | START-OF-SELECTION | perform bdc_field       using 'P_CNVAMT' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:196 | START-OF-SELECTION | perform bdc_field       using 'P_CNVDAT' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:198 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:199 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:201 | START-OF-SELECTION | perform bdc_dynpro      using '/1CADMC/SAP_LSMW_READ_00000007' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:202 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:204 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:206 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPLLSMW_OBJ_000' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:207 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:209 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:211 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPLLSMW_OBJ_080' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:212 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:214 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:216 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSSCREEN-TOLINE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:218 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:219 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:221 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPLLSMW_OBJ_000' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:222 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:224 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:226 | START-OF-SELECTION | perform bdc_dynpro      using '/1CADMC/SAP_LSMW_CONV_00000007' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:227 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:229 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:231 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:232 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:234 | START-OF-SELECTION | perform bdc_dynpro      using '/1CADMC/SAP_LSMW_CONV_00000007' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:235 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:237 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:239 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPLLSMW_OBJ_000' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:240 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:242 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:244 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPLLSMW_OBJ_080' '0300'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:245 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:247 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:249 | START-OF-SELECTION | perform bdc_field       using '/SAPDMC/LSSCREEN-TOLINE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:251 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:252 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:254 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPLLSMW_OBJ_000' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:255 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:257 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:259 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPLSPO5' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:260 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:262 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:264 | START-OF-SELECTION | perform bdc_dynpro      using 'RMDATIND' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:265 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:267 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:269 | START-OF-SELECTION | perform bdc_field       using '%%%_R_L' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:271 | START-OF-SELECTION | perform bdc_field       using 'LDS_NAME' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:273 | START-OF-SELECTION | perform bdc_field       using '%%%_R_P' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:275 | START-OF-SELECTION | perform bdc_field       using '%%%_PHY' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:277 | START-OF-SELECTION | perform bdc_field       using 'UC' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:279 | START-OF-SELECTION | perform bdc_field       using 'MAX_ERR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:281 | START-OF-SELECTION | perform bdc_field       using 'MAX_COMM' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:283 | START-OF-SELECTION | perform bdc_field       using 'LEVEL' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:285 | START-OF-SELECTION | perform bdc_field       using 'ERF_MELD' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:287 | START-OF-SELECTION | perform bdc_field       using 'SPERR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:289 | START-OF-SELECTION | perform bdc_field       using 'PRF_KZ' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:291 | START-OF-SELECTION | perform bdc_field       using 'FLAG_M' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:293 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPLSVAR' '0281'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:294 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:296 | START-OF-SELECTION | perform bdc_dynpro      using 'RMDATIND' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:297 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:299 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:301 | START-OF-SELECTION | perform bdc_field       using 'LDS_NAME' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:303 | START-OF-SELECTION | perform bdc_field       using '%%%_R_P' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:305 | START-OF-SELECTION | perform bdc_field       using '%%%_PHY' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:307 | START-OF-SELECTION | perform bdc_field       using 'UC' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:309 | START-OF-SELECTION | perform bdc_field       using 'MAX_ERR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:311 | START-OF-SELECTION | perform bdc_field       using 'MAX_COMM' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:313 | START-OF-SELECTION | perform bdc_field       using 'LEVEL' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:315 | START-OF-SELECTION | perform bdc_field       using 'ERF_MELD' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:317 | START-OF-SELECTION | perform bdc_field       using 'SPERR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:319 | START-OF-SELECTION | perform bdc_field       using 'PRF_KZ' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:321 | START-OF-SELECTION | perform bdc_field       using 'FLAG_M' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:323 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPLSBAL_DISPLAY' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:324 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:326 | START-OF-SELECTION | perform bdc_dynpro      using 'RMDATIND' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:327 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:329 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:331 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPLLSMW_OBJ_000' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:332 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:334 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:336 | START-OF-SELECTION | perform bdc_dynpro      using '/SAPDMC/SAPMLSMW' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:337 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:339 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:341 | START-OF-SELECTION | perform bdc_transaction using 'LSMW'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:343 | START-OF-SELECTION | perform close_group. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:356 | START-OF-SELECTION | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:360 | FORM DISPLAY | perform build_fieldcatalog. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_QMVIEW:361 | FORM DISPLAY | perform comment_build using gt_list_top_of_page[]. | Tinjau kondisi dan hasil di ECC.
+  ZZBDCREX3:220 | FORM BDC_TRANSACTION > ELSE. | CALL TRANSACTION TCODE USING BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:60 | INITIALIZATION | PERFORM LAYOUT_INIT USING GS_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:61 | INITIALIZATION | PERFORM EVENTTAB_BUILD USING GT_EVENTS[]. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:109 | START-OF-SELECTION > IF sy-subrc <> 0. | message i000(0k) with 'File cannot be opened'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:119 | START-OF-SELECTION | perform open_group. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:123 | START-OF-SELECTION > IF IT_DATA2-MATNR IS INITIAL. | perform bdc_dynpro      using 'RQMQMM00' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:124 | START-OF-SELECTION > IF IT_DATA2-MATNR IS INITIAL. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:126 | START-OF-SELECTION > IF IT_DATA2-MATNR IS INITIAL. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:128 | START-OF-SELECTION > IF IT_DATA2-MATNR IS INITIAL. | perform bdc_field       using 'G_WERKS-LOW' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:134 | START-OF-SELECTION > IF IT_DATA2-MATNR IS INITIAL. | perform bdc_field       using 'G_MTART-LOW' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:138 | START-OF-SELECTION > ELSE. | perform bdc_dynpro      using 'RQMQMM00' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:139 | START-OF-SELECTION > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:141 | START-OF-SELECTION > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:143 | START-OF-SELECTION > ELSE. | perform bdc_field       using 'G_WERKS-LOW' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:149 | START-OF-SELECTION > ELSE. | perform bdc_field       using 'G_MTART-LOW' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:153 | START-OF-SELECTION > ELSE. | perform bdc_dynpro      using 'SAPLALDB' '3000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:154 | START-OF-SELECTION > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:156 | START-OF-SELECTION > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:158 | START-OF-SELECTION > ELSE. | perform bdc_field       using 'RSCSEL_255-SLOW_I(01)' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:162 | START-OF-SELECTION > ELSE. | perform bdc_dynpro      using 'SAPLALDB' '3000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:163 | START-OF-SELECTION > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:165 | START-OF-SELECTION > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:168 | START-OF-SELECTION > ELSE. | perform bdc_dynpro      using 'RQMQMM00' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:169 | START-OF-SELECTION > ELSE. | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:171 | START-OF-SELECTION > ELSE. | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:176 | START-OF-SELECTION | perform bdc_dynpro      using 'RQMQMM00' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:177 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:179 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:181 | START-OF-SELECTION | perform bdc_field       using 'G_ART4' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:184 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPLQPLS' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:185 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:187 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:189 | START-OF-SELECTION | perform bdc_field       using 'RMQAM-APA(01)' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:192 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:193 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:195 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:198 | START-OF-SELECTION | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:199 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:201 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:216 | START-OF-SELECTION | perform bdc_dynpro      using 'RQMQMM00' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:217 | START-OF-SELECTION | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:219 | START-OF-SELECTION | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:222 | START-OF-SELECTION | perform bdc_transaction using 'QA08'. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:224 | START-OF-SELECTION | perform close_group. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:258 | START-OF-SELECTION | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:262 | FORM DISPLAY | perform build_fieldcatalog. | Tinjau kondisi dan hasil di ECC.
+  ZPPC_UPLOAD_INSPECTIONSETUP:263 | FORM DISPLAY | perform comment_build using gt_list_top_of_page[]. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZPPC_MASTER_U_INSPECTION (22 baris)
+  11 | Field DDIC | SY-UCOMM
+  22 | Layar dan GUI | CALL SCREEN 100.
+  15 | includes | ZPPI_MASTER_U_INSPECTION_O01
+  16 | includes | ZPPI_MASTER_U_INSPECTION_I01
+  17 | includes | ZPPI_MASTER_U_INSPECTION_F01
+
+Objek ZPPI_MASTER_U_INSPECTION_F01 (3 baris)
+
+Objek ZPPI_MASTER_U_INSPECTION_I01 (26 baris)
+  13 | submitPrograms | ZPPC_UPLOAD_INSPECTIONSETUP
+  17 | submitPrograms | ZPPC_UPLOAD_QMVIEW
+
+Objek ZPPC_UPLOAD_QMVIEW (455 baris)
+  19 | Field DDIC | MARA-PSTAT
+  20 | Field DDIC | MARA-MTART
+  42 | Field DDIC | SY-REPID
+  66 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK 1 WITH FRAME TITLE text-001.
+  66 | Teks Seleksi | text-001
+  68 | Layar Seleksi | PARAMETERS: FPATH LIKE RLGRAP-FILENAME MEMORY ID pid LOWER CASE OBLIGATORY.
+  68 | Field DDIC | RLGRAP-FILENAME
+  70 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK 1.
+  12 | includes | ZZBDCREX3
+  73 | callFunctions | WS_FILENAME_GET
+  363 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  421 | callFunctions | REUSE_ALV_EVENTS_GET
+  451 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  347 | tableReads | T100
+
+Objek ZZBDCREX3 (298 baris)
+  17 | Field DDIC | sy-datum
+  111 | BDC | BDCDATA
+  111 | BDC | BDCDATA
+  117 | Tipe DDIC | T100
+  138 | Teks Seleksi | TEXT-E00
+  160 | BDC | BDC_OPEN_GROUP
+  166 | BDC | BDC_OPEN_GROUP
+  179 | BDC | BDC_CLOSE_GROUP
+  180 | BDC | BDC_CLOSE_GROUP
+  185 | BDC | BDC_CLOSE_GROUP
+  198 | Field DDIC | SY-SUBRC
+  201 | BDC | BDC_INSERT
+  203 | Tipe DDIC | DYNPROTAB
+  203 | BDC | BDCDATA
+  205 | BDC | BDC_INSERT
+  220 | BDC | BDCDATA
+  220 | BDC | CALL TRANSACTION TCODE USING BDCDATA
+  261 | BDC | BDC_OPEN_GROUP
+  269 | BDC | BDC_INSERT
+  271 | Tipe DDIC | DYNPROTAB
+  271 | BDC | BDCDATA
+  274 | BDC | BDCDATA
+  281 | BDC | BDCDATA
+  282 | BDC | BDCDATA
+  283 | BDC | BDCDATA
+  284 | BDC | BDCDATA
+  285 | BDC | BDCDATA
+  293 | BDC | BDCDATA
+  294 | BDC | BDCDATA
+  295 | BDC | BDCDATA
+  296 | BDC | BDCDATA
+  160 | callFunctions | BDC_OPEN_GROUP
+  179 | callFunctions | BDC_CLOSE_GROUP
+  201 | callFunctions | BDC_INSERT
+  220 | callTransactions | TCODE
+
+Objek ZPPC_UPLOAD_INSPECTIONSETUP (398 baris)
+  42 | Field DDIC | SY-REPID
+  66 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK 1 WITH FRAME TITLE text-001.
+  66 | Teks Seleksi | text-001
+  68 | Layar Seleksi | PARAMETERS: FPATH LIKE RLGRAP-FILENAME MEMORY ID pid LOWER CASE OBLIGATORY.
+  68 | Field DDIC | RLGRAP-FILENAME
+  70 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK 1.
+  13 | includes | ZZBDCREX3
+  73 | callFunctions | WS_FILENAME_GET
+  91 | callFunctions | GUI_UPLOAD
+  265 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  364 | callFunctions | REUSE_ALV_EVENTS_GET
+  394 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  232 | tableReads | T100
+
+Objek ZPPI_MASTER_U_INSPECTION_O01 (13 baris)
+  10 | Layar dan GUI | SET PF-STATUS 'PF-100'.
+  11 | Layar dan GUI | SET TITLEBAR 'TB-100'.
+Jumlah source terbaca: 7
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZPPC_MASTER_U_INSPECTION.abap
+  Baris 11 | Field DDIC | SY-UCOMM
+  Baris 22 | Layar dan GUI | CALL SCREEN 100.
+  Baris 15 | INCLUDE | ZPPI_MASTER_U_INSPECTION_O01
+  Baris 16 | INCLUDE | ZPPI_MASTER_U_INSPECTION_I01
+  Baris 17 | INCLUDE | ZPPI_MASTER_U_INSPECTION_F01
+
+ZPPI_MASTER_U_INSPECTION_O01.abap
+  Baris 10 | Layar dan GUI | SET PF-STATUS 'PF-100'.
+  Baris 11 | Layar dan GUI | SET TITLEBAR 'TB-100'.
+
+ZPPI_MASTER_U_INSPECTION_I01.abap
+  Baris 13 | Program yang dirujuk SUBMIT | ZPPC_UPLOAD_INSPECTIONSETUP
+  Baris 17 | Program yang dirujuk SUBMIT | ZPPC_UPLOAD_QMVIEW
+
+ZPPI_MASTER_U_INSPECTION_F01.abap

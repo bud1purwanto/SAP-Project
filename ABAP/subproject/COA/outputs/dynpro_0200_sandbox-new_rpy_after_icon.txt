@@ -1,0 +1,568 @@
+RC     0
+H          0  PROGRAM                        ZQMI_COA
+H          0  SCREEN                         0200
+H          0  LANGUAGE                       E
+H          0  DESCRIPT                       Certificate of analysis
+H          0  TYPE                           N
+H          0  NEXTSCREEN                     0200
+H          0  LINES                          200
+H          0  COLUMNS                        255
+C          1  TYPE                           SCREEN
+C          1  NAME                           SCREEN
+C          1  LINE                           000
+C          1  COLUMN                         000
+C          1  LENGTH                         000
+C          1  HEIGHT                         000
+C          1  LOOP_BLOCK                     000
+C          1  LOOP_DISP                      000
+C          1  C_LINE_MIN                     000
+C          1  C_COLN_MIN                     000
+C          1  TC_FIXCOL                      000
+C          2  TYPE                           TABLE_CTRL
+C          2  NAME                           TDETAIL
+C          2  ELEMENT_OF                     SCREEN
+C          2  LINE                           010
+C          2  COLUMN                         004
+C          2  LENGTH                         177
+C          2  HEIGHT                         015
+C          2  LOOP_BLOCK                     000
+C          2  LOOP_DISP                      000
+C          2  C_RESIZE_V                     X
+C          2  C_RESIZE_H                     X
+C          2  C_LINE_MIN                     005
+C          2  C_COLN_MIN                     015
+C          2  C_SCROLL_V                     X
+C          2  C_SCROLL_H                     X
+C          2  TC_TABTYPE                     ENTRY
+C          2  TC_SEPAR_V                     X
+C          2  TC_SEPAR_H                     X
+C          2  TC_HEADER                      X
+C          2  TC_CONFIG                      X
+C          2  TC_SEL_LNS                     SINGLE
+C          2  TC_SEL_CLS                     NONE
+C          2  TC_FIXCOL                      000
+F          1  CONT_TYPE                      SCREEN
+F          1  CONT_NAME                      SCREEN
+F          1  TYPE                           FRAME
+F          1  NAME                           %#AUTOTEXT001
+F          1  TEXT
+____________________________________________________________________________________
+F          1  LINE                           001
+F          1  COLUMN                         001
+F          1  LENGTH                         182
+F          1  VISLENGTH                      182
+F          1  HEIGHT                         026
+F          1  FORMAT                         CHAR
+F          1  REQU_ENTRY                     N
+F          2  CONT_TYPE                      SCREEN
+F          2  CONT_NAME                      SCREEN
+F          2  TYPE                           TEXT
+F          2  NAME                           HEADER
+F          2  TEXT                           CERTIFICATE_OF_ANALYSIS__
+F          2  LINE                           002
+F          2  COLUMN                         066
+F          2  LENGTH                         025
+F          2  VISLENGTH                      025
+F          2  HEIGHT                         001
+F          2  FORMAT                         CHAR
+F          2  REQU_ENTRY                     N
+F          3  CONT_TYPE                      SCREEN
+F          3  CONT_NAME                      SCREEN
+F          3  TYPE                           TEXT
+F          3  NAME                           CUSTOMER
+F          3  TEXT                           Customer__________
+F          3  LINE                           004
+F          3  COLUMN                         053
+F          3  LENGTH                         018
+F          3  VISLENGTH                      018
+F          3  HEIGHT                         001
+F          3  FORMAT                         CHAR
+F          3  REQU_ENTRY                     N
+F          3  LABELLEFT                      X
+F          4  CONT_TYPE                      SCREEN
+F          4  CONT_NAME                      SCREEN
+F          4  TYPE                           TEMPLATE
+F          4  NAME                           NAME1
+F          4  TEXT
+________________________________________
+F          4  LINE                           004
+F          4  COLUMN                         076
+F          4  LENGTH                         040
+F          4  VISLENGTH                      040
+F          4  HEIGHT                         001
+F          4  FORMAT                         CHAR
+F          4  INPUT_FLD                      X
+F          4  OUTPUT_FLD                     X
+F          5  CONT_TYPE                      SCREEN
+F          5  CONT_NAME                      SCREEN
+F          5  TYPE                           TEXT
+F          5  NAME                           DELIVERY
+F          5  TEXT                           Delivery_Number___
+F          5  LINE                           005
+F          5  COLUMN                         053
+F          5  LENGTH                         018
+F          5  VISLENGTH                      018
+F          5  HEIGHT                         001
+F          5  FORMAT                         CHAR
+F          5  REQU_ENTRY                     N
+F          5  LABELLEFT                      X
+F          6  CONT_TYPE                      SCREEN
+F          6  CONT_NAME                      SCREEN
+F          6  TYPE                           TEMPLATE
+F          6  NAME                           VBELN
+F          6  TEXT
+________________________________________
+F          6  LINE                           005
+F          6  COLUMN                         076
+F          6  LENGTH                         040
+F          6  VISLENGTH                      040
+F          6  HEIGHT                         001
+F          6  FORMAT                         CHAR
+F          6  INPUT_FLD                      X
+F          6  OUTPUT_FLD                     X
+F          7  CONT_TYPE                      SCREEN
+F          7  CONT_NAME                      SCREEN
+F          7  TYPE                           TEXT
+F          7  NAME                           PRODUCT
+F          7  TEXT                           Product___________
+F          7  LINE                           006
+F          7  COLUMN                         053
+F          7  LENGTH                         018
+F          7  VISLENGTH                      018
+F          7  HEIGHT                         001
+F          7  FORMAT                         CHAR
+F          7  REQU_ENTRY                     N
+F          7  LABELLEFT                      X
+F          8  CONT_TYPE                      SCREEN
+F          8  CONT_NAME                      SCREEN
+F          8  TYPE                           TEMPLATE
+F          8  NAME                           PRODUCT
+F          8  TEXT
+________________________________________
+F          8  LINE                           006
+F          8  COLUMN                         076
+F          8  LENGTH                         040
+F          8  VISLENGTH                      040
+F          8  HEIGHT                         001
+F          8  FORMAT                         CHAR
+F          8  INPUT_FLD                      X
+F          8  OUTPUT_FLD                     X
+F          9  CONT_TYPE                      SCREEN
+F          9  CONT_NAME                      SCREEN
+F          9  TYPE                           TEXT
+F          9  NAME                           QUNTITY
+F          9  TEXT                           Quantity__________
+F          9  LINE                           007
+F          9  COLUMN                         053
+F          9  LENGTH                         018
+F          9  VISLENGTH                      018
+F          9  HEIGHT                         001
+F          9  FORMAT                         CHAR
+F          9  REQU_ENTRY                     N
+F          9  LABELLEFT                      X
+F         10  CONT_TYPE                      SCREEN
+F         10  CONT_NAME                      SCREEN
+F         10  TYPE                           TEMPLATE
+F         10  NAME                           NTGEW
+F         10  TEXT
+________________________________________
+F         10  LINE                           007
+F         10  COLUMN                         076
+F         10  LENGTH                         040
+F         10  VISLENGTH                      040
+F         10  HEIGHT                         001
+F         10  FORMAT                         DEC
+F         10  OUTPUT_FLD                     X
+F         10  REQU_ENTRY                     N
+F         11  CONT_TYPE                      SCREEN
+F         11  CONT_NAME                      SCREEN
+F         11  TYPE                           TEXT
+F         11  NAME                           KG
+F         11  TEXT                           kg
+F         11  LINE                           007
+F         11  COLUMN                         117
+F         11  LENGTH                         002
+F         11  VISLENGTH                      002
+F         11  HEIGHT                         001
+F         11  FORMAT                         CHAR
+F         11  REQU_ENTRY                     N
+F         12  CONT_TYPE                      SCREEN
+F         12  CONT_NAME                      SCREEN
+F         12  TYPE                           TEXT
+F         12  NAME                           WIDTH
+F         12  TEXT                           Width_____________
+F         12  LINE                           008
+F         12  COLUMN                         053
+F         12  LENGTH                         018
+F         12  VISLENGTH                      018
+F         12  HEIGHT                         001
+F         12  FORMAT                         CHAR
+F         12  REQU_ENTRY                     N
+F         12  LABELLEFT                      X
+F         13  CONT_TYPE                      SCREEN
+F         13  CONT_NAME                      SCREEN
+F         13  TYPE                           TEMPLATE
+F         13  NAME                           WIDTH
+F         13  TEXT
+________________________________________
+F         13  LINE                           008
+F         13  COLUMN                         076
+F         13  LENGTH                         040
+F         13  VISLENGTH                      040
+F         13  HEIGHT                         001
+F         13  FORMAT                         CHAR
+F         13  OUTPUT_FLD                     X
+F         13  REQU_ENTRY                     N
+F         14  CONT_TYPE                      SCREEN
+F         14  CONT_NAME                      SCREEN
+F         14  TYPE                           TEXT
+F         14  NAME                           MM
+F         14  TEXT                           mm
+F         14  LINE                           008
+F         14  COLUMN                         117
+F         14  LENGTH                         002
+F         14  VISLENGTH                      002
+F         14  HEIGHT                         001
+F         14  FORMAT                         CHAR
+F         14  REQU_ENTRY                     N
+F         15  CONT_TYPE                      SCREEN
+F         15  CONT_NAME                      SCREEN
+F         15  TYPE                           PUSH
+F         15  NAME                           TDETAIL_TOP
+F         15  ICON_NAME                      ICON_FIRST_PAGE
+F         15  WITH_ICON                      X
+F         15  LINE                           025
+F         15  COLUMN                         004
+F         15  LENGTH                         004
+F         15  VISLENGTH                      003
+F         15  HEIGHT                         001
+F         15  GROUP1                         PAG
+F         15  PUSH_FCODE                     TDETAIL_P--
+F         15  FORMAT                         CHAR
+F         15  REQU_ENTRY                     N
+F         16  CONT_TYPE                      SCREEN
+F         16  CONT_NAME                      SCREEN
+F         16  TYPE                           PUSH
+F         16  NAME                           TDETAIL_PREVIOUS
+F         16  ICON_NAME                      ICON_PREVIOUS_PAGE
+F         16  WITH_ICON                      X
+F         16  LINE                           025
+F         16  COLUMN                         008
+F         16  LENGTH                         004
+F         16  VISLENGTH                      003
+F         16  HEIGHT                         001
+F         16  GROUP1                         PAG
+F         16  PUSH_FCODE                     TDETAIL_P-
+F         16  FORMAT                         CHAR
+F         16  REQU_ENTRY                     N
+F         17  CONT_TYPE                      SCREEN
+F         17  CONT_NAME                      SCREEN
+F         17  TYPE                           PUSH
+F         17  NAME                           TDETAIL_NEXT
+F         17  ICON_NAME                      ICON_NEXT_PAGE
+F         17  WITH_ICON                      X
+F         17  LINE                           025
+F         17  COLUMN                         012
+F         17  LENGTH                         004
+F         17  VISLENGTH                      003
+F         17  HEIGHT                         001
+F         17  GROUP1                         PAG
+F         17  PUSH_FCODE                     TDETAIL_P+
+F         17  FORMAT                         CHAR
+F         17  REQU_ENTRY                     N
+F         18  CONT_TYPE                      SCREEN
+F         18  CONT_NAME                      SCREEN
+F         18  TYPE                           PUSH
+F         18  NAME                           TDETAIL_BOTTOM
+F         18  ICON_NAME                      ICON_LAST_PAGE
+F         18  WITH_ICON                      X
+F         18  LINE                           025
+F         18  COLUMN                         016
+F         18  LENGTH                         004
+F         18  VISLENGTH                      003
+F         18  HEIGHT                         001
+F         18  GROUP1                         PAG
+F         18  PUSH_FCODE                     TDETAIL_P++
+F         18  FORMAT                         CHAR
+F         18  REQU_ENTRY                     N
+F         19  CONT_TYPE                      SCREEN
+F         19  CONT_NAME                      SCREEN
+F         19  TYPE                           OKCODE
+F         19  TEXT                           ____________________
+F         19  LINE                           000
+F         19  COLUMN                         000
+F         19  LENGTH                         020
+F         19  VISLENGTH                      020
+F         19  HEIGHT                         001
+F         19  FORMAT                         CHAR
+F         19  INPUT_FLD                      X
+F         20  CONT_TYPE                      TABLE_CTRL
+F         20  CONT_NAME                      TDETAIL
+F         20  TYPE                           TEXT
+F         20  NAME                           IT_DETAIL-MICDES
+F         20  TEXT                           Properties
+F         20  LINE                           001
+F         20  COLUMN                         002
+F         20  LENGTH                         010
+F         20  VISLENGTH                      048
+F         20  HEIGHT                         001
+F         20  FORMAT                         CHAR
+F         20  REQU_ENTRY                     N
+F         20  TC_HEADING                     X
+F         21  CONT_TYPE                      TABLE_CTRL
+F         21  CONT_NAME                      TDETAIL
+F         21  TYPE                           TEXT
+F         21  NAME                           IT_DETAIL-RANGE_FLAG
+F         21  TEXT                           Out_Limit
+F         21  LINE                           001
+F         21  COLUMN                         003
+F         21  LENGTH                         009
+F         21  VISLENGTH                      009
+F         21  HEIGHT                         001
+F         21  FORMAT                         CHAR
+F         21  REQU_ENTRY                     N
+F         21  TC_HEADING                     X
+F         22  CONT_TYPE                      TABLE_CTRL
+F         22  CONT_NAME                      TDETAIL
+F         22  TYPE                           TEXT
+F         22  NAME                           IT_DETAIL-UOM
+F         22  TEXT                           Unit_of_Measure
+F         22  LINE                           001
+F         22  COLUMN                         004
+F         22  LENGTH                         015
+F         22  VISLENGTH                      015
+F         22  HEIGHT                         001
+F         22  FORMAT                         CHAR
+F         22  REQU_ENTRY                     N
+F         22  TC_HEADING                     X
+F         23  CONT_TYPE                      TABLE_CTRL
+F         23  CONT_NAME                      TDETAIL
+F         23  TYPE                           TEXT
+F         23  NAME                           IT_DETAIL-METHOD
+F         23  TEXT                           Testing_Method
+F         23  LINE                           001
+F         23  COLUMN                         005
+F         23  LENGTH                         014
+F         23  VISLENGTH                      048
+F         23  HEIGHT                         001
+F         23  FORMAT                         CHAR
+F         23  REQU_ENTRY                     N
+F         23  TC_HEADING                     X
+F         24  CONT_TYPE                      TABLE_CTRL
+F         24  CONT_NAME                      TDETAIL
+F         24  TYPE                           TEXT
+F         24  NAME                           IT_DETAIL-MICMIN
+F         24  TEXT                           Lower_Limit
+F         24  LINE                           001
+F         24  COLUMN                         006
+F         24  LENGTH                         011
+F         24  VISLENGTH                      011
+F         24  HEIGHT                         001
+F         24  FORMAT                         CHAR
+F         24  REQU_ENTRY                     N
+F         24  TC_HEADING                     X
+F         25  CONT_TYPE                      TABLE_CTRL
+F         25  CONT_NAME                      TDETAIL
+F         25  TYPE                           TEXT
+F         25  NAME                           IT_DETAIL-MICMAX
+F         25  TEXT                           Upper_Limit
+F         25  LINE                           001
+F         25  COLUMN                         007
+F         25  LENGTH                         011
+F         25  VISLENGTH                      011
+F         25  HEIGHT                         001
+F         25  FORMAT                         CHAR
+F         25  REQU_ENTRY                     N
+F         25  TC_HEADING                     X
+F         26  CONT_TYPE                      TABLE_CTRL
+F         26  CONT_NAME                      TDETAIL
+F         26  TYPE                           TEXT
+F         26  NAME                           IT_DETAIL-CMICMIT
+F         26  TEXT                           Value
+F         26  LINE                           001
+F         26  COLUMN                         008
+F         26  LENGTH                         005
+F         26  VISLENGTH                      008
+F         26  HEIGHT                         001
+F         26  FORMAT                         CHAR
+F         26  REQU_ENTRY                     N
+F         26  TC_HEADING                     X
+F         27  CONT_TYPE                      TABLE_CTRL
+F         27  CONT_NAME                      TDETAIL
+F         27  TYPE                           CHECK
+F         27  NAME                           IT_DETAIL-CHK
+F         27  LINE                           001
+F         27  COLUMN                         001
+F         27  LENGTH                         001
+F         27  VISLENGTH                      004
+F         27  HEIGHT                         001
+F         27  FORMAT                         CHAR
+F         27  INPUT_FLD                      X
+F         27  OUTPUT_FLD                     X
+F         28  CONT_TYPE                      TABLE_CTRL
+F         28  CONT_NAME                      TDETAIL
+F         28  TYPE                           TEMPLATE
+F         28  NAME                           IT_DETAIL-MICDES
+F         28  TEXT
+________________________________________________
+F         28  ROLLING                        X
+F         28  LINE                           001
+F         28  COLUMN                         002
+F         28  LENGTH                         048
+F         28  VISLENGTH                      048
+F         28  HEIGHT                         001
+F         28  FORMAT                         CHAR
+F         28  UP_LOWER                       X
+F         28  INPUT_FLD                      X
+F         28  OUTPUT_FLD                     X
+F         29  CONT_TYPE                      TABLE_CTRL
+F         29  CONT_NAME                      TDETAIL
+F         29  TYPE                           TEMPLATE
+F         29  NAME                           IT_DETAIL-OUT_ICON
+F         29  TEXT                           ____
+F         29  WITH_ICON                      X
+F         29  ROLLING                        X
+F         29  LINE                           001
+F         29  COLUMN                         003
+F         29  LENGTH                         009
+F         29  VISLENGTH                      009
+F         29  HEIGHT                         001
+F         29  FORMAT                         CHAR
+F         29  OUTPUT_FLD                     X
+F         29  OUTPUTONLY                     X
+F         29  REQU_ENTRY                     N
+F         30  CONT_TYPE                      TABLE_CTRL
+F         30  CONT_NAME                      TDETAIL
+F         30  TYPE                           TEMPLATE
+F         30  NAME                           IT_DETAIL-UOM
+F         30  TEXT                           _______________
+F         30  ROLLING                        X
+F         30  LINE                           001
+F         30  COLUMN                         004
+F         30  LENGTH                         015
+F         30  VISLENGTH                      015
+F         30  HEIGHT                         001
+F         30  FORMAT                         CHAR
+F         30  OUTPUT_FLD                     X
+F         30  REQU_ENTRY                     N
+F         31  CONT_TYPE                      TABLE_CTRL
+F         31  CONT_NAME                      TDETAIL
+F         31  TYPE                           TEMPLATE
+F         31  NAME                           IT_DETAIL-METHOD
+F         31  TEXT
+________________________________________________
+F         31  ROLLING                        X
+F         31  LINE                           001
+F         31  COLUMN                         005
+F         31  LENGTH                         048
+F         31  VISLENGTH                      048
+F         31  HEIGHT                         001
+F         31  FORMAT                         CHAR
+F         31  OUTPUT_FLD                     X
+F         31  REQU_ENTRY                     N
+F         32  CONT_TYPE                      TABLE_CTRL
+F         32  CONT_NAME                      TDETAIL
+F         32  TYPE                           TEMPLATE
+F         32  NAME                           IT_DETAIL-MICMIN
+F         32  TEXT                           ___________
+F         32  ROLLING                        X
+F         32  LINE                           001
+F         32  COLUMN                         006
+F         32  LENGTH                         011
+F         32  VISLENGTH                      011
+F         32  HEIGHT                         001
+F         32  FORMAT                         CHAR
+F         32  OUTPUT_FLD                     X
+F         32  REQU_ENTRY                     N
+F         33  CONT_TYPE                      TABLE_CTRL
+F         33  CONT_NAME                      TDETAIL
+F         33  TYPE                           TEMPLATE
+F         33  NAME                           IT_DETAIL-MICMAX
+F         33  TEXT                           ___________
+F         33  ROLLING                        X
+F         33  LINE                           001
+F         33  COLUMN                         007
+F         33  LENGTH                         011
+F         33  VISLENGTH                      011
+F         33  HEIGHT                         001
+F         33  FORMAT                         CHAR
+F         33  OUTPUT_FLD                     X
+F         33  REQU_ENTRY                     N
+F         34  CONT_TYPE                      TABLE_CTRL
+F         34  CONT_NAME                      TDETAIL
+F         34  TYPE                           TEMPLATE
+F         34  NAME                           IT_DETAIL-CMICMIT
+F         34  TEXT                           ________
+F         34  LINE                           001
+F         34  COLUMN                         008
+F         34  LENGTH                         008
+F         34  VISLENGTH                      008
+F         34  HEIGHT                         001
+F         34  FORMAT                         CHAR
+F         34  INPUT_FLD                      X
+F         34  OUTPUT_FLD                     X
+L          1
+PROCESS BEFORE OUTPUT.
+L          2
+*&SPWIZARD: PBO FLOW LOGIC FOR TABLECONTROL 'TDETAIL'
+L          3
+  MODULE TDETAIL_CHANGE_TC_ATTR.
+L          4
+*&SPWIZARD: MODULE TDETAIL_CHANGE_COL_ATTR.
+L          5
+  LOOP AT   IT_DETAIL
+L          6
+       WITH CONTROL TDETAIL
+L          7
+       CURSOR TDETAIL-CURRENT_LINE.
+L          8
+    MODULE TDETAIL_GET_LINES.
+L          9
+    MODULE TDETAIL_SET_ICON.
+L         10
+*&SPWIZARD:   MODULE TDETAIL_CHANGE_FIELD_ATTR
+L         11
+  ENDLOOP.
+L         12
+L         13
+ MODULE STATUS_0200.
+L         14
+*
+L         15
+PROCESS AFTER INPUT.
+L         16
+*&SPWIZARD: PAI FLOW LOGIC FOR TABLECONTROL 'TDETAIL'
+L         17
+  LOOP AT IT_DETAIL.
+L         18
+    CHAIN.
+L         19
+      FIELD IT_DETAIL-CHK.
+L         20
+      FIELD IT_DETAIL-MICDES.
+L         21
+      FIELD IT_DETAIL-UOM.
+L         22
+      FIELD IT_DETAIL-METHOD.
+L         23
+      FIELD IT_DETAIL-MICMIN.
+L         24
+      FIELD IT_DETAIL-MICMAX.
+L         25
+      FIELD IT_DETAIL-CMICMIT.
+L         26
+      MODULE TDETAIL_MODIFY ON CHAIN-REQUEST. ""
+L         27
+    endchain.
+L         28
+  ENDLOOP.
+L         29
+  MODULE TDETAIL_USER_COMMAND.
+L         30
+*&SPWIZARD: MODULE TDETAIL_CHANGE_TC_ATTR.
+L         31
+*&SPWIZARD: MODULE TDETAIL_CHANGE_COL_ATTR.
+L         32
+L         33
+* MODULE USER_COMMAND_0200.
+P          0

@@ -1,0 +1,304 @@
+﻿Input: ZVLMOVE1
+Source SAP development (RFC baca-saja): ZVLMOVE1_MENU
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZVLMOVE1_MENU:28 | START-OF-SELECTION > IF HU IS NOT INITIAL. | SUBMIT ZHUI_TRS_HU_DV VIA SELECTION-SCREEN AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  ZVLMOVE1_MENU:32 | START-OF-SELECTION > IF PLT IS NOT INITIAL. | SUBMIT ZMMR_TRS_PLT_DV VIA SELECTION-SCREEN AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_TRS_PLT_DV:142 | AT SELECTION-SCREEN > IF SY-UCOMM = 'INFO'. | PERFORM F_PROG_INFO USING V_PROG. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_TRS_PLT_DV:149 | AT SELECTION-SCREEN | PERFORM F4_OPEN_FILE. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_TRS_PLT_DV:166 | FORM F4_OPEN_FILE > IF SY-SUBRC <> 0 OR P_FILE EQ ''. | MESSAGE 'Please insert the template' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_TRS_PLT_DV:173 | START-OF-SELECTION | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_TRS_PLT_DV:177 | START-OF-SELECTION > IF IT_PALLET[] IS NOT INITIAL. | PERFORM INSERT_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_TRS_PLT_DV:178 | START-OF-SELECTION > IF IT_PALLET[] IS NOT INITIAL. | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_TRS_PLT_DV:180 | START-OF-SELECTION > ELSE. | MESSAGE 'Tidak ada data yang di-upload!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_TRS_PLT_DV:488 | FORM DISPLAY_DATA | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_TRS_PLT_DV:489 | FORM DISPLAY_DATA | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_TRS_PLT_DV:490 | FORM DISPLAY_DATA | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZMM_GRN_PO_CKI_GET_CHAR_VAL:98 | FORM GET_CHAR_VAL | CALL TRANSACTION 'MSC2' USING BDC_DATA MODE MODE UPDATE UPDATE MESSAGES INTO L_TA_MSG. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_TRS_HU_DV_I01:126 | WHEN 'GDTA'. > IF SY-SUBRC NE 0. | MESSAGE 'No Authorization to process data' TYPE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_I01:130 | WHEN 'GDTA'. | PERFORM F_DATA_RETRIEVAL. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_I01:133 | WHEN 'TRNS'. | PERFORM F_GETDATATRANSFER. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_I01:136 | WHEN 'S_ALL'. | PERFORM F_SELECT_ALL. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_I01:139 | WHEN 'D_ALL'. | PERFORM F_DESELECT_ALL. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_I01:142 | WHEN 'CLEAR'. | PERFORM F_CLEARDATA. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_I01:145 | WHEN 'SCA'. | PERFORM F_SORT_ASC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_I01:148 | WHEN 'SDC'. | PERFORM F_SORT_DSC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_I01:151 | WHEN 'FIND'. | PERFORM F_FIND_HU. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_I01:168 | WHEN 'EXE'. | PERFORM F_UPLOAD_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:76 | FORM F_DATA_RETRIEVAL > IF ITDATA[] IS INITIAL. | MESSAGE 'No Data Exist!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:159 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG_ICON USING 'ITALV' : | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:205 | FORM USER_COMMAND > WHEN 'TRANSFER'. | PERFORM F_TRANSFERHU. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZHUI_TRS_HU_DV_F01:251 | FORM F_TRANSFERHU > IF WADATA-MATDOC <> ' '. | MESSAGE 'Error, Transfer HU telah dilakukan sebelumnya!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:343 | FORM F_TRANSFERHU > ELSE. > IF SY-SUBRC = 0. > IF ITALV-MATDOC NE '-' . | PERFORM BDC_DYNPRO      USING 'RHU_GOODS_MOVEMENT_CANCEL' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:344 | FORM F_TRANSFERHU > ELSE. > IF SY-SUBRC = 0. > IF ITALV-MATDOC NE '-' . | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:346 | FORM F_TRANSFERHU > ELSE. > IF SY-SUBRC = 0. > IF ITALV-MATDOC NE '-' . | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:348 | FORM F_TRANSFERHU > ELSE. > IF SY-SUBRC = 0. > IF ITALV-MATDOC NE '-' . | PERFORM BDC_FIELD       USING 'SP_PSTDA' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:350 | FORM F_TRANSFERHU > ELSE. > IF SY-SUBRC = 0. > IF ITALV-MATDOC NE '-' . | PERFORM BDC_FIELD       USING 'SP_MBLNR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:352 | FORM F_TRANSFERHU > ELSE. > IF SY-SUBRC = 0. > IF ITALV-MATDOC NE '-' . | PERFORM BDC_FIELD       USING 'SP_MJAHR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:355 | FORM F_TRANSFERHU > ELSE. > IF SY-SUBRC = 0. > IF ITALV-MATDOC NE '-' . | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:375 | FORM F_TRANSFERHU > ELSE. > IF SY-SUBRC = 0. > IF VLINE = 1. | MESSAGE 'HU Not Transferred.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:377 | FORM F_TRANSFERHU > ELSE. > IF SY-SUBRC = 0. > ELSE. | MESSAGE 'All HU are Not Transferred.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:546 | FORM F_TRANSFERHU > ELSE. | PERFORM F_DISPLAY_DATA2. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:556 | FORM F_FIELD_CATALOG2 | PERFORM F_ALV_FIELDCATG_ICON USING 'ITALV' : | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:570 | FORM F_FIELD_CATALOG3 | PERFORM F_ALV_FIELDCATG_ICON USING 'ITAB1' : | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:613 | FORM F_GETDATATRANSFER > IF ITALV[] IS INITIAL. | MESSAGE 'Please Select any HU'  TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:622 | FORM F_GETDATATRANSFER > ELSE. > IF N <> 0. | MESSAGE 'Please Input SLoc Tujuan for all of selected HU'  TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:631 | FORM F_GETDATATRANSFER > ELSE. > ELSE. > IF N >= 1. | MESSAGE 'Please Input HU which status = QAOK!'  TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:683 | FORM F_GETDATATRANSFER > ELSE. > ELSE. > ELSE. > ELSEIF P2 = 'X'. > IF ITALV-SLOCT IN TSLOC. | PERFORM F_CHECK_ERROR CHANGING N L_ERRNO. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:692 | FORM F_GETDATATRANSFER > ELSE. > ELSE. > ELSE. > IF N >= 1. | MESSAGE 'Please check SLoc Tujuan'  TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:695 | FORM F_GETDATATRANSFER > ELSE. > ELSE. > ELSE. > ELSE. > IF L_ERRNO <> -1. | PERFORM F_DISPLAYDATA. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:743 | FORM F_UPLOAD_DATA > IF FPATH IS INITIAL. | MESSAGE 'Please input a file' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:763 | FORM F_UPLOAD_DATA > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:771 | FORM F_UPLOAD_DATA > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > IF V_EXIDV = ITAB-EXIDV. | MESSAGE V_MSG TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:800 | FORM F_UPLOAD_DATA > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. > ELSE. > IF WA_VEPO-WERKS NE '1000' AND WA_VEPO-WERKS NE '2000'. | MESSAGE V_MSG TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1264 | FORM F_UPLOAD_DATA > ELSE. > IF EKS = 'TXT' OR  EKS = 'txt'. | PERFORM F_DISPLAY_DATA3. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1266 | FORM F_UPLOAD_DATA > ELSE. > ELSE. | MESSAGE 'Please upload only .txt file' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1331 | FORM F_FIND_HU > IF SY-SUBRC <> 0. | MESSAGE 'No Data Found' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1346 | FORM F_FIND_HU > ELSE. > ELSE. | MESSAGE 'No Data Found' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1486 | FORM F_DISPLAYDATA | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1487 | FORM F_DISPLAYDATA | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1488 | FORM F_DISPLAYDATA | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1628 | FORM F_DISPLAY_DATA2 | PERFORM F_FIELD_CATALOG2. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1629 | FORM F_DISPLAY_DATA2 | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1630 | FORM F_DISPLAY_DATA2 | PERFORM F_SET_CELL_COLOURS. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1631 | FORM F_DISPLAY_DATA2 | PERFORM F_LIST_DETAIL3. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1639 | FORM F_DISPLAY_DATA3 | PERFORM F_FIELD_CATALOG3. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1640 | FORM F_DISPLAY_DATA3 | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1641 | FORM F_DISPLAY_DATA3 | PERFORM F_SET_CELL_COLOURS_U. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1642 | FORM F_DISPLAY_DATA3 | PERFORM F_LIST_DETAIL2. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1738 | FORM F_CHECK_ERROR > IF ITALV-SLOCT NOT IN TSLOC. | MESSAGE MESSAGE TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1762 | FORM F_CHECK_ERROR > ELSE. > IF SY-SUBRC <> 0. > WHEN '1000'. | MESSAGE 'Error, Warehouse W01 belum di-maintain' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DV_F01:1765 | FORM F_CHECK_ERROR > ELSE. > IF SY-SUBRC <> 0. > WHEN '2000'. | MESSAGE 'Error, Warehouse K01 belum di-maintain' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZVLMOVE1_MENU (35 baris)
+  11 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK PARAMETER1 WITH FRAME TITLE TEXT-001.
+  11 | Teks Seleksi | TEXT-001
+  13 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  15 | Layar Seleksi | SELECTION-SCREEN COMMENT (75) TEXT-T01 FOR FIELD HU.
+  15 | Teks Seleksi | TEXT-T01
+  16 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  18 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  20 | Layar Seleksi | SELECTION-SCREEN COMMENT (75) TEXT-T02 FOR FIELD PLT.
+  20 | Teks Seleksi | TEXT-T02
+  21 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  23 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK PARAMETER1.
+  28 | submitPrograms | ZHUI_TRS_HU_DV
+  32 | submitPrograms | ZMMR_TRS_PLT_DV
+
+Objek ZMMR_TRS_PLT_DV (691 baris)
+  21 | Field DDIC | MCHB-LGORT
+  22 | Field DDIC | MCHB-LGORT
+  23 | Field DDIC | MCHB-WERKS
+  32 | BDC | BDCDATA
+  60 | Field DDIC | ZPROGINFO-PGMNA
+  62 | Field DDIC | KLAH-CLASS
+  63 | Field DDIC | KLAH-KLART
+  64 | Field DDIC | TCLT-OBTAB
+  65 | Field DDIC | KSSK-OBJEK
+  68 | Field DDIC | EKPO-MATKL
+  69 | Field DDIC | ZSEQNUM-ARBPL
+  70 | Field DDIC | ZSEQNUM-ARBPL
+  71 | Field DDIC | CAWNT-ATWTB
+  72 | Field DDIC | CAWNT-ATWTB
+  73 | Field DDIC | CAWNT-ATWTB
+  74 | Field DDIC | ZSEQNUM-ZMONTH
+  75 | Field DDIC | ZSEQNUM-ZMONTH
+  79 | Field DDIC | CAWNT-ATWTB
+  80 | Field DDIC | MSEG-CHARG
+  81 | Field DDIC | MARA-MATNR
+  84 | Field DDIC | ZSEQNUM-ARBPL
+  85 | Field DDIC | ZSEQNUM-ZMONTH
+  86 | Field DDIC | ZSEQNUM-ZSEQNO
+  92 | Field DDIC | MKPF-MBLNR
+  93 | Field DDIC | MCH1-CHARG
+  99 | Field DDIC | SY-MSGID
+  100 | Field DDIC | SY-MSGTY
+  101 | Field DDIC | SY-MSGNO
+  102 | Field DDIC | SY-MSGV1
+  103 | Field DDIC | SY-MSGV2
+  104 | Field DDIC | SY-MSGV3
+  105 | Field DDIC | SY-MSGV4
+  106 | Field DDIC | MESG-ZEILE
+  125 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1000 WITH FRAME TITLE TEXT-100..
+  125 | Teks Seleksi | TEXT-100
+  126 | Layar Seleksi | PARAMETERS: P_FILE   LIKE RLGRAP-FILENAME
+  126 | Field DDIC | RLGRAP-FILENAME
+  129 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1000.
+  136 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1002 WITH FRAME.
+  137 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  138 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1002.
+  238 | Field DDIC | MCHB-CHARG
+  240 | Field DDIC | MCHB-WERKS
+  241 | Field DDIC | MCHB-LGORT
+  242 | Field DDIC | MARA-MATNR
+  243 | Field DDIC | MARA-MEINS
+  609 | Field DDIC | ZPROGINFO-PGMNA
+  618 | Field DDIC | RSNEWLENG-FCODE
+  10 | includes | ZMM_GRN_PO_CKI_GET_CHAR_VAL
+  157 | callFunctions | F4_FILENAME
+  196 | callFunctions | GUI_UPLOAD
+  267 | callFunctions | SAPGUI_PROGRESS_INDICATOR
+  426 | callFunctions | BAPI_GOODSMVT_CREATE
+  474 | callFunctions | VB_INIT
+  590 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  680 | callFunctions | HELP_DOCULINES_SHOW
+  293 | tableReads | MCHB
+  293 | tableReads | MARA
+  300 | tableReads | ZPALLETR
+  663 | tableReads | ZPROGINFO
+
+Objek ZMM_GRN_PO_CKI_GET_CHAR_VAL (102 baris)
+  5 | Field DDIC | VM07M-LICHA
+  6 | Field DDIC | MSEG-MATNR
+  7 | Field DDIC | MSEG-CHARG
+  9 | Field DDIC | AUSP-OBJEK
+  10 | Field DDIC | AUSP-ATWRT
+  11 | Field DDIC | AUSP-ATWRT
+  12 | Field DDIC | AUSP-ATWRT
+  13 | Field DDIC | AUSP-ATWRT
+  14 | Field DDIC | AUSP-ATWRT
+  18 | BDC | BDCDATA
+  18 | BDC | BDCDATA
+  23 | BDC | BDCDATA
+  98 | BDC | CALL TRANSACTION 'MSC2' USING BDC_DATA MODE MODE UPDATE UPDATE MESSAGES INTO L_TA_MSG.
+  98 | callTransactions | MSC2
+  41 | tableReads | MCH1
+  45 | tableReads | AUSP
+  45 | tableReads | CABN
+
+Objek ZHUI_TRS_HU_DV (24 baris)
+  20 | includes | ZABAPALV
+  21 | includes | ZHUI_TRS_HU_DV_TOP
+  22 | includes | ZHUI_TRS_HU_DV_F01
+  23 | includes | ZHUI_TRS_HU_DV_O01
+  24 | includes | ZHUI_TRS_HU_DV_I01
+
+Objek ZHUI_TRS_HU_DV_I01 (171 baris)
+  36 | Field DDIC | ZHU_MAPP-LGOR1
+  37 | Field DDIC | T001L-LGOBE
+  60 | Field DDIC | SY-STEPL
+  120 | Layar dan GUI | LEAVE TO SCREEN 0.
+  165 | Layar dan GUI | LEAVE TO SCREEN 0.
+  12 | callFunctions | F4_FILENAME
+  61 | callFunctions | DYNP_GET_STEPL
+  68 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  41 | tableReads | ZHU_MAPP
+  41 | tableReads | T001L
+  93 | databaseWrites | ITDATA
+
+Objek ZHUI_TRS_HU_DV_O01 (31 baris)
+  11 | Layar dan GUI | SET PF-STATUS 'PF100'.
+  12 | Layar dan GUI | SET TITLEBAR  'TL100'.
+  22 | Layar dan GUI | SET PF-STATUS 'PF110'.
+  23 | Layar dan GUI | SET TITLEBAR 'T110'.
+
+Objek ZHUI_TRS_HU_DV_F01 (1771 baris)
+  8 | Layar dan GUI | CALL SCREEN 100.
+  10 | Layar dan GUI | CALL SCREEN 110.
+  176 | Field DDIC | WA_HEADER-INFO
+  197 | Field DDIC | SY-UCOMM
+  213 | Layar dan GUI | SET PF-STATUS 'PF1000'.
+  231 | Field DDIC | BAPI2017_GM_HEAD_RET-MAT_DOC
+  272 | Class dan Interface | IF_EVENT
+  272 | Class dan Interface | IF_EVENT
+  273 | Class dan Interface | IF_TCODE
+  273 | Class dan Interface | IF_TCODE
+  355 | BDC | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA
+  710 | Field DDIC | VEPO-VENUM
+  714 | Field DDIC | VEPO-WERKS
+  717 | Field DDIC | VEKP-EXIDV
+  730 | Field DDIC | BAPI2017_GM_HEAD_RET-MAT_DOC
+  763 | Field DDIC | SY-MSGTY
+  1027 | Class dan Interface | IF_EVENT
+  1027 | Class dan Interface | IF_EVENT
+  1028 | Class dan Interface | IF_TCODE
+  1028 | Class dan Interface | IF_TCODE
+  1358 | Field DDIC | SY-TABIX
+  1424 | Field DDIC | SY-TABIX
+  143 | callFunctions | CONVERSION_EXIT_ALPHA_OUTPUT
+  186 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  259 | callFunctions | CONVERSION_EXIT_ALPHA_INPUT
+  270 | callFunctions | HU_CREATE_GOODS_MOVEMENT
+  294 | callFunctions | BAPI_TRANSACTION_COMMIT
+  409 | callFunctions | HU_GET_HUS_DB
+  505 | callFunctions | BAPI_GOODSMVT_CREATE
+  519 | callFunctions | BAPI_TRANSACTION_ROLLBACK
+  754 | callFunctions | GUI_UPLOAD
+  1320 | callFunctions | POPUP_GET_VALUES
+  1568 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  355 | callTransactions | HUCANC
+  25 | tableReads | ZHU_MAPP
+  38 | tableReads | VEKP
+  38 | tableReads | VEPO
+  128 | tableReads | TJ30T
+  128 | tableReads | HUSTOBJ
+  128 | tableReads | HUSSTAT
+  305 | tableReads | ZPACK_PCL
+  417 | tableReads | ZPALLETR
+  427 | tableReads | ZMAP_TYPE
+  460 | tableReads | MCH1
+  465 | tableReads | MARA
+  468 | tableReads | MCHB
+  1717 | tableReads | MARD
+  1744 | tableReads | MLGT
+  307 | databaseWrites | ZPACK_PCL
+
+Objek ZHUI_TRS_HU_DV_TOP (106 baris)
+  4 | Tipe DDIC | VEKP
+  7 | Field DDIC | VEKP-EXIDV
+  8 | Field DDIC | VEPO-UNVEL
+  9 | Field DDIC | VEKP-LGORT
+  10 | Field DDIC | TJ30T-TXT04
+  11 | Field DDIC | VEPO-WERKS
+  19 | Field DDIC | VEKP-EXIDV
+  20 | Field DDIC | VEPO-UNVEL
+  21 | Field DDIC | VEKP-LGORT
+  22 | Field DDIC | TJ30T-TXT04
+  23 | Field DDIC | VEPO-WERKS
+  30 | Field DDIC | ZHU_MAPP-LGOR2
+  34 | Field DDIC | VEKP-EXIDV
+  35 | Field DDIC | VEKP-LGORT
+  50 | Field DDIC | SY-UCOMM
+  56 | Field DDIC | IBIPPARMS-PATH
+  57 | Field DDIC | VEKP-VENUM
+  58 | Field DDIC | MARA-MATNR
+  59 | Field DDIC | VEPO-UNVEL
+  60 | Field DDIC | HUSTOBJ-OBJNR
+  61 | Field DDIC | MLGT-LGNUM
+  80 | BDC | BDCDATA
+  84 | Class dan Interface | IF_EVENT
+  85 | Class dan Interface | IF_TCODE
+  92 | Field DDIC | SY-SUBRC
+  103 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOCK1 WITH FRAME TITLE TEXT-001.
+  103 | Teks Seleksi | TEXT-001
+  104 | Layar Seleksi | PARAMETERS : RM RADIOBUTTON GROUP RAD1 DEFAULT 'X',
+  106 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOCK1.
+
+Objek ZABAPALV (660 baris)
+  7 | Field DDIC | SY-REPID
+  27 | Field DDIC | SY-DATUM
+  28 | Field DDIC | SY-DATUM
+  559 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+Jumlah source terbaca: 9
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZVLMOVE1_MENU.abap
+  Baris 11 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK PARAMETER1 WITH FRAME TITLE TEXT-001.
+  Baris 11 | Teks Seleksi | TEXT-001
+  Baris 13 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 15 | Layar Seleksi | SELECTION-SCREEN COMMENT (75) TEXT-T01 FOR FIELD HU.
+  Baris 15 | Teks Seleksi | TEXT-T01
+  Baris 16 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 18 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 20 | Layar Seleksi | SELECTION-SCREEN COMMENT (75) TEXT-T02 FOR FIELD PLT.
+  Baris 20 | Teks Seleksi | TEXT-T02
+  Baris 21 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 23 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK PARAMETER1.
+  Baris 28 | Program yang dirujuk SUBMIT | ZHUI_TRS_HU_DV
+  Baris 32 | Program yang dirujuk SUBMIT | ZMMR_TRS_PLT_DV

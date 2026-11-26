@@ -1,0 +1,67 @@
+*&---------------------------------------------------------------------*
+*&  Include           MV45AI0K_KUWEV_KNFAK_SETZEN
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Form  KUWEV_KNFAK_SETZEN
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->P_KUWEV_ABLAD  text
+*      -->P_KUWEV_KUNNR  text
+*----------------------------------------------------------------------*
+FORM KUWEV_KNFAK_SETZEN  USING    P_KUWEV_ABLAD
+                                  P_KUWEV_KUNNR.
+
+DATA: BEGIN OF LKNVA OCCURS 0001.
+        INCLUDE STRUCTURE KNVA .
+DATA: END OF LKNVA.
+
+  CHECK NOT P_KUWEV_ABLAD IS INITIAL
+    AND NOT P_KUWEV_KUNNR IS INITIAL.
+.
+  CALL FUNCTION 'KNVA_SINGLE_READ'
+       EXPORTING
+            I_KUNNR   = P_KUWEV_KUNNR
+            I_ABLAD   = P_KUWEV_ABLAD
+       IMPORTING
+            O_KNVA    = LKNVA
+       EXCEPTIONS
+            NOT_FOUND = 1
+            OTHERS    = 2.
+  IF SY-SUBRC <> 0.
+    CLEAR LKNVA.
+  ELSE.
+    MOVE LKNVA-KNFAK TO KUWEV-KNFAK .
+    MOVE LKNVA-ABLAD TO KUWEV-ABLAD .
+    MOVE LKNVA-DIAB1 TO KUWEV-DIAB1 .
+    MOVE LKNVA-DIAB2 TO KUWEV-DIAB2 .
+    MOVE LKNVA-DIBI1 TO KUWEV-DIBI1 .
+    MOVE LKNVA-DIBI2 TO KUWEV-DIBI2 .
+    MOVE LKNVA-DOAB1 TO KUWEV-DOAB1 .
+    MOVE LKNVA-DOAB2 TO KUWEV-DOAB2 .
+    MOVE LKNVA-DOBI1 TO KUWEV-DOBI1 .
+    MOVE LKNVA-DOBI2 TO KUWEV-DOBI2 .
+    MOVE LKNVA-FRAB1 TO KUWEV-FRAB1 .
+    MOVE LKNVA-FRAB2 TO KUWEV-FRAB2 .
+    MOVE LKNVA-FRBI1 TO KUWEV-FRBI1 .
+    MOVE LKNVA-FRBI2 TO KUWEV-FRBI2 .
+    MOVE LKNVA-MIAB1 TO KUWEV-MIAB1 .
+    MOVE LKNVA-MIAB2 TO KUWEV-MIAB2 .
+    MOVE LKNVA-MIBI1 TO KUWEV-MIBI1 .
+    MOVE LKNVA-MIBI2 TO KUWEV-MIBI2 .
+    MOVE LKNVA-MOAB1 TO KUWEV-MOAB1 .
+    MOVE LKNVA-MOAB2 TO KUWEV-MOAB2 .
+    MOVE LKNVA-MOBI1 TO KUWEV-MOBI1 .
+    MOVE LKNVA-MOBI2 TO KUWEV-MOBI2 .
+    MOVE LKNVA-SAAB1 TO KUWEV-SAAB1 .
+    MOVE LKNVA-SAAB2 TO KUWEV-SAAB2 .
+    MOVE LKNVA-SABI1 TO KUWEV-SABI1 .
+    MOVE LKNVA-SABI2 TO KUWEV-SABI2 .
+    MOVE LKNVA-SOAB1 TO KUWEV-SOAB1 .
+    MOVE LKNVA-SOAB2 TO KUWEV-SOAB2 .
+    MOVE LKNVA-SOBI1 TO KUWEV-SOBI1 .
+    MOVE LKNVA-SOBI2 TO KUWEV-SOBI2 .
+    MOVE LKNVA-WANID TO KUWEV-WANID .
+  ENDIF.
+
+ENDFORM.                    " KUWEV_KNFAK_SETZEN

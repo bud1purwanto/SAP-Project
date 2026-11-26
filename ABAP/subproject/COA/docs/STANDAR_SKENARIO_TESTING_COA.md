@@ -164,14 +164,20 @@ Catatan ML-QM04 (perlu dikonfirmasi):
 | 2026-11-19 | **Fix tombol Print COA**: pengecekan MIC kosong/0 dan di luar limit (`ZQMI_COA_F02`, WHEN 'PRNT') hanya memeriksa baris yang dicentang (`CHK = 'X'`), sama dengan `F_PRINT`. Sebelumnya baris yang tidak dicentang tetap memblok cetak (kasus DO 0085006285/86, PCADSTNT/PEYASTNT bernilai 0). Patch `tests/printchk/ZQMI_COA_F02.abap`, push sandbox-new (1165 baris, syntax check RC 0, readback identik); logika loop diuji di sandbox (baris 0 tidak dicentang: lama blok, baru lolos; dicentang: tetap blok). **Belum di DEV**, deploy oleh user; belum diuji di layar Print COA |
 | 2026-11-25 | **Batch List hanya Excel** (keputusan functional): `F_PRINT` tidak lagi memanggil smartform `ZQMF_COA_BATCH` (blok cari FM dan blok cetak lampiran dihapus, deklarasi `LV_BATCH_FM` dihapus). Excel (`BATLIST`, `DOWNLOAD_BATCH_LIST_XLSX`) tidak berubah. Patch `tests/batchxls/ZQMI_COA_F01.abap`, push sandbox-new (5993 baris, syntax check RC 0, readback identik). Regresi 21 DO harness: ZQM002, EXEC, ZQM003 **identik** dengan DEV as-is (`outputs/test_batchxls_20261125/`). Catatan: fix Print COA 19 Nov sudah di DEV (deploy user). **Sudah di DEV** (deploy user, terverifikasi fetch 25 Nov: DEV F01 = patch batchxls); cetak spool belum diuji |
 | 2026-11-25 | **Message arahkan ke Tim QA**: 6 teks message diganti agar user menghubungi Tim QA (mapping ZMAP_COA kosong, MIC belum di-record, value di luar limit, MIC campur kualitatif/kuantitatif, kolom Batch List belum diatur, kolom Batch List > 14). Hanya teks, logika tidak berubah. Patch `tests/qamsg/ZQMI_COA_F01.abap` + `ZQMI_COA_F02.abap` (di atas batchxls + printchk), push sandbox-new (RC 0, readback identik). Regresi 21 DO (basis DEV 25 Nov, `dev_25nov_b`): 0 GENERR, ZQM002/EXEC/ZQM003 **identik** dengan DEV as-is dan dengan hasil batchxls (`outputs/test_qamsg_20261125/`). **Belum di DEV** |
+| 2026-11-26 | **Ikon merah Out Limit (screen 0200)**: kolom Out Limit di layar Print COA kini menampilkan ikon `ICON_LED_RED` bila value di luar Lower/Upper Limit (sebelumnya hanya `X`). TOP: `TYPE-POOLS ICON` + field `IT_DETAIL-OUT_ICON`. F02: module PBO `TDETAIL_SET_ICON` (isi ikon dari `RANGE_FLAG`). Screen 0200: kolom `IT_DETAIL-RANGE_FLAG` diganti `IT_DETAIL-OUT_ICON` (atribut *As icon*), flow logic PBO tambah `MODULE TDETAIL_SET_ICON.` setelah `TDETAIL_GET_LINES`. Patch `tests/outicon/` (di atas qamsg), push sandbox-new (syntax RC 0, readback identik, dynpro generate RC 0; backup `outputs/dynpro_0200_sandbox-new_rpy_pre_icon.txt`). Logika nilai tidak berubah. **Belum di DEV**, belum diuji visual (sandbox tanpa data DO) |
+| 2026-11-26 | **Ikon merah Out Limit screen 0100 (layar utama)**: uji GUI DEV DO 0085006243 masih `X` karena layar utama Print COA adalah screen 0100 (`TCERTI`/`IT_DATA`), bukan 0200. Ditambah: TOP field `IT_DATA-OUT_ICON`; F02 module PBO `TCERTI_SET_ICON`; screen 0100 kolom `IT_DATA-RANGE_FLAG` → `IT_DATA-OUT_ICON` (*As icon*), flow logic PBO `MODULE TCERTI_SET_ICON.` setelah `TCERTI_GET_LINES`. Push sandbox-new (RC 0, readback identik, dynpro generate RC 0; backup `outputs/dynpro_0100_sandbox-new_rpy_pre_icon.txt`). **Belum di DEV** (DEV sudah punya versi 0200) |
 | 2026-11-17 | **Live test DEV dengan program versi sandbox** (alias + kolom Material + Opsi D, in-memory; program DEV tetap tanpa alias) `outputs/MT_20261117_live_sbxver.txt`, `outputs/LIMIT_20261117_live_sbxver.txt` | Value/lot/EXEC/ZQM003 15 DO skenario + DO 6281 **0 selisih** vs acuan (`MT_20261116_dev_after_zqm003fix.txt`); limit 178 baris = `LIMIT_20261116_before.txt`; limit ZQM003 = ZQM002; DO 6282/6284 value 9/9 = tabel AL-VALUE; limit DO 6280/6282/6284 9/9 = Opsi D |
 | 2026-11-17 | Opsi D limit alias (sandbox-new, harness DEV) `outputs/MT_20261117_limitD.txt` | 15 DO skenario + DO 6281 0 selisih; DO 6280/6282/6284 hanya limit berubah (value tetap) |
 | 2026-11-17 | Data uji AL-VALUE1 (DO 6282) dan AL-VALUE2 (DO 6284); regresi lengkap 19 DO `outputs/MT_20261117_regresi_all.txt` | 15 DO skenario + DO 6280/6281 **identik** dengan DEV terverifikasi 16 Nov; ZQM002 + EXEC identik dengan program asli sebelum semua perubahan. DO 6282/6284 = rata-rata manual 9/9 |
+| 2026-11-26 | Lot JR dari 20 sequence sebelumnya lintas 1 bulan (`GET_JR_PREV_LOT`, sandbox-new; DEV belum), `docs/RANCANGAN_JR_20_SEQ_SEBELUMNYA_20261126.md`, `outputs/MT_20261126_jrprev_new.txt` | 19 DO 0 selisih vs program asli `MT_20261126_jrprev_orig.txt`. **BERUBAH disengaja:** DO 6270 (JR `4 AAB 086 003` ambil `4 AAB 076 009`, Thickness 22.40 → 20.99, 11 MIC) dan DO 6279 (JR `V EC7 116 001/002` ambil `V EC7 106 001`, PEC7FDCD 0.540 → 0.470). Acuan baru berlaku setelah deploy DEV |
+| 2026-11-26 | **User deploy `GET_JR_PREV_LOT` ke DEV AIX** (F01 6293, identik patch); program DEV apa adanya 21 DO `outputs/MT_20261126_dev_after_jrprev.txt` | = harness patch (0 selisih). Acuan aktif baru: DO 6270 dan 6279 memakai nilai lintas bulan; 19 DO lain sama dengan acuan sebelumnya |
 
 
 ### 0.6 Data acuan per skenario (before alias, 16 Nov 2026) — **acuan compare utama**
 
 **Default testing = hasil real** (keputusan user 16 Nov 2026): bandingkan dengan kolom **Nilai asli** (hasil inspeksi SAP, tanpa override) per skenario/DO/MIC/lot. Override ZLOG_COA dan perubahan mapping **hanya diuji kalau user menyebut secara eksplisit**; selisih yang berasal dari keduanya dilaporkan terpisah, bukan sebagai selisih hasil. Diambil dari program DEV yang aktif 16 Nov 2026 (harness read-only, source = fetch 12 Nov), file mentah `outputs/MT_20261116_before_alias.txt` (ZQM002) dan `outputs/ALV_20261116_before_alias.txt` (ZQM003). Laporan: `docs/REGRESI_BEFORE_ALIAS_20261116.md`.
+
+**Update 26 Nov 2026 (aturan lot JR 20 sequence sebelumnya):** L-QM11 (DO 6270) dan ML-QM04 (DO 6279) punya tabel **Acuan aktif 26 Nov** di bawah tabel lama. Tabel lama disimpan sebagai riwayat. 19 DO lain tetap memakai tabel 16 Nov. Raw acuan 26 Nov: `outputs/MT_20261126_dev_after_jrprev.txt`.
 
 Arti kolom:
 - **Nilai asli**: nilai dari hasil inspeksi SAP tanpa override (untuk MIC yang di-override diambil dari golden 19 Okt; sama dengan `data_inspeksi_sap_gabungan.md` dan dengan kolom nilai ZQM003).
@@ -332,6 +338,8 @@ Kolom **Lower / Upper** = limit yang tercetak di COA (ZQM002, setelah limit mapp
 
 #### L-QM11: DO `0085006270` (SRAABI), customer 1141000026, mapping customer 1141000026
 
+**Acuan lama (16 Nov 2026, sebelum aturan JR 26 Nov). Disimpan sebagai riwayat, jangan dipakai untuk compare setelah 26 Nov.**
+
 | SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
 |:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
 | 1 | PAABTH00 | `040000020867` | 22.40 |  | **22.40** | 19.40 | 20.60 | = | = |  |
@@ -346,6 +354,23 @@ Kolom **Lower / Upper** = limit yang tercetak di COA (ZQM002, setelah limit mapp
 | 10 | SAABSTTR | `050000014263` | 40 |  | **40** | 38 | 42 | = | = |  |
 | 11 | PAABFDNT | `040000020867` | 0.450 |  | **0.450** | 0.300 | 0.500 | = | = |  |
 | 12 | PAABFDTR | `040000020867` | 0.562 |  | **0.562** | 0.300 | 0.600 | = | = |  |
+
+**Acuan aktif (26 Nov 2026, setelah `GET_JR_PREV_LOT` di DEV)**, `outputs/MT_20261126_dev_after_jrprev.txt`. JR `4 AAB 086 003` (awal Agustus, tanpa hasil) sekarang mengambil lot `040000020752` = `4 AAB 076 009` (Juli). JR `4 AAB 086 022` tetap dari `4 AAB 086 006` (lot `040000020851`). Lot tampil tetap `040000020867`. Detail: `docs/REGRESI_JR_PREV_SEQ_20261126.md`.
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | PAABTH00 | `040000020867` | 20.99 |  | **20.99** | 19.40 | 20.60 | = | = | Rata-rata JR 022 (dari 006: 22.40) + JR 003 (dari Juli 076 009: 19.58); lama 22.40 |
+| 2 | PAABTSMD | `040000020867` | 13.46 |  | **13.46** | 11.00 | 18.00 | = | = | Rata-rata JR 022 (dari 006: 14.00) + JR 003 (dari Juli 076 009: 12.92); lama 14.00 |
+| 3 | PAABTSTD | `040000020867` | 27.31 |  | **27.31** | 22.00 | 35.00 | = | = | Rata-rata JR 022 (dari 006: 26.90) + JR 003 (dari Juli 076 009: 27.71); lama 26.90 |
+| 4 | PAABELMD | `040000020867` | 166 |  | **166** | 120 | 240 | = | = | Rata-rata JR 022 (dari 006: 180) + JR 003 (dari Juli 076 009: 151); lama 180 |
+| 5 | PAABELTD | `040000020867` | 56 |  | **56** | 30 | 90 | = | = | Rata-rata JR 022 (dari 006: 65) + JR 003 (dari Juli 076 009: 46); lama 65 |
+| 6 | PAABSHMD | `040000020867` | 4.49 |  | **4.49** | 3.00 | 5.00 | = | = | Rata-rata JR 022 (dari 006: 4.65) + JR 003 (dari Juli 076 009: 4.33); lama 4.65 |
+| 7 | PAABSHTD | `040000020867` | 1.92 |  | **1.92** | 0.00 | 3.00 | = | = | Rata-rata JR 022 (dari 006: 1.78) + JR 003 (dari Juli 076 009: 2.05); lama 1.78 |
+| 8 | PAABHZ00 | `040000020867` | 1.38 |  | **1.38** | 1.00 | 2.00 | = | = | Rata-rata JR 022 (dari 006: 1.00) + JR 003 (dari Juli 076 009: 1.75); lama 1.00 |
+| 9 | PAABG400 | `040000020867` | 93 |  | **93** | 90 | 100 | = | = | Rata-rata JR 022 (dari 006: 89) + JR 003 (dari Juli 076 009: 97); lama 89 |
+| 10 | SAABSTTR | `050000014263` | 40 |  | **40** | 38 | 42 | = | = | Tidak berubah |
+| 11 | PAABFDNT | `040000020867` | 0.358 |  | **0.358** | 0.300 | 0.500 | = | = | JR 022 0.450 + JR 003 0.265; lama 0.450 |
+| 12 | PAABFDTR | `040000020867` | 0.467 |  | **0.467** | 0.300 | 0.600 | = | = | JR 022 0.562 + JR 003 0.371; lama 0.562 |
 
 #### L-QM12: DO `0085006271` (SRAABI), customer 1141100304, mapping umum (mapping customer 1141100304 di-flag DELETION 05.11.2026)
 
@@ -435,6 +460,8 @@ Kolom **Lower / Upper** = limit yang tercetak di COA (ZQM002, setelah limit mapp
 
 #### ML-QM04: DO `0085006279` (SREC7I), customer 1141100236, mapping umum
 
+**Acuan lama (16 Nov 2026, sebelum aturan JR 26 Nov). Disimpan sebagai riwayat, jangan dipakai untuk compare setelah 26 Nov.**
+
 | SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
 |:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
 | 1 | SVLCTSMD | `050000014331` | 16.15 |  | **16.15** | 12.00 | 0.00 | = | = |  |
@@ -447,6 +474,21 @@ Kolom **Lower / Upper** = limit yang tercetak di COA (ZQM002, setelah limit mapp
 | 8 | PEC7FDCD | `040000021127` | 0.540 |  | **0.540** | 0.300 | 0.800 | = | = |  |
 | 9 | SEC7MVTR | `050000014339` | 0.07 |  | **0.07** | 0.05 | 0.15 | = | = |  |
 | 10 | SEC7O2TR | `050000014339` | 0.07 |  | **0.07** | 0.05 | 0.15 | = | = |  |
+
+**Acuan aktif (26 Nov 2026, setelah `GET_JR_PREV_LOT` di DEV)**, `outputs/MT_20261126_dev_after_jrprev.txt`. JR `V EC7 116 001` dan `002` (awal November, tanpa hasil) sekarang mengambil lot `040000021117` = `V EC7 106 001` (Oktober, COF 0.400). `R EC7 106 001` tetap kosong. Detail: `docs/REGRESI_JR_PREV_SEQ_20261126.md`.
+
+| SEQ | MIC | Lot (INSLOT) | Nilai asli | Override ZLOG_COA | **Nilai print ZQM002** | **Lower** | **Upper** | ZQM003 nilai | ZQM003 limit | Catatan |
+|:-:|:--|:-:|--:|--:|--:|--:|--:|--:|:-:|:--|
+| 1 | SVLCTSMD | `050000014331` | 16.15 |  | **16.15** | 12.00 | 0.00 | = | = | Tidak berubah |
+| 2 | SVLCTSTD | `050000014331` | 24.17 |  | **24.17** | 22.00 | 0.00 | = | = | Tidak berubah |
+| 3 | SVLCELMD | `050000014331` | 237 |  | **237** | 0 | 300 | = | = | Tidak berubah |
+| 4 | SVLCELTD | `050000014331` | 73 |  | **73** | 0 | 80 | = | = | Tidak berubah |
+| 5 | SVLCSHMD | `050000014331` | 0.00 |  | **0.00** | 0.00 | 5.00 | = | = | Tidak berubah |
+| 6 | SVLCSHTD | `050000014331` | 0.00 |  | **0.00** | 0.00 | 4.00 | = | = | Tidak berubah |
+| 7 | SEC7STCD | `050000014339` | 39 |  | **39** | 38 | 42 | = | = | Tidak berubah |
+| 8 | PEC7FDCD | `040000021127` | 0.470 |  | **0.470** | 0.300 | 0.800 | = | = | Rata-rata R116 001 0.540, R116 002 0.540, V116 001 0.400, V116 002 0.400 (V dari Okt `V EC7 106 001`); lama 0.540 |
+| 9 | SEC7MVTR | `050000014339` | 0.07 |  | **0.07** | 0.05 | 0.15 | = | = | Tidak berubah |
+| 10 | SEC7O2TR | `050000014339` | 0.07 |  | **0.07** | 0.05 | 0.15 | = | = | Tidak berubah |
 
 #### Data uji alias (MIXED): DO `0085006281` (SRAABI), customer 1141000512, mapping umum
 

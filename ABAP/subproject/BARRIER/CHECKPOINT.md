@@ -3,6 +3,16 @@
 ## Terakhir Dikerjakan
 | Atribut | Isi |
 |---|---|
+| Waktu | 2026-11-26 |
+| Pekerjaan | Analisa laporan tester: NCR approval "hilang" di ZQM004 setelah update WVTR/OTR (DEV, batch SRRPAI/0000407498) |
+| Temuan | Approval TIDAK terhapus di ZLOG_BARRIER (guard v8 jalan). `GET_JUDGEMENT` mengabaikan baris jika UD R/C/L lebih baru dari CPUDT/CPUTM baris → tampil kosong, dan `GET_SHIPMENT` menimpa CANBESHIP=X. Direproduksi read-only di DEV |
+| Status | Keputusan: approval dibekukan. Patch `GET_JUDGEMENT` + syarat hitung ulang pushed sandbox-new, GENERATE_OK, TRS = lokal, uji dummy T1/T2 LULUS. Belum ke DEV (oleh user), belum uji GUI ZQM004 |
+| Dokumen | `outputs/uji_ncr_20261126/ANALISA_NCR_HILANG_DEV_20261126.md` |
+| Backup | `outputs/ZQMI_BARRIER_PASS_FAIL_dev_TRD_20261126.abap` |
+
+## Sebelumnya (19 Nov)
+| Atribut | Isi |
+|---|---|
 | Waktu | 2026-11-19 |
 | Pekerjaan | Re-apply guard NCR approval (v8) ke `ZQMI_BARRIER_PASS_FAIL` setelah sandbox ditimpa source dev terbaru (subcont 541/543 + FM `ZQM_GET_BATCH_CHANGE_GRADE`) |
 | Alasan | Dev masih pakai `MODIFY ZLOG_BARRIER FROM WA_JUDGEMENT` (full row dari WA basi) di `INSERT_JUDGEMENT` & `GET_SHIPMENT`: approval NCR (form `APPROVAL`) bisa tertimpa kosong saat job/re-run berjalan bersamaan, dan batch Approved di-soft-delete + versi baru |

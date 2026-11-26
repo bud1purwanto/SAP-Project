@@ -1,0 +1,517 @@
+RC     0
+H          0  PROGRAM                        ZQMI_COA
+H          0  SCREEN                         0100
+H          0  LANGUAGE                       E
+H          0  DESCRIPT                       Screen 0100
+H          0  TYPE                           N
+H          0  NEXTSCREEN                     0100
+H          0  LINES                          200
+H          0  COLUMNS                        255
+C          1  TYPE                           SCREEN
+C          1  NAME                           SCREEN
+C          1  LINE                           000
+C          1  COLUMN                         000
+C          1  LENGTH                         000
+C          1  HEIGHT                         000
+C          1  LOOP_BLOCK                     000
+C          1  LOOP_DISP                      000
+C          1  C_LINE_MIN                     000
+C          1  C_COLN_MIN                     000
+C          1  TC_FIXCOL                      000
+C          2  TYPE                           TABLE_CTRL
+C          2  NAME                           TCERTI
+C          2  ELEMENT_OF                     SCREEN
+C          2  LINE                           002
+C          2  COLUMN                         004
+C          2  LENGTH                         177
+C          2  HEIGHT                         021
+C          2  LOOP_BLOCK                     000
+C          2  LOOP_DISP                      000
+C          2  C_RESIZE_V                     X
+C          2  C_RESIZE_H                     X
+C          2  C_LINE_MIN                     005
+C          2  C_COLN_MIN                     015
+C          2  C_SCROLL_V                     X
+C          2  C_SCROLL_H                     X
+C          2  TC_TABTYPE                     ENTRY
+C          2  TC_SEPAR_V                     X
+C          2  TC_SEPAR_H                     X
+C          2  TC_HEADER                      X
+C          2  TC_CONFIG                      X
+C          2  TC_SEL_LNS                     SINGLE
+C          2  TC_SEL_CLS                     NONE
+C          2  TC_FIXCOL                      000
+F          1  CONT_TYPE                      SCREEN
+F          1  CONT_NAME                      SCREEN
+F          1  TYPE                           FRAME
+F          1  NAME                           %#AUTOTEXT001
+F          1  TEXT
+____________________________________________________________________________________
+F          1  LINE                           001
+F          1  COLUMN                         001
+F          1  LENGTH                         182
+F          1  VISLENGTH                      182
+F          1  HEIGHT                         024
+F          1  FORMAT                         CHAR
+F          1  REQU_ENTRY                     N
+F          2  CONT_TYPE                      SCREEN
+F          2  CONT_NAME                      SCREEN
+F          2  TYPE                           PUSH
+F          2  NAME                           TCERTI_TOP
+F          2  ICON_NAME                      ICON_FIRST_PAGE
+F          2  WITH_ICON                      X
+F          2  LINE                           023
+F          2  COLUMN                         004
+F          2  LENGTH                         004
+F          2  VISLENGTH                      003
+F          2  HEIGHT                         001
+F          2  GROUP1                         PAG
+F          2  PUSH_FCODE                     TCERTI_P--
+F          2  FORMAT                         CHAR
+F          2  REQU_ENTRY                     N
+F          3  CONT_TYPE                      SCREEN
+F          3  CONT_NAME                      SCREEN
+F          3  TYPE                           PUSH
+F          3  NAME                           TCERTI_PREVIOUS
+F          3  ICON_NAME                      ICON_PREVIOUS_PAGE
+F          3  WITH_ICON                      X
+F          3  LINE                           023
+F          3  COLUMN                         008
+F          3  LENGTH                         004
+F          3  VISLENGTH                      003
+F          3  HEIGHT                         001
+F          3  GROUP1                         PAG
+F          3  PUSH_FCODE                     TCERTI_P-
+F          3  FORMAT                         CHAR
+F          3  REQU_ENTRY                     N
+F          4  CONT_TYPE                      SCREEN
+F          4  CONT_NAME                      SCREEN
+F          4  TYPE                           PUSH
+F          4  NAME                           TCERTI_NEXT
+F          4  ICON_NAME                      ICON_NEXT_PAGE
+F          4  WITH_ICON                      X
+F          4  LINE                           023
+F          4  COLUMN                         012
+F          4  LENGTH                         004
+F          4  VISLENGTH                      003
+F          4  HEIGHT                         001
+F          4  GROUP1                         PAG
+F          4  PUSH_FCODE                     TCERTI_P+
+F          4  FORMAT                         CHAR
+F          4  REQU_ENTRY                     N
+F          5  CONT_TYPE                      SCREEN
+F          5  CONT_NAME                      SCREEN
+F          5  TYPE                           PUSH
+F          5  NAME                           TCERTI_BOTTOM
+F          5  ICON_NAME                      ICON_LAST_PAGE
+F          5  WITH_ICON                      X
+F          5  LINE                           023
+F          5  COLUMN                         016
+F          5  LENGTH                         004
+F          5  VISLENGTH                      003
+F          5  HEIGHT                         001
+F          5  GROUP1                         PAG
+F          5  PUSH_FCODE                     TCERTI_P++
+F          5  FORMAT                         CHAR
+F          5  REQU_ENTRY                     N
+F          6  CONT_TYPE                      SCREEN
+F          6  CONT_NAME                      SCREEN
+F          6  TYPE                           OKCODE
+F          6  TEXT                           ____________________
+F          6  LINE                           000
+F          6  COLUMN                         000
+F          6  LENGTH                         020
+F          6  VISLENGTH                      020
+F          6  HEIGHT                         001
+F          6  FORMAT                         CHAR
+F          6  INPUT_FLD                      X
+F          7  CONT_TYPE                      TABLE_CTRL
+F          7  CONT_NAME                      TCERTI
+F          7  TYPE                           TEXT
+F          7  NAME                           *IT_DATA-CHK
+F          7  TEXT                           Choose
+F          7  LINE                           001
+F          7  COLUMN                         001
+F          7  LENGTH                         006
+F          7  VISLENGTH                      009
+F          7  HEIGHT                         001
+F          7  FORMAT                         CHAR
+F          7  REQU_ENTRY                     N
+F          7  TC_HEADING                     X
+F          8  CONT_TYPE                      TABLE_CTRL
+F          8  CONT_NAME                      TCERTI
+F          8  TYPE                           TEXT
+F          8  NAME                           IT_DATA-VBELN
+F          8  TEXT                           Delivery
+F          8  LINE                           001
+F          8  COLUMN                         002
+F          8  LENGTH                         008
+F          8  VISLENGTH                      010
+F          8  HEIGHT                         001
+F          8  FORMAT                         CHAR
+F          8  REQU_ENTRY                     N
+F          8  TC_HEADING                     X
+F          9  CONT_TYPE                      TABLE_CTRL
+F          9  CONT_NAME                      TCERTI
+F          9  TYPE                           TEXT
+F          9  NAME                           IT_DATA-POSNR
+F          9  TEXT                           Item
+F          9  LINE                           001
+F          9  COLUMN                         003
+F          9  LENGTH                         004
+F          9  VISLENGTH                      006
+F          9  HEIGHT                         001
+F          9  FORMAT                         CHAR
+F          9  REQU_ENTRY                     N
+F          9  TC_HEADING                     X
+F         10  CONT_TYPE                      TABLE_CTRL
+F         10  CONT_NAME                      TCERTI
+F         10  TYPE                           TEXT
+F         10  NAME                           IT_DATA-MATNR
+F         10  TEXT                           Material
+F         10  LINE                           001
+F         10  COLUMN                         004
+F         10  LENGTH                         008
+F         10  VISLENGTH                      008
+F         10  HEIGHT                         001
+F         10  FORMAT                         CHAR
+F         10  REQU_ENTRY                     N
+F         10  TC_HEADING                     X
+F         11  CONT_TYPE                      TABLE_CTRL
+F         11  CONT_NAME                      TCERTI
+F         11  TYPE                           TEXT
+F         11  NAME                           IT_DATA-MIC
+F         11  TEXT                           MIC
+F         11  LINE                           001
+F         11  COLUMN                         005
+F         11  LENGTH                         003
+F         11  VISLENGTH                      008
+F         11  HEIGHT                         001
+F         11  FORMAT                         CHAR
+F         11  REQU_ENTRY                     N
+F         11  TC_HEADING                     X
+F         12  CONT_TYPE                      TABLE_CTRL
+F         12  CONT_NAME                      TCERTI
+F         12  TYPE                           TEXT
+F         12  NAME                           IT_DATA-MICDES
+F         12  TEXT                           MIC_Description
+F         12  LINE                           001
+F         12  COLUMN                         006
+F         12  LENGTH                         015
+F         12  VISLENGTH                      040
+F         12  HEIGHT                         001
+F         12  FORMAT                         CHAR
+F         12  REQU_ENTRY                     N
+F         12  TC_HEADING                     X
+F         13  CONT_TYPE                      TABLE_CTRL
+F         13  CONT_NAME                      TCERTI
+F         13  TYPE                           TEXT
+F         13  NAME                           IT_DATA-RANGE_FLAG
+F         13  TEXT                           Out_Limit
+F         13  LINE                           001
+F         13  COLUMN                         007
+F         13  LENGTH                         009
+F         13  VISLENGTH                      009
+F         13  HEIGHT                         001
+F         13  FORMAT                         CHAR
+F         13  REQU_ENTRY                     N
+F         13  TC_HEADING                     X
+F         14  CONT_TYPE                      TABLE_CTRL
+F         14  CONT_NAME                      TCERTI
+F         14  TYPE                           TEXT
+F         14  NAME                           UOM
+F         14  TEXT                           Unit_Of_Measure
+F         14  LINE                           001
+F         14  COLUMN                         008
+F         14  LENGTH                         015
+F         14  VISLENGTH                      012
+F         14  HEIGHT                         001
+F         14  FORMAT                         CHAR
+F         14  REQU_ENTRY                     N
+F         14  TC_HEADING                     X
+F         15  CONT_TYPE                      TABLE_CTRL
+F         15  CONT_NAME                      TCERTI
+F         15  TYPE                           TEXT
+F         15  NAME                           METHOD
+F         15  TEXT                           Method
+F         15  LINE                           001
+F         15  COLUMN                         009
+F         15  LENGTH                         006
+F         15  VISLENGTH                      030
+F         15  HEIGHT                         001
+F         15  FORMAT                         CHAR
+F         15  REQU_ENTRY                     N
+F         15  TC_HEADING                     X
+F         16  CONT_TYPE                      TABLE_CTRL
+F         16  CONT_NAME                      TCERTI
+F         16  TYPE                           TEXT
+F         16  NAME                           IT_DATA-MICMIN
+F         16  TEXT                           Lower_Limit
+F         16  LINE                           001
+F         16  COLUMN                         010
+F         16  LENGTH                         011
+F         16  VISLENGTH                      008
+F         16  HEIGHT                         001
+F         16  FORMAT                         CHAR
+F         16  REQU_ENTRY                     N
+F         16  TC_HEADING                     X
+F         17  CONT_TYPE                      TABLE_CTRL
+F         17  CONT_NAME                      TCERTI
+F         17  TYPE                           TEXT
+F         17  NAME                           IT_DATA-MICMAX
+F         17  TEXT                           Upper_Limit
+F         17  LINE                           001
+F         17  COLUMN                         011
+F         17  LENGTH                         011
+F         17  VISLENGTH                      008
+F         17  HEIGHT                         001
+F         17  FORMAT                         CHAR
+F         17  REQU_ENTRY                     N
+F         17  TC_HEADING                     X
+F         18  CONT_TYPE                      TABLE_CTRL
+F         18  CONT_NAME                      TCERTI
+F         18  TYPE                           TEXT
+F         18  NAME                           VALUE
+F         18  TEXT                           Value
+F         18  LINE                           001
+F         18  COLUMN                         012
+F         18  LENGTH                         005
+F         18  VISLENGTH                      008
+F         18  HEIGHT                         001
+F         18  FORMAT                         CHAR
+F         18  REQU_ENTRY                     N
+F         18  TC_HEADING                     X
+F         19  CONT_TYPE                      TABLE_CTRL
+F         19  CONT_NAME                      TCERTI
+F         19  TYPE                           CHECK
+F         19  NAME                           IT_DATA-CHK
+F         19  LINE                           001
+F         19  COLUMN                         001
+F         19  LENGTH                         001
+F         19  VISLENGTH                      009
+F         19  HEIGHT                         001
+F         19  PUSH_FCODE                     GRPCHK
+F         19  FORMAT                         CHAR
+F         19  INPUT_FLD                      X
+F         19  OUTPUT_FLD                     X
+F         20  CONT_TYPE                      TABLE_CTRL
+F         20  CONT_NAME                      TCERTI
+F         20  TYPE                           TEMPLATE
+F         20  NAME                           IT_DATA-VBELN
+F         20  TEXT                           __________
+F         20  LINE                           001
+F         20  COLUMN                         002
+F         20  LENGTH                         010
+F         20  VISLENGTH                      010
+F         20  HEIGHT                         001
+F         20  FORMAT                         CHAR
+F         20  OUTPUT_FLD                     X
+F         20  REQU_ENTRY                     N
+F         21  CONT_TYPE                      TABLE_CTRL
+F         21  CONT_NAME                      TCERTI
+F         21  TYPE                           TEMPLATE
+F         21  NAME                           IT_DATA-UECHA
+F         21  TEXT                           ______
+F         21  LINE                           001
+F         21  COLUMN                         003
+F         21  LENGTH                         006
+F         21  VISLENGTH                      006
+F         21  HEIGHT                         001
+F         21  FORMAT                         NUMC
+F         21  OUTPUT_FLD                     X
+F         21  REQU_ENTRY                     N
+F         22  CONT_TYPE                      TABLE_CTRL
+F         22  CONT_NAME                      TCERTI
+F         22  TYPE                           TEMPLATE
+F         22  NAME                           IT_DATA-MATNR
+F         22  TEXT                           ________
+F         22  LINE                           001
+F         22  COLUMN                         004
+F         22  LENGTH                         008
+F         22  VISLENGTH                      008
+F         22  HEIGHT                         001
+F         22  FORMAT                         CHAR
+F         22  OUTPUT_FLD                     X
+F         22  REQU_ENTRY                     N
+F         23  CONT_TYPE                      TABLE_CTRL
+F         23  CONT_NAME                      TCERTI
+F         23  TYPE                           TEMPLATE
+F         23  NAME                           IT_DATA-MIC
+F         23  TEXT                           ________
+F         23  LINE                           001
+F         23  COLUMN                         005
+F         23  LENGTH                         008
+F         23  VISLENGTH                      008
+F         23  HEIGHT                         001
+F         23  FORMAT                         CHAR
+F         23  OUTPUT_FLD                     X
+F         23  REQU_ENTRY                     N
+F         24  CONT_TYPE                      TABLE_CTRL
+F         24  CONT_NAME                      TCERTI
+F         24  TYPE                           TEMPLATE
+F         24  NAME                           IT_DATA-MICDES
+F         24  TEXT
+________________________________________
+F         24  LINE                           001
+F         24  COLUMN                         006
+F         24  LENGTH                         040
+F         24  VISLENGTH                      040
+F         24  HEIGHT                         001
+F         24  FORMAT                         CHAR
+F         24  OUTPUT_FLD                     X
+F         24  REQU_ENTRY                     N
+F         25  CONT_TYPE                      TABLE_CTRL
+F         25  CONT_NAME                      TCERTI
+F         25  TYPE                           TEMPLATE
+F         25  NAME                           IT_DATA-RANGE_FLAG
+F         25  TEXT                           _
+F         25  LINE                           001
+F         25  COLUMN                         007
+F         25  LENGTH                         001
+F         25  VISLENGTH                      009
+F         25  HEIGHT                         001
+F         25  FORMAT                         CHAR
+F         25  OUTPUT_FLD                     X
+F         25  OUTPUTONLY                     X
+F         25  REQU_ENTRY                     N
+F         26  CONT_TYPE                      TABLE_CTRL
+F         26  CONT_NAME                      TCERTI
+F         26  TYPE                           TEMPLATE
+F         26  NAME                           IT_DATA-UOM
+F         26  TEXT                           ____________
+F         26  ROLLING                        X
+F         26  LINE                           001
+F         26  COLUMN                         008
+F         26  LENGTH                         012
+F         26  VISLENGTH                      012
+F         26  HEIGHT                         001
+F         26  FORMAT                         CHAR
+F         26  INPUT_FLD                      X
+F         26  OUTPUT_FLD                     X
+F         27  CONT_TYPE                      TABLE_CTRL
+F         27  CONT_NAME                      TCERTI
+F         27  TYPE                           TEMPLATE
+F         27  NAME                           IT_DATA-METHOD
+F         27  TEXT
+___________________________________________
+F         27  ROLLING                        X
+F         27  LINE                           001
+F         27  COLUMN                         009
+F         27  LENGTH                         043
+F         27  VISLENGTH                      030
+F         27  HEIGHT                         001
+F         27  FORMAT                         CHAR
+F         27  INPUT_FLD                      X
+F         27  OUTPUT_FLD                     X
+F         28  CONT_TYPE                      TABLE_CTRL
+F         28  CONT_NAME                      TCERTI
+F         28  TYPE                           TEMPLATE
+F         28  NAME                           IT_DATA-MICMIN
+F         28  TEXT                           ________
+F         28  LINE                           001
+F         28  COLUMN                         010
+F         28  LENGTH                         008
+F         28  VISLENGTH                      008
+F         28  HEIGHT                         001
+F         28  FORMAT                         CHAR
+F         28  OUTPUT_FLD                     X
+F         28  REQU_ENTRY                     N
+F         29  CONT_TYPE                      TABLE_CTRL
+F         29  CONT_NAME                      TCERTI
+F         29  TYPE                           TEMPLATE
+F         29  NAME                           IT_DATA-MICMAX
+F         29  TEXT                           ________
+F         29  LINE                           001
+F         29  COLUMN                         011
+F         29  LENGTH                         008
+F         29  VISLENGTH                      008
+F         29  HEIGHT                         001
+F         29  FORMAT                         CHAR
+F         29  OUTPUT_FLD                     X
+F         29  REQU_ENTRY                     N
+F         30  CONT_TYPE                      TABLE_CTRL
+F         30  CONT_NAME                      TCERTI
+F         30  TYPE                           TEMPLATE
+F         30  NAME                           IT_DATA-CMICMIT
+F         30  TEXT                           ________
+F         30  LINE                           001
+F         30  COLUMN                         012
+F         30  LENGTH                         008
+F         30  VISLENGTH                      008
+F         30  HEIGHT                         001
+F         30  FORMAT                         CHAR
+F         30  INPUT_FLD                      X
+F         30  OUTPUT_FLD                     X
+L          1
+L          2
+PROCESS BEFORE OUTPUT.
+L          3
+*&SPWIZARD: PBO FLOW LOGIC FOR TABLECONTROL 'TCERTI'
+L          4
+  MODULE TCERTI_CHANGE_TC_ATTR.
+L          5
+*&SPWIZARD: MODULE TCERTI_CHANGE_COL_ATTR.
+L          6
+  LOOP AT   IT_DATA
+L          7
+       WITH CONTROL TCERTI
+L          8
+       CURSOR TCERTI-CURRENT_LINE.
+L          9
+    MODULE TCERTI_GET_LINES.
+L         10
+*&SPWIZARD:   MODULE TCERTI_CHANGE_FIELD_ATTR
+L         11
+  ENDLOOP.
+L         12
+L         13
+L         14
+  MODULE STATUS_0100.
+L         15
+L         16
+PROCESS AFTER INPUT.
+L         17
+*&SPWIZARD: PAI FLOW LOGIC FOR TABLECONTROL 'TCERTI'
+L         18
+  LOOP AT IT_DATA.
+L         19
+    CHAIN.
+L         20
+      FIELD IT_DATA-CHK.
+L         21
+      FIELD IT_DATA-VBELN.
+L         22
+      FIELD IT_DATA-UECHA.
+L         23
+      FIELD IT_DATA-MATNR.
+L         24
+      FIELD IT_DATA-MIC.
+L         25
+      FIELD IT_DATA-MICDES.
+L         26
+      FIELD IT_DATA-UOM.
+L         27
+      FIELD IT_DATA-METHOD.
+L         28
+      FIELD IT_DATA-MICMIN.
+L         29
+      FIELD IT_DATA-MICMAX.
+L         30
+      FIELD IT_DATA-CMICMIT.
+L         31
+      MODULE TCTIMB_MODIFY ON CHAIN-REQUEST. ""
+L         32
+    endchain.
+L         33
+  ENDLOOP.
+L         34
+  MODULE TCERTI_USER_COMMAND.
+L         35
+*&SPWIZARD: MODULE TCERTI_CHANGE_TC_ATTR.
+L         36
+*&SPWIZARD: MODULE TCERTI_CHANGE_COL_ATTR.
+L         37
+L         38
+L         39
+  MODULE USER_COMMAND_0100.
+P          0

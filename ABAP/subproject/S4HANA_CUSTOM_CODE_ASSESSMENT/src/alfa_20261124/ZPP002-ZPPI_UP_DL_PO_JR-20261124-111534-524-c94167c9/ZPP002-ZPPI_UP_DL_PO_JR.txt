@@ -1,0 +1,520 @@
+﻿Input: ZPP002
+Source SAP development (RFC baca-saja): ZPPI_UP_DL_PO_JR
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZPPI_UP_DL_PO_JR:51 | AT SELECTION-SCREEN > WHEN 'ONLI'. > IF BUT1 = 'X'. | SUBMIT ZPPI_UP_REV_PR_JR VIA SELECTION-SCREEN AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_DL_PO_JR:55 | AT SELECTION-SCREEN > WHEN 'ONLI'. > ELSEIF BUT2 = 'X'. | SUBMIT ZPPI_DL_PO_JR VIA SELECTION-SCREEN AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_DL_PO_JR:59 | AT SELECTION-SCREEN > WHEN 'ONLI'. > ELSEIF BUT3 = 'X'. | SUBMIT ZPPI_GCHART_PR_JR VIA SELECTION-SCREEN AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_DL_PO_JR:63 | AT SELECTION-SCREEN > WHEN 'INFO'. | PERFORM F_PROG_INFO USING V_PROG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JR:20 | START-OF-SELECTION | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JR:21 | START-OF-SELECTION | PERFORM REPORT. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:69 | FORM GANTCHART | PERFORM CONVERT USING WA_ITEM-AUFNR WA_ITEM-ZLINE WA_ITEM-ZZCODE WA_ITEM-ZWIDTH WA_ITEM-ZLENGTH | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:77 | FORM GANTCHART > IF ZOK = 0 AND ZNOTOK = 0. | PERFORM COUNT_TIME USING WA_ITEM-FSAVZ WA_ITEM-FSEDZ WA_ITEM-FSAVD WA_ITEM-FSEDD CHANGING ZDIFF. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:79 | FORM GANTCHART > IF ZOK = 0 AND ZNOTOK = 0. > IF WA_ITEM-AUART NE 'ZP90'. | PERFORM FILL_ELEM USING '' WA_ITEM-FSAVD WA_ITEM-FSAVZ ZDIFF 'M' 'RED' '20' 'C'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:81 | FORM GANTCHART > IF ZOK = 0 AND ZNOTOK = 0. > ELSE. | PERFORM FILL_ELEM USING '' WA_ITEM-FSAVD WA_ITEM-FSAVZ ZDIFF 'M' 'BLUE' '20' 'C'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:86 | FORM GANTCHART > ELSE. | PERFORM COUNT_TIME USING FSAVZ FSEDZ FSAVD FSEDD CHANGING ZDIFF. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:88 | FORM GANTCHART > ELSE. > IF WA_ITEM-AUART NE 'ZP90'. | PERFORM FILL_ELEM USING '' FSAVD FSAVZ ZDIFF 'M' 'RED' '20' 'C'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:90 | FORM GANTCHART > ELSE. > ELSE. | PERFORM FILL_ELEM USING '' FSAVD FSAVZ ZDIFF 'M' 'BLUE' '20' 'C'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:97 | FORM GANTCHART > IF ZOK > '0.0'. | PERFORM CONVERT USING WA_ITEM-AUFNR WA_ITEM-ZLINE WA_ITEM-ZZCODE WA_ITEM-ZWIDTH WA_ITEM-ZLENGTH | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:107 | FORM GANTCHART > IF ZOK > '0.0'. | PERFORM COUNT_TIME USING WA_ITEM2-ISDZ WA_ITEM2-IEDZ WA_ITEM2-ISDD WA_ITEM2-IEDD CHANGING ZDIFF. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:108 | FORM GANTCHART > IF ZOK > '0.0'. | PERFORM FILL_ELEM USING '' WA_ITEM2-ISDD WA_ITEM2-ISDZ ZDIFF 'M' COL '20' 'C'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:116 | FORM GANTCHART > IF ZNOTOK   > '0.0'. | PERFORM CONVERT USING WA_ITEM-AUFNR WA_ITEM-ZLINE WA_ITEM-ZZCODE WA_ITEM-ZWIDTH WA_ITEM-ZLENGTH | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:127 | FORM GANTCHART > IF ZNOTOK   > '0.0'. | PERFORM COUNT_TIME USING WA_ITEM2-ISDZ WA_ITEM2-IEDZ WA_ITEM2-ISDD WA_ITEM2-IEDD CHANGING ZDIFF. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:128 | FORM GANTCHART > IF ZNOTOK   > '0.0'. | PERFORM FILL_ELEM USING '' WA_ITEM2-ISDD WA_ITEM2-ISDZ ZDIFF 'M' COL '20' 'C'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:287 | FORM REPORT > IF LINE = 0. | MESSAGE 'No data' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:291 | FORM REPORT | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:292 | FORM REPORT | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:293 | FORM REPORT | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRF01:532 | FORM F_USER_COMMAND > WHEN '&RFRESH'. | PERFORM GET_DATA. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_GCHART_PR_JRF01:534 | FORM F_USER_COMMAND > WHEN '&RFRESH'. | PERFORM F_LIST_DETAIL. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_GCHART_PR_JRF01:538 | FORM F_USER_COMMAND > WHEN '&UP'. | SUBMIT ZPPI_UP_DL_PO_JR VIA SELECTION-SCREEN. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_GCHART_PR_JRF01:540 | FORM F_USER_COMMAND > WHEN '&BACK'. | SUBMIT ZPPI_GCHART_PR_JR VIA SELECTION-SCREEN. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_GCHART_PR_JRF01:543 | FORM F_USER_COMMAND > WHEN '&GRAP'. | PERFORM GANTCHART. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_GCHART_PR_JRF01:580 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG_ICON USING 'TA_ITEM' : | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRTOP:125 | AT SELECTION-SCREEN | PERFORM F4_ZLINE . | Tinjau kondisi dan hasil di ECC.
+  ZPPI_GCHART_PR_JRTOP:128 | AT SELECTION-SCREEN | PERFORM F4_ZLINE . | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JR:29 | START-OF-SELECTION | PERFORM CHECK_STATUS. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JR:30 | START-OF-SELECTION | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JR:32 | START-OF-SELECTION | PERFORM ALV_HIE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JRF02:14 | FORM DETAIL_DISPLAY | PERFORM BUILD_FIELDCAT. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_DL_PO_JRF02:15 | FORM DETAIL_DISPLAY | PERFORM BUILD_LAYOUT. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_DL_PO_JRF02:212 | FORM ALV_HIE | PERFORM BUILD_FIELDCAT_HIE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JRF02:213 | FORM ALV_HIE | PERFORM BUILD_LAYOUT_HIE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JRF02:214 | FORM ALV_HIE | PERFORM BUILD_KEY_HIE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JRF02:215 | FORM ALV_HIE | PERFORM LIST_DISPLAY_HIE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JRF02:943 | FORM F_IMPORT_EXCEL > IF SY-SUBRC <> 0. | MESSAGE W002(ZMM) WITH 'Download Error'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JRF01:662 | FORM ALV | PERFORM F_LAYOUT. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_DL_PO_JRF01:663 | FORM ALV | PERFORM F_FIELD_CATALOG. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_DL_PO_JRF01:664 | FORM ALV | PERFORM F_SORT. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_DL_PO_JRF01:665 | FORM ALV | PERFORM F_LIST_DETAIL. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_DL_PO_JRF01:746 | FORM F_USER_COMMAND > WHEN 'REFRESH'. | PERFORM GET_DATA. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_DL_PO_JRF01:747 | FORM F_USER_COMMAND > WHEN 'REFRESH'. | PERFORM ALV_HIE. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_DL_PO_JRF01:789 | FORM F_USER_COMMAND > WHEN 'TECO'. > IF SY-SUBRC NE 0. > ELSE. | MESSAGE MESSAGE TYPE 'I'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_DL_PO_JRF01:819 | FORM F_USER_COMMAND > WHEN '&EXCEL'. | PERFORM F_IMPORT_EXCEL. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZPPI_DL_PO_JRF01:851 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG2 USING 'IT_REPORT' : | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JRTOP:204 | AT SELECTION-SCREEN | PERFORM F4_ZLINE . | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JRTOP:207 | AT SELECTION-SCREEN | PERFORM F4_ZLINE . | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JRTOP:210 | AT SELECTION-SCREEN | PERFORM F4_ZCODE . | Tinjau kondisi dan hasil di ECC.
+  ZPPI_DL_PO_JRTOP:213 | AT SELECTION-SCREEN | PERFORM F4_ZCODE . | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR:20 | START-OF-SELECTION | PERFORM UPLOAD. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR:21 | START-OF-SELECTION | PERFORM RECORD. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:44 | FORM UPLOAD > IF SY-SUBRC <> 0. | MESSAGE W000(0K) WITH 'Upload Error'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:62 | FORM UPLOAD | PERFORM GET_MAPPING. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:63 | FORM UPLOAD | PERFORM VALIDASI. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:142 | FORM VALIDASI > IF V_HAS_SPECIAL = 'X'. | MESSAGE V_MSG TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:250 | FORM VALIDASI > IF IT_WARNING[] IS NOT INITIAL. > IF SY-XCODE EQ '&AC1'. | PERFORM REPORT. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:283 | FORM RECORD > IF LINE NE 0. > IF TA_UPLOAD IS NOT INITIAL. | PERFORM UPLOAD_PO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:287 | FORM RECORD > IF LINE NE 0. > IF TA_REV IS NOT INITIAL. | PERFORM REVISI_PO. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:291 | FORM RECORD > IF LINE NE 0. > IF SY-SUBRC = 0. | PERFORM INSERT_TO_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:294 | FORM RECORD > IF LINE NE 0. | PERFORM REPORT. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:296 | FORM RECORD > ELSE. | MESSAGE 'Upload Error' TYPE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:822 | FORM UPLOAD_PO | CALL TRANSACTION 'COR1' USING BDC_DATA OPTIONS FROM OPTION MESSAGES INTO L_TA_MSG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:945 | FORM UPLOAD_PO > IF SY-SUBRC NE 0 AND ( WA_UPLOAD-ORTYPE EQ 'ZP03' | PERFORM CONVERT_DATE_I USING WA_UPLOAD-SDATE CHANGING V_DATE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:948 | FORM UPLOAD_PO > IF SY-SUBRC NE 0 AND ( WA_UPLOAD-ORTYPE EQ 'ZP03' | PERFORM CONVERT_DATE_I USING WA_UPLOAD-FDATE CHANGING V_DATE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:983 | FORM UPLOAD_PO > IF SY-SUBRC NE 0 AND ( WA_UPLOAD-ORTYPE EQ 'ZP03' > IF LS_SUBRC EQ 0. | PERFORM PROCESS_DELAYING. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:1068 | FORM UPLOAD_PO > IF SY-SUBRC NE 0 AND ( WA_UPLOAD-ORTYPE EQ 'ZP03' > IF LS_SUBRC EQ 0. | CALL TRANSACTION 'COR2' USING BDC_DATA OPTIONS FROM OPTION MESSAGES INTO L_TA_MSG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:1358 | FORM REVISI_PO | CALL TRANSACTION 'COR2' USING BDC_DATA OPTIONS FROM OPTION MESSAGES INTO L_TA_MSG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:1538 | FORM REVISI_PO > IF SY-SUBRC NE 0 AND ( WA_REV-ORTYPE EQ 'ZP03' > IF IT_AUFK[] IS INITIAL. | PERFORM CONVERT_DATE_I USING WA_REV-SDATE CHANGING V_DATE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:1541 | FORM REVISI_PO > IF SY-SUBRC NE 0 AND ( WA_REV-ORTYPE EQ 'ZP03' > IF IT_AUFK[] IS INITIAL. | PERFORM CONVERT_DATE_I USING WA_REV-FDATE CHANGING V_DATE. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:1581 | FORM REVISI_PO > IF SY-SUBRC NE 0 AND ( WA_REV-ORTYPE EQ 'ZP03' | PERFORM PROCESS_DELAYING. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:1723 | FORM REVISI_PO > IF SY-SUBRC NE 0 AND ( WA_REV-ORTYPE EQ 'ZP03' | CALL TRANSACTION 'COR2' USING BDC_DATA OPTIONS FROM OPTION MESSAGES INTO L_TA_MSG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:1882 | FORM REPORT | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:1883 | FORM REPORT | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:1884 | FORM REPORT | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:1979 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG_ICON_WT_ZERO USING 'TA_DETAIL' : | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_F01:2024 | FORM INSERT_TO_SQL > IF R_AUFNR[] IS NOT INITIAL. | SUBMIT ZTPPR_JR_PLANNING WITH S_AUFNR IN R_AUFNR AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  LZMMCHARU02:34 | IF T NE 'F' AND T NE 'P' AND T NE 'I'. | MESSAGE E102(MM) WITH 'INPUT' RAISING INPUT_INVALID. | Tinjau kondisi dan hasil di ECC.
+  LZMMCHARU02:42 | IF T_OUT NE 'F' AND T_OUT NE 'P' AND T_OUT NE 'I'. | MESSAGE E102(MM) WITH 'OUTPUT' RAISING OUTPUT_INVALID. | Tinjau kondisi dan hasil di ECC.
+  LZMMCHARU02:84 | Konteks perlu ditinjau | PERFORM Z_FLOAT_VERGLEICH | Tinjau kondisi dan hasil di ECC.
+  LZMMCHARU02:94 | Konteks perlu ditinjau | PERFORM Z_FLOAT_VERGLEICH | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_JR_PLANNING:65 | START-OF-SELECTION | PERFORM CHECK_SERVER. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_JR_PLANNING:67 | START-OF-SELECTION | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_JR_PLANNING:72 | START-OF-SELECTION > IF IT_DATA[] IS INITIAL. | PERFORM UPDATE_LOG_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_JR_PLANNING:74 | START-OF-SELECTION > ELSE. | PERFORM INSERT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_JR_PLANNING:75 | START-OF-SELECTION > ELSE. | PERFORM UPDATE_LOG_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZTPPR_JR_PLANNING:168 | FORM GET_DATA | PERFORM GET_STAT_ORDER USING IT_EXEC-OBJNR IT_EXEC-AUFNR CHANGING IT_EXEC-ZSTAT. | Tinjau kondisi dan hasil di ECC.
+  ZINCL_ERP_SQL:70 | Konteks perlu ditinjau | PERFORM CONNECT_SQL. | Tinjau kondisi dan hasil di ECC.
+  ZINCL_ERP_SQL:71 | Konteks perlu ditinjau | PERFORM INSERT_LOG USING VARSTATUS VARMSG. | Tinjau kondisi dan hasil di ECC.
+  ZINCL_ERP_SQL:93 | FORM INSERT_LOG | MESSAGE LEX_ROOT TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZINCL_ERP_SQL:134 | FORM UPDATE_LOG_SQL | MESSAGE LEX_ROOT TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZPPI_UP_REV_PR_JR_TOP:190 | AT SELECTION-SCREEN | PERFORM F4_OPEN_FILE. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZPPI_UP_DL_PO_JR (66 baris)
+  18 | Field DDIC | ZPROGINFO-PGMNA
+  20 | Layar Seleksi | SELECTION-SCREEN: SKIP,
+  21 | Teks Seleksi | TEXT-100
+  23 | Layar Seleksi | PARAMETERS:     BUT1  RADIOBUTTON GROUP GRP1.
+  24 | Layar Seleksi | SELECTION-SCREEN: POSITION 4, COMMENT (45) TEXT-110,
+  24 | Teks Seleksi | TEXT-110
+  26 | Layar Seleksi | SELECTION-SCREEN: END OF LINE,
+  28 | Layar Seleksi | PARAMETERS:     BUT2 RADIOBUTTON GROUP GRP1.
+  29 | Layar Seleksi | SELECTION-SCREEN: POSITION 4, COMMENT (50) TEXT-120,
+  29 | Teks Seleksi | TEXT-120
+  32 | Layar Seleksi | PARAMETERS:     BUT3 TYPE C RADIOBUTTON GROUP GRP1 .
+  33 | Layar Seleksi | SELECTION-SCREEN: POSITION 4, COMMENT (50) TEXT-130,
+  33 | Teks Seleksi | TEXT-130
+  37 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK INFO1 WITH FRAME.
+  38 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  39 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK INFO1.
+  17 | includes | Z_PROG_INFO
+  51 | submitPrograms | ZPPI_UP_REV_PR_JR
+  55 | submitPrograms | ZPPI_DL_PO_JR
+  59 | submitPrograms | ZPPI_GCHART_PR_JR
+
+Objek ZPPI_GCHART_PR_JR (21 baris)
+  16 | includes | ZPPI_GCHART_PR_JRTOP
+  17 | includes | ZPPI_GCHART_PR_JRF01
+
+Objek ZPPI_GCHART_PR_JRF01 (710 baris)
+  13 | Field DDIC | AFRU-IEDD
+  14 | Field DDIC | AFRU-ISDD
+  15 | Field DDIC | AFRU-IEDZ
+  16 | Field DDIC | AFRU-ISDZ
+  17 | Field DDIC | AFVV-FSEDZ
+  18 | Field DDIC | AFVV-FSEDD
+  19 | Field DDIC | AFVV-FSAVZ
+  20 | Field DDIC | AFVV-FSAVD
+  519 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN' EXCLUDING FT_EXTAB.
+  525 | Field DDIC | SY-UCOMM
+  538 | submitPrograms | ZPPI_UP_DL_PO_JR
+  540 | submitPrograms | ZPPI_GCHART_PR_JR
+  135 | callFunctions | GRAPH_GANTT
+  267 | callFunctions | DELTA_TIME_DAY_HOUR
+  370 | callFunctions | VB_INIT
+  372 | callFunctions | VB_BATCH_GET_DETAIL
+  487 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  634 | callFunctions | CONVERSION_EXIT_ALPHA_OUTPUT
+  696 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  306 | tableReads | AUFK
+  306 | tableReads | AFKO
+  330 | tableReads | JEST
+  338 | tableReads | AUFM
+  346 | tableReads | MSEG
+  401 | tableReads | AFVV
+  401 | tableReads | AFVC
+  401 | tableReads | AFRU
+  454 | tableReads | CAWNT
+  454 | tableReads | CAWN
+  467 | databaseWrites | TA_ITEM
+
+Objek ZPPI_GCHART_PR_JRTOP (128 baris)
+  7 | Tipe DDIC | AUFK
+  10 | Field DDIC | AFVV-FSAVD
+  22 | Field DDIC | MSEG-SGTXT
+  24 | Field DDIC | AUFK-ZLENGTH
+  25 | Field DDIC | AUFK-ZLENGTH
+  28 | Field DDIC | AUFK-AUFNR
+  29 | Field DDIC | AUFK-AUART
+  30 | Field DDIC | AUFK-ZLINE
+  31 | Field DDIC | AUFK-ZCODE
+  32 | Field DDIC | AUFK-ZWIDTH
+  33 | Field DDIC | AUFK-ZLENGTH
+  34 | Field DDIC | AUFK-ZWIDTH
+  35 | Field DDIC | AUFK-ZLENGTH
+  36 | Field DDIC | AUFK-ZCUSTM
+  37 | Field DDIC | AUFK-WERKS
+  38 | Field DDIC | AFKO-GAMNG
+  39 | Field DDIC | AFKO-PLNBEZ
+  40 | Field DDIC | MSEG-CHARG
+  42 | Field DDIC | AFVV-FSAVD
+  43 | Field DDIC | AFVV-FSAVZ
+  44 | Field DDIC | AFVV-FSEDD
+  45 | Field DDIC | AFVV-FSEDZ
+  46 | Field DDIC | AFRU-ISDD
+  47 | Field DDIC | AFRU-ISDZ
+  48 | Field DDIC | AFRU-IEDD
+  49 | Field DDIC | AFRU-IEDZ
+  50 | Field DDIC | AFRU-STZHL
+  53 | Field DDIC | AUFK-OBJNR
+  54 | Field DDIC | JEST-STAT
+  66 | Field DDIC | MSEG-CHARG
+  80 | Field DDIC | SY-TABIX
+  103 | Field DDIC | MSEG-MBLNR
+  104 | Field DDIC | MSEG-MJAHR
+  105 | Field DDIC | MSEG-ZEILE
+  108 | Field DDIC | MSEG-CHARG
+  110 | Field DDIC | JEST-STAT
+  118 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOCK1 WITH FRAME TITLE TEXT-001.
+  118 | Teks Seleksi | TEXT-001
+  119 | Layar Seleksi | SELECT-OPTIONS  : ZLINE FOR AUFK-ZLINE,
+  119 | Field DDIC | AUFK-ZLINE
+  120 | Field DDIC | AFKO-GSTRP
+  121 | Field DDIC | AUFK-AUFNR
+  122 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOCK1.
+  124 | Field DDIC | ZLINE-LOW
+  127 | Field DDIC | ZLINE-HIGH
+  5 | includes | ZABAPALV
+
+Objek ZABAPALV (660 baris)
+  7 | Field DDIC | SY-REPID
+  27 | Field DDIC | SY-DATUM
+  28 | Field DDIC | SY-DATUM
+  559 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+
+Objek ZPPI_DL_PO_JR (32 baris)
+  16 | includes | ZPPI_DL_PO_JRTOP
+  18 | includes | ZPPI_DL_PO_JRF01
+  19 | includes | ZPPI_DL_PO_JRF02
+
+Objek ZPPI_DL_PO_JRF02 (948 baris)
+  648 | Class dan Interface | CL_GUI_FRONTEND_SERVICES
+  18 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  580 | callFunctions | REUSE_ALV_HIERSEQ_LIST_DISPLAY
+  655 | callFunctions | POC_GET_COMPUTER_NAME
+  908 | callFunctions | GUI_DOWNLOAD
+
+Objek ZPPI_DL_PO_JRF01 (1013 baris)
+  732 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN' EXCLUDING T_EXTAB.
+  738 | Field DDIC | SY-UCOMM
+  83 | callFunctions | STATUS_TEXT_EDIT
+  298 | callFunctions | VB_INIT
+  299 | callFunctions | VB_BATCH_GET_DETAIL
+  678 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  757 | callFunctions | BAPI_PROCORD_COMPLETE_TECH
+  765 | callFunctions | BAPI_TRANSACTION_COMMIT
+  784 | callFunctions | C14Z_MESSAGES_SHOW_AS_POPUP
+  904 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  18 | tableReads | AFKO
+  18 | tableReads | AUFK
+  18 | tableReads | AFPO
+  61 | tableReads | JEST
+  148 | tableReads | AFRU
+  214 | tableReads | MSEG
+  381 | tableReads | AFWI
+  612 | tableReads | CAWNT
+  612 | tableReads | CAWN
+  620 | tableReads | MCHB
+
+Objek ZPPI_DL_PO_JRTOP (213 baris)
+  8 | Tipe DDIC | AUFK
+  12 | Field DDIC | AUFK-AUFNR
+  13 | Field DDIC | AFKO-PLNBEZ
+  14 | Field DDIC | AUFK-WERKS
+  15 | Field DDIC | AUFK-AUART
+  16 | Field DDIC | AFKO-GAMNG
+  17 | Field DDIC | AFKO-GMEIN
+  18 | Field DDIC | AFKO-GSTRP
+  19 | Field DDIC | AFKO-GSUZP
+  20 | Field DDIC | AFPO-VERID
+  23 | Field DDIC | AUFK-ZWIDTH
+  24 | Field DDIC | AUFK-ZLENGTH
+  26 | Field DDIC | AUFK-ZTREAT
+  27 | Field DDIC | AUFK-ZLINE
+  28 | Field DDIC | AUFK-ZMONTH
+  29 | Field DDIC | AUFK-ZCUSTM
+  30 | Field DDIC | AUFK-ZNOSHEET
+  31 | Field DDIC | AFKO-SBMNG
+  32 | Field DDIC | AFKO-SBMEH
+  33 | Field DDIC | MSEG-ERFMG
+  34 | Field DDIC | MSEG-ERFME
+  35 | Field DDIC | AFRU-ISDD
+  36 | Field DDIC | AFRU-ISDZ
+  37 | Field DDIC | MSEG-CHARG
+  38 | Field DDIC | AFPO-WEMNG
+  39 | Field DDIC | AFRU-IEDD
+  40 | Field DDIC | AFRU-IEDZ
+  41 | Field DDIC | AFRU-ISM01
+  57 | Field DDIC | AFRU-PERNR
+  60 | Field DDIC | AUFK-OBJNR
+  61 | Field DDIC | AFRU-RUECK
+  62 | Field DDIC | AFRU-RMZHL
+  63 | Field DDIC | MSEG-MBLNR
+  64 | Field DDIC | MSEG-MJAHR
+  65 | Field DDIC | MSEG-ZEILE
+  66 | Field DDIC | AFPO-AMEIN
+  67 | Field DDIC | AUFM-MENGE
+  68 | Field DDIC | AUFM-MEINS
+  69 | Field DDIC | AFKO-GSTRI
+  70 | Field DDIC | AFKO-GSUZI
+  77 | Field DDIC | SY-MSGID
+  78 | Field DDIC | SY-MSGTY
+  79 | Field DDIC | SY-MSGNO
+  80 | Field DDIC | SY-MSGV1
+  81 | Field DDIC | SY-MSGV2
+  82 | Field DDIC | SY-MSGV3
+  83 | Field DDIC | SY-MSGV4
+  84 | Field DDIC | MESG-ZEILE
+  92 | Field DDIC | MSEG-BWART
+  93 | Field DDIC | MSEG-BWART
+  94 | Field DDIC | MSEG-BWART
+  95 | Field DDIC | MCHB-CLABS
+  96 | Field DDIC | MCHB-CINSM
+  97 | Field DDIC | MCHB-CLABS
+  98 | Field DDIC | MSEG-SGTXT
+  135 | Field DDIC | BSVX-STTXT
+  160 | Field DDIC | AUFK-ZLINE
+  164 | Field DDIC | AUFK-ZCODE
+  172 | Field DDIC | MSEG-MBLNR
+  178 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLOCK1 WITH FRAME TITLE TEXT.
+  179 | Layar Seleksi | SELECT-OPTIONS  : ZLINE FOR AUFK-ZLINE,
+  179 | Field DDIC | AUFK-ZLINE
+  180 | Field DDIC | AUFK-AUFNR
+  181 | Field DDIC | AUFK-ZCODE
+  182 | Field DDIC | AFKO-GSTRP
+  183 | Field DDIC | AFRU-ISDD
+  184 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  185 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(7) TEXT1.
+  186 | Layar Seleksi | SELECTION-SCREEN POSITION 1.
+  187 | Layar Seleksi | PARAMETERS : R1 AS CHECKBOX.
+  189 | Layar Seleksi | SELECTION-SCREEN COMMENT 18(11) TEXT2.
+  190 | Layar Seleksi | SELECTION-SCREEN POSITION 16.
+  191 | Layar Seleksi | PARAMETERS : R2 AS CHECKBOX.
+  193 | Layar Seleksi | SELECTION-SCREEN COMMENT 37(9) TEXT3.
+  194 | Layar Seleksi | SELECTION-SCREEN POSITION 35.
+  195 | Layar Seleksi | PARAMETERS : R3 AS CHECKBOX.
+  197 | Layar Seleksi | SELECTION-SCREEN COMMENT 54(5) TEXT4.
+  198 | Layar Seleksi | SELECTION-SCREEN POSITION 52.
+  199 | Layar Seleksi | PARAMETERS : R4 AS CHECKBOX.
+  200 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  201 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLOCK1.
+  203 | Field DDIC | ZLINE-LOW
+  206 | Field DDIC | ZLINE-HIGH
+  209 | Field DDIC | ZCODE-LOW
+  212 | Field DDIC | ZCODE-HIGH
+  6 | includes | ZABAPALV
+
+Objek ZPPI_UP_REV_PR_JR (22 baris)
+  16 | includes | ZPPI_UP_REV_PR_JR_TOP
+  17 | includes | ZPPI_UP_REV_PR_JR_F01
+
+Objek ZPPI_UP_REV_PR_JR_F01 (2100 baris)
+  88 | Field DDIC | TSTC-TCODE
+  91 | Field DDIC | TSTCT-TCODE
+  92 | Field DDIC | TSTCT-TTEXT
+  822 | BDC | CALL TRANSACTION 'COR1' USING BDC_DATA OPTIONS FROM OPTION MESSAGES INTO L_TA_MSG.
+  1068 | BDC | CALL TRANSACTION 'COR2' USING BDC_DATA OPTIONS FROM OPTION MESSAGES INTO L_TA_MSG.
+  1106 | Tipe DDIC | AFRU
+  1358 | BDC | CALL TRANSACTION 'COR2' USING BDC_DATA OPTIONS FROM OPTION MESSAGES INTO L_TA_MSG.
+  1723 | BDC | CALL TRANSACTION 'COR2' USING BDC_DATA OPTIONS FROM OPTION MESSAGES INTO L_TA_MSG.
+  1932 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN' EXCLUDING FT_EXTAB.
+  1938 | Field DDIC | SY-UCOMM
+  2012 | Field DDIC | AUFK-AUFNR
+  2024 | submitPrograms | ZTPPR_JR_PLANNING
+  36 | callFunctions | GUI_UPLOAD
+  52 | callFunctions | CARD_TABLE_READ_ENTRIES
+  219 | callFunctions | REUSE_ALV_POPUP_TO_SELECT
+  714 | callFunctions | Z_MMUR_ROUND_FOR_FRACT5
+  770 | callFunctions | CONVERSION_EXIT_ALPHA_INPUT
+  951 | callFunctions | BAPI_PROCORD_CREATE
+  1788 | callFunctions | F4_FILENAME
+  1900 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  2051 | callFunctions | CONVERSION_EXIT_PDATE_OUTPUT
+  2067 | callFunctions | CONVERT_DATE_TO_INTERNAL
+  822 | callTransactions | COR1
+  1068 | callTransactions | COR2
+  97 | tableReads | TSTCT
+  314 | tableReads | ZMAP_INDICATOR
+  340 | tableReads | ZMAPPG
+  340 | tableReads | T001K
+  355 | tableReads | ZTMAP_MATRECYCLE
+  362 | tableReads | MARA
+  373 | tableReads | MKAL
+  373 | tableReads | MAST
+  389 | tableReads | STAS
+  389 | tableReads | STPO
+  420 | tableReads | KNA1
+  458 | tableReads | ZMAP_MAT_SBU
+  523 | tableReads | MAPL
+  916 | tableReads | AUFK
+  1075 | tableReads | T100
+  1260 | tableReads | AFRU
+  1423 | tableReads | AFPO
+  2083 | tableReads | ZMAP_TYPE
+
+Objek LZMMCHARU02 (144 baris)
+  26 | Field DDIC | MARM-UMREZ
+  27 | Field DDIC | MARM-UMREN
+  52 | callFunctions | ROUND
+  67 | callFunctions | CONVERT_TO_FRACT5
+
+Objek ZTPPR_JR_PLANNING (385 baris)
+  12 | Tipe DDIC | CRHD
+  15 | Field DDIC | ICON-ID
+  16 | Field DDIC | TJ02T-ISTAT
+  17 | Field DDIC | AUFK-WERKS
+  18 | Field DDIC | AUFK-AUFNR
+  19 | Field DDIC | AUFK-AUART
+  20 | Field DDIC | AFKO-PLNBEZ
+  21 | Field DDIC | MAKT-MAKTX
+  22 | Field DDIC | AFKO-GSTRP
+  23 | Field DDIC | AFKO-GSUZP
+  24 | Field DDIC | AUFK-OBJNR
+  25 | Field DDIC | TJ02T-TXT04
+  26 | Field DDIC | TJ02T-TXT30
+  27 | Field DDIC | CRHD-ARBPL
+  28 | Field DDIC | AFKO-GAMNG
+  29 | Field DDIC | AFKO-GMEIN
+  33 | Field DDIC | AUFK-AUFNR
+  34 | Field DDIC | AUFK-AUART
+  35 | Field DDIC | AUFK-WERKS
+  36 | Field DDIC | CRHD-ARBPL
+  37 | Field DDIC | AFKO-GSTRP
+  38 | Field DDIC | AFKO-GSUZP
+  39 | Field DDIC | AFKO-PLNBEZ
+  40 | Field DDIC | MAKT-MAKTX
+  41 | Field DDIC | AFKO-GAMNG
+  57 | Field DDIC | CAWN-ATINN
+  60 | Layar Seleksi | SELECT-OPTIONS : S_ARBPL FOR CRHD-ARBPL NO-DISPLAY.
+  60 | Field DDIC | CRHD-ARBPL
+  61 | Layar Seleksi | SELECT-OPTIONS : S_GSTRP FOR AFKO-GSTRP NO-DISPLAY.
+  61 | Field DDIC | AFKO-GSTRP
+  62 | Layar Seleksi | SELECT-OPTIONS : S_AUFNR FOR AUFK-AUFNR OBLIGATORY.
+  62 | Field DDIC | AUFK-AUFNR
+  86 | Field DDIC | CAWNT-ATWTB
+  88 | Field DDIC | CAWNT-ATWTB
+  92 | Field DDIC | CALE-ABSDATE
+  93 | Field DDIC | CALE-ABSDATE
+  291 | Field DDIC | BSVX-STTXT
+  292 | Field DDIC | AFPO-PSMNG
+  293 | Field DDIC | AFPO-WEMNG
+  10 | includes | ZINCL_ERP_SQL
+  182 | callFunctions | CONVERSION_EXIT_ATINN_INPUT
+  199 | callFunctions | CARD_TABLE_READ_ENTRIES
+  261 | callFunctions | Z_MMUR_ROUND_FOR_FRACT5
+  295 | callFunctions | AIP9_STATUS_READ
+  96 | tableReads | CRHD
+  96 | tableReads | AFVC
+  96 | tableReads | AFKO
+  96 | tableReads | AUFK
+  149 | tableReads | TJ02T
+  149 | tableReads | JEST
+  163 | tableReads | MAKT
+  188 | tableReads | CAWNT
+  188 | tableReads | CAWN
+  308 | tableReads | AFPO
+
+Objek ZINCL_ERP_SQL (163 baris)
+  5 | Field DDIC | SY-DATUM
+  47 | callFunctions | GUI_GET_DESKTOP_INFO
+  126 | databaseWrites | RPT
+
+Objek ZPPI_UP_REV_PR_JR_TOP (190 baris)
+  11 | Field DDIC | VTENTRIES-VTLINENO
+  12 | Field DDIC | VTENTRIES-VTVALUE
+  13 | Field DDIC | VTENTRIES-VTVALUE
+  25 | Field DDIC | CALE-ABSDATE
+  27 | Field DDIC | CALE-ABSDATE
+  54 | BDC | BDCDATA
+  59 | Field DDIC | SY-MSGID
+  60 | Field DDIC | SY-MSGTY
+  61 | Field DDIC | SY-MSGNO
+  62 | Field DDIC | SY-MSGV1
+  63 | Field DDIC | SY-MSGV2
+  64 | Field DDIC | SY-MSGV3
+  65 | Field DDIC | SY-MSGV4
+  66 | Field DDIC | MESG-ZEILE
+  74 | Field DDIC | AUFK-AUFNR
+  114 | Field DDIC | ZMAPPG-SBU_ASSET
+  115 | Field DDIC | ZMAPPG-SBU_ASSET
+  136 | Field DDIC | BAPI_ORDER_KEY-ORDER_NUMBER
+  138 | Field DDIC | SY-SUBRC
+  139 | Field DDIC | SY-DATUM
+  144 | Field DDIC | MARA-MATKL
+  176 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1000 WITH FRAME.
+  177 | Layar Seleksi | PARAMETERS: P_FILE   TYPE LOCALFILE OBLIGATORY.
+  178 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1000.
+  187 | Layar dan GUI | SET TITLEBAR 'TITLE' WITH V_TTEXT.
+  6 | includes | ZABAPALV
+  185 | tableReads | TSTCT
+
+Objek Z_PROG_INFO (88 baris)
+  6 | Field DDIC | ZPROGINFO-PGMNA
+  15 | Field DDIC | RSNEWLENG-FCODE
+  77 | callFunctions | HELP_DOCULINES_SHOW
+  60 | tableReads | ZPROGINFO
+Jumlah source terbaca: 16
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZPPI_UP_DL_PO_JR.abap
+  Baris 18 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 20 | Layar Seleksi | SELECTION-SCREEN: SKIP,
+  Baris 21 | Teks Seleksi | TEXT-100
+  Baris 23 | Layar Seleksi | PARAMETERS:     BUT1  RADIOBUTTON GROUP GRP1.
+  Baris 24 | Layar Seleksi | SELECTION-SCREEN: POSITION 4, COMMENT (45) TEXT-110,
+  Baris 24 | Teks Seleksi | TEXT-110
+  Baris 26 | Layar Seleksi | SELECTION-SCREEN: END OF LINE,
+  Baris 28 | Layar Seleksi | PARAMETERS:     BUT2 RADIOBUTTON GROUP GRP1.
+  Baris 29 | Layar Seleksi | SELECTION-SCREEN: POSITION 4, COMMENT (50) TEXT-120,
+  Baris 29 | Teks Seleksi | TEXT-120
+  Baris 32 | Layar Seleksi | PARAMETERS:     BUT3 TYPE C RADIOBUTTON GROUP GRP1 .
+  Baris 33 | Layar Seleksi | SELECTION-SCREEN: POSITION 4, COMMENT (50) TEXT-130,
+  Baris 33 | Teks Seleksi | TEXT-130
+  Baris 37 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK INFO1 WITH FRAME.
+  Baris 38 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  Baris 39 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK INFO1.
+  Baris 17 | INCLUDE | Z_PROG_INFO
+  Baris 51 | Program yang dirujuk SUBMIT | ZPPI_UP_REV_PR_JR
+  Baris 55 | Program yang dirujuk SUBMIT | ZPPI_DL_PO_JR
+  Baris 59 | Program yang dirujuk SUBMIT | ZPPI_GCHART_PR_JR
+
+Z_PROG_INFO.abap
+  Baris 6 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 15 | Field DDIC | RSNEWLENG-FCODE
+  Baris 60 | Sumber data pada SELECT atau JOIN | ZPROGINFO
+  Baris 77 | Function module | HELP_DOCULINES_SHOW

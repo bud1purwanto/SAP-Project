@@ -1,0 +1,26 @@
+*----------------- Messaging ------------------------------------------*
+FORM MESSAGING USING XSIMU LIKE AM07M-XTEST.
+
+  IF XMSEG-ZEILE IS INITIAL OR NOT XSIMU IS INITIAL.
+    NAST_KEY-ZEILE = MSEG-ZEILE.
+  ELSE.
+    NAST_KEY-ZEILE = XMSEG-ZEILE.
+  ENDIF.
+
+* Aufruf SLL
+  perform SLL_DOCUMENT_TRANSFER using 'N'.
+
+  NASTTAB-KEY = NAST_KEY.
+  COLLECT NASTTAB.
+  MSG_OBJKY = NAST_KEY.
+  CALL FUNCTION 'MESSAGING'
+    EXPORTING
+      APPLIKATION = 'ME'
+      MSG_OBJKY   = MSG_OBJKY
+      SCHEMA      = 'ME0001'
+      PI_OBJTYPE  = MSG_OBJTYP
+      PI_ITEM     = X
+    TABLES
+      MSG_PART    = PART.
+
+ENDFORM.                    "MESSAGING

@@ -1,0 +1,150 @@
+﻿Input: ZCOPAFI
+Source SAP development (RFC baca-saja): ZCOPA_VS_FI
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZCOPA_VS_FI:129 | INITIALIZATION | PERFORM LAYOUT_INIT USING GS_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZCOPA_VS_FI:130 | INITIALIZATION | PERFORM EVENTTAB_BUILD USING GT_EVENTS[]. | Tinjau kondisi dan hasil di ECC.
+  ZCOPA_VS_FI:159 | AT SELECTION-SCREEN | PERFORM F_GET_FISCALYEAR. | Tinjau kondisi dan hasil di ECC.
+  ZCOPA_VS_FI:172 | START-OF-SELECTION > IF SY-SUBRC NE 0. | MESSAGE 'No Authorization to process data' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZCOPA_VS_FI:179 | START-OF-SELECTION > IF SY-SUBRC NE 0. | MESSAGE 'No Authorization to process data' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZCOPA_VS_FI:183 | START-OF-SELECTION | PERFORM GET_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZCOPA_VS_FI:184 | START-OF-SELECTION | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZCOPA_VS_FI:344 | FORM DISPLAY | PERFORM BUILD_FIELDCATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZCOPA_VS_FI:345 | FORM DISPLAY | PERFORM COMMENT_BUILD USING GT_LIST_TOP_OF_PAGE[]. | Tinjau kondisi dan hasil di ECC.
+  ZCOPA_VS_FI:561 | FORM F_GET_FISCALYEAR > IF SY-SUBRC NE 0. | MESSAGE V_MSG TYPE 'E' DISPLAY LIKE 'I'. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZCOPA_VS_FI (596 baris)
+  11 | Tipe DDIC | BSEG
+  14 | Field DDIC | BSEG-BUKRS
+  15 | Field DDIC | BSEG-GJAHR
+  16 | Field DDIC | BSEG-BELNR
+  17 | Field DDIC | BSEG-BUZEI
+  18 | Field DDIC | MARA-MATNR
+  19 | Field DDIC | BSEG-HKONT
+  20 | Field DDIC | BSEG-SHKZG
+  21 | Field DDIC | BSEG-DMBE2
+  22 | Field DDIC | BSEG-DMBE2
+  23 | Field DDIC | BSEG-DMBE2
+  24 | Field DDIC | BSEG-DMBE2
+  25 | Field DDIC | BSEG-DMBE2
+  26 | Field DDIC | BSEG-DMBE2
+  27 | Field DDIC | BSEG-DMBE2
+  28 | Field DDIC | K9RTRD1000001-TARGET1
+  29 | Field DDIC | BSEG-DMBE2
+  33 | Field DDIC | BSIS-BUKRS
+  34 | Field DDIC | BSIS-GJAHR
+  35 | Field DDIC | BSIS-BELNR
+  36 | Field DDIC | BSIS-BUZEI
+  39 | Field DDIC | K9RTRD1000001-SOUR1_FROM
+  40 | Field DDIC | K9RTRD1000001-SOUR1_TO
+  41 | Field DDIC | K9RTRD1000001-VALID_FROM
+  42 | Field DDIC | K9RTRD1000001-TARGET1
+  43 | Field DDIC | K9RTRD1000001-DELETE_FLG
+  44 | Field DDIC | K9RTRD1000001-ADDED_BY
+  45 | Field DDIC | K9RTRD1000001-ADDED_ON
+  61 | Field DDIC | SY-REPID
+  76 | Field DDIC | TKEDRS-STEP_NO
+  77 | Field DDIC | TKEDRS-PARAM_1
+  82 | Field DDIC | TKEB-ERKRS
+  83 | Field DDIC | TKEBT-ERKRS_BZ
+  91 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1001 WITH FRAME TITLE TEXT-100.
+  91 | Teks Seleksi | TEXT-100
+  92 | Layar Seleksi | PARAMETERS : P_OPCONC LIKE TKEDRS-KEDRENV OBLIGATORY.
+  92 | Field DDIC | TKEDRS-KEDRENV
+  93 | Layar Seleksi | SELECT-OPTIONS : COMPANY FOR BKPF-BUKRS OBLIGATORY,
+  93 | Field DDIC | BKPF-BUKRS
+  94 | Field DDIC | BKPF-BUDAT
+  95 | Field DDIC | BSIS-GJAHR
+  96 | Field DDIC | BSEG-HKONT
+  97 | Field DDIC | BSEG-HKONT
+  98 | Field DDIC | BSEG-HKONT
+  99 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1001.
+  164 | Field DDIC | T001-BUKRS
+  545 | Field DDIC | TKA01-ERKRS
+  546 | Field DDIC | TKA02-BUKRS
+  548 | Field DDIC | TKA02-BUKRS
+  143 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  195 | callFunctions | SAPGUI_PROGRESS_INDICATOR
+  350 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  490 | callFunctions | REUSE_ALV_EVENTS_GET
+  532 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  139 | tableReads | TKEBA
+  139 | tableReads | TKEBT
+  167 | tableReads | T001
+  200 | tableReads | TKEDRS
+  211 | tableReads | BSIS
+  244 | tableReads | BSEG
+  551 | tableReads | TKA02
+  554 | tableReads | TKA01
+Jumlah source terbaca: 1
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZCOPA_VS_FI.abap
+  Baris 11 | Tipe DDIC | BSEG
+  Baris 14 | Field DDIC | BSEG-BUKRS
+  Baris 15 | Field DDIC | BSEG-GJAHR
+  Baris 16 | Field DDIC | BSEG-BELNR
+  Baris 17 | Field DDIC | BSEG-BUZEI
+  Baris 18 | Field DDIC | MARA-MATNR
+  Baris 19 | Field DDIC | BSEG-HKONT
+  Baris 20 | Field DDIC | BSEG-SHKZG
+  Baris 21 | Field DDIC | BSEG-DMBE2
+  Baris 22 | Field DDIC | BSEG-DMBE2
+  Baris 23 | Field DDIC | BSEG-DMBE2
+  Baris 24 | Field DDIC | BSEG-DMBE2
+  Baris 25 | Field DDIC | BSEG-DMBE2
+  Baris 26 | Field DDIC | BSEG-DMBE2
+  Baris 27 | Field DDIC | BSEG-DMBE2
+  Baris 28 | Field DDIC | K9RTRD1000001-TARGET1
+  Baris 29 | Field DDIC | BSEG-DMBE2
+  Baris 33 | Field DDIC | BSIS-BUKRS
+  Baris 34 | Field DDIC | BSIS-GJAHR
+  Baris 35 | Field DDIC | BSIS-BELNR
+  Baris 36 | Field DDIC | BSIS-BUZEI
+  Baris 39 | Field DDIC | K9RTRD1000001-SOUR1_FROM
+  Baris 40 | Field DDIC | K9RTRD1000001-SOUR1_TO
+  Baris 41 | Field DDIC | K9RTRD1000001-VALID_FROM
+  Baris 42 | Field DDIC | K9RTRD1000001-TARGET1
+  Baris 43 | Field DDIC | K9RTRD1000001-DELETE_FLG
+  Baris 44 | Field DDIC | K9RTRD1000001-ADDED_BY
+  Baris 45 | Field DDIC | K9RTRD1000001-ADDED_ON
+  Baris 61 | Field DDIC | SY-REPID
+  Baris 76 | Field DDIC | TKEDRS-STEP_NO
+  Baris 77 | Field DDIC | TKEDRS-PARAM_1
+  Baris 82 | Field DDIC | TKEB-ERKRS
+  Baris 83 | Field DDIC | TKEBT-ERKRS_BZ
+  Baris 91 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1001 WITH FRAME TITLE TEXT-100.
+  Baris 91 | Teks Seleksi | TEXT-100
+  Baris 92 | Layar Seleksi | PARAMETERS : P_OPCONC LIKE TKEDRS-KEDRENV OBLIGATORY.
+  Baris 92 | Field DDIC | TKEDRS-KEDRENV
+  Baris 93 | Layar Seleksi | SELECT-OPTIONS : COMPANY FOR BKPF-BUKRS OBLIGATORY,
+  Baris 93 | Field DDIC | BKPF-BUKRS
+  Baris 94 | Field DDIC | BKPF-BUDAT
+  Baris 95 | Field DDIC | BSIS-GJAHR
+  Baris 96 | Field DDIC | BSEG-HKONT
+  Baris 97 | Field DDIC | BSEG-HKONT
+  Baris 98 | Field DDIC | BSEG-HKONT
+  Baris 99 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1001.
+  Baris 164 | Field DDIC | T001-BUKRS
+  Baris 545 | Field DDIC | TKA01-ERKRS
+  Baris 546 | Field DDIC | TKA02-BUKRS
+  Baris 548 | Field DDIC | TKA02-BUKRS
+  Baris 139 | Sumber data pada SELECT atau JOIN | TKEBA
+  Baris 139 | Sumber data pada SELECT atau JOIN | TKEBT
+  Baris 167 | Sumber data pada SELECT atau JOIN | T001
+  Baris 200 | Sumber data pada SELECT atau JOIN | TKEDRS
+  Baris 211 | Sumber data pada SELECT atau JOIN | BSIS
+  Baris 244 | Sumber data pada SELECT atau JOIN | BSEG
+  Baris 551 | Sumber data pada SELECT atau JOIN | TKA02
+  Baris 554 | Sumber data pada SELECT atau JOIN | TKA01
+  Baris 143 | Function module | F4IF_INT_TABLE_VALUE_REQUEST
+  Baris 195 | Function module | SAPGUI_PROGRESS_INDICATOR
+  Baris 350 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 490 | Function module | REUSE_ALV_EVENTS_GET
+  Baris 532 | Function module | REUSE_ALV_COMMENTARY_WRITE

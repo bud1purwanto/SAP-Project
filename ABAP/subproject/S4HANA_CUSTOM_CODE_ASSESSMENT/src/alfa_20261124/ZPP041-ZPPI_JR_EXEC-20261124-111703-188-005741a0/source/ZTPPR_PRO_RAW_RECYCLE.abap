@@ -1,0 +1,410 @@
+*&---------------------------------------------------------------------*
+*& Report  ZTPPR_PRO_RAW_RECYCLE
+*&
+*&---------------------------------------------------------------------*
+*&
+*&
+*&---------------------------------------------------------------------*
+
+REPORT  ZTPPR_PRO_RAW_RECYCLE.
+
+INCLUDE ZINCL_ERP_SQL.
+
+TABLES : MCHB, MARA, AUFK, ZTMAP_MATRECYCLE, VBAK, AFKO, MSEG, RESB.
+
+* TYPE DECLARATIONS
+TYPES : BEGIN OF TYDATA,
+          MARK(1) TYPE C,
+          MATNR       TYPE MCHB-MATNR, "MATERIAL KUPAS
+          CHARG       TYPE MCHB-CHARG, "BACTH
+          ZZTYPE      TYPE ATWTB,      "TYPE FILM
+          CLABS       TYPE MCHB-CLABS, "QUANTITY
+          CCLABS      TYPE MCHB-CLABS, "QUANTITY STOCK
+          SLOCGI      TYPE MCHB-LGORT, "SLOC GI
+          SLOCGR      TYPE MCHB-LGORT, "SLOC GR
+          DESC        TYPE T001L-LGOBE, "SLOC GR DESC.
+          AUFNR       TYPE AUFK-AUFNR, "PROCESS ORDER
+          MTART       TYPE MARA-MTART, "MATERIAL TYPE
+          RAR_A_MATNR TYPE ZTMAP_MATRECYCLE-RAR_A_MATNR, "RAW RECYCLE
+          STATUS      TYPE BSVX-STTXT, "STATUS
+          FLAG(1) TYPE C,
+        END OF TYDATA,
+       "TYPE FOR DISPLAY ORDER.
+        BEGIN OF TYORDER,
+          MARK(1) TYPE C,
+          MATNR   LIKE RESB-MATNR,
+          AUFNR   LIKE RESB-AUFNR,
+          ZZTYPE  TYPE ATWTB,      "TYPE FILM
+          ZZCODE  TYPE ATWTB,      "TYPE FILM
+          CHARG   LIKE RESB-CHARG,
+          WERKS   LIKE AUFK-WERKS,
+          GLTRP   LIKE AFKO-GLTRP, "ORDER DATE
+          BMENGE   LIKE AFKO-BMENGE, "ORDER QUANTITY
+          LGORTGI LIKE RESB-LGORT, "SLOC GI
+          LGORTGR LIKE RESB-LGORT, "SLOC GR
+          RAWM    LIKE RESB-MATNR, "RAW MAT
+          STAT    LIKE BSVX-STTXT,
+          OBJNR   LIKE AUFK-OBJNR,
+          BKTXT   LIKE MKPF-XBLNR,
+          FLAG,
+        END OF TYORDER,
+        BEGIN OF TYMATDOC,
+          MATDOC TYPE MBLNR,
+          MJAHR  TYPE MJAHR,
+          BWART  TYPE BWART,
+        END OF TYMATDOC.
+
+*CONSTANTS : CMATNR    TYPE C LENGTH 11 VALUE 'RESBD-MATNR',
+*            CMENGE    TYPE C LENGTH 11 VALUE 'RESBD-MENGE',
+*            CPOSTP    TYPE C LENGTH 11 VALUE 'RESBD-POSTP',
+*            CLGORT    TYPE C LENGTH 11 VALUE 'RESBD-LGORT',
+*            CCHARG    TYPE C LENGTH 11 VALUE 'RESBD-CHARG',
+*            CVORNR    TYPE C LENGTH 11 VALUE 'RESBD-VORNR',
+*            CEINHEIT  TYPE C LENGTH 14 VALUE 'RESBD-EINHEIT'.
+
+DATA : ITDATA      TYPE STANDARD TABLE OF TYDATA WITH HEADER LINE,
+       WADATA      TYPE TYDATA,
+       ITORDER     TYPE STANDARD TABLE OF TYORDER WITH HEADER LINE,
+       ITMATDOC    TYPE TABLE OF TYMATDOC WITH HEADER LINE,
+       ITREFERENCE TYPE TABLE OF TYMATDOC WITH HEADER LINE.
+
+
+DATA : CHC(1) TYPE C,
+       CHP(1) TYPE C,
+       CHR(1) TYPE C,
+       CHT(1) TYPE C,
+       V_MBLNR TYPE MKPF-MBLNR.
+
+DATA: FNAME TYPE STRING.
+
+*RANGES : R_MATGROUP FOR MARA-MATKL,
+*         R_PERIOD FOR AFKO-GLTRP.
+
+DATA: V_ZZCODE LIKE AUSP-ATINN.   "ADDED ON 22.07.2020 - tuning
+
+SELECT-OPTIONS:
+        S_MTGRP FOR MARA-MATKL NO-DISPLAY,
+        S_AUFNR FOR RESB-AUFNR," OBLIGATORY,
+        S_PERIOD FOR AFKO-GLTRP." NO-DISPLAY.
+
+DATA : P_STATUS TYPE RANGE OF ZSTATUS WITH HEADER LINE,
+       W_STATUS LIKE LINE OF P_STATUS,
+       R_SLOC TYPE RANGE OF MCHB-LGORT.
+
+START-OF-SELECTION.
+  PERFORM CHECK_SERVER.
+  PERFORM GETDATA.
+*  INSERT_LOG_SQL ITORDER.
+  INSERT_LOG_SQL ITORDER AUFNR 'ZTPP019'.
+
+  IF ITORDER[] IS INITIAL.
+    VARSTATUS = '0'. "VARMSG = ''.
+    PERFORM UPDATE_LOG_SQL.
+  ELSE.
+    PERFORM INSERT_SQL.
+    PERFORM UPDATE_LOG_SQL.
+  ENDIF.
+
+END-OF-SELECTION.
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_BATCH_CHAR
+*&---------------------------------------------------------------------*
+*       ADDED BY FATHIR ON 15.07.2020
+*       get Batch Characteristics untuk setiap batch yang ditemukan
+*----------------------------------------------------------------------*
+FORM GET_BATCH_CHAR.
+  SELECT SINGLE ATINN INTO V_ZZCODE
+    FROM CABN
+    WHERE ATNAM = 'ZZCODE'.
+
+  LOOP AT ITORDER.
+
+     SELECT SINGLE CAWNT~ATWTB INTO ITORDER-ZZCODE
+       FROM MCH1
+       JOIN AUSP ON AUSP~OBJEK  = MCH1~CUOBJ_BM
+       JOIN CAWN ON AUSP~ATINN = CAWN~ATINN AND AUSP~ATWRT = CAWN~ATWRT
+       JOIN CAWNT ON CAWN~ATINN = CAWNT~ATINN AND CAWN~ATZHL = CAWNT~ATZHL
+       WHERE MCH1~MATNR  = ITORDER-MATNR
+         AND MCH1~CHARG  = ITORDER-CHARG
+         AND AUSP~ATINN = V_ZZCODE
+         AND AUSP~KLART = '023'
+         AND CAWNT~SPRAS = 'E'.
+
+    MODIFY ITORDER.
+  ENDLOOP.
+ENDFORM.                    "GET_BATCH_CHAR
+
+
+*&---------------------------------------------------------------------*
+*&      Form  GETDATA
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM GETDATA.
+*  lv =  100 / 0.
+  REFRESH ITORDER.
+  SELECT RESB~MATNR AS MATNR
+    RESB~AUFNR AS AUFNR
+    RESB~CHARG AS CHARG
+    AFKO~BMENGE AS BMENGE
+    AUFK~OBJNR AS OBJNR
+    AUFK~WERKS AS WERKS
+    AFKO~GLTRP AS GLTRP
+    FROM RESB
+    JOIN AFKO ON RESB~AUFNR = AFKO~AUFNR
+    JOIN AFPO ON AFKO~AUFNR = AFPO~AUFNR
+    JOIN AUFK ON AFPO~AUFNR = AUFK~AUFNR
+    INTO CORRESPONDING FIELDS OF TABLE ITORDER
+    WHERE AFKO~GSTRP IN S_PERIOD  "CHANGED BY FATHIR ON 16.07.2020 - ubah pencarian Period ke field GSTRP (before: GLTRP), tuning
+      AND RESB~MATKL IN S_MTGRP
+      AND RESB~AUFNR IN S_AUFNR
+      AND RESB~CHARG NE ''
+      AND AUFK~AUART IN ('ZRR2','ZRR1').
+
+  PERFORM GET_BATCH_CHAR. "ADDED BY FATHIR ON 15.07.2020 - get Batch Char.
+
+  IF ITORDER[] IS INITIAL.
+    "MESSAGE 'Data tidak ditemukan!' TYPE 'I'.
+  ENDIF.
+
+  REFRESH P_STATUS.
+  IF CHC = 'X'.
+    CLEAR W_STATUS.
+    W_STATUS-SIGN   = 'I'.
+    W_STATUS-OPTION = 'EQ'.
+    W_STATUS-LOW    = 'CANCELLED'.
+    APPEND W_STATUS TO P_STATUS.
+  ENDIF.
+
+  IF CHP = 'X'.
+    CLEAR W_STATUS.
+    W_STATUS-SIGN   = 'I'.
+    W_STATUS-OPTION = 'EQ'.
+    W_STATUS-LOW    = 'POSTED'.
+    APPEND W_STATUS TO P_STATUS.
+  ENDIF.
+
+  IF CHR = 'X'.
+    CLEAR W_STATUS.
+    W_STATUS-SIGN   = 'I'.
+    W_STATUS-OPTION = 'EQ'.
+    W_STATUS-LOW    = 'RELEASED'.
+    APPEND W_STATUS TO P_STATUS.
+  ENDIF.
+
+  IF CHT = 'X'.
+    CLEAR W_STATUS.
+    W_STATUS-SIGN   = 'I'.
+    W_STATUS-OPTION = 'EQ'.
+    W_STATUS-LOW    = 'TECO'.
+    APPEND W_STATUS TO P_STATUS.
+  ENDIF.
+
+  LOOP AT ITORDER.
+    "GET RAW RECYCLE
+    SELECT SINGLE RESB~MATNR
+     INTO ITORDER-RAWM
+     FROM RESB
+     WHERE RESB~AUFNR = ITORDER-AUFNR
+     AND RESB~MATNR NE ITORDER-MATNR.
+
+    "GET SLOC GI
+    SELECT SINGLE RESB~LGORT
+      INTO ITORDER-LGORTGI
+      FROM RESB
+      WHERE RESB~AUFNR = ITORDER-AUFNR
+      AND RESB~MATNR = ITORDER-MATNR
+      AND RESB~CHARG = ITORDER-CHARG.
+
+    "GET SLOC GR
+    SELECT SINGLE RESB~LGORT
+     INTO ITORDER-LGORTGR
+     FROM RESB
+     WHERE RESB~AUFNR = ITORDER-AUFNR
+     AND RESB~MATNR = ITORDER-RAWM.
+
+    "GET STATUS ORDER
+    CALL FUNCTION 'AIP9_STATUS_READ'
+      EXPORTING
+        I_OBJNR = ITORDER-OBJNR
+        I_SPRAS = SY-LANGU
+      IMPORTING
+        E_SYSST = ITORDER-STAT.
+
+    IF ITORDER-STAT NP '*TECO*'.
+      IF ITORDER-STAT NP '*GMPS*'.
+        ITORDER-STAT = 'RELEASED'.
+      ELSEIF ITORDER-STAT CP '*GMPS*'.
+        CLEAR : ITMATDOC, ITREFERENCE.
+        REFRESH : ITMATDOC, ITREFERENCE.
+        "GET DATA MATERIAL DOCUMENT
+        SELECT DISTINCT MBLNR AS MATDOC
+          MJAHR AS MJAHR
+          INTO CORRESPONDING FIELDS OF TABLE ITMATDOC
+          FROM MSEG
+          WHERE AUFNR = ITORDER-AUFNR
+          AND SMBLN = ''.
+
+        "GET DATA REFERENSI MATDOC.
+        SELECT DISTINCT SMBLN AS MATDOC
+        INTO CORRESPONDING FIELDS OF TABLE ITREFERENCE
+        FROM MSEG
+        WHERE AUFNR = ITORDER-AUFNR
+          AND SMBLN NE ''.
+
+        "GET THE LAST MATDOC FOR PRO
+        LOOP AT ITREFERENCE.
+          DELETE ITMATDOC WHERE MATDOC = ITREFERENCE-MATDOC .
+        ENDLOOP.
+
+        IF ITMATDOC[] IS INITIAL .
+          ITORDER-STAT = 'CANCELLED'.
+        ELSE.
+          ITORDER-STAT = 'POSTED'.
+        ENDIF.
+      ENDIF.
+
+    ELSEIF ITORDER-STAT CP '*TECO*'.
+      IF ITORDER-STAT NP '*GMPS*'.
+        ITORDER-STAT = 'TECO'.
+      ELSEIF ITORDER-STAT CP '*GMPS*'.
+        CLEAR : ITMATDOC, ITREFERENCE.
+        REFRESH : ITMATDOC, ITREFERENCE.
+        "GET DATA MATERIAL DOCUMENT
+        SELECT DISTINCT MBLNR AS MATDOC
+          MJAHR AS MJAHR
+          INTO CORRESPONDING FIELDS OF TABLE ITMATDOC
+          FROM MSEG
+          WHERE AUFNR = ITORDER-AUFNR
+          AND SMBLN = ''.
+
+        "GET DATA REFERENSI MATDOC.
+        SELECT DISTINCT SMBLN AS MATDOC
+        INTO CORRESPONDING FIELDS OF TABLE ITREFERENCE
+        FROM MSEG
+        WHERE AUFNR = ITORDER-AUFNR
+          AND SMBLN NE ''.
+
+        "GET THE LAST MATDOC FOR PRO
+        LOOP AT ITREFERENCE.
+          DELETE ITMATDOC WHERE MATDOC = ITREFERENCE-MATDOC.
+        ENDLOOP.
+
+        IF ITMATDOC[] IS INITIAL .
+          ITORDER-STAT = 'CANCELLED TECO'.
+        ELSE.
+          ITORDER-STAT = 'POSTED TECO'.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+
+    IF P_STATUS[] IS NOT INITIAL.
+      LOOP AT P_STATUS.
+        IF P_STATUS-LOW = 'TECO'.
+          IF ITORDER-STAT CP '*TECO*'.
+            ITORDER-FLAG = 'X'.
+          ENDIF.
+        ELSEIF P_STATUS-LOW = 'CANCELLED'.
+          IF ITORDER-STAT = 'CANCELLED'.
+            ITORDER-FLAG = 'X'.
+          ENDIF.
+        ELSEIF P_STATUS-LOW = 'POSTED'.
+          IF ITORDER-STAT = 'POSTED'.
+            ITORDER-FLAG = 'X'.
+          ENDIF.
+        ELSEIF P_STATUS-LOW = 'RELEASED'.
+          IF ITORDER-STAT CP '*RELEASED*'.
+            ITORDER-FLAG = 'X'.
+          ENDIF.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+
+    "HEADER TEXT
+    CLEAR V_MBLNR.
+    SELECT MAX( MSEG~MBLNR )
+      INTO V_MBLNR
+      FROM MSEG
+      JOIN MKPF ON MKPF~MBLNR = MSEG~MBLNR
+      WHERE MSEG~AUFNR = ITORDER-AUFNR
+      AND MKPF~XBLNR  NE ''
+      AND MSEG~BWART IN ('531', '532').
+
+    SELECT SINGLE MKPF~XBLNR
+      INTO ITORDER-BKTXT
+      FROM MKPF
+      JOIN MSEG ON   MSEG~MBLNR = MKPF~MBLNR
+      WHERE MSEG~AUFNR = ITORDER-AUFNR
+      AND MSEG~MBLNR = V_MBLNR
+      AND MKPF~XBLNR NE ''.
+
+    MODIFY ITORDER.
+  ENDLOOP.
+
+  IF P_STATUS[] IS NOT INITIAL.
+    DELETE ITORDER WHERE FLAG = ''.
+    IF ITORDER[] IS INITIAL.
+*      MESSAGE 'Tidak ada data.' TYPE 'I'.
+    ENDIF.
+  ENDIF.
+
+  ITORDER-GLTRP = '19000101'.
+  MODIFY ITORDER TRANSPORTING GLTRP WHERE GLTRP = 00000000.
+ENDFORM.                    "GETDATA
+
+
+*&---------------------------------------------------------------------*
+*&      Form  INSERT_SQL
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM INSERT_SQL.
+
+  LOOP AT ITORDER.
+    EXEC SQL.
+      INSERT INTO TMP.RPT_ZPP019
+      (Material1,
+      [Order],
+      Type,
+      Batch,
+      Plant,
+      Basicfin,
+      Baseqty,
+      StorLoc1,
+      StorLoc2,
+      Material2,
+      SysStatus,
+      Objno,
+      Reference,
+      Flag,
+      LastUpdated)
+      VALUES
+      (:ITORDER-MATNR,
+      :ITORDER-AUFNR,
+      :ITORDER-ZZCODE,
+      :ITORDER-CHARG,
+      :ITORDER-WERKS,
+      :ITORDER-GLTRP,
+      :ITORDER-BMENGE,
+      :ITORDER-LGORTGI,
+      :ITORDER-LGORTGR,
+      :ITORDER-RAWM,
+      :ITORDER-STAT,
+      :ITORDER-OBJNR,
+      :ITORDER-BKTXT,
+      :ITORDER-FLAG,
+      :VARDATETIME)
+    ENDEXEC.
+  ENDLOOP.
+
+  IF SY-SUBRC = 0.
+    EXEC SQL.
+      COMMIT WORK
+    ENDEXEC.
+    VARSTATUS = '1'. VARMSG = ''.
+  ELSE.
+    VARSTATUS = '0'. VARMSG = ''.
+  ENDIF.
+
+ENDFORM.                    "INSERT_SQL

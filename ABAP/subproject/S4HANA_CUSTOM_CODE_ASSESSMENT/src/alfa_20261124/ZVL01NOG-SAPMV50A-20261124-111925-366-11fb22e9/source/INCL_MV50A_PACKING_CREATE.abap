@@ -1,0 +1,85 @@
+*----------------------------------------------------------------------*
+*   INCLUDE INCL_MV50A_PACKING_CREATE                                  *
+*----------------------------------------------------------------------*
+  LOOP AT CT_VERKO INTO LS_VERKO.
+    IF NOT LS_VERKO-OBJKEY IS INITIAL                      " Note 682506
+       AND LS_VERKO-OBJKEY NE LF_VBELN.
+      CONTINUE.
+    ENDIF.
+    CLEAR: LS_HDR_PRO, LS_HEADER_ADD, LS_HEADER_TRA, LS_HEADER_CAP.
+    MOVE-CORRESPONDING LS_VERKO TO LS_Hdr_PRO.
+    insert ls_hdr_pro into table lt_hdr_pro.
+*    APPEND LS_HDR_PRO TO LT_HDR_PRO.
+    MOVE-CORRESPONDING LS_VERKO TO LS_HEADER_CAP.
+    clear ls_header_cap-exidv.
+    IF NOT LS_HEADER_CAP IS INITIAL.
+      LS_HEADER_CAP-EXIDV = LS_HDR_PRO-EXIDV.
+      insert ls_header_cap into table lt_header_cap.
+*      APPEND LS_HEADER_CAP TO LT_HEADER_CAP.
+    ENDIF.
+    MOVE-CORRESPONDING LS_VERKO TO LS_HEADER_TRA.
+    clear ls_header_tra-exidv.
+    IF NOT LS_HEADER_TRA IS INITIAL.
+      LS_HEADER_TRA-EXIDV = ls_hdr_pro-EXIDV.
+      insert ls_header_tra into table lt_header_tra.
+*      APPEND LS_HEADER_TRA TO LT_HEADER_TRA.
+    ENDIF.
+    MOVE-CORRESPONDING LS_VERKO TO LS_HEADER_ADD.
+    clear ls_header_add-exidv.
+    IF NOT LS_HEADER_ADD IS INITIAL.
+      LS_HEADER_ADD-EXIDV = LS_HDR_PRO-EXIDV.
+      insert ls_header_add into table lt_header_add.
+*      APPEND LS_HEADER_ADD TO LT_HEADER_ADD.
+    ENDIF.
+  ENDLOOP.
+  LOOP AT CT_VERPO INTO LS_VERPO.
+    READ TABLE lt_hdr_pro TRANSPORTING NO FIELDS               "n_796473
+                          WITH KEY EXIDV = LS_VERPO-EXIDV_OB
+                          BINARY SEARCH.
+    CHECK sy-subrc IS INITIAL.
+
+    CLEAR: LS_HUITEM_PRO.
+    LS_HUITEM_PRO-EXIDV = LS_VERPO-EXIDV_OB.
+    LS_HUITEM_PRO-VELIN = LS_VERPO-VELIN.
+    CASE LS_VERPO-VELIN.
+      WHEN '1'.
+        LS_HUITEM_PRO-QUANTITY     = LS_VERPO-TMENG.
+        LS_HUITEM_PRO-BELNR = LS_VERPO-VBELN.
+        LS_HUITEM_PRO-POSNR = LS_VERPO-POSNR.
+
+ENHANCEMENT-POINT INCL_MV50A_PACKING_CREATE_01 SPOTS ES_INCL_MV50A_PACKING_CREATE INCLUDE BOUND.
+
+      WHEN '2'.
+        LS_HUITEM_PRO-VEANZ        = LS_VERPO-TMENG.
+      WHEN '3'.
+        LS_HUITEM_PRO-VEANZ        = LS_VERPO-TMENG.
+        LS_HUITEM_PRO-SUB_HU_EXIDV = LS_VERPO-EXIDV.
+      WHEN OTHERS.
+        IF NOT LS_VERPO-EXIDV IS INITIAL.
+          LS_HUITEM_PRO-VELIN        = '3'.
+          LS_HUITEM_PRO-SUB_HU_EXIDV = LS_VERPO-EXIDV.
+          LS_HUITEM_PRO-VEANZ        = LS_VERPO-TMENG.
+        ELSE.
+          LS_HUITEM_PRO-VELIN = '1'.
+          LS_HUITEM_PRO-BELNR = LS_VERPO-VBELN.
+          LS_HUITEM_PRO-POSNR = LS_VERPO-POSNR.
+          LS_HUITEM_PRO-QUANTITY = LS_VERPO-TMENG.
+
+ENHANCEMENT-POINT INCL_MV50A_PACKING_CREATE_02 SPOTS ES_INCL_MV50A_PACKING_CREATE INCLUDE BOUND.
+
+        ENDIF.
+    ENDCASE.
+    LS_HUITEM_PRO-MEINS        = LS_VERPO-VRKME.
+    LS_HUITEM_PRO-MATNR        = LS_VERPO-MATNR.
+    LS_HUITEM_PRO-CHARG        = LS_VERPO-CHARG.
+    LS_HUITEM_PRO-ANZSN        = LS_VERPO-ANZSN.
+    LS_HUITEM_PRO-WERKS        = LS_VERPO-WERKS.
+    LS_HUITEM_PRO-LGORT        = LS_VERPO-LGORT.
+    LS_HUITEM_PRO-P_MATERIAL   = LS_VERPO-P_MATERIAL.
+    LS_HUITEM_PRO-SPE_IDPLATE  = LS_VERPO-SPE_IDPLATE.
+    LS_HUITEM_PRO-BESTQ        = LS_VERPO-BESTQ.             "SP_694577
+    LS_HUITEM_PRO-SOBKZ        = LS_VERPO-SOBKZ.
+    LS_HUITEM_PRO-SONUM        = LS_VERPO-SONUM.
+*    insert ls_huitem_pro into table lt_hu_items.
+    APPEND LS_HUITEM_PRO TO LT_HU_ITEMS.
+  ENDLOOP.

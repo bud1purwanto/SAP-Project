@@ -1,0 +1,680 @@
+﻿Input: ZQM001P
+Source SAP development (RFC baca-saja): ZQMI_PACKING_STATUS
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZQMI_PACKING_STATUS:23 | START-OF-SELECTION | PERFORM CHECK_AUTH_PLANT USING S_WERKS. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS:26 | START-OF-SELECTION > IF RET_CODE <> 0. | MESSAGE ZTEXT TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS:30 | START-OF-SELECTION | PERFORM READ_HANDLING_UNIT. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS:32 | START-OF-SELECTION > IF R1 = 'X'. | PERFORM DISPLAY_DATA USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS:34 | START-OF-SELECTION > ELSE. | PERFORM DISPLAY_DATA_NON USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS:40 | START-OF-SELECTION > IF SY-UCOMM NE 'CLOG'. > IF R1 = 'X'. | PERFORM HEADER_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS:42 | START-OF-SELECTION > IF SY-UCOMM NE 'CLOG'. > ELSE. | PERFORM HEADER_DATA_NON. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS:49 | START-OF-SELECTION > IF SY-UCOMM NE 'CLOG'. > IF R1 = 'X'. | PERFORM HEADER_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS:51 | START-OF-SELECTION > IF SY-UCOMM NE 'CLOG'. > ELSE. | PERFORM HEADER_DATA_NON. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS:56 | START-OF-SELECTION | PERFORM EDIT_STATUS. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS:59 | START-OF-SELECTION | PERFORM USER_COMMAND USING SY-UCOMM RS_SELFIELD. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS:63 | AT SELECTION-SCREEN > IF SY-UCOMM = 'INFO'. | PERFORM F_PROG_INFO USING V_PROG. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:860 | FORM READ_HANDLING_UNIT | PERFORM CEK_COMPLETENESS. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:884 | FORM EDIT_STATUS > IF SY-UCOMM =  'PICK' AND CFIELD1 EQ 'WA_VEKP-PRUEFLOS'. | PERFORM CALL_TRANS . | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:887 | FORM EDIT_STATUS > ELSE. > IF SY-UCOMM = 'EDIT'. | PERFORM GET_SELECTED. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:890 | FORM EDIT_STATUS > ELSE. > IF SY-UCOMM = 'EDIT'. > IF COUNT = 0. | MESSAGE I000(0K) WITH 'No Data Selected.'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:923 | FORM EDIT_STATUS > ELSE. > IF SY-SUBRC = 0. > IF V_HUSTAT = 'O'. | MESSAGE V_MSG TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:928 | FORM EDIT_STATUS > ELSE. > IF SY-SUBRC = 0. > ELSEIF  V_HUSTAT = 'I'. | MESSAGE V_MSG TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:934 | FORM EDIT_STATUS > ELSE. > ELSE. | MESSAGE 'Status packing tidak ditemukan.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:990 | FORM EDIT_STATUS > ELSE. > IF TSTAT-NIK EQ '00000000'. | MESSAGE 'Masukkan NIK' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:994 | FORM EDIT_STATUS > ELSE. | PERFORM CEK_EDITED. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:999 | FORM EDIT_STATUS > ELSE. > IF T_TEMP-VBELN EQ ''. > IF T_TEMP-ZSTAT = 'Init' AND TSTAT-PSTAT = 'H'. | PERFORM UNRESTR_MOVING USING '0023'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1012 | FORM EDIT_STATUS > ELSE. > IF T_TEMP-VBELN EQ ''. > IF T_TEMP-ZSTAT = 'Init' AND TSTAT-PSTAT = 'P'. | PERFORM CHECK. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1025 | FORM EDIT_STATUS > ELSE. > IF T_TEMP-VBELN EQ ''. > IF T_TEMP-ZSTAT = 'Hold' AND TSTAT-PSTAT = 'P'. | PERFORM UNRESTR_MOVING USING '0022'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1039 | FORM EDIT_STATUS > ELSE. > IF T_TEMP-VBELN EQ ''. > IF T_TEMP-ZSTAT = 'Pass' AND TSTAT-PSTAT = 'H'. | PERFORM UNRESTR_MOVING USING '0023'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1076 | FORM EDIT_STATUS > IF R1 = 'X'. | PERFORM DISPLAY_DATA USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1078 | FORM EDIT_STATUS > ELSE. | PERFORM DISPLAY_DATA_NON USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1127 | FORM SELECT_STATUS > IF R1 = 'X'. | PERFORM DISPLAY_DATA USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1129 | FORM SELECT_STATUS > ELSE. | PERFORM DISPLAY_DATA_NON USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1147 | FORM DESELECT > IF R1 = 'X'. | PERFORM DISPLAY_DATA USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1149 | FORM DESELECT > ELSE. | PERFORM DISPLAY_DATA_NON USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1173 | FORM USER_COMMAND > WHEN 'EDIT'. | PERFORM EDIT_STATUS. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1176 | FORM USER_COMMAND > WHEN 'SELE'. | PERFORM SELECT_STATUS. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1179 | FORM USER_COMMAND > WHEN 'DESE'. | PERFORM DESELECT. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1182 | FORM USER_COMMAND > WHEN 'PRT'. | PERFORM GET_SELECTED. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1183 | FORM USER_COMMAND > WHEN 'PRT'. | PERFORM PRINT. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1186 | FORM USER_COMMAND > WHEN 'CSTAT'. | PERFORM CALL_CHANGEHUSTAT. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1189 | FORM USER_COMMAND > WHEN 'PICK'. | PERFORM CALL_TRANS. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1192 | FORM USER_COMMAND > WHEN 'CLOG'. | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1213 | FORM UNRESTR_MOVING | PERFORM BDC_DYNPRO  USING 'SAPLLE_MOV' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1215 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_SUBSCR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1217 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1219 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'LEMOVHUS-HUWBEVENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1221 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_SUBSCR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1223 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_SUBSCR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1225 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1228 | FORM UNRESTR_MOVING | PERFORM BDC_DYNPRO  USING 'SAPLLE_MOV' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1230 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_SUBSCR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1232 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1234 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'LEMOVHUS-HUWBEVENT' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1236 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'LEMOVHUS-EXIDV' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1238 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_SUBSCR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1240 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_SUBSCR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1242 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1244 | FORM UNRESTR_MOVING | PERFORM BDC_DYNPRO  USING 'SAPLLE_MOV' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1246 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1248 | FORM UNRESTR_MOVING | PERFORM BDC_DYNPRO  USING 'SAPLLE_MOV' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1250 | FORM UNRESTR_MOVING | PERFORM BDC_FIELD   USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1253 | FORM UNRESTR_MOVING | CALL TRANSACTION 'VLMOVE' USING BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1275 | FORM UNRESTR_MOVING > IF MSTEXT EQ ''. | PERFORM CHECK. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1278 | FORM UNRESTR_MOVING > ELSE. | MESSAGE I000(0K) WITH V_TEXT. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1337 | FORM DISPLAY_DATA > IF T_VEKP[] IS INITIAL. | MESSAGE I000(0K) WITH 'No Data Selected.'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1361 | FORM DISPLAY_DATA | PERFORM SET_COLOR. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1599 | FORM DISPLAY_DATA_NON > IF T_VEKP[] IS INITIAL. | MESSAGE I000(0K) WITH 'No Data Selected.'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1624 | FORM DISPLAY_DATA_NON | PERFORM SET_COLOR. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1883 | FORM CHECK | MESSAGE V_TEXT TYPE 'S'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1904 | FORM CALL_CHANGEHUSTAT | MESSAGE LIKE BAPIRET2-MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1937 | FORM CALL_CHANGEHUSTAT > IF IND = 0. > IF SELECTED > 0. | MESSAGE 'HU dengan status Init tidak dapat diubah.' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1939 | FORM CALL_CHANGEHUSTAT > IF IND = 0. > ELSE. | MESSAGE 'No Data Selected.' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1944 | FORM CALL_CHANGEHUSTAT > ELSE. | SUBMIT ZQMI_CHANGE_STAT_HU AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1973 | FORM CALL_CHANGEHUSTAT > ELSE. > IF IT_BDCMSGCOLLE[] IS NOT INITIAL. > IF ERRMSG[] IS NOT INITIAL. | MESSAGE    = MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1979 | FORM CALL_CHANGEHUSTAT > ELSE. > IF IT_BDCMSGCOLLE[] IS NOT INITIAL. > IF ERRMSG[] IS NOT INITIAL. > IF MESSAGE NE ''. | MESSAGE MESSAGE TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1985 | FORM CALL_CHANGEHUSTAT | PERFORM UPDATE_VEKP. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1988 | FORM CALL_CHANGEHUSTAT > IF R1 = 'X'. | PERFORM DISPLAY_DATA USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:1990 | FORM CALL_CHANGEHUSTAT > ELSE. | PERFORM DISPLAY_DATA_NON USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:2039 | FORM CALL_TRANS > IF CFIELD = 'WA_VEKP-PRUEFLOS'. > IF SY-SUBRC <> 0. | MESSAGE 'No data found' TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:2044 | FORM CALL_TRANS > IF CFIELD = 'WA_VEKP-PRUEFLOS'. > ELSE. | CALL TRANSACTION 'QE03' AND SKIP FIRST SCREEN. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:2253 | FORM GET_DATA > IF COUNT = 0. | MESSAGE I000(0K) WITH 'Select at least one line.'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:2274 | FORM GET_DATA | PERFORM WRITE_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:2289 | FORM WRITE_DATA > IF IT_LOG[] IS INITIAL. | MESSAGE I000(0K) WITH 'No Data Selected.'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:2317 | FORM WRITE_DATA | PERFORM SET_COLOR. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:2394 | FORM PRINT | SUBMIT ZMMR_LABELQA WITH P_EXIDV IN TAB_LABEL AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:2421 | FORM PRINT > IF R1 = 'X'. | PERFORM DISPLAY_DATA USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_PACKING_STATUS_F01:2423 | FORM PRINT > ELSE. | PERFORM DISPLAY_DATA_NON USING ''. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_LABELQA:30 | START-OF-SELECTION | perform get_hu. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_LABELQA:33 | START-OF-SELECTION | perform get_data. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_LABELQA:34 | START-OF-SELECTION | perform print. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_LABELQA:51 | FORM GET_DATA > if sy-subrc ne 0. | message 'NIK tidak di temukan didalam data QA.' type 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_LABELQA:166 | FORM PRINT > IF sy-subrc <> 0. | MESSAGE e000(0k) WITH 'Download data file error, cause : ' v_info_error. | Tinjau kondisi dan hasil di ECC.
+  ZMMR_LABELQA:177 | FORM PRINT > IF v_returncode <> 0. | MESSAGE i000(0k) WITH 'Run Batch File Error'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:30 | AT SELECTION-SCREEN > IF SY-UCOMM = 'INFO'. | PERFORM F_PROG_INFO USING V_PROG. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:34 | START-OF-SELECTION | PERFORM DATA_RETRIEVAL. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:270 | FORM DATA_RETRIEVAL > IF HU_ST_INIT NE ''. | PERFORM CHANGE_HUBYBDC. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:276 | FORM DATA_RETRIEVAL > ELSE. | PERFORM CHANGE_HUBYBDC1. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:335 | FORM SELECT_ALL | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:352 | FORM DESELECT_ALL | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:439 | FORM EDIT_STATUS > IF SY-SUBRC = 0. | PERFORM CHANGE_HUBYBDC. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:499 | FORM EDIT_STATUS > IF CTR > 0. > IF ERROR-ID NE 'HUDIALOG'. | MESSAGE    = MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:506 | FORM EDIT_STATUS > IF CTR > 0. > ELSE. | MESSAGE = ERROR-MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:537 | FORM EDIT_STATUS | PERFORM REFRESH_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:539 | FORM EDIT_STATUS | PERFORM DISPLAY_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:553 | FORM FILTER_DATA | PERFORM DISPLAY_DATA. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_F01:579 | FORM DISPLAY_DATA | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:580 | FORM DISPLAY_DATA | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:581 | FORM DISPLAY_DATA | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:737 | FORM CHANGE_HUBYBDC | perform bdc_dynpro      using 'SAPLV51G' '6000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:738 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:740 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:742 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'V51VE-EXIDV(01)' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:744 | FORM CHANGE_HUBYBDC | perform bdc_dynpro      using 'SAPLV51G' '6000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:745 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:747 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:750 | FORM CHANGE_HUBYBDC | perform bdc_dynpro      using 'SAPLV51G' '6001'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:751 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:753 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:755 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'VEKP-EXIDV' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:757 | FORM CHANGE_HUBYBDC | perform bdc_dynpro      using 'SAPLV51G' '6000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:758 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:760 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:762 | FORM CHANGE_HUBYBDC | perform bdc_dynpro      using 'SAPLV51G' '6100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:763 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:765 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:767 | FORM CHANGE_HUBYBDC | perform bdc_dynpro      using 'SAPLBSVA' '0201'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:768 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:770 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:772 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'J_STMAINT-ANWS(01)' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:774 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'J_STMAINT-ANWS(02)' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:776 | FORM CHANGE_HUBYBDC | perform bdc_dynpro      using 'SAPLV51G' '6100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:777 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:779 | FORM CHANGE_HUBYBDC | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:782 | FORM CHANGE_HUBYBDC | CALL TRANSACTION 'HU02' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:840 | FORM SETHU02HEADER | perform bdc_dynpro      using 'SAPLV51G' '6000'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_F01:841 | FORM SETHU02HEADER | perform bdc_field       using 'BDC_OKCODE' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_F01:843 | FORM SETHU02HEADER | perform bdc_field       using 'BDC_CURSOR' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_F01:845 | FORM SETHU02HEADER | perform bdc_field       using 'HUM_MM_KOPFDATEN-WERKS' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_F01:847 | FORM SETHU02HEADER | perform bdc_field       using 'HUM_MM_KOPFDATEN-LGORT' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_F01:849 | FORM SETHU02HEADER | CALL TRANSACTION 'HU02' | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_F01:870 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_DYNPRO  USING 'SAPLV51G'    '6000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:871 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_FIELD   USING 'BDC_OKCODE'    '=UE6ALLG'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:873 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_FIELD   USING 'BDC_SUBSCR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:876 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_DYNPRO  USING 'SAPLV51G'    '6000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:878 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_FIELD   USING 'BDC_SUBSCR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:880 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_FIELD   USING 'BDC_CURSOR'      'HEADER51-PLANHU'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:881 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_FIELD   USING 'HEADER51-PLANHU'         'C'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:882 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_FIELD   USING 'HUM_MM_KOPFDATEN-WERKS'  '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:883 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_FIELD   USING 'HUM_MM_KOPFDATEN-LGORT'  SPACE. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:889 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_FIELD   USING 'BDC_OKCODE'    '=UE6HUS'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:893 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_DYNPRO  USING 'SAPLV51G'    '6000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:894 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_FIELD   USING 'BDC_SUBSCR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:896 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'V51VE-EXIDV(01)' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:898 | FORM CHANGE_HUBYBDC1 | PERFORM BDC_FIELD   USING 'BDC_OKCODE'    '=ENTR'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:900 | FORM CHANGE_HUBYBDC1 | perform bdc_dynpro      using 'SAPLV51G' '6000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:901 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:908 | FORM CHANGE_HUBYBDC1 | perform bdc_dynpro      using 'SAPLV51G' '6000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:909 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:911 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:913 | FORM CHANGE_HUBYBDC1 | perform bdc_dynpro      using 'SAPLV51G' '6001'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:914 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:916 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:918 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'VEKP-EXIDV' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:920 | FORM CHANGE_HUBYBDC1 | perform bdc_dynpro      using 'SAPLV51G' '6000'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:921 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:923 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:925 | FORM CHANGE_HUBYBDC1 | perform bdc_dynpro      using 'SAPLV51G' '6100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:926 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:928 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:930 | FORM CHANGE_HUBYBDC1 | perform bdc_dynpro      using 'SAPLBSVA' '0201'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:931 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:933 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:935 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'J_STMAINT-ANWS(01)' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:937 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'J_STMAINT-ANWS(02)' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:939 | FORM CHANGE_HUBYBDC1 | perform bdc_dynpro      using 'SAPLV51G' '6100'. | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:940 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:942 | FORM CHANGE_HUBYBDC1 | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_F01:945 | FORM CHANGE_HUBYBDC1 | CALL TRANSACTION 'HU02' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_ALV:62 | FORM F_FIELD_CATALOG | PERFORM F_ALV_FIELDCATG_ICON1 USING 'ITRESULT' : | Tinjau kondisi dan hasil di ECC.
+  ZQMI_CHANGE_STAT_HU_ALV:161 | FORM F_USER_COMMAND > WHEN 'EXEC'. | PERFORM EDIT_STATUS. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_ALV:164 | FORM F_USER_COMMAND > WHEN 'SELALL'. | PERFORM SELECT_ALL. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_ALV:167 | FORM F_USER_COMMAND > WHEN 'DESALL'. | PERFORM DESELECT_ALL. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_ALV:170 | FORM F_USER_COMMAND > WHEN 'REFDAT'. | PERFORM DATA_RETRIEVAL. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_ALV:187 | FORM WRITE_ERROR | PERFORM F_FIELD_CATALOG_ERROR. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_ALV:188 | FORM WRITE_ERROR | PERFORM F_LAYOUT_ERROR. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_ALV:189 | FORM WRITE_ERROR | PERFORM F_LIST_DETAIL_ERROR. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZQMI_CHANGE_STAT_HU_ALV:203 | FORM F_FIELD_CATALOG_ERROR | PERFORM F_ALV_FIELDCATG_ICON1 USING 'IT_ERROR' : | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZQMI_PACKING_STATUS (86 baris)
+  17 | includes | ZQMI_PACKING_STATUS_TOP
+  18 | includes | ZQMI_PACKING_STATUS_F01
+  19 | includes | Z_PROG_INFO
+  83 | callFunctions | VRM_SET_VALUES
+
+Objek Z_PROG_INFO (88 baris)
+  6 | Field DDIC | ZPROGINFO-PGMNA
+  15 | Field DDIC | RSNEWLENG-FCODE
+  77 | callFunctions | HELP_DOCULINES_SHOW
+  60 | tableReads | ZPROGINFO
+
+Objek ZQMI_PACKING_STATUS_F01 (2445 baris)
+  14 | Field DDIC | LIPS-VBELN
+  18 | Field DDIC | QAVE-KZART
+  19 | Field DDIC | THEAD-TDNAME
+  20 | Field DDIC | THEAD-TDNAME
+  21 | Field DDIC | TLINE-TDLINE
+  28 | Field DDIC | ZLOG_QA_REASON-ID
+  29 | Field DDIC | ZLOG_QA_REASON-TEXT
+  33 | Field DDIC | ZLOG_QA_REASON-CHARG
+  36 | Field DDIC | QALS-PRUEFLOS
+  37 | Field DDIC | ZLOG_QA_REASON-CHARG
+  46 | Field DDIC | ZQM001-SEQ
+  47 | Field DDIC | ZQM001-NOTE
+  50 | Field DDIC | ZQM001-EXIDV
+  51 | Field DDIC | ZQM001-SEQ
+  796 | Field DDIC | HUSSTAT-STAT
+  798 | Field DDIC | VEPO-VENUM
+  874 | Field DDIC | MSKA-KALAB
+  875 | Field DDIC | MSKA-KASPE
+  907 | Field DDIC | ZPACK_PCL-HUSTAT
+  1162 | Field DDIC | SY-UCOMM
+  1167 | Class dan Interface | CL_GUI_ALV_GRID
+  1170 | Layar dan GUI | LEAVE TO SCREEN 0.
+  1212 | BDC | BDCDATA
+  1253 | BDC | BDCDATA
+  1253 | BDC | CALL TRANSACTION 'VLMOVE' USING BDCDATA
+  1288 | BDC | BDCDATA
+  1289 | BDC | BDCDATA
+  1290 | BDC | BDCDATA
+  1291 | BDC | BDCDATA
+  1292 | BDC | BDCDATA
+  1300 | BDC | BDCDATA
+  1301 | BDC | BDCDATA
+  1302 | BDC | BDCDATA
+  1303 | BDC | BDCDATA
+  1341 | Layar dan GUI | SET PF-STATUS 'BLIST'.
+  1604 | Layar dan GUI | SET PF-STATUS 'BLIST'.
+  1897 | Field DDIC | VEKP-EXIDV
+  1904 | Field DDIC | BAPIRET2-MESSAGE
+  2004 | Field DDIC | VEKP-CHARG
+  2005 | Field DDIC | QALS-PRUEFLOS
+  2006 | Field DDIC | QALS-MATNR
+  2059 | Field DDIC | HUSSTAT-STAT
+  2061 | Field DDIC | VEPO-VENUM
+  2106 | Field DDIC | LIKP-VBELN
+  2145 | Field DDIC | ZQM001-EXIDV
+  2186 | Field DDIC | LIKP-VBELN
+  2293 | Layar dan GUI | SET PF-STATUS ''.
+  1944 | submitPrograms | ZQMI_CHANGE_STAT_HU
+  2394 | submitPrograms | ZMMR_LABELQA
+  241 | callFunctions | ZCHARACTERISTICS_ZQM001P
+  571 | callFunctions | READ_TEXT
+  765 | callFunctions | CONVERSION_EXIT_ALPHA_OUTPUT
+  802 | callFunctions | CONVERSION_EXIT_ALPHA_INPUT
+  962 | callFunctions | POPUP_GET_VALUES
+  1260 | callFunctions | FORMAT_MESSAGE
+  1962 | callFunctions | BAPI_MESSAGE_GETDETAIL
+  1253 | callTransactions | VLMOVE
+  2044 | callTransactions | QE03
+  61 | tableReads | VEKP
+  61 | tableReads | VEPO
+  137 | tableReads | MSEG
+  149 | tableReads | MKPF
+  212 | tableReads | AFPO
+  231 | tableReads | MARA
+  278 | tableReads | VBAK
+  298 | tableReads | LIKP
+  313 | tableReads | KNA1
+  334 | tableReads | QALS
+  344 | tableReads | JEST
+  511 | tableReads | ZQM001
+  565 | tableReads | STXH
+  635 | tableReads | ZLOG_QA_REASON
+  816 | tableReads | HUSSTAT
+  916 | tableReads | ZPACK_PCL
+  2119 | tableReads | VBUK
+  2410 | databaseWrites | ZQM001
+
+Objek LZCHARACTERISTICSU06 (43 baris)
+  15 | Field DDIC | MCH1-CUOBJ_BM
+  19 | tableReads | MCH1
+  29 | tableReads | CABN
+  29 | tableReads | AUSP
+
+Objek ZMMR_LABELQA (181 baris)
+  9 | Tipe DDIC | vekp
+  16 | Field DDIC | vekp-exidv
+  26 | Layar Seleksi | SELECT-OPTIONS : p_exidv FOR vekp-exidv.
+  26 | Field DDIC | vekp-exidv
+  55 | callFunctions | CONVERSION_EXIT_ALPHA_OUTPUT
+  89 | callFunctions | GUI_DOWNLOAD
+  169 | callFunctions | GUI_RUN
+  40 | tableReads | VEKP
+  49 | tableReads | ZQM001
+
+Objek ZQMI_CHANGE_STAT_HU (22 baris)
+  20 | includes | ZQMI_CHANGE_STAT_HU_TOP
+  22 | includes | ZQMI_CHANGE_STAT_HU_F01
+
+Objek ZQMI_CHANGE_STAT_HU_F01 (957 baris)
+  12 | Field DDIC | VEKP-EXIDV
+  15 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK BLK1 WITH FRAME TITLE TEXT-001.
+  15 | Teks Seleksi | TEXT-001
+  16 | Layar Seleksi | SELECT-OPTIONS: P_EXIDV FOR VEKP-EXIDV,
+  16 | Field DDIC | VEKP-EXIDV
+  17 | Field DDIC | VEPO-WERKS
+  18 | Field DDIC | VEPO-MATNR
+  19 | Field DDIC | VEKP-ERDAT
+  20 | Field DDIC | VEPO-LGORT
+  22 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK BLK1.
+  23 | Layar Seleksi | SELECTION-SCREEN SKIP 2.
+  24 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  75 | Field DDIC | HEADER51-PLANHU
+  290 | Layar dan GUI | SET SCREEN 0.
+  291 | Layar dan GUI | LEAVE TO SCREEN 0.
+  300 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN'.
+  365 | Field DDIC | TJ30T-STSMA
+  366 | Field DDIC | TJ30T-ESTAT
+  369 | Field DDIC | VEKP-EXIDV
+  373 | Field DDIC | BAPIRET2-MESSAGE
+  375 | Field DDIC | BAPIRET2-MESSAGE
+  593 | Field DDIC | VEPO-VENUM
+  594 | Field DDIC | VEPO-UNVEL
+  598 | Field DDIC | T001L-LGORT
+  782 | BDC | CALL TRANSACTION 'HU02' USING IT_BDCDATA
+  859 | Field DDIC | VEPO-VENUM
+  860 | Field DDIC | VEPO-UNVEL
+  864 | Field DDIC | T001L-LGORT
+  945 | BDC | CALL TRANSACTION 'HU02' USING IT_BDCDATA
+  6 | includes | Z_PROG_INFO
+  8 | includes | ZQMI_CHANGE_STAT_HU_ALV
+  54 | callFunctions | CONVERSION_EXIT_ALPHA_INPUT
+  256 | callFunctions | HU_PACKING_REFRESH
+  488 | callFunctions | BAPI_MESSAGE_GETDETAIL
+  521 | callFunctions | POPUP_TO_SHOW_DB_DATA_IN_TABLE
+  782 | callTransactions | HU02
+  80 | tableReads | VEKP
+  80 | tableReads | ZQM001
+  80 | tableReads | VEPO
+  224 | tableReads | HUSSTAT
+  385 | tableReads | TJ30T
+  385 | tableReads | HUSTOBJ
+
+Objek ZQMI_CHANGE_STAT_HU_ALV (273 baris)
+  135 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN'.
+  141 | Field DDIC | SY-UCOMM
+  272 | Layar dan GUI | SET PF-STATUS 'STANDARD_FULLSCREEN' EXCLUDING FT_EXTAB.
+  102 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  148 | callFunctions | GET_GLOBALS_FROM_SLVC_FULLSCR
+
+Objek ZQMI_CHANGE_STAT_HU_TOP (94 baris)
+  4 | Tipe DDIC | VEKP
+  5 | Field DDIC | Zproginfo-PGMNA
+  7 | Field DDIC | ZQM001-PSTAT
+  9 | Field DDIC | VEPO-VENUM
+  14 | BDC | BDCDATA
+  22 | Field DDIC | VEKP-EXIDV
+  23 | Field DDIC | ZQM001-PSTAT
+  25 | Field DDIC | VEPO-MATNR
+  26 | Field DDIC | VEPO-CHARG
+  27 | Field DDIC | VEPO-LGORT
+  29 | Field DDIC | VEPO-WERKS
+  30 | Field DDIC | VEKP-ERDAT
+  31 | Field DDIC | VEPO-VENUM
+  32 | Field DDIC | VEPO-VENUM
+  34 | Field DDIC | HUSSTAT-STAT
+  38 | Field DDIC | VEPO-VENUM
+  42 | Field DDIC | VEPO-UNVEL
+  45 | Field DDIC | VEPO-VENUM
+  46 | Field DDIC | VEPO-LGORT
+  47 | Field DDIC | VEPO-CHARG
+  54 | Class dan Interface | CL_GUI_ALV_GRID
+  60 | Field DDIC | SY-REPID
+  80 | Field DDIC | SY-DATUM
+  81 | Field DDIC | SY-DATUM
+  84 | Field DDIC | SY-UCOMM
+  86 | Field DDIC | BDCMSGCOLL-MSGSPRA
+  87 | Field DDIC | BDCMSGCOLL-MSGID
+  88 | Field DDIC | BDCMSGCOLL-MSGNR
+
+Objek ZQMI_PACKING_STATUS_TOP (251 baris)
+  9 | Tipe DDIC | ZQM001
+  17 | Field DDIC | SY-SUBRC
+  23 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK OPT1 WITH FRAME TITLE TEXT-001.
+  23 | Teks Seleksi | TEXT-001
+  24 | Layar Seleksi | SELECT-OPTIONS: S_EXIDV FOR VEKP-EXIDV,
+  24 | Field DDIC | VEKP-EXIDV
+  25 | Field DDIC | VEKP-VHILM
+  26 | Field DDIC | LIPS-VGBEL
+  27 | Field DDIC | LIPS-VBELN
+  28 | Field DDIC | KNA1-KUNNR
+  29 | Field DDIC | VEPO-WERKS
+  30 | Layar Seleksi | SELECT-OPTIONS: S_LGORT FOR VEPO-LGORT.
+  30 | Field DDIC | VEPO-LGORT
+  31 | Layar Seleksi | PARAMETERS    : P_LIST(20) AS LISTBOX VISIBLE LENGTH 20 DEFAULT 'QA IN'.
+  33 | Layar Seleksi | SELECT-OPTIONS: S_ERDAT FOR VEKP-ERDAT.
+  33 | Field DDIC | VEKP-ERDAT
+  35 | Layar Seleksi | SELECTION-SCREEN SKIP.
+  36 | Layar Seleksi | PARAMETERS    : P_ROLLNR  AS CHECKBOX DEFAULT 'X'.
+  37 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK OPT1.
+  39 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK OPT2 WITH FRAME TITLE TEXT-002.
+  39 | Teks Seleksi | TEXT-002
+  40 | Layar Seleksi | PARAMETERS : R2 RADIOBUTTON GROUP RAD,
+  43 | Layar Seleksi | SELECTION-SCREEN SKIP.
+  44 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  45 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK OPT2.
+  58 | Field DDIC | VEKP-EXIDV
+  59 | Field DDIC | HUSSTAT-STAT
+  61 | Field DDIC | VEKP-VENUM
+  62 | Field DDIC | VEKP-ERDAT
+  63 | Field DDIC | VEPO-UNVEL
+  64 | Field DDIC | VEKP-MAGRV
+  66 | Field DDIC | QALS-KTEXTMAT
+  67 | Field DDIC | VEPO-CHARG
+  68 | Field DDIC | VEPO-WERKS
+  69 | Field DDIC | VEPO-MATNR
+  70 | Field DDIC | VEPO-SONUM
+  71 | Field DDIC | MARA-MATKL
+  74 | Field DDIC | QALS-PRUEFLOS
+  75 | Field DDIC | QAVE-VCODE
+  76 | Field DDIC | VEPO-VBELN
+  77 | Field DDIC | VEPO-POSNR
+  78 | Field DDIC | LIPS-VGBEL
+  79 | Field DDIC | LIPS-VGPOS
+  81 | Field DDIC | KNA1-NAME1
+  82 | Field DDIC | SY-DATUM
+  84 | Field DDIC | ZQM001-NOTE
+  90 | Field DDIC | LIKP-LFART
+  95 | Field DDIC | ZQM001-EXIDV
+  96 | Field DDIC | ZQM001-PSTAT
+  97 | Field DDIC | ZQM001-NOTE
+  98 | Field DDIC | ZQM001-PRNT
+  102 | Field DDIC | ZQM001-EXIDV
+  122 | Field DDIC | SY-DATUM
+  123 | Field DDIC | VEKP-EXIDV
+  129 | Field DDIC | MSEG-MBLNR
+  130 | Field DDIC | MKPF-MJAHR
+  131 | Field DDIC | MSEG-BWART
+  132 | Field DDIC | MSEG-AUFNR
+  133 | Field DDIC | MSEG-MATNR
+  134 | Field DDIC | MSEG-MATNR
+  135 | Field DDIC | MSEG-CHARG
+  136 | Field DDIC | MSEG-WERKS
+  137 | Field DDIC | JEST-OBJNR
+  138 | Field DDIC | QALS-PRUEFLOS
+  139 | Field DDIC | VBAK-VBELN
+  140 | Field DDIC | MKPF-BUDAT
+  144 | Field DDIC | SY-PAGNO
+  148 | Field DDIC | HEADER51-PLANHU
+  149 | Field DDIC | MSKA-WERKS
+  150 | Field DDIC | MSKA-LGORT
+  157 | Field DDIC | VEKP-VENUM
+  158 | Field DDIC | VEKP-EXIDV
+  159 | Field DDIC | VEKP-VHILM
+  164 | Field DDIC | VEPO-VENUM
+  165 | Field DDIC | VEPO-UNVEL
+  166 | Field DDIC | VEPO-MATNR
+  167 | Field DDIC | VEPO-CHARG
+  172 | Field DDIC | VEPO-VENUM
+  173 | Field DDIC | VEPO-UNVEL
+  175 | Field DDIC | VEPO-POSNR
+  176 | Field DDIC | VEPO-MATNR
+  177 | Field DDIC | VEPO-CHARG
+  182 | Field DDIC | VEKP-VENUM
+  183 | Field DDIC | VEKP-EXIDV
+  184 | Field DDIC | VEKP-VHILM
+  188 | Field DDIC | VEKP-EXIDV
+  189 | Field DDIC | VEKP-VENUM
+  190 | Field DDIC | VEPO-UNVEL
+  197 | Field DDIC | ZQM001-PSTAT
+  198 | Field DDIC | ZQM001-NOTE
+  204 | BDC | BDCDATA
+  204 | BDC | BDCDATA
+  211 | Field DDIC | ZQM001-PSTAT
+  212 | Field DDIC | ZQM001-NOTE
+  213 | Field DDIC | ZQM001-SEQ
+  225 | Field DDIC | CTU_PARAMS-DISMODE
+  226 | Field DDIC | ZPROGINFO-PGMNA
+  237 | Field DDIC | VEKP-EXIDV
+Jumlah source terbaca: 10
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZQMI_PACKING_STATUS.abap
+  Baris 17 | INCLUDE | ZQMI_PACKING_STATUS_TOP
+  Baris 18 | INCLUDE | ZQMI_PACKING_STATUS_F01
+  Baris 19 | INCLUDE | Z_PROG_INFO
+  Baris 83 | Function module | VRM_SET_VALUES
+
+ZQMI_PACKING_STATUS_TOP.abap
+  Baris 9 | Tipe DDIC | ZQM001
+  Baris 17 | Field DDIC | SY-SUBRC
+  Baris 23 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK OPT1 WITH FRAME TITLE TEXT-001.
+  Baris 23 | Teks Seleksi | TEXT-001
+  Baris 24 | Layar Seleksi | SELECT-OPTIONS: S_EXIDV FOR VEKP-EXIDV,
+  Baris 24 | Field DDIC | VEKP-EXIDV
+  Baris 25 | Field DDIC | VEKP-VHILM
+  Baris 26 | Field DDIC | LIPS-VGBEL
+  Baris 27 | Field DDIC | LIPS-VBELN
+  Baris 28 | Field DDIC | KNA1-KUNNR
+  Baris 29 | Field DDIC | VEPO-WERKS
+  Baris 30 | Layar Seleksi | SELECT-OPTIONS: S_LGORT FOR VEPO-LGORT.
+  Baris 30 | Field DDIC | VEPO-LGORT
+  Baris 31 | Layar Seleksi | PARAMETERS    : P_LIST(20) AS LISTBOX VISIBLE LENGTH 20 DEFAULT 'QA IN'.
+  Baris 33 | Layar Seleksi | SELECT-OPTIONS: S_ERDAT FOR VEKP-ERDAT.
+  Baris 33 | Field DDIC | VEKP-ERDAT
+  Baris 35 | Layar Seleksi | SELECTION-SCREEN SKIP.
+  Baris 36 | Layar Seleksi | PARAMETERS    : P_ROLLNR  AS CHECKBOX DEFAULT 'X'.
+  Baris 37 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK OPT1.
+  Baris 39 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK OPT2 WITH FRAME TITLE TEXT-002.
+  Baris 39 | Teks Seleksi | TEXT-002
+  Baris 40 | Layar Seleksi | PARAMETERS : R2 RADIOBUTTON GROUP RAD,
+  Baris 43 | Layar Seleksi | SELECTION-SCREEN SKIP.
+  Baris 44 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  Baris 45 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK OPT2.
+  Baris 58 | Field DDIC | VEKP-EXIDV
+  Baris 59 | Field DDIC | HUSSTAT-STAT
+  Baris 61 | Field DDIC | VEKP-VENUM
+  Baris 62 | Field DDIC | VEKP-ERDAT
+  Baris 63 | Field DDIC | VEPO-UNVEL
+  Baris 64 | Field DDIC | VEKP-MAGRV
+  Baris 66 | Field DDIC | QALS-KTEXTMAT
+  Baris 67 | Field DDIC | VEPO-CHARG
+  Baris 68 | Field DDIC | VEPO-WERKS
+  Baris 69 | Field DDIC | VEPO-MATNR
+  Baris 70 | Field DDIC | VEPO-SONUM
+  Baris 71 | Field DDIC | MARA-MATKL
+  Baris 74 | Field DDIC | QALS-PRUEFLOS
+  Baris 75 | Field DDIC | QAVE-VCODE
+  Baris 76 | Field DDIC | VEPO-VBELN
+  Baris 77 | Field DDIC | VEPO-POSNR
+  Baris 78 | Field DDIC | LIPS-VGBEL
+  Baris 79 | Field DDIC | LIPS-VGPOS
+  Baris 81 | Field DDIC | KNA1-NAME1
+  Baris 82 | Field DDIC | SY-DATUM
+  Baris 84 | Field DDIC | ZQM001-NOTE
+  Baris 90 | Field DDIC | LIKP-LFART
+  Baris 95 | Field DDIC | ZQM001-EXIDV
+  Baris 96 | Field DDIC | ZQM001-PSTAT
+  Baris 97 | Field DDIC | ZQM001-NOTE
+  Baris 98 | Field DDIC | ZQM001-PRNT
+  Baris 102 | Field DDIC | ZQM001-EXIDV
+  Baris 122 | Field DDIC | SY-DATUM
+  Baris 123 | Field DDIC | VEKP-EXIDV
+  Baris 129 | Field DDIC | MSEG-MBLNR
+  Baris 130 | Field DDIC | MKPF-MJAHR
+  Baris 131 | Field DDIC | MSEG-BWART
+  Baris 132 | Field DDIC | MSEG-AUFNR
+  Baris 133 | Field DDIC | MSEG-MATNR
+  Baris 134 | Field DDIC | MSEG-MATNR
+  Baris 135 | Field DDIC | MSEG-CHARG
+  Baris 136 | Field DDIC | MSEG-WERKS
+  Baris 137 | Field DDIC | JEST-OBJNR
+  Baris 138 | Field DDIC | QALS-PRUEFLOS
+  Baris 139 | Field DDIC | VBAK-VBELN
+  Baris 140 | Field DDIC | MKPF-BUDAT
+  Baris 144 | Field DDIC | SY-PAGNO
+  Baris 148 | Field DDIC | HEADER51-PLANHU
+  Baris 149 | Field DDIC | MSKA-WERKS
+  Baris 150 | Field DDIC | MSKA-LGORT
+  Baris 157 | Field DDIC | VEKP-VENUM
+  Baris 158 | Field DDIC | VEKP-EXIDV
+  Baris 159 | Field DDIC | VEKP-VHILM
+  Baris 164 | Field DDIC | VEPO-VENUM
+  Baris 165 | Field DDIC | VEPO-UNVEL
+  Baris 166 | Field DDIC | VEPO-MATNR
+  Baris 167 | Field DDIC | VEPO-CHARG
+  Baris 172 | Field DDIC | VEPO-VENUM
+  Baris 173 | Field DDIC | VEPO-UNVEL
+  Baris 175 | Field DDIC | VEPO-POSNR
+  Baris 176 | Field DDIC | VEPO-MATNR
+  Baris 177 | Field DDIC | VEPO-CHARG
+  Baris 182 | Field DDIC | VEKP-VENUM
+  Baris 183 | Field DDIC | VEKP-EXIDV
+  Baris 184 | Field DDIC | VEKP-VHILM
+  Baris 188 | Field DDIC | VEKP-EXIDV
+  Baris 189 | Field DDIC | VEKP-VENUM
+  Baris 190 | Field DDIC | VEPO-UNVEL
+  Baris 197 | Field DDIC | ZQM001-PSTAT
+  Baris 198 | Field DDIC | ZQM001-NOTE
+  Baris 204 | BDC | BDCDATA
+  Baris 204 | BDC | BDCDATA
+  Baris 211 | Field DDIC | ZQM001-PSTAT
+  Baris 212 | Field DDIC | ZQM001-NOTE
+  Baris 213 | Field DDIC | ZQM001-SEQ
+  Baris 225 | Field DDIC | CTU_PARAMS-DISMODE
+  Baris 226 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 237 | Field DDIC | VEKP-EXIDV
+
+ZQMI_PACKING_STATUS_F01.abap
+  Baris 14 | Field DDIC | LIPS-VBELN
+  Baris 18 | Field DDIC | QAVE-KZART
+  Baris 19 | Field DDIC | THEAD-TDNAME
+  Baris 20 | Field DDIC | THEAD-TDNAME
+  Baris 21 | Field DDIC | TLINE-TDLINE
+  Baris 28 | Field DDIC | ZLOG_QA_REASON-ID
+  Baris 29 | Field DDIC | ZLOG_QA_REASON-TEXT
+  Baris 33 | Field DDIC | ZLOG_QA_REASON-CHARG
+  Baris 36 | Field DDIC | QALS-PRUEFLOS
+  Baris 37 | Field DDIC | ZLOG_QA_REASON-CHARG
+  Baris 46 | Field DDIC | ZQM001-SEQ
+  Baris 47 | Field DDIC | ZQM001-NOTE
+  Baris 50 | Field DDIC | ZQM001-EXIDV
+  Baris 51 | Field DDIC | ZQM001-SEQ
+  Baris 796 | Field DDIC | HUSSTAT-STAT
+  Baris 798 | Field DDIC | VEPO-VENUM
+  Baris 874 | Field DDIC | MSKA-KALAB
+  Baris 875 | Field DDIC | MSKA-KASPE
+  Baris 907 | Field DDIC | ZPACK_PCL-HUSTAT
+  Baris 1162 | Field DDIC | SY-UCOMM
+  Baris 1167 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 1170 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 1212 | BDC | BDCDATA
+  Baris 1253 | BDC | BDCDATA
+  Baris 1253 | BDC | CALL TRANSACTION 'VLMOVE' USING BDCDATA
+  Baris 1288 | BDC | BDCDATA
+  Baris 1289 | BDC | BDCDATA
+  Baris 1290 | BDC | BDCDATA
+  Baris 1291 | BDC | BDCDATA
+  Baris 1292 | BDC | BDCDATA
+  Baris 1300 | BDC | BDCDATA
+  Baris 1301 | BDC | BDCDATA
+  Baris 1302 | BDC | BDCDATA
+  Baris 1303 | BDC | BDCDATA
+  Baris 1341 | Layar dan GUI | SET PF-STATUS 'BLIST'.
+  Baris 1604 | Layar dan GUI | SET PF-STATUS 'BLIST'.
+  Baris 1897 | Field DDIC | VEKP-EXIDV
+  Baris 1904 | Field DDIC | BAPIRET2-MESSAGE
+  Baris 2004 | Field DDIC | VEKP-CHARG
+  Baris 2005 | Field DDIC | QALS-PRUEFLOS
+  Baris 2006 | Field DDIC | QALS-MATNR
+  Baris 2059 | Field DDIC | HUSSTAT-STAT
+  Baris 2061 | Field DDIC | VEPO-VENUM
+  Baris 2106 | Field DDIC | LIKP-VBELN
+  Baris 2145 | Field DDIC | ZQM001-EXIDV
+  Baris 2186 | Field DDIC | LIKP-VBELN
+  Baris 2293 | Layar dan GUI | SET PF-STATUS ''.
+  Baris 61 | Sumber data pada SELECT atau JOIN | VEKP
+  Baris 61 | Sumber data pada SELECT atau JOIN | VEPO
+  Baris 137 | Sumber data pada SELECT atau JOIN | MSEG
+  Baris 149 | Sumber data pada SELECT atau JOIN | MKPF
+  Baris 212 | Sumber data pada SELECT atau JOIN | AFPO
+  Baris 231 | Sumber data pada SELECT atau JOIN | MARA
+  Baris 278 | Sumber data pada SELECT atau JOIN | VBAK
+  Baris 298 | Sumber data pada SELECT atau JOIN | LIKP
+  Baris 313 | Sumber data pada SELECT atau JOIN | KNA1
+  Baris 334 | Sumber data pada SELECT atau JOIN | QALS
+  Baris 344 | Sumber data pada SELECT atau JOIN | JEST
+  Baris 511 | Sumber data pada SELECT atau JOIN | ZQM001
+  Baris 565 | Sumber data pada SELECT atau JOIN | STXH
+  Baris 635 | Sumber data pada SELECT atau JOIN | ZLOG_QA_REASON
+  Baris 816 | Sumber data pada SELECT atau JOIN | HUSSTAT
+  Baris 916 | Sumber data pada SELECT atau JOIN | ZPACK_PCL
+  Baris 2119 | Sumber data pada SELECT atau JOIN | VBUK
+  Baris 241 | Function module | ZCHARACTERISTICS_ZQM001P
+  Baris 571 | Function module | READ_TEXT
+  Baris 765 | Function module | CONVERSION_EXIT_ALPHA_OUTPUT
+  Baris 802 | Function module | CONVERSION_EXIT_ALPHA_INPUT
+  Baris 962 | Function module | POPUP_GET_VALUES
+  Baris 1260 | Function module | FORMAT_MESSAGE
+  Baris 1962 | Function module | BAPI_MESSAGE_GETDETAIL
+  Baris 1944 | Program yang dirujuk SUBMIT | ZQMI_CHANGE_STAT_HU
+  Baris 2394 | Program yang dirujuk SUBMIT | ZMMR_LABELQA
+  Baris 1253 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | VLMOVE
+  Baris 2044 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | QE03
+  Baris 2410 | Indikasi penulisan data (perlu konfirmasi) | ZQM001
+  Baris 1873 | Kontrol transaksi | COMMIT_WORK
+  Baris 2411 | Kontrol transaksi | COMMIT_WORK
+
+Z_PROG_INFO.abap
+  Baris 6 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 15 | Field DDIC | RSNEWLENG-FCODE
+  Baris 60 | Sumber data pada SELECT atau JOIN | ZPROGINFO
+  Baris 77 | Function module | HELP_DOCULINES_SHOW

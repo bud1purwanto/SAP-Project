@@ -1,0 +1,19 @@
+SRCBUX             stokBatch         90  batch9         75  terbaru 18.06.2025
+SREC7I             stokBatch          0  batch9          0  terbaru 00.00.0000
+SRCADI             stokBatch        129  batch9          0  terbaru 03.10.2022
+SRVC2I             stokBatch          2  batch9          0  terbaru 02.09.2026
+SRGJBI             stokBatch         97  batch9          0  terbaru 26.01.2023
+SREYAI             stokBatch         50  batch9          0  terbaru 24.01.2018
+SRAAAI             stokBatch        109  batch9          0  terbaru 29.03.2023
+SRABDI             stokBatch          4  batch9          0  terbaru 16.04.2014
+SRGLBI             stokBatch          0  batch9          0  terbaru 00.00.0000
+SREWEI             stokBatch         64  batch9          0  terbaru 12.11.2026
+SREASI             stokBatch         29  batch9          0  terbaru 09.09.2026
+SRGIDI             stokBatch         37  batch9          0  terbaru 09.09.2026
+SRACBI             stokBatch         55  batch9          0  terbaru 10.11.2026
+SRAABI             stokBatch      1,241  batch9          0  terbaru 10.11.2026
+SREC7X             stokBatch          0  batch9          0  terbaru 00.00.0000
+SR3884165 261 100000778527
+SR3884165 101 P29000054815
+SR3884165 411 P29000054815
+SR3884165 411 P29000054815

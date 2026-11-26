@@ -1,0 +1,433 @@
+﻿Input: ZSD008
+Source SAP development (RFC baca-saja): ZSDI_SOTOSO
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZSDI_SOTOSO_F01:10 | AT SELECTION-SCREEN | PERFORM FILENAME. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:35 | AT SELECTION-SCREEN > IF SY-UCOMM = 'TEMPL'. > IF FPATH IS NOT INITIAL. | PERFORM DONLOT_TEMPLATE. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:39 | AT SELECTION-SCREEN > IF SY-UCOMM = 'INFO'. | PERFORM F_PROG_INFO USING V_PROG. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:43 | AT SELECTION-SCREEN | PERFORM TRANS. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:46 | START-OF-SELECTION | PERFORM PROCESS. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:56 | FORM PROCESS | PERFORM MASTER_ATNAM. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:59 | FORM PROCESS > IF R1 IS NOT INITIAL. > IF BATCH IS INITIAL AND HU IS INITIAL . | MESSAGE  'Please Fill Batch  or HU.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:61 | FORM PROCESS > IF R1 IS NOT INITIAL. > ELSE. | PERFORM GET_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:66 | FORM PROCESS > IF R1 IS NOT INITIAL. > ELSE. > IF SY-SUBRC EQ 0. > IF SY-SUBRC EQ 0. | MESSAGE E016(PN) WITH 'Cannot Combine sotoso between SLOC WM and NON-WM'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:69 | FORM PROCESS > IF R1 IS NOT INITIAL. > ELSE. | PERFORM DISPLAY_ALV. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:73 | FORM PROCESS > ELSE. > IF DATASET IS INITIAL . | MESSAGE  'Please Fill File Name.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:75 | FORM PROCESS > ELSE. > ELSE. | PERFORM READ_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:83 | FORM PROCESS > ELSE. > ELSE. | MESSAGE E016(PN) WITH TXT. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:89 | FORM PROCESS > ELSE. > ELSE. > IF SY-SUBRC EQ 0. > IF SY-SUBRC EQ 0. | MESSAGE E016(PN) WITH 'Cannot Combine sotoso between SLOC WM and NON-WM'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:94 | FORM PROCESS > ELSE. > ELSE. > IF ABSTA EQ 'C' AND ST NE 'X'. | MESSAGE E016(PN) WITH MSG1. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:97 | FORM PROCESS > ELSE. > ELSE. > IF GBSTA EQ 'C' AND ST NE 'X'. | MESSAGE E016(PN) WITH MSG2. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:102 | FORM PROCESS > ELSE. > ELSE. > ELSE. | PERFORM PROC_DATA. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:103 | FORM PROCESS > ELSE. > ELSE. > ELSE. | PERFORM DOWNLOAD. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:105 | FORM PROCESS > ELSE. > ELSE. > ELSE. | PERFORM WRITE_LOG. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:169 | FORM READ_DATA > IF SY-SUBRC <> 0. | MESSAGE I000(0K) WITH 'File can not be opened'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:174 | FORM READ_DATA > ELSE. > IF SY-SUBRC EQ 0. | MESSAGE I000(0K) WITH 'Do not use movement type 412'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:211 | FORM READ_DATA > IF ITAB_DATA-ISSUE_SLOC NE ITAB_DATA-SLOC. | MESSAGE TXT TYPE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:269 | FORM READ_DATA > IF V_ERROR = 1. | MESSAGE 'Data Tidak Ada' TYPE 'S' DISPLAY LIKE 'E'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:313 | FORM READ_DATA > ELSE. > IF SY-SUBRC NE 0. | MESSAGE E016(PN) WITH TXT. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:331 | FORM READ_DATA > ELSE. > ELSE. > IF ITAB_DATA-SALES_ORDER NE TSO OR ITAB_DATA-SALES_ORDER_ITEM NE TSOITEM. | MESSAGE E016(PN) WITH TXT. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:376 | FORM READ_DATA > ELSE. > IF ITAB_DATA-MOV_TYPE NE '411'. > IF ITAB_DATA-MOV_TYPE EQ '413' AND ITAB_DATA-SPEC_STOCK EQ ' '. > IF TCUOBJ IS INITIAL. | MESSAGE E016(PN) WITH 'Configuration Object 'ITAB_DATA-SO_STOCK ITAB_DATA-SOITEM_STOCK' does not exist'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:409 | FORM READ_DATA > ELSE. > IF ITAB_DATA-MOV_TYPE NE '411'. > ELSE. > IF TCUOBJ IS INITIAL. | MESSAGE E016(PN) WITH 'Configuration Object 'ITAB_DATA-SALES_ORDER ITAB_DATA-SALES_ORDER_ITEM' does not exist'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:638 | FORM READ_DATA > ELSE. > IF STAT EQ 'X'. | MESSAGE E016(PN) WITH TERR. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:784 | FORM PROC_DATA | PERFORM GET_ERROR. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:820 | FORM GET_ERROR | MESSAGE    = V_MSG. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:836 | FORM GET_ERROR > IF ERRFLAG IS INITIAL. > IF SY-SUBRC NE 0. | MESSAGE E899 WITH 'Error in updating'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:858 | FORM GET_ERROR > IF ERRFLAG IS INITIAL. > ELSE. > IF T_ERRORS-LGNUM IS INITIAL. | PERFORM UPDATE. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:951 | FORM DOWNLOAD > IF SY-SUBRC <> 0. | MESSAGE I000(0K) WITH 'Download error'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1341 | FORM DISPLAY_ALV | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1342 | FORM DISPLAY_ALV | PERFORM BUILD_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1343 | FORM DISPLAY_ALV | PERFORM BUILD_EVENTS. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1344 | FORM DISPLAY_ALV | PERFORM BUILD_PRINT_PARAMS. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1345 | FORM DISPLAY_ALV | PERFORM DISPLAY_ALV_REPORT. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1360 | FORM F_FIELD_CATALOG > IF SY-TCODE = 'ZSD008A'. | PERFORM F_ALV_FIELDCATG_SO USING 'ITAB_DATA' : | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1375 | FORM F_FIELD_CATALOG > ELSE. | PERFORM F_ALV_FIELDCATG_SO USING 'ITAB_DATA' : | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1509 | FORM USER_COMMAND > WHEN 'EXEC'. > IF SY-SUBRC NE 0. | MESSAGE E016(PN) WITH TXT. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1515 | FORM USER_COMMAND > WHEN 'EXEC'. | MESSAGE E016(PN) WITH ERRORTXT. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1524 | FORM USER_COMMAND > WHEN 'EXEC'. > IF R3 IS NOT INITIAL. > IF STAT NE 'A'. | PERFORM POPSTS. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1526 | FORM USER_COMMAND > WHEN 'EXEC'. > IF R3 IS NOT INITIAL. > ELSE. | MESSAGE E016(PN) WITH 'Can not Upload Diff SO'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1530 | FORM USER_COMMAND > WHEN 'EXEC'. > ELSEIF R4 IS NOT INITIAL. > IF STAT NE 'A'. | PERFORM POPFTS. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1532 | FORM USER_COMMAND > WHEN 'EXEC'. > ELSEIF R4 IS NOT INITIAL. > ELSE. | MESSAGE E016(PN) WITH 'Can not Upload Diff HU'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1536 | FORM USER_COMMAND > WHEN 'EXEC'. > ELSEIF R5 IS NOT INITIAL. > IF STAT NE 'A'. | PERFORM PROC_DATA3. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1538 | FORM USER_COMMAND > WHEN 'EXEC'. > ELSEIF R5 IS NOT INITIAL. > ELSE. | MESSAGE E016(PN) WITH 'Can not Upload Diff HU'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1544 | FORM USER_COMMAND > WHEN 'EXEC'. > ELSE. | PERFORM F_FIELD_CATALOG_END. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1545 | FORM USER_COMMAND > WHEN 'EXEC'. > ELSE. | PERFORM DISPLAY_ALV_REPORT_END. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1574 | FORM L_USER_COMMAND > WHEN 'REFE'. | PERFORM F_FIELD_CATALOG_LOG. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1575 | FORM L_USER_COMMAND > WHEN 'REFE'. | PERFORM DISPLAY_ALV_REPORT_LOG. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1578 | FORM L_USER_COMMAND > WHEN 'TEST'. | CALL TRANSACTION 'ZSD008'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  ZSDI_SOTOSO_F01:1734 | FORM POPSTS > IF TCUOBJ IS INITIAL. | MESSAGE E016(PN) WITH 'Configuration Object 'ITAB_DATA-SALES_ORDER ITAB_DATA-SALES_ORDER_ITEM ' does not exist'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1737 | FORM POPSTS | PERFORM SUBCONTRACTING USING ITAB_DATA-SALES_ORDER. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1961 | FORM POPSTS > IF ABSTA EQ 'C' AND ST NE 'X'. | MESSAGE MSG1 TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1964 | FORM POPSTS > IF GBSTA EQ 'C' AND ST NE 'X'. | MESSAGE MSG2 TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1970 | FORM POPSTS > ELSE. > IF STAT NE 'X'. | PERFORM PROC_DATA1. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:1972 | FORM POPSTS > ELSE. > ELSE. | MESSAGE E016(PN) WITH TERR. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:2074 | FORM POPFTS > IF TCUOBJ IS INITIAL. | MESSAGE E016(PN) WITH 'Configuration Object 'ITAB_DATA-SO_STOCK ITAB_DATA-SOITEM_STOCK ' does not exist'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:2077 | FORM POPFTS | PERFORM SUBCONTRACTING USING ITAB_DATA-SO_STOCK. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:2306 | FORM POPFTS > IF ABSTA EQ 'C' AND ST NE 'X'. | MESSAGE MSG1 TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:2309 | FORM POPFTS > IF GBSTA EQ 'C' AND ST NE 'X'. | MESSAGE MSG2 TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:2315 | FORM POPFTS > ELSE. > IF STAT NE 'X'. | PERFORM PROC_DATA2. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:2317 | FORM POPFTS > ELSE. > ELSE. | MESSAGE E016(PN) WITH TERR. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:2433 | FORM PROC_DATA1 | PERFORM GET_ERROR. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:2543 | FORM PROC_DATA2 | PERFORM GET_ERROR. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:2682 | FORM PROC_DATA3 | PERFORM GET_ERROR. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:2718 | FORM F_FIELD_CATALOG_END | PERFORM F_ALV_FIELDCATG_SO USING T_ERRORS : | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:2767 | FORM F_FIELD_CATALOG_LOG | PERFORM F_ALV_FIELDCATG_SO USING 'ITAB_LOG1' : | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3037 | FORM UPDATE | PERFORM BDC_DYNPRO      USING 'SAPMV50A' '4004'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3038 | FORM UPDATE | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3040 | FORM UPDATE | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3042 | FORM UPDATE | PERFORM BDC_FIELD       USING 'LIKP-VBELN' | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3056 | FORM UPDATE > IF N > 8. | PERFORM BDC_DYNPRO      USING 'SAPMV50A' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3057 | FORM UPDATE > IF N > 8. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3069 | FORM UPDATE | PERFORM BDC_DYNPRO      USING 'SAPMV50A' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3070 | FORM UPDATE | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3074 | FORM UPDATE | PERFORM BDC_FIELD      USING V_FIELD | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3077 | FORM UPDATE | PERFORM BDC_DYNPRO      USING 'SAPMV50A' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3078 | FORM UPDATE | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZSDI_SOTOSO_F01:3081 | FORM UPDATE | CALL TRANSACTION 'VL02N' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZSDI_SOTOSO (20 baris)
+  17 | includes | ZSDI_SOTOSO_TOP
+  18 | includes | Z_PROG_INFO
+  19 | includes | ZABAPALV
+  20 | includes | ZSDI_SOTOSO_F01
+
+Objek ZSDI_SOTOSO_F01 (3188 baris)
+  14 | Class dan Interface | CL_GUI_FRONTEND_SERVICES
+  116 | Layar dan GUI | SET PF-STATUS 'PFSTAT'.
+  124 | Layar dan GUI | SET SCREEN 0.
+  137 | Field DDIC | ZQM001-SEQ
+  139 | Field DDIC | MSKA-KALAB
+  140 | Field DDIC | MSKA-KAEIN
+  142 | Field DDIC | CAWN-ATWRT
+  143 | Field DDIC | CAWN-ATWRT
+  875 | Tipe DDIC | RLGRAP
+  877 | Field DDIC | RLGRAP-FILENAME
+  878 | Field DDIC | RLGRAP-FILENAME
+  1485 | Field DDIC | SY-UCOMM
+  1488 | Class dan Interface | CL_GUI_ALV_GRID
+  1549 | Layar dan GUI | LEAVE TO SCREEN 0.
+  1561 | Field DDIC | SY-UCOMM
+  1564 | Class dan Interface | CL_GUI_ALV_GRID
+  1594 | Field DDIC | WA_HEADER-INFO
+  1623 | Layar dan GUI | SET PF-STATUS 'PFSTAT'.
+  1633 | Layar dan GUI | SET PF-STATUS 'PF_LOG'.
+  1646 | Field DDIC | CAWN-ATWRT
+  1647 | Field DDIC | CAWN-ATWRT
+  1987 | Field DDIC | CAWN-ATWRT
+  1988 | Field DDIC | CAWN-ATWRT
+  2965 | Field DDIC | CABNT-ATINN
+  3026 | Field DDIC | THEAD-TDNAME
+  3081 | BDC | CALL TRANSACTION 'VL02N' USING IT_BDCDATA
+  3124 | Field DDIC | CABNT-ATINN
+  77 | callFunctions | CONVERSION_EXIT_ALPHA_OUTPUT
+  151 | callFunctions | GUI_UPLOAD
+  344 | callFunctions | CONVERSION_EXIT_ALPHA_INPUT
+  412 | callFunctions | VC_I_GET_CONFIGURATION
+  418 | callFunctions | VB_INIT
+  421 | callFunctions | VB_BATCH_GET_DETAIL
+  462 | callFunctions | POPUP_TO_CONFIRM
+  669 | callFunctions | CONVERT_DATE_TO_INTERNAL
+  773 | callFunctions | BAPI_GOODSMVT_CREATE
+  809 | callFunctions | BAPI_MESSAGE_GETDETAIL
+  831 | callFunctions | BAPI_TRANSACTION_COMMIT
+  920 | callFunctions | WS_FILENAME_GET
+  939 | callFunctions | GUI_DOWNLOAD
+  1130 | callFunctions | CONVERT_DATE_TO_EXTERNAL
+  1416 | callFunctions | REUSE_ALV_EVENTS_GET
+  1458 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  1490 | callFunctions | GET_GLOBALS_FROM_SLVC_FULLSCR
+  1613 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  1688 | callFunctions | POPUP_GET_VALUES
+  3001 | callFunctions | CONVERSION_EXIT_ATINN_INPUT
+  1578 | callTransactions | ZSD008
+  3081 | callTransactions | VL02N
+  180 | tableReads | VEPO
+  183 | tableReads | VEKP
+  191 | tableReads | T320
+  200 | tableReads | ZQM001
+  215 | tableReads | MSKA
+  224 | tableReads | MCHB
+  350 | tableReads | VBUP
+  354 | tableReads | VBAK
+  370 | tableReads | VBAP
+  446 | tableReads | CAWN
+  446 | tableReads | CAWNT
+  851 | tableReads | LIKP
+  855 | tableReads | LIPS
+  1185 | tableReads | MARA
+  3006 | tableReads | CABNT
+  3128 | tableReads | ZMAP_TYPE
+
+Objek ZABAPALV (660 baris)
+  7 | Field DDIC | SY-REPID
+  27 | Field DDIC | SY-DATUM
+  28 | Field DDIC | SY-DATUM
+  559 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+
+Objek Z_PROG_INFO (88 baris)
+  6 | Field DDIC | ZPROGINFO-PGMNA
+  15 | Field DDIC | RSNEWLENG-FCODE
+  77 | callFunctions | HELP_DOCULINES_SHOW
+  60 | tableReads | ZPROGINFO
+
+Objek ZSDI_SOTOSO_TOP (182 baris)
+  4 | Tipe DDIC | MSEG
+  9 | Field DDIC | BAPIRET2-MESSAGE
+  12 | Field DDIC | VEPO-SONUM
+  13 | Field DDIC | VEKP-EXIDV
+  14 | Field DDIC | VBAP-VBELN
+  15 | Field DDIC | VBAP-POSNR
+  20 | Field DDIC | ZPROGINFO-PGMNA
+  22 | Field DDIC | VEPO-VENUM
+  23 | Field DDIC | VBUP-ABSTA
+  24 | Field DDIC | VBUP-GBSTA
+  25 | Field DDIC | VBAK-AUART
+  27 | Field DDIC | VBAP-CUOBJ
+  28 | Field DDIC | SY-UCOMM
+  34 | Field DDIC | LIKP-VBELN
+  35 | Field DDIC | LIKP-LGNUM
+  38 | BDC | BDCDATA
+  58 | Field DDIC | MSKA-KALAB
+  59 | Field DDIC | MSKA-KAEIN
+  60 | Field DDIC | VEPO-VENUM
+  61 | Field DDIC | VEPO-SONUM
+  62 | Field DDIC | VEKP-EXIDV
+  63 | Field DDIC | VEKP-UEVEL
+  64 | Field DDIC | VEPO-UNVEL
+  65 | Field DDIC | T320-LGORT
+  68 | Field DDIC | ZQM001-PSTAT
+  72 | Field DDIC | MARA-MATNR
+  73 | Field DDIC | MCHB-CHARG
+  74 | Field DDIC | MSEG-WERKS
+  75 | Field DDIC | MSEG-LGORT
+  77 | Field DDIC | MSEG-MEINS
+  78 | Field DDIC | VBAP-VBELN
+  79 | Field DDIC | VBAP-POSNR
+  80 | Field DDIC | VBAP-VBELN
+  81 | Field DDIC | VBAP-POSNR
+  85 | Field DDIC | CABNT-ATBEZ
+  139 | Field DDIC | RLGRAP-FILENAME
+  142 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK ABD WITH FRAME TITLE TEXT-ABD.
+  142 | Teks Seleksi | TEXT-ABD
+  143 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  145 | Layar Seleksi | PARAMETERS: R1 RADIOBUTTON GROUP RAD1 DEFAULT 'X' USER-COMMAND USR.
+  146 | Layar Seleksi | SELECTION-SCREEN COMMENT 8(20) TEXT-003.
+  146 | Teks Seleksi | TEXT-003
+  147 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  148 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  150 | Layar Seleksi | PARAMETERS: R2 RADIOBUTTON GROUP RAD1 .
+  151 | Layar Seleksi | SELECTION-SCREEN COMMENT 8(20) TEXT-004.
+  151 | Teks Seleksi | TEXT-004
+  152 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  153 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK ABD.
+  155 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK ABC WITH FRAME TITLE TEXT-ABC.
+  155 | Teks Seleksi | TEXT-ABC
+  156 | Layar Seleksi | PARAMETERS: DATASET LIKE RLGRAP-FILENAME LOWER CASE DEFAULT 'D:\'.
+  156 | Field DDIC | RLGRAP-FILENAME
+  157 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK ABC.
+  159 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK ABE WITH FRAME TITLE TEXT-ABE.
+  159 | Teks Seleksi | TEXT-ABE
+  160 | Layar Seleksi | SELECT-OPTIONS BATCH FOR MSEG-CHARG.
+  160 | Field DDIC | MSEG-CHARG
+  161 | Layar Seleksi | SELECT-OPTIONS HU FOR VEKP-EXIDV .
+  161 | Field DDIC | VEKP-EXIDV
+  162 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  164 | Layar Seleksi | PARAMETERS: R3 RADIOBUTTON GROUP RAD2 DEFAULT 'X'.
+  165 | Layar Seleksi | SELECTION-SCREEN COMMENT 8(20) TEXT-005.
+  165 | Teks Seleksi | TEXT-005
+  166 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  168 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  170 | Layar Seleksi | PARAMETERS: R4 RADIOBUTTON GROUP RAD2.
+  171 | Layar Seleksi | SELECTION-SCREEN COMMENT 8(20) TEXT-006.
+  171 | Teks Seleksi | TEXT-006
+  172 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  174 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  176 | Layar Seleksi | PARAMETERS: R5 RADIOBUTTON GROUP RAD2.
+  177 | Layar Seleksi | SELECTION-SCREEN COMMENT 8(20) TEXT-007.
+  177 | Teks Seleksi | TEXT-007
+  178 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  179 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK ABE.
+  180 | Layar Seleksi | SELECTION-SCREEN SKIP 2.
+  181 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) TEMPL USER-COMMAND TEMPL.
+  182 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  5 | includes | OLE2INCL
+
+Objek OLE2INCL (3 baris)
+Jumlah source terbaca: 6
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZSDI_SOTOSO.abap
+  Baris 17 | INCLUDE | ZSDI_SOTOSO_TOP
+  Baris 18 | INCLUDE | Z_PROG_INFO
+  Baris 19 | INCLUDE | ZABAPALV
+  Baris 20 | INCLUDE | ZSDI_SOTOSO_F01
+
+ZSDI_SOTOSO_TOP.abap
+  Baris 4 | Tipe DDIC | MSEG
+  Baris 9 | Field DDIC | BAPIRET2-MESSAGE
+  Baris 12 | Field DDIC | VEPO-SONUM
+  Baris 13 | Field DDIC | VEKP-EXIDV
+  Baris 14 | Field DDIC | VBAP-VBELN
+  Baris 15 | Field DDIC | VBAP-POSNR
+  Baris 20 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 22 | Field DDIC | VEPO-VENUM
+  Baris 23 | Field DDIC | VBUP-ABSTA
+  Baris 24 | Field DDIC | VBUP-GBSTA
+  Baris 25 | Field DDIC | VBAK-AUART
+  Baris 27 | Field DDIC | VBAP-CUOBJ
+  Baris 28 | Field DDIC | SY-UCOMM
+  Baris 34 | Field DDIC | LIKP-VBELN
+  Baris 35 | Field DDIC | LIKP-LGNUM
+  Baris 38 | BDC | BDCDATA
+  Baris 58 | Field DDIC | MSKA-KALAB
+  Baris 59 | Field DDIC | MSKA-KAEIN
+  Baris 60 | Field DDIC | VEPO-VENUM
+  Baris 61 | Field DDIC | VEPO-SONUM
+  Baris 62 | Field DDIC | VEKP-EXIDV
+  Baris 63 | Field DDIC | VEKP-UEVEL
+  Baris 64 | Field DDIC | VEPO-UNVEL
+  Baris 65 | Field DDIC | T320-LGORT
+  Baris 68 | Field DDIC | ZQM001-PSTAT
+  Baris 72 | Field DDIC | MARA-MATNR
+  Baris 73 | Field DDIC | MCHB-CHARG
+  Baris 74 | Field DDIC | MSEG-WERKS
+  Baris 75 | Field DDIC | MSEG-LGORT
+  Baris 77 | Field DDIC | MSEG-MEINS
+  Baris 78 | Field DDIC | VBAP-VBELN
+  Baris 79 | Field DDIC | VBAP-POSNR
+  Baris 80 | Field DDIC | VBAP-VBELN
+  Baris 81 | Field DDIC | VBAP-POSNR
+  Baris 85 | Field DDIC | CABNT-ATBEZ
+  Baris 139 | Field DDIC | RLGRAP-FILENAME
+  Baris 142 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK ABD WITH FRAME TITLE TEXT-ABD.
+  Baris 142 | Teks Seleksi | TEXT-ABD
+  Baris 143 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 145 | Layar Seleksi | PARAMETERS: R1 RADIOBUTTON GROUP RAD1 DEFAULT 'X' USER-COMMAND USR.
+  Baris 146 | Layar Seleksi | SELECTION-SCREEN COMMENT 8(20) TEXT-003.
+  Baris 146 | Teks Seleksi | TEXT-003
+  Baris 147 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 148 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 150 | Layar Seleksi | PARAMETERS: R2 RADIOBUTTON GROUP RAD1 .
+  Baris 151 | Layar Seleksi | SELECTION-SCREEN COMMENT 8(20) TEXT-004.
+  Baris 151 | Teks Seleksi | TEXT-004
+  Baris 152 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 153 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK ABD.
+  Baris 155 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK ABC WITH FRAME TITLE TEXT-ABC.
+  Baris 155 | Teks Seleksi | TEXT-ABC
+  Baris 156 | Layar Seleksi | PARAMETERS: DATASET LIKE RLGRAP-FILENAME LOWER CASE DEFAULT 'D:\'.
+  Baris 156 | Field DDIC | RLGRAP-FILENAME
+  Baris 157 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK ABC.
+  Baris 159 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK ABE WITH FRAME TITLE TEXT-ABE.
+  Baris 159 | Teks Seleksi | TEXT-ABE
+  Baris 160 | Layar Seleksi | SELECT-OPTIONS BATCH FOR MSEG-CHARG.
+  Baris 160 | Field DDIC | MSEG-CHARG
+  Baris 161 | Layar Seleksi | SELECT-OPTIONS HU FOR VEKP-EXIDV .
+  Baris 161 | Field DDIC | VEKP-EXIDV
+  Baris 162 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 164 | Layar Seleksi | PARAMETERS: R3 RADIOBUTTON GROUP RAD2 DEFAULT 'X'.
+  Baris 165 | Layar Seleksi | SELECTION-SCREEN COMMENT 8(20) TEXT-005.
+  Baris 165 | Teks Seleksi | TEXT-005
+  Baris 166 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 168 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 170 | Layar Seleksi | PARAMETERS: R4 RADIOBUTTON GROUP RAD2.
+  Baris 171 | Layar Seleksi | SELECTION-SCREEN COMMENT 8(20) TEXT-006.
+  Baris 171 | Teks Seleksi | TEXT-006
+  Baris 172 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 174 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 176 | Layar Seleksi | PARAMETERS: R5 RADIOBUTTON GROUP RAD2.
+  Baris 177 | Layar Seleksi | SELECTION-SCREEN COMMENT 8(20) TEXT-007.
+  Baris 177 | Teks Seleksi | TEXT-007
+  Baris 178 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 179 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK ABE.
+  Baris 180 | Layar Seleksi | SELECTION-SCREEN SKIP 2.
+  Baris 181 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) TEMPL USER-COMMAND TEMPL.
+  Baris 182 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+  Baris 5 | INCLUDE | OLE2INCL
+
+OLE2INCL.abap
+
+Z_PROG_INFO.abap
+  Baris 6 | Field DDIC | ZPROGINFO-PGMNA
+  Baris 15 | Field DDIC | RSNEWLENG-FCODE
+  Baris 60 | Sumber data pada SELECT atau JOIN | ZPROGINFO
+  Baris 77 | Function module | HELP_DOCULINES_SHOW
+
+ZABAPALV.abap
+  Baris 7 | Field DDIC | SY-REPID
+  Baris 27 | Field DDIC | SY-DATUM
+  Baris 28 | Field DDIC | SY-DATUM
+  Baris 559 | Function module | REUSE_ALV_COMMENTARY_WRITE
+
+ZSDI_SOTOSO_F01.abap
+  Baris 14 | Class dan Interface | CL_GUI_FRONTEND_SERVICES
+  Baris 116 | Layar dan GUI | SET PF-STATUS 'PFSTAT'.
+  Baris 124 | Layar dan GUI | SET SCREEN 0.
+  Baris 137 | Field DDIC | ZQM001-SEQ
+  Baris 139 | Field DDIC | MSKA-KALAB
+  Baris 140 | Field DDIC | MSKA-KAEIN
+  Baris 142 | Field DDIC | CAWN-ATWRT
+  Baris 143 | Field DDIC | CAWN-ATWRT
+  Baris 875 | Tipe DDIC | RLGRAP
+  Baris 877 | Field DDIC | RLGRAP-FILENAME
+  Baris 878 | Field DDIC | RLGRAP-FILENAME
+  Baris 1485 | Field DDIC | SY-UCOMM
+  Baris 1488 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 1549 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 1561 | Field DDIC | SY-UCOMM
+  Baris 1564 | Class dan Interface | CL_GUI_ALV_GRID
+  Baris 1594 | Field DDIC | WA_HEADER-INFO
+  Baris 1623 | Layar dan GUI | SET PF-STATUS 'PFSTAT'.
+  Baris 1633 | Layar dan GUI | SET PF-STATUS 'PF_LOG'.
+  Baris 1646 | Field DDIC | CAWN-ATWRT
+  Baris 1647 | Field DDIC | CAWN-ATWRT
+  Baris 1987 | Field DDIC | CAWN-ATWRT
+  Baris 1988 | Field DDIC | CAWN-ATWRT
+  Baris 2965 | Field DDIC | CABNT-ATINN
+  Baris 3026 | Field DDIC | THEAD-TDNAME
+  Baris 3081 | BDC | CALL TRANSACTION 'VL02N' USING IT_BDCDATA
+  Baris 3124 | Field DDIC | CABNT-ATINN
+  Baris 180 | Sumber data pada SELECT atau JOIN | VEPO
+  Baris 183 | Sumber data pada SELECT atau JOIN | VEKP
+  Baris 191 | Sumber data pada SELECT atau JOIN | T320
+  Baris 200 | Sumber data pada SELECT atau JOIN | ZQM001
+  Baris 215 | Sumber data pada SELECT atau JOIN | MSKA
+  Baris 224 | Sumber data pada SELECT atau JOIN | MCHB
+  Baris 350 | Sumber data pada SELECT atau JOIN | VBUP
+  Baris 354 | Sumber data pada SELECT atau JOIN | VBAK
+  Baris 370 | Sumber data pada SELECT atau JOIN | VBAP
+  Baris 446 | Sumber data pada SELECT atau JOIN | CAWN
+  Baris 446 | Sumber data pada SELECT atau JOIN | CAWNT
+  Baris 851 | Sumber data pada SELECT atau JOIN | LIKP
+  Baris 855 | Sumber data pada SELECT atau JOIN | LIPS
+  Baris 1185 | Sumber data pada SELECT atau JOIN | MARA
+  Baris 3006 | Sumber data pada SELECT atau JOIN | CABNT
+  Baris 3128 | Sumber data pada SELECT atau JOIN | ZMAP_TYPE
+  Baris 77 | Function module | CONVERSION_EXIT_ALPHA_OUTPUT
+  Baris 151 | Function module | GUI_UPLOAD
+  Baris 344 | Function module | CONVERSION_EXIT_ALPHA_INPUT
+  Baris 412 | Function module | VC_I_GET_CONFIGURATION
+  Baris 418 | Function module | VB_INIT
+  Baris 421 | Function module | VB_BATCH_GET_DETAIL
+  Baris 462 | Function module | POPUP_TO_CONFIRM
+  Baris 669 | Function module | CONVERT_DATE_TO_INTERNAL
+  Baris 773 | Function module | BAPI_GOODSMVT_CREATE
+  Baris 809 | Function module | BAPI_MESSAGE_GETDETAIL
+  Baris 831 | Function module | BAPI_TRANSACTION_COMMIT
+  Baris 920 | Function module | WS_FILENAME_GET
+  Baris 939 | Function module | GUI_DOWNLOAD
+  Baris 1130 | Function module | CONVERT_DATE_TO_EXTERNAL
+  Baris 1416 | Function module | REUSE_ALV_EVENTS_GET
+  Baris 1458 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 1490 | Function module | GET_GLOBALS_FROM_SLVC_FULLSCR
+  Baris 1613 | Function module | REUSE_ALV_COMMENTARY_WRITE
+  Baris 1688 | Function module | POPUP_GET_VALUES
+  Baris 3001 | Function module | CONVERSION_EXIT_ATINN_INPUT
+  Baris 1578 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | ZSD008
+  Baris 3081 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | VL02N
+  Baris 3084 | Kontrol transaksi | COMMIT_WORK

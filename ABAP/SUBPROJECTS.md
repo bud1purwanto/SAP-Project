@@ -74,6 +74,12 @@ Prinsip: **1 TCODE / program = 1 sub-project** (program + include + Smart Form +
 | `subproject/ABAP_INTERVIEW_STUDY_CASE/` | Materi belajar (ZMM052, ZSD113, BAdI `ZBADI_ADD_TAB_SO`, `MV45AFZZ`, SmartForm `ZMMF_PO_LOCAL`) | Study case hands-on teknik ABAP ECC 6 untuk interview: ALV, BAPI vs BDC, BAdI, user exit, SmartForms, IDoc, OData (OO ABAP menyusul) | study case abap, interview abap, belajar alv, bapi vs bdc, contoh badi, user exit va01, latihan smartforms, latihan idoc, latihan odata, segw, adi yuda |
 
 
+## Referensi Eksternal (bukan sub-project)
+
+| Folder | Pemilik | Peran | Aturan |
+|---|---|---|---|
+| `/data/Projects/SAP/S4HANA_MIGRATION/MIGRATION ECC6 to S4HANA/` | Manager (disalin dari laptop 2026-11-26) | Peta dan aturan main migrasi ECC 6 ke S/4HANA: fase SAP Activate, register konfigurasi, keputusan DEC-Sxx, S4_TRANSITION_PM_KIT (7 skill + template accelerator) | Hanya dibaca dan dirujuk, jangan diedit. Pekerjaan kita tetap di sub-project masing-masing (`S4HANA_CUSTOM_CODE_ASSESSMENT`, `S4HANA_DATA_MIGRATION`, `ZJR_EXEC`, `ZSMS`, `BTP_HYBRID_INTEGRATION`). Tidak di-commit (ada di `.gitignore`) |
+
 ## Folder Non-Sub-Project
 
 - `_SHARED/` dan `_REVIEW_IMAGES/` dihapus 2026-11-05 atas perintah Baginda. Arsip: `00_RULES/_backup/arsip_hapus_20261105/` (+ riwayat git commit `d4aafc5`). Helper lintas program baru → taruh di sub-project yang memakainya.

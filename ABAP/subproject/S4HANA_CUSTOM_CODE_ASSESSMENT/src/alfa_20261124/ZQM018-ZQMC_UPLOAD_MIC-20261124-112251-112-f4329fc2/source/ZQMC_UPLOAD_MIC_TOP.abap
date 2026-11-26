@@ -1,0 +1,153 @@
+*&---------------------------------------------------------------------*
+*&  Include           ZQMC_UPLOAD_MIC_TOP
+*&---------------------------------------------------------------------*
+
+DATA : BEGIN OF IT_MIC OCCURS 0,
+*        BOX(1),
+        WERKS(4),
+        MKMNR(8),
+        GUELTIGAM(10),
+        QUANTITAET(1),
+        QUALITAET(1),
+        LOEKZ(1),
+        KONSISTENT(1),
+        KURZTEXT(40),
+        SORTFELD(40),
+        Weighting(40),
+        TOLERUNTEN(1),
+        TOLEROBEN(1),
+        SOLLPRUEF(1),
+        MeasurementUnit(40),
+        TargetValue(40),
+        LowerSpecLimit(40),
+        UpperSpecLimit(40),
+        PRUEFKAT(1),
+        STICHPR(1),
+        QSPCMK(1),
+        ADDPRO(1),
+        ZERSTPRF(1),
+        ESTUKZ5(1),
+        ESTUKZ3(1),
+        ESTUKZ1(1),
+        ESTUKZ2(1),
+        FEHLREC(1),
+        RZWANG4(1),
+        RZWANG1(1),
+        RZWANG2(1),
+        RZWANG3(1),
+        PUMFKZ1(1),
+        PUMFKZ4(1),
+        PUMFKZ2(1),
+        PUMFKZ3(1),
+        DOKUKZ1(1),
+        DOKUKZ2(1),
+        DOKUKZ3(1),
+        LZEITKZ(1),
+        AUSSLOS(1),
+        AENDBELEG(1),
+        PMMZWANG(1),
+        MESSWERTE(1),
+        FORMELMK(1),
+        DRUCK1(1),
+        DRUCK2(1),
+        DRUCK3(1),
+        NoFormula(1),
+        Decimalplaces(1),
+        AUSWMENGE1(8),
+        AUSWMGWRK1(4),
+        DUMMY40(40),
+        ZQTTGT(1),
+        ZQTUP(1),
+        ZQTLW(1),
+        ZVERSION(6),
+        MASSEINHSW LIKE QPMK-MASSEINHSW,
+        ZCDATE(8), "CONVERT DATE
+        ZVER(1),    "JUMLAH VERSION
+        QUAL LIKE QPMZ-AUSWMENGE1,
+        QUAL2 LIKE QPMZ-AUSWMENGE1,
+        upper TYPE p DECIMALS 2,
+        lower TYPE p DECIMALS 2,
+        target TYPE p DECIMALS 2,
+       END OF IT_MIC.
+
+DATA: BEGIN OF IT_REPORT OCCURS 0.
+        INCLUDE STRUCTURE IT_MIC.
+DATA :  LINE TYPE I,
+        NOERR TYPE I,
+        STAT(40) TYPE C,
+        MESSAGE(100),
+      END OF IT_REPORT.
+
+DATA : V_PROG LIKE ZPROGINFO-PGMNA VALUE 'ZQMC_UPLOAD_MIC'.
+
+* Data for listviewer
+DATA: D_REPID      LIKE SY-REPID,
+      T_FIELDCAT   TYPE SLIS_T_FIELDCAT_ALV WITH HEADER LINE,
+      WA_KEYINFO   TYPE SLIS_KEYINFO_ALV,
+      T_COLOR      TYPE SLIS_T_SPECIALCOL_ALV WITH HEADER LINE,
+      WA_LAYOUT    TYPE SLIS_LAYOUT_ALV,
+      T_PRINT      TYPE SLIS_PRINT_ALV,
+      T_SORT       TYPE SLIS_T_SORTINFO_ALV WITH HEADER LINE,
+      T_EXCLUDING  TYPE SLIS_T_EXTAB WITH HEADER LINE,
+      T_EVENTS     TYPE SLIS_T_EVENT WITH HEADER LINE,
+      T_EVENT_EXIT TYPE SLIS_T_EVENT_EXIT WITH HEADER LINE,
+      T_LIST_TOP   TYPE SLIS_T_LISTHEADER,
+
+* Variants
+      WA_VARIANTE        LIKE DISVARIANT,
+      WA_DEF_VARIANTE    LIKE DISVARIANT,
+      D_VARIANT_EXIT(1) TYPE C.
+
+CONSTANTS:
+  GCF_E1(4) TYPE C VALUE '@0A@',
+  GCF_S1(4) TYPE C VALUE '@08@'.
+
+DATA: BDCDATA LIKE BDCDATA OCCURS 0 WITH HEADER LINE,     "BDC Data
+      MESSTAB TYPE SORTED TABLE OF BDCMSGCOLL WITH HEADER LINE
+      WITH NON-UNIQUE DEFAULT KEY,  "Message
+      MESSTAB2 TYPE SORTED TABLE OF BDCMSGCOLL WITH HEADER LINE
+      WITH NON-UNIQUE DEFAULT KEY,
+      MSGS  LIKE BDCMSGCOLL OCCURS 0 WITH HEADER LINE.
+
+*********
+SELECTION-SCREEN BEGIN OF BLOCK B1001 WITH FRAME TITLE TEXT-100.
+PARAMETERS: FILENAME LIKE RLGRAP-FILENAME
+                     LOWER CASE OBLIGATORY
+                     DEFAULT 'C:/'.
+SELECTION-SCREEN END OF BLOCK B1001.
+
+SELECTION-SCREEN BEGIN OF BLOCK B1002 WITH FRAME TITLE TEXT-150.
+PARAMETERS: CTUMODE LIKE CTU_PARAMS-DISMODE DEFAULT 'N'.
+SELECTION-SCREEN END OF BLOCK B1002.
+
+SELECTION-SCREEN BEGIN OF BLOCK B1004 WITH FRAME TITLE TEXT-200.
+PARAMETERS: RB1 RADIOBUTTON GROUP AB MODIF ID BL2,
+            RB2 RADIOBUTTON GROUP AB MODIF ID BL2,
+            RB3 RADIOBUTTON GROUP AB MODIF ID BL2.
+SELECTION-SCREEN END OF BLOCK B1004.
+
+SELECTION-SCREEN BEGIN OF BLOCK B1003 WITH FRAME.
+SELECTION-SCREEN PUSHBUTTON /12(79) INFO USER-COMMAND INFO.
+SELECTION-SCREEN END OF BLOCK B1003.
+
+LOAD-OF-PROGRAM.
+  INFO = 'Program Information'.
+
+*************************Get file name*********************************
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR FILENAME.
+*POPUP TO SELECT FILE NAME
+  CALL FUNCTION 'WS_FILENAME_GET'
+    EXPORTING
+      DEF_PATH         = 'C:\'
+      MASK             = ',*.*,*.*.'
+      MODE             = 'O'
+    IMPORTING
+      FILENAME         = FILENAME
+    EXCEPTIONS
+      INV_WINSYS       = 1
+      NO_BATCH         = 2
+      SELECTION_CANCEL = 3
+      SELECTION_ERROR  = 4
+      OTHERS           = 5.
+
+*************************Get file name*********************************

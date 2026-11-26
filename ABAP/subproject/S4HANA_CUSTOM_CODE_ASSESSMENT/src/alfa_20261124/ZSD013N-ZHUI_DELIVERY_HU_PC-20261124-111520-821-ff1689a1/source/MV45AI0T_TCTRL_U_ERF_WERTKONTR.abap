@@ -1,0 +1,25 @@
+*&---------------------------------------------------------------------*
+*&      Module  TCTRL_U_ERF_WERTKONTRAKT_BLAET(TERN)  INPUT
+*&---------------------------------------------------------------------*
+*       Anpassen des Tabellenzeigers an die Scroll-Position des
+*       Table Controls (AKK)
+*----------------------------------------------------------------------*
+MODULE TCTRL_U_ERF_WERTKONTRAKT_BLAET INPUT.
+
+  IVBAP_TABIX_ZEILE_1 = TCTRL_U_ERF_WERTKONTRAKT-TOP_LINE.
+  GET CURSOR LINE TC_SELLINE.
+
+ENDMODULE.                 " TCTRL_U_ERF_WERTKONTRAKT_BLAET(TERN) INPUT
+
+*&---------------------------------------------------------------------*
+*&      Module  TCTRL_U_BST_WERTKONTRAKT_BLAET(TERN)  INPUT
+*&---------------------------------------------------------------------*
+*       Anpassen des Tabellenzeigers an die Scroll-Position des
+*       Table Controls
+*----------------------------------------------------------------------*
+MODULE TCTRL_U_BST_WERTKONTRAKT_BLAET INPUT.
+
+  IVBAP_TABIX_ZEILE_1 = TCTRL_U_BST_WERTKONTRAKT-TOP_LINE.
+  GET CURSOR LINE TC_SELLINE.
+
+ENDMODULE.                 " TCTRL_U_BST_WERTKONTRAKT_BLAET(TERN) INPUT

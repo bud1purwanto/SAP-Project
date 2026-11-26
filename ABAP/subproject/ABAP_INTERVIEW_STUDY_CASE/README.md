@@ -37,6 +37,7 @@ Materi study case hands-on per teknik ABAP (ALV, BAPI, BAdI, User Exit, SmartFor
 | [docs/06_HASIL_UJI.md](docs/06_HASIL_UJI.md) | Hasil uji sandbox-new & S/4 (RFC + GUI) |
 | [docs/07_IDOC.md](docs/07_IDOC.md) | IDoc dari nol: konsep, IDoc custom PO outbound/inbound, WE19/BD87 |
 | [docs/08_ODATA.md](docs/08_ODATA.md) | OData di S/4: SEGW + DPC_EXT, pembanding CDS/RAP |
+| [docs/export/](docs/export/) | Gabungan 00–08 dalam Word & PDF (`scripts/build_docx.js`, jalankan ulang setelah docs berubah) |
 
 ## 4. Aturan Khusus Sub-Project
 

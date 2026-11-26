@@ -1,0 +1,160 @@
+﻿Input: ZFI104
+Source SAP development (RFC baca-saja): ZFIC_IB_AUC
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZFIC_IB_AUC:28 | START-OF-SELECTION > IF R1 EQ 'X'. | PERFORM GUI_UPLOAD_AIAB. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC:29 | START-OF-SELECTION > IF R1 EQ 'X'. | PERFORM AIAB_TRANS. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC:30 | START-OF-SELECTION > IF R1 EQ 'X'. | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC:32 | START-OF-SELECTION > ELSE. | PERFORM GUI_UPLOAD_AIBU. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC:33 | START-OF-SELECTION > ELSE. | PERFORM AIBU_TRANS. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC:34 | START-OF-SELECTION > ELSE. | PERFORM DISPLAY. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:17 | FORM AIAB_TRANS | perform bdc_dynpro      using 'SAPMA15B' '0110'. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:18 | FORM AIAB_TRANS | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:20 | FORM AIAB_TRANS | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:22 | FORM AIAB_TRANS | perform bdc_field       using 'AICOM-BUKRS' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:24 | FORM AIAB_TRANS | perform bdc_field       using 'AICOM-ANLN1' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:26 | FORM AIAB_TRANS | perform bdc_field       using 'AICOM-ANLN2' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:29 | FORM AIAB_TRANS | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:30 | FORM AIAB_TRANS | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:32 | FORM AIAB_TRANS | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:35 | FORM AIAB_TRANS | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:36 | FORM AIAB_TRANS | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:38 | FORM AIAB_TRANS | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:41 | FORM AIAB_TRANS | perform bdc_dynpro      using 'SAPLKOBS' '0130'. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:44 | FORM AIAB_TRANS | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:46 | FORM AIAB_TRANS | perform bdc_field       using 'COBRB-KONTY(01)' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:48 | FORM AIAB_TRANS | perform bdc_field       using 'DKOBR-EMPGE(01)' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:53 | FORM AIAB_TRANS | perform bdc_dynpro      using 'SAPLKOBS' '0130'. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:54 | FORM AIAB_TRANS | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:57 | FORM AIAB_TRANS | perform bdc_dynpro      using 'SAPMSSY0' '0120'. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:58 | FORM AIAB_TRANS | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:60 | FORM AIAB_TRANS | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:64 | FORM AIAB_TRANS | CALL TRANSACTION 'AIAB' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:69 | FORM AIAB_TRANS | PERFORM CREATE_MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:90 | FORM AIBU_TRANS | perform bdc_dynpro      using 'SAPMA12B' '0100'. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:91 | FORM AIBU_TRANS | perform bdc_field       using 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:93 | FORM AIBU_TRANS | perform bdc_field       using 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:95 | FORM AIBU_TRANS | perform bdc_field       using 'ANLA-BUKRS' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:97 | FORM AIBU_TRANS | perform bdc_field       using 'ANLA-ANLN1' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:99 | FORM AIBU_TRANS | perform bdc_field       using 'ANLA-ANLN2' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:101 | FORM AIBU_TRANS | perform bdc_field       using 'ANEK-BLDAT' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:103 | FORM AIBU_TRANS | perform bdc_field       using 'ANEP-BZDAT' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:105 | FORM AIBU_TRANS | perform bdc_field       using 'ANEK-BUDAT' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:107 | FORM AIBU_TRANS | perform bdc_field       using 'ANBZ-MONAT' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:109 | FORM AIBU_TRANS | perform bdc_field       using '*KOMK3-SGTXT' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:111 | FORM AIBU_TRANS | perform bdc_field       using '*KOMK1-BLART' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:113 | FORM AIBU_TRANS | perform bdc_field       using '*KOMK3-ZUONR' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:115 | FORM AIBU_TRANS | perform bdc_field       using 'LKO74-TESTLAUF' | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:124 | FORM AIBU_TRANS | CALL TRANSACTION 'AIBU' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:129 | FORM AIBU_TRANS | PERFORM CREATE_MESSAGE. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:233 | FORM DISPLAY > IF IRESULT[] IS INITIAL. | MESSAGE 'No Data Upload' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:237 | FORM DISPLAY | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:238 | FORM DISPLAY | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_AIAB_TRANSF01:300 | FORM F_LAYOUT > IF SY-SUBRC <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_TOP:106 | FORM GUI_UPLOAD_AIAB > IF sy-subrc <> 0. | message i000(0k) with 'File cannot be opened'. | Tinjau kondisi dan hasil di ECC.
+  ZFIC_IB_AUC_TOP:136 | FORM GUI_UPLOAD_AIBU > IF sy-subrc <> 0. | message i000(0k) with 'File cannot be opened'. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZFIC_IB_AUC (37 baris)
+  19 | includes | ZFIC_IB_AUC_TOP
+  20 | includes | ZFIC_IB_AUC_AIAB_TRANSF01
+
+Objek ZFIC_IB_AUC_AIAB_TRANSF01 (327 baris)
+  64 | BDC | CALL TRANSACTION 'AIAB' USING IT_BDCDATA
+  124 | BDC | CALL TRANSACTION 'AIBU' USING IT_BDCDATA
+  300 | Field DDIC | SY-MSGTY
+  313 | Field DDIC | WA_HEADER-INFO
+  183 | callFunctions | /SAPTRX/GET_MESSAGE_TEXT
+  Belum terurai: /SAPTRX/GET_MESSAGE_TEXT | Objek source tidak terpetakan: /SAPTRX/GET_MESSAGE_TEXT
+  284 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  324 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  64 | callTransactions | AIAB
+  124 | callTransactions | AIBU
+
+Objek ZFIC_IB_AUC_TOP (139 baris)
+  7 | Field DDIC | AICOM-ANLN1
+  12 | Field DDIC | AICOM-BUKRS
+  13 | Field DDIC | AICOM-ANLN1
+  14 | Field DDIC | AICOM-ANLN2
+  16 | Field DDIC | DKOBR-EMPGE
+  17 | Field DDIC | COBRB-PROZS
+  21 | Field DDIC | AICOM-BUKRS
+  22 | Field DDIC | AICOM-ANLN1
+  23 | Field DDIC | AICOM-ANLN2
+  27 | Field DDIC | ANBZ-MONAT
+  28 | Field DDIC | KOMK3-SGTXT
+  29 | Field DDIC | KOMK1-BLART
+  30 | Field DDIC | KOMK3-ZUONR
+  40 | BDC | BDCDATA
+  43 | Field DDIC | RLGRAP-FILENAME
+  44 | Field DDIC | ANEK-BLDAT
+  45 | Field DDIC | ANEP-BZDAT
+  46 | Field DDIC | ANEK-BUDAT
+  53 | Field DDIC | SY-REPID
+  61 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1 WITH FRAME TITLE TEXT-001.
+  61 | Teks Seleksi | TEXT-001
+  62 | Layar Seleksi | PARAMETERS: R1 RADIOBUTTON GROUP RAD1 DEFAULT 'X'.
+  63 | Layar Seleksi | PARAMETERS: R2 RADIOBUTTON GROUP RAD1.
+  64 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1.
+  65 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B2 WITH FRAME TITLE text-002.
+  65 | Teks Seleksi | text-002
+  66 | Layar Seleksi | PARAMETERS: FPATH LIKE RLGRAP-FILENAME MEMORY ID pid LOWER CASE OBLIGATORY.
+  66 | Field DDIC | RLGRAP-FILENAME
+  67 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B2.
+  70 | callFunctions | F4_FILENAME
+  89 | callFunctions | GUI_UPLOAD
+Jumlah source terbaca: 3
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZFIC_IB_AUC.abap
+  Baris 19 | INCLUDE | ZFIC_IB_AUC_TOP
+  Baris 20 | INCLUDE | ZFIC_IB_AUC_AIAB_TRANSF01
+
+ZFIC_IB_AUC_TOP.abap
+  Baris 7 | Field DDIC | AICOM-ANLN1
+  Baris 12 | Field DDIC | AICOM-BUKRS
+  Baris 13 | Field DDIC | AICOM-ANLN1
+  Baris 14 | Field DDIC | AICOM-ANLN2
+  Baris 16 | Field DDIC | DKOBR-EMPGE
+  Baris 17 | Field DDIC | COBRB-PROZS
+  Baris 21 | Field DDIC | AICOM-BUKRS
+  Baris 22 | Field DDIC | AICOM-ANLN1
+  Baris 23 | Field DDIC | AICOM-ANLN2
+  Baris 27 | Field DDIC | ANBZ-MONAT
+  Baris 28 | Field DDIC | KOMK3-SGTXT
+  Baris 29 | Field DDIC | KOMK1-BLART
+  Baris 30 | Field DDIC | KOMK3-ZUONR
+  Baris 40 | BDC | BDCDATA
+  Baris 43 | Field DDIC | RLGRAP-FILENAME
+  Baris 44 | Field DDIC | ANEK-BLDAT
+  Baris 45 | Field DDIC | ANEP-BZDAT
+  Baris 46 | Field DDIC | ANEK-BUDAT
+  Baris 53 | Field DDIC | SY-REPID
+  Baris 61 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B1 WITH FRAME TITLE TEXT-001.
+  Baris 61 | Teks Seleksi | TEXT-001
+  Baris 62 | Layar Seleksi | PARAMETERS: R1 RADIOBUTTON GROUP RAD1 DEFAULT 'X'.
+  Baris 63 | Layar Seleksi | PARAMETERS: R2 RADIOBUTTON GROUP RAD1.
+  Baris 64 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B1.
+  Baris 65 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK B2 WITH FRAME TITLE text-002.
+  Baris 65 | Teks Seleksi | text-002
+  Baris 66 | Layar Seleksi | PARAMETERS: FPATH LIKE RLGRAP-FILENAME MEMORY ID pid LOWER CASE OBLIGATORY.
+  Baris 66 | Field DDIC | RLGRAP-FILENAME
+  Baris 67 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK B2.
+  Baris 70 | Function module | F4_FILENAME
+  Baris 89 | Function module | GUI_UPLOAD
+
+ZFIC_IB_AUC_AIAB_TRANSF01.abap
+  Baris 64 | BDC | CALL TRANSACTION 'AIAB' USING IT_BDCDATA
+  Baris 124 | BDC | CALL TRANSACTION 'AIBU' USING IT_BDCDATA
+  Baris 300 | Field DDIC | SY-MSGTY
+  Baris 313 | Field DDIC | WA_HEADER-INFO
+  Baris 183 | Function module | /SAPTRX/GET_MESSAGE_TEXT
+  Baris 284 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 324 | Function module | REUSE_ALV_COMMENTARY_WRITE
+  Baris 64 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | AIAB
+  Baris 124 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | AIBU

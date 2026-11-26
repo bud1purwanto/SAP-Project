@@ -1,0 +1,40 @@
+*&---------------------------------------------------------------------*
+*&  Include           MV45AILO_LORD_PS_PAI
+*&---------------------------------------------------------------------*
+FORM FMII1_FINALIZE.
+  DATA: DA_SAV TYPE FLAG.
+
+  DATA: L_COBL TYPE COBL,
+        L_VBAK TYPE VBAK,
+        L_VBAP TYPE VBAP,
+        l_DA_DATALOSS TYPE FLAG,
+        l_DA_EXIT TYPE FLAG.
+
+  CALL FUNCTION 'FM_CO_ASS_INPUT_FINALIZE_LORD'
+    IMPORTING
+      E_FLG_ASSIGNMENT_CHANGE = l_DA_DATALOSS.
+  IF NOT l_DA_DATALOSS IS INITIAL.
+
+    DA_SAV = VBAP_ENDE_VERFUEGBARKEIT.
+    VBAP_ENDE_VERFUEGBARKEIT = CHARX.
+
+    R185D-DATALOSS = l_DA_DATALOSS.
+
+* Evtl. erzeugte Banfen wegen Obligo anpassen
+    LOOP AT XVBEP WHERE UPDKZ NE UPDKZ_DELETE
+                  AND   POSNR EQ VBAP-POSNR
+                  AND   WMENG GT 0
+                  AND   BNFPO NE SPACE.
+      SVBEP-TABIX = SY-TABIX.
+      PERFORM VBEP_BEARBEITEN_VORBEREITEN(SAPFV45E).
+      PERFORM VBEP_BEARBEITEN_BESCHAFFUNG(SAPFV45E).
+    ENDLOOP.
+
+    VBAP_ENDE_VERFUEGBARKEIT = DA_SAV.
+  ENDIF.
+
+  IF l_DA_EXIT IS INITIAL.
+    PERFORM FMII1_PRUEFEN_VOLLST(SAPFV45P) USING CHARX.
+  ENDIF.
+
+ENDFORM.                    "FMII1_FINALIZE

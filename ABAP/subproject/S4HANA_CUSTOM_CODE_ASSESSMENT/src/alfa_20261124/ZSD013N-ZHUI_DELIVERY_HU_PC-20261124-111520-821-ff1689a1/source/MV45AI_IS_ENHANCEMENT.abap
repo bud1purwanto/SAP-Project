@@ -1,0 +1,24 @@
+*&---------------------------------------------------------------------*
+*&  Include           MV45AI_IS_ENHANCEMENT
+*&---------------------------------------------------------------------*
+MODULE IS_ENHANCEMENT_05 INPUT.
+
+ENHANCEMENT-POINT IS_ENHANCEMENT_05 SPOTS ES_SAPMV45A.
+
+ENDMODULE.                 " IS_ENHANCEMENT_05  INPUT
+
+
+
+MODULE IS_ENHANCEMENT_06 INPUT.
+
+ENHANCEMENT-POINT IS_ENHANCEMENT_06 SPOTS ES_SAPMV45A.
+
+ENDMODULE.                 " IS_ENHANCEMENT_06  INPUT
+
+
+
+MODULE IS_ENHANCEMENT_07 INPUT.
+
+ENHANCEMENT-POINT IS_ENHANCEMENT_07 SPOTS ES_SAPMV45A.
+
+ENDMODULE.                 " IS_ENHANCEMENT_07  INPUT

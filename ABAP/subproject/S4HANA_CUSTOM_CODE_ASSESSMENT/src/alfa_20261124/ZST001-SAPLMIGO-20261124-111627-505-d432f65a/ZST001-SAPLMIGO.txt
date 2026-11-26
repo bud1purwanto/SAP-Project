@@ -1,0 +1,3974 @@
+﻿Input: ZST001
+Source SAP development (RFC baca-saja): SAPLMIGO
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  IUID_MIGO:14 | Konteks perlu ditinjau | PERFORM init_uii_fields. | Tinjau kondisi dan hasil di ECC.
+  IUID_MIGO:105 | Konteks perlu ditinjau | PERFORM check_uii_field USING goitem-matnr goitem-werks | Tinjau kondisi dan hasil di ECC.
+  IUID_MIGO:179 | FORM CHECK_UII_FIELD > ELSE. > IF cv_sernr IS INITIAL. > ELSE. > IF NOT lv_iuid_relevant IS INITIAL. | PERFORM sernr_to_uii_gen CHANGING cv_uii cv_sernr. | Tinjau kondisi dan hasil di ECC.
+  LMIGOTRB:86 | Konteks perlu ditinjau | MESSAGE e899(migo) WITH 'CNTL_ERROR' 'NEWTREE' space space. | Tinjau kondisi dan hasil di ECC.
+  LMIGOTR8:268 | IF p_sorttype IS INITIAL. | MESSAGE i022(migo). | Tinjau kondisi dan hasil di ECC.
+  LMIGOTR7:431 | Konteks perlu ditinjau | MESSAGE s019(migo). | Tinjau kondisi dan hasil di ECC.
+  LMIGOTR6:106 | Konteks perlu ditinjau | MESSAGE s017(migo). | Tinjau kondisi dan hasil di ECC.
+  LMIGOTV2:128 | WHEN 'MIGO_OK_SPLIT_QUAN'. > ELSE. > ELSE. | MESSAGE s031. | Tinjau kondisi dan hasil di ECC.
+  LMIGOTV2:167 | WHEN 'MIGO_OK_EXPAND_BOM'. > ELSE. > ELSE. | MESSAGE s036. | Tinjau kondisi dan hasil di ECC.
+  LMIGOTV3:240 | ELSE. | MESSAGE s020. | Tinjau kondisi dan hasil di ECC.
+  LMIGOTV3:323 | IF lcl_migo_cursor=>oref_screenobject <> me OR | MESSAGE s021(migo). | Tinjau kondisi dan hasil di ECC.
+  LMIGOGD2:337 | IF p_my_id <> lcl_migo_globals=>kernel->s_status-allowed_refdoc    AND | MESSAGE s019. | Tinjau kondisi dan hasil di ECC.
+  LMIGOCA2:98 | IF l_lines = 0. | MESSAGE s018. | Tinjau kondisi dan hasil di ECC.
+  LMIGOST2:133 | WHEN 'OK_CHECK'. > IF l_ok = abap_true. | MESSAGE s026. | Tinjau kondisi dan hasil di ECC.
+  LMIGOSR7:109 | Konteks perlu ditinjau | SUBMIT rm07resl AND RETURN | Tinjau kondisi dan hasil di ECC.
+  LMIGOSR6:52 | IF NOT gosearch_ord-matnr IS INITIAL OR | SUBMIT ppcowe00 AND RETURN WITH p_matnr = gosearch_ord-matnr | Tinjau kondisi dan hasil di ECC.
+  LMIGOSR5:17 | Konteks perlu ditinjau | CALL TRANSACTION 'MB51'. | Tinjau kondisi dan hasil di ECC.
+  LMIGOSR4:147 | IF sy-subrc <> 0 AND NOT sy-msgty IS INITIAL. | MESSAGE ID   sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGODS6:329 | IF sy-subrc <> 0 AND i_massproc = abap_false. | MESSAGE ID sy-msgid TYPE s NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGODS6:363 | IF l_quantity_det > 0. > WHEN 1. | MESSAGE w065(migo) WITH l_string1 ls_cdcom-matnr l_string2. | Tinjau kondisi dan hasil di ECC.
+  LMIGODS6:387 | IF l_quantity_det > 0. > WHEN 5. | MESSAGE w065(migo) WITH l_string1 ls_cdcom-matnr l_string2. | Tinjau kondisi dan hasil di ECC.
+  LMIGODS6:595 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOSP3:86 | IF NOT ps_goitem-xvgtype IS INITIAL | MESSAGE s039. | Tinjau kondisi dan hasil di ECC.
+  LMIGOSMC:32 | WHEN abap_false. > IF sy-subrc <> 0. > IF i_global_counter <> c_item_template. | MESSAGE e899 WITH 'FIELDSELECTION' | Tinjau kondisi dan hasil di ECC.
+  LMIGOSMC:97 | IF sy-subrc <> 0. | MESSAGE e899 WITH 'FIELDSELECTION=>GET' | Tinjau kondisi dan hasil di ECC.
+  LMIGOSMC:111 | IF sy-subrc <> 0. | MESSAGE e899 WITH 'FIELDSELECTION=>GET FIELD' | Tinjau kondisi dan hasil di ECC.
+  LMIGOPR2:263 | WHEN 'TAKE'. > ELSE. > IF l_count > 1. | MESSAGE i014. | Tinjau kondisi dan hasil di ECC.
+  LMIGOPR2:286 | IF ls_org-saprl = '46A' OR ls_org-saprl = '46B'. | MESSAGE s035 WITH ls_org-saprl sy-saprl. | Tinjau kondisi dan hasil di ECC.
+  LMIGOPR2:295 | IF sy-subrc <> 0. | MESSAGE s025. | Tinjau kondisi dan hasil di ECC.
+  LMIGOLO2:74 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOLO2:108 | Konteks perlu ditinjau | MESSAGE ID i_msgid TYPE i_msgty NUMBER i_msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOLO2:139 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOLO3:119 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE s NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOLO3:220 | IF e_loglevel <> space. | MESSAGE ID es_msg-msgid TYPE es_msg-msgty NUMBER es_msg-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKVS:162 | IF is_new_goitem-erfme = is_old_goitem-erfme AND | MESSAGE i338(M7). | Tinjau kondisi dan hasil di ECC.
+  LMIGOKU3:351 | IF sy-subrc <> 0. > IF i_error_type = 'S'. | MESSAGE s057 WITH l_bwart l_sobkz. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKU3:353 | IF sy-subrc <> 0. > ELSEIF i_error_type = 'E'. | MESSAGE e057 WITH l_bwart l_sobkz. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKU3:489 | if lines = 0. > if lines = 0. > if plant = space. | message s009(migo) with text. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKU3:495 | if lines = 0. > if lines = 0. > else. | message s010(migo) with text c_plant. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKU2:75 | IF sy-subrc <> 0. > IF SY-SUBRC <> 0. | MESSAGE S042(XU) WITH is_goitem-erfme. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKU2:81 | IF sy-subrc <> 0. > ELSE. | MESSAGE S060(XU). | Tinjau kondisi dan hasil di ECC.
+  LMIGOKST:22 | if ls_goitem_top-migo_insmk <> abap_false. | message s023(migo). | Tinjau kondisi dan hasil di ECC.
+  LMIGOKST:179 | IF lt_xstru IS INITIAL. | MESSAGE s023(migo). | Tinjau kondisi dan hasil di ECC.
+  LMIGOKR2:182 | IF ls_resitem-bdart = 'AR' AND s_control-refdoc = 'R09' > IF sy-subrc = 0. > WHEN '01'. | MESSAGE W397(m7) WITH ls_resitem-rsnum ls_resitem-rspos. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKR2:191 | IF ls_resitem-bdart = 'AR' AND s_control-refdoc = 'R09' > IF sy-subrc = 0. > WHEN '02'. | MESSAGE S397(M7) WITH ls_resitem-rsnum ls_resitem-rspos. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKP3:96 | IF sy-subrc <> 0. | MESSAGE s025. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKO5:49 | IF NOT s_action-create is INITIAL. > IF sy-subrc = 0. > WHEN '01'. | MESSAGE W398(m7) WITH i_order_number. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKO5:57 | IF NOT s_action-create is INITIAL. > IF sy-subrc = 0. > WHEN '02'. | MESSAGE S398(m7) WITH i_order_number. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKO4:295 | IF sy-subrc = 0. > IF lcl_migo_globals=>sap_system = abap_true. | MESSAGE e899 WITH 'ORDER_FILL_MATDOC' 'multiple lines' | Tinjau kondisi dan hasil di ECC.
+  LMIGOKO4:298 | IF sy-subrc = 0. > ELSE. | MESSAGE s899 WITH 'ORDER_FILL_MATDOC' 'multiple lines' | Tinjau kondisi dan hasil di ECC.
+  LMIGOKO2:116 | IF l_noauth = abap_true. | MESSAGE i122(m7) WITH <goitem>-werks. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKO2:134 | IF NOT sy-subrc IS INITIAL. | MESSAGE ID sy-msgid TYPE a NUMBER sy-msgno WITH | Tinjau kondisi dan hasil di ECC.
+  LMIGOKO2:138 | IF lt_xnast IS INITIAL. | MESSAGE i032. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKO2:152 | IF NOT sy-subrc IS INITIAL. | MESSAGE ID sy-msgid TYPE a NUMBER sy-msgno WITH | Tinjau kondisi dan hasil di ECC.
+  LMIGOKO2:155 | ELSE. | MESSAGE i570(m7). | Tinjau kondisi dan hasil di ECC.
+  LMIGOKM2:118 | WHEN abap_false. > IF sy-subrc = 0. > IF ls_mtcor-rmarc = abap_false. > IF cs_goitem-batch_from_refdoc <> space. > ELSEIF sy-subrc = 4. | MESSAGE ID sy-msgid | Tinjau kondisi dan hasil di ECC.
+  LMIGOKM2:184 | WHEN abap_false. > WHEN '01'. > IF NOT cs_goitem-sobkz IS INITIAL AND cs_goitem-sobkz <> k. | MESSAGE i054(MIGO) WITH cs_goitem-sobkz. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKM2:255 | WHEN abap_true. > IF sy-subrc = 0. > IF ( cs_goitem-xgatype IS INITIAL AND ls_mbefu-attyp = '01' ) | MESSAGE i066(MIGO). | Tinjau kondisi dan hasil di ECC.
+  LMIGOKM1:219 | IF s_action-display =  abap_true   AND | MESSAGE  e062(m7)        WITH i_mat_doc c_doc_year | Tinjau kondisi dan hasil di ECC.
+  LMIGOKM1:1377 | IF s_action-display = abap_true  AND > IF  sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKM1:1487 | IF  cv_flag_archive = abap_true. > IF SY-SUBRC <> 0. | MESSAGE S071(MIGO)     WITH  i_mat_doc i_doc_year. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKL4:229 | IF is_old_goitem-waers <> ls_goplant-waers AND > IF l_currdec_new <> l_currdec_old. | MESSAGE w064 WITH is_old_goitem-werks l_currdec_old | Tinjau kondisi dan hasil di ECC.
+  LMIGOKL4:306 | IF s_action-display = abap_false AND | MESSAGE s044(migo) WITH is_old_goitem-bwart ls_goitem-bwart | Tinjau kondisi dan hasil di ECC.
+  LMIGOKL3:80 | IF <f1> <> <f2>. > WHEN 8. > IF s_action-display IS INITIAL. | MESSAGE w049 WITH l_fieldname. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKL3:88 | IF <f1> <> <f2>. > WHEN OTHERS. > IF s_action-display IS INITIAL. | MESSAGE w050 WITH l_fieldname. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKL3:228 | IF NOT l_stge_loc IS INITIAL AND ( cs_goitem-lgort <> l_stge_loc ) . > WHEN OTHERS. | MESSAGE w051 WITH 'LGORT'. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKL3:247 | IF NOT l_item_text IS INITIAL AND ( cs_goitem-sgtxt <> l_item_text ). > WHEN OTHERS. | MESSAGE w051 WITH 'SGTXT'. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKL3:309 | IF <f1> <> <f2>. > WHEN OTHERS. | MESSAGE w050 WITH ls_fields-input_field. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKL2:139 | IF sy-subrc <> 0. > IF l_lines_old = l_lines_new. | MESSAGE s023. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKL2:390 | IF ls_goitem_top-erfmg IS INITIAL. | MESSAGE i040(m7). | Tinjau kondisi dan hasil di ECC.
+  LMIGOKL2:414 | IF oref_bom->s_gobom-capid IS INITIAL AND | MESSAGE i042(migo). | Tinjau kondisi dan hasil di ECC.
+  LMIGOKL2:627 | IF sy-subrc = 0. > IF NOT ls_goitem_top-sobkz IS INITIAL. | MESSAGE i054(migo) WITH ls_goitem_top-sobkz. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKGA:117 | IF line_add_authority_check( ls_goitem_top ) = abap_false. | MESSAGE e120(M7) WITH ls_goitem_top-werks. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKGA:230 | IF NOT sy-subrc IS INITIAL. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKGA:420 | IF sy-subrc <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  LMIGOKGA:859 | Konteks perlu ditinjau | SUBMIT  rmbva002 AND RETURN. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKG1:938 | IF ls_emkpf-subrc IS INITIAL. > IF ls_emkpf-mblnr IS INITIAL. | MESSAGE ID es_emkpf_old-msgid TYPE s | Tinjau kondisi dan hasil di ECC.
+  LMIGOKG1:945 | IF ls_emkpf-subrc IS INITIAL. > ELSE. | MESSAGE s012 WITH ls_emkpf-mblnr. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKG1:967 | IF ls_emkpf-subrc IS INITIAL. > IF l_tafkz = x. | CALL TRANSACTION 'LT06'. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKD4:122 | IF oref_doc_log->message_exist_all( ) = abap_true. > IF es_highest_msg-msgty <> space. | MESSAGE ID     es_highest_msg-msgid | Tinjau kondisi dan hasil di ECC.
+  LMIGOKD1:521 | IF l_no_items = abap_true. > ELSE. > IF s_action-migo_mode = 'GS'. | MESSAGE s053. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKD1:526 | IF l_no_items = abap_true. > ELSE. > ELSE. | MESSAGE s007. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKCD:72 | IF sy-subrc = 2. | MESSAGE i418(w#) WITH ls_cd_mseg-matnr. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKCD:108 | Konteks perlu ditinjau | MESSAGE i070. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB2:71 | IF sy-subrc = 1 AND e_docubatch_control = abap_true OR | MESSAGE a899 WITH 'VBDBDM_ACTIVE_CHECK_DETAIL' space space space. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB2:256 | IF sy-subrc = 2. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB2:320 | IF ls_tcudb_process-record = 1. > IF sy-subrc <> 0. > IF sy-subrc <> 0 AND l_docubatch_control = abap_true. | MESSAGE a899 WITH 'VBDBDM_ACTIVE_CHECK_DETAIL' | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:108 | IF NOT l_kzwsm IS INITIAL. > IF     lv_subrc_loop           IS INITIAL AND | MESSAGE i004(xu) WITH ls_goitem-charg ls_goitem-matnr. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:269 | IF ls_rc_mcha_buffer IS INITIAL. > IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE s NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:287 | ELSE. > IF ls_goitem-chneu CA 'DEF' AND ls_goitem-charg IS INITIAL. | MESSAGE e029(lb) WITH ls_goitem-bwart. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:289 | ELSE. > ELSEIF ls_goitem-chneu = 'G'. | MESSAGE e042(m7) WITH ls_classification-matnr | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:310 | ELSE. > ELSE. | MESSAGE s207(m7) | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:544 | ELSE. > IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE s NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:690 | IF ( lv_rc_buf IS INITIAL AND ls_mcha-bwtar IS NOT INITIAL > IF ls_batch_data_new NE ls_batch_data_old. > IF lcl_migo_globals=>batch_level EQ '0'. > IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:709 | IF ( lv_rc_buf IS INITIAL AND ls_mcha-bwtar IS NOT INITIAL > IF ls_batch_data_new NE ls_batch_data_old. > ELSE. > IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:724 | ELSE. > IF    cs_goitem-chneu CA 'CG' AND | MESSAGE s042(m7) WITH cs_goitem-matnr | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:864 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:1023 | IF lv_rc_buf IS INITIAL. > ELSE. > ELSE. > IF is_old_goitem-umcha EQ cs_goitem-umcha AND > IF ls_mcha-charg EQ cs_goitem-umcha > IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:1059 | IF lv_rc_buf IS INITIAL. > IF ls_batch_data_new NE ls_batch_data_old. > IF lcl_migo_globals=>batch_level EQ '0'. > IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:1078 | IF lv_rc_buf IS INITIAL. > IF ls_batch_data_new NE ls_batch_data_old. > ELSE. > IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:1092 | ELSE. > IF cs_goitem-chneu CA 'CG'. | MESSAGE s042(m7) WITH cs_goitem-ummat | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:1206 | IF is_goitem-chneu CA 'DEF' AND ls_classification-charg IS INITIAL. | MESSAGE s029(lb) WITH is_goitem-bwart. | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:1209 | ELSEIF is_goitem-chneu = 'G'. | MESSAGE s042(m7) WITH ls_classification-matnr | Tinjau kondisi dan hasil di ECC.
+  LMIGOKB1:1529 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE s NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOKA3:116 | IF sy-subrc <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  LMIGOKA2:440 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOJB2:579 | IF sy-subrc IS INITIAL. > if not ls_nfdoc-nfe is initial. > IF sy-subrc <> 0. | MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO | Tinjau kondisi dan hasil di ECC.
+  LMIGOJB2:587 | IF sy-subrc IS INITIAL. > if not ls_nfdoc-nfe is initial. > if ls_active-docsta <>  '1' | message e077(J1B_NFE) with ls_nfdoc-docnum | Tinjau kondisi dan hasil di ECC.
+  LMIGOJB2:593 | ELSE. | MESSAGE w374(8b) WITH i_mblnr i_vbeln. | Tinjau kondisi dan hasil di ECC.
+  LMIGOHP2:58 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE s NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOHT2:57 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE s NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOGL2:59 | IF NOT lcl_migo_globals=>if_badi IS INITIAL. > IF l_badis_1 > 5. | MESSAGE a047. | Tinjau kondisi dan hasil di ECC.
+  LMIGOGL2:65 | IF NOT lcl_migo_globals=>if_badi IS INITIAL. > IF l_badis_1 <> l_badis_2. | MESSAGE a048. | Tinjau kondisi dan hasil di ECC.
+  LMIGOGL2:176 | IF cntl_error = abap_false. | MESSAGE i017(migo). | Tinjau kondisi dan hasil di ECC.
+  LMIGOGL2:240 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOFR2:48 | IF i_iref_viewer->class_id IS INITIAL. | MESSAGE a899(migo) WITH 'FRAMEWORK_ERROR' | Tinjau kondisi dan hasil di ECC.
+  LMIGOFR2:57 | IF sy-subrc = 0. | MESSAGE a899(migo) WITH 'FRAMEWORK_ERROR' | Tinjau kondisi dan hasil di ECC.
+  LMIGOFR2:71 | IF sy-subrc = 0. | MESSAGE a899(migo) WITH 'FRAMEWORK_ERROR' | Tinjau kondisi dan hasil di ECC.
+  LMIGOFR2:88 | IF sy-subrc = 0. | MESSAGE a899(migo) WITH 'FRAMEWORK_ERROR' | Tinjau kondisi dan hasil di ECC.
+  LMIGOFR2:105 | IF sy-subrc = 0. | MESSAGE a899(migo) WITH 'FRAMEWORK_ERROR' | Tinjau kondisi dan hasil di ECC.
+  LMIGOFR2:197 | IF i_system_message = abap_false. > IF sy-subrc <> 0. | MESSAGE a899 WITH 'FRAMEWORK_ERROR' | Tinjau kondisi dan hasil di ECC.
+  LMIGOFR2:309 | IF NOT lt_answers IS INITIAL. | MESSAGE a899 WITH 'FRAMEWORK_ERROR' | Tinjau kondisi dan hasil di ECC.
+  LMIGOFL4:253 | if sy-subrc = 1. | MESSAGE e062 WITH godefault_tv-bwart. | Tinjau kondisi dan hasil di ECC.
+  LMIGOFL4:261 | IF sy-subrc <> 0. > IF godefault_tv-sobkz is INITIAL. | message e080. | Tinjau kondisi dan hasil di ECC.
+  LMIGOFL4:264 | IF sy-subrc <> 0. | MESSAGE e057 WITH godefault_tv-bwart | Tinjau kondisi dan hasil di ECC.
+  LMIGOFL3:210 | WHEN 'MIGO_OK_GO'. > WHEN 'R01'. > IF lf_active = 'X'. > ELSE. | MESSAGE s019(06) DISPLAY LIKE 'E' WITH godynpro-longnum. | Tinjau kondisi dan hasil di ECC.
+  LMIGOFH2:221 | ELSE. | MESSAGE s801(dh). | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN5:25 | IF NOT sy-subrc IS INITIAL. | MESSAGE s017(co) WITH i_aufnr. | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:23 | IF sy-subrc <> 0. | MESSAGE s172(00) WITH i_tcode. | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:30 | Konteks perlu ditinjau | CALL TRANSACTION i_tcode AND SKIP FIRST SCREEN. | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:85 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:111 | IF i_bsakz = t. | MESSAGE s004. | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:182 | WHEN 1. | MESSAGE s008(mick) WITH i_mblnr i_mjahr. | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:184 | WHEN OTHERS. | MESSAGE ID sy-msgid TYPE 'S' NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:212 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE 'S' NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:223 | Konteks perlu ditinjau | SUBMIT rm07migo_po_history WITH i_ebeln = i_ebeln | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:244 | IF sy-subrc <> 0. | MESSAGE s872(m7) WITH ls_vbeln. | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:274 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE 'S' NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:297 | IF l_uname IS INITIAL. > IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE s NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:313 | IF sy-subrc <> 0. | MESSAGE s240(so) WITH ls_name_in. | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:383 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE s NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGOEN4:394 | IF sy-subrc <> 0. | MESSAGE ID sy-msgid TYPE s NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGODX2:65 | if    ls_scrap_ind-scrap_indicator = cv_scrap_retention | message i100(migo). | Tinjau kondisi dan hasil di ECC.
+  LMIGODX2:72 | if    ls_scrap_ind-scrap_indicator <> cv_scrap_retention | message i102(migo) with goitem-zeile lv_string_keep_qty. | Tinjau kondisi dan hasil di ECC.
+  LMIGODX2:82 | if okcode = 'OK_POST'. > if   ls_scrap_ind-scrap_indicator   = cv_scrap_retention | message i100(migo). | Tinjau kondisi dan hasil di ECC.
+  LMIGODX2:90 | if okcode = 'OK_POST'. > if ls_bapiret2 is not initial. | message id sy-msgid type sy-msgty number sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGODS3:357 | Konteks perlu ditinjau | SUBMIT riequi21 VIA SELECTION-SCREEN | Tinjau kondisi dan hasil di ECC.
+  LMIGODS3:417 | IF goserial_size > goserial_max_size. | MESSAGE i063(migo) WITH goserial_max_size. | Tinjau kondisi dan hasil di ECC.
+  LMIGODS3:500 | Konteks perlu ditinjau | SUBMIT riobjk00 VIA SELECTION-SCREEN | Tinjau kondisi dan hasil di ECC.
+  LMIGODR4:33 | IF g_tablev_current_dyn = '0201'. | PERFORM CTMX_OK_CODE IN PROGRAM SAPLWMMB. | Tinjau kondisi dan hasil di ECC.
+  LMIGODE2:295 | IF sy-ucomm = 'OK_DEF_GO'. | MESSAGE s016. | Tinjau kondisi dan hasil di ECC.
+  LMIGODD2:63 | IF cl_ops_switch_check=>mm_sfws_sit( ) IS NOT INITIAL > IF sy-subrc = 0 AND lv_sobkz IS NOT INITIAL. > IF lv_vbtyp = 'J' | MESSAGE s468(m7) WITH goitem-sobkz. | Tinjau kondisi dan hasil di ECC.
+  LMIGODD2:69 | IF cl_ops_switch_check=>mm_sfws_sit( ) IS NOT INITIAL > IF sy-subrc = 0 AND lv_sobkz IS NOT INITIAL. > ELSEIF lv_vbtyp = '7' | MESSAGE s468(m7) WITH goitem-sobkz. | Tinjau kondisi dan hasil di ECC.
+  LMIGODC2:525 | WHEN 'MIGO_OK_PREV_IT'. > IF l_index = 0. | MESSAGE s020(migo). | Tinjau kondisi dan hasil di ECC.
+  LMIGODB4:106 | WHEN 1. | MESSAGE a899 WITH 'VBDBDM_DATA_GET_FROM_IM' space space space. | Tinjau kondisi dan hasil di ECC.
+  LMIGODB4:109 | WHEN 2. | MESSAGE e530(m7) WITH goitem-matnr. | Tinjau kondisi dan hasil di ECC.
+  LMIGODB4:112 | WHEN OTHERS. | MESSAGE ID sy-msgid TYPE s NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGODB4:144 | IF l_global_counter <> goitem-global_counter. | MESSAGE a899 WITH 'lcl_migo_detail_doc_batch->PAI' | Tinjau kondisi dan hasil di ECC.
+  LMIGODA2:106 | IF goitem-xaccount      = abap_true AND > IF cl_psm_core_switch_check=>PSM_FM_GI_EF_CORE_NOT_REV( ) IS NOT INITIAL. > IF ls_cobl-kblnr IS NOT INITIAL. > IF sy-subrc IS NOT INITIAL. | MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno | Tinjau kondisi dan hasil di ECC.
+  LMIGODA2:117 | IF goitem-xaccount      = abap_true AND > IF l_cancelled = abap_false. > IF ls_conv_error-type <> space. | MESSAGE ID ls_conv_error-id TYPE 'S' | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU2:37 | IF sy-subrc <> 0. | MESSAGE e004(mick) WITH i_plant | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU2:61 | IF sy-subrc <> 0 AND NOT l_own_ls IS INITIAL. | MESSAGE e005(mick) WITH ls_t001w-bwkey | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU2:128 | WHEN 1. | MESSAGE e004(mick) WITH i_plant | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU2:131 | WHEN 2. | MESSAGE e005(mick) WITH sy-msgv1 | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU2:183 | ELSE. | MESSAGE e010(migo) WITH i_storage_loc i_plant | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU5:21 | IF sy-subrc <> 0. > ELSE. | MESSAGE e001(mick) WITH i_move | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU5:33 | IF sy-subrc <> 0. | MESSAGE e060(migo) WITH e_got156-bustr. | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU5:61 | ELSE. | MESSAGE e001(mick) WITH i_move | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU5:102 | ELSE. > ELSEIF i_match = abap_true. | MESSAGE e010 WITH i_move i_spec_stock | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU5:114 | IF sy-subrc <> 0. | MESSAGE e010 WITH i_move i_spec_stock | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU5:158 | ELSE. | MESSAGE e001(mick) WITH    i_tcode | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU5:197 | ELSE. | MESSAGE e096(m7) WITH i_bwart RAISING not_found. | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU5:265 | IF sy-subrc <> 0. | MESSAGE e001(mick) WITH i_bwart | Tinjau kondisi dan hasil di ECC.
+  LMIGOBU3:75 | ELSE. | MESSAGE e001(mick) WITH i_postp | Tinjau kondisi dan hasil di ECC.
+  LMIGOPAI:854 | IF sy-subrc = 1. | MESSAGE e062 WITH goitem-bwart. | Tinjau kondisi dan hasil di ECC.
+  LMIGOPBO:11 | Konteks perlu ditinjau | PERFORM initialization. | Tinjau kondisi dan hasil di ECC.
+  LMIGOPBO:12 | Konteks perlu ditinjau | PERFORM take_data_from_migo_dialog. | Tinjau kondisi dan hasil di ECC.
+  LMIGOU01:212 | ELSE. | MESSAGE a899 WITH 'READ TABLE' 'lt_list' | Tinjau kondisi dan hasil di ECC.
+  LMIGOU01:223 | ELSE. | MESSAGE a899 WITH 'READ TABLE' 'lt_list' | Tinjau kondisi dan hasil di ECC.
+  LMIGOU01:236 | ELSE. | MESSAGE a899 WITH 'READ TABLE' 'lt_list' | Tinjau kondisi dan hasil di ECC.
+  LMIGOU02:133 | IF NOT i_new_rollarea IS INITIAL. | SUBMIT mb_call_migo_dialog | Tinjau kondisi dan hasil di ECC.
+  LMIGOU02:181 | IF i_no_auth_check IS INITIAL. > IF sy-subrc NE 0. | MESSAGE s172(00) WITH 'MIGO'. | Tinjau kondisi dan hasil di ECC.
+  LMIGOFR1:81 | Konteks perlu ditinjau | message    TYPE lif_migo_frame~ty_s_message, | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek SAPLMIGO (97 baris)
+  4 | includes | LMIGOTOP
+  5 | includes | LMIGOUXX
+  11 | includes | LMIGOPBO
+  12 | includes | LMIGOPAI
+  13 | includes | LMIGOPOV
+  15 | includes | LMIGOBU2
+  16 | includes | LMIGOCU2
+  17 | includes | LMIGODA2
+  18 | includes | LMIGODA4
+  19 | includes | LMIGODB2
+  20 | includes | LMIGODB4
+  21 | includes | LMIGODC2
+  22 | includes | LMIGODD2
+  23 | includes | LMIGODE2
+  24 | includes | LMIGODF2
+  25 | includes | LMIGODI2
+  26 | includes | LMIGODL2
+  27 | includes | LMIGODM2
+  28 | includes | LMIGODN2
+  29 | includes | LMIGODR4
+  30 | includes | LMIGODO2
+  31 | includes | LMIGODP2
+  32 | includes | LMIGODO4
+  33 | includes | LMIGODP4
+  34 | includes | LMIGODP6
+  35 | includes | LMIGODT4
+  36 | includes | LMIGODT6
+  37 | includes | LMIGODT8
+  38 | includes | LMIGODQ2
+  39 | includes | LMIGODT2
+  40 | includes | LMIGODS2
+  41 | includes | LMIGODW2
+  42 | includes | LMIGODX2
+  43 | includes | LMIGODY2
+  44 | includes | LMIGOEN2
+  45 | includes | LMIGOEQ2
+  46 | includes | LMIGOFH2
+  47 | includes | LMIGOFL2
+  48 | includes | LMIGOFR2
+  49 | includes | LMIGOGL2
+  50 | includes | LMIGOHC2
+  51 | includes | LMIGOHT2
+  52 | includes | LMIGOHD2
+  53 | includes | LMIGOHG2
+  54 | includes | LMIGOHI2
+  55 | includes | LMIGOHO2
+  56 | includes | LMIGOHP2
+  57 | includes | LMIGOHV2
+  58 | includes | LMIGOJB2
+  59 | includes | LMIGOBO2
+  60 | includes | LMIGOIN1
+  61 | includes | LMIGOKE2
+  62 | includes | LMIGOLO2
+  63 | includes | LMIGOPR2
+  64 | includes | LMIGOSM2
+  65 | includes | LMIGOSM4
+  66 | includes | LMIGOSO2
+  67 | includes | LMIGOSP2
+  68 | includes | LMIGODS6
+  69 | includes | LMIGOSR2
+  70 | includes | LMIGOST2
+  71 | includes | LMIGOTI2
+  72 | includes | LMIGOTO2
+  73 | includes | LMIGOTP2
+  74 | includes | LMIGOCA2
+  75 | includes | LMIGOGD2
+  76 | includes | LMIGOTR2
+  77 | includes | LMIGOTV2
+  78 | includes | LMIGOTR4
+  79 | includes | LMIGOTRB
+  80 | includes | LMIGOTRC
+  81 | includes | LMIGORE1
+  82 | includes | LMIGODR2
+  83 | includes | LMIGOAR2
+  87 | includes | LMIGOIIS
+  93 | includes | LMIGOO01
+  94 | includes | LMIGOO02
+  95 | includes | LMIGOI01
+  97 | includes | IUID_MIGO
+
+Objek IUID_MIGO (214 baris)
+  63 | Class dan Interface | cl_uid_iuid
+  70 | Class dan Interface | cl_uid_cust
+  70 | Class dan Interface | cl_uid_cust
+  80 | Class dan Interface | cl_uid_cust
+  80 | Class dan Interface | cl_uid_cust
+  86 | Class dan Interface | cl_uid_iuid
+  118 | Field DDIC | equi-uii_plant
+  133 | Class dan Interface | cl_uid_iuid
+  142 | Class dan Interface | cl_uid_iuid
+  172 | Class dan Interface | cl_uid_iuid
+  45 | callFunctions | MARC_SINGLE_READ
+  58 | tableReads | T377P
+
+Objek LMIGOI01 (15 baris)
+
+Objek LMIGOO02 (13 baris)
+
+Objek LMIGOO01 (29 baris)
+  9 | Class dan Interface | cl_change
+  9 | Class dan Interface | cl_numbers
+  13 | Class dan Interface | cl_change
+  15 | Class dan Interface | cl_change
+  22 | Class dan Interface | cl_numbers
+
+Objek LMIGOIIS (49 baris)
+
+Objek LMIGOAR2 (130 baris)
+  96 | Class dan Interface | cl_gui_cfw
+
+Objek LMIGODR2 (6 baris)
+
+Objek LMIGORE1 (35 baris)
+  9 | Field DDIC | ldbn-ldbnode
+  28 | Field DDIC | ldbn-ldbnode
+
+Objek LMIGOTRC (14 baris)
+
+Objek LMIGOTRB (89 baris)
+  37 | Class dan Interface | cl_gui_docking_container
+
+Objek LMIGOTR4 (11 baris)
+  7 | includes | LMIGOTR5
+  8 | includes | LMIGOTR6
+  9 | includes | LMIGOTR7
+  10 | includes | LMIGOTR8
+
+Objek LMIGOTR8 (687 baris)
+  115 | Class dan Interface | cl_gui_column_tree
+  116 | Teks Seleksi | text-100
+  208 | Class dan Interface | cl_gui_column_tree
+  228 | Teks Seleksi | text-106
+  235 | Class dan Interface | cl_gui_column_tree
+  275 | Class dan Interface | cl_gui_cfw
+  339 | Class dan Interface | cl_mmim_userdefaults
+  303 | callFunctions | LVC_SORT_DIALOG
+
+Objek LMIGOTR7 (516 baris)
+  28 | Class dan Interface | cl_mmim_userdefaults
+  47 | Teks Seleksi | text-116
+  62 | Teks Seleksi | text-108
+  94 | Class dan Interface | cl_gui_cfw
+  111 | Class dan Interface | cl_mmim_userdefaults
+  311 | Class dan Interface | cl_gui_column_tree
+  316 | Class dan Interface | cl_gui_column_tree
+  321 | Class dan Interface | cl_gui_column_tree
+  325 | Class dan Interface | cl_gui_column_tree
+  370 | Class dan Interface | cl_gui_cfw
+  489 | Class dan Interface | cl_gui_cfw
+  511 | Class dan Interface | cl_gui_cfw
+
+Objek LMIGOTR6 (814 baris)
+  36 | Class dan Interface | cl_gui_column_tree
+  51 | Teks Seleksi | text-101
+  177 | Teks Seleksi | text-102
+  190 | Teks Seleksi | text-105
+  201 | Teks Seleksi | text-120
+  214 | Teks Seleksi | text-105
+  225 | Teks Seleksi | text-121
+  238 | Teks Seleksi | text-105
+  249 | Teks Seleksi | text-103
+  262 | Teks Seleksi | text-105
+  272 | Teks Seleksi | text-104
+  285 | Teks Seleksi | text-105
+  306 | Class dan Interface | cl_gui_column_tree
+  454 | Class dan Interface | cl_change
+  454 | Class dan Interface | cl_numbers
+  516 | Class dan Interface | cl_change
+  518 | Class dan Interface | cl_change
+  525 | Class dan Interface | cl_numbers
+  601 | Class dan Interface | cl_gui_column_tree
+  686 | Teks Seleksi | text-105
+  763 | Field DDIC | esruo_s-object_typ
+  764 | Field DDIC | esruo_s-object_id
+  785 | Class dan Interface | cl_mmim_datastore
+  787 | Class dan Interface | if_badi
+  788 | Class dan Interface | if_badi
+  331 | callFunctions | ES_READ_USER_OBJECTS
+  748 | callFunctions | ES_SAVE_USER_OBJECTS
+  809 | callFunctions | ES_DELETE_USER_OBJECTS
+  424 | tableReads | MMIM_PREDOC_ORG
+  784 | databaseWrites | MMIM_PREDOC_ORG
+
+Objek LMIGOTR5 (160 baris)
+
+Objek LMIGOTV2 (379 baris)
+  339 | Field DDIC | sy-tabix
+  359 | Field DDIC | sy-tabix
+  6 | includes | LMIGOTV3
+  7 | includes | LMIGOTV4
+
+Objek LMIGOTV4 (73 baris)
+
+Objek LMIGOTV3 (401 baris)
+  74 | callFunctions | DDIF_NAMETAB_GET
+
+Objek LMIGOTR2 (207 baris)
+  23 | Class dan Interface | cl_mmim_userdefaults
+  55 | Class dan Interface | cl_gui_toolbar
+  58 | Class dan Interface | cl_gui_toolbar
+  132 | Class dan Interface | cl_mmim_userdefaults
+  151 | Class dan Interface | cl_ctmenu
+  152 | Class dan Interface | cl_ctmenu
+
+Objek LMIGOGD2 (374 baris)
+  231 | Class dan Interface | cl_gui_alv_grid
+  250 | Teks Seleksi | text-109
+  261 | Teks Seleksi | text-019
+  216 | includes | RM07RESL_FIELDCAT
+
+Objek RM07RESL_FIELDCAT (72 baris)
+  8 | callFunctions | GET_DEFAULT_PRIO_ACTIVE
+
+Objek LMIGOCA2 (203 baris)
+  77 | Class dan Interface | cl_gui_cfw
+  80 | Class dan Interface | cl_mmim_userdefaults
+  112 | Class dan Interface | cl_gui_docking_container
+
+Objek LMIGOTP2 (176 baris)
+  57 | Layar dan GUI | CALL SCREEN 1300 STARTING AT 2 6.
+  147 | Layar dan GUI | SET TITLEBAR  'TIP_POPUP'.
+  148 | Layar dan GUI | SET PF-STATUS 'TIP_STATUS'.
+  171 | Layar dan GUI | SET SCREEN 0.
+  112 | callFunctions | DOCU_GET_FOR_F1HELP
+  125 | callFunctions | CONVERT_ITF_TO_HTML
+
+Objek LMIGOTO2 (109 baris)
+  44 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGOTI2 (88 baris)
+  86 | Layar dan GUI | SET TITLEBAR 'MIGO_TITLEBAR' WITH p_title.
+  37 | callFunctions | DDUT_DOMVALUE_TEXT_GET
+
+Objek LMIGOST2 (304 baris)
+  120 | Class dan Interface | if_badi_item
+  137 | Teks Seleksi | text-007
+  140 | Layar dan GUI | LEAVE TO SCREEN 0001.
+  142 | Teks Seleksi | text-001
+  150 | Layar dan GUI | SET SCREEN 0.
+  250 | Layar dan GUI | SET PF-STATUS 'MIGO_STATUS' EXCLUDING pt_excluding.
+  257 | Layar dan GUI | SET PF-STATUS 'MIGO_STATUS' EXCLUDING pt_excluding.
+  259 | Layar dan GUI | SET PF-STATUS 'MIGO_STATUS_BRAZIL' EXCLUDING pt_excluding.
+  281 | Teks Seleksi | text-003
+  278 | callFunctions | POPUP_TO_CONFIRM_STEP
+
+Objek LMIGOSR2 (22 baris)
+  7 | includes | LMIGOSR3
+  8 | includes | LMIGOSR4
+  9 | includes | LMIGOSR5
+  10 | includes | LMIGOSR6
+  11 | includes | LMIGOSR7
+  18 | callFunctions | MM_PLANT_CONVERT
+
+Objek LMIGOSR7 (145 baris)
+  24 | Layar dan GUI | CALL SCREEN 3020 STARTING AT 5 1.
+  109 | submitPrograms | RM07RESL
+
+Objek LMIGOSR6 (74 baris)
+  10 | Layar dan GUI | CALL SCREEN 3010 STARTING AT 5 1.
+  25 | Field DDIC | caufv-autyp
+  26 | Field DDIC | caufv-gamng
+  27 | Field DDIC | caufv-gmein
+  28 | Field DDIC | caufv-objnr
+  29 | Field DDIC | caufvd-sttxt
+  52 | submitPrograms | PPCOWE00
+
+Objek LMIGOSR5 (31 baris)
+  17 | callTransactions | MB51
+
+Objek LMIGOSR4 (242 baris)
+  13 | Layar dan GUI | CALL SCREEN 3000 STARTING AT 5 1.
+  147 | Field DDIC | sy-msgty
+  126 | callFunctions | ME_READ_EKKO_MULTIPLE
+  79 | tableReads | T156
+  163 | tableReads | LFA1
+  169 | tableReads | T001W
+  185 | tableReads | T001L
+  190 | tableReads | T023T
+  195 | tableReads | T163I
+
+Objek LMIGOSR3 (96 baris)
+  66 | Layar dan GUI | SET PF-STATUS 'SEARCH_POPUP'.
+  85 | Layar dan GUI | SET SCREEN 0.
+  94 | Layar dan GUI | SET SCREEN 0.
+
+Objek LMIGODS6 (625 baris)
+  58 | Field DDIC | sy-subrc
+  72 | Field DDIC | bkpf-monat
+  73 | Field DDIC | bkpf-gjahr
+  550 | Field DDIC | t156m-cnt02
+  551 | Field DDIC | t156m-zustd
+  552 | Field DDIC | dm07m-kzuml
+  595 | Field DDIC | sy-msgty
+  191 | callFunctions | ME_EKKO_SINGLE_READ
+  198 | callFunctions | ME_EKPO_SINGLE_READ
+  276 | callFunctions | FI_PERIOD_DETERMINE
+  314 | callFunctions | VB_COMPLETE_DETERMINATION
+  342 | callFunctions | MB_CHECK_T160M
+  579 | callFunctions | MB_CONTROL_MOVETYPE_GET_SINGLE
+  251 | tableReads | T156B
+  283 | tableReads | MARV
+  558 | tableReads | T156
+  599 | tableReads | T156M
+
+Objek LMIGOSP2 (192 baris)
+  82 | Layar dan GUI | SET SCREEN 0.
+  96 | Field DDIC | gosplit-erfme
+  98 | Field DDIC | gosplit-bwtar_from_refdoc
+  103 | Field DDIC | gosplit-erfme
+  104 | Field DDIC | gosplit-lgort
+  105 | Field DDIC | gosplit-bwtar_from_refdoc
+  10 | includes | LMIGOSP3
+  159 | callFunctions | MM_SLOC_CONVERT
+  180 | callFunctions | MBEW_BWTAR_HELP
+
+Objek LMIGOSP3 (357 baris)
+  41 | Layar dan GUI | SET PF-STATUS 'SPLIT'.
+  42 | Layar dan GUI | SET TITLEBAR 'GR_SPLIT' WITH l_quantity
+  144 | Layar dan GUI | CALL SCREEN 1000 STARTING AT 5 1.
+  167 | Layar dan GUI | SET SCREEN 0.
+  209 | Field DDIC | SY-SUBRC
+  230 | callFunctions | MB_CHECK_T160M
+  247 | callFunctions | VB_BATCH_READ_BUFFER_DB
+  349 | callFunctions | QBCK_MIGO_LINE_SPLIT
+
+Objek LMIGOSO2 (40 baris)
+
+Objek LMIGOSM4 (11 baris)
+  8 | includes | LMIGOSMB
+  9 | includes | LMIGOSMC
+  10 | includes | LMIGOSMD
+
+Objek LMIGOSMD (109 baris)
+  11 | Field DDIC | dfies-lfieldname
+  78 | callFunctions | DDIF_FIELDINFO_GET
+
+Objek LMIGOSMC (362 baris)
+
+Objek LMIGOSMB (167 baris)
+  21 | includes | LMIGOSMG
+  29 | callFunctions | DDIF_NAMETAB_GET
+  108 | callFunctions | FIELD_SELECTION_MODIFY_SINGLE
+
+Objek LMIGOSMG (468 baris)
+
+Objek LMIGOSM2 (60 baris)
+
+Objek LMIGOPR2 (347 baris)
+  224 | Layar dan GUI | SET TITLEBAR 'PREDOC_POPUP'.
+  225 | Layar dan GUI | SET PF-STATUS 'PREDOC_STATUS' EXCLUDING ct_extab.
+  316 | Class dan Interface | cl_mmim_datastore
+  318 | Class dan Interface | if_badi
+  319 | Class dan Interface | if_badi
+  341 | Field DDIC | sy-ucomm
+  117 | callFunctions | POPUP_GET_VALUES
+  135 | callFunctions | GUID_CREATE
+  197 | callFunctions | REUSE_ALV_LIST_DISPLAY
+  179 | tableReads | MMIM_PREDOC_ORG
+  165 | databaseWrites | MMIM_PREDOC_ORG
+
+Objek LMIGOLO2 (456 baris)
+  74 | Field DDIC | sy-msgty
+  139 | Field DDIC | sy-msgty
+  8 | includes | LMIGOLO3
+  9 | includes | LMIGOLO4
+  17 | callFunctions | BAL_GLB_AUTHORIZATION_GET
+  50 | callFunctions | BAL_LOG_DELETE
+  66 | callFunctions | BAL_LOG_CREATE
+  86 | callFunctions | BAL_GLB_MSG_DEFAULTS_SET
+  125 | callFunctions | BAL_LOG_MSG_ADD
+  186 | callFunctions | BAL_GLB_SEARCH_MSG
+  209 | callFunctions | BAL_LOG_MSG_DELETE
+  287 | callFunctions | BAL_LOG_MSG_READ
+
+Objek LMIGOLO4 (17 baris)
+  12 | callFunctions | MICK_LOG_LOCAL_HANDLE_SET
+
+Objek LMIGOLO3 (279 baris)
+  89 | Teks Seleksi | text-011
+  90 | Teks Seleksi | text-011
+  220 | Field DDIC | es_msg-msgty
+  39 | callFunctions | BAL_DSP_PROFILE_POPUP_GET
+  80 | callFunctions | BAL_GLB_SEARCH_MSG
+  111 | callFunctions | BAL_DSP_LOG_DISPLAY
+  185 | callFunctions | BAL_LOG_MSG_READ
+
+Objek LMIGOKE2 (110 baris)
+  37 | includes | LMIGOKA1
+  38 | includes | LMIGOKA2
+  39 | includes | LMIGOKA3
+  40 | includes | LMIGOKB1
+  41 | includes | LMIGOKB2
+  42 | includes | LMIGOKC1
+  43 | includes | LMIGOKC2
+  44 | includes | LMIGOKCD
+  45 | includes | LMIGOKD1
+  46 | includes | LMIGOKD2
+  47 | includes | LMIGOKD3
+  48 | includes | LMIGOKD4
+  49 | includes | LMIGOKF1
+  50 | includes | LMIGOKFE
+  51 | includes | LMIGOKG1
+  52 | includes | LMIGOKG2
+  53 | includes | LMIGOKGA
+  54 | includes | LMIGOKGE
+  55 | includes | LMIGOKH1
+  56 | includes | LMIGOKI1
+  57 | includes | LMIGOKJ2
+  58 | includes | LMIGOKL1
+  59 | includes | LMIGOKL2
+  60 | includes | LMIGOKL3
+  61 | includes | LMIGOKL4
+  62 | includes | LMIGOKL5
+  63 | includes | LMIGOKM1
+  64 | includes | LMIGOKM2
+  65 | includes | LMIGOKM3
+  66 | includes | LMIGOKN1
+  67 | includes | LMIGOKN2
+  68 | includes | LMIGOKO1
+  69 | includes | LMIGOKO2
+  70 | includes | LMIGOKO4
+  71 | includes | LMIGOKO5
+  72 | includes | LMIGOKP1
+  73 | includes | LMIGOKP2
+  74 | includes | LMIGOKP3
+  75 | includes | LMIGOKP4
+  76 | includes | LMIGOKP5
+  78 | includes | LMIGOKP6
+  80 | includes | LMIGOKP7
+  81 | includes | LMIGOKR1
+  82 | includes | LMIGOKR2
+  84 | includes | LMIGOKS1
+  85 | includes | LMIGOKS2
+  86 | includes | LMIGOKS3
+  87 | includes | LMIGOKS4
+  88 | includes | LMIGOKS5
+  89 | includes | LMIGOKS6
+  90 | includes | LMIGOKST
+  91 | includes | LMIGOKT1
+  92 | includes | LMIGOKT2
+  93 | includes | LMIGOKT3
+  94 | includes | LMIGOKT4
+  95 | includes | LMIGOKU1
+  96 | includes | LMIGOKU2
+  97 | includes | LMIGOKU3
+  98 | includes | LMIGOKV1
+  99 | includes | LMIGOKVS
+  100 | includes | LMIGOKW1
+
+Objek LMIGOKW1 (136 baris)
+  71 | Field DDIC | goitem-werks
+  72 | Field DDIC | goitem-lgort
+  10 | callFunctions | L_LGORT_LGNUM_CHECK
+  100 | callFunctions | SEND_SUGG_VALUES_TO_WM
+  113 | callFunctions | SEND_LINE_DATA_TO_WM
+  122 | callFunctions | SEND_CURRENT_LINE_TO_WM
+  130 | callFunctions | DELETE_SINGLE_LINE_WM
+
+Objek LMIGOKVS (166 baris)
+  44 | callFunctions | W_VAS_SERVICES_GET_SINGLE_DOC
+  82 | callFunctions | W_VAS_GR_CHECK
+  132 | callFunctions | MB_UNIT_CONVERSION
+
+Objek LMIGOKV1 (99 baris)
+  19 | Field DDIC | sy-tabix
+  25 | callFunctions | VB_BATCH_READ_BUFFER_DB
+  63 | callFunctions | MATERIAL_READ
+
+Objek LMIGOKU3 (556 baris)
+  10 | Field DDIC | sy-tabix
+  19 | Class dan Interface | cl_mmim_migo_move_fields
+  235 | Class dan Interface | cl_ops_switch_check
+  235 | Class dan Interface | cl_ops_switch_check
+  272 | Field DDIC | sy-tabix
+  521 | Teks Seleksi | text-002
+  532 | callFunctions | REUSE_ALV_POPUP_TO_SELECT
+  323 | tableReads | T156
+  325 | tableReads | MIGO_T156
+  329 | tableReads | T156B
+  384 | tableReads | T001W
+  398 | tableReads | T001L
+
+Objek LMIGOKU2 (226 baris)
+  154 | Field DDIC | mcha-lwedt
+  156 | Field DDIC | tcuws-kzdws
+  205 | Field DDIC | tcuws-kzdws
+  49 | callFunctions | MARM_SINGLE_READ
+  61 | callFunctions | VBWS_UNIT_CHECK_FOR_MATNR
+  109 | callFunctions | MURC_SET_VALUE_CHARACTERISTIC
+  162 | callFunctions | VBWS_UNITS_OF_MATERIAL
+  216 | callFunctions | MATERIAL_READ
+
+Objek LMIGOKU1 (131 baris)
+  61 | callFunctions | MB_UNIT_CONVERSION
+  116 | tableReads | EKPO
+
+Objek LMIGOKT4 (55 baris)
+
+Objek LMIGOKT3 (23 baris)
+  11 | tableReads | SHP_VIEW_TRAI
+
+Objek LMIGOKT2 (36 baris)
+  17 | callFunctions | SD_SHINOTIF_FOR_SHIPMENT
+
+Objek LMIGOKT1 (115 baris)
+
+Objek LMIGOKST (364 baris)
+  118 | Field DDIC | goitem-shkzg
+  119 | Field DDIC | goitem-shkzg
+  120 | Field DDIC | goitem-bwart
+  121 | Field DDIC | goitem-matnr
+  122 | Field DDIC | goitem-werks
+  123 | Field DDIC | goitem-shkzg
+  124 | Field DDIC | goitem-lgort
+  125 | Field DDIC | goitem-umlgo
+  126 | Field DDIC | goitem-lgobe
+  127 | Field DDIC | goitem-umlgobe
+  128 | Field DDIC | goitem-umwrk
+  129 | Field DDIC | goitem-umname1
+  130 | Field DDIC | goitem-bwtar
+  132 | Class dan Interface | if_ex_mb_me_csgmt_badi_sap
+  248 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  249 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  161 | callFunctions | MB_SHOW_MATERIAL_STRUCTURE
+
+Objek LMIGOKS6 (282 baris)
+
+Objek LMIGOKS5 (124 baris)
+
+Objek LMIGOKS4 (2214 baris)
+  573 | Class dan Interface | cl_mmim_migo_move_fields
+  841 | Class dan Interface | CL_OPS_SWITCH_CHECK
+  848 | Field DDIC | mtcom-kenng
+  849 | Field DDIC | mtcom-kenng
+  850 | Field DDIC | mtcom-kenng
+  851 | Field DDIC | mtcom-kenng
+  902 | Class dan Interface | CL_OPS_SWITCH_CHECK
+  1268 | Class dan Interface | cl_mmim_auth
+  1381 | Class dan Interface | cl_mmim_migo_move_fields
+  1387 | Class dan Interface | cl_mmim_migo_move_fields
+  1402 | Class dan Interface | cl_mmim_migo_move_fields
+  2006 | Class dan Interface | cl_mmim_migo_move_fields
+  857 | callFunctions | MATERIAL_READ
+  1485 | callFunctions | MIGO_CUST_FIELD_ALLOWED
+
+Objek LMIGOKS3 (284 baris)
+  58 | Class dan Interface | cl_mmpur_switch_check
+  209 | Field DDIC | ty_s_goserial_kernel-global_counter
+  240 | Field DDIC | ty_s_goserial_kernel-global_counter
+  270 | Field DDIC | ty_s_goserial_kernel-global_counter
+  84 | callFunctions | GET_SERNOS_OF_DOCUMENT
+  178 | callFunctions | DOCUMENT_SERIALNOS_IMPORT
+  184 | callFunctions | SERIALPROFILE_CHECK
+
+Objek LMIGOKS2 (63 baris)
+  36 | Field DDIC | ty_s_action-display
+  37 | Field DDIC | goitem-evere
+  48 | Teks Seleksi | text-200
+  14 | callFunctions | MB_SELECT_SHIPPING_UNITS
+  46 | callFunctions | ME_SHIPPING_INSTRUCTIONS
+
+Objek LMIGOKS1 (513 baris)
+  225 | Class dan Interface | if_badi
+  226 | Class dan Interface | if_badi
+  457 | Class dan Interface | if_badi
+  458 | Class dan Interface | if_badi
+  186 | callFunctions | SET_TC_KONTEXT
+
+Objek LMIGOKR2 (622 baris)
+  142 | Field DDIC | rbefu-offen
+  143 | Field DDIC | sy-subrc
+  217 | Field DDIC | aufk-autyp
+  245 | Field DDIC | grpga-grpnr
+  538 | Field DDIC | sy-subrc
+  60 | callFunctions | LDB_PROCESS
+  163 | callFunctions | CO_FW_CHECK_AFFW_BY_RSNUM
+  173 | callFunctions | MB_CHECK_T160M
+  223 | callFunctions | CO_SF_HEADER_GOODS_ISSUE
+  295 | callFunctions | GRPG_FIND_GRPNR_WITH_MATNR
+  432 | callFunctions | FI_PERIOD_DETERMINE
+  444 | callFunctions | COPA_PROFITABILITY_SEGMENT
+  220 | tableReads | AUFK
+  316 | tableReads | T156B
+  411 | tableReads | RESB
+
+Objek LMIGOKR1 (133 baris)
+  30 | Class dan Interface | cl_mmim_line_id_manager
+  82 | Class dan Interface | cl_inb_action_info
+  91 | Class dan Interface | if_badi
+  92 | Class dan Interface | if_badi
+  49 | callFunctions | VB_INIT
+  55 | callFunctions | VBDRV_BUFFERFLUSH
+  67 | callFunctions | RV_MESSAGES_REFRESH
+  71 | callFunctions | REFRESH_WM_DATA_ALL
+  73 | callFunctions | QBCK_MIGO_REFRESH
+  75 | callFunctions | J_1B_IM_NF_REFRESH
+  80 | callFunctions | ME_REFRESH_GOODS_RECEIPT
+  87 | callFunctions | EXPIMP_TABLES_REFRESH
+  101 | callFunctions | CO_SF_DATA_RESET
+  102 | callFunctions | CO_BT_DATA_RESET
+
+Objek LMIGOKP7 (98 baris)
+
+Objek LMIGOKP6 (331 baris)
+  284 | Class dan Interface | cl_ops_switch_check
+  111 | callFunctions | ME_ITEM_CATEGORY_OUTPUT
+  232 | callFunctions | MMPUR_EKBZ_READ_EBELN_EBELP
+  75 | tableReads | AUFK
+
+Objek LMIGOKP5 (92 baris)
+
+Objek LMIGOKP4 (80 baris)
+  32 | callFunctions | ME_SELECT_EKORG_FOR_PLANT
+  66 | callFunctions | ME_SEARCH_SOURCE_OF_SUPPLY
+
+Objek LMIGOKP3 (171 baris)
+  10 | Class dan Interface | cl_mmim_datastore
+  18 | Class dan Interface | cl_mmim_datastore
+  52 | Class dan Interface | if_badi
+  53 | Class dan Interface | if_badi
+  67 | Class dan Interface | cl_mmim_datastore
+  79 | Class dan Interface | cl_mmim_datastore
+  127 | Class dan Interface | if_badi
+  128 | Class dan Interface | if_badi
+  33 | callFunctions | GET_ALL_DATA_FROM_WM
+  38 | callFunctions | QBCK_MIGO_ALL_TO_MM
+  111 | callFunctions | SEND_ALL_DATA_TO_WM
+  116 | callFunctions | QBCK_MIGO_ALL_TO_QM
+
+Objek LMIGOKP2 (563 baris)
+  21 | Field DDIC | sy-subrc
+  32 | Class dan Interface | if_ex_mb_me_csgmt_badi_sap
+  476 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  550 | Class dan Interface | cl_mmpur_switch_check
+  251 | callFunctions | MB_CHECK_T160M
+  372 | callFunctions | MB_PROPOSE_RECEIPT_QUANTITY
+  492 | callFunctions | MM_VENDOR_CONVERT
+  123 | tableReads | VBFA
+
+Objek LMIGOKP1 (1003 baris)
+  301 | Class dan Interface | cl_ops_switch_check
+  368 | Class dan Interface | cl_ops_switch_check
+  703 | Field DDIC | grpga-grpnr
+  133 | callFunctions | ME_READ_HEADER_GOODS_RECEIPT
+  155 | callFunctions | MB_CHECK_T160M
+  318 | callFunctions | ME_READ_ITEM_GOODS_RECEIPT
+  477 | callFunctions | ME_READ_ITEM_TRANSFER
+  638 | callFunctions | ME_REFRESH_COMP_GOODS_MOVEMENT
+  639 | callFunctions | ME_READ_COMP_GOODS_RECEIPT
+  704 | callFunctions | GRPG_FIND_GRPNR_WITH_MATNR
+  788 | callFunctions | MB_UNIT_CONVERSION
+  990 | callFunctions | ME_READ_COMP_GOODS_ISSUE
+  623 | tableReads | AUFK
+
+Objek LMIGOKO5 (87 baris)
+  14 | Field DDIC | sy-subrc
+  16 | callFunctions | CO_SF_HEADER_GOODS_ISSUE
+  31 | callFunctions | CO_FW_CHECK_AFFW_BY_RSNUM
+  40 | callFunctions | MB_CHECK_T160M
+  20 | tableReads | AFKO
+  75 | tableReads | RESB
+
+Objek LMIGOKO4 (358 baris)
+  45 | Field DDIC | cobl-autyp
+  119 | Tipe DDIC | fbefu
+  51 | callFunctions | CO_SF_HEADER_GOODS_RECEIPT
+  102 | callFunctions | CO_SF_ITEM_GOODS_RECEIPT
+
+Objek LMIGOKO2 (309 baris)
+  8 | Field DDIC | goitem-werks
+  15 | Field DDIC | nast-objky
+  16 | Field DDIC | tojtb-name
+  37 | Class dan Interface | cl_mmim_auth
+  189 | Field DDIC | nast-objky
+  190 | Field DDIC | nast-objky
+  245 | Field DDIC | dv70a-btext
+  248 | Field DDIC | nast-objky
+  250 | Field DDIC | dfies-scrtext_m
+  25 | callFunctions | COMMUNICATION_AREA_KOMKBME
+  75 | callFunctions | COMMUNICATION_AREA_KOMPBME
+  92 | callFunctions | MESSAGING
+  122 | callFunctions | RV_MESSAGES_GET
+  144 | callFunctions | MB_MESSAGE_UPDATE
+  207 | callFunctions | RV_MESSAGES_READ
+  254 | callFunctions | DDIF_FIELDINFO_GET
+  287 | callFunctions | RV_MESSAGES_MAINTENANCE
+  70 | tableReads | MARA
+
+Objek LMIGOKO1 (111 baris)
+  38 | Class dan Interface | if_lock
+  70 | Class dan Interface | cl_ops_switch_check
+  74 | Class dan Interface | cl_mm_im_sit_info
+  34 | callFunctions | SD_DELIVERY_ITEMS_RECEIVE
+  78 | callFunctions | ME_EKPO_SINGLE_READ
+
+Objek LMIGOKN2 (43 baris)
+
+Objek LMIGOKN1 (65 baris)
+  19 | callFunctions | SO_NAMES_GET
+
+Objek LMIGOKM3 (80 baris)
+
+Objek LMIGOKM2 (319 baris)
+  23 | Class dan Interface | cl_mmim_cross_system
+  119 | Field DDIC | sy-msgty
+  230 | Class dan Interface | cl_mmim_cross_system
+  31 | callFunctions | MATERIAL_READ
+  78 | callFunctions | VB_BATCH_GET_DETAIL
+  159 | callFunctions | MAKT_SINGLE_READ
+  278 | callFunctions | CV141_LINK_EXIST
+  302 | callFunctions | MATERIAL_PRE_READ_MBEFU
+  315 | callFunctions | MATERIAL_PRE_READ_MAKT
+
+Objek LMIGOKM1 (1493 baris)
+  24 | Field DDIC | t156n-fcode
+  25 | Field DDIC | goitem-evers
+  67 | Field DDIC | goitem-mblnr
+  68 | Field DDIC | goitem-mjahr
+  69 | Field DDIC | goitem-zeile
+  70 | Field DDIC | goitem-matnr
+  71 | Field DDIC | goitem-ummat
+  72 | Field DDIC | goitem-werks
+  73 | Field DDIC | goitem-bwart
+  74 | Field DDIC | goitem-kzbew
+  75 | Field DDIC | goitem-umwrk
+  76 | Field DDIC | goitem-umlgo
+  77 | Field DDIC | goitem-charg
+  78 | Field DDIC | goitem-umcha
+  79 | Field DDIC | goitem-erfmg
+  80 | Field DDIC | goitem-erfme
+  81 | Field DDIC | goitem-kunnr
+  82 | Field DDIC | goitem-ebeln
+  83 | Field DDIC | goitem-ebelp
+  84 | Field DDIC | goitem-mwskz
+  85 | Field DDIC | goitem-umsok
+  86 | Field DDIC | goitem-lifnr
+  89 | Field DDIC | goitem-j_1bexbase
+  94 | Field DDIC | prps-pspnr
+  102 | Field DDIC | mseg-matnr
+  103 | Field DDIC | mseg-werks
+  104 | Field DDIC | mseg-lgort
+  105 | Field DDIC | mseg-charg
+  110 | Field DDIC | mseg-parbu
+  111 | Field DDIC | mseg-pargb
+  112 | Field DDIC | mseg-ummat
+  113 | Field DDIC | mseg-umwrk
+  114 | Field DDIC | mseg-umlgo
+  115 | Field DDIC | mseg-umcha
+  116 | Field DDIC | mseg-sobkz
+  117 | Field DDIC | mseg-insmk
+  118 | Field DDIC | mseg-bwart
+  122 | Field DDIC | mseg-erfmg
+  123 | Field DDIC | mseg-erfme
+  124 | Field DDIC | mseg-wempf
+  125 | Field DDIC | mseg-ablad
+  126 | Field DDIC | mseg-sgtxt
+  127 | Field DDIC | mseg-grund
+  132 | Field DDIC | mseg-sakto
+  133 | Field DDIC | mseg-kostl
+  138 | Field DDIC | mseg-pprctr
+  139 | Field DDIC | mseg-ebeln
+  140 | Field DDIC | mseg-ebelp
+  141 | Field DDIC | mseg-aufnr
+  142 | Field DDIC | mseg-aufps
+  143 | Field DDIC | mseg-lifnr
+  144 | Field DDIC | mseg-kunnr
+  145 | Field DDIC | mseg-kdauf
+  146 | Field DDIC | mseg-kdpos
+  147 | Field DDIC | mseg-ps_psp_pnr
+  148 | Field DDIC | mseg-mat_kdauf
+  149 | Field DDIC | mseg-mat_kdpos
+  150 | Field DDIC | mseg-umsok
+  151 | Field DDIC | mseg-mat_pspnr
+  154 | Field DDIC | mseg-mwskz
+  155 | Field DDIC | mseg-txjcd
+  156 | Field DDIC | mseg-j_1bexbase
+  194 | Field DDIC | goitem-parent
+  297 | Class dan Interface | cl_ops_switch_check
+  318 | Class dan Interface | cl_mmim_line_id_manager
+  345 | Class dan Interface | cl_ops_switch_check
+  380 | Class dan Interface | cl_mmim_line_id_manager
+  816 | Class dan Interface | cl_ops_switch_check
+  816 | Class dan Interface | cl_ops_switch_check
+  1377 | Field DDIC | sy-msgty
+  199 | callFunctions | MB_READ_MATERIAL_HEADER
+  323 | callFunctions | MB_READ_MATERIAL_POSITION
+  570 | callFunctions | EXPIMP_TABLES_REFRESH
+  572 | callFunctions | EXPIMP_GENERAL_DATA_COPY
+  646 | callFunctions | MB_READ_DELIVERY_FLOW
+  755 | callFunctions | EXPIMP_ITEM_DATA_READ
+  950 | callFunctions | ME_ITEM_CATEGORY_OUTPUT
+  1248 | callFunctions | EXPIMP_ITEM_DATA_COPY
+  1366 | callFunctions | MB_CHECK_USER_PG_DATE_PLANT
+  1448 | callFunctions | ASH_MM_MATBEL_READ
+  1477 | callFunctions | ME_CHECK_T160M
+  551 | tableReads | TSTCT
+  622 | tableReads | EKKO
+  655 | tableReads | MSEG
+  946 | tableReads | EKPO
+
+Objek LMIGOKL5 (149 baris)
+
+Objek LMIGOKL4 (1611 baris)
+  348 | Class dan Interface | cl_mmim_migo_move_fields
+  392 | Class dan Interface | cl_erp_co_olc_sw_check
+  457 | Class dan Interface | cl_erp_co_olc_sw_check
+  1319 | Class dan Interface | cl_mmim_migo_move_fields
+  1343 | Class dan Interface | cl_psm_core_switch_check
+  1466 | Field DDIC | qm00-qkz
+  1468 | Field DDIC | goitem-werks
+  1469 | Field DDIC | goitem-lgort
+  1471 | Field DDIC | mkpf-xblnr
+  213 | callFunctions | TCURX_READ
+  394 | callFunctions | READ_NETWORK_AUFPL_APLZL
+  426 | callFunctions | CO_SF_NETWORKACTIVITY_CHECK
+  459 | callFunctions | READ_NETWORK_NPLNR_VORNR
+  487 | callFunctions | CO_BO_OBJNR_OPR_CONV
+  621 | callFunctions | MB_READ_HTN_AND_MATERIAL
+  751 | callFunctions | ME_READ_ITEM_GOODS_RECEIPT
+  1205 | callFunctions | MB_CHECK_T160M
+  1507 | callFunctions | J_1BSA_COMPONENT_ACTIVE
+  1564 | callFunctions | QBCK_MIGO_CERT_REL_CHECK
+  1583 | callFunctions | QBCK_MIGO_LINE_TO_QM
+  1588 | callFunctions | QBCK_MIGO_LINE_DELETE
+  539 | tableReads | T148T
+  555 | tableReads | T157E
+
+Objek LMIGOKL3 (314 baris)
+  11 | Class dan Interface | cl_abap_structdescr
+  23 | Class dan Interface | if_badi
+  27 | Class dan Interface | if_badi
+  43 | Class dan Interface | cl_abap_typedescr
+  126 | Field DDIC | goitem-lgort
+  127 | Field DDIC | goitem-sgtxt
+  135 | Class dan Interface | if_badi_item
+  147 | Class dan Interface | if_badi_item
+
+Objek LMIGOKL2 (1079 baris)
+  282 | Field DDIC | grpga-grpnr
+  724 | Class dan Interface | cl_mmpur_mepo_db_utility
+  191 | callFunctions | ME_REFRESH_COMP_GOODS_MOVEMENT
+  194 | callFunctions | ME_READ_COMP_GOODS_RECEIPT
+  283 | callFunctions | GRPG_FIND_GRPNR_WITH_MATNR
+  419 | callFunctions | CS_BOM_EXPL_EQU_V2
+  450 | callFunctions | CS_BOM_EXPL_MAT_V2
+  529 | callFunctions | MATERIAL_READ
+  792 | callFunctions | MB_UNIT_CONVERSION
+  1005 | tableReads | AUFK
+  1008 | tableReads | T156
+
+Objek LMIGOKL1 (686 baris)
+  141 | Class dan Interface | cl_mmim_migo_move_fields
+  347 | Class dan Interface | if_badi
+  348 | Class dan Interface | if_badi
+  362 | Class dan Interface | cl_change
+  362 | Class dan Interface | cl_numbers
+  388 | Class dan Interface | cl_change
+  390 | Class dan Interface | cl_change
+  396 | Class dan Interface | cl_numbers
+  469 | Class dan Interface | if_badi
+  470 | Class dan Interface | if_badi
+  160 | callFunctions | MIGO_CUST_FIELD_ALLOWED
+  189 | callFunctions | VBDRV_EVENT_ACTIVE_CHECK
+
+Objek LMIGOKJ2 (18 baris)
+  9 | callFunctions | OFF_NUMBER_MIGO_DEFAULTS
+
+Objek LMIGOKI1 (28 baris)
+
+Objek LMIGOKH1 (55 baris)
+
+Objek LMIGOKGE (317 baris)
+
+Objek LMIGOKGA (1000 baris)
+  230 | Field DDIC | sy-msgty
+  420 | Field DDIC | SY-MSGTY
+  713 | Field DDIC | emseg-msgno
+  859 | submitPrograms | RMBVA002
+  206 | callFunctions | MATERIAL_READ
+  218 | callFunctions | MB_PROCESS_VARIANTS
+  400 | callFunctions | WMMA_MATRIX_RETURN_MB
+  759 | callFunctions | MATNR_VARIANTS_CREATE
+  794 | callFunctions | LOCATION_SELECT_PLANT
+  834 | callFunctions | MARA_SINGLE_READ
+  903 | callFunctions | ASSORTMENT_AUTO_LOCAL
+
+Objek LMIGOKG2 (66 baris)
+
+Objek LMIGOKG1 (1004 baris)
+  17 | Field DDIC | sy-subrc
+  18 | Field DDIC | t027c-evere
+  77 | Class dan Interface | if_badi
+  79 | Class dan Interface | if_badi
+  383 | Class dan Interface | if_badi
+  385 | Class dan Interface | if_badi
+  777 | Field DDIC | imkpf-pr_print
+  778 | Field DDIC | sy-tabix
+  795 | Class dan Interface | if_badi
+  797 | Class dan Interface | if_badi
+  846 | Class dan Interface | if_badi
+  848 | Class dan Interface | if_badi
+  926 | Field DDIC | t321-tafkz
+  53 | callFunctions | /SAPPSPRO/READ_REASON_CODE_LOG
+  Belum terurai: /SAPPSPRO/READ_REASON_CODE_LOG | Objek source tidak terpetakan: /SAPPSPRO/READ_REASON_CODE_LOG
+  99 | callFunctions | MIMB_PO_REFRESH
+  245 | callFunctions | MB_CHECK_T160M
+  340 | callFunctions | /SAPPSPRO/USCHK_GOODS_RECEIPT
+  Belum terurai: /SAPPSPRO/USCHK_GOODS_RECEIPT | Objek source tidak terpetakan: /SAPPSPRO/USCHK_GOODS_RECEIPT
+  542 | callFunctions | MIMB_PO_EXPORT
+  682 | callFunctions | MIMB_FREIGHT_EXPORT
+  905 | callFunctions | MIMB_CANCEL_EXPORT
+  929 | callFunctions | MB_POST_GOODS_MOVEMENT
+  967 | callTransactions | LT06
+  284 | tableReads | T027C
+
+Objek LMIGOKFE (79 baris)
+
+Objek LMIGOKF1 (321 baris)
+  58 | callFunctions | IMPORT_DETERMINE
+  93 | callFunctions | EXPIMP_TABLES_REFRESH
+  101 | callFunctions | EXPIMP_GENERAL_DATA_COPY
+  119 | callFunctions | IMPORT_GENERAL_DATA_PROPOSE
+  162 | callFunctions | MATERIAL_READ
+  174 | callFunctions | IMPORT_ITEM_DATA_PROPOSE
+  211 | callFunctions | EXPIMP_ITEM_DATA_READ
+  224 | callFunctions | EXPIMP_ITEM_DATA_COPY
+  252 | callFunctions | EXPIMP_ITEM_DATA_MAINTAIN
+  291 | callFunctions | EXPIMP_GENERAL_DATA_MAINTAIN
+
+Objek LMIGOKD4 (190 baris)
+  183 | callFunctions | ES_APPEND_USER_OBJECTS
+
+Objek LMIGOKD3 (41 baris)
+
+Objek LMIGOKD2 (78 baris)
+  60 | callFunctions | REUSE_ALV_POPUP_TO_SELECT
+  25 | tableReads | M_MEBEX
+  37 | tableReads | EKKO
+  39 | tableReads | MKPF
+
+Objek LMIGOKD1 (718 baris)
+  65 | Field DDIC | sy-tcode
+  81 | Class dan Interface | cl_inb_mat_doc
+  143 | Class dan Interface | cl_mmim_maa_2
+  158 | Class dan Interface | cl_ops_switch_check
+  295 | Class dan Interface | cl_cust
+  303 | Class dan Interface | cl_class_factory
+  304 | Class dan Interface | CL_INB_MAT_DOC
+  310 | Class dan Interface | cl_inb_action_info
+  313 | Class dan Interface | cl_inb_action_info
+  326 | Class dan Interface | cl_class_factory
+  327 | Class dan Interface | CL_INB_MAT_DOC
+  334 | Class dan Interface | cl_inb_action_info
+  337 | Class dan Interface | cl_inb_action_info
+  369 | Class dan Interface | cl_cust
+  373 | Class dan Interface | cl_inb_action_info
+  375 | Class dan Interface | cl_inb_action_info
+  376 | Class dan Interface | cl_inb_action_info
+  377 | Class dan Interface | cl_inb_action_info
+  388 | Class dan Interface | cl_class_factory
+  389 | Class dan Interface | CL_INB_MAT_DOC
+  396 | Class dan Interface | cl_inb_action_info
+  399 | Class dan Interface | cl_inb_action_info
+  480 | Class dan Interface | if_badi
+  481 | Class dan Interface | if_badi
+  542 | Class dan Interface | if_badi_item
+  113 | callFunctions | STATUS_BUFFER_EXPORT_TO_MEMORY
+  264 | callFunctions | MB_SET_BAPI_FLAG
+  346 | callFunctions | MB_CREATE_GOODS_MOVEMENT
+  404 | callFunctions | MB_CANCEL_GOODS_MOVEMENT
+  438 | callFunctions | MB_SIMULATE_GOODS_MOVEMENT
+  454 | callFunctions | MB_SIM_CANCEL_GOODS_MOVEMENT
+  556 | callFunctions | STATUS_BUFFER_REFRESH
+  557 | callFunctions | STATUS_BUFFER_IMPORT_FROM_MEMO
+  630 | callFunctions | VB_BATCH_READ_BUFFER_DB
+  320 | tableReads | T001L
+
+Objek LMIGOKCD (141 baris)
+  28 | callFunctions | STRUC_ART_KEY_TODO
+  63 | callFunctions | W_FRM_GR_ASSIGNMENT_SIMULATE
+
+Objek LMIGOKC2 (443 baris)
+  93 | Field DDIC | tcuch-kzdch
+  150 | Field DDIC | tcuch-kzdch
+  195 | callFunctions | VB_BATCH_READ_BUFFER_DB
+
+Objek LMIGOKC1 (68 baris)
+  16 | Field DDIC | t163d-ibtyp
+  18 | callFunctions | ME_CONFIRMATION_SEARCH_GR
+
+Objek LMIGOKB2 (340 baris)
+  227 | Field DDIC | sy-subrc
+  256 | Field DDIC | sy-msgty
+  53 | callFunctions | VBDBDM_ACTIVE_CHECK_DETAIL
+  110 | callFunctions | VBDBDM_DATA_READ_FOR_MATDOC_IM
+  170 | callFunctions | VBDBDM_DATA_CHECK_IM
+  246 | callFunctions | VBDBDM_ACTIVE_CHECK_PROCESS
+  275 | callFunctions | ME_REFRESH_COMP_GOODS_MOVEMENT
+  277 | callFunctions | ME_READ_COMP_GOODS_RECEIPT
+
+Objek LMIGOKB1 (1533 baris)
+  14 | Field DDIC | sy-subrc
+  15 | Field DDIC | sy-subrc
+  463 | Field DDIC | mch1-lifnr
+  474 | Class dan Interface | cl_ops_switch_check
+  690 | Field DDIC | sy-msgty
+  709 | Field DDIC | sy-msgty
+  805 | Class dan Interface | cl_mmim_migo_move_fields
+  864 | Field DDIC | sy-msgty
+  1023 | Field DDIC | sy-msgty
+  1059 | Field DDIC | sy-msgty
+  1078 | Field DDIC | sy-msgty
+  1188 | Field DDIC | sy-subrc
+  1189 | Field DDIC | sy-subrc
+  78 | callFunctions | VB_BATCH_DEFINITION
+  116 | callFunctions | VB_BATCH_READ_BUFFER_DB
+  239 | callFunctions | VB_CHANGE_BATCH
+  296 | callFunctions | CLFC_BATCH_ALLOCATION_TO_CLASS
+  495 | callFunctions | MB_CHECK_T160M
+  680 | callFunctions | VB_BATCH_WRITE_BUFFER
+  957 | callFunctions | VB_RESET_BATCH
+  1157 | callFunctions | MGW0_PACKAGING_COMPONENTS
+  1483 | callFunctions | VB_CREATE_BATCH
+  477 | tableReads | MCH_PUR_TEMP
+
+Objek LMIGOKA3 (151 baris)
+  116 | Field DDIC | SY-MSGTY
+  48 | callFunctions | AVAILABILITY_CHECK_CONTROLLER
+  106 | callFunctions | ME_READ_SCHEDULES_HEADER
+  27 | tableReads | MARD
+  128 | tableReads | EKPO
+
+Objek LMIGOKA2 (643 baris)
+  27 | Field DDIC | t158-tcode
+  34 | Field DDIC | t156b-chsmm
+  440 | Field DDIC | sy-msgty
+  43 | callFunctions | BF_RESET_LOC_ENQ_TAB
+  114 | callFunctions | BF_SET_LOC_ENQ_TAB
+  426 | callFunctions | MD_MRP_AREA_GET
+  54 | tableReads | T158
+  56 | tableReads | T156SC
+  68 | tableReads | RKPF
+  71 | tableReads | RESB
+  85 | tableReads | MARC
+  88 | tableReads | T156B
+
+Objek LMIGOKA1 (151 baris)
+  13 | Field DDIC | goitem-werks
+  14 | Field DDIC | goitem-lgort
+  16 | Field DDIC | ty_s_goitem-bwart
+  52 | Class dan Interface | cl_mmim_auth
+  102 | Class dan Interface | cl_mmim_auth
+  111 | Class dan Interface | cl_mmim_auth
+  136 | Class dan Interface | cl_mmim_auth
+  66 | callFunctions | MB_CHECK_USER_PG_DATE_PLANT
+  27 | tableReads | T156
+
+Objek LMIGOIN1 (224 baris)
+  32 | Class dan Interface | cl_mmim_userdefaults
+  121 | Class dan Interface | cl_gui_custom_container
+  156 | Class dan Interface | cl_ops_switch_check
+  159 | Class dan Interface | cl_mmim_maa_2
+
+Objek LMIGOBO2 (127 baris)
+  35 | Layar dan GUI | CALL SCREEN 1200 STARTING AT 5 5.
+  79 | Layar dan GUI | SET PF-STATUS 'BOM_POPUP'.
+  80 | Layar dan GUI | SET TITLEBAR  'BOM_POPUP'.
+  92 | Layar dan GUI | SET SCREEN 0.
+  101 | Layar dan GUI | SET SCREEN 0.
+
+Objek LMIGOJB2 (721 baris)
+  249 | Field DDIC | t001-bukrs
+  291 | Field DDIC | sy-tfill
+  454 | Field DDIC | sy-datum
+  579 | Field DDIC | SY-MSGTY
+  628 | Field DDIC | j_1bnflin-refkey
+  629 | Field DDIC | j_1bnflin-netpr
+  45 | callFunctions | J_1BFIFOCHECK
+  160 | callFunctions | J_1B_IM_SWITCH_TAXCODE_MIGO
+  190 | callFunctions | J_1B_SET_MIGO_UMWRK
+  261 | callFunctions | J_1B_COMPANY_DETERMINE
+  272 | callFunctions | J_1B_IM_TX_TAX_PROC_SET
+  319 | callFunctions | J_1B_SET_FIRST_CALL_FROM_MIGO
+  386 | callFunctions | J_1B_IM_NF_DOCUMENT_FUNCTION
+  558 | callFunctions | J_1B_NF_NUMBER_CONDENSE
+  569 | callFunctions | J_1B_NFE_XML_RAED_ACTIVE_TAB
+  619 | callFunctions | J_1B_SET_MIGO_REF_ITEM
+  689 | callFunctions | J_1B_IM_NF_CANCEL_TAXES
+  703 | callFunctions | J_1BSA_COMPONENT_ACTIVE
+  228 | tableReads | T001W
+  431 | tableReads | J_1BIV04
+  458 | tableReads | LIKP
+  469 | tableReads | VBFA
+  484 | tableReads | MSEG
+  540 | tableReads | J_1BNFLIN
+  547 | tableReads | J_1BNFDOC
+
+Objek LMIGOHV2 (7 baris)
+
+Objek LMIGOHP2 (76 baris)
+  14 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGOHO2 (24 baris)
+
+Objek LMIGOHI2 (163 baris)
+  70 | Field DDIC | t180-trtyp
+  71 | Field DDIC | kna1-kunnr
+  72 | Field DDIC | kna1-name1
+  73 | Field DDIC | kna1-land1
+  76 | Layar dan GUI | SET PF-STATUS 'IMPORT_HEADER'.
+  77 | Layar dan GUI | SET TITLEBAR  'IMPORT_HEADER'.
+  123 | Layar dan GUI | SET SCREEN 0.
+  143 | Layar dan GUI | SET SCREEN 0.
+  154 | Layar dan GUI | CALL SCREEN 4000 STARTING AT 5 1
+  34 | callFunctions | EXPIMP_DATA_COMPLETENESS_CHECK
+  100 | callFunctions | FTRADE_HEADER_DATA_MNT_TS_PBO
+  132 | callFunctions | FTRADE_HEADER_DATA_MNT_TS_PAI
+
+Objek LMIGOHG2 (164 baris)
+  95 | Teks Seleksi | text-h02
+  97 | Teks Seleksi | text-h01
+  150 | callFunctions | GET_DATE_FROM_CALID
+
+Objek LMIGOHD2 (7 baris)
+
+Objek LMIGOHT2 (109 baris)
+  45 | callFunctions | DOC_DISPLAY_INITIALIZE
+  69 | callFunctions | DOC_DISPLAY_GET_STATE
+  84 | callFunctions | DOC_DISPLAY_TEXT
+  93 | callFunctions | DOC_DISPLAY_UNHIDE
+  101 | callFunctions | DOC_DISPLAY_HIDE
+
+Objek LMIGOHC2 (187 baris)
+  43 | Class dan Interface | if_badi
+  47 | Class dan Interface | if_badi
+  100 | Class dan Interface | if_badi
+  101 | Class dan Interface | if_badi
+
+Objek LMIGOGL2 (286 baris)
+  47 | Class dan Interface | cl_exithandler
+  52 | Class dan Interface | if_badi
+  53 | Class dan Interface | if_badi
+  54 | Class dan Interface | if_badi
+  69 | Class dan Interface | cl_exithandler
+  74 | Class dan Interface | if_badi_item
+  163 | Class dan Interface | cl_ops_switch_check
+  163 | Class dan Interface | cl_ops_switch_check
+  240 | Field DDIC | sy-msgty
+  272 | Class dan Interface | cl_exithandler
+  277 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  278 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  30 | callFunctions | VB_BATCH_DEFINITION
+  35 | callFunctions | VBDBBF_ACTIVE_CHECK_GENERAL
+  231 | callFunctions | DDIF_NAMETAB_GET
+  147 | tableReads | MIGO_CUST_ACTION
+  152 | tableReads | MIGO_CUST_REFDOC
+  269 | tableReads | TCURM
+
+Objek LMIGOFR2 (590 baris)
+  177 | Class dan Interface | cl_gui_cfw
+  450 | Class dan Interface | cl_gui_splitter_container
+  451 | Class dan Interface | cl_gui_splitter_container
+  460 | Class dan Interface | cl_gui_toolbar
+  522 | Class dan Interface | cl_gui_textedit
+  524 | Class dan Interface | cl_gui_textedit
+  534 | Class dan Interface | cl_mmim_userdefaults
+  560 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGOFL2 (8 baris)
+  6 | includes | LMIGOFL3
+  7 | includes | LMIGOFL4
+
+Objek LMIGOFL4 (268 baris)
+  41 | Field DDIC | ls_action-action
+  137 | Teks Seleksi | text-126
+  16 | callFunctions | DDUT_DOMVALUES_GET
+  93 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  255 | tableReads | T156B
+
+Objek LMIGOFL3 (403 baris)
+  137 | Class dan Interface | cl_change
+  137 | Class dan Interface | cl_numbers
+  192 | Class dan Interface | cl_change
+  194 | Class dan Interface | cl_change
+  201 | Class dan Interface | cl_numbers
+  377 | Class dan Interface | cl_change
+  377 | Class dan Interface | cl_numbers
+  381 | Class dan Interface | cl_change
+  382 | Class dan Interface | cl_change
+
+Objek LMIGOFH2 (224 baris)
+  74 | Class dan Interface | cl_ops_switch_check
+  184 | Class dan Interface | cl_ops_switch_check
+  131 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  157 | callFunctions | F4IF_FIELD_VALUE_REQUEST
+  98 | tableReads | CHVW_INC_PUR
+  119 | tableReads | CHVW
+  196 | tableReads | MCH_PUR_TEMP
+
+Objek LMIGOEQ2 (134 baris)
+  18 | callFunctions | ENQUEUE_READ
+  56 | callFunctions | DEQUEUE_ALL
+  66 | callFunctions | VB_ENQUEUE_BATCH
+  74 | callFunctions | ITOB_BUF_CLEANUP
+  126 | callFunctions | ENQUE_DELETE
+
+Objek LMIGOEN2 (10 baris)
+  7 | includes | LMIGOEN3
+  8 | includes | LMIGOEN4
+  9 | includes | LMIGOEN5
+
+Objek LMIGOEN5 (27 baris)
+  16 | callFunctions | CO_SF_CALL_ORDER_CATEGORY
+
+Objek LMIGOEN4 (410 baris)
+  85 | Field DDIC | sy-msgty
+  163 | Field DDIC | acchd-awref
+  164 | Field DDIC | acchd-aworg
+  165 | Field DDIC | acchd-awtyp
+  223 | submitPrograms | RM07MIGO_PO_HISTORY
+  13 | callFunctions | AUTHORITY_CHECK_TCODE
+  74 | callFunctions | MMIM_CALL_TRANSACTION
+  169 | callFunctions | AC_DOCUMENT_RECORD
+  201 | callFunctions | ME_DISPLAY_PURCHASE_DOCUMENT
+  235 | callFunctions | SD_SHOW_ORIGINATE_DOCUMENT
+  264 | callFunctions | QPL2_LOT_LIST_SHOW
+  304 | callFunctions | SO_ADDRESS_SHOW
+  346 | callFunctions | CV141_SHOW_LINK_DOCUMENT
+  373 | callFunctions | HU_PER_DOCUMENT_READ
+  387 | callFunctions | HU_DISPLAY
+  30 | callTransactions | I_TCODE
+
+Objek LMIGOEN3 (438 baris)
+
+Objek LMIGODY2 (187 baris)
+  15 | Class dan Interface | if_badi_ext_int
+  17 | Class dan Interface | if_badi_ext_int
+  18 | Class dan Interface | if_badi_ext_int
+  19 | Class dan Interface | if_badi_ext_int
+  24 | Class dan Interface | if_badi_ext_int
+  54 | Class dan Interface | if_badi_ext_int
+  56 | Class dan Interface | if_badi_ext_int
+  62 | Class dan Interface | if_badi_ext_int
+  67 | Class dan Interface | if_badi_ext_int
+  73 | Class dan Interface | if_badi_ext_int
+  85 | Class dan Interface | cl_enh_badi_runtime_functions
+  113 | Class dan Interface | if_badi_ext_int
+  118 | Class dan Interface | if_badi_ext_int
+  122 | Class dan Interface | if_badi_ext_int
+  133 | Class dan Interface | if_badi_ext_int
+  136 | Class dan Interface | if_badi_ext_int
+  141 | Class dan Interface | if_badi_ext_int
+  156 | Class dan Interface | if_badi_ext_int
+  160 | Class dan Interface | if_badi_ext_int
+  169 | Class dan Interface | if_badi_ext_int
+  171 | Class dan Interface | if_badi_ext_int
+  177 | Class dan Interface | if_badi_ext_int
+
+Objek LMIGODX2 (107 baris)
+  25 | Class dan Interface | cl_ctrl
+  90 | Field DDIC | sy-msgty
+  34 | callFunctions | /SPE/DISPLAY_SET
+  Belum terurai: /SPE/DISPLAY_SET | Objek source tidak terpetakan: /SPE/DISPLAY_SET
+  54 | callFunctions | /SPE/SCRAP_IND_GET
+  Belum terurai: /SPE/SCRAP_IND_GET | Objek source tidak terpetakan: /SPE/SCRAP_IND_GET
+  75 | callFunctions | /SPE/SCRAP_INDICATORS_SET
+  Belum terurai: /SPE/SCRAP_INDICATORS_SET | Objek source tidak terpetakan: /SPE/SCRAP_INDICATORS_SET
+  85 | callFunctions | /SPE/SCRAP_IND_CHECK
+  Belum terurai: /SPE/SCRAP_IND_CHECK | Objek source tidak terpetakan: /SPE/SCRAP_IND_CHECK
+
+Objek LMIGODW2 (57 baris)
+  24 | callFunctions | SEND_CURRENT_LINE_TO_WM
+  31 | callFunctions | SEND_DISP_LINE_TO_WM
+
+Objek LMIGODS2 (90 baris)
+  8 | includes | LMIGODS3
+  9 | includes | LMIGODS4
+
+Objek LMIGODS4 (49 baris)
+
+Objek LMIGODS3 (540 baris)
+  22 | Field DDIC | sy-tabix
+  23 | Field DDIC | sy-loopc
+  24 | Field DDIC | sy-stepl
+  357 | submitPrograms | RIEQUI21
+  500 | submitPrograms | RIOBJK00
+  276 | callFunctions | MB_CONTROL_MOVETYPE_GET_SINGLE
+  303 | callFunctions | VB_BATCH_DEFINITION
+  307 | callFunctions | SERIAL_CHECK_STRUCTURE_FILL
+  339 | callFunctions | STATUS_ACT_ANALYZER_INTERN
+  459 | callFunctions | INVENTORY_ITEM_DISPLAY
+  518 | callFunctions | SERIALNUMBER_READ
+  297 | tableReads | MARA
+  446 | tableReads | ISEG
+
+Objek LMIGODT2 (11 baris)
+
+Objek LMIGODQ2 (48 baris)
+
+Objek LMIGODT8 (117 baris)
+  51 | Field DDIC | goitem-shkzg
+  62 | Teks Seleksi | text-220
+  63 | Teks Seleksi | text-210
+  66 | Teks Seleksi | text-210
+  67 | Teks Seleksi | text-220
+  54 | tableReads | T156
+  85 | tableReads | T148T
+
+Objek LMIGODT6 (6 baris)
+
+Objek LMIGODT4 (7 baris)
+
+Objek LMIGODP6 (93 baris)
+  19 | Field DDIC | sy-tabix
+  20 | Field DDIC | dd02d-tabname
+  21 | Field DDIC | dd03d-fieldname
+  43 | Class dan Interface | cl_mmpur_mepo_db_utility
+
+Objek LMIGODP4 (15 baris)
+
+Objek LMIGODO4 (7 baris)
+
+Objek LMIGODP2 (52 baris)
+  34 | callFunctions | QBCK_MIGO_LINE_SET
+
+Objek LMIGODO2 (36 baris)
+
+Objek LMIGODR4 (51 baris)
+  29 | callFunctions | WMMB_MATRIX_FCODE
+
+Objek LMIGODN2 (58 baris)
+  38 | Field DDIC | mseg-zeile
+  39 | tableReads | MSEG
+
+Objek LMIGODM2 (49 baris)
+
+Objek LMIGODL2 (189 baris)
+
+Objek LMIGODI2 (154 baris)
+  65 | Field DDIC | t180-trtyp
+  70 | Layar dan GUI | SET PF-STATUS 'IMPORT_ITEM'.
+  71 | Layar dan GUI | SET TITLEBAR  'IMPORT_ITEM'.
+  101 | Layar dan GUI | SET SCREEN 0.
+  108 | Field DDIC | gohead-exnum
+  134 | Layar dan GUI | SET SCREEN 0.
+  145 | Layar dan GUI | CALL SCREEN 4100 STARTING AT 5 1
+  34 | callFunctions | EXPIMP_DATA_COMPLETENESS_CHECK
+  81 | callFunctions | FTRADE_ITEM_DATA_MNT_TS_PBO
+  114 | callFunctions | FTRADE_ITEM_DATA_MNT_TS_PAI
+
+Objek LMIGODF2 (199 baris)
+  161 | Field DDIC | sy-tabix
+  162 | Field DDIC | sy-loopc
+  163 | Field DDIC | sy-stepl
+
+Objek LMIGODE2 (584 baris)
+  278 | Layar dan GUI | CALL SCREEN 1100 STARTING AT 5 5.
+  371 | Layar dan GUI | SET PF-STATUS 'DEFAULTS_POPUP'.
+  372 | Layar dan GUI | SET TITLEBAR  'DEFAULTS_POPUP'.
+  407 | Layar dan GUI | SET SCREEN 0.
+  418 | Layar dan GUI | SET SCREEN 0.
+  48 | callFunctions | DDIF_NAMETAB_GET
+  101 | tableReads | MIGO_CUST_REFDOC
+
+Objek LMIGODD2 (76 baris)
+  22 | Class dan Interface | cl_ops_switch_check
+  47 | Class dan Interface | cl_ops_switch_check
+  66 | Class dan Interface | cl_mm_im_sit_info
+  52 | tableReads | LIKP
+  52 | tableReads | LIPS
+
+Objek LMIGODC2 (532 baris)
+  177 | Class dan Interface | cl_change
+  177 | Class dan Interface | cl_numbers
+  216 | Class dan Interface | cl_change
+  218 | Class dan Interface | cl_change
+  276 | Class dan Interface | CL_OPS_SWITCH_CHECK
+  376 | Class dan Interface | if_badi
+  393 | Class dan Interface | if_badi
+  456 | Class dan Interface | if_badi
+  457 | Class dan Interface | if_badi
+  381 | callFunctions | FI_COUNTRY_DATA
+
+Objek LMIGODB4 (339 baris)
+  16 | callFunctions | VBDBDM_INIT
+  80 | callFunctions | VBDBDM_DATA_GET_FROM_IM
+  135 | callFunctions | VBDBDM_DATA_PUT_TO_IM
+
+Objek LMIGODB2 (38 baris)
+
+Objek LMIGODA4 (191 baris)
+  63 | Class dan Interface | cl_mmim_migo_move_fields
+  101 | Class dan Interface | cl_ops_switch_check
+  103 | Class dan Interface | cl_mmim_migo_move_fields
+  104 | Class dan Interface | cl_mmim_migo_move_fields
+  105 | Class dan Interface | cl_mmim_migo_move_fields
+  160 | Field DDIC | FMIOI-RFKNT
+  162 | Class dan Interface | CL_FM_FUNDED_PROG_UTIL_APPL
+  74 | callFunctions | MB_MAA_VALUE_SET
+
+Objek LMIGODA2 (384 baris)
+  70 | Class dan Interface | cl_psm_core_switch_check
+  106 | Field DDIC | sy-msgty
+  156 | Class dan Interface | cl_mmim_migo_move_fields
+  158 | Class dan Interface | cl_mmim_migo_move_fields
+  176 | Class dan Interface | cl_fm_funded_prog_util_appl
+  185 | Class dan Interface | cl_psm_core_switch_check
+  239 | Class dan Interface | cl_psm_core_switch_check
+  331 | Class dan Interface | cl_fm_funded_prog_util_appl
+  348 | Class dan Interface | cl_erp_co_olc_sw_check
+  29 | callFunctions | COBL_FCODE_SET
+  34 | callFunctions | COBL_SEND_PAI
+  58 | callFunctions | COBL_RECEIVE
+  82 | callFunctions | RWIN_CHECK
+  283 | callFunctions | MATERIAL_READ
+  306 | callFunctions | FI_PERIOD_DETERMINE
+  373 | callFunctions | COBL_SEND_PBO
+
+Objek LMIGOCU2 (52 baris)
+
+Objek LMIGOBU2 (207 baris)
+  7 | includes | LMIGOBN1
+  8 | includes | LMIGOBU3
+  9 | includes | LMIGOBU5
+  27 | callFunctions | AIP01_PLANT_DETERMINE
+  70 | callFunctions | J_1BSA_COMPONENT_ACTIVE
+  47 | tableReads | T159L
+  52 | tableReads | TQSS1
+  57 | tableReads | T001K
+  84 | tableReads | T001
+  173 | tableReads | T001L
+
+Objek LMIGOBU5 (330 baris)
+  209 | Field DDIC | sy-tabix
+  303 | callFunctions | SERIAL_PROFILE_READ
+  15 | tableReads | T156
+  29 | tableReads | MIGO_T156
+  53 | tableReads | T156N
+  88 | tableReads | T156T
+  151 | tableReads | T158
+  185 | tableReads | T158B
+  289 | tableReads | T156Q
+
+Objek LMIGOBU3 (204 baris)
+  12 | Class dan Interface | cl_iav_mapping_util
+  41 | Class dan Interface | cl_iav_mapping_util
+  26 | callFunctions | VENDOR_MASTER_DATA_SELECT_00
+  94 | callFunctions | KNA1_READ_SINGLE
+  69 | tableReads | T418
+  153 | tableReads | T158
+  184 | tableReads | AUFK
+
+Objek LMIGOBN1 (104 baris)
+  38 | callFunctions | SO_NAME_CONVERT
+  53 | callFunctions | SUSR_USER_ADDRESS_READ
+  96 | tableReads | T024
+
+Objek LMIGOPOV (52 baris)
+  34 | callFunctions | SD_F4_EXTENDED
+
+Objek LMIGOPAI (899 baris)
+  326 | callFunctions | MM_PLANT_CONVERT
+  335 | callFunctions | MM_SLOC_CONVERT
+  372 | callFunctions | MM_MAKTX_CONVERT
+  393 | callFunctions | MM_VENDOR_CONVERT
+  463 | callFunctions | MM_CUSTOMER_CONVERT
+
+Objek LMIGOPBO (452 baris)
+  20 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGOUXX (9 baris)
+  5 | includes | LMIGOU02
+  6 | includes | LMIGOU03
+  7 | includes | LMIGOU01
+  8 | includes | LMIGOU04
+  9 | includes | LMIGOU05
+
+Objek LMIGOU05 (6 baris)
+
+Objek LMIGOU04 (2 baris)
+
+Objek LMIGOU01 (257 baris)
+  6 | Class dan Interface | cl_mmim_migo_move_fields
+  41 | Class dan Interface | cl_change
+  41 | Class dan Interface | cl_numbers
+  45 | Class dan Interface | cl_change
+  47 | Class dan Interface | cl_change
+  92 | Class dan Interface | cl_abap_switch
+  180 | Class dan Interface | cl_mmim_migo_move_fields
+  70 | callFunctions | RPY_DYNPRO_READ
+  36 | tableReads | D020S
+
+Objek LMIGOU03 (35 baris)
+  21 | callFunctions | MIGO_DIALOG
+
+Objek LMIGOU02 (231 baris)
+  229 | Layar dan GUI | CALL SCREEN 0001.
+  133 | submitPrograms | MB_CALL_MIGO_DIALOG
+  173 | callFunctions | AUTHORITY_CHECK_TCODE
+
+Objek LMIGOTOP (396 baris)
+  76 | Field DDIC | sy-repid
+  126 | Class dan Interface | cl_mmim_auth
+  127 | Class dan Interface | cl_mmim_line_id_manager
+  128 | Class dan Interface | cl_mmim_cross_system
+  252 | Class dan Interface | cl_gui_custom_container
+  273 | Class dan Interface | cl_mmim_maa_2
+  317 | Field DDIC | tcobl-dynnr
+  373 | Field DDIC | goitem-maktx
+  374 | Field DDIC | goitem-name1
+  375 | Field DDIC | goitem-matnr
+  376 | Field DDIC | goitem-werks
+  377 | Field DDIC | goitem-erfme
+  378 | Field DDIC | goitem-erfmg
+  387 | Class dan Interface | if_badi_ext_int
+  131 | includes | LMIGOIF1
+  132 | includes | LMIGOBU1
+  133 | includes | LMIGOGL1
+  134 | includes | LMIGOLO1
+  135 | includes | LMIGOSO1
+  136 | includes | LMIGOBO1
+  137 | includes | LMIGOKE1
+  138 | includes | LMIGODE1
+  139 | includes | LMIGOEQ1
+  140 | includes | LMIGOFR1
+  141 | includes | LMIGOCU1
+  142 | includes | LMIGOTP1
+  143 | includes | LMIGOSR1
+  144 | includes | LMIGOCA1
+  145 | includes | LMIGOGD1
+  146 | includes | LMIGOEN1
+  147 | includes | LMIGODO1
+  148 | includes | LMIGODC1
+  149 | includes | LMIGODA1
+  150 | includes | LMIGODA3
+  151 | includes | LMIGODB1
+  152 | includes | LMIGODB3
+  153 | includes | LMIGODD1
+  154 | includes | LMIGODF1
+  155 | includes | LMIGODI1
+  156 | includes | LMIGODL1
+  157 | includes | LMIGODM1
+  158 | includes | LMIGODN1
+  159 | includes | LMIGODP1
+  160 | includes | LMIGODP3
+  161 | includes | LMIGODP5
+  162 | includes | LMIGODR3
+  163 | includes | LMIGODO3
+  164 | includes | LMIGODT3
+  165 | includes | LMIGODT5
+  166 | includes | LMIGODT7
+  167 | includes | LMIGODS1
+  168 | includes | LMIGODQ1
+  169 | includes | LMIGODT1
+  170 | includes | LMIGODW1
+  171 | includes | LMIGODX1
+  172 | includes | LMIGODY1
+  173 | includes | LMIGOFH1
+  174 | includes | LMIGOHO1
+  175 | includes | LMIGOHC1
+  176 | includes | LMIGOHG1
+  177 | includes | LMIGOHV1
+  178 | includes | LMIGOHP1
+  179 | includes | LMIGOHD1
+  180 | includes | LMIGOHI1
+  181 | includes | LMIGOJB1
+  182 | includes | LMIGOPR1
+  183 | includes | LMIGOST1
+  184 | includes | LMIGOSM3
+  185 | includes | LMIGOSM1
+  186 | includes | LMIGOTO1
+  187 | includes | LMIGOFL1
+  188 | includes | LMIGOTR1
+  189 | includes | LMIGOTI1
+  190 | includes | LMIGOSP1
+  191 | includes | LMIGODS5
+  192 | includes | LMIGOTV1
+  193 | includes | LMIGOHT1
+  194 | includes | LMIGOTR3
+  195 | includes | LMIGOTRA
+  196 | includes | LMIGODR1
+  197 | includes | LMIGOAR1
+
+Objek LMIGOAR1 (23 baris)
+  20 | Class dan Interface | cl_gos_manager
+
+Objek LMIGODR1 (7 baris)
+
+Objek LMIGOTRA (49 baris)
+  21 | Class dan Interface | cl_gui_docking_container
+  22 | Class dan Interface | cl_gui_alv_tree
+  23 | Class dan Interface | cl_mmim_userdefaults
+  27 | Class dan Interface | cl_gui_cfw
+
+Objek LMIGOTR3 (203 baris)
+  65 | Field DDIC | sy-repid
+  66 | Field DDIC | sy-dynnr
+  108 | Class dan Interface | cl_gui_docking_container
+  109 | Class dan Interface | cl_gui_alv_tree
+  110 | Class dan Interface | cl_gui_toolbar
+  111 | Class dan Interface | cl_mmim_userdefaults
+  139 | Class dan Interface | cl_gui_column_tree
+  141 | Class dan Interface | cl_gui_column_tree
+  143 | Class dan Interface | cl_gui_column_tree
+  164 | Class dan Interface | cl_gui_toolbar
+  170 | Class dan Interface | cl_gui_alv_tree
+  174 | Class dan Interface | cl_gui_alv_tree
+  179 | Class dan Interface | cl_gui_alv_tree
+
+Objek LMIGOHT1 (19 baris)
+
+Objek LMIGOTV1 (42 baris)
+  36 | Field DDIC | sy-loopc
+
+Objek LMIGODS5 (38 baris)
+
+Objek LMIGOSP1 (47 baris)
+
+Objek LMIGOTI1 (20 baris)
+
+Objek LMIGOTR1 (26 baris)
+  18 | Class dan Interface | cl_gui_custom_container
+  19 | Class dan Interface | cl_gui_toolbar
+  20 | Class dan Interface | cl_mmim_userdefaults
+  23 | Class dan Interface | cl_gui_toolbar
+
+Objek LMIGOFL1 (56 baris)
+  35 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGOTO1 (46 baris)
+  34 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGOSM1 (18 baris)
+
+Objek LMIGOSM3 (145 baris)
+  18 | Field DDIC | icon-oleng
+  101 | Field DDIC | goitem-global_counter
+
+Objek LMIGOST1 (32 baris)
+
+Objek LMIGOPR1 (39 baris)
+
+Objek LMIGOJB1 (87 baris)
+  32 | Field DDIC | gohead-xblnr
+  60 | Field DDIC | gohead-xblnr
+  68 | Field DDIC | gohead-xblnr
+
+Objek LMIGOHI1 (20 baris)
+
+Objek LMIGOHD1 (8 baris)
+
+Objek LMIGOHP1 (19 baris)
+  17 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGOHV1 (9 baris)
+
+Objek LMIGOHG1 (26 baris)
+
+Objek LMIGOHC1 (20 baris)
+  16 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGOHO1 (14 baris)
+
+Objek LMIGOFH1 (19 baris)
+  12 | Field DDIC | sy-stepl
+  14 | Field DDIC | sy-stepl
+
+Objek LMIGODY1 (24 baris)
+
+Objek LMIGODX1 (21 baris)
+
+Objek LMIGODW1 (16 baris)
+
+Objek LMIGODT1 (9 baris)
+
+Objek LMIGODQ1 (15 baris)
+
+Objek LMIGODS1 (44 baris)
+  21 | Field DDIC | sy-tabix
+  22 | Field DDIC | sy-loopc
+  24 | Field DDIC | mseg-mblnr
+  25 | Field DDIC | mseg-mjahr
+
+Objek LMIGODT7 (14 baris)
+
+Objek LMIGODT5 (8 baris)
+
+Objek LMIGODT3 (9 baris)
+
+Objek LMIGODO3 (9 baris)
+
+Objek LMIGODR3 (16 baris)
+
+Objek LMIGODP5 (20 baris)
+
+Objek LMIGODP3 (14 baris)
+
+Objek LMIGODP1 (15 baris)
+
+Objek LMIGODN1 (14 baris)
+
+Objek LMIGODM1 (11 baris)
+
+Objek LMIGODL1 (23 baris)
+
+Objek LMIGODI1 (19 baris)
+
+Objek LMIGODF1 (26 baris)
+
+Objek LMIGODD1 (11 baris)
+
+Objek LMIGODB3 (60 baris)
+  35 | Field DDIC | goitem-global_counter
+  39 | Field DDIC | goitem-global_counter
+  48 | Field DDIC | goitem-global_counter
+
+Objek LMIGODB1 (14 baris)
+
+Objek LMIGODA3 (40 baris)
+
+Objek LMIGODA1 (19 baris)
+
+Objek LMIGODC1 (42 baris)
+  34 | Field DDIC | goitem-global_counter
+  37 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGODO1 (14 baris)
+
+Objek LMIGOEN1 (110 baris)
+
+Objek LMIGOGD1 (48 baris)
+  13 | Class dan Interface | cl_gui_container
+  22 | Class dan Interface | cl_gui_alv_grid
+  36 | Tipe DDIC | _build
+  37 | Class dan Interface | cl_gui_alv_grid
+  39 | Class dan Interface | cl_gui_alv_grid
+  41 | Class dan Interface | cl_gui_alv_grid
+
+Objek LMIGOCA1 (44 baris)
+  27 | Class dan Interface | cl_gui_docking_container
+  28 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGOSR1 (113 baris)
+  14 | Field DDIC | ekko-ebeln
+  15 | Field DDIC | ekpo-ebelp
+  16 | Field DDIC | ekko-lifnr
+  17 | Field DDIC | lfa1-name1
+  18 | Field DDIC | ekpo-matnr
+  19 | Field DDIC | ekpo-txz01
+  20 | Field DDIC | ekko-reswk
+  21 | Field DDIC | t001w-name1
+  22 | Field DDIC | eket-eindt
+  23 | Field DDIC | ekko-ernam
+  24 | Field DDIC | ekpo-menge
+  25 | Field DDIC | ekpo-meins
+  26 | Field DDIC | eket-wemng
+  27 | Field DDIC | ekpo-idnlf
+  28 | Field DDIC | ekpo-ean11
+  29 | Field DDIC | ekpo-werks
+  30 | Field DDIC | t001w-name1
+  31 | Field DDIC | ekpo-lgort
+  32 | Field DDIC | t001l-lgobe
+  33 | Field DDIC | ekpo-matkl
+  34 | Field DDIC | t023t-wgbez
+  35 | Field DDIC | ekpo-knttp
+  36 | Field DDIC | t163i-knttx
+  44 | Field DDIC | mseg-matnr
+  45 | Field DDIC | makt-maktx
+  46 | Field DDIC | mseg-werks
+  47 | Field DDIC | t001w-name1
+  48 | Field DDIC | mseg-lgort
+  49 | Field DDIC | mseg-charg
+  50 | Field DDIC | mseg-bwtar
+  51 | Field DDIC | mseg-bwart
+  52 | Field DDIC | mseg-sobkz
+  53 | Field DDIC | t156t-btext
+  54 | Field DDIC | mseg-mblnr
+  55 | Field DDIC | mseg-mjahr
+  56 | Field DDIC | mseg-zeile
+  57 | Field DDIC | mkpf-budat
+  58 | Field DDIC | mseg-erfmg
+  59 | Field DDIC | mseg-erfme
+  60 | Field DDIC | mseg-lifnr
+  61 | Field DDIC | mkpf-vgart
+  69 | Field DDIC | afpo-dglts
+  70 | Field DDIC | caufv-gamng
+  71 | Field DDIC | caufv-gmein
+  72 | Field DDIC | afpo-wemng
+  73 | Field DDIC | afpo-dwerk
+  74 | Field DDIC | caufvd-sttxt
+  87 | Field DDIC | makt-maktx
+  88 | Field DDIC | t156t-btext
+
+Objek LMIGOTP1 (26 baris)
+  18 | Class dan Interface | cl_mmim_userdefaults
+  19 | Class dan Interface | cl_gui_custom_container
+  20 | Class dan Interface | cl_gui_html_viewer
+  21 | Field DDIC | dokhl-object
+
+Objek LMIGOCU1 (32 baris)
+
+Objek LMIGOFR1 (139 baris)
+  102 | Class dan Interface | cl_mmim_userdefaults
+  103 | Class dan Interface | cl_gui_dialogbox_container
+  104 | Class dan Interface | cl_gui_splitter_container
+  105 | Class dan Interface | cl_gui_container
+  106 | Class dan Interface | cl_gui_container
+  107 | Class dan Interface | cl_gui_toolbar
+  108 | Class dan Interface | cl_gui_textedit
+  111 | Class dan Interface | cl_gui_toolbar
+  115 | Class dan Interface | cl_gui_dialogbox_container
+
+Objek LMIGOEQ1 (29 baris)
+
+Objek LMIGODE1 (81 baris)
+  52 | Class dan Interface | cl_mmim_userdefaults
+  53 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGOKE1 (1501 baris)
+  87 | Field DDIC | goitem-werks
+  88 | Field DDIC | goitem-lgort
+  89 | Field DDIC | goitem-bwart
+  91 | Field DDIC | goitem-sobkz
+  92 | Field DDIC | goitem-insmk
+  238 | Field DDIC | goitem-matnr
+  239 | Field DDIC | goitem-werks
+  240 | Field DDIC | goitem-lgort
+  241 | Field DDIC | goitem-charg
+  242 | Field DDIC | goitem-sobkz
+  243 | Field DDIC | goitem-emlif
+  244 | Field DDIC | cdcom-prreg
+  592 | Field DDIC | ebefu-ebeln
+  593 | Field DDIC | ebefu-ebelp
+  594 | Field DDIC | ebefu-lfbnr
+  595 | Field DDIC | ebefu-uebpo
+  596 | Field DDIC | ebefu-bstme
+  597 | Field DDIC | ebefu-upvor
+  598 | Field DDIC | ebefu-uptyp
+  599 | Field DDIC | ebefu-elikz
+  882 | Field DDIC | goitem-matnr
+  883 | Field DDIC | goitem-werks
+  884 | Field DDIC | goitem-charg
+  886 | Field DDIC | mcha-lwedt
+  908 | Field DDIC | goitem-docubatch_control
+  914 | Field DDIC | goitem-docubatch_control
+  915 | Field DDIC | goitem-docubatch_charg
+  916 | Field DDIC | goitem-docubatch_mult_entries
+  943 | Field DDIC | gohead-exnum
+  944 | Field DDIC | gohead-land1
+  948 | Field DDIC | gohead-exnum
+  950 | Field DDIC | goitem-land1
+  964 | Field DDIC | goitem-matnr
+  965 | Field DDIC | goitem-werks
+  966 | Field DDIC | goitem-charg
+  967 | Field DDIC | goitem-kzcla
+  969 | Field DDIC | goitem-xparallel
+  1142 | Field DDIC | gohead-xblnr
+  1410 | Field DDIC | sy-tabix
+  1411 | Field DDIC | goitem-global_counter
+  1447 | Field DDIC | gohead-budat
+  1493 | Field DDIC | goitem-werks
+  1494 | Field DDIC | goitem-lgort
+  709 | includes | LMIGOKEE
+
+Objek LMIGOKEE (163 baris)
+
+Objek LMIGOBO1 (24 baris)
+  21 | Class dan Interface | cl_mmim_userdefaults
+
+Objek LMIGOSO1 (26 baris)
+
+Objek LMIGOLO1 (96 baris)
+  34 | Field DDIC | sy-msgty
+  35 | Field DDIC | sy-msgid
+
+Objek LMIGOGL1 (90 baris)
+  19 | Class dan Interface | cl_gui_cfw
+  73 | Class dan Interface | if_badi
+  73 | Class dan Interface | if_ex_mb_migo_badi
+  76 | Class dan Interface | if_badi_item
+  76 | Class dan Interface | if_ex_mb_migo_item_badi
+  83 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  83 | Class dan Interface | if_ex_mb_me_csgmt_badi_sap
+
+Objek LMIGOBU1 (286 baris)
+  40 | Field DDIC | t156n-fcode
+  162 | Field DDIC | t156n-fcode
+
+Objek LMIGOIF1 (47 baris)
+Jumlah source terbaca: 243
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+SAPLMIGO.abap
+  Baris 4 | INCLUDE | LMIGOTOP
+  Baris 5 | INCLUDE | LMIGOUXX
+  Baris 11 | INCLUDE | LMIGOPBO
+  Baris 12 | INCLUDE | LMIGOPAI
+  Baris 13 | INCLUDE | LMIGOPOV
+  Baris 15 | INCLUDE | LMIGOBU2
+  Baris 16 | INCLUDE | LMIGOCU2
+  Baris 17 | INCLUDE | LMIGODA2
+  Baris 18 | INCLUDE | LMIGODA4
+  Baris 19 | INCLUDE | LMIGODB2
+  Baris 20 | INCLUDE | LMIGODB4
+  Baris 21 | INCLUDE | LMIGODC2
+  Baris 22 | INCLUDE | LMIGODD2
+  Baris 23 | INCLUDE | LMIGODE2
+  Baris 24 | INCLUDE | LMIGODF2
+  Baris 25 | INCLUDE | LMIGODI2
+  Baris 26 | INCLUDE | LMIGODL2
+  Baris 27 | INCLUDE | LMIGODM2
+  Baris 28 | INCLUDE | LMIGODN2
+  Baris 29 | INCLUDE | LMIGODR4
+  Baris 30 | INCLUDE | LMIGODO2
+  Baris 31 | INCLUDE | LMIGODP2
+  Baris 32 | INCLUDE | LMIGODO4
+  Baris 33 | INCLUDE | LMIGODP4
+  Baris 34 | INCLUDE | LMIGODP6
+  Baris 35 | INCLUDE | LMIGODT4
+  Baris 36 | INCLUDE | LMIGODT6
+  Baris 37 | INCLUDE | LMIGODT8
+  Baris 38 | INCLUDE | LMIGODQ2
+  Baris 39 | INCLUDE | LMIGODT2
+  Baris 40 | INCLUDE | LMIGODS2
+  Baris 41 | INCLUDE | LMIGODW2
+  Baris 42 | INCLUDE | LMIGODX2
+  Baris 43 | INCLUDE | LMIGODY2
+  Baris 44 | INCLUDE | LMIGOEN2
+  Baris 45 | INCLUDE | LMIGOEQ2
+  Baris 46 | INCLUDE | LMIGOFH2
+  Baris 47 | INCLUDE | LMIGOFL2
+  Baris 48 | INCLUDE | LMIGOFR2
+  Baris 49 | INCLUDE | LMIGOGL2
+  Baris 50 | INCLUDE | LMIGOHC2
+  Baris 51 | INCLUDE | LMIGOHT2
+  Baris 52 | INCLUDE | LMIGOHD2
+  Baris 53 | INCLUDE | LMIGOHG2
+  Baris 54 | INCLUDE | LMIGOHI2
+  Baris 55 | INCLUDE | LMIGOHO2
+  Baris 56 | INCLUDE | LMIGOHP2
+  Baris 57 | INCLUDE | LMIGOHV2
+  Baris 58 | INCLUDE | LMIGOJB2
+  Baris 59 | INCLUDE | LMIGOBO2
+  Baris 60 | INCLUDE | LMIGOIN1
+  Baris 61 | INCLUDE | LMIGOKE2
+  Baris 62 | INCLUDE | LMIGOLO2
+  Baris 63 | INCLUDE | LMIGOPR2
+  Baris 64 | INCLUDE | LMIGOSM2
+  Baris 65 | INCLUDE | LMIGOSM4
+  Baris 66 | INCLUDE | LMIGOSO2
+  Baris 67 | INCLUDE | LMIGOSP2
+  Baris 68 | INCLUDE | LMIGODS6
+  Baris 69 | INCLUDE | LMIGOSR2
+  Baris 70 | INCLUDE | LMIGOST2
+  Baris 71 | INCLUDE | LMIGOTI2
+  Baris 72 | INCLUDE | LMIGOTO2
+  Baris 73 | INCLUDE | LMIGOTP2
+  Baris 74 | INCLUDE | LMIGOCA2
+  Baris 75 | INCLUDE | LMIGOGD2
+  Baris 76 | INCLUDE | LMIGOTR2
+  Baris 77 | INCLUDE | LMIGOTV2
+  Baris 78 | INCLUDE | LMIGOTR4
+  Baris 79 | INCLUDE | LMIGOTRB
+  Baris 80 | INCLUDE | LMIGOTRC
+  Baris 81 | INCLUDE | LMIGORE1
+  Baris 82 | INCLUDE | LMIGODR2
+  Baris 83 | INCLUDE | LMIGOAR2
+  Baris 87 | INCLUDE | LMIGOIIS
+  Baris 93 | INCLUDE | LMIGOO01
+  Baris 94 | INCLUDE | LMIGOO02
+  Baris 95 | INCLUDE | LMIGOI01
+  Baris 97 | INCLUDE | IUID_MIGO
+
+LMIGOTOP.abap
+  Baris 76 | Field DDIC | sy-repid
+  Baris 126 | Class dan Interface | cl_mmim_auth
+  Baris 127 | Class dan Interface | cl_mmim_line_id_manager
+  Baris 128 | Class dan Interface | cl_mmim_cross_system
+  Baris 252 | Class dan Interface | cl_gui_custom_container
+  Baris 273 | Class dan Interface | cl_mmim_maa_2
+  Baris 317 | Field DDIC | tcobl-dynnr
+  Baris 373 | Field DDIC | goitem-maktx
+  Baris 374 | Field DDIC | goitem-name1
+  Baris 375 | Field DDIC | goitem-matnr
+  Baris 376 | Field DDIC | goitem-werks
+  Baris 377 | Field DDIC | goitem-erfme
+  Baris 378 | Field DDIC | goitem-erfmg
+  Baris 387 | Class dan Interface | if_badi_ext_int
+  Baris 131 | INCLUDE | LMIGOIF1
+  Baris 132 | INCLUDE | LMIGOBU1
+  Baris 133 | INCLUDE | LMIGOGL1
+  Baris 134 | INCLUDE | LMIGOLO1
+  Baris 135 | INCLUDE | LMIGOSO1
+  Baris 136 | INCLUDE | LMIGOBO1
+  Baris 137 | INCLUDE | LMIGOKE1
+  Baris 138 | INCLUDE | LMIGODE1
+  Baris 139 | INCLUDE | LMIGOEQ1
+  Baris 140 | INCLUDE | LMIGOFR1
+  Baris 141 | INCLUDE | LMIGOCU1
+  Baris 142 | INCLUDE | LMIGOTP1
+  Baris 143 | INCLUDE | LMIGOSR1
+  Baris 144 | INCLUDE | LMIGOCA1
+  Baris 145 | INCLUDE | LMIGOGD1
+  Baris 146 | INCLUDE | LMIGOEN1
+  Baris 147 | INCLUDE | LMIGODO1
+  Baris 148 | INCLUDE | LMIGODC1
+  Baris 149 | INCLUDE | LMIGODA1
+  Baris 150 | INCLUDE | LMIGODA3
+  Baris 151 | INCLUDE | LMIGODB1
+  Baris 152 | INCLUDE | LMIGODB3
+  Baris 153 | INCLUDE | LMIGODD1
+  Baris 154 | INCLUDE | LMIGODF1
+  Baris 155 | INCLUDE | LMIGODI1
+  Baris 156 | INCLUDE | LMIGODL1
+  Baris 157 | INCLUDE | LMIGODM1
+  Baris 158 | INCLUDE | LMIGODN1
+  Baris 159 | INCLUDE | LMIGODP1
+  Baris 160 | INCLUDE | LMIGODP3
+  Baris 161 | INCLUDE | LMIGODP5
+  Baris 162 | INCLUDE | LMIGODR3
+  Baris 163 | INCLUDE | LMIGODO3
+  Baris 164 | INCLUDE | LMIGODT3
+  Baris 165 | INCLUDE | LMIGODT5
+  Baris 166 | INCLUDE | LMIGODT7
+  Baris 167 | INCLUDE | LMIGODS1
+  Baris 168 | INCLUDE | LMIGODQ1
+  Baris 169 | INCLUDE | LMIGODT1
+  Baris 170 | INCLUDE | LMIGODW1
+  Baris 171 | INCLUDE | LMIGODX1
+  Baris 172 | INCLUDE | LMIGODY1
+  Baris 173 | INCLUDE | LMIGOFH1
+  Baris 174 | INCLUDE | LMIGOHO1
+  Baris 175 | INCLUDE | LMIGOHC1
+  Baris 176 | INCLUDE | LMIGOHG1
+  Baris 177 | INCLUDE | LMIGOHV1
+  Baris 178 | INCLUDE | LMIGOHP1
+  Baris 179 | INCLUDE | LMIGOHD1
+  Baris 180 | INCLUDE | LMIGOHI1
+  Baris 181 | INCLUDE | LMIGOJB1
+  Baris 182 | INCLUDE | LMIGOPR1
+  Baris 183 | INCLUDE | LMIGOST1
+  Baris 184 | INCLUDE | LMIGOSM3
+  Baris 185 | INCLUDE | LMIGOSM1
+  Baris 186 | INCLUDE | LMIGOTO1
+  Baris 187 | INCLUDE | LMIGOFL1
+  Baris 188 | INCLUDE | LMIGOTR1
+  Baris 189 | INCLUDE | LMIGOTI1
+  Baris 190 | INCLUDE | LMIGOSP1
+  Baris 191 | INCLUDE | LMIGODS5
+  Baris 192 | INCLUDE | LMIGOTV1
+  Baris 193 | INCLUDE | LMIGOHT1
+  Baris 194 | INCLUDE | LMIGOTR3
+  Baris 195 | INCLUDE | LMIGOTRA
+  Baris 196 | INCLUDE | LMIGODR1
+  Baris 197 | INCLUDE | LMIGOAR1
+
+LMIGOIF1.abap
+
+LMIGOBU1.abap
+  Baris 40 | Field DDIC | t156n-fcode
+  Baris 162 | Field DDIC | t156n-fcode
+
+LMIGOGL1.abap
+  Baris 19 | Class dan Interface | cl_gui_cfw
+  Baris 73 | Class dan Interface | if_badi
+  Baris 73 | Class dan Interface | if_ex_mb_migo_badi
+  Baris 76 | Class dan Interface | if_badi_item
+  Baris 76 | Class dan Interface | if_ex_mb_migo_item_badi
+  Baris 83 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  Baris 83 | Class dan Interface | if_ex_mb_me_csgmt_badi_sap
+
+LMIGOLO1.abap
+  Baris 34 | Field DDIC | sy-msgty
+  Baris 35 | Field DDIC | sy-msgid
+
+LMIGOSO1.abap
+
+LMIGOBO1.abap
+  Baris 21 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGOKE1.abap
+  Baris 87 | Field DDIC | goitem-werks
+  Baris 88 | Field DDIC | goitem-lgort
+  Baris 89 | Field DDIC | goitem-bwart
+  Baris 91 | Field DDIC | goitem-sobkz
+  Baris 92 | Field DDIC | goitem-insmk
+  Baris 238 | Field DDIC | goitem-matnr
+  Baris 239 | Field DDIC | goitem-werks
+  Baris 240 | Field DDIC | goitem-lgort
+  Baris 241 | Field DDIC | goitem-charg
+  Baris 242 | Field DDIC | goitem-sobkz
+  Baris 243 | Field DDIC | goitem-emlif
+  Baris 244 | Field DDIC | cdcom-prreg
+  Baris 592 | Field DDIC | ebefu-ebeln
+  Baris 593 | Field DDIC | ebefu-ebelp
+  Baris 594 | Field DDIC | ebefu-lfbnr
+  Baris 595 | Field DDIC | ebefu-uebpo
+  Baris 596 | Field DDIC | ebefu-bstme
+  Baris 597 | Field DDIC | ebefu-upvor
+  Baris 598 | Field DDIC | ebefu-uptyp
+  Baris 599 | Field DDIC | ebefu-elikz
+  Baris 882 | Field DDIC | goitem-matnr
+  Baris 883 | Field DDIC | goitem-werks
+  Baris 884 | Field DDIC | goitem-charg
+  Baris 886 | Field DDIC | mcha-lwedt
+  Baris 908 | Field DDIC | goitem-docubatch_control
+  Baris 914 | Field DDIC | goitem-docubatch_control
+  Baris 915 | Field DDIC | goitem-docubatch_charg
+  Baris 916 | Field DDIC | goitem-docubatch_mult_entries
+  Baris 943 | Field DDIC | gohead-exnum
+  Baris 944 | Field DDIC | gohead-land1
+  Baris 948 | Field DDIC | gohead-exnum
+  Baris 950 | Field DDIC | goitem-land1
+  Baris 964 | Field DDIC | goitem-matnr
+  Baris 965 | Field DDIC | goitem-werks
+  Baris 966 | Field DDIC | goitem-charg
+  Baris 967 | Field DDIC | goitem-kzcla
+  Baris 969 | Field DDIC | goitem-xparallel
+  Baris 1142 | Field DDIC | gohead-xblnr
+  Baris 1410 | Field DDIC | sy-tabix
+  Baris 1411 | Field DDIC | goitem-global_counter
+  Baris 1447 | Field DDIC | gohead-budat
+  Baris 1493 | Field DDIC | goitem-werks
+  Baris 1494 | Field DDIC | goitem-lgort
+  Baris 709 | INCLUDE | LMIGOKEE
+
+LMIGOKEE.abap
+
+LMIGODE1.abap
+  Baris 52 | Class dan Interface | cl_mmim_userdefaults
+  Baris 53 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGOEQ1.abap
+
+LMIGOFR1.abap
+  Baris 102 | Class dan Interface | cl_mmim_userdefaults
+  Baris 103 | Class dan Interface | cl_gui_dialogbox_container
+  Baris 104 | Class dan Interface | cl_gui_splitter_container
+  Baris 105 | Class dan Interface | cl_gui_container
+  Baris 106 | Class dan Interface | cl_gui_container
+  Baris 107 | Class dan Interface | cl_gui_toolbar
+  Baris 108 | Class dan Interface | cl_gui_textedit
+  Baris 111 | Class dan Interface | cl_gui_toolbar
+  Baris 115 | Class dan Interface | cl_gui_dialogbox_container
+
+LMIGOCU1.abap
+
+LMIGOTP1.abap
+  Baris 18 | Class dan Interface | cl_mmim_userdefaults
+  Baris 19 | Class dan Interface | cl_gui_custom_container
+  Baris 20 | Class dan Interface | cl_gui_html_viewer
+  Baris 21 | Field DDIC | dokhl-object
+
+LMIGOSR1.abap
+  Baris 14 | Field DDIC | ekko-ebeln
+  Baris 15 | Field DDIC | ekpo-ebelp
+  Baris 16 | Field DDIC | ekko-lifnr
+  Baris 17 | Field DDIC | lfa1-name1
+  Baris 18 | Field DDIC | ekpo-matnr
+  Baris 19 | Field DDIC | ekpo-txz01
+  Baris 20 | Field DDIC | ekko-reswk
+  Baris 21 | Field DDIC | t001w-name1
+  Baris 22 | Field DDIC | eket-eindt
+  Baris 23 | Field DDIC | ekko-ernam
+  Baris 24 | Field DDIC | ekpo-menge
+  Baris 25 | Field DDIC | ekpo-meins
+  Baris 26 | Field DDIC | eket-wemng
+  Baris 27 | Field DDIC | ekpo-idnlf
+  Baris 28 | Field DDIC | ekpo-ean11
+  Baris 29 | Field DDIC | ekpo-werks
+  Baris 30 | Field DDIC | t001w-name1
+  Baris 31 | Field DDIC | ekpo-lgort
+  Baris 32 | Field DDIC | t001l-lgobe
+  Baris 33 | Field DDIC | ekpo-matkl
+  Baris 34 | Field DDIC | t023t-wgbez
+  Baris 35 | Field DDIC | ekpo-knttp
+  Baris 36 | Field DDIC | t163i-knttx
+  Baris 44 | Field DDIC | mseg-matnr
+  Baris 45 | Field DDIC | makt-maktx
+  Baris 46 | Field DDIC | mseg-werks
+  Baris 47 | Field DDIC | t001w-name1
+  Baris 48 | Field DDIC | mseg-lgort
+  Baris 49 | Field DDIC | mseg-charg
+  Baris 50 | Field DDIC | mseg-bwtar
+  Baris 51 | Field DDIC | mseg-bwart
+  Baris 52 | Field DDIC | mseg-sobkz
+  Baris 53 | Field DDIC | t156t-btext
+  Baris 54 | Field DDIC | mseg-mblnr
+  Baris 55 | Field DDIC | mseg-mjahr
+  Baris 56 | Field DDIC | mseg-zeile
+  Baris 57 | Field DDIC | mkpf-budat
+  Baris 58 | Field DDIC | mseg-erfmg
+  Baris 59 | Field DDIC | mseg-erfme
+  Baris 60 | Field DDIC | mseg-lifnr
+  Baris 61 | Field DDIC | mkpf-vgart
+  Baris 69 | Field DDIC | afpo-dglts
+  Baris 70 | Field DDIC | caufv-gamng
+  Baris 71 | Field DDIC | caufv-gmein
+  Baris 72 | Field DDIC | afpo-wemng
+  Baris 73 | Field DDIC | afpo-dwerk
+  Baris 74 | Field DDIC | caufvd-sttxt
+  Baris 87 | Field DDIC | makt-maktx
+  Baris 88 | Field DDIC | t156t-btext
+
+LMIGOCA1.abap
+  Baris 27 | Class dan Interface | cl_gui_docking_container
+  Baris 28 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGOGD1.abap
+  Baris 13 | Class dan Interface | cl_gui_container
+  Baris 22 | Class dan Interface | cl_gui_alv_grid
+  Baris 36 | Tipe DDIC | _build
+  Baris 37 | Class dan Interface | cl_gui_alv_grid
+  Baris 39 | Class dan Interface | cl_gui_alv_grid
+  Baris 41 | Class dan Interface | cl_gui_alv_grid
+
+LMIGOEN1.abap
+
+LMIGODO1.abap
+
+LMIGODC1.abap
+  Baris 34 | Field DDIC | goitem-global_counter
+  Baris 37 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGODA1.abap
+
+LMIGODA3.abap
+
+LMIGODB1.abap
+
+LMIGODB3.abap
+  Baris 35 | Field DDIC | goitem-global_counter
+  Baris 39 | Field DDIC | goitem-global_counter
+  Baris 48 | Field DDIC | goitem-global_counter
+
+LMIGODD1.abap
+
+LMIGODF1.abap
+
+LMIGODI1.abap
+
+LMIGODL1.abap
+
+LMIGODM1.abap
+
+LMIGODN1.abap
+
+LMIGODP1.abap
+
+LMIGODP3.abap
+
+LMIGODP5.abap
+
+LMIGODR3.abap
+
+LMIGODO3.abap
+
+LMIGODT3.abap
+
+LMIGODT5.abap
+
+LMIGODT7.abap
+
+LMIGODS1.abap
+  Baris 21 | Field DDIC | sy-tabix
+  Baris 22 | Field DDIC | sy-loopc
+  Baris 24 | Field DDIC | mseg-mblnr
+  Baris 25 | Field DDIC | mseg-mjahr
+
+LMIGODQ1.abap
+
+LMIGODT1.abap
+
+LMIGODW1.abap
+
+LMIGODX1.abap
+
+LMIGODY1.abap
+
+LMIGOFH1.abap
+  Baris 12 | Field DDIC | sy-stepl
+  Baris 14 | Field DDIC | sy-stepl
+
+LMIGOHO1.abap
+
+LMIGOHC1.abap
+  Baris 16 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGOHG1.abap
+
+LMIGOHV1.abap
+
+LMIGOHP1.abap
+  Baris 17 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGOHD1.abap
+
+LMIGOHI1.abap
+
+LMIGOJB1.abap
+  Baris 32 | Field DDIC | gohead-xblnr
+  Baris 60 | Field DDIC | gohead-xblnr
+  Baris 68 | Field DDIC | gohead-xblnr
+
+LMIGOPR1.abap
+
+LMIGOST1.abap
+
+LMIGOSM3.abap
+  Baris 18 | Field DDIC | icon-oleng
+  Baris 101 | Field DDIC | goitem-global_counter
+
+LMIGOSM1.abap
+
+LMIGOTO1.abap
+  Baris 34 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGOFL1.abap
+  Baris 35 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGOTR1.abap
+  Baris 18 | Class dan Interface | cl_gui_custom_container
+  Baris 19 | Class dan Interface | cl_gui_toolbar
+  Baris 20 | Class dan Interface | cl_mmim_userdefaults
+  Baris 23 | Class dan Interface | cl_gui_toolbar
+
+LMIGOTI1.abap
+
+LMIGOSP1.abap
+
+LMIGODS5.abap
+
+LMIGOTV1.abap
+  Baris 36 | Field DDIC | sy-loopc
+
+LMIGOHT1.abap
+
+LMIGOTR3.abap
+  Baris 65 | Field DDIC | sy-repid
+  Baris 66 | Field DDIC | sy-dynnr
+  Baris 108 | Class dan Interface | cl_gui_docking_container
+  Baris 109 | Class dan Interface | cl_gui_alv_tree
+  Baris 110 | Class dan Interface | cl_gui_toolbar
+  Baris 111 | Class dan Interface | cl_mmim_userdefaults
+  Baris 139 | Class dan Interface | cl_gui_column_tree
+  Baris 141 | Class dan Interface | cl_gui_column_tree
+  Baris 143 | Class dan Interface | cl_gui_column_tree
+  Baris 164 | Class dan Interface | cl_gui_toolbar
+  Baris 170 | Class dan Interface | cl_gui_alv_tree
+  Baris 174 | Class dan Interface | cl_gui_alv_tree
+  Baris 179 | Class dan Interface | cl_gui_alv_tree
+
+LMIGOTRA.abap
+  Baris 21 | Class dan Interface | cl_gui_docking_container
+  Baris 22 | Class dan Interface | cl_gui_alv_tree
+  Baris 23 | Class dan Interface | cl_mmim_userdefaults
+  Baris 27 | Class dan Interface | cl_gui_cfw
+
+LMIGODR1.abap
+
+LMIGOAR1.abap
+  Baris 20 | Class dan Interface | cl_gos_manager
+
+LMIGOUXX.abap
+  Baris 5 | INCLUDE | LMIGOU02
+  Baris 6 | INCLUDE | LMIGOU03
+  Baris 7 | INCLUDE | LMIGOU01
+  Baris 8 | INCLUDE | LMIGOU04
+  Baris 9 | INCLUDE | LMIGOU05
+
+LMIGOU02.abap
+  Baris 229 | Layar dan GUI | CALL SCREEN 0001.
+  Baris 173 | Function module | AUTHORITY_CHECK_TCODE
+  Baris 133 | Program yang dirujuk SUBMIT | MB_CALL_MIGO_DIALOG
+
+LMIGOU03.abap
+  Baris 21 | Function module | MIGO_DIALOG
+
+LMIGOU01.abap
+  Baris 6 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 41 | Class dan Interface | cl_change
+  Baris 41 | Class dan Interface | cl_numbers
+  Baris 45 | Class dan Interface | cl_change
+  Baris 47 | Class dan Interface | cl_change
+  Baris 92 | Class dan Interface | cl_abap_switch
+  Baris 180 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 36 | Sumber data pada SELECT atau JOIN | D020S
+  Baris 70 | Function module | RPY_DYNPRO_READ
+
+LMIGOU04.abap
+
+LMIGOU05.abap
+
+LMIGOPBO.abap
+  Baris 20 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGOPAI.abap
+  Baris 326 | Function module | MM_PLANT_CONVERT
+  Baris 335 | Function module | MM_SLOC_CONVERT
+  Baris 372 | Function module | MM_MAKTX_CONVERT
+  Baris 393 | Function module | MM_VENDOR_CONVERT
+  Baris 463 | Function module | MM_CUSTOMER_CONVERT
+
+LMIGOPOV.abap
+  Baris 34 | Function module | SD_F4_EXTENDED
+
+LMIGOBU2.abap
+  Baris 7 | INCLUDE | LMIGOBN1
+  Baris 8 | INCLUDE | LMIGOBU3
+  Baris 9 | INCLUDE | LMIGOBU5
+  Baris 47 | Sumber data pada SELECT atau JOIN | T159L
+  Baris 52 | Sumber data pada SELECT atau JOIN | TQSS1
+  Baris 57 | Sumber data pada SELECT atau JOIN | T001K
+  Baris 84 | Sumber data pada SELECT atau JOIN | T001
+  Baris 173 | Sumber data pada SELECT atau JOIN | T001L
+  Baris 27 | Function module | AIP01_PLANT_DETERMINE
+  Baris 70 | Function module | J_1BSA_COMPONENT_ACTIVE
+
+LMIGOBN1.abap
+  Baris 96 | Sumber data pada SELECT atau JOIN | T024
+  Baris 38 | Function module | SO_NAME_CONVERT
+  Baris 53 | Function module | SUSR_USER_ADDRESS_READ
+
+LMIGOBU3.abap
+  Baris 12 | Class dan Interface | cl_iav_mapping_util
+  Baris 41 | Class dan Interface | cl_iav_mapping_util
+  Baris 69 | Sumber data pada SELECT atau JOIN | T418
+  Baris 153 | Sumber data pada SELECT atau JOIN | T158
+  Baris 184 | Sumber data pada SELECT atau JOIN | AUFK
+  Baris 26 | Function module | VENDOR_MASTER_DATA_SELECT_00
+  Baris 94 | Function module | KNA1_READ_SINGLE
+
+LMIGOBU5.abap
+  Baris 209 | Field DDIC | sy-tabix
+  Baris 15 | Sumber data pada SELECT atau JOIN | T156
+  Baris 29 | Sumber data pada SELECT atau JOIN | MIGO_T156
+  Baris 53 | Sumber data pada SELECT atau JOIN | T156N
+  Baris 88 | Sumber data pada SELECT atau JOIN | T156T
+  Baris 151 | Sumber data pada SELECT atau JOIN | T158
+  Baris 185 | Sumber data pada SELECT atau JOIN | T158B
+  Baris 289 | Sumber data pada SELECT atau JOIN | T156Q
+  Baris 303 | Function module | SERIAL_PROFILE_READ
+
+LMIGOCU2.abap
+
+LMIGODA2.abap
+  Baris 70 | Class dan Interface | cl_psm_core_switch_check
+  Baris 106 | Field DDIC | sy-msgty
+  Baris 156 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 158 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 176 | Class dan Interface | cl_fm_funded_prog_util_appl
+  Baris 185 | Class dan Interface | cl_psm_core_switch_check
+  Baris 239 | Class dan Interface | cl_psm_core_switch_check
+  Baris 331 | Class dan Interface | cl_fm_funded_prog_util_appl
+  Baris 348 | Class dan Interface | cl_erp_co_olc_sw_check
+  Baris 29 | Function module | COBL_FCODE_SET
+  Baris 34 | Function module | COBL_SEND_PAI
+  Baris 58 | Function module | COBL_RECEIVE
+  Baris 82 | Function module | RWIN_CHECK
+  Baris 283 | Function module | MATERIAL_READ
+  Baris 306 | Function module | FI_PERIOD_DETERMINE
+  Baris 373 | Function module | COBL_SEND_PBO
+
+LMIGODA4.abap
+  Baris 63 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 101 | Class dan Interface | cl_ops_switch_check
+  Baris 103 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 104 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 105 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 160 | Field DDIC | FMIOI-RFKNT
+  Baris 162 | Class dan Interface | CL_FM_FUNDED_PROG_UTIL_APPL
+  Baris 74 | Function module | MB_MAA_VALUE_SET
+
+LMIGODB2.abap
+
+LMIGODB4.abap
+  Baris 16 | Function module | VBDBDM_INIT
+  Baris 80 | Function module | VBDBDM_DATA_GET_FROM_IM
+  Baris 135 | Function module | VBDBDM_DATA_PUT_TO_IM
+
+LMIGODC2.abap
+  Baris 177 | Class dan Interface | cl_change
+  Baris 177 | Class dan Interface | cl_numbers
+  Baris 216 | Class dan Interface | cl_change
+  Baris 218 | Class dan Interface | cl_change
+  Baris 276 | Class dan Interface | CL_OPS_SWITCH_CHECK
+  Baris 376 | Class dan Interface | if_badi
+  Baris 393 | Class dan Interface | if_badi
+  Baris 456 | Class dan Interface | if_badi
+  Baris 457 | Class dan Interface | if_badi
+  Baris 381 | Function module | FI_COUNTRY_DATA
+
+LMIGODD2.abap
+  Baris 22 | Class dan Interface | cl_ops_switch_check
+  Baris 47 | Class dan Interface | cl_ops_switch_check
+  Baris 66 | Class dan Interface | cl_mm_im_sit_info
+  Baris 52 | Sumber data pada SELECT atau JOIN | LIKP
+  Baris 52 | Sumber data pada SELECT atau JOIN | LIPS
+
+LMIGODE2.abap
+  Baris 278 | Layar dan GUI | CALL SCREEN 1100 STARTING AT 5 5.
+  Baris 371 | Layar dan GUI | SET PF-STATUS 'DEFAULTS_POPUP'.
+  Baris 372 | Layar dan GUI | SET TITLEBAR  'DEFAULTS_POPUP'.
+  Baris 407 | Layar dan GUI | SET SCREEN 0.
+  Baris 418 | Layar dan GUI | SET SCREEN 0.
+  Baris 101 | Sumber data pada SELECT atau JOIN | MIGO_CUST_REFDOC
+  Baris 48 | Function module | DDIF_NAMETAB_GET
+
+LMIGODF2.abap
+  Baris 161 | Field DDIC | sy-tabix
+  Baris 162 | Field DDIC | sy-loopc
+  Baris 163 | Field DDIC | sy-stepl
+
+LMIGODI2.abap
+  Baris 65 | Field DDIC | t180-trtyp
+  Baris 70 | Layar dan GUI | SET PF-STATUS 'IMPORT_ITEM'.
+  Baris 71 | Layar dan GUI | SET TITLEBAR  'IMPORT_ITEM'.
+  Baris 101 | Layar dan GUI | SET SCREEN 0.
+  Baris 108 | Field DDIC | gohead-exnum
+  Baris 134 | Layar dan GUI | SET SCREEN 0.
+  Baris 145 | Layar dan GUI | CALL SCREEN 4100 STARTING AT 5 1
+  Baris 34 | Function module | EXPIMP_DATA_COMPLETENESS_CHECK
+  Baris 81 | Function module | FTRADE_ITEM_DATA_MNT_TS_PBO
+  Baris 114 | Function module | FTRADE_ITEM_DATA_MNT_TS_PAI
+
+LMIGODL2.abap
+
+LMIGODM2.abap
+
+LMIGODN2.abap
+  Baris 38 | Field DDIC | mseg-zeile
+  Baris 39 | Sumber data pada SELECT atau JOIN | MSEG
+
+LMIGODR4.abap
+  Baris 29 | Function module | WMMB_MATRIX_FCODE
+
+LMIGODO2.abap
+
+LMIGODP2.abap
+  Baris 34 | Function module | QBCK_MIGO_LINE_SET
+
+LMIGODO4.abap
+
+LMIGODP4.abap
+
+LMIGODP6.abap
+  Baris 19 | Field DDIC | sy-tabix
+  Baris 20 | Field DDIC | dd02d-tabname
+  Baris 21 | Field DDIC | dd03d-fieldname
+  Baris 43 | Class dan Interface | cl_mmpur_mepo_db_utility
+
+LMIGODT4.abap
+
+LMIGODT6.abap
+
+LMIGODT8.abap
+  Baris 51 | Field DDIC | goitem-shkzg
+  Baris 62 | Teks Seleksi | text-220
+  Baris 63 | Teks Seleksi | text-210
+  Baris 66 | Teks Seleksi | text-210
+  Baris 67 | Teks Seleksi | text-220
+  Baris 54 | Sumber data pada SELECT atau JOIN | T156
+  Baris 85 | Sumber data pada SELECT atau JOIN | T148T
+
+LMIGODQ2.abap
+
+LMIGODT2.abap
+
+LMIGODS2.abap
+  Baris 8 | INCLUDE | LMIGODS3
+  Baris 9 | INCLUDE | LMIGODS4
+
+LMIGODS3.abap
+  Baris 22 | Field DDIC | sy-tabix
+  Baris 23 | Field DDIC | sy-loopc
+  Baris 24 | Field DDIC | sy-stepl
+  Baris 297 | Sumber data pada SELECT atau JOIN | MARA
+  Baris 446 | Sumber data pada SELECT atau JOIN | ISEG
+  Baris 276 | Function module | MB_CONTROL_MOVETYPE_GET_SINGLE
+  Baris 303 | Function module | VB_BATCH_DEFINITION
+  Baris 307 | Function module | SERIAL_CHECK_STRUCTURE_FILL
+  Baris 339 | Function module | STATUS_ACT_ANALYZER_INTERN
+  Baris 459 | Function module | INVENTORY_ITEM_DISPLAY
+  Baris 518 | Function module | SERIALNUMBER_READ
+  Baris 357 | Program yang dirujuk SUBMIT | RIEQUI21
+  Baris 500 | Program yang dirujuk SUBMIT | RIOBJK00
+
+LMIGODS4.abap
+
+LMIGODW2.abap
+  Baris 24 | Function module | SEND_CURRENT_LINE_TO_WM
+  Baris 31 | Function module | SEND_DISP_LINE_TO_WM
+
+LMIGODX2.abap
+  Baris 25 | Class dan Interface | cl_ctrl
+  Baris 90 | Field DDIC | sy-msgty
+  Baris 34 | Function module | /SPE/DISPLAY_SET
+  Baris 54 | Function module | /SPE/SCRAP_IND_GET
+  Baris 75 | Function module | /SPE/SCRAP_INDICATORS_SET
+  Baris 85 | Function module | /SPE/SCRAP_IND_CHECK
+
+LMIGODY2.abap
+  Baris 15 | Class dan Interface | if_badi_ext_int
+  Baris 17 | Class dan Interface | if_badi_ext_int
+  Baris 18 | Class dan Interface | if_badi_ext_int
+  Baris 19 | Class dan Interface | if_badi_ext_int
+  Baris 24 | Class dan Interface | if_badi_ext_int
+  Baris 54 | Class dan Interface | if_badi_ext_int
+  Baris 56 | Class dan Interface | if_badi_ext_int
+  Baris 62 | Class dan Interface | if_badi_ext_int
+  Baris 67 | Class dan Interface | if_badi_ext_int
+  Baris 73 | Class dan Interface | if_badi_ext_int
+  Baris 85 | Class dan Interface | cl_enh_badi_runtime_functions
+  Baris 113 | Class dan Interface | if_badi_ext_int
+  Baris 118 | Class dan Interface | if_badi_ext_int
+  Baris 122 | Class dan Interface | if_badi_ext_int
+  Baris 133 | Class dan Interface | if_badi_ext_int
+  Baris 136 | Class dan Interface | if_badi_ext_int
+  Baris 141 | Class dan Interface | if_badi_ext_int
+  Baris 156 | Class dan Interface | if_badi_ext_int
+  Baris 160 | Class dan Interface | if_badi_ext_int
+  Baris 169 | Class dan Interface | if_badi_ext_int
+  Baris 171 | Class dan Interface | if_badi_ext_int
+  Baris 177 | Class dan Interface | if_badi_ext_int
+
+LMIGOEN2.abap
+  Baris 7 | INCLUDE | LMIGOEN3
+  Baris 8 | INCLUDE | LMIGOEN4
+  Baris 9 | INCLUDE | LMIGOEN5
+
+LMIGOEN3.abap
+
+LMIGOEN4.abap
+  Baris 85 | Field DDIC | sy-msgty
+  Baris 163 | Field DDIC | acchd-awref
+  Baris 164 | Field DDIC | acchd-aworg
+  Baris 165 | Field DDIC | acchd-awtyp
+  Baris 13 | Function module | AUTHORITY_CHECK_TCODE
+  Baris 74 | Function module | MMIM_CALL_TRANSACTION
+  Baris 169 | Function module | AC_DOCUMENT_RECORD
+  Baris 201 | Function module | ME_DISPLAY_PURCHASE_DOCUMENT
+  Baris 235 | Function module | SD_SHOW_ORIGINATE_DOCUMENT
+  Baris 264 | Function module | QPL2_LOT_LIST_SHOW
+  Baris 304 | Function module | SO_ADDRESS_SHOW
+  Baris 346 | Function module | CV141_SHOW_LINK_DOCUMENT
+  Baris 373 | Function module | HU_PER_DOCUMENT_READ
+  Baris 387 | Function module | HU_DISPLAY
+  Baris 223 | Program yang dirujuk SUBMIT | RM07MIGO_PO_HISTORY
+  Baris 30 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | I_TCODE
+
+LMIGOEN5.abap
+  Baris 16 | Function module | CO_SF_CALL_ORDER_CATEGORY
+
+LMIGOEQ2.abap
+  Baris 18 | Function module | ENQUEUE_READ
+  Baris 56 | Function module | DEQUEUE_ALL
+  Baris 66 | Function module | VB_ENQUEUE_BATCH
+  Baris 74 | Function module | ITOB_BUF_CLEANUP
+  Baris 126 | Function module | ENQUE_DELETE
+
+LMIGOFH2.abap
+  Baris 74 | Class dan Interface | cl_ops_switch_check
+  Baris 184 | Class dan Interface | cl_ops_switch_check
+  Baris 98 | Sumber data pada SELECT atau JOIN | CHVW_INC_PUR
+  Baris 119 | Sumber data pada SELECT atau JOIN | CHVW
+  Baris 196 | Sumber data pada SELECT atau JOIN | MCH_PUR_TEMP
+  Baris 131 | Function module | F4IF_INT_TABLE_VALUE_REQUEST
+  Baris 157 | Function module | F4IF_FIELD_VALUE_REQUEST
+
+LMIGOFL2.abap
+  Baris 6 | INCLUDE | LMIGOFL3
+  Baris 7 | INCLUDE | LMIGOFL4
+
+LMIGOFL3.abap
+  Baris 137 | Class dan Interface | cl_change
+  Baris 137 | Class dan Interface | cl_numbers
+  Baris 192 | Class dan Interface | cl_change
+  Baris 194 | Class dan Interface | cl_change
+  Baris 201 | Class dan Interface | cl_numbers
+  Baris 377 | Class dan Interface | cl_change
+  Baris 377 | Class dan Interface | cl_numbers
+  Baris 381 | Class dan Interface | cl_change
+  Baris 382 | Class dan Interface | cl_change
+
+LMIGOFL4.abap
+  Baris 41 | Field DDIC | ls_action-action
+  Baris 137 | Teks Seleksi | text-126
+  Baris 255 | Sumber data pada SELECT atau JOIN | T156B
+  Baris 16 | Function module | DDUT_DOMVALUES_GET
+  Baris 93 | Function module | F4IF_INT_TABLE_VALUE_REQUEST
+
+LMIGOFR2.abap
+  Baris 177 | Class dan Interface | cl_gui_cfw
+  Baris 450 | Class dan Interface | cl_gui_splitter_container
+  Baris 451 | Class dan Interface | cl_gui_splitter_container
+  Baris 460 | Class dan Interface | cl_gui_toolbar
+  Baris 522 | Class dan Interface | cl_gui_textedit
+  Baris 524 | Class dan Interface | cl_gui_textedit
+  Baris 534 | Class dan Interface | cl_mmim_userdefaults
+  Baris 560 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGOGL2.abap
+  Baris 47 | Class dan Interface | cl_exithandler
+  Baris 52 | Class dan Interface | if_badi
+  Baris 53 | Class dan Interface | if_badi
+  Baris 54 | Class dan Interface | if_badi
+  Baris 69 | Class dan Interface | cl_exithandler
+  Baris 74 | Class dan Interface | if_badi_item
+  Baris 163 | Class dan Interface | cl_ops_switch_check
+  Baris 163 | Class dan Interface | cl_ops_switch_check
+  Baris 240 | Field DDIC | sy-msgty
+  Baris 272 | Class dan Interface | cl_exithandler
+  Baris 277 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  Baris 278 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  Baris 147 | Sumber data pada SELECT atau JOIN | MIGO_CUST_ACTION
+  Baris 152 | Sumber data pada SELECT atau JOIN | MIGO_CUST_REFDOC
+  Baris 269 | Sumber data pada SELECT atau JOIN | TCURM
+  Baris 30 | Function module | VB_BATCH_DEFINITION
+  Baris 35 | Function module | VBDBBF_ACTIVE_CHECK_GENERAL
+  Baris 231 | Function module | DDIF_NAMETAB_GET
+
+LMIGOHC2.abap
+  Baris 43 | Class dan Interface | if_badi
+  Baris 47 | Class dan Interface | if_badi
+  Baris 100 | Class dan Interface | if_badi
+  Baris 101 | Class dan Interface | if_badi
+
+LMIGOHT2.abap
+  Baris 45 | Function module | DOC_DISPLAY_INITIALIZE
+  Baris 69 | Function module | DOC_DISPLAY_GET_STATE
+  Baris 84 | Function module | DOC_DISPLAY_TEXT
+  Baris 93 | Function module | DOC_DISPLAY_UNHIDE
+  Baris 101 | Function module | DOC_DISPLAY_HIDE
+
+LMIGOHD2.abap
+
+LMIGOHG2.abap
+  Baris 95 | Teks Seleksi | text-h02
+  Baris 97 | Teks Seleksi | text-h01
+  Baris 150 | Function module | GET_DATE_FROM_CALID
+
+LMIGOHI2.abap
+  Baris 70 | Field DDIC | t180-trtyp
+  Baris 71 | Field DDIC | kna1-kunnr
+  Baris 72 | Field DDIC | kna1-name1
+  Baris 73 | Field DDIC | kna1-land1
+  Baris 76 | Layar dan GUI | SET PF-STATUS 'IMPORT_HEADER'.
+  Baris 77 | Layar dan GUI | SET TITLEBAR  'IMPORT_HEADER'.
+  Baris 123 | Layar dan GUI | SET SCREEN 0.
+  Baris 143 | Layar dan GUI | SET SCREEN 0.
+  Baris 154 | Layar dan GUI | CALL SCREEN 4000 STARTING AT 5 1
+  Baris 34 | Function module | EXPIMP_DATA_COMPLETENESS_CHECK
+  Baris 100 | Function module | FTRADE_HEADER_DATA_MNT_TS_PBO
+  Baris 132 | Function module | FTRADE_HEADER_DATA_MNT_TS_PAI
+
+LMIGOHO2.abap
+
+LMIGOHP2.abap
+  Baris 14 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGOHV2.abap
+
+LMIGOJB2.abap
+  Baris 249 | Field DDIC | t001-bukrs
+  Baris 291 | Field DDIC | sy-tfill
+  Baris 454 | Field DDIC | sy-datum
+  Baris 579 | Field DDIC | SY-MSGTY
+  Baris 628 | Field DDIC | j_1bnflin-refkey
+  Baris 629 | Field DDIC | j_1bnflin-netpr
+  Baris 228 | Sumber data pada SELECT atau JOIN | T001W
+  Baris 431 | Sumber data pada SELECT atau JOIN | J_1BIV04
+  Baris 458 | Sumber data pada SELECT atau JOIN | LIKP
+  Baris 469 | Sumber data pada SELECT atau JOIN | VBFA
+  Baris 484 | Sumber data pada SELECT atau JOIN | MSEG
+  Baris 540 | Sumber data pada SELECT atau JOIN | J_1BNFLIN
+  Baris 547 | Sumber data pada SELECT atau JOIN | J_1BNFDOC
+  Baris 45 | Function module | J_1BFIFOCHECK
+  Baris 160 | Function module | J_1B_IM_SWITCH_TAXCODE_MIGO
+  Baris 190 | Function module | J_1B_SET_MIGO_UMWRK
+  Baris 261 | Function module | J_1B_COMPANY_DETERMINE
+  Baris 272 | Function module | J_1B_IM_TX_TAX_PROC_SET
+  Baris 319 | Function module | J_1B_SET_FIRST_CALL_FROM_MIGO
+  Baris 386 | Function module | J_1B_IM_NF_DOCUMENT_FUNCTION
+  Baris 558 | Function module | J_1B_NF_NUMBER_CONDENSE
+  Baris 569 | Function module | J_1B_NFE_XML_RAED_ACTIVE_TAB
+  Baris 619 | Function module | J_1B_SET_MIGO_REF_ITEM
+  Baris 689 | Function module | J_1B_IM_NF_CANCEL_TAXES
+  Baris 703 | Function module | J_1BSA_COMPONENT_ACTIVE
+
+LMIGOBO2.abap
+  Baris 35 | Layar dan GUI | CALL SCREEN 1200 STARTING AT 5 5.
+  Baris 79 | Layar dan GUI | SET PF-STATUS 'BOM_POPUP'.
+  Baris 80 | Layar dan GUI | SET TITLEBAR  'BOM_POPUP'.
+  Baris 92 | Layar dan GUI | SET SCREEN 0.
+  Baris 101 | Layar dan GUI | SET SCREEN 0.
+
+LMIGOIN1.abap
+  Baris 32 | Class dan Interface | cl_mmim_userdefaults
+  Baris 121 | Class dan Interface | cl_gui_custom_container
+  Baris 156 | Class dan Interface | cl_ops_switch_check
+  Baris 159 | Class dan Interface | cl_mmim_maa_2
+
+LMIGOKE2.abap
+  Baris 37 | INCLUDE | LMIGOKA1
+  Baris 38 | INCLUDE | LMIGOKA2
+  Baris 39 | INCLUDE | LMIGOKA3
+  Baris 40 | INCLUDE | LMIGOKB1
+  Baris 41 | INCLUDE | LMIGOKB2
+  Baris 42 | INCLUDE | LMIGOKC1
+  Baris 43 | INCLUDE | LMIGOKC2
+  Baris 44 | INCLUDE | LMIGOKCD
+  Baris 45 | INCLUDE | LMIGOKD1
+  Baris 46 | INCLUDE | LMIGOKD2
+  Baris 47 | INCLUDE | LMIGOKD3
+  Baris 48 | INCLUDE | LMIGOKD4
+  Baris 49 | INCLUDE | LMIGOKF1
+  Baris 50 | INCLUDE | LMIGOKFE
+  Baris 51 | INCLUDE | LMIGOKG1
+  Baris 52 | INCLUDE | LMIGOKG2
+  Baris 53 | INCLUDE | LMIGOKGA
+  Baris 54 | INCLUDE | LMIGOKGE
+  Baris 55 | INCLUDE | LMIGOKH1
+  Baris 56 | INCLUDE | LMIGOKI1
+  Baris 57 | INCLUDE | LMIGOKJ2
+  Baris 58 | INCLUDE | LMIGOKL1
+  Baris 59 | INCLUDE | LMIGOKL2
+  Baris 60 | INCLUDE | LMIGOKL3
+  Baris 61 | INCLUDE | LMIGOKL4
+  Baris 62 | INCLUDE | LMIGOKL5
+  Baris 63 | INCLUDE | LMIGOKM1
+  Baris 64 | INCLUDE | LMIGOKM2
+  Baris 65 | INCLUDE | LMIGOKM3
+  Baris 66 | INCLUDE | LMIGOKN1
+  Baris 67 | INCLUDE | LMIGOKN2
+  Baris 68 | INCLUDE | LMIGOKO1
+  Baris 69 | INCLUDE | LMIGOKO2
+  Baris 70 | INCLUDE | LMIGOKO4
+  Baris 71 | INCLUDE | LMIGOKO5
+  Baris 72 | INCLUDE | LMIGOKP1
+  Baris 73 | INCLUDE | LMIGOKP2
+  Baris 74 | INCLUDE | LMIGOKP3
+  Baris 75 | INCLUDE | LMIGOKP4
+  Baris 76 | INCLUDE | LMIGOKP5
+  Baris 78 | INCLUDE | LMIGOKP6
+  Baris 80 | INCLUDE | LMIGOKP7
+  Baris 81 | INCLUDE | LMIGOKR1
+  Baris 82 | INCLUDE | LMIGOKR2
+  Baris 84 | INCLUDE | LMIGOKS1
+  Baris 85 | INCLUDE | LMIGOKS2
+  Baris 86 | INCLUDE | LMIGOKS3
+  Baris 87 | INCLUDE | LMIGOKS4
+  Baris 88 | INCLUDE | LMIGOKS5
+  Baris 89 | INCLUDE | LMIGOKS6
+  Baris 90 | INCLUDE | LMIGOKST
+  Baris 91 | INCLUDE | LMIGOKT1
+  Baris 92 | INCLUDE | LMIGOKT2
+  Baris 93 | INCLUDE | LMIGOKT3
+  Baris 94 | INCLUDE | LMIGOKT4
+  Baris 95 | INCLUDE | LMIGOKU1
+  Baris 96 | INCLUDE | LMIGOKU2
+  Baris 97 | INCLUDE | LMIGOKU3
+  Baris 98 | INCLUDE | LMIGOKV1
+  Baris 99 | INCLUDE | LMIGOKVS
+  Baris 100 | INCLUDE | LMIGOKW1
+
+LMIGOKA1.abap
+  Baris 13 | Field DDIC | goitem-werks
+  Baris 14 | Field DDIC | goitem-lgort
+  Baris 16 | Field DDIC | ty_s_goitem-bwart
+  Baris 52 | Class dan Interface | cl_mmim_auth
+  Baris 102 | Class dan Interface | cl_mmim_auth
+  Baris 111 | Class dan Interface | cl_mmim_auth
+  Baris 136 | Class dan Interface | cl_mmim_auth
+  Baris 27 | Sumber data pada SELECT atau JOIN | T156
+  Baris 66 | Function module | MB_CHECK_USER_PG_DATE_PLANT
+
+LMIGOKA2.abap
+  Baris 27 | Field DDIC | t158-tcode
+  Baris 34 | Field DDIC | t156b-chsmm
+  Baris 440 | Field DDIC | sy-msgty
+  Baris 54 | Sumber data pada SELECT atau JOIN | T158
+  Baris 56 | Sumber data pada SELECT atau JOIN | T156SC
+  Baris 68 | Sumber data pada SELECT atau JOIN | RKPF
+  Baris 71 | Sumber data pada SELECT atau JOIN | RESB
+  Baris 85 | Sumber data pada SELECT atau JOIN | MARC
+  Baris 88 | Sumber data pada SELECT atau JOIN | T156B
+  Baris 43 | Function module | BF_RESET_LOC_ENQ_TAB
+  Baris 114 | Function module | BF_SET_LOC_ENQ_TAB
+  Baris 426 | Function module | MD_MRP_AREA_GET
+
+LMIGOKA3.abap
+  Baris 116 | Field DDIC | SY-MSGTY
+  Baris 27 | Sumber data pada SELECT atau JOIN | MARD
+  Baris 128 | Sumber data pada SELECT atau JOIN | EKPO
+  Baris 48 | Function module | AVAILABILITY_CHECK_CONTROLLER
+  Baris 106 | Function module | ME_READ_SCHEDULES_HEADER
+
+LMIGOKB1.abap
+  Baris 14 | Field DDIC | sy-subrc
+  Baris 15 | Field DDIC | sy-subrc
+  Baris 463 | Field DDIC | mch1-lifnr
+  Baris 474 | Class dan Interface | cl_ops_switch_check
+  Baris 690 | Field DDIC | sy-msgty
+  Baris 709 | Field DDIC | sy-msgty
+  Baris 805 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 864 | Field DDIC | sy-msgty
+  Baris 1023 | Field DDIC | sy-msgty
+  Baris 1059 | Field DDIC | sy-msgty
+  Baris 1078 | Field DDIC | sy-msgty
+  Baris 1188 | Field DDIC | sy-subrc
+  Baris 1189 | Field DDIC | sy-subrc
+  Baris 477 | Sumber data pada SELECT atau JOIN | MCH_PUR_TEMP
+  Baris 78 | Function module | VB_BATCH_DEFINITION
+  Baris 116 | Function module | VB_BATCH_READ_BUFFER_DB
+  Baris 239 | Function module | VB_CHANGE_BATCH
+  Baris 296 | Function module | CLFC_BATCH_ALLOCATION_TO_CLASS
+  Baris 495 | Function module | MB_CHECK_T160M
+  Baris 680 | Function module | VB_BATCH_WRITE_BUFFER
+  Baris 957 | Function module | VB_RESET_BATCH
+  Baris 1157 | Function module | MGW0_PACKAGING_COMPONENTS
+  Baris 1483 | Function module | VB_CREATE_BATCH
+
+LMIGOKB2.abap
+  Baris 227 | Field DDIC | sy-subrc
+  Baris 256 | Field DDIC | sy-msgty
+  Baris 53 | Function module | VBDBDM_ACTIVE_CHECK_DETAIL
+  Baris 110 | Function module | VBDBDM_DATA_READ_FOR_MATDOC_IM
+  Baris 170 | Function module | VBDBDM_DATA_CHECK_IM
+  Baris 246 | Function module | VBDBDM_ACTIVE_CHECK_PROCESS
+  Baris 275 | Function module | ME_REFRESH_COMP_GOODS_MOVEMENT
+  Baris 277 | Function module | ME_READ_COMP_GOODS_RECEIPT
+
+LMIGOKC1.abap
+  Baris 16 | Field DDIC | t163d-ibtyp
+  Baris 18 | Function module | ME_CONFIRMATION_SEARCH_GR
+
+LMIGOKC2.abap
+  Baris 93 | Field DDIC | tcuch-kzdch
+  Baris 150 | Field DDIC | tcuch-kzdch
+  Baris 195 | Function module | VB_BATCH_READ_BUFFER_DB
+
+LMIGOKCD.abap
+  Baris 28 | Function module | STRUC_ART_KEY_TODO
+  Baris 63 | Function module | W_FRM_GR_ASSIGNMENT_SIMULATE
+
+LMIGOKD1.abap
+  Baris 65 | Field DDIC | sy-tcode
+  Baris 81 | Class dan Interface | cl_inb_mat_doc
+  Baris 143 | Class dan Interface | cl_mmim_maa_2
+  Baris 158 | Class dan Interface | cl_ops_switch_check
+  Baris 295 | Class dan Interface | cl_cust
+  Baris 303 | Class dan Interface | cl_class_factory
+  Baris 304 | Class dan Interface | CL_INB_MAT_DOC
+  Baris 310 | Class dan Interface | cl_inb_action_info
+  Baris 313 | Class dan Interface | cl_inb_action_info
+  Baris 326 | Class dan Interface | cl_class_factory
+  Baris 327 | Class dan Interface | CL_INB_MAT_DOC
+  Baris 334 | Class dan Interface | cl_inb_action_info
+  Baris 337 | Class dan Interface | cl_inb_action_info
+  Baris 369 | Class dan Interface | cl_cust
+  Baris 373 | Class dan Interface | cl_inb_action_info
+  Baris 375 | Class dan Interface | cl_inb_action_info
+  Baris 376 | Class dan Interface | cl_inb_action_info
+  Baris 377 | Class dan Interface | cl_inb_action_info
+  Baris 388 | Class dan Interface | cl_class_factory
+  Baris 389 | Class dan Interface | CL_INB_MAT_DOC
+  Baris 396 | Class dan Interface | cl_inb_action_info
+  Baris 399 | Class dan Interface | cl_inb_action_info
+  Baris 480 | Class dan Interface | if_badi
+  Baris 481 | Class dan Interface | if_badi
+  Baris 542 | Class dan Interface | if_badi_item
+  Baris 320 | Sumber data pada SELECT atau JOIN | T001L
+  Baris 113 | Function module | STATUS_BUFFER_EXPORT_TO_MEMORY
+  Baris 264 | Function module | MB_SET_BAPI_FLAG
+  Baris 346 | Function module | MB_CREATE_GOODS_MOVEMENT
+  Baris 404 | Function module | MB_CANCEL_GOODS_MOVEMENT
+  Baris 438 | Function module | MB_SIMULATE_GOODS_MOVEMENT
+  Baris 454 | Function module | MB_SIM_CANCEL_GOODS_MOVEMENT
+  Baris 556 | Function module | STATUS_BUFFER_REFRESH
+  Baris 557 | Function module | STATUS_BUFFER_IMPORT_FROM_MEMO
+  Baris 630 | Function module | VB_BATCH_READ_BUFFER_DB
+
+LMIGOKD2.abap
+  Baris 25 | Sumber data pada SELECT atau JOIN | M_MEBEX
+  Baris 37 | Sumber data pada SELECT atau JOIN | EKKO
+  Baris 39 | Sumber data pada SELECT atau JOIN | MKPF
+  Baris 60 | Function module | REUSE_ALV_POPUP_TO_SELECT
+
+LMIGOKD3.abap
+
+LMIGOKD4.abap
+  Baris 183 | Function module | ES_APPEND_USER_OBJECTS
+
+LMIGOKF1.abap
+  Baris 58 | Function module | IMPORT_DETERMINE
+  Baris 93 | Function module | EXPIMP_TABLES_REFRESH
+  Baris 101 | Function module | EXPIMP_GENERAL_DATA_COPY
+  Baris 119 | Function module | IMPORT_GENERAL_DATA_PROPOSE
+  Baris 162 | Function module | MATERIAL_READ
+  Baris 174 | Function module | IMPORT_ITEM_DATA_PROPOSE
+  Baris 211 | Function module | EXPIMP_ITEM_DATA_READ
+  Baris 224 | Function module | EXPIMP_ITEM_DATA_COPY
+  Baris 252 | Function module | EXPIMP_ITEM_DATA_MAINTAIN
+  Baris 291 | Function module | EXPIMP_GENERAL_DATA_MAINTAIN
+
+LMIGOKFE.abap
+
+LMIGOKG1.abap
+  Baris 17 | Field DDIC | sy-subrc
+  Baris 18 | Field DDIC | t027c-evere
+  Baris 77 | Class dan Interface | if_badi
+  Baris 79 | Class dan Interface | if_badi
+  Baris 383 | Class dan Interface | if_badi
+  Baris 385 | Class dan Interface | if_badi
+  Baris 777 | Field DDIC | imkpf-pr_print
+  Baris 778 | Field DDIC | sy-tabix
+  Baris 795 | Class dan Interface | if_badi
+  Baris 797 | Class dan Interface | if_badi
+  Baris 846 | Class dan Interface | if_badi
+  Baris 848 | Class dan Interface | if_badi
+  Baris 926 | Field DDIC | t321-tafkz
+  Baris 284 | Sumber data pada SELECT atau JOIN | T027C
+  Baris 53 | Function module | /SAPPSPRO/READ_REASON_CODE_LOG
+  Baris 99 | Function module | MIMB_PO_REFRESH
+  Baris 245 | Function module | MB_CHECK_T160M
+  Baris 340 | Function module | /SAPPSPRO/USCHK_GOODS_RECEIPT
+  Baris 542 | Function module | MIMB_PO_EXPORT
+  Baris 682 | Function module | MIMB_FREIGHT_EXPORT
+  Baris 905 | Function module | MIMB_CANCEL_EXPORT
+  Baris 929 | Function module | MB_POST_GOODS_MOVEMENT
+  Baris 967 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | LT06
+  Baris 965 | Kontrol transaksi | COMMIT_WORK
+  Baris 969 | Kontrol transaksi | COMMIT_WORK
+
+LMIGOKG2.abap
+
+LMIGOKGA.abap
+  Baris 230 | Field DDIC | sy-msgty
+  Baris 420 | Field DDIC | SY-MSGTY
+  Baris 713 | Field DDIC | emseg-msgno
+  Baris 206 | Function module | MATERIAL_READ
+  Baris 218 | Function module | MB_PROCESS_VARIANTS
+  Baris 400 | Function module | WMMA_MATRIX_RETURN_MB
+  Baris 759 | Function module | MATNR_VARIANTS_CREATE
+  Baris 794 | Function module | LOCATION_SELECT_PLANT
+  Baris 834 | Function module | MARA_SINGLE_READ
+  Baris 903 | Function module | ASSORTMENT_AUTO_LOCAL
+  Baris 859 | Program yang dirujuk SUBMIT | RMBVA002
+
+LMIGOKGE.abap
+
+LMIGOKH1.abap
+
+LMIGOKI1.abap
+
+LMIGOKJ2.abap
+  Baris 9 | Function module | OFF_NUMBER_MIGO_DEFAULTS
+
+LMIGOKL1.abap
+  Baris 141 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 347 | Class dan Interface | if_badi
+  Baris 348 | Class dan Interface | if_badi
+  Baris 362 | Class dan Interface | cl_change
+  Baris 362 | Class dan Interface | cl_numbers
+  Baris 388 | Class dan Interface | cl_change
+  Baris 390 | Class dan Interface | cl_change
+  Baris 396 | Class dan Interface | cl_numbers
+  Baris 469 | Class dan Interface | if_badi
+  Baris 470 | Class dan Interface | if_badi
+  Baris 160 | Function module | MIGO_CUST_FIELD_ALLOWED
+  Baris 189 | Function module | VBDRV_EVENT_ACTIVE_CHECK
+
+LMIGOKL2.abap
+  Baris 282 | Field DDIC | grpga-grpnr
+  Baris 724 | Class dan Interface | cl_mmpur_mepo_db_utility
+  Baris 1005 | Sumber data pada SELECT atau JOIN | AUFK
+  Baris 1008 | Sumber data pada SELECT atau JOIN | T156
+  Baris 191 | Function module | ME_REFRESH_COMP_GOODS_MOVEMENT
+  Baris 194 | Function module | ME_READ_COMP_GOODS_RECEIPT
+  Baris 283 | Function module | GRPG_FIND_GRPNR_WITH_MATNR
+  Baris 419 | Function module | CS_BOM_EXPL_EQU_V2
+  Baris 450 | Function module | CS_BOM_EXPL_MAT_V2
+  Baris 529 | Function module | MATERIAL_READ
+  Baris 792 | Function module | MB_UNIT_CONVERSION
+
+LMIGOKL3.abap
+  Baris 11 | Class dan Interface | cl_abap_structdescr
+  Baris 23 | Class dan Interface | if_badi
+  Baris 27 | Class dan Interface | if_badi
+  Baris 43 | Class dan Interface | cl_abap_typedescr
+  Baris 126 | Field DDIC | goitem-lgort
+  Baris 127 | Field DDIC | goitem-sgtxt
+  Baris 135 | Class dan Interface | if_badi_item
+  Baris 147 | Class dan Interface | if_badi_item
+
+LMIGOKL4.abap
+  Baris 348 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 392 | Class dan Interface | cl_erp_co_olc_sw_check
+  Baris 457 | Class dan Interface | cl_erp_co_olc_sw_check
+  Baris 1319 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 1343 | Class dan Interface | cl_psm_core_switch_check
+  Baris 1466 | Field DDIC | qm00-qkz
+  Baris 1468 | Field DDIC | goitem-werks
+  Baris 1469 | Field DDIC | goitem-lgort
+  Baris 1471 | Field DDIC | mkpf-xblnr
+  Baris 539 | Sumber data pada SELECT atau JOIN | T148T
+  Baris 555 | Sumber data pada SELECT atau JOIN | T157E
+  Baris 213 | Function module | TCURX_READ
+  Baris 394 | Function module | READ_NETWORK_AUFPL_APLZL
+  Baris 426 | Function module | CO_SF_NETWORKACTIVITY_CHECK
+  Baris 459 | Function module | READ_NETWORK_NPLNR_VORNR
+  Baris 487 | Function module | CO_BO_OBJNR_OPR_CONV
+  Baris 621 | Function module | MB_READ_HTN_AND_MATERIAL
+  Baris 751 | Function module | ME_READ_ITEM_GOODS_RECEIPT
+  Baris 1205 | Function module | MB_CHECK_T160M
+  Baris 1507 | Function module | J_1BSA_COMPONENT_ACTIVE
+  Baris 1564 | Function module | QBCK_MIGO_CERT_REL_CHECK
+  Baris 1583 | Function module | QBCK_MIGO_LINE_TO_QM
+  Baris 1588 | Function module | QBCK_MIGO_LINE_DELETE
+
+LMIGOKL5.abap
+
+LMIGOKM1.abap
+  Baris 24 | Field DDIC | t156n-fcode
+  Baris 25 | Field DDIC | goitem-evers
+  Baris 67 | Field DDIC | goitem-mblnr
+  Baris 68 | Field DDIC | goitem-mjahr
+  Baris 69 | Field DDIC | goitem-zeile
+  Baris 70 | Field DDIC | goitem-matnr
+  Baris 71 | Field DDIC | goitem-ummat
+  Baris 72 | Field DDIC | goitem-werks
+  Baris 73 | Field DDIC | goitem-bwart
+  Baris 74 | Field DDIC | goitem-kzbew
+  Baris 75 | Field DDIC | goitem-umwrk
+  Baris 76 | Field DDIC | goitem-umlgo
+  Baris 77 | Field DDIC | goitem-charg
+  Baris 78 | Field DDIC | goitem-umcha
+  Baris 79 | Field DDIC | goitem-erfmg
+  Baris 80 | Field DDIC | goitem-erfme
+  Baris 81 | Field DDIC | goitem-kunnr
+  Baris 82 | Field DDIC | goitem-ebeln
+  Baris 83 | Field DDIC | goitem-ebelp
+  Baris 84 | Field DDIC | goitem-mwskz
+  Baris 85 | Field DDIC | goitem-umsok
+  Baris 86 | Field DDIC | goitem-lifnr
+  Baris 89 | Field DDIC | goitem-j_1bexbase
+  Baris 94 | Field DDIC | prps-pspnr
+  Baris 102 | Field DDIC | mseg-matnr
+  Baris 103 | Field DDIC | mseg-werks
+  Baris 104 | Field DDIC | mseg-lgort
+  Baris 105 | Field DDIC | mseg-charg
+  Baris 110 | Field DDIC | mseg-parbu
+  Baris 111 | Field DDIC | mseg-pargb
+  Baris 112 | Field DDIC | mseg-ummat
+  Baris 113 | Field DDIC | mseg-umwrk
+  Baris 114 | Field DDIC | mseg-umlgo
+  Baris 115 | Field DDIC | mseg-umcha
+  Baris 116 | Field DDIC | mseg-sobkz
+  Baris 117 | Field DDIC | mseg-insmk
+  Baris 118 | Field DDIC | mseg-bwart
+  Baris 122 | Field DDIC | mseg-erfmg
+  Baris 123 | Field DDIC | mseg-erfme
+  Baris 124 | Field DDIC | mseg-wempf
+  Baris 125 | Field DDIC | mseg-ablad
+  Baris 126 | Field DDIC | mseg-sgtxt
+  Baris 127 | Field DDIC | mseg-grund
+  Baris 132 | Field DDIC | mseg-sakto
+  Baris 133 | Field DDIC | mseg-kostl
+  Baris 138 | Field DDIC | mseg-pprctr
+  Baris 139 | Field DDIC | mseg-ebeln
+  Baris 140 | Field DDIC | mseg-ebelp
+  Baris 141 | Field DDIC | mseg-aufnr
+  Baris 142 | Field DDIC | mseg-aufps
+  Baris 143 | Field DDIC | mseg-lifnr
+  Baris 144 | Field DDIC | mseg-kunnr
+  Baris 145 | Field DDIC | mseg-kdauf
+  Baris 146 | Field DDIC | mseg-kdpos
+  Baris 147 | Field DDIC | mseg-ps_psp_pnr
+  Baris 148 | Field DDIC | mseg-mat_kdauf
+  Baris 149 | Field DDIC | mseg-mat_kdpos
+  Baris 150 | Field DDIC | mseg-umsok
+  Baris 151 | Field DDIC | mseg-mat_pspnr
+  Baris 154 | Field DDIC | mseg-mwskz
+  Baris 155 | Field DDIC | mseg-txjcd
+  Baris 156 | Field DDIC | mseg-j_1bexbase
+  Baris 194 | Field DDIC | goitem-parent
+  Baris 297 | Class dan Interface | cl_ops_switch_check
+  Baris 318 | Class dan Interface | cl_mmim_line_id_manager
+  Baris 345 | Class dan Interface | cl_ops_switch_check
+  Baris 380 | Class dan Interface | cl_mmim_line_id_manager
+  Baris 816 | Class dan Interface | cl_ops_switch_check
+  Baris 816 | Class dan Interface | cl_ops_switch_check
+  Baris 1377 | Field DDIC | sy-msgty
+  Baris 551 | Sumber data pada SELECT atau JOIN | TSTCT
+  Baris 622 | Sumber data pada SELECT atau JOIN | EKKO
+  Baris 655 | Sumber data pada SELECT atau JOIN | MSEG
+  Baris 946 | Sumber data pada SELECT atau JOIN | EKPO
+  Baris 199 | Function module | MB_READ_MATERIAL_HEADER
+  Baris 323 | Function module | MB_READ_MATERIAL_POSITION
+  Baris 570 | Function module | EXPIMP_TABLES_REFRESH
+  Baris 572 | Function module | EXPIMP_GENERAL_DATA_COPY
+  Baris 646 | Function module | MB_READ_DELIVERY_FLOW
+  Baris 755 | Function module | EXPIMP_ITEM_DATA_READ
+  Baris 950 | Function module | ME_ITEM_CATEGORY_OUTPUT
+  Baris 1248 | Function module | EXPIMP_ITEM_DATA_COPY
+  Baris 1366 | Function module | MB_CHECK_USER_PG_DATE_PLANT
+  Baris 1448 | Function module | ASH_MM_MATBEL_READ
+  Baris 1477 | Function module | ME_CHECK_T160M
+
+LMIGOKM2.abap
+  Baris 23 | Class dan Interface | cl_mmim_cross_system
+  Baris 119 | Field DDIC | sy-msgty
+  Baris 230 | Class dan Interface | cl_mmim_cross_system
+  Baris 31 | Function module | MATERIAL_READ
+  Baris 78 | Function module | VB_BATCH_GET_DETAIL
+  Baris 159 | Function module | MAKT_SINGLE_READ
+  Baris 278 | Function module | CV141_LINK_EXIST
+  Baris 302 | Function module | MATERIAL_PRE_READ_MBEFU
+  Baris 315 | Function module | MATERIAL_PRE_READ_MAKT
+
+LMIGOKM3.abap
+
+LMIGOKN1.abap
+  Baris 19 | Function module | SO_NAMES_GET
+
+LMIGOKN2.abap
+
+LMIGOKO1.abap
+  Baris 38 | Class dan Interface | if_lock
+  Baris 70 | Class dan Interface | cl_ops_switch_check
+  Baris 74 | Class dan Interface | cl_mm_im_sit_info
+  Baris 34 | Function module | SD_DELIVERY_ITEMS_RECEIVE
+  Baris 78 | Function module | ME_EKPO_SINGLE_READ
+
+LMIGOKO2.abap
+  Baris 8 | Field DDIC | goitem-werks
+  Baris 15 | Field DDIC | nast-objky
+  Baris 16 | Field DDIC | tojtb-name
+  Baris 37 | Class dan Interface | cl_mmim_auth
+  Baris 189 | Field DDIC | nast-objky
+  Baris 190 | Field DDIC | nast-objky
+  Baris 245 | Field DDIC | dv70a-btext
+  Baris 248 | Field DDIC | nast-objky
+  Baris 250 | Field DDIC | dfies-scrtext_m
+  Baris 70 | Sumber data pada SELECT atau JOIN | MARA
+  Baris 25 | Function module | COMMUNICATION_AREA_KOMKBME
+  Baris 75 | Function module | COMMUNICATION_AREA_KOMPBME
+  Baris 92 | Function module | MESSAGING
+  Baris 122 | Function module | RV_MESSAGES_GET
+  Baris 144 | Function module | MB_MESSAGE_UPDATE
+  Baris 207 | Function module | RV_MESSAGES_READ
+  Baris 254 | Function module | DDIF_FIELDINFO_GET
+  Baris 287 | Function module | RV_MESSAGES_MAINTENANCE
+  Baris 158 | Kontrol transaksi | COMMIT_WORK
+
+LMIGOKO4.abap
+  Baris 45 | Field DDIC | cobl-autyp
+  Baris 119 | Tipe DDIC | fbefu
+  Baris 51 | Function module | CO_SF_HEADER_GOODS_RECEIPT
+  Baris 102 | Function module | CO_SF_ITEM_GOODS_RECEIPT
+
+LMIGOKO5.abap
+  Baris 14 | Field DDIC | sy-subrc
+  Baris 20 | Sumber data pada SELECT atau JOIN | AFKO
+  Baris 75 | Sumber data pada SELECT atau JOIN | RESB
+  Baris 16 | Function module | CO_SF_HEADER_GOODS_ISSUE
+  Baris 31 | Function module | CO_FW_CHECK_AFFW_BY_RSNUM
+  Baris 40 | Function module | MB_CHECK_T160M
+
+LMIGOKP1.abap
+  Baris 301 | Class dan Interface | cl_ops_switch_check
+  Baris 368 | Class dan Interface | cl_ops_switch_check
+  Baris 703 | Field DDIC | grpga-grpnr
+  Baris 623 | Sumber data pada SELECT atau JOIN | AUFK
+  Baris 133 | Function module | ME_READ_HEADER_GOODS_RECEIPT
+  Baris 155 | Function module | MB_CHECK_T160M
+  Baris 318 | Function module | ME_READ_ITEM_GOODS_RECEIPT
+  Baris 477 | Function module | ME_READ_ITEM_TRANSFER
+  Baris 638 | Function module | ME_REFRESH_COMP_GOODS_MOVEMENT
+  Baris 639 | Function module | ME_READ_COMP_GOODS_RECEIPT
+  Baris 704 | Function module | GRPG_FIND_GRPNR_WITH_MATNR
+  Baris 788 | Function module | MB_UNIT_CONVERSION
+  Baris 990 | Function module | ME_READ_COMP_GOODS_ISSUE
+
+LMIGOKP2.abap
+  Baris 21 | Field DDIC | sy-subrc
+  Baris 32 | Class dan Interface | if_ex_mb_me_csgmt_badi_sap
+  Baris 476 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  Baris 550 | Class dan Interface | cl_mmpur_switch_check
+  Baris 123 | Sumber data pada SELECT atau JOIN | VBFA
+  Baris 251 | Function module | MB_CHECK_T160M
+  Baris 372 | Function module | MB_PROPOSE_RECEIPT_QUANTITY
+  Baris 492 | Function module | MM_VENDOR_CONVERT
+
+LMIGOKP3.abap
+  Baris 10 | Class dan Interface | cl_mmim_datastore
+  Baris 18 | Class dan Interface | cl_mmim_datastore
+  Baris 52 | Class dan Interface | if_badi
+  Baris 53 | Class dan Interface | if_badi
+  Baris 67 | Class dan Interface | cl_mmim_datastore
+  Baris 79 | Class dan Interface | cl_mmim_datastore
+  Baris 127 | Class dan Interface | if_badi
+  Baris 128 | Class dan Interface | if_badi
+  Baris 33 | Function module | GET_ALL_DATA_FROM_WM
+  Baris 38 | Function module | QBCK_MIGO_ALL_TO_MM
+  Baris 111 | Function module | SEND_ALL_DATA_TO_WM
+  Baris 116 | Function module | QBCK_MIGO_ALL_TO_QM
+
+LMIGOKP4.abap
+  Baris 32 | Function module | ME_SELECT_EKORG_FOR_PLANT
+  Baris 66 | Function module | ME_SEARCH_SOURCE_OF_SUPPLY
+
+LMIGOKP5.abap
+
+LMIGOKP6.abap
+  Baris 284 | Class dan Interface | cl_ops_switch_check
+  Baris 75 | Sumber data pada SELECT atau JOIN | AUFK
+  Baris 111 | Function module | ME_ITEM_CATEGORY_OUTPUT
+  Baris 232 | Function module | MMPUR_EKBZ_READ_EBELN_EBELP
+
+LMIGOKP7.abap
+
+LMIGOKR1.abap
+  Baris 30 | Class dan Interface | cl_mmim_line_id_manager
+  Baris 82 | Class dan Interface | cl_inb_action_info
+  Baris 91 | Class dan Interface | if_badi
+  Baris 92 | Class dan Interface | if_badi
+  Baris 49 | Function module | VB_INIT
+  Baris 55 | Function module | VBDRV_BUFFERFLUSH
+  Baris 67 | Function module | RV_MESSAGES_REFRESH
+  Baris 71 | Function module | REFRESH_WM_DATA_ALL
+  Baris 73 | Function module | QBCK_MIGO_REFRESH
+  Baris 75 | Function module | J_1B_IM_NF_REFRESH
+  Baris 80 | Function module | ME_REFRESH_GOODS_RECEIPT
+  Baris 87 | Function module | EXPIMP_TABLES_REFRESH
+  Baris 101 | Function module | CO_SF_DATA_RESET
+  Baris 102 | Function module | CO_BT_DATA_RESET
+
+LMIGOKR2.abap
+  Baris 142 | Field DDIC | rbefu-offen
+  Baris 143 | Field DDIC | sy-subrc
+  Baris 217 | Field DDIC | aufk-autyp
+  Baris 245 | Field DDIC | grpga-grpnr
+  Baris 538 | Field DDIC | sy-subrc
+  Baris 220 | Sumber data pada SELECT atau JOIN | AUFK
+  Baris 316 | Sumber data pada SELECT atau JOIN | T156B
+  Baris 411 | Sumber data pada SELECT atau JOIN | RESB
+  Baris 60 | Function module | LDB_PROCESS
+  Baris 163 | Function module | CO_FW_CHECK_AFFW_BY_RSNUM
+  Baris 173 | Function module | MB_CHECK_T160M
+  Baris 223 | Function module | CO_SF_HEADER_GOODS_ISSUE
+  Baris 295 | Function module | GRPG_FIND_GRPNR_WITH_MATNR
+  Baris 432 | Function module | FI_PERIOD_DETERMINE
+  Baris 444 | Function module | COPA_PROFITABILITY_SEGMENT
+
+LMIGOKS1.abap
+  Baris 225 | Class dan Interface | if_badi
+  Baris 226 | Class dan Interface | if_badi
+  Baris 457 | Class dan Interface | if_badi
+  Baris 458 | Class dan Interface | if_badi
+  Baris 186 | Function module | SET_TC_KONTEXT
+
+LMIGOKS2.abap
+  Baris 36 | Field DDIC | ty_s_action-display
+  Baris 37 | Field DDIC | goitem-evere
+  Baris 48 | Teks Seleksi | text-200
+  Baris 14 | Function module | MB_SELECT_SHIPPING_UNITS
+  Baris 46 | Function module | ME_SHIPPING_INSTRUCTIONS
+
+LMIGOKS3.abap
+  Baris 58 | Class dan Interface | cl_mmpur_switch_check
+  Baris 209 | Field DDIC | ty_s_goserial_kernel-global_counter
+  Baris 240 | Field DDIC | ty_s_goserial_kernel-global_counter
+  Baris 270 | Field DDIC | ty_s_goserial_kernel-global_counter
+  Baris 84 | Function module | GET_SERNOS_OF_DOCUMENT
+  Baris 178 | Function module | DOCUMENT_SERIALNOS_IMPORT
+  Baris 184 | Function module | SERIALPROFILE_CHECK
+
+LMIGOKS4.abap
+  Baris 573 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 841 | Class dan Interface | CL_OPS_SWITCH_CHECK
+  Baris 848 | Field DDIC | mtcom-kenng
+  Baris 849 | Field DDIC | mtcom-kenng
+  Baris 850 | Field DDIC | mtcom-kenng
+  Baris 851 | Field DDIC | mtcom-kenng
+  Baris 902 | Class dan Interface | CL_OPS_SWITCH_CHECK
+  Baris 1268 | Class dan Interface | cl_mmim_auth
+  Baris 1381 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 1387 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 1402 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 2006 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 857 | Function module | MATERIAL_READ
+  Baris 1485 | Function module | MIGO_CUST_FIELD_ALLOWED
+
+LMIGOKS5.abap
+
+LMIGOKS6.abap
+
+LMIGOKST.abap
+  Baris 118 | Field DDIC | goitem-shkzg
+  Baris 119 | Field DDIC | goitem-shkzg
+  Baris 120 | Field DDIC | goitem-bwart
+  Baris 121 | Field DDIC | goitem-matnr
+  Baris 122 | Field DDIC | goitem-werks
+  Baris 123 | Field DDIC | goitem-shkzg
+  Baris 124 | Field DDIC | goitem-lgort
+  Baris 125 | Field DDIC | goitem-umlgo
+  Baris 126 | Field DDIC | goitem-lgobe
+  Baris 127 | Field DDIC | goitem-umlgobe
+  Baris 128 | Field DDIC | goitem-umwrk
+  Baris 129 | Field DDIC | goitem-umname1
+  Baris 130 | Field DDIC | goitem-bwtar
+  Baris 132 | Class dan Interface | if_ex_mb_me_csgmt_badi_sap
+  Baris 248 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  Baris 249 | Class dan Interface | if_badi_retail_mb_me_csgmt
+  Baris 161 | Function module | MB_SHOW_MATERIAL_STRUCTURE
+
+LMIGOKT1.abap
+
+LMIGOKT2.abap
+  Baris 17 | Function module | SD_SHINOTIF_FOR_SHIPMENT
+
+LMIGOKT3.abap
+  Baris 11 | Sumber data pada SELECT atau JOIN | SHP_VIEW_TRAI
+
+LMIGOKT4.abap
+
+LMIGOKU1.abap
+  Baris 116 | Sumber data pada SELECT atau JOIN | EKPO
+  Baris 61 | Function module | MB_UNIT_CONVERSION
+
+LMIGOKU2.abap
+  Baris 154 | Field DDIC | mcha-lwedt
+  Baris 156 | Field DDIC | tcuws-kzdws
+  Baris 205 | Field DDIC | tcuws-kzdws
+  Baris 49 | Function module | MARM_SINGLE_READ
+  Baris 61 | Function module | VBWS_UNIT_CHECK_FOR_MATNR
+  Baris 109 | Function module | MURC_SET_VALUE_CHARACTERISTIC
+  Baris 162 | Function module | VBWS_UNITS_OF_MATERIAL
+  Baris 216 | Function module | MATERIAL_READ
+
+LMIGOKU3.abap
+  Baris 10 | Field DDIC | sy-tabix
+  Baris 19 | Class dan Interface | cl_mmim_migo_move_fields
+  Baris 235 | Class dan Interface | cl_ops_switch_check
+  Baris 235 | Class dan Interface | cl_ops_switch_check
+  Baris 272 | Field DDIC | sy-tabix
+  Baris 521 | Teks Seleksi | text-002
+  Baris 323 | Sumber data pada SELECT atau JOIN | T156
+  Baris 325 | Sumber data pada SELECT atau JOIN | MIGO_T156
+  Baris 329 | Sumber data pada SELECT atau JOIN | T156B
+  Baris 384 | Sumber data pada SELECT atau JOIN | T001W
+  Baris 398 | Sumber data pada SELECT atau JOIN | T001L
+  Baris 532 | Function module | REUSE_ALV_POPUP_TO_SELECT
+
+LMIGOKV1.abap
+  Baris 19 | Field DDIC | sy-tabix
+  Baris 25 | Function module | VB_BATCH_READ_BUFFER_DB
+  Baris 63 | Function module | MATERIAL_READ
+
+LMIGOKVS.abap
+  Baris 44 | Function module | W_VAS_SERVICES_GET_SINGLE_DOC
+  Baris 82 | Function module | W_VAS_GR_CHECK
+  Baris 132 | Function module | MB_UNIT_CONVERSION
+
+LMIGOKW1.abap
+  Baris 71 | Field DDIC | goitem-werks
+  Baris 72 | Field DDIC | goitem-lgort
+  Baris 10 | Function module | L_LGORT_LGNUM_CHECK
+  Baris 100 | Function module | SEND_SUGG_VALUES_TO_WM
+  Baris 113 | Function module | SEND_LINE_DATA_TO_WM
+  Baris 122 | Function module | SEND_CURRENT_LINE_TO_WM
+  Baris 130 | Function module | DELETE_SINGLE_LINE_WM
+
+LMIGOLO2.abap
+  Baris 74 | Field DDIC | sy-msgty
+  Baris 139 | Field DDIC | sy-msgty
+  Baris 8 | INCLUDE | LMIGOLO3
+  Baris 9 | INCLUDE | LMIGOLO4
+  Baris 17 | Function module | BAL_GLB_AUTHORIZATION_GET
+  Baris 50 | Function module | BAL_LOG_DELETE
+  Baris 66 | Function module | BAL_LOG_CREATE
+  Baris 86 | Function module | BAL_GLB_MSG_DEFAULTS_SET
+  Baris 125 | Function module | BAL_LOG_MSG_ADD
+  Baris 186 | Function module | BAL_GLB_SEARCH_MSG
+  Baris 209 | Function module | BAL_LOG_MSG_DELETE
+  Baris 287 | Function module | BAL_LOG_MSG_READ
+
+LMIGOLO3.abap
+  Baris 89 | Teks Seleksi | text-011
+  Baris 90 | Teks Seleksi | text-011
+  Baris 220 | Field DDIC | es_msg-msgty
+  Baris 39 | Function module | BAL_DSP_PROFILE_POPUP_GET
+  Baris 80 | Function module | BAL_GLB_SEARCH_MSG
+  Baris 111 | Function module | BAL_DSP_LOG_DISPLAY
+  Baris 185 | Function module | BAL_LOG_MSG_READ
+
+LMIGOLO4.abap
+  Baris 12 | Function module | MICK_LOG_LOCAL_HANDLE_SET
+
+LMIGOPR2.abap
+  Baris 224 | Layar dan GUI | SET TITLEBAR 'PREDOC_POPUP'.
+  Baris 225 | Layar dan GUI | SET PF-STATUS 'PREDOC_STATUS' EXCLUDING ct_extab.
+  Baris 316 | Class dan Interface | cl_mmim_datastore
+  Baris 318 | Class dan Interface | if_badi
+  Baris 319 | Class dan Interface | if_badi
+  Baris 341 | Field DDIC | sy-ucomm
+  Baris 179 | Sumber data pada SELECT atau JOIN | MMIM_PREDOC_ORG
+  Baris 117 | Function module | POPUP_GET_VALUES
+  Baris 135 | Function module | GUID_CREATE
+  Baris 197 | Function module | REUSE_ALV_LIST_DISPLAY
+  Baris 165 | Indikasi penulisan data (perlu konfirmasi) | MMIM_PREDOC_ORG
+
+LMIGOSM2.abap
+
+LMIGOSM4.abap
+  Baris 8 | INCLUDE | LMIGOSMB
+  Baris 9 | INCLUDE | LMIGOSMC
+  Baris 10 | INCLUDE | LMIGOSMD
+
+LMIGOSMB.abap
+  Baris 21 | INCLUDE | LMIGOSMG
+  Baris 29 | Function module | DDIF_NAMETAB_GET
+  Baris 108 | Function module | FIELD_SELECTION_MODIFY_SINGLE
+
+LMIGOSMG.abap
+
+LMIGOSMC.abap
+
+LMIGOSMD.abap
+  Baris 11 | Field DDIC | dfies-lfieldname
+  Baris 78 | Function module | DDIF_FIELDINFO_GET
+
+LMIGOSO2.abap
+
+LMIGOSP2.abap
+  Baris 82 | Layar dan GUI | SET SCREEN 0.
+  Baris 96 | Field DDIC | gosplit-erfme
+  Baris 98 | Field DDIC | gosplit-bwtar_from_refdoc
+  Baris 103 | Field DDIC | gosplit-erfme
+  Baris 104 | Field DDIC | gosplit-lgort
+  Baris 105 | Field DDIC | gosplit-bwtar_from_refdoc
+  Baris 10 | INCLUDE | LMIGOSP3
+  Baris 159 | Function module | MM_SLOC_CONVERT
+  Baris 180 | Function module | MBEW_BWTAR_HELP
+
+LMIGOSP3.abap
+  Baris 41 | Layar dan GUI | SET PF-STATUS 'SPLIT'.
+  Baris 42 | Layar dan GUI | SET TITLEBAR 'GR_SPLIT' WITH l_quantity
+  Baris 144 | Layar dan GUI | CALL SCREEN 1000 STARTING AT 5 1.
+  Baris 167 | Layar dan GUI | SET SCREEN 0.
+  Baris 209 | Field DDIC | SY-SUBRC
+  Baris 230 | Function module | MB_CHECK_T160M
+  Baris 247 | Function module | VB_BATCH_READ_BUFFER_DB
+  Baris 349 | Function module | QBCK_MIGO_LINE_SPLIT
+
+LMIGODS6.abap
+  Baris 58 | Field DDIC | sy-subrc
+  Baris 72 | Field DDIC | bkpf-monat
+  Baris 73 | Field DDIC | bkpf-gjahr
+  Baris 550 | Field DDIC | t156m-cnt02
+  Baris 551 | Field DDIC | t156m-zustd
+  Baris 552 | Field DDIC | dm07m-kzuml
+  Baris 595 | Field DDIC | sy-msgty
+  Baris 251 | Sumber data pada SELECT atau JOIN | T156B
+  Baris 283 | Sumber data pada SELECT atau JOIN | MARV
+  Baris 558 | Sumber data pada SELECT atau JOIN | T156
+  Baris 599 | Sumber data pada SELECT atau JOIN | T156M
+  Baris 191 | Function module | ME_EKKO_SINGLE_READ
+  Baris 198 | Function module | ME_EKPO_SINGLE_READ
+  Baris 276 | Function module | FI_PERIOD_DETERMINE
+  Baris 314 | Function module | VB_COMPLETE_DETERMINATION
+  Baris 342 | Function module | MB_CHECK_T160M
+  Baris 579 | Function module | MB_CONTROL_MOVETYPE_GET_SINGLE
+
+LMIGOSR2.abap
+  Baris 7 | INCLUDE | LMIGOSR3
+  Baris 8 | INCLUDE | LMIGOSR4
+  Baris 9 | INCLUDE | LMIGOSR5
+  Baris 10 | INCLUDE | LMIGOSR6
+  Baris 11 | INCLUDE | LMIGOSR7
+  Baris 18 | Function module | MM_PLANT_CONVERT
+
+LMIGOSR3.abap
+  Baris 66 | Layar dan GUI | SET PF-STATUS 'SEARCH_POPUP'.
+  Baris 85 | Layar dan GUI | SET SCREEN 0.
+  Baris 94 | Layar dan GUI | SET SCREEN 0.
+
+LMIGOSR4.abap
+  Baris 13 | Layar dan GUI | CALL SCREEN 3000 STARTING AT 5 1.
+  Baris 147 | Field DDIC | sy-msgty
+  Baris 79 | Sumber data pada SELECT atau JOIN | T156
+  Baris 163 | Sumber data pada SELECT atau JOIN | LFA1
+  Baris 169 | Sumber data pada SELECT atau JOIN | T001W
+  Baris 185 | Sumber data pada SELECT atau JOIN | T001L
+  Baris 190 | Sumber data pada SELECT atau JOIN | T023T
+  Baris 195 | Sumber data pada SELECT atau JOIN | T163I
+  Baris 126 | Function module | ME_READ_EKKO_MULTIPLE
+
+LMIGOSR5.abap
+  Baris 17 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | MB51
+
+LMIGOSR6.abap
+  Baris 10 | Layar dan GUI | CALL SCREEN 3010 STARTING AT 5 1.
+  Baris 25 | Field DDIC | caufv-autyp
+  Baris 26 | Field DDIC | caufv-gamng
+  Baris 27 | Field DDIC | caufv-gmein
+  Baris 28 | Field DDIC | caufv-objnr
+  Baris 29 | Field DDIC | caufvd-sttxt
+  Baris 52 | Program yang dirujuk SUBMIT | PPCOWE00
+
+LMIGOSR7.abap
+  Baris 24 | Layar dan GUI | CALL SCREEN 3020 STARTING AT 5 1.
+  Baris 109 | Program yang dirujuk SUBMIT | RM07RESL
+
+LMIGOST2.abap
+  Baris 120 | Class dan Interface | if_badi_item
+  Baris 137 | Teks Seleksi | text-007
+  Baris 140 | Layar dan GUI | LEAVE TO SCREEN 0001.
+  Baris 142 | Teks Seleksi | text-001
+  Baris 150 | Layar dan GUI | SET SCREEN 0.
+  Baris 250 | Layar dan GUI | SET PF-STATUS 'MIGO_STATUS' EXCLUDING pt_excluding.
+  Baris 257 | Layar dan GUI | SET PF-STATUS 'MIGO_STATUS' EXCLUDING pt_excluding.
+  Baris 259 | Layar dan GUI | SET PF-STATUS 'MIGO_STATUS_BRAZIL' EXCLUDING pt_excluding.
+  Baris 281 | Teks Seleksi | text-003
+  Baris 278 | Function module | POPUP_TO_CONFIRM_STEP
+
+LMIGOTI2.abap
+  Baris 86 | Layar dan GUI | SET TITLEBAR 'MIGO_TITLEBAR' WITH p_title.
+  Baris 37 | Function module | DDUT_DOMVALUE_TEXT_GET
+
+LMIGOTO2.abap
+  Baris 44 | Class dan Interface | cl_mmim_userdefaults
+
+LMIGOTP2.abap
+  Baris 57 | Layar dan GUI | CALL SCREEN 1300 STARTING AT 2 6.
+  Baris 147 | Layar dan GUI | SET TITLEBAR  'TIP_POPUP'.
+  Baris 148 | Layar dan GUI | SET PF-STATUS 'TIP_STATUS'.
+  Baris 171 | Layar dan GUI | SET SCREEN 0.
+  Baris 112 | Function module | DOCU_GET_FOR_F1HELP
+  Baris 125 | Function module | CONVERT_ITF_TO_HTML
+
+LMIGOCA2.abap
+  Baris 77 | Class dan Interface | cl_gui_cfw
+  Baris 80 | Class dan Interface | cl_mmim_userdefaults
+  Baris 112 | Class dan Interface | cl_gui_docking_container
+
+LMIGOGD2.abap
+  Baris 231 | Class dan Interface | cl_gui_alv_grid
+  Baris 250 | Teks Seleksi | text-109
+  Baris 261 | Teks Seleksi | text-019
+  Baris 216 | INCLUDE | RM07RESL_FIELDCAT
+
+RM07RESL_FIELDCAT.abap
+  Baris 8 | Function module | GET_DEFAULT_PRIO_ACTIVE
+
+LMIGOTR2.abap
+  Baris 23 | Class dan Interface | cl_mmim_userdefaults
+  Baris 55 | Class dan Interface | cl_gui_toolbar
+  Baris 58 | Class dan Interface | cl_gui_toolbar
+  Baris 132 | Class dan Interface | cl_mmim_userdefaults
+  Baris 151 | Class dan Interface | cl_ctmenu
+  Baris 152 | Class dan Interface | cl_ctmenu
+
+LMIGOTV2.abap
+  Baris 339 | Field DDIC | sy-tabix
+  Baris 359 | Field DDIC | sy-tabix
+  Baris 6 | INCLUDE | LMIGOTV3
+  Baris 7 | INCLUDE | LMIGOTV4
+
+LMIGOTV3.abap
+  Baris 74 | Function module | DDIF_NAMETAB_GET
+
+LMIGOTV4.abap
+
+LMIGOTR4.abap
+  Baris 7 | INCLUDE | LMIGOTR5
+  Baris 8 | INCLUDE | LMIGOTR6
+  Baris 9 | INCLUDE | LMIGOTR7
+  Baris 10 | INCLUDE | LMIGOTR8
+
+LMIGOTR5.abap
+
+LMIGOTR6.abap
+  Baris 36 | Class dan Interface | cl_gui_column_tree
+  Baris 51 | Teks Seleksi | text-101
+  Baris 177 | Teks Seleksi | text-102
+  Baris 190 | Teks Seleksi | text-105
+  Baris 201 | Teks Seleksi | text-120
+  Baris 214 | Teks Seleksi | text-105
+  Baris 225 | Teks Seleksi | text-121
+  Baris 238 | Teks Seleksi | text-105
+  Baris 249 | Teks Seleksi | text-103
+  Baris 262 | Teks Seleksi | text-105
+  Baris 272 | Teks Seleksi | text-104
+  Baris 285 | Teks Seleksi | text-105
+  Baris 306 | Class dan Interface | cl_gui_column_tree
+  Baris 454 | Class dan Interface | cl_change
+  Baris 454 | Class dan Interface | cl_numbers
+  Baris 516 | Class dan Interface | cl_change
+  Baris 518 | Class dan Interface | cl_change
+  Baris 525 | Class dan Interface | cl_numbers
+  Baris 601 | Class dan Interface | cl_gui_column_tree
+  Baris 686 | Teks Seleksi | text-105
+  Baris 763 | Field DDIC | esruo_s-object_typ
+  Baris 764 | Field DDIC | esruo_s-object_id
+  Baris 785 | Class dan Interface | cl_mmim_datastore
+  Baris 787 | Class dan Interface | if_badi
+  Baris 788 | Class dan Interface | if_badi
+  Baris 424 | Sumber data pada SELECT atau JOIN | MMIM_PREDOC_ORG
+  Baris 331 | Function module | ES_READ_USER_OBJECTS
+  Baris 748 | Function module | ES_SAVE_USER_OBJECTS
+  Baris 809 | Function module | ES_DELETE_USER_OBJECTS
+  Baris 784 | Indikasi penulisan data (perlu konfirmasi) | MMIM_PREDOC_ORG
+
+LMIGOTR7.abap
+  Baris 28 | Class dan Interface | cl_mmim_userdefaults
+  Baris 47 | Teks Seleksi | text-116
+  Baris 62 | Teks Seleksi | text-108
+  Baris 94 | Class dan Interface | cl_gui_cfw
+  Baris 111 | Class dan Interface | cl_mmim_userdefaults
+  Baris 311 | Class dan Interface | cl_gui_column_tree
+  Baris 316 | Class dan Interface | cl_gui_column_tree
+  Baris 321 | Class dan Interface | cl_gui_column_tree
+  Baris 325 | Class dan Interface | cl_gui_column_tree
+  Baris 370 | Class dan Interface | cl_gui_cfw
+  Baris 489 | Class dan Interface | cl_gui_cfw
+  Baris 511 | Class dan Interface | cl_gui_cfw
+
+LMIGOTR8.abap
+  Baris 115 | Class dan Interface | cl_gui_column_tree
+  Baris 116 | Teks Seleksi | text-100
+  Baris 208 | Class dan Interface | cl_gui_column_tree
+  Baris 228 | Teks Seleksi | text-106
+  Baris 235 | Class dan Interface | cl_gui_column_tree
+  Baris 275 | Class dan Interface | cl_gui_cfw
+  Baris 339 | Class dan Interface | cl_mmim_userdefaults
+  Baris 303 | Function module | LVC_SORT_DIALOG
+
+LMIGOTRB.abap
+  Baris 37 | Class dan Interface | cl_gui_docking_container
+
+LMIGOTRC.abap
+
+LMIGORE1.abap
+  Baris 9 | Field DDIC | ldbn-ldbnode
+  Baris 28 | Field DDIC | ldbn-ldbnode
+
+LMIGODR2.abap
+
+LMIGOAR2.abap
+  Baris 96 | Class dan Interface | cl_gui_cfw
+
+LMIGOIIS.abap
+
+LMIGOO01.abap
+  Baris 9 | Class dan Interface | cl_change
+  Baris 9 | Class dan Interface | cl_numbers
+  Baris 13 | Class dan Interface | cl_change
+  Baris 15 | Class dan Interface | cl_change
+  Baris 22 | Class dan Interface | cl_numbers
+
+LMIGOO02.abap
+
+LMIGOI01.abap
+
+IUID_MIGO.abap
+  Baris 63 | Class dan Interface | cl_uid_iuid
+  Baris 70 | Class dan Interface | cl_uid_cust
+  Baris 70 | Class dan Interface | cl_uid_cust
+  Baris 80 | Class dan Interface | cl_uid_cust
+  Baris 80 | Class dan Interface | cl_uid_cust
+  Baris 86 | Class dan Interface | cl_uid_iuid
+  Baris 118 | Field DDIC | equi-uii_plant
+  Baris 133 | Class dan Interface | cl_uid_iuid
+  Baris 142 | Class dan Interface | cl_uid_iuid
+  Baris 172 | Class dan Interface | cl_uid_iuid
+  Baris 58 | Sumber data pada SELECT atau JOIN | T377P
+  Baris 45 | Function module | MARC_SINGLE_READ

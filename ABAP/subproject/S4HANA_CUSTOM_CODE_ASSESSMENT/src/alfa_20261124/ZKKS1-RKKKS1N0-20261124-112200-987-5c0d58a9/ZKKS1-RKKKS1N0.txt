@@ -1,0 +1,492 @@
+﻿Input: ZKKS1
+Source SAP development (RFC baca-saja): RKKKS1N0
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  RKKKS0I1:9 | FORM START_OF_SELECTION_MAIN | PERFORM SENDER_SELECTION | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKKKS0I1:51 | FORM START_OF_SELECTION_MAIN | PERFORM EXTERN_BATCHLAUF_STARTEN IN PROGRAM SAPMKKS0 | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKKKS0I1:86 | Konteks perlu ditinjau | PERFORM TITEL_AUSGEBEN IN PROGRAM SAPMKKS0. | Tinjau kondisi dan hasil di ECC.
+  RKKKS0I1:88 | Konteks perlu ditinjau | PERFORM TITEL_AUSGEBEN IN PROGRAM SAPMKKS0. | Tinjau kondisi dan hasil di ECC.
+  RKKKS0O1:5 | INITIALIZATION | perform limit_process using sy-repid. | Tinjau kondisi dan hasil di ECC.
+  RKKKS0O1:7 | INITIALIZATION | perform kass_fw_init | Tinjau kondisi dan hasil di ECC.
+  RKKKS0O1:12 | INITIALIZATION | perform kass_fw_event_register | Tinjau kondisi dan hasil di ECC.
+  RKKKS0O1:19 | INITIALIZATION | perform kass_fw_event_register using | Tinjau kondisi dan hasil di ECC.
+  RKKKS0O1:25 | INITIALIZATION | perform kass_fw_event_register using: | Tinjau kondisi dan hasil di ECC.
+  RKKKS0O1:41 | INITIALIZATION | perform transaktion_setzen in program sapmkks0 | Tinjau kondisi dan hasil di ECC.
+  RKKKS0O1:82 | FORM ICON_CHANGE > IF SY-BATCH IS INITIAL. | PERFORM SOLLVERSIONEN_BESORGEN in program sapmkks0 | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKKKS0O1:159 | FORM JUST_DO_IT > when 'LIST'. > if pa_listf is initial. | message e244(kd). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKKKS0O1:192 | FORM JUST_DO_IT > when 'AVER'. | PERFORM SOLLVERSIONEN_BESORGEN in program sapmkks0 | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKKKS0O1:209 | FORM JUST_DO_IT > when 'VSOK'. > if not pa_awvse is initial | message s018. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKKKS0O1:223 | FORM JUST_DO_IT > when 'KKRS'. | perform kokrs_setzen(sapmkks0). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKKKS0O1:227 | FORM JUST_DO_IT > WHEN 'SDEL'. | PERFORM INDX_SOLLVERSIONEN_KEY_SETZEN(SAPMKKS0) | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKKKS0O1:229 | FORM JUST_DO_IT > WHEN 'SDEL'. | PERFORM INDX_SOLLVERSIONEN_LOESCHEN(SAPMKKS0) | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:127 | FORM RFCGRP_SELSCREEN > WHEN 0. > IF NOT rfcproc IS INITIAL > IF sy-ucomm = 'RFCPROC'. | MESSAGE s002(spta). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:129 | FORM RFCGRP_SELSCREEN > WHEN 0. > IF NOT rfcproc IS INITIAL > ELSE. | MESSAGE e002(spta). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:135 | FORM RFCGRP_SELSCREEN > WHEN 0. > IF NOT ld_invalid_rfcgrp IS INITIAL | MESSAGE e004(spta) WITH rfcgroup. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:147 | FORM RFCGRP_SELSCREEN > WHEN 1. > IF sy-ucomm = 'RFCPBT1'. | PERFORM rfcgrp_selection_list | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:153 | FORM RFCGRP_SELSCREEN > WHEN 1. > ELSEIF NOT rfcproc IS INITIAL. > IF ld_rfcgr IS INITIAL. | PERFORM rfcgrp_selection_list | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:159 | FORM RFCGRP_SELSCREEN > WHEN 1. > ELSEIF NOT rfcproc IS INITIAL. > IF ld_rfcgr IS INITIAL. > IF sy-ucomm = 'RFCPROC'. | MESSAGE s002(spta). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:161 | FORM RFCGRP_SELSCREEN > WHEN 1. > ELSEIF NOT rfcproc IS INITIAL. > IF ld_rfcgr IS INITIAL. > ELSE. | MESSAGE e002(spta). | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKRFCGROUPINC_EVENTS:190 | FORM RFCGRP_INIT | PERFORM kass_fw_event_register | Tinjau kondisi dan hasil di ECC.
+  RKRFCGROUPINC_EVENTS:196 | FORM RFCGRP_INIT | PERFORM kass_fw_event_register | Tinjau kondisi dan hasil di ECC.
+  RKRFCGROUPINC_EVENTS:202 | FORM RFCGRP_INIT | PERFORM kass_fw_event_register | Tinjau kondisi dan hasil di ECC.
+  RKRFCGROUPINC_EVENTS:262 | INITIALIZATION | PERFORM rfcgrp_init. | Tinjau kondisi dan hasil di ECC.
+  RKCOSEI4:158 | FORM SENDER_INITIALIZATION | perform select_options_restrict. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKCOSEI4:159 | FORM SENDER_INITIALIZATION | perform kass_fw_event_register using: | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKCOSEI4:203 | FORM SENDER_SELSCREEN_OUTPUT | perform kass_fw_activity_get | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKCOSEI4:277 | FORM SENDER_SELSCREEN | perform kokrs_adjust using werks[]. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKCOSEI4:302 | FORM WERKS_TEXT_GET > if not p_werks is initial. > else. > if not p_chk_input is initial. | message id 'KD' type 'E' number '600'. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RKCOSEI4:407 | FORM KOKRS_ADJUST > if sy-subrc <> 0. | message id 'KO' type 'E' number '133' with ld_werksel-low. | Tinjau kondisi dan hasil di ECC.
+  RKCOSEI4:433 | FORM KOKRS_ADJUST > if ld_no_of_plants > 1. > if sy-subrc <> 0. | message id 'KO' type 'E' number '133' with ld_werksel-low . | Tinjau kondisi dan hasil di ECC.
+  RKCOSEI4:437 | FORM KOKRS_ADJUST > if ld_no_of_plants > 1. > if ld_kokrs_sav <> ld_kokrs. | message id '61' type 'E' number '824' | Tinjau kondisi dan hasil di ECC.
+  RKCOSEI3:13 | AT SELECTION-SCREEN | perform kokrs_adjust using werks[]. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:31 | AT SELECTION-SCREEN | PERFORM kass_fw_kokrs_online_init. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:32 | AT SELECTION-SCREEN | PERFORM kass_fw_display_adjust. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:33 | AT SELECTION-SCREEN | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:39 | AT SELECTION-SCREEN | PERFORM kass_fw_set_kokrs. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:40 | AT SELECTION-SCREEN | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:46 | AT SELECTION-SCREEN | PERFORM kass_fw_check_kokrs_edited. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:49 | START-OF-SELECTION | PERFORM kass_fw_kokrs_batch_init. | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:50 | START-OF-SELECTION | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+  RKASSEFW:56 | END-OF-SELECTION | PERFORM kass_fw_event_process | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek RKKKS1N0 (27 baris)
+  17 | includes | RKASSEFW
+  19 | includes | RKKKSTOP
+  21 | includes | RKCOSEI1
+  23 | includes | RKKKS0D1
+  25 | includes | RKKKS0O1
+  27 | includes | RKKKS0I1
+
+Objek RKKKS0I1 (88 baris)
+  10 | Tipe DDIC | IT_SENDER
+  13 | callFunctions | K_OBJECT_SELECTION_CRIT_FILL
+
+Objek RKKKS0O1 (254 baris)
+  83 | Tipe DDIC | ta_kv20a
+  117 | Teks Seleksi | text-I01
+  120 | Teks Seleksi | text-I01
+  124 | Teks Seleksi | text-I02
+  127 | Teks Seleksi | text-I02
+  193 | Tipe DDIC | ta_kv20a
+  64 | callFunctions | K_PERIODS_GET
+  161 | callFunctions | K_VARIANCES_BATCH_CONFIG_46A
+  178 | callFunctions | K_VARIANCE_VERSION_SELECT
+  214 | callFunctions | K_TEST_MODE_SET
+  244 | callFunctions | FB0C_LIMIT_PROCESS
+
+Objek RKKKS0D1 (51 baris)
+  4 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK PARAMETERS
+  5 | Teks Seleksi | TEXT-101
+  6 | Layar Seleksi | PARAMETERS: PA_POPER  LIKE KKS00-POPER MEMORY ID VPE OBLIGATORY,
+  6 | Field DDIC | KKS00-POPER
+  7 | Field DDIC | KKS00-GJAHR
+  8 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  10 | Layar Seleksi | PARAMETERS: PA_AWVAL LIKE KKS00-AWVAL RADIOBUTTON GROUP VERS
+  10 | Field DDIC | KKS00-AWVAL
+  12 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(28)  SA_AWVAL FOR FIELD PA_AWVAL.
+  13 | Layar Seleksi | SELECTION-SCREEN COMMENT 33(47) SA_VSALL FOR FIELD PA_AWVAL.
+  14 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  15 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  16 | Layar Seleksi | PARAMETERS: PA_AWVSE  LIKE KKS00-AWVSE RADIOBUTTON GROUP VERS.
+  16 | Field DDIC | KKS00-AWVSE
+  17 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(28)  SA_AWVSE FOR FIELD PA_AWVSE.
+  19 | Layar Seleksi | SELECTION-SCREEN COMMENT 33(15) SA_VSSEL FOR FIELD PA_AWVSE.
+  20 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON 52(28) PB_AWVSE USER-COMMAND AVER.
+  21 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  22 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK PARAMETERS.
+  24 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK PROCESSING_OPTIONS
+  25 | Teks Seleksi | TEXT-102
+  26 | Layar Seleksi | PARAMETERS: PA_TESTL  LIKE KKS00-TESTL DEFAULT 'X'.
+  26 | Field DDIC | KKS00-TESTL
+  28 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  29 | Layar Seleksi | PARAMETERS: PA_LISTF  LIKE KKS00-LISTF USER-COMMAND LIOK.
+  29 | Field DDIC | KKS00-LISTF
+  30 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(28)  SA_LISTF FOR FIELD PA_LISTF.
+  31 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON 33(30) PB_LISTF USER-COMMAND LIST.
+  32 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  33 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK PROCESSING_OPTIONS.
+  46 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK SECRET_FIELDS
+  47 | Teks Seleksi | TEXT-110
+  48 | Layar Seleksi | PARAMETERS: PA_VSSEL  LIKE KKS00-VSSEL NO-DISPLAY.
+  48 | Field DDIC | KKS00-VSSEL
+  49 | Layar Seleksi | PARAMETERS: P_KKS00C  LIKE KKS00C NO-DISPLAY.
+  50 | Layar Seleksi | PARAMETERS: PA_TSTKZ  LIKE KKS00-TSTKZ NO-DISPLAY.
+  50 | Field DDIC | KKS00-TSTKZ
+  51 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK SECRET_FIELDS.
+  27 | includes | RKRFCGROUPINC_PARAMS
+  44 | includes | RKRFCGROUPINC_EVENTS
+
+Objek RKRFCGROUPINC_EVENTS (262 baris)
+  223 | Field DDIC | sy-tabix
+  49 | callFunctions | ICON_CREATE
+  246 | callFunctions | HELP_VALUES_GET_WITH_TABLE
+  111 | tableReads | RZLLITAB
+
+Objek RKRFCGROUPINC_PARAMS (20 baris)
+  5 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK _rfcgroup.
+  6 | Layar Seleksi | SELECTION-SCREEN   BEGIN OF LINE.
+  7 | Layar Seleksi | PARAMETERS:  rfcproc TYPE co_para_processing  AS CHECKBOX
+  9 | Layar Seleksi | SELECTION-SCREEN     COMMENT 3(28) rfcproct FOR FIELD rfcproc.
+  10 | Layar Seleksi | SELECTION-SCREEN POSITION pos_low.
+  11 | Layar Seleksi | SELECTION-SCREEN   PUSHBUTTON (40) rfcpbt1
+  14 | Layar Seleksi | SELECTION-SCREEN   END OF LINE.
+  15 | Layar Seleksi | SELECTION-SCREEN   BEGIN OF LINE.
+  16 | Layar Seleksi | SELECTION-SCREEN COMMENT 4(28) rfcgrt FOR FIELD rfcgroup.
+  17 | Layar Seleksi | SELECTION-SCREEN POSITION pos_low.
+  18 | Layar Seleksi | PARAMETERS:  rfcgroup TYPE spta_rfcgr.
+  19 | Layar Seleksi | SELECTION-SCREEN   END OF LINE.
+  20 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK _rfcgroup.
+
+Objek RKCOSEI1 (32 baris)
+  4 | includes | RKCOSEI2
+  6 | includes | RKCOSEI3
+  8 | includes | RKCOSEI4
+
+Objek RKCOSEI4 (475 baris)
+  22 | Field DDIC | rsvar-variant
+  25 | Field DDIC | lko74-kokrs
+  189 | Field DDIC | tj01-vrgng
+  266 | Field DDIC | tka01-kokrs
+  267 | Field DDIC | tka01-kokrs
+  268 | Field DDIC | aufk-werks
+  289 | Field DDIC | lko74-werks
+  292 | Tipe DDIC | t001w
+  326 | Field DDIC | tka01-kokrs
+  379 | Field DDIC | tka01-kokrs
+  380 | Field DDIC | tka01-kokrs
+  381 | Field DDIC | aufk-werks
+  26 | callFunctions | K_KOKRS_SET
+  217 | callFunctions | ICON_CREATE
+  351 | callFunctions | HELP_VALUES_GET_WITH_TABLE
+  386 | callFunctions | SPTA_RFC_CONTEXT_DETECT
+  398 | callFunctions | RM_KOKRS_TO_PLANT_FIND
+  470 | callFunctions | SELECT_OPTIONS_RESTRICT
+  297 | tableReads | T001W
+
+Objek RKCOSEI3 (15 baris)
+
+Objek RKCOSEI2 (42 baris)
+  9 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  10 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK sender_selection.
+  11 | Layar Seleksi | PARAMETERS: selexp TYPE xflag NO-DISPLAY.
+  13 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /1(40) subscexp USER-COMMAND subscexp.
+  14 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  15 | Layar Seleksi | SELECT-OPTIONS:
+  18 | Layar Seleksi | SELECT-OPTIONS:
+  23 | Layar Seleksi | PARAMETERS:
+  24 | Field DDIC | lko74-incl_fauf
+  26 | Field DDIC | lko74-incl_piauf
+  28 | Field DDIC | lko74-incl_pkosa
+  30 | Field DDIC | lko74-incl_qmauf
+  32 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  33 | Layar Seleksi | PARAMETERS:
+  34 | Field DDIC | lko74-incl_proj
+  36 | Field DDIC | lko74-incl_kstrg
+  39 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  40 | Layar Seleksi | PARAMETERS:
+  41 | Field DDIC | lko74-aufgr
+  42 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK sender_selection.
+
+Objek RKKKSTOP (72 baris)
+  4 | Tipe DDIC | KKS00
+  5 | Field DDIC | KKS00-KOKRS
+  6 | Field DDIC | KKS00-BATCH
+  7 | Field DDIC | KKS00-WERKS
+  9 | Field DDIC | KKS00-AUFNR
+  10 | Field DDIC | KKS00-AUFNB
+  11 | Field DDIC | KKS00-AUART
+  12 | Field DDIC | KKS00-AUTYP
+  14 | Field DDIC | KKS00-PROCNR
+  15 | Field DDIC | KKS00-PROCNB
+  16 | Field DDIC | KKS00-SAFNR
+  17 | Field DDIC | KKS00-SAFNB
+  18 | Field DDIC | KKS00-VERID
+  19 | Field DDIC | KKS00-MATNR
+  20 | Field DDIC | KKS00-MATNB
+  22 | Field DDIC | KKS00-KDAUF
+  23 | Field DDIC | KKS00-KDAUB
+  24 | Field DDIC | KKS00-KDPOS
+  25 | Field DDIC | KKS00-PROJN
+  26 | Field DDIC | KKS00-PROJB
+  28 | Field DDIC | KKS00-PRIMS
+  30 | Field DDIC | KKS00-OKCOD
+  31 | Field DDIC | KKS00-TCODE
+  32 | Field DDIC | KKS00-DYNNR
+  36 | Field DDIC | KKS00-VERWS
+  37 | Field DDIC | KKS00-STAKZ
+  38 | Field DDIC | KKS00-STAMD
+  39 | Field DDIC | KKS00-STANO
+  40 | Field DDIC | KKS00-FORTS
+  43 | Field DDIC | KKS00-INCLF
+  44 | Field DDIC | KKS00-INCLP
+  45 | Field DDIC | KKS00-INCLI
+  47 | Field DDIC | KKS00-VSALL
+  48 | Field DDIC | KKS00-SAMML
+  49 | Field DDIC | KKS00-OBJKT
+  50 | Field DDIC | KKS00-AWVRS
+  51 | Field DDIC | KKS07-ANZVS
+  52 | Field DDIC | KV042-XFELD
+  54 | Field DDIC | SY-REPID
+  64 | Field DDIC | RSVAR-VARIANT
+  67 | Field DDIC | KV042-XFELD
+  68 | Field DDIC | KV042-XFELD
+  71 | Field DDIC | KV042-XFELD
+  2 | includes | LKV20DA4
+  3 | includes | LKV20DA6
+
+Objek LKV20DA6 (14 baris)
+  6 | Field DDIC | TKV03-AWOBA
+  7 | Field DDIC | TKV03-AWOBA
+  8 | Field DDIC | TKV03-AWOBA
+  9 | Field DDIC | TKV03-AWOBA
+  10 | Field DDIC | TKV03-AWOBA
+  11 | Field DDIC | TKV03-AWOBA
+  12 | Field DDIC | TKV03-AWOBA
+  13 | Field DDIC | TKV03-AWOBA
+
+Objek LKV20DA4 (12 baris)
+
+Objek RKASSEFW (324 baris)
+  4 | Tipe DDIC | sscrfields
+  6 | Layar Seleksi | PARAMETERS kokrs TYPE tka01-kokrs MODIF ID cac.
+  6 | Field DDIC | tka01-kokrs
+  18 | Field DDIC | tj01-vrgng
+  73 | Field DDIC | tj01-vrgng
+  105 | Field DDIC | tj01-vrgng
+  118 | Field DDIC | tj01-vrgng
+  3 | includes | RKASSELA
+  9 | includes | RKASMAWF
+  86 | callFunctions | K_KOKRS_SET
+  231 | callFunctions | RS_EXTERNAL_SELSCREEN_STATUS
+
+Objek RKASMAWF (9 baris)
+  5 | Field DDIC | SCMA_WITEM-WF_WITEM
+  7 | Field DDIC | SWOTOBJID-OBJKEY
+  9 | Field DDIC | SCMA_WITEM-WF_WLIST
+
+Objek RKASSELA (59 baris)
+Jumlah source terbaca: 16
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+RKKKS1N0.abap
+  Baris 17 | INCLUDE | RKASSEFW
+  Baris 19 | INCLUDE | RKKKSTOP
+  Baris 21 | INCLUDE | RKCOSEI1
+  Baris 23 | INCLUDE | RKKKS0D1
+  Baris 25 | INCLUDE | RKKKS0O1
+  Baris 27 | INCLUDE | RKKKS0I1
+
+RKASSEFW.abap
+  Baris 4 | Tipe DDIC | sscrfields
+  Baris 6 | Layar Seleksi | PARAMETERS kokrs TYPE tka01-kokrs MODIF ID cac.
+  Baris 6 | Field DDIC | tka01-kokrs
+  Baris 18 | Field DDIC | tj01-vrgng
+  Baris 73 | Field DDIC | tj01-vrgng
+  Baris 105 | Field DDIC | tj01-vrgng
+  Baris 118 | Field DDIC | tj01-vrgng
+  Baris 3 | INCLUDE | RKASSELA
+  Baris 9 | INCLUDE | RKASMAWF
+  Baris 86 | Function module | K_KOKRS_SET
+  Baris 231 | Function module | RS_EXTERNAL_SELSCREEN_STATUS
+
+RKASSELA.abap
+
+RKASMAWF.abap
+  Baris 5 | Field DDIC | SCMA_WITEM-WF_WITEM
+  Baris 7 | Field DDIC | SWOTOBJID-OBJKEY
+  Baris 9 | Field DDIC | SCMA_WITEM-WF_WLIST
+
+RKKKSTOP.abap
+  Baris 4 | Tipe DDIC | KKS00
+  Baris 5 | Field DDIC | KKS00-KOKRS
+  Baris 6 | Field DDIC | KKS00-BATCH
+  Baris 7 | Field DDIC | KKS00-WERKS
+  Baris 9 | Field DDIC | KKS00-AUFNR
+  Baris 10 | Field DDIC | KKS00-AUFNB
+  Baris 11 | Field DDIC | KKS00-AUART
+  Baris 12 | Field DDIC | KKS00-AUTYP
+  Baris 14 | Field DDIC | KKS00-PROCNR
+  Baris 15 | Field DDIC | KKS00-PROCNB
+  Baris 16 | Field DDIC | KKS00-SAFNR
+  Baris 17 | Field DDIC | KKS00-SAFNB
+  Baris 18 | Field DDIC | KKS00-VERID
+  Baris 19 | Field DDIC | KKS00-MATNR
+  Baris 20 | Field DDIC | KKS00-MATNB
+  Baris 22 | Field DDIC | KKS00-KDAUF
+  Baris 23 | Field DDIC | KKS00-KDAUB
+  Baris 24 | Field DDIC | KKS00-KDPOS
+  Baris 25 | Field DDIC | KKS00-PROJN
+  Baris 26 | Field DDIC | KKS00-PROJB
+  Baris 28 | Field DDIC | KKS00-PRIMS
+  Baris 30 | Field DDIC | KKS00-OKCOD
+  Baris 31 | Field DDIC | KKS00-TCODE
+  Baris 32 | Field DDIC | KKS00-DYNNR
+  Baris 36 | Field DDIC | KKS00-VERWS
+  Baris 37 | Field DDIC | KKS00-STAKZ
+  Baris 38 | Field DDIC | KKS00-STAMD
+  Baris 39 | Field DDIC | KKS00-STANO
+  Baris 40 | Field DDIC | KKS00-FORTS
+  Baris 43 | Field DDIC | KKS00-INCLF
+  Baris 44 | Field DDIC | KKS00-INCLP
+  Baris 45 | Field DDIC | KKS00-INCLI
+  Baris 47 | Field DDIC | KKS00-VSALL
+  Baris 48 | Field DDIC | KKS00-SAMML
+  Baris 49 | Field DDIC | KKS00-OBJKT
+  Baris 50 | Field DDIC | KKS00-AWVRS
+  Baris 51 | Field DDIC | KKS07-ANZVS
+  Baris 52 | Field DDIC | KV042-XFELD
+  Baris 54 | Field DDIC | SY-REPID
+  Baris 64 | Field DDIC | RSVAR-VARIANT
+  Baris 67 | Field DDIC | KV042-XFELD
+  Baris 68 | Field DDIC | KV042-XFELD
+  Baris 71 | Field DDIC | KV042-XFELD
+  Baris 2 | INCLUDE | LKV20DA4
+  Baris 3 | INCLUDE | LKV20DA6
+
+LKV20DA4.abap
+
+LKV20DA6.abap
+  Baris 6 | Field DDIC | TKV03-AWOBA
+  Baris 7 | Field DDIC | TKV03-AWOBA
+  Baris 8 | Field DDIC | TKV03-AWOBA
+  Baris 9 | Field DDIC | TKV03-AWOBA
+  Baris 10 | Field DDIC | TKV03-AWOBA
+  Baris 11 | Field DDIC | TKV03-AWOBA
+  Baris 12 | Field DDIC | TKV03-AWOBA
+  Baris 13 | Field DDIC | TKV03-AWOBA
+
+RKCOSEI1.abap
+  Baris 4 | INCLUDE | RKCOSEI2
+  Baris 6 | INCLUDE | RKCOSEI3
+  Baris 8 | INCLUDE | RKCOSEI4
+
+RKCOSEI2.abap
+  Baris 9 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  Baris 10 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK sender_selection.
+  Baris 11 | Layar Seleksi | PARAMETERS: selexp TYPE xflag NO-DISPLAY.
+  Baris 13 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON /1(40) subscexp USER-COMMAND subscexp.
+  Baris 14 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  Baris 15 | Layar Seleksi | SELECT-OPTIONS:
+  Baris 18 | Layar Seleksi | SELECT-OPTIONS:
+  Baris 23 | Layar Seleksi | PARAMETERS:
+  Baris 24 | Field DDIC | lko74-incl_fauf
+  Baris 26 | Field DDIC | lko74-incl_piauf
+  Baris 28 | Field DDIC | lko74-incl_pkosa
+  Baris 30 | Field DDIC | lko74-incl_qmauf
+  Baris 32 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  Baris 33 | Layar Seleksi | PARAMETERS:
+  Baris 34 | Field DDIC | lko74-incl_proj
+  Baris 36 | Field DDIC | lko74-incl_kstrg
+  Baris 39 | Layar Seleksi | SELECTION-SCREEN SKIP 1.
+  Baris 40 | Layar Seleksi | PARAMETERS:
+  Baris 41 | Field DDIC | lko74-aufgr
+  Baris 42 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK sender_selection.
+
+RKCOSEI3.abap
+
+RKCOSEI4.abap
+  Baris 22 | Field DDIC | rsvar-variant
+  Baris 25 | Field DDIC | lko74-kokrs
+  Baris 189 | Field DDIC | tj01-vrgng
+  Baris 266 | Field DDIC | tka01-kokrs
+  Baris 267 | Field DDIC | tka01-kokrs
+  Baris 268 | Field DDIC | aufk-werks
+  Baris 289 | Field DDIC | lko74-werks
+  Baris 292 | Tipe DDIC | t001w
+  Baris 326 | Field DDIC | tka01-kokrs
+  Baris 379 | Field DDIC | tka01-kokrs
+  Baris 380 | Field DDIC | tka01-kokrs
+  Baris 381 | Field DDIC | aufk-werks
+  Baris 297 | Sumber data pada SELECT atau JOIN | T001W
+  Baris 26 | Function module | K_KOKRS_SET
+  Baris 217 | Function module | ICON_CREATE
+  Baris 351 | Function module | HELP_VALUES_GET_WITH_TABLE
+  Baris 386 | Function module | SPTA_RFC_CONTEXT_DETECT
+  Baris 398 | Function module | RM_KOKRS_TO_PLANT_FIND
+  Baris 470 | Function module | SELECT_OPTIONS_RESTRICT
+
+RKKKS0D1.abap
+  Baris 4 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK PARAMETERS
+  Baris 5 | Teks Seleksi | TEXT-101
+  Baris 6 | Layar Seleksi | PARAMETERS: PA_POPER  LIKE KKS00-POPER MEMORY ID VPE OBLIGATORY,
+  Baris 6 | Field DDIC | KKS00-POPER
+  Baris 7 | Field DDIC | KKS00-GJAHR
+  Baris 8 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 10 | Layar Seleksi | PARAMETERS: PA_AWVAL LIKE KKS00-AWVAL RADIOBUTTON GROUP VERS
+  Baris 10 | Field DDIC | KKS00-AWVAL
+  Baris 12 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(28)  SA_AWVAL FOR FIELD PA_AWVAL.
+  Baris 13 | Layar Seleksi | SELECTION-SCREEN COMMENT 33(47) SA_VSALL FOR FIELD PA_AWVAL.
+  Baris 14 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 15 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 16 | Layar Seleksi | PARAMETERS: PA_AWVSE  LIKE KKS00-AWVSE RADIOBUTTON GROUP VERS.
+  Baris 16 | Field DDIC | KKS00-AWVSE
+  Baris 17 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(28)  SA_AWVSE FOR FIELD PA_AWVSE.
+  Baris 19 | Layar Seleksi | SELECTION-SCREEN COMMENT 33(15) SA_VSSEL FOR FIELD PA_AWVSE.
+  Baris 20 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON 52(28) PB_AWVSE USER-COMMAND AVER.
+  Baris 21 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 22 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK PARAMETERS.
+  Baris 24 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK PROCESSING_OPTIONS
+  Baris 25 | Teks Seleksi | TEXT-102
+  Baris 26 | Layar Seleksi | PARAMETERS: PA_TESTL  LIKE KKS00-TESTL DEFAULT 'X'.
+  Baris 26 | Field DDIC | KKS00-TESTL
+  Baris 28 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 29 | Layar Seleksi | PARAMETERS: PA_LISTF  LIKE KKS00-LISTF USER-COMMAND LIOK.
+  Baris 29 | Field DDIC | KKS00-LISTF
+  Baris 30 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(28)  SA_LISTF FOR FIELD PA_LISTF.
+  Baris 31 | Layar Seleksi | SELECTION-SCREEN PUSHBUTTON 33(30) PB_LISTF USER-COMMAND LIST.
+  Baris 32 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 33 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK PROCESSING_OPTIONS.
+  Baris 46 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK SECRET_FIELDS
+  Baris 47 | Teks Seleksi | TEXT-110
+  Baris 48 | Layar Seleksi | PARAMETERS: PA_VSSEL  LIKE KKS00-VSSEL NO-DISPLAY.
+  Baris 48 | Field DDIC | KKS00-VSSEL
+  Baris 49 | Layar Seleksi | PARAMETERS: P_KKS00C  LIKE KKS00C NO-DISPLAY.
+  Baris 50 | Layar Seleksi | PARAMETERS: PA_TSTKZ  LIKE KKS00-TSTKZ NO-DISPLAY.
+  Baris 50 | Field DDIC | KKS00-TSTKZ
+  Baris 51 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK SECRET_FIELDS.
+  Baris 27 | INCLUDE | RKRFCGROUPINC_PARAMS
+  Baris 44 | INCLUDE | RKRFCGROUPINC_EVENTS
+
+RKRFCGROUPINC_PARAMS.abap
+  Baris 5 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK _rfcgroup.
+  Baris 6 | Layar Seleksi | SELECTION-SCREEN   BEGIN OF LINE.
+  Baris 7 | Layar Seleksi | PARAMETERS:  rfcproc TYPE co_para_processing  AS CHECKBOX
+  Baris 9 | Layar Seleksi | SELECTION-SCREEN     COMMENT 3(28) rfcproct FOR FIELD rfcproc.
+  Baris 10 | Layar Seleksi | SELECTION-SCREEN POSITION pos_low.
+  Baris 11 | Layar Seleksi | SELECTION-SCREEN   PUSHBUTTON (40) rfcpbt1
+  Baris 14 | Layar Seleksi | SELECTION-SCREEN   END OF LINE.
+  Baris 15 | Layar Seleksi | SELECTION-SCREEN   BEGIN OF LINE.
+  Baris 16 | Layar Seleksi | SELECTION-SCREEN COMMENT 4(28) rfcgrt FOR FIELD rfcgroup.
+  Baris 17 | Layar Seleksi | SELECTION-SCREEN POSITION pos_low.
+  Baris 18 | Layar Seleksi | PARAMETERS:  rfcgroup TYPE spta_rfcgr.
+  Baris 19 | Layar Seleksi | SELECTION-SCREEN   END OF LINE.
+  Baris 20 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK _rfcgroup.
+
+RKRFCGROUPINC_EVENTS.abap
+  Baris 223 | Field DDIC | sy-tabix
+  Baris 111 | Sumber data pada SELECT atau JOIN | RZLLITAB
+  Baris 49 | Function module | ICON_CREATE
+  Baris 246 | Function module | HELP_VALUES_GET_WITH_TABLE
+
+RKKKS0O1.abap
+  Baris 83 | Tipe DDIC | ta_kv20a
+  Baris 117 | Teks Seleksi | text-I01
+  Baris 120 | Teks Seleksi | text-I01
+  Baris 124 | Teks Seleksi | text-I02
+  Baris 127 | Teks Seleksi | text-I02
+  Baris 193 | Tipe DDIC | ta_kv20a
+  Baris 64 | Function module | K_PERIODS_GET
+  Baris 161 | Function module | K_VARIANCES_BATCH_CONFIG_46A
+  Baris 178 | Function module | K_VARIANCE_VERSION_SELECT
+  Baris 214 | Function module | K_TEST_MODE_SET
+  Baris 244 | Function module | FB0C_LIMIT_PROCESS
+
+RKKKS0I1.abap
+  Baris 10 | Tipe DDIC | IT_SENDER
+  Baris 13 | Function module | K_OBJECT_SELECTION_CRIT_FILL

@@ -1,0 +1,429 @@
+﻿Input: ZVLMOVE2
+Source SAP development (RFC baca-saja): ZHUI_TRS_HU_DP2
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  ZHUI_TRS_HU_DP2_I01:12 | Konteks perlu ditinjau | PERFORM F_GET_TYPE_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_I01:104 | WHEN 'EXE1'. > IF SY-SUBRC NE 0. | MESSAGE 'No Authorization to process data' TYPE 'W'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_I01:108 | WHEN 'EXE1'. > ELSE. | PERFORM EXECUTE1. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_I01:127 | WHEN 'EXE2'. | PERFORM F_TRANSFERHU. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_I01:145 | WHEN 'EXE3'. | PERFORM F_TRANSFERHU. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_I01:164 | WHEN 'EXE4'. | PERFORM F_TRANSFERHU. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:167 | FORM F_FIELD_CATALOG > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X' ). | PERFORM F_ALV_FIELDCATG_ICON USING 'ITDATA' : | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:176 | FORM F_FIELD_CATALOG > ELSE. | PERFORM F_ALV_FIELDCATG_ICON USING 'ITDATA' : | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:364 | FORM F_GETLAYOUT | PERFORM F_FIELD_CATALOG. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:365 | FORM F_GETLAYOUT | PERFORM F_LAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:366 | FORM F_GETLAYOUT | PERFORM SET_CELL_COLOURS. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:367 | FORM F_GETLAYOUT | PERFORM F_LIST_DETAIL. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:385 | WHEN 'GO'. > IF TSLOC IS INITIAL. | MESSAGE 'Please input target SLoc' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:391 | WHEN 'GO'. > ELSE. > IF ITDATA-KET <> ''. | MESSAGE 'Transfer HU sudah dilakukan sebelumnya' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:394 | WHEN 'GO'. > ELSE. > ELSE. | PERFORM PENERIMAAN_BARANG. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:492 | FORM F_TRANSFERHU | PERFORM GET_HUPLANT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:498 | FORM F_TRANSFERHU > IF ( WTGN = 'X' OR KTGN = 'X'). > IF WTGN = 'X'. > IF ZHUW[] IS INITIAL. | MESSAGE 'Please input HU Number!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:500 | FORM F_TRANSFERHU > IF ( WTGN = 'X' OR KTGN = 'X'). > IF WTGN = 'X'. > ELSE. | PERFORM F_TRANSFER_TO_GUDANG_NONWM. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:505 | FORM F_TRANSFERHU > IF ( WTGN = 'X' OR KTGN = 'X'). > ELSEIF KTGN = 'X' . > IF ZHUK[] IS INITIAL. | MESSAGE 'Please input HU Number!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:507 | FORM F_TRANSFERHU > IF ( WTGN = 'X' OR KTGN = 'X'). > ELSEIF KTGN = 'X' . > ELSE. | PERFORM F_TRANSFER_TO_GUDANG_NONWM. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:515 | FORM F_TRANSFERHU > ELSEIF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X'). > IF ( WTJ = 'X' OR  WTK = 'X' ). > IF ZHUW[] IS INITIAL. | MESSAGE 'Please input HU Number!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:517 | FORM F_TRANSFERHU > ELSEIF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X'). > IF ( WTJ = 'X' OR  WTK = 'X' ). > ELSE. | PERFORM F_TRANSFER_ANTAR_AREA. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:522 | FORM F_TRANSFERHU > ELSEIF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X'). > ELSEIF ( KTJ = 'X' OR KTW = 'X' ) . > IF ZHUK[] IS INITIAL. | MESSAGE 'Please input HU Number!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:524 | FORM F_TRANSFERHU > ELSEIF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X'). > ELSEIF ( KTJ = 'X' OR KTW = 'X' ) . > ELSE. | PERFORM F_TRANSFER_ANTAR_AREA. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:529 | FORM F_TRANSFERHU > ELSEIF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X'). > ELSEIF ( JTK = 'X'  OR JTW = 'X' ). > IF ZHUJ[] IS INITIAL. | MESSAGE 'Please input HU Number!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:531 | FORM F_TRANSFERHU > ELSEIF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X'). > ELSEIF ( JTK = 'X'  OR JTW = 'X' ). > ELSE. | PERFORM F_TRANSFER_ANTAR_AREA. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:539 | FORM F_TRANSFERHU > ELSEIF ( WTGI = 'X' OR KTGI = 'X' OR JTGI = 'X' ). > IF WTGI = 'X'. > IF ZHUW[] IS INITIAL. | MESSAGE 'Please input HU Number!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:541 | FORM F_TRANSFERHU > ELSEIF ( WTGI = 'X' OR KTGI = 'X' OR JTGI = 'X' ). > IF WTGI = 'X'. > ELSE. | PERFORM   F_TRANSFER_FOR_GI_SALES. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:546 | FORM F_TRANSFERHU > ELSEIF ( WTGI = 'X' OR KTGI = 'X' OR JTGI = 'X' ). > ELSEIF KTGI = 'X' . > IF ZHUK[] IS INITIAL. | MESSAGE 'Please input HU Number!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:548 | FORM F_TRANSFERHU > ELSEIF ( WTGI = 'X' OR KTGI = 'X' OR JTGI = 'X' ). > ELSEIF KTGI = 'X' . > ELSE. | PERFORM   F_TRANSFER_FOR_GI_SALES. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:553 | FORM F_TRANSFERHU > ELSEIF ( WTGI = 'X' OR KTGI = 'X' OR JTGI = 'X' ). > ELSEIF JTGI = 'X' . > IF ZHUJ[] IS INITIAL. | MESSAGE 'Please input HU Number!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:555 | FORM F_TRANSFERHU > ELSEIF ( WTGI = 'X' OR KTGI = 'X' OR JTGI = 'X' ). > ELSEIF JTGI = 'X' . > ELSE. | PERFORM   F_TRANSFER_FOR_GI_SALES. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:564 | FORM F_TRANSFERHU > ELSEIF ( KPB = 'X' OR KTS = 'X' OR JPB = 'X' OR JTS = 'X' OR WPB = 'X' OR WTS = 'X' ). > IF ( WPB = 'X' OR WTS = 'X' ). > IF ZHUW[] IS INITIAL. | MESSAGE 'Please input HU Number!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:566 | FORM F_TRANSFERHU > ELSEIF ( KPB = 'X' OR KTS = 'X' OR JPB = 'X' OR JTS = 'X' OR WPB = 'X' OR WTS = 'X' ). > IF ( WPB = 'X' OR WTS = 'X' ). > ELSE. | PERFORM F_TRANSFER_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:571 | FORM F_TRANSFERHU > ELSEIF ( KPB = 'X' OR KTS = 'X' OR JPB = 'X' OR JTS = 'X' OR WPB = 'X' OR WTS = 'X' ). > ELSEIF ( KPB = 'X' OR KTS = 'X' ). > IF ZHUK[] IS INITIAL. | MESSAGE 'Please input HU Number!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:573 | FORM F_TRANSFERHU > ELSEIF ( KPB = 'X' OR KTS = 'X' OR JPB = 'X' OR JTS = 'X' OR WPB = 'X' OR WTS = 'X' ). > ELSEIF ( KPB = 'X' OR KTS = 'X' ). > ELSE. | PERFORM F_TRANSFER_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:578 | FORM F_TRANSFERHU > ELSEIF ( KPB = 'X' OR KTS = 'X' OR JPB = 'X' OR JTS = 'X' OR WPB = 'X' OR WTS = 'X' ). > ELSEIF ( JPB = 'X' OR JTS = 'X' ). > IF ZHUJ[] IS INITIAL. | MESSAGE 'Please input HU Number!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:580 | FORM F_TRANSFERHU > ELSEIF ( KPB = 'X' OR KTS = 'X' OR JPB = 'X' OR JTS = 'X' OR WPB = 'X' OR WTS = 'X' ). > ELSEIF ( JPB = 'X' OR JTS = 'X' ). > ELSE. | PERFORM F_TRANSFER_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:621 | FORM F_TRANSFER_TO_GUDANG_NONWM | PERFORM F_GET_TYPE_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:622 | FORM F_TRANSFER_TO_GUDANG_NONWM | PERFORM F_GET_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:917 | FORM F_TRANSFER_TO_GUDANG_NONWM > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_DYNPRO      USING 'RHU_GOODS_MOVEMENT_CANCEL' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:918 | FORM F_TRANSFER_TO_GUDANG_NONWM > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:920 | FORM F_TRANSFER_TO_GUDANG_NONWM > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:922 | FORM F_TRANSFER_TO_GUDANG_NONWM > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_PSTDA' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:924 | FORM F_TRANSFER_TO_GUDANG_NONWM > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_MBLNR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:926 | FORM F_TRANSFER_TO_GUDANG_NONWM > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_MJAHR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:929 | FORM F_TRANSFER_TO_GUDANG_NONWM > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:948 | FORM F_TRANSFER_TO_GUDANG_NONWM > IF SY-SUBRC = 0. > IF VLINE = 1. | MESSAGE 'HU Not Transferred.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:950 | FORM F_TRANSFER_TO_GUDANG_NONWM > IF SY-SUBRC = 0. > ELSE. | MESSAGE 'All HU are Not Transferred.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:956 | FORM F_TRANSFER_TO_GUDANG_NONWM > IF ITDATA[] IS INITIAL. | MESSAGE 'No Data Exist!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:958 | FORM F_TRANSFER_TO_GUDANG_NONWM > ELSE. | PERFORM F_GETLAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1003 | FORM F_TRANSFER_FOR_GI_SALES | PERFORM F_GET_TYPE_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1004 | FORM F_TRANSFER_FOR_GI_SALES | PERFORM F_GET_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1322 | FORM F_TRANSFER_FOR_GI_SALES > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_DYNPRO      USING 'RHU_GOODS_MOVEMENT_CANCEL' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1323 | FORM F_TRANSFER_FOR_GI_SALES > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1325 | FORM F_TRANSFER_FOR_GI_SALES > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1327 | FORM F_TRANSFER_FOR_GI_SALES > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_PSTDA' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1329 | FORM F_TRANSFER_FOR_GI_SALES > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_MBLNR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1331 | FORM F_TRANSFER_FOR_GI_SALES > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_MJAHR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1334 | FORM F_TRANSFER_FOR_GI_SALES > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1353 | FORM F_TRANSFER_FOR_GI_SALES > IF SY-SUBRC = 0. > IF VLINE = 1. | MESSAGE 'HU Not Transferred.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1355 | FORM F_TRANSFER_FOR_GI_SALES > IF SY-SUBRC = 0. > ELSE. | MESSAGE 'All HU are Not Transferred.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1360 | FORM F_TRANSFER_FOR_GI_SALES > IF ITDATA[] IS INITIAL. | MESSAGE 'No Data Exist!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1362 | FORM F_TRANSFER_FOR_GI_SALES > ELSE. | PERFORM F_GETLAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1420 | FORM PENERIMAAN_BARANG | PERFORM F_GET_TYPE_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1421 | FORM PENERIMAAN_BARANG | PERFORM F_GET_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1836 | FORM PENERIMAAN_BARANG > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_DYNPRO      USING 'RHU_GOODS_MOVEMENT_CANCEL' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1837 | FORM PENERIMAAN_BARANG > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1839 | FORM PENERIMAAN_BARANG > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1841 | FORM PENERIMAAN_BARANG > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_PSTDA' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1843 | FORM PENERIMAAN_BARANG > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_MBLNR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1845 | FORM PENERIMAAN_BARANG > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_MJAHR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1848 | FORM PENERIMAAN_BARANG > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1867 | FORM PENERIMAAN_BARANG > IF SY-SUBRC = 0. > IF VLINE = 1. | MESSAGE 'HU Not Transferred.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1869 | FORM PENERIMAAN_BARANG > IF SY-SUBRC = 0. > ELSE. | MESSAGE 'All HU are Not Transferred.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1884 | FORM PENERIMAAN_BARANG > IF ITDATA[] IS INITIAL. | MESSAGE 'No Data Exist!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1886 | FORM PENERIMAAN_BARANG > ELSE. | PERFORM F_GETLAYOUT. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:1932 | FORM F_TRANSFER_ANTAR_AREA | PERFORM F_GET_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2176 | FORM F_TRANSFER_ANTAR_AREA > IF VSTAT = 'F'. | MESSAGE 'All HU are not transfered.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2275 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_DYNPRO      USING 'RHU_GOODS_MOVEMENT_CANCEL' '1000'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2276 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2278 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2280 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_PSTDA' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2282 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_MBLNR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2284 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | PERFORM BDC_FIELD       USING 'SP_MJAHR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2287 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > IF SY-SUBRC = 0. > IF ITDATA-MATDOC NE '-'. | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2307 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > IF SY-SUBRC = 0. > IF VLINE = 1. | MESSAGE 'HU Not Transferred.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2309 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > IF SY-SUBRC = 0. > ELSE. | MESSAGE 'All HU are Not Transferred.' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2322 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. | PERFORM F_GET_TYPE_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2323 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. | PERFORM F_GET_SLOC. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2377 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > IF WTK = 'X' OR WTJ = 'X' OR KTW = 'X' OR JTW = 'X'. | PERFORM BDC_DYNPRO      USING 'SAPLLE_MOV' '2000'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2378 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > IF WTK = 'X' OR WTJ = 'X' OR KTW = 'X' OR JTW = 'X'. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2380 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > IF WTK = 'X' OR WTJ = 'X' OR KTW = 'X' OR JTW = 'X'. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2382 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > IF WTK = 'X' OR WTJ = 'X' OR KTW = 'X' OR JTW = 'X'. | PERFORM BDC_FIELD       USING 'LEMOVHUS-HUWBEVENT' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2384 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > IF WTK = 'X' OR WTJ = 'X' OR KTW = 'X' OR JTW = 'X'. | PERFORM BDC_DYNPRO      USING 'SAPLLE_MOV' '2000'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2385 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > IF WTK = 'X' OR WTJ = 'X' OR KTW = 'X' OR JTW = 'X'. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2387 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > IF WTK = 'X' OR WTJ = 'X' OR KTW = 'X' OR JTW = 'X'. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2389 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > IF WTK = 'X' OR WTJ = 'X' OR KTW = 'X' OR JTW = 'X'. | PERFORM BDC_FIELD       USING 'LEMOVHUS-EXIDV' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2391 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > IF WTK = 'X' OR WTJ = 'X' OR KTW = 'X' OR JTW = 'X'. | PERFORM BDC_FIELD       USING 'LEMOVHUS-WERKS' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2393 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > IF WTK = 'X' OR WTJ = 'X' OR KTW = 'X' OR JTW = 'X'. | PERFORM BDC_FIELD       USING 'LEMOVHUS-LGORT' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2398 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > ELSE. | PERFORM BDC_DYNPRO      USING 'SAPLLE_MOV' '2000'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2399 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2401 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2404 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'LEMOVHUS-HUWBEVENT' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2406 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > ELSE. | PERFORM BDC_DYNPRO      USING 'SAPLLE_MOV' '2000'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2407 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_OKCODE' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2409 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'BDC_CURSOR' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2412 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'LEMOVHUS-HUWBEVENT' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2414 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'LEMOVHUS-EXIDV' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2416 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . > ELSE. > ELSE. | PERFORM BDC_FIELD       USING 'LEMOVHUS-LGORT' | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2427 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . | PERFORM BDC_DYNPRO      USING 'SAPLLE_MOV' '2000'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2428 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . | PERFORM BDC_FIELD       USING 'BDC_OKCODE' '=TCCR'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2431 | FORM F_TRANSFER_ANTAR_AREA > ELSE. > ELSE. > IF ( WTJ = 'X' OR  WTK = 'X' OR KTJ = 'X' OR KTW = 'X' OR JTK = 'X'  OR JTW = 'X') . | CALL TRANSACTION 'VLMOVE' USING IT_BDCDATA | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2523 | FORM F_TRANSFER_ANTAR_AREA > IF ITDATA[] IS INITIAL. | MESSAGE 'No Data Exist!' TYPE 'I'. | Tinjau kondisi dan hasil di ECC.
+  ZHUI_TRS_HU_DP2_F01:2525 | FORM F_TRANSFER_ANTAR_AREA > ELSE. | PERFORM F_GETLAYOUT. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek ZHUI_TRS_HU_DP2 (25 baris)
+  21 | includes | ZABAPALV
+  22 | includes | ZHUI_TRS_HU_DP2_TOP
+  23 | includes | ZHUI_TRS_HU_DP2_F01
+  24 | includes | ZHUI_TRS_HU_DP2_O01
+  25 | includes | ZHUI_TRS_HU_DP2_I01
+
+Objek ZHUI_TRS_HU_DP2_I01 (169 baris)
+  123 | Layar dan GUI | LEAVE TO SCREEN 0.
+  141 | Layar dan GUI | LEAVE TO SCREEN 0.
+  160 | Layar dan GUI | LEAVE TO SCREEN 0.
+  66 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  25 | tableReads | ZHU_MAPP
+  58 | tableReads | T001L
+
+Objek ZHUI_TRS_HU_DP2_O01 (45 baris)
+  11 | Layar dan GUI | SET PF-STATUS 'PF100'.
+  12 | Layar dan GUI | SET TITLEBAR  'T100'.
+  19 | Layar dan GUI | SET PF-STATUS 'PF200'.
+  20 | Layar dan GUI | SET TITLEBAR  'T200'.
+  27 | Layar dan GUI | SET PF-STATUS 'PF300'.
+  28 | Layar dan GUI | SET TITLEBAR  'T300'.
+  35 | Layar dan GUI | SET PF-STATUS 'PF400'.
+  36 | Layar dan GUI | SET TITLEBAR  'T400'.
+  43 | Layar dan GUI | SET PF-STATUS 'PF500'.
+  44 | Layar dan GUI | SET TITLEBAR  'T500'.
+
+Objek ZHUI_TRS_HU_DP2_F01 (2695 baris)
+  5 | Layar dan GUI | CALL SCREEN 100.
+  16 | Layar dan GUI | CALL SCREEN 200.
+  21 | Layar dan GUI | CALL SCREEN 300.
+  26 | Layar dan GUI | CALL SCREEN 400.
+  192 | Field DDIC | SY-UCOMM
+  205 | Field DDIC | SY-TABIX
+  277 | Field DDIC | WA_HEADER-INFO
+  382 | Layar dan GUI | LEAVE TO SCREEN 0.
+  439 | Layar dan GUI | CALL SCREEN 500.
+  830 | Class dan Interface | IF_EVENT
+  831 | Class dan Interface | IF_TCODE
+  929 | BDC | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA
+  1228 | Class dan Interface | IF_EVENT
+  1230 | Class dan Interface | IF_EVENT
+  1235 | Class dan Interface | IF_EVENT
+  1235 | Class dan Interface | IF_EVENT
+  1236 | Class dan Interface | IF_TCODE
+  1334 | BDC | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA
+  1381 | Field DDIC | BAPI2017_GM_HEAD_RET-MAT_DOC
+  1655 | Class dan Interface | IF_EVENT
+  1657 | Class dan Interface | IF_EVENT
+  1659 | Class dan Interface | IF_EVENT
+  1664 | Class dan Interface | IF_EVENT
+  1664 | Class dan Interface | IF_EVENT
+  1665 | Class dan Interface | IF_TCODE
+  1848 | BDC | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA
+  2198 | Class dan Interface | IF_EVENT
+  2199 | Class dan Interface | IF_TCODE
+  2287 | BDC | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA
+  2431 | BDC | CALL TRANSACTION 'VLMOVE' USING IT_BDCDATA
+  2617 | Field DDIC | VEKP-EXIDV
+  2620 | Field DDIC | SY-MSGID
+  2621 | Field DDIC | SY-MSGTY
+  2622 | Field DDIC | SY-MSGNO
+  2623 | Field DDIC | SY-MSGV1
+  2624 | Field DDIC | SY-MSGV2
+  2625 | Field DDIC | SY-MSGV3
+  2626 | Field DDIC | SY-MSGV4
+  2627 | Field DDIC | MESG-ZEILE
+  2692 | Layar dan GUI | LEAVE TO SCREEN 0.
+  350 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  814 | callFunctions | CONVERSION_EXIT_ALPHA_INPUT
+  828 | callFunctions | HU_CREATE_GOODS_MOVEMENT
+  859 | callFunctions | BAPI_TRANSACTION_COMMIT
+  1784 | callFunctions | BAPI_GOODSMVT_CREATE
+  1798 | callFunctions | BAPI_TRANSACTION_ROLLBACK
+  2588 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  2654 | callFunctions | HU_GET_HUS_DB
+  2688 | callFunctions | C14Z_MESSAGES_SHOW_AS_POPUP
+  929 | callTransactions | HUCANC
+  2431 | callTransactions | VLMOVE
+  43 | tableReads | ZHU_MAPP
+  600 | tableReads | VEKP
+  600 | tableReads | VEPO
+  765 | tableReads | TJ30T
+  765 | tableReads | HUSTOBJ
+  765 | tableReads | HUSSTAT
+  787 | tableReads | ZQM001
+  868 | tableReads | ZPACK_PCL
+  1698 | tableReads | ZPALLETR
+  1711 | tableReads | ZMAP_TYPE
+  1737 | tableReads | MCH1
+  1742 | tableReads | MARA
+  1745 | tableReads | MCHB
+  2475 | tableReads | LIPS
+  870 | databaseWrites | ZPACK_PCL
+
+Objek ZHUI_TRS_HU_DP2_TOP (143 baris)
+  5 | Tipe DDIC | VEKP
+  9 | Field DDIC | VEKP-EXIDV
+  10 | Field DDIC | VEPO-LGORT
+  11 | Field DDIC | VEPO-WERKS
+  12 | Field DDIC | VEPO-LGORT
+  13 | Field DDIC | VEPO-WERKS
+  21 | Field DDIC | LIKP-VBELN
+  22 | Field DDIC | LIPS-CHARG
+  27 | Field DDIC | VEPO-VENUM
+  28 | Field DDIC | VEKP-EXIDV
+  39 | Field DDIC | ZHU_MAPP-LGOR1
+  40 | Field DDIC | T001L-LGOBE
+  48 | Field DDIC | ZHU_MAPP-TYPES
+  49 | Field DDIC | VEPO-LGORT
+  62 | Field DDIC | VEKP-VENUM
+  63 | Field DDIC | HUSTOBJ-OBJNR
+  64 | Field DDIC | TJ30T-TXT04
+  65 | Field DDIC | VEPO-MATNR
+  68 | BDC | BDCDATA
+  78 | Field DDIC | SY-UCOMM
+  81 | Field DDIC | VEPO-UNVEL
+  82 | Field DDIC | ZQM001-PSTAT
+  83 | Field DDIC | VEPO-WERKS
+  84 | Field DDIC | VEPO-WERKS
+  85 | Field DDIC | VEPO-LGORT
+  87 | Field DDIC | VEPO-CHARG
+  88 | Field DDIC | ZQM001-AEDAT
+  89 | Field DDIC | ZQM001-AETIME
+  92 | Class dan Interface | IF_EVENT
+  93 | Class dan Interface | IF_TCODE
+  112 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 210 AS SUBSCREEN.
+  113 | Layar Seleksi | SELECT-OPTIONS : ZHUW FOR VEKP-EXIDV.
+  113 | Field DDIC | VEKP-EXIDV
+  114 | Layar Seleksi | PARAMETERS     : WTGN RADIOBUTTON GROUP RAD DEFAULT 'X',
+  120 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 210.
+  123 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 310 AS SUBSCREEN.
+  124 | Layar Seleksi | SELECT-OPTIONS : ZHUK FOR VEKP-EXIDV.
+  124 | Field DDIC | VEKP-EXIDV
+  125 | Layar Seleksi | PARAMETERS     : KTGN RADIOBUTTON GROUP RAD1 DEFAULT 'X',
+  131 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 310.
+  135 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 410 AS SUBSCREEN.
+  136 | Layar Seleksi | SELECT-OPTIONS : ZHUJ FOR VEKP-EXIDV.
+  136 | Field DDIC | VEKP-EXIDV
+  137 | Layar Seleksi | PARAMETERS     :
+  143 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 410.
+
+Objek ZABAPALV (660 baris)
+  7 | Field DDIC | SY-REPID
+  27 | Field DDIC | SY-DATUM
+  28 | Field DDIC | SY-DATUM
+  559 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+Jumlah source terbaca: 6
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+ZHUI_TRS_HU_DP2.abap
+  Baris 21 | INCLUDE | ZABAPALV
+  Baris 22 | INCLUDE | ZHUI_TRS_HU_DP2_TOP
+  Baris 23 | INCLUDE | ZHUI_TRS_HU_DP2_F01
+  Baris 24 | INCLUDE | ZHUI_TRS_HU_DP2_O01
+  Baris 25 | INCLUDE | ZHUI_TRS_HU_DP2_I01
+
+ZABAPALV.abap
+  Baris 7 | Field DDIC | SY-REPID
+  Baris 27 | Field DDIC | SY-DATUM
+  Baris 28 | Field DDIC | SY-DATUM
+  Baris 559 | Function module | REUSE_ALV_COMMENTARY_WRITE
+
+ZHUI_TRS_HU_DP2_TOP.abap
+  Baris 5 | Tipe DDIC | VEKP
+  Baris 9 | Field DDIC | VEKP-EXIDV
+  Baris 10 | Field DDIC | VEPO-LGORT
+  Baris 11 | Field DDIC | VEPO-WERKS
+  Baris 12 | Field DDIC | VEPO-LGORT
+  Baris 13 | Field DDIC | VEPO-WERKS
+  Baris 21 | Field DDIC | LIKP-VBELN
+  Baris 22 | Field DDIC | LIPS-CHARG
+  Baris 27 | Field DDIC | VEPO-VENUM
+  Baris 28 | Field DDIC | VEKP-EXIDV
+  Baris 39 | Field DDIC | ZHU_MAPP-LGOR1
+  Baris 40 | Field DDIC | T001L-LGOBE
+  Baris 48 | Field DDIC | ZHU_MAPP-TYPES
+  Baris 49 | Field DDIC | VEPO-LGORT
+  Baris 62 | Field DDIC | VEKP-VENUM
+  Baris 63 | Field DDIC | HUSTOBJ-OBJNR
+  Baris 64 | Field DDIC | TJ30T-TXT04
+  Baris 65 | Field DDIC | VEPO-MATNR
+  Baris 68 | BDC | BDCDATA
+  Baris 78 | Field DDIC | SY-UCOMM
+  Baris 81 | Field DDIC | VEPO-UNVEL
+  Baris 82 | Field DDIC | ZQM001-PSTAT
+  Baris 83 | Field DDIC | VEPO-WERKS
+  Baris 84 | Field DDIC | VEPO-WERKS
+  Baris 85 | Field DDIC | VEPO-LGORT
+  Baris 87 | Field DDIC | VEPO-CHARG
+  Baris 88 | Field DDIC | ZQM001-AEDAT
+  Baris 89 | Field DDIC | ZQM001-AETIME
+  Baris 92 | Class dan Interface | IF_EVENT
+  Baris 93 | Class dan Interface | IF_TCODE
+  Baris 112 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 210 AS SUBSCREEN.
+  Baris 113 | Layar Seleksi | SELECT-OPTIONS : ZHUW FOR VEKP-EXIDV.
+  Baris 113 | Field DDIC | VEKP-EXIDV
+  Baris 114 | Layar Seleksi | PARAMETERS     : WTGN RADIOBUTTON GROUP RAD DEFAULT 'X',
+  Baris 120 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 210.
+  Baris 123 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 310 AS SUBSCREEN.
+  Baris 124 | Layar Seleksi | SELECT-OPTIONS : ZHUK FOR VEKP-EXIDV.
+  Baris 124 | Field DDIC | VEKP-EXIDV
+  Baris 125 | Layar Seleksi | PARAMETERS     : KTGN RADIOBUTTON GROUP RAD1 DEFAULT 'X',
+  Baris 131 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 310.
+  Baris 135 | Layar Seleksi | SELECTION-SCREEN BEGIN OF SCREEN 410 AS SUBSCREEN.
+  Baris 136 | Layar Seleksi | SELECT-OPTIONS : ZHUJ FOR VEKP-EXIDV.
+  Baris 136 | Field DDIC | VEKP-EXIDV
+  Baris 137 | Layar Seleksi | PARAMETERS     :
+  Baris 143 | Layar Seleksi | SELECTION-SCREEN END OF SCREEN 410.
+
+ZHUI_TRS_HU_DP2_F01.abap
+  Baris 5 | Layar dan GUI | CALL SCREEN 100.
+  Baris 16 | Layar dan GUI | CALL SCREEN 200.
+  Baris 21 | Layar dan GUI | CALL SCREEN 300.
+  Baris 26 | Layar dan GUI | CALL SCREEN 400.
+  Baris 192 | Field DDIC | SY-UCOMM
+  Baris 205 | Field DDIC | SY-TABIX
+  Baris 277 | Field DDIC | WA_HEADER-INFO
+  Baris 382 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 439 | Layar dan GUI | CALL SCREEN 500.
+  Baris 830 | Class dan Interface | IF_EVENT
+  Baris 831 | Class dan Interface | IF_TCODE
+  Baris 929 | BDC | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA
+  Baris 1228 | Class dan Interface | IF_EVENT
+  Baris 1230 | Class dan Interface | IF_EVENT
+  Baris 1235 | Class dan Interface | IF_EVENT
+  Baris 1235 | Class dan Interface | IF_EVENT
+  Baris 1236 | Class dan Interface | IF_TCODE
+  Baris 1334 | BDC | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA
+  Baris 1381 | Field DDIC | BAPI2017_GM_HEAD_RET-MAT_DOC
+  Baris 1655 | Class dan Interface | IF_EVENT
+  Baris 1657 | Class dan Interface | IF_EVENT
+  Baris 1659 | Class dan Interface | IF_EVENT
+  Baris 1664 | Class dan Interface | IF_EVENT
+  Baris 1664 | Class dan Interface | IF_EVENT
+  Baris 1665 | Class dan Interface | IF_TCODE
+  Baris 1848 | BDC | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA
+  Baris 2198 | Class dan Interface | IF_EVENT
+  Baris 2199 | Class dan Interface | IF_TCODE
+  Baris 2287 | BDC | CALL TRANSACTION 'HUCANC' USING IT_BDCDATA
+  Baris 2431 | BDC | CALL TRANSACTION 'VLMOVE' USING IT_BDCDATA
+  Baris 2617 | Field DDIC | VEKP-EXIDV
+  Baris 2620 | Field DDIC | SY-MSGID
+  Baris 2621 | Field DDIC | SY-MSGTY
+  Baris 2622 | Field DDIC | SY-MSGNO
+  Baris 2623 | Field DDIC | SY-MSGV1
+  Baris 2624 | Field DDIC | SY-MSGV2
+  Baris 2625 | Field DDIC | SY-MSGV3
+  Baris 2626 | Field DDIC | SY-MSGV4
+  Baris 2627 | Field DDIC | MESG-ZEILE
+  Baris 2692 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 43 | Sumber data pada SELECT atau JOIN | ZHU_MAPP
+  Baris 600 | Sumber data pada SELECT atau JOIN | VEKP
+  Baris 600 | Sumber data pada SELECT atau JOIN | VEPO
+  Baris 765 | Sumber data pada SELECT atau JOIN | TJ30T
+  Baris 765 | Sumber data pada SELECT atau JOIN | HUSTOBJ
+  Baris 765 | Sumber data pada SELECT atau JOIN | HUSSTAT
+  Baris 787 | Sumber data pada SELECT atau JOIN | ZQM001
+  Baris 868 | Sumber data pada SELECT atau JOIN | ZPACK_PCL
+  Baris 1698 | Sumber data pada SELECT atau JOIN | ZPALLETR
+  Baris 1711 | Sumber data pada SELECT atau JOIN | ZMAP_TYPE
+  Baris 1737 | Sumber data pada SELECT atau JOIN | MCH1
+  Baris 1742 | Sumber data pada SELECT atau JOIN | MARA
+  Baris 1745 | Sumber data pada SELECT atau JOIN | MCHB
+  Baris 2475 | Sumber data pada SELECT atau JOIN | LIPS
+  Baris 350 | Function module | REUSE_ALV_COMMENTARY_WRITE
+  Baris 814 | Function module | CONVERSION_EXIT_ALPHA_INPUT
+  Baris 828 | Function module | HU_CREATE_GOODS_MOVEMENT
+  Baris 859 | Function module | BAPI_TRANSACTION_COMMIT
+  Baris 1784 | Function module | BAPI_GOODSMVT_CREATE
+  Baris 1798 | Function module | BAPI_TRANSACTION_ROLLBACK
+  Baris 2588 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 2654 | Function module | HU_GET_HUS_DB
+  Baris 2688 | Function module | C14Z_MESSAGES_SHOW_AS_POPUP
+  Baris 929 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | HUCANC
+  Baris 2431 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | VLMOVE
+  Baris 870 | Indikasi penulisan data (perlu konfirmasi) | ZPACK_PCL
+  Baris 871 | Kontrol transaksi | COMMIT_WORK
+  Baris 885 | Kontrol transaksi | COMMIT_WORK
+  Baris 1277 | Kontrol transaksi | COMMIT_WORK
+  Baris 1291 | Kontrol transaksi | COMMIT_WORK
+  Baris 2232 | Kontrol transaksi | COMMIT_WORK
+  Baris 2246 | Kontrol transaksi | COMMIT_WORK
+
+ZHUI_TRS_HU_DP2_O01.abap
+  Baris 11 | Layar dan GUI | SET PF-STATUS 'PF100'.
+  Baris 12 | Layar dan GUI | SET TITLEBAR  'T100'.
+  Baris 19 | Layar dan GUI | SET PF-STATUS 'PF200'.
+  Baris 20 | Layar dan GUI | SET TITLEBAR  'T200'.
+  Baris 27 | Layar dan GUI | SET PF-STATUS 'PF300'.
+  Baris 28 | Layar dan GUI | SET TITLEBAR  'T300'.
+  Baris 35 | Layar dan GUI | SET PF-STATUS 'PF400'.
+  Baris 36 | Layar dan GUI | SET TITLEBAR  'T400'.
+  Baris 43 | Layar dan GUI | SET PF-STATUS 'PF500'.
+  Baris 44 | Layar dan GUI | SET TITLEBAR  'T500'.
+
+ZHUI_TRS_HU_DP2_I01.abap
+  Baris 123 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 141 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 160 | Layar dan GUI | LEAVE TO SCREEN 0.
+  Baris 25 | Sumber data pada SELECT atau JOIN | ZHU_MAPP
+  Baris 58 | Sumber data pada SELECT atau JOIN | T001L
+  Baris 66 | Function module | F4IF_INT_TABLE_VALUE_REQUEST

@@ -2,6 +2,8 @@
 
 > Kondisi sistem (dicek 25 Nov 2026): di DEV dan sandbox-new **belum ada pemakaian IDoc**. Partner profile (EDP13/EDP21) kosong, dan tidak ada IDoc yang terbentuk sejak 2024. Yang sudah tersedia: logical system per client (mis. `TRDCLNT130`, dicatat di T000) dan basic type standar (`MATMAS05`, `ORDERS05`, `INVOIC02`, `DEBMAS07`).
 > Karena itu studi kasus ini **dibangun dari nol**, dengan tema yang sama dengan modul lain: **PO**.
+>
+> **Status 26 Nov 2026: sudah DIBANGUN dan DIUJI di sandbox-new.** Hasilnya ada di §3; langkah-langkah §2 sudah dijalankan persis.
 > Kode latihan: [../src/ZTRN_IDOC_PO_OUT.abap](../src/ZTRN_IDOC_PO_OUT.abap) (outbound) dan [../src/Z_IDOC_INPUT_ZTRN_PO.abap](../src/Z_IDOC_INPUT_ZTRN_PO.abap) (inbound). Keduanya lolos syntax check di sandbox-new memakai versi mock (`ZTRAIN_IDOC_OUT_MOCK`, `ZTRAIN_IDOC_IN_MOCK`; tipe segmen ditiru sebagai `TYPES` lokal karena segmen belum dibuat). Nama parameter `MASTER_IDOC_DISTRIBUTE` dan interface FM inbound sudah dicocokkan dengan `FUPARAREF` (interface `IDOC_INPUT_ORDERS`).
 
 ## 1. Konsep dasar (mulai dari nol)
@@ -133,9 +135,12 @@ LOOP AT idoc_contrl.                         "bisa lebih dari 1 IDoc sekaligus
   LOOP AT idoc_data WHERE docnum = idoc_contrl-docnum.
     CASE idoc_data-segnam.
       WHEN 'ZTRN_E1POHDR'. ls_hdr = idoc_data-sdata.   "teks -> struktur segmen
-      WHEN 'ZTRN_E1POITM'. ls_itm = idoc_data-sdata.   "... simpan ke ZTRN_PO_LOG
+      WHEN 'ZTRN_E1POITM'. ls_itm = idoc_data-sdata.   "... tampung ke LT_LOG
     ENDCASE.
   ENDLOOP.
+  IF lv_err IS INITIAL.                      "validasi dulu, baru tulis DB
+    MODIFY ztrn_po_log FROM TABLE lt_log.
+  ENDIF.
   idoc_status-docnum = idoc_contrl-docnum.
   idoc_status-status = '53'.                 "atau '51' bila error
   APPEND idoc_status.                        "framework yang menulis EDIDS
@@ -162,7 +167,49 @@ Tambah segmen `ZTRN_E1EDP01X` (mis. `ZLINE` production line) sebagai *extension*
 ### Bersih-bersih setelah latihan
 Hapus partner profile `ZTRNLS` (WE20), port `ZTRNFILE` (WE21), process code (WE42), dan isi `ZTRN_PO_LOG`. Segmen/basic type boleh tetap ada untuk latihan berikutnya.
 
-## 3. Pertanyaan interview yang mungkin muncul
+## 3. Hasil pembangunan dan uji di sandbox-new (25–26 Nov 2026)
+
+Screenshot: [../outputs/idoc_build_20261125/](../outputs/idoc_build_20261125/).
+
+### 3.1 Objek yang dibuat
+
+| Langkah | Objek | Cara | Hasil |
+|---|---|---|---|
+| WE31 | Segmen `ZTRN_E1POHDR` (5 field, 37 char), `ZTRN_E1POITM` (6 field, 100 char) | API `SEGMENT_CREATE` + `SEGMENTDEFINITION_CLOSE` | Released (closed = X, release 731), definisi `ZTRN_E1POHDR000` / `ZTRN_E1POITM000` |
+| WE30 | Basic type `ZTRN_PO01` | API `IDOCTYPE_CREATE` + `IDOCTYPE_CLOSE` | Released; header level 01 (1×), item level 02 (0–9999×) |
+| WE81 / WE82 | Message type `ZTRN_PO` ↔ `ZTRN_PO01` rel. 731 | SAP GUI | Tersimpan |
+| BD54 | Logical system `ZTRNLS` | SAP GUI | Tersimpan |
+| WE21 | Port file `ZTRNFILE`, direktori `/tmp/`, FM `EDI_PATH_CREATE_MESTYP_DOCNUM` | SAP GUI | Access test OK |
+| WE20 | Partner `ZTRNLS`/LS: outbound `ZTRN_PO` → `ZTRNFILE` (transfer immediately); inbound `ZTRN_PO` → process code `ZTRN_PO` (trigger immediately) | API `EDI_AGREE_PARTNER_INSERT`, `EDI_AGREE_OUT_MESSTYPE_INSERT`, `EDI_AGREE_IN_MESSTYPE_INSERT` | Tersimpan. Catatan: field status partner (`MATLVL`) wajib diisi `A` |
+| SE11 | Tabel `ZTRN_PO_LOG` | API `DDIF_TABL_PUT` + `DDIF_TABL_ACTIVATE` | Aktif |
+| SE37 | Function group `ZTRN_IDOC`, FM `Z_IDOC_INPUT_ZTRN_PO` | API `RS_FUNCTION_POOL_INSERT` + `RS_FUNCTIONMODULE_INSERT` | Generate tanpa error |
+| WE57 / BD51 / WE42 | FM ↔ `ZTRN_PO01`/`ZTRN_PO` inbound; input type 0; process code `ZTRN_PO` → FM | SAP GUI | Tersimpan |
+| SE38 | Program `ZTRN_IDOC_PO_OUT` | `Z_RFC_PROGRAM_UPDATE` | Aktif |
+
+Transport request (dibuat sendiri karena SAP menawarkan request milik user lain): **TRDK921884** (workbench: WE81, WE82, BD54, WE57, BD51) dan **TRDK921886** (customizing: WE42). Keduanya berlabel "JANGAN TRANSPORT" dan **tidak boleh** di-release.
+
+### 3.2 Hasil uji
+
+| Uji | IDoc | Riwayat status | Hasil |
+|---|---|---|---|
+| Outbound PO 4503000351 | **199012** | 01 → 30 → **03** "IDoc written to file" | File `/tmp/ZTRN_PO_00199012` berisi control record `EDI_DC40` + segmen header + item |
+| Inbound data benar | **199016** | 50 → 64 → 62 → **53** "PO 4503000351 tercatat di ZTRN_PO_LOG" | 1 baris log |
+| Inbound EBELN kosong (setelah perbaikan FM) | **199019** | 50 → 64 → 62 → **51** "Nomor PO kosong di segmen header" | 0 baris log |
+| Perbaiki data lalu proses ulang (setara edit WE02 + BD87) | **199019** | 51 → **69** (diedit TRSTDEV) → **53** | 1 baris log |
+
+Uji inbound memakai `IDOC_INBOUND_SINGLE` dengan control record pengirim `ZTRNLS` dan data segmen dari IDoc 199012. Ini mekanisme yang sama dengan WE19 → *Standard inbound*. Perbaikan data memakai `EDI_DOCUMENT_OPEN_FOR_EDIT` / `EDI_CHANGE_DATA_SEGMENT` / `EDI_DOCUMENT_CLOSE_EDIT` (yang dipakai WE02 saat segmen diedit, sehingga muncul status 69), lalu `IDOC_MANUAL_INPUT` (yang dipakai BD87).
+
+### 3.3 Bug yang ditemukan saat uji (bahan interview)
+Versi pertama FM menulis `ZTRN_PO_LOG` per segmen item **sebelum** validasi header selesai. Akibatnya IDoc error (199015, 199017) tetap meninggalkan baris log walaupun statusnya 51. Perbaikannya: item ditampung di tabel internal dan baru ditulis kalau tidak ada error. Prinsipnya: **validasi dulu, baru update database**, karena status 51 tidak otomatis membatalkan perubahan DB yang sudah dibuat FM.
+
+Sisa data uji di `ZTRN_PO_LOG` (dari IDoc 199013–199017 dan 199019) dibiarkan dan baru dihapus atas perintah Baginda.
+
+### 3.4 Uji manual yang disarankan untuk Baginda (GUI)
+1. WE02 → nomor IDoc 199012 / 199016 / 199019 → lihat control record, data record, status record.
+2. WE19 → *Existing IDoc* 199012 → ubah sender ke `ZTRNLS`/LS, receiver `TRDCLNT130`/LS → *Standard inbound*.
+3. BD87 → filter message type `ZTRN_PO` → lihat IDoc status 51 (199015, 199017) → coba proses ulang (tetap 51, karena datanya belum diperbaiki).
+
+## 4. Pertanyaan interview yang mungkin muncul
 
 1. **Apa itu IDoc dan strukturnya?** → Control (EDIDC), data (EDID4/EDIDD, segmen), status (EDIDS).
 2. **Beda message type dan basic type?** → Message type = arti bisnis (`ORDERS`); basic type = struktur teknis dan versinya (`ORDERS05`). Hubungan di WE82.

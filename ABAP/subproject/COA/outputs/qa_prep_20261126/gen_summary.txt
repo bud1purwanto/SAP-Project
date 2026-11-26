@@ -1,0 +1,24 @@
+040000139819 JRAABI   0003880871 28.08.2025 in=3 RPC,RPM,RPV                    ord=0 join=0 SR=0 stok=0  SRlot=0 SRres=0 used=0 cg=0
+040000140418 JRAABI   0003883652 11.03.2026 in=0                                ord=1 join=1 SR=2 stok=1 SRAABI SRlot=0 SRres=0 used=1 cg=0
+040000140419 JRAABI   0003883653 11.03.2026 in=0                                ord=0 join=0 SR=0 stok=0  SRlot=0 SRres=0 used=0 cg=0
+040000140420 JRAABI   0003883654 12.03.2026 in=0                                ord=5 join=1 SR=32 stok=14 SRAABI SRlot=1 SRres=0 used=0 cg=0
+040000140447 JRAABI   0003884196 11.05.2026 in=0                                ord=1 join=1 SR=1 stok=1 SRAABI SRlot=1 SRres=1 used=0 cg=0
+040000140448 JRAC2I   0003884225 12.05.2026 in=0                                ord=3 join=1 SR=26 stok=19 SRAC2I SRlot=1 SRres=1 used=1 cg=0
+040000140449 JRCGAI   0003884226 12.05.2026 in=0                                ord=1 join=1 SR=3 stok=2 SRCGAI SRlot=0 SRres=0 used=3 cg=0
+040000140500 JREWEI   0003884248 12.05.2026 in=5 SREWEA                         ord=6 join=1 SR=7 stok=0  SRlot=2 SRres=2 used=0 cg=0
+040000140690 JRAABI   0003884597 20.08.2026 in=0                                ord=0 join=0 SR=0 stok=0  SRlot=0 SRres=0 used=0 cg=0
+040000140709 JRAKSI   0003884624 20.08.2026 in=0                                ord=1 join=1 SR=2 stok=0  SRlot=0 SRres=0 used=2 cg=0
+040000140701 JRALZI   0003884608 20.08.2026 in=0                                ord=1 join=1 SR=2 stok=0  SRlot=0 SRres=0 used=2 cg=0
+040000140719 JRCADI   0003884634 20.08.2026 in=0                                ord=0 join=0 SR=0 stok=0  SRlot=0 SRres=0 used=0 cg=0
+040000140729 JRCGAI   0003884644 20.08.2026 in=0                                ord=1 join=1 SR=2 stok=0  SRlot=0 SRres=0 used=2 cg=0
+040000140735 JRVC2I   0003884650 20.08.2026 in=0                                ord=0 join=0 SR=0 stok=0  SRlot=0 SRres=0 used=0 cg=0
+040000140741 JRAH8I   0003884673 21.08.2026 in=0                                ord=1 join=1 SR=2 stok=0  SRlot=0 SRres=0 used=2 cg=0
+040000140762 JREASI   0003884762 26.08.2026 in=10 SREASA                         ord=3 join=1 SR=5 stok=5 SREASI SRlot=0 SRres=0 used=0 cg=0
+040000140749 JREWEI   0003884735 26.08.2026 in=12 SREWEA                         ord=2 join=1 SR=4 stok=4 SREWEI SRlot=0 SRres=0 used=0 cg=0
+040000140782 JRGKAI   0003884836 26.08.2026 in=6 SRGKAA                         ord=2 join=1 SR=2 stok=0  SRlot=0 SRres=0 used=2 cg=0
+040000140774 JRIA5I   0003884786 26.08.2026 in=10 SRIA5A                         ord=6 join=1 SR=12 stok=12 SRIA5I SRlot=0 SRres=0 used=0 cg=0
+040000140803 JRGIDI   0003884918 29.08.2026 in=10 SRGIDA                         ord=4 join=1 SR=6 stok=6 SRGIDI SRlot=0 SRres=0 used=0 cg=0
+040000140791 JRGLAI   0003884894 29.08.2026 in=12 SRGLAA                         ord=4 join=1 SR=7 stok=7 SRGLAI SRlot=0 SRres=0 used=0 cg=0
+040000140842 JRAABI   0003885615 10.11.2026 in=0                                ord=4 join=1 SR=9 stok=9 SRAABI SRlot=0 SRres=0 used=0 cg=0
+040000140835 JRACBI   0003885608 10.11.2026 in=0                                ord=1 join=1 SR=6 stok=6 SRACBI SRlot=0 SRres=0 used=0 cg=0
+040000140852 JRACBI   0003885625 10.11.2026 in=0                                ord=1 join=1 SR=6 stok=6 SRACBI SRlot=0 SRres=0 used=0 cg=0

@@ -1,0 +1,493 @@
+﻿Input: ZQA32B
+Source SAP development (RFC baca-saja): RQEEAL10
+
+ALUR YANG PERLU DIUJI
+Draft statis dari pola ABAP. Kondisi dan aksi di bawah masih perlu direview.
+  RQEEAL10:73 | AT SELECTION-SCREEN | PERFORM variant_inputhelp_f14 USING variant. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:76 | AT SELECTION-SCREEN | PERFORM create_monitor_tab_f16. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:77 | AT SELECTION-SCREEN | PERFORM monitor_inputhelp_f16 USING monitor. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:84 | AT SELECTION-SCREEN | PERFORM user_fc_steuern. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:108 | AT SELECTION-SCREEN | PERFORM variant_existence_f14 USING variant. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:115 | AT SELECTION-SCREEN > IF sscrfields-ucomm EQ 'FC01'. | PERFORM variant_f10. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:119 | AT SELECTION-SCREEN > IF sscrfields-ucomm EQ 'FC01'. > IF sy-tcode = 'SE38' | SUBMIT (sy-repid) VIA SELECTION-SCREEN. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:149 | INITIALIZATION | PERFORM variant_init_f14 USING 'LOTS' | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:155 | INITIALIZATION | PERFORM variant_start_f10. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:158 | INITIALIZATION > IF NOT variant IS INITIAL. | PERFORM get_default_variant_f14 USING variant. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:164 | INITIALIZATION > IF variant IS INITIAL. | PERFORM get_default_variant_f14 USING variant. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:191 | START-OF-SELECTION > IF g_submit IS INITIAL. | PERFORM create_fieldcat_l USING g_tabname. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:192 | START-OF-SELECTION > IF g_submit IS INITIAL. | PERFORM update_fieldcat_variant_f14. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:194 | START-OF-SELECTION | PERFORM select_fields_manip2_f16   USING g_fieldcat_tab. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:253 | START-OF-SELECTION | PERFORM set_monitor_f16. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:316 | END-OF-SELECTION > IF g_anz_no_auth GT 0. | MESSAGE s046. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:328 | END-OF-SELECTION > ELSE. | PERFORM fill_events_f14. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:329 | END-OF-SELECTION > ELSE. | PERFORM fill_event_exit_tab_f14. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:330 | END-OF-SELECTION > ELSE. | PERFORM fill_layout_f16. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:331 | END-OF-SELECTION > ELSE. | PERFORM get_fieldcat_actual_f16. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:332 | END-OF-SELECTION > ELSE. | PERFORM fill_fieldgroups_f16. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:333 | END-OF-SELECTION > ELSE. | PERFORM CALL_LISTVIEWER_F14 using G_FIELDCAT_TAB[] OBJECT_TAB[]. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:352 | FORM USER_COMMAND_L > WHEN 'V-A '. | PERFORM change_aktyp_l. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RQEEAL10:356 | FORM USER_COMMAND_L > WHEN 'A-V '. | PERFORM change_aktyp_l. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RQEEAL10:361 | FORM USER_COMMAND_L > WHEN OTHERS. | PERFORM user_command_f16 USING p_ucomm p_selfield. | Pemanggil PERFORM langsung belum ditemukan. Periksa callback atau panggilan dinamis.
+  RQEEAL10:567 | FORM CHANGE_AKTYP_L > IF h_retc IS INITIAL. | PERFORM set_pf_stat_l USING gt_extab. | Tinjau kondisi dan hasil di ECC.
+  RQEEAL10:616 | FORM CREATE_FIELDCAT_L > IF sy-subrc IS INITIAL. | PERFORM add_viewed_column_f14. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:406 | FORM GET_FIELDCAT_ACTUAL_F16 > IF SY-SUBRC IS INITIAL. > IF H_CHANGE = YES. | PERFORM CREATE_G_SELFIELDS_TAB_F14. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:900 | FORM USER_COMMAND_F16 > WHEN '&OLX'. | PERFORM AKTUALISIEREN_F14. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:902 | FORM USER_COMMAND_F16 > WHEN '&OAD'. | PERFORM AKTUALISIEREN_F14. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:904 | FORM USER_COMMAND_F16 > WHEN '&OL0'. | PERFORM AKTUALISIEREN_F14. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:907 | FORM USER_COMMAND_F16 > WHEN 'AKTU'. | PERFORM AKTUALISIEREN_F14. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:925 | FORM USER_COMMAND_F16 > WHEN 'GRAF'. | PERFORM GET_FIELDCAT_ACTUAL_INFO_F14. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:926 | FORM USER_COMMAND_F16 > WHEN 'GRAF'. | PERFORM GRAPHICS_F16 USING P_SELFIELD. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:939 | FORM USER_COMMAND_F16 > WHEN 'PLOS' OR 'QAMV' OR 'VEAZ' OR 'QMEL' OR 'PRLS' OR 'PRZG' OR | PERFORM EXECUTE_FCODE_F16 USING P_UCOMM. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:949 | FORM USER_COMMAND_F16 > WHEN 'PLOS' OR 'QAMV' OR 'VEAZ' OR 'QMEL' OR 'PRLS' OR 'PRZG' OR > IF NOT SY-SUBRC IS INITIAL AND | PERFORM EXECUTE_FCODE_F16 USING P_UCOMM. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:988 | FORM EXECUTE_FCODE_F16 > WHEN 'PRZG'. | SUBMIT RQCAAP01 VIA SELECTION-SCREEN AND RETURN | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:996 | FORM EXECUTE_FCODE_F16 > WHEN 'PLOS'. > IF G_AKTYP = 'V'. | PERFORM CALL_TRANSACTION_F16 USING 'QA02'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:998 | FORM EXECUTE_FCODE_F16 > WHEN 'PLOS'. > ELSE. | PERFORM CALL_TRANSACTION_F16 USING 'QA03'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1005 | FORM EXECUTE_FCODE_F16 > WHEN 'WORK' OR 'WRK2'. > IF OBJECT_TAB-KZ_QAVE IS INITIAL. | PERFORM CALL_TRANSACTION_F16 USING 'QA11'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1007 | FORM EXECUTE_FCODE_F16 > WHEN 'WORK' OR 'WRK2'. > ELSE. | PERFORM CALL_TRANSACTION_F16 USING 'QA12'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1015 | FORM EXECUTE_FCODE_F16 > WHEN 'VEAZ'. > IF G_AKTYP = 'V'. > IF OBJECT_TAB-KZ_QAVE IS INITIAL. | PERFORM CALL_TRANSACTION_F16 USING 'QA11'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1017 | FORM EXECUTE_FCODE_F16 > WHEN 'VEAZ'. > IF G_AKTYP = 'V'. > ELSE. | PERFORM CALL_TRANSACTION_F16 USING 'QA12'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1020 | FORM EXECUTE_FCODE_F16 > WHEN 'VEAZ'. > ELSE. | PERFORM CALL_TRANSACTION_F16 USING 'QA13'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1026 | FORM EXECUTE_FCODE_F16 > WHEN 'QAMV'. > IF OBJECT_TAB-OBTYP NE 'QL1'. | MESSAGE I181(QE) WITH OBJECT_TAB-PRUEFLOS. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1040 | FORM EXECUTE_FCODE_F16 > WHEN 'QAMV'. > ELSE. > IF SY-SUBRC NE 0. | MESSAGE I181(QE) WITH OBJECT_TAB-PRUEFLOS. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1071 | FORM EXECUTE_FCODE_F16 > WHEN 'QAMV'. > ELSE. > ELSE. > IF OBJECT_TAB-STAT07 NE SPACE. > IF G_AKTYP = 'V'. | PERFORM CALL_TRANSACTION_F16 USING 'QE11'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1073 | FORM EXECUTE_FCODE_F16 > WHEN 'QAMV'. > ELSE. > ELSE. > IF OBJECT_TAB-STAT07 NE SPACE. > ELSE. | PERFORM CALL_TRANSACTION_F16 USING 'QE13'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1080 | FORM EXECUTE_FCODE_F16 > WHEN 'QAMV'. > ELSE. > ELSE. > ELSEIF OBJECT_TAB-STAT02 NE SPACE. > IF G_AKTYP = 'V'. | PERFORM CALL_TRANSACTION_F16 USING 'QE14'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1082 | FORM EXECUTE_FCODE_F16 > WHEN 'QAMV'. > ELSE. > ELSE. > ELSEIF OBJECT_TAB-STAT02 NE SPACE. > ELSE. | PERFORM CALL_TRANSACTION_F16 USING 'QE16'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1088 | FORM EXECUTE_FCODE_F16 > WHEN 'QAMV'. > ELSE. > ELSE. > ELSE. > IF T370A-AKTYP = 'V'. | PERFORM CALL_TRANSACTION_F16 USING 'QE01'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1090 | FORM EXECUTE_FCODE_F16 > WHEN 'QAMV'. > ELSE. > ELSE. > ELSE. > ELSE. | PERFORM CALL_TRANSACTION_F16 USING 'QE03'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1117 | FORM EXECUTE_FCODE_F16 > WHEN 'QMEL'. > IF G_AKTYP = 'V'. > IF SY-SUBRC IS INITIAL. | PERFORM CALL_TRANSACTION_F16  USING 'QF02'  . | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1120 | FORM EXECUTE_FCODE_F16 > WHEN 'QMEL'. > IF G_AKTYP = 'V'. > ELSE. | CALL TRANSACTION 'QF01'. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1123 | FORM EXECUTE_FCODE_F16 > WHEN 'QMEL'. > ELSE. | PERFORM CALL_TRANSACTION_F16 USING 'QF03'  . | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1134 | FORM EXECUTE_FCODE_F16 > WHEN 'QFER'. > IF G_AKTYP = 'V'. | CALL TRANSACTION 'QF01'  . | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1152 | FORM CALL_TRANSACTION_F16 | CALL TRANSACTION P_TCODE AND SKIP FIRST SCREEN. | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1238 | FORM GET_COLUMN_MARKED_F16 > ELSE. | MESSAGE I081(IH). | Tinjau kondisi dan hasil di ECC.
+  RQALVF16:1269 | FORM GRAPHICS_F16 | PERFORM GET_COLUMN_MARKED_F16 USING | Tinjau kondisi dan hasil di ECC.
+  RQALVF14:49 | FORM UPDATE_FIELDCAT_VARIANT_F14 > IF NOT g_variant-variant IS INITIAL. > IF sy-subrc IS INITIAL. | PERFORM create_g_selfields_tab_f14. | Tinjau kondisi dan hasil di ECC.
+  RQALVF14:481 | FORM AKTUALISIEREN_F14 | PERFORM get_fieldcat_actual_info_f14. | Tinjau kondisi dan hasil di ECC.
+  RQALVF14:508 | FORM AKTUALISIEREN_F14 > IF sy-subrc IS INITIAL. | SUBMIT (l_reportid) WITH SELECTION-TABLE t_sel_tab | Tinjau kondisi dan hasil di ECC.
+  RQALVF14:513 | FORM AKTUALISIEREN_F14 > ELSE. | SUBMIT (l_reportid) WITH SELECTION-TABLE t_sel_tab AND RETURN. | Tinjau kondisi dan hasil di ECC.
+Input contoh dan hasil ECC yang diharapkan: diisi bersama functional.
+
+DEEP SCAN SAP: hubungan statis dan objek yang berhasil dibaca
+
+Objek RQEEAL10 (840 baris)
+  11 | Tipe DDIC | qals
+  27 | Field DDIC | qals-art
+  28 | Field DDIC | qals-werk
+  29 | Field DDIC | qm00-qkz
+  35 | Field DDIC | sy-tcode
+  36 | Field DDIC | sy-tcode
+  44 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK bottom WITH FRAME TITLE text-p00.
+  44 | Teks Seleksi | text-p00
+  45 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  46 | Layar Seleksi | PARAMETERS: p_alles RADIOBUTTON GROUP ud.
+  48 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(70) text-p03 for field p_alles.
+  48 | Teks Seleksi | text-p03
+  49 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  51 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  52 | Layar Seleksi | PARAMETERS: p_no_ud RADIOBUTTON GROUP ud.
+  54 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(70) text-p01 for field p_no_ud.
+  54 | Teks Seleksi | text-p01
+  55 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  57 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  58 | Layar Seleksi | PARAMETERS: p_ud RADIOBUTTON GROUP ud.
+  60 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(70) text-p02 for field p_ud.
+  60 | Teks Seleksi | text-p02
+  61 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  63 | Layar Seleksi | PARAMETERS: variant LIKE disvariant-variant.
+  63 | Field DDIC | disvariant-variant
+  64 | Layar Seleksi | PARAMETERS: monitor LIKE rqmonitor-qm_monitor
+  64 | Field DDIC | rqmonitor-qm_monitor
+  66 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK bottom.
+  69 | Layar Seleksi | SELECT-OPTIONS:
+  70 | Field DDIC | qals-stat35
+  148 | Teks Seleksi | text-tes
+  168 | Layar Seleksi | SELECTION-SCREEN
+  344 | Field DDIC | sy-ucomm
+  376 | Layar dan GUI | SET PF-STATUS 'CUST' OF PROGRAM 'RQEVAM10' EXCLUDING rt_extab.
+  396 | Layar dan GUI | SET TITLEBAR 'LVS' WITH tstct-ttext.
+  475 | Layar dan GUI | SET PF-STATUS 'CHANGE' EXCLUDING rt_extab.
+  505 | Layar dan GUI | SET PF-STATUS 'MAIN' EXCLUDING rt_extab.
+  518 | Field DDIC | t370a-tabarg
+  519 | Field DDIC | t370a-programm
+  520 | Field DDIC | sy-subrc
+  521 | Field DDIC | t370a-tcode
+  586 | Field DDIC | sy-tabix
+  624 | Teks Seleksi | text-vd1
+  625 | Teks Seleksi | text-vd2
+  629 | Teks Seleksi | text-fd1
+  632 | Teks Seleksi | text-fd2
+  635 | Teks Seleksi | text-fd3
+  638 | Teks Seleksi | text-fd4
+  641 | Teks Seleksi | text-fd5
+  644 | Teks Seleksi | text-fd6
+  647 | Teks Seleksi | text-fd7
+  650 | Teks Seleksi | text-fd9
+  653 | Teks Seleksi | text-fd8
+  656 | Teks Seleksi | text-fd0
+  659 | Teks Seleksi | text-fe1
+  662 | Teks Seleksi | text-fe2
+  666 | Teks Seleksi | text-fe3
+  669 | Teks Seleksi | text-fe4
+  672 | Teks Seleksi | text-fe5
+  695 | Field DDIC | qals-ebeln
+  696 | Field DDIC | qals-ebelp
+  729 | Field DDIC | qals-mblnr
+  730 | Field DDIC | qals-mjahr
+  731 | Field DDIC | qals-zeile
+  776 | Field DDIC | likp-vbeln
+  8 | includes | RQALVTOP
+  822 | includes | RQALVF14
+  823 | includes | RQALVF16
+  824 | includes | RQ00MF10
+  227 | callFunctions | QAUT_INSPTYPE
+  256 | callFunctions | STATUS_TEXT_EDIT
+  404 | callFunctions | QAUT_CHECK_TCODE
+  588 | callFunctions | REUSE_ALV_FIELDCATALOG_MERGE
+  704 | callFunctions | ME_DISPLAY_PURCHASE_DOCUMENT
+  741 | callFunctions | MIGO_DIALOG
+  782 | callFunctions | RV_CALL_DISPLAY_TRANSACTION
+  807 | callFunctions | QSS1_PLAN_SHOW
+  835 | callFunctions | REUSE_ALV_COMMENTARY_WRITE
+  134 | tableReads | T370A
+  390 | tableReads | TSTCT
+  801 | tableReads | QALS
+  609 | databaseWrites | G_FIELDCAT_TAB
+
+Objek RQ00MF10 (136 baris)
+  9 | Field DDIC | sy-repid
+  27 | Field DDIC | sy-subrc
+  28 | Field DDIC | sy-repid
+  29 | Field DDIC | rsvar-variant
+  113 | Field DDIC | sy-repid
+  115 | Field DDIC | sy-ucomm
+  12 | callFunctions | PM_CHANGE_SELOPT
+  39 | callFunctions | RS_VARIANT_EXISTS
+  95 | callFunctions | RS_SUPPORT_SELECTIONS
+  120 | callFunctions | RS_SUBMIT_INFO
+  128 | callFunctions | RS_SET_SELSCREEN_STATUS
+
+Objek RQALVF16 (1331 baris)
+  12 | Teks Seleksi | TEXT-MO1
+  17 | Teks Seleksi | TEXT-MO2
+  22 | Teks Seleksi | TEXT-MO3
+  27 | Teks Seleksi | TEXT-MO4
+  32 | Teks Seleksi | TEXT-MO5
+  49 | Field DDIC | RIHEA-SLKNZ
+  50 | Field DDIC | RIHEA-PM_REFFIELD
+  58 | Teks Seleksi | TEXT-F05
+  178 | Field DDIC | SY-TABIX
+  180 | Field DDIC | SY-TABIX
+  276 | Field DDIC | SY-TABIX
+  358 | Field DDIC | SY-UCOMM
+  363 | Field DDIC | SY-TABIX
+  426 | Teks Seleksi | TEXT-GPB
+  430 | Teks Seleksi | TEXT-GPK
+  434 | Teks Seleksi | TEXT-GPM
+  438 | Teks Seleksi | TEXT-GPP
+  442 | Teks Seleksi | TEXT-GPQ
+  446 | Teks Seleksi | TEXT-GPR
+  450 | Teks Seleksi | TEXT-GPS
+  454 | Teks Seleksi | TEXT-GPU
+  458 | Teks Seleksi | TEXT-GPV
+  462 | Teks Seleksi | TEXT-GPZ
+  855 | Field DDIC | SY-UCOMM
+  865 | Field DDIC | QM00-QKZ
+  911 | Field DDIC | DOKHL-OBJECT
+  912 | Field DDIC | DOKHL-ID
+  958 | Field DDIC | QAPO-VORNR
+  959 | Field DDIC | QAPO-PLNFL
+  960 | Field DDIC | QALS-PRUEFLOS
+  962 | Field DDIC | QALS-PRUEFLOS
+  963 | Field DDIC | QAPO-PLNFL
+  964 | Field DDIC | QAPO-VORNR
+  967 | Field DDIC | bapiparam-parva
+  971 | Field DDIC | BAPIBNAME-BAPIBNAME
+  1171 | Layar dan GUI | SET PF-STATUS 'MAIN' OF PROGRAM 'RQEVAM10' EXCLUDING RT_EXTAB.
+  1191 | Layar dan GUI | SET PF-STATUS 'MAIN' OF PROGRAM 'RQEVAM10' EXCLUDING RT_EXTAB.
+  1206 | Field DDIC | DFIES-FIELDNAME
+  1257 | Field DDIC | SY-TABIX
+  988 | submitPrograms | RQCAAP01
+  55 | callFunctions | F4IF_INT_TABLE_VALUE_REQUEST
+  138 | callFunctions | STATUS_CHECK
+  370 | callFunctions | REUSE_ALV_GRID_LAYOUT_INFO_GET
+  378 | callFunctions | REUSE_ALV_LIST_LAYOUT_INFO_GET
+  878 | callFunctions | MASTER_DATA
+  915 | callFunctions | DOCU_CALL
+  976 | callFunctions | QAUT_CHECK_TCODE
+  979 | callFunctions | QSS1_PRINT_INSPECTION_RESULTS
+  1028 | callFunctions | QELA_INSPECTION_OPERATION_LIST
+  1045 | callFunctions | BAPI_USER_GET_DETAIL
+  1322 | callFunctions | GRAPH_2D
+  1120 | callTransactions | QF01
+  1152 | callTransactions | P_TCODE
+  1175 | tableReads | TSTCT
+  261 | databaseWrites | SELECT_FIELDS
+  844 | databaseWrites | G_FIELDCAT_TAB
+  892 | databaseWrites | OBJECT_TAB
+
+Objek RQALVF14 (599 baris)
+  60 | Field DDIC | g_variant-variant
+  93 | Field DDIC | disvariant-handle
+  94 | Field DDIC | disvariant-log_group
+  95 | Field DDIC | disvariant-text
+  120 | Field DDIC | g_variant-variant
+  138 | Field DDIC | g_variant-variant
+  301 | Class dan Interface | cl_salv_tooltip
+  303 | Class dan Interface | CL_WD_UTILITIES
+  424 | Field DDIC | sy-tabix
+  470 | Field DDIC | sy-repid
+  17 | callFunctions | REUSE_ALV_VARIANT_SELECT
+  66 | callFunctions | REUSE_ALV_VARIANT_F4
+  126 | callFunctions | REUSE_ALV_VARIANT_EXISTENCE
+  146 | callFunctions | REUSE_ALV_VARIANT_DEFAULT_GET
+  175 | callFunctions | REUSE_ALV_EVENTS_GET
+  314 | callFunctions | IREP1_CHANGE_SETTINGS_ALV
+  330 | callFunctions | REUSE_ALV_GRID_DISPLAY
+  366 | callFunctions | REUSE_ALV_LIST_DISPLAY
+  462 | callFunctions | SAPGUI_PROGRESS_INDICATOR
+  486 | callFunctions | RS_REFRESH_FROM_SELECTOPTIONS
+  492 | callFunctions | RS_REFRESH_FROM_DYNAMICAL_SEL
+  502 | callFunctions | FREE_SELECTIONS_RANGE_2_EX
+  518 | callFunctions | STATUS_BUFFER_REFRESH
+  531 | callFunctions | REUSE_ALV_GRID_LAYOUT_INFO_GET
+  545 | callFunctions | REUSE_ALV_LIST_LAYOUT_INFO_GET
+  579 | callFunctions | DDIF_DTEL_GET
+  188 | databaseWrites | G_EVENTS_TAB
+
+Objek RQALVTOP (103 baris)
+  3 | Tipe DDIC | T370A
+  4 | Tipe DDIC | QALS_QAVE
+  7 | Field DDIC | RIHEA-PM_SELFIELD
+  8 | Field DDIC | RIHEA-PM_REFFIELD
+  9 | Field DDIC | DFIES-FIELDNAME
+  18 | Field DDIC | SY-TCODE
+  36 | Field DDIC | SY-REPID
+  57 | Field DDIC | SY-UCOMM
+  58 | Field DDIC | SY-UCOMM
+  59 | Field DDIC | SY-UCOMM
+  60 | Field DDIC | SY-UCOMM
+  61 | Field DDIC | SY-UCOMM
+  62 | Field DDIC | SY-UCOMM
+  63 | Field DDIC | SY-UCOMM
+  64 | Field DDIC | SY-UCOMM
+  65 | Field DDIC | SY-UCOMM
+  73 | Field DDIC | SY-UCOMM
+  74 | Field DDIC | QM00-QKZ
+  83 | Field DDIC | TIH01-TABNAME
+  85 | Field DDIC | SY-TABIX
+  92 | BDC | BDCDATA
+  96 | Field DDIC | SY-TCODE
+Jumlah source terbaca: 5
+
+INVENTARIS PROGRAM UTAMA
+Inventaris referensi statis. Nomor baris menunjuk contoh kemunculan. Panggilan dinamis, jalur eksekusi, dan efek bisnis perlu ditinjau.
+
+RQEEAL10.abap
+  Baris 11 | Tipe DDIC | qals
+  Baris 27 | Field DDIC | qals-art
+  Baris 28 | Field DDIC | qals-werk
+  Baris 29 | Field DDIC | qm00-qkz
+  Baris 35 | Field DDIC | sy-tcode
+  Baris 36 | Field DDIC | sy-tcode
+  Baris 44 | Layar Seleksi | SELECTION-SCREEN BEGIN OF BLOCK bottom WITH FRAME TITLE text-p00.
+  Baris 44 | Teks Seleksi | text-p00
+  Baris 45 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 46 | Layar Seleksi | PARAMETERS: p_alles RADIOBUTTON GROUP ud.
+  Baris 48 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(70) text-p03 for field p_alles.
+  Baris 48 | Teks Seleksi | text-p03
+  Baris 49 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 51 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 52 | Layar Seleksi | PARAMETERS: p_no_ud RADIOBUTTON GROUP ud.
+  Baris 54 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(70) text-p01 for field p_no_ud.
+  Baris 54 | Teks Seleksi | text-p01
+  Baris 55 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 57 | Layar Seleksi | SELECTION-SCREEN BEGIN OF LINE.
+  Baris 58 | Layar Seleksi | PARAMETERS: p_ud RADIOBUTTON GROUP ud.
+  Baris 60 | Layar Seleksi | SELECTION-SCREEN COMMENT 3(70) text-p02 for field p_ud.
+  Baris 60 | Teks Seleksi | text-p02
+  Baris 61 | Layar Seleksi | SELECTION-SCREEN END OF LINE.
+  Baris 63 | Layar Seleksi | PARAMETERS: variant LIKE disvariant-variant.
+  Baris 63 | Field DDIC | disvariant-variant
+  Baris 64 | Layar Seleksi | PARAMETERS: monitor LIKE rqmonitor-qm_monitor
+  Baris 64 | Field DDIC | rqmonitor-qm_monitor
+  Baris 66 | Layar Seleksi | SELECTION-SCREEN END OF BLOCK bottom.
+  Baris 69 | Layar Seleksi | SELECT-OPTIONS:
+  Baris 70 | Field DDIC | qals-stat35
+  Baris 148 | Teks Seleksi | text-tes
+  Baris 168 | Layar Seleksi | SELECTION-SCREEN
+  Baris 344 | Field DDIC | sy-ucomm
+  Baris 376 | Layar dan GUI | SET PF-STATUS 'CUST' OF PROGRAM 'RQEVAM10' EXCLUDING rt_extab.
+  Baris 396 | Layar dan GUI | SET TITLEBAR 'LVS' WITH tstct-ttext.
+  Baris 475 | Layar dan GUI | SET PF-STATUS 'CHANGE' EXCLUDING rt_extab.
+  Baris 505 | Layar dan GUI | SET PF-STATUS 'MAIN' EXCLUDING rt_extab.
+  Baris 518 | Field DDIC | t370a-tabarg
+  Baris 519 | Field DDIC | t370a-programm
+  Baris 520 | Field DDIC | sy-subrc
+  Baris 521 | Field DDIC | t370a-tcode
+  Baris 586 | Field DDIC | sy-tabix
+  Baris 624 | Teks Seleksi | text-vd1
+  Baris 625 | Teks Seleksi | text-vd2
+  Baris 629 | Teks Seleksi | text-fd1
+  Baris 632 | Teks Seleksi | text-fd2
+  Baris 635 | Teks Seleksi | text-fd3
+  Baris 638 | Teks Seleksi | text-fd4
+  Baris 641 | Teks Seleksi | text-fd5
+  Baris 644 | Teks Seleksi | text-fd6
+  Baris 647 | Teks Seleksi | text-fd7
+  Baris 650 | Teks Seleksi | text-fd9
+  Baris 653 | Teks Seleksi | text-fd8
+  Baris 656 | Teks Seleksi | text-fd0
+  Baris 659 | Teks Seleksi | text-fe1
+  Baris 662 | Teks Seleksi | text-fe2
+  Baris 666 | Teks Seleksi | text-fe3
+  Baris 669 | Teks Seleksi | text-fe4
+  Baris 672 | Teks Seleksi | text-fe5
+  Baris 695 | Field DDIC | qals-ebeln
+  Baris 696 | Field DDIC | qals-ebelp
+  Baris 729 | Field DDIC | qals-mblnr
+  Baris 730 | Field DDIC | qals-mjahr
+  Baris 731 | Field DDIC | qals-zeile
+  Baris 776 | Field DDIC | likp-vbeln
+  Baris 8 | INCLUDE | RQALVTOP
+  Baris 822 | INCLUDE | RQALVF14
+  Baris 823 | INCLUDE | RQALVF16
+  Baris 824 | INCLUDE | RQ00MF10
+  Baris 134 | Sumber data pada SELECT atau JOIN | T370A
+  Baris 390 | Sumber data pada SELECT atau JOIN | TSTCT
+  Baris 801 | Sumber data pada SELECT atau JOIN | QALS
+  Baris 227 | Function module | QAUT_INSPTYPE
+  Baris 256 | Function module | STATUS_TEXT_EDIT
+  Baris 404 | Function module | QAUT_CHECK_TCODE
+  Baris 588 | Function module | REUSE_ALV_FIELDCATALOG_MERGE
+  Baris 704 | Function module | ME_DISPLAY_PURCHASE_DOCUMENT
+  Baris 741 | Function module | MIGO_DIALOG
+  Baris 782 | Function module | RV_CALL_DISPLAY_TRANSACTION
+  Baris 807 | Function module | QSS1_PLAN_SHOW
+  Baris 835 | Function module | REUSE_ALV_COMMENTARY_WRITE
+  Baris 609 | Indikasi penulisan data (perlu konfirmasi) | G_FIELDCAT_TAB
+
+RQALVTOP.abap
+  Baris 3 | Tipe DDIC | T370A
+  Baris 4 | Tipe DDIC | QALS_QAVE
+  Baris 7 | Field DDIC | RIHEA-PM_SELFIELD
+  Baris 8 | Field DDIC | RIHEA-PM_REFFIELD
+  Baris 9 | Field DDIC | DFIES-FIELDNAME
+  Baris 18 | Field DDIC | SY-TCODE
+  Baris 36 | Field DDIC | SY-REPID
+  Baris 57 | Field DDIC | SY-UCOMM
+  Baris 58 | Field DDIC | SY-UCOMM
+  Baris 59 | Field DDIC | SY-UCOMM
+  Baris 60 | Field DDIC | SY-UCOMM
+  Baris 61 | Field DDIC | SY-UCOMM
+  Baris 62 | Field DDIC | SY-UCOMM
+  Baris 63 | Field DDIC | SY-UCOMM
+  Baris 64 | Field DDIC | SY-UCOMM
+  Baris 65 | Field DDIC | SY-UCOMM
+  Baris 73 | Field DDIC | SY-UCOMM
+  Baris 74 | Field DDIC | QM00-QKZ
+  Baris 83 | Field DDIC | TIH01-TABNAME
+  Baris 85 | Field DDIC | SY-TABIX
+  Baris 92 | BDC | BDCDATA
+  Baris 96 | Field DDIC | SY-TCODE
+
+RQALVF14.abap
+  Baris 60 | Field DDIC | g_variant-variant
+  Baris 93 | Field DDIC | disvariant-handle
+  Baris 94 | Field DDIC | disvariant-log_group
+  Baris 95 | Field DDIC | disvariant-text
+  Baris 120 | Field DDIC | g_variant-variant
+  Baris 138 | Field DDIC | g_variant-variant
+  Baris 301 | Class dan Interface | cl_salv_tooltip
+  Baris 303 | Class dan Interface | CL_WD_UTILITIES
+  Baris 424 | Field DDIC | sy-tabix
+  Baris 470 | Field DDIC | sy-repid
+  Baris 17 | Function module | REUSE_ALV_VARIANT_SELECT
+  Baris 66 | Function module | REUSE_ALV_VARIANT_F4
+  Baris 126 | Function module | REUSE_ALV_VARIANT_EXISTENCE
+  Baris 146 | Function module | REUSE_ALV_VARIANT_DEFAULT_GET
+  Baris 175 | Function module | REUSE_ALV_EVENTS_GET
+  Baris 314 | Function module | IREP1_CHANGE_SETTINGS_ALV
+  Baris 330 | Function module | REUSE_ALV_GRID_DISPLAY
+  Baris 366 | Function module | REUSE_ALV_LIST_DISPLAY
+  Baris 462 | Function module | SAPGUI_PROGRESS_INDICATOR
+  Baris 486 | Function module | RS_REFRESH_FROM_SELECTOPTIONS
+  Baris 492 | Function module | RS_REFRESH_FROM_DYNAMICAL_SEL
+  Baris 502 | Function module | FREE_SELECTIONS_RANGE_2_EX
+  Baris 518 | Function module | STATUS_BUFFER_REFRESH
+  Baris 531 | Function module | REUSE_ALV_GRID_LAYOUT_INFO_GET
+  Baris 545 | Function module | REUSE_ALV_LIST_LAYOUT_INFO_GET
+  Baris 579 | Function module | DDIF_DTEL_GET
+  Baris 188 | Indikasi penulisan data (perlu konfirmasi) | G_EVENTS_TAB
+
+RQALVF16.abap
+  Baris 12 | Teks Seleksi | TEXT-MO1
+  Baris 17 | Teks Seleksi | TEXT-MO2
+  Baris 22 | Teks Seleksi | TEXT-MO3
+  Baris 27 | Teks Seleksi | TEXT-MO4
+  Baris 32 | Teks Seleksi | TEXT-MO5
+  Baris 49 | Field DDIC | RIHEA-SLKNZ
+  Baris 50 | Field DDIC | RIHEA-PM_REFFIELD
+  Baris 58 | Teks Seleksi | TEXT-F05
+  Baris 178 | Field DDIC | SY-TABIX
+  Baris 180 | Field DDIC | SY-TABIX
+  Baris 276 | Field DDIC | SY-TABIX
+  Baris 358 | Field DDIC | SY-UCOMM
+  Baris 363 | Field DDIC | SY-TABIX
+  Baris 426 | Teks Seleksi | TEXT-GPB
+  Baris 430 | Teks Seleksi | TEXT-GPK
+  Baris 434 | Teks Seleksi | TEXT-GPM
+  Baris 438 | Teks Seleksi | TEXT-GPP
+  Baris 442 | Teks Seleksi | TEXT-GPQ
+  Baris 446 | Teks Seleksi | TEXT-GPR
+  Baris 450 | Teks Seleksi | TEXT-GPS
+  Baris 454 | Teks Seleksi | TEXT-GPU
+  Baris 458 | Teks Seleksi | TEXT-GPV
+  Baris 462 | Teks Seleksi | TEXT-GPZ
+  Baris 855 | Field DDIC | SY-UCOMM
+  Baris 865 | Field DDIC | QM00-QKZ
+  Baris 911 | Field DDIC | DOKHL-OBJECT
+  Baris 912 | Field DDIC | DOKHL-ID
+  Baris 958 | Field DDIC | QAPO-VORNR
+  Baris 959 | Field DDIC | QAPO-PLNFL
+  Baris 960 | Field DDIC | QALS-PRUEFLOS
+  Baris 962 | Field DDIC | QALS-PRUEFLOS
+  Baris 963 | Field DDIC | QAPO-PLNFL
+  Baris 964 | Field DDIC | QAPO-VORNR
+  Baris 967 | Field DDIC | bapiparam-parva
+  Baris 971 | Field DDIC | BAPIBNAME-BAPIBNAME
+  Baris 1171 | Layar dan GUI | SET PF-STATUS 'MAIN' OF PROGRAM 'RQEVAM10' EXCLUDING RT_EXTAB.
+  Baris 1191 | Layar dan GUI | SET PF-STATUS 'MAIN' OF PROGRAM 'RQEVAM10' EXCLUDING RT_EXTAB.
+  Baris 1206 | Field DDIC | DFIES-FIELDNAME
+  Baris 1257 | Field DDIC | SY-TABIX
+  Baris 1175 | Sumber data pada SELECT atau JOIN | TSTCT
+  Baris 55 | Function module | F4IF_INT_TABLE_VALUE_REQUEST
+  Baris 138 | Function module | STATUS_CHECK
+  Baris 370 | Function module | REUSE_ALV_GRID_LAYOUT_INFO_GET
+  Baris 378 | Function module | REUSE_ALV_LIST_LAYOUT_INFO_GET
+  Baris 878 | Function module | MASTER_DATA
+  Baris 915 | Function module | DOCU_CALL
+  Baris 976 | Function module | QAUT_CHECK_TCODE
+  Baris 979 | Function module | QSS1_PRINT_INSPECTION_RESULTS
+  Baris 1028 | Function module | QELA_INSPECTION_OPERATION_LIST
+  Baris 1045 | Function module | BAPI_USER_GET_DETAIL
+  Baris 1322 | Function module | GRAPH_2D
+  Baris 988 | Program yang dirujuk SUBMIT | RQCAAP01
+  Baris 1120 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | QF01
+  Baris 1152 | Tujuan CALL TRANSACTION (periksa literal atau variabel) | P_TCODE
+  Baris 261 | Indikasi penulisan data (perlu konfirmasi) | SELECT_FIELDS
+  Baris 844 | Indikasi penulisan data (perlu konfirmasi) | G_FIELDCAT_TAB
+  Baris 892 | Indikasi penulisan data (perlu konfirmasi) | OBJECT_TAB
+
+RQ00MF10.abap
+  Baris 9 | Field DDIC | sy-repid
+  Baris 27 | Field DDIC | sy-subrc
+  Baris 28 | Field DDIC | sy-repid
+  Baris 29 | Field DDIC | rsvar-variant
+  Baris 113 | Field DDIC | sy-repid
+  Baris 115 | Field DDIC | sy-ucomm
+  Baris 12 | Function module | PM_CHANGE_SELOPT
+  Baris 39 | Function module | RS_VARIANT_EXISTS
+  Baris 95 | Function module | RS_SUPPORT_SELECTIONS
+  Baris 120 | Function module | RS_SUBMIT_INFO
+  Baris 128 | Function module | RS_SET_SELSCREEN_STATUS

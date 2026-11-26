@@ -1,0 +1,16 @@
+QL 0003516347 JREYAI             040000121550 qamr         12
+QL 0003761724 JRGJBI             040000132662 qamr         14
+QL 0003761847 JRGJBI             040000132768 qamr         14
+QL 0003844097 JRCADI             040000135721 qamr         18
+QL 0003879043 tanpa lot Z02
+QL 0003884733 JREWEI             040000140748 qamr          0
+QL 0003884760 JREASI             040000140761 qamr          0
+QL 0003884784 JRIA5I             040000140773 qamr          0
+QL 0003884892 JRGLAI             040000140790 qamr          0
+QL 0003884912 JRGIDI             040000140800 qamr          0
+QL 0003885059 JREWEI             040000140814 qamr          0
+QL 0003885607 JRACBI             040000140834 qamr          0
+QL 0003885609 JRACBI             040000140836 qamr          0
+QL 0003885613 JRAABI             040000140840 qamr          0
+QL 0003885614 JRAABI             040000140841 qamr          0
+QL 0003885615 JRAABI             040000140842 qamr         23

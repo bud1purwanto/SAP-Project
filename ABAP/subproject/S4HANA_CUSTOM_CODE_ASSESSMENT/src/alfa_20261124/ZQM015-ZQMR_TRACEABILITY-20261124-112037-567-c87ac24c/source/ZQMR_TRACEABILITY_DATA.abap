@@ -1,0 +1,1212 @@
+*&---------------------------------------------------------------------*
+*&  Include           ZQMR_TRACEABILITY_DATA
+*&---------------------------------------------------------------------*
+
+FORM GET_DATA.
+
+  IF V_ATWRT IS NOT INITIAL.
+
+    CALL FUNCTION 'CONVERSION_EXIT_ATINN_INPUT'
+      EXPORTING
+        INPUT  = 'ZZNOMORROLL'
+      IMPORTING
+        OUTPUT = VATINN.
+
+    SELECT  MCH1~MATNR AS MATNR
+            MCH1~CHARG AS CHARG
+            AUSP~ATWRT AS ATWRT
+      INTO CORRESPONDING FIELDS OF TABLE IT_DETAIL
+    FROM MCH1
+      JOIN AUSP ON AUSP~OBJEK EQ MCH1~CUOBJ_BM
+    UP TO 1 ROWS
+    WHERE AUSP~ATWRT = V_ATWRT
+    AND MCH1~FVDT1 = '00000000'
+    AND AUSP~KLART = '023'
+    AND AUSP~MAFID = 'O'
+    AND AUSP~ATINN = VATINN.
+  ELSE.
+    SELECT MATNR
+           CHARG
+      INTO CORRESPONDING FIELDS OF TABLE IT_DETAIL
+    FROM MCH1
+    UP TO 1 ROWS
+    WHERE MCH1~CHARG = V_CHARG.
+  ENDIF.
+
+  PERFORM LEVEL_UP.
+  PERFORM UPDATEDATA.
+
+  APPEND LINES OF IT_DETAIL2 TO IT_DETAIL.
+  APPEND LINES OF IT_DATA_HEADER TO IT_DETAIL.
+  SORT IT_DETAIL BY MATNR CHARG ATWRT AUFNR ARBPL P_CHARG P_ATWRT.
+  DELETE ADJACENT DUPLICATES FROM IT_DETAIL COMPARING MATNR CHARG ATWRT AUFNR ARBPL P_CHARG P_ATWRT.
+  SORT IT_DETAIL BY LEVEL.
+
+ENDFORM.                    "Get_Data
+
+*&---------------------------------------------------------------------*
+*&      Form  UpdateData
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM UPDATEDATA.
+  LOOP AT IT_DETAIL ASSIGNING <FS_DETAIL>.
+    DT_STATUS = 0.
+
+    IF <FS_DETAIL>-ATWRT IS INITIAL.
+      VMATNR = <FS_DETAIL>-MATNR.
+      VCHARG = <FS_DETAIL>-CHARG.
+
+      PERFORM GETNOMORROLL.
+
+      <FS_DETAIL>-ATWRT = VARIABEL.
+    ENDIF.
+
+    IF <FS_DETAIL>-LEVEL IS INITIAL OR <FS_DETAIL>-LEVEL = 0.
+      <FS_DETAIL>-LEVEL = VSORT + 1.
+    ENDIF.
+
+    CLEAR: IT_MSEG, IT_MSEG2.
+    REFRESH: IT_MSEG, IT_MSEG2.
+    SELECT AUFNR MBLNR MJAHR ZEILE CPUDT_MKPF CPUTM_MKPF SMBLN SJAHR SMBLP BWART LIFNR
+      INTO CORRESPONDING FIELDS OF TABLE IT_MSEG
+    FROM MSEG
+    WHERE BWART IN ('101', '102', '531', '532')
+    AND MATNR EQ <FS_DETAIL>-MATNR
+    AND CHARG EQ <FS_DETAIL>-CHARG.
+
+    IT_MSEG2[] = IT_MSEG[].
+    DELETE IT_MSEG2 WHERE SMBLN IS INITIAL.
+    LOOP AT IT_MSEG2.
+      DELETE IT_MSEG WHERE MBLNR EQ IT_MSEG2-SMBLN AND MJAHR EQ IT_MSEG2-SJAHR AND ZEILE EQ IT_MSEG2-SMBLP.
+    ENDLOOP.
+    DELETE IT_MSEG WHERE SMBLN IS NOT INITIAL OR BWART EQ '102'.
+    DELETE IT_MSEG WHERE SMBLN IS NOT INITIAL OR BWART EQ '532'.
+
+    SORT IT_MSEG BY CPUDT_MKPF CPUTM_MKPF.
+
+    CLEAR: VSTATUS, STS_PROCESS.
+    READ TABLE IT_MSEG INDEX 1.
+    VSTATUS = IT_MSEG-MBLNR.
+
+*    IF IT_MSEG-AUFNR IS NOT INITIAL.
+*      STS_PROCESS = 1.
+**    ELSE.
+**      SELECT COUNT(*) INTO STS_PROCESS FROM EKPO
+**        WHERE EBELN = IT_MSEG-EBELN
+**        AND EBELP = IT_MSEG-EBELP
+**        AND MATNR = IT_MSEG-MATNR
+**        AND PSTYP = '3'.
+*    ENDIF.
+
+    "IF VSTATUS IS INITIAL. "OR STS_PROCESS = 0.
+      "DELETE IT_DETAIL.
+    "ELSE.
+      <FS_DETAIL>-AUFNR = IT_MSEG-AUFNR.
+      <FS_DETAIL>-MBLNR = IT_MSEG-MBLNR.
+      CLEAR : <FS_DETAIL>-CPUDT, <FS_DETAIL>-CPUTM.
+
+
+      SELECT SINGLE CPUDT CPUTM INTO (<FS_DETAIL>-CPUDT , <FS_DETAIL>-CPUTM ) FROM MKPF
+        WHERE MBLNR = <FS_DETAIL>-MBLNR.
+
+      IF <FS_DETAIL>-AUFNR IS INITIAL.
+        IF <FS_DETAIL>-CPUDT IS INITIAL.
+          <FS_DETAIL>-AUFNR = 'INITIAL'.
+        ELSE.
+          <FS_DETAIL>-AUFNR = 'SUBCONTRACT'.
+        ENDIF.
+
+        <FS_DETAIL>-ARBPL =  IT_MSEG-LIFNR.
+      ENDIF.
+
+      CLEAR VCOMBINE.
+      SELECT SINGLE AUFNR FROM AFPO
+        INTO VCOMBINE
+        WHERE MILL_OC_AUFNR_U EQ <FS_DETAIL>-AUFNR.
+
+      IF VCOMBINE IS INITIAL.
+        VCOMBINE = <FS_DETAIL>-AUFNR.
+      ENDIF.
+
+      CLEAR VBKTXT.
+      SELECT SINGLE BKTXT INTO VBKTXT FROM MKPF
+        WHERE MBLNR = <FS_DETAIL>-MBLNR.
+
+      if <FS_DETAIL>-AUFNR = 'SUBCONTRACT'.
+        <FS_DETAIL>-ARBPL = IT_MSEG-LIFNR.
+
+        CLEAR IT_PREBATCH.
+        SELECT  MATNR
+                CHARG
+                MSEG~MBLNR
+                MSEG~MJAHR
+                ZEILE
+                AUFNR
+                BKTXT
+          INTO CORRESPONDING FIELDS OF TABLE IT_PREBATCH
+          FROM MSEG JOIN MKPF ON MSEG~MBLNR = MKPF~MBLNR
+          WHERE MSEG~MBLNR EQ <FS_DETAIL>-MBLNR
+          AND MSEG~BWART EQ '543'.
+
+      else.
+        SELECT SINGLE CRHD~ARBPL
+          INTO <FS_DETAIL>-ARBPL
+          FROM CRHD
+          JOIN AFRU ON CRHD~OBJID EQ AFRU~ARBID
+          WHERE CRHD~OBJTY EQ 'A'
+          AND AFRU~AUFNR EQ VCOMBINE
+          AND AFRU~STOKZ EQ ''.
+
+        CLEAR IT_PREBATCH.
+        SELECT  MATNR
+                CHARG
+                AUFM~MBLNR
+                AUFM~MJAHR
+                ZEILE
+                AUFNR
+                BKTXT
+          INTO CORRESPONDING FIELDS OF TABLE IT_PREBATCH
+          FROM AUFM JOIN MKPF ON AUFM~MBLNR = MKPF~MBLNR
+          WHERE AUFM~AUFNR EQ VCOMBINE
+          AND AUFM~BWART IN ('261', '901').
+      endif.
+
+*      MSEG-CHARG
+*      mseg-
+      SORT IT_PREBATCH BY CHARG.
+      CLEAR PREVCHARG.
+
+      SEQ_BATCH = 0.
+      LOOP AT IT_PREBATCH ASSIGNING <FS_PREBATCH> WHERE BKTXT = VBKTXT.
+        IF <FS_PREBATCH>-CHARG IS NOT INITIAL.
+          DT_STATUS = 1.
+          VMATNR = <FS_PREBATCH>-MATNR.
+          VCHARG = <FS_PREBATCH>-CHARG.
+
+          PERFORM GETNOMORROLL.
+
+          <FS_PREBATCH>-ATWRT = VARIABEL.
+
+          CLEAR VSTATUS.
+          SELECT SINGLE MBLNR INTO VSTATUS FROM MSEG
+            WHERE MATNR = <FS_PREBATCH>-MATNR
+            AND CHARG = <FS_PREBATCH>-CHARG
+            AND BWART IN ('262', '902')
+            AND SMBLN = <FS_PREBATCH>-MBLNR
+            AND SJAHR = <FS_PREBATCH>-MJAHR
+            AND SMBLP = <FS_PREBATCH>-ZEILE.
+
+          IF VSTATUS IS NOT INITIAL.
+            DELETE IT_PREBATCH.
+          ELSE.
+            SELECT SINGLE CPUDT CPUTM INTO (<FS_PREBATCH>-CPUDT , <FS_PREBATCH>-CPUTM ) FROM MKPF
+              WHERE MBLNR = <FS_PREBATCH>-MBLNR AND
+                    MJAHR = <FS_PREBATCH>-MJAHR.
+*            SELECT SINGLE CPUDT CPUTM INTO (<FS_PREBATCH>-CPUDT , <FS_PREBATCH>-CPUTM ) FROM MKPF
+*              WHERE MBLNR = <FS_PREBATCH>-MBLNR.
+
+
+            IF PREVCHARG <> <FS_PREBATCH>-CHARG.
+              IT_DETAIL-MATNR = <FS_PREBATCH>-MATNR.
+              IT_DETAIL-CHARG = <FS_PREBATCH>-CHARG.
+              IT_DETAIL-MBLNR = <FS_PREBATCH>-MBLNR.
+              IT_DETAIL-MJAHR = <FS_PREBATCH>-MJAHR.
+              IT_DETAIL-ZEILE = <FS_PREBATCH>-ZEILE.
+              IT_DETAIL-CPUDT = <FS_PREBATCH>-CPUDT.
+              IT_DETAIL-CPUTM = <FS_PREBATCH>-CPUTM.
+              IT_DETAIL-ATWRT = <FS_PREBATCH>-ATWRT.
+              IT_DETAIL-LEVEL = <FS_DETAIL>-LEVEL + 1.
+             APPEND IT_DETAIL.
+            ENDIF.
+
+
+            IF SEQ_BATCH = 0.
+              IT_DETAIL2-MATNR     = <FS_DETAIL>-MATNR.
+              IT_DETAIL2-ATWRT     = <FS_DETAIL>-ATWRT.
+              IT_DETAIL2-CHARG     = <FS_DETAIL>-CHARG.
+              IT_DETAIL2-AUFNR     = <FS_DETAIL>-AUFNR.
+              IT_DETAIL2-MBLNR     = <FS_DETAIL>-MBLNR.
+              IT_DETAIL2-ZEILE     = <FS_DETAIL>-ZEILE.
+              IT_DETAIL2-MJAHR     = <FS_DETAIL>-MJAHR.
+              IT_DETAIL2-CPUDT     = <FS_DETAIL>-CPUDT.
+              IT_DETAIL2-CPUTM     = <FS_DETAIL>-CPUTM.
+              IT_DETAIL2-ARBPL     = <FS_DETAIL>-ARBPL.
+              IT_DETAIL2-P_CHARG   = <FS_PREBATCH>-CHARG.
+              IT_DETAIL2-P_MATNR   = <FS_PREBATCH>-MATNR.
+              IT_DETAIL2-P_ATWRT   = <FS_PREBATCH>-ATWRT.
+              IT_DETAIL2-P_CPUDT   = <FS_PREBATCH>-CPUDT.
+              IT_DETAIL2-P_CPUTM   = <FS_PREBATCH>-CPUTM.
+              IT_DETAIL2-LEVEL     = <FS_DETAIL>-LEVEL.
+              PREVCHARG = <FS_PREBATCH>-CHARG.
+              APPEND IT_DETAIL2.
+              SEQ_BATCH = 1.
+            ELSE.
+              LOOP AT IT_DETAIL2 WHERE CHARG = <FS_DETAIL>-CHARG.
+                IT_DETAIL2-MATNR     = <FS_DETAIL>-MATNR.
+                IT_DETAIL2-ATWRT     = <FS_DETAIL>-ATWRT.
+                IT_DETAIL2-CHARG     = <FS_DETAIL>-CHARG.
+                IT_DETAIL2-AUFNR     = <FS_DETAIL>-AUFNR.
+                IT_DETAIL2-MBLNR     = <FS_DETAIL>-MBLNR.
+                IT_DETAIL2-ZEILE     = <FS_DETAIL>-ZEILE.
+                IT_DETAIL2-MJAHR     = <FS_DETAIL>-MJAHR.
+                IT_DETAIL2-CPUDT     = <FS_DETAIL>-CPUDT.
+                IT_DETAIL2-CPUTM     = <FS_DETAIL>-CPUTM.
+                IT_DETAIL2-ARBPL     = <FS_DETAIL>-ARBPL.
+                IF PREVCHARG <> <FS_PREBATCH>-CHARG.
+                  CONCATENATE IT_DETAIL2-P_CHARG ',' INTO IT_DETAIL2-P_CHARG.
+                  CONCATENATE IT_DETAIL2-P_CHARG <FS_PREBATCH>-CHARG INTO IT_DETAIL2-P_CHARG SEPARATED BY SPACE.
+                  CONCATENATE IT_DETAIL2-P_ATWRT ',' INTO IT_DETAIL2-P_ATWRT.
+                  CONCATENATE IT_DETAIL2-P_ATWRT <FS_PREBATCH>-ATWRT INTO IT_DETAIL2-P_ATWRT SEPARATED BY SPACE.
+                ENDIF.
+                PREVCHARG = <FS_PREBATCH>-CHARG.
+**                IT_DETAIL2-P_CHARG   = <FS_PREBATCH>-CHARG.
+**                IT_DETAIL2-P_MATNR   = <FS_PREBATCH>-MATNR.
+**                IT_DETAIL2-P_ATWRT   = <FS_PREBATCH>-ATWRT.
+**                IT_DETAIL2-P_CPUDT   = <FS_PREBATCH>-CPUDT.
+**                IT_DETAIL2-P_CPUTM   = <FS_PREBATCH>-CPUTM.
+**                IT_DETAIL2-LEVEL     = <FS_DETAIL>-LEVEL.
+                MODIFY IT_DETAIL2.
+              ENDLOOP.
+            ENDIF.
+          ENDIF.
+        ENDIF.
+      ENDLOOP.
+
+      IF DT_STATUS = 1.
+        DELETE IT_DETAIL.
+      ENDIF.
+*    ENDIF.
+  ENDLOOP.
+ENDFORM.                    "UpdateData
+
+*&---------------------------------------------------------------------*
+*&      Form  getNomorRoll
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM GETNOMORROLL.
+  CLEAR: VARIABEL, IT_CLBATCH.
+  REFRESH: IT_CLBATCH.
+  CALL FUNCTION 'VB_INIT'
+   EXPORTING
+     INIT_RESET       = 'X'
+            .
+
+  CALL FUNCTION 'VB_BATCH_GET_DETAIL'
+    EXPORTING
+      MATNR              = VMATNR
+      CHARG              = VCHARG
+      GET_CLASSIFICATION = 'X'
+    TABLES
+      CHAR_OF_BATCH      = IT_CLBATCH.
+
+  READ TABLE IT_CLBATCH WITH KEY ATNAM = 'ZZNOMORROLL'.
+  IF SY-SUBRC = 0.
+    VARIABEL = IT_CLBATCH-ATWTB.
+  ENDIF.
+
+
+ENDFORM.                    "getNomorRoll
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_DETAIL
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM GET_DETAIL.
+  IF V_ATWRT IS NOT INITIAL.
+    CALL FUNCTION 'CONVERSION_EXIT_ATINN_INPUT'
+      EXPORTING
+        INPUT  = 'ZZNOMORROLL'
+      IMPORTING
+        OUTPUT = VATINN.
+
+    SELECT SINGLE  MCH1~MATNR MCH1~CHARG
+      INTO (VMATNR, VCHARG)
+      FROM MCH1 JOIN AUSP ON AUSP~OBJEK EQ MCH1~CUOBJ_BM
+      WHERE AUSP~ATWRT = V_ATWRT
+      AND MCH1~FVDT1 = '00000000'
+      AND AUSP~KLART = '023'
+      AND AUSP~MAFID = 'O'
+      AND AUSP~ATINN = VATINN.
+  ELSE.
+    SELECT SINGLE MATNR
+      FROM MCH1
+      INTO VMATNR
+      WHERE MCH1~CHARG EQ V_CHARG.
+    VCHARG = V_CHARG.
+    PERFORM GETNOMORROLL.
+    V_ATWRT = VARIABEL.
+  ENDIF.
+
+  IT_LIST-MATNR = VMATNR.
+  IT_LIST-CHARG = VCHARG.
+  APPEND IT_LIST.
+
+  DO 1000 TIMES.
+    X = X + 1.
+    CLEAR VTEXT.
+    CONCATENATE 'Looping no' X INTO VTEXT SEPARATED BY SPACE.
+    CALL FUNCTION 'SAPGUI_PROGRESS_INDICATOR'
+      EXPORTING
+        PERCENTAGE = 0
+        TEXT       = VTEXT.
+    .
+
+    CLEAR: IT_FINAL, IT_FINAL2, IT_ISSUE, IT_ISSUE2, IT_ISSUE_OR, IT_ISSUE_PO, IT_ORDER, IT_ORDER2, IT_ORDER3.
+    REFRESH: IT_FINAL, IT_FINAL2, IT_ISSUE, IT_ISSUE2, IT_ISSUE_OR, IT_ISSUE_PO, IT_ORDER, IT_ORDER2, IT_ORDER3.
+
+    LOOP AT IT_FINAL3.
+      DELETE IT_LIST WHERE MATNR EQ IT_FINAL3-MATNR AND CHARG EQ IT_FINAL3-CHARG.
+    ENDLOOP.
+    IF IT_LIST[] IS NOT INITIAL.
+      SELECT DISTINCT MBLNR MJAHR ZEILE MATNR CHARG BWART SJAHR SMBLN SMBLP
+        FROM MSEG APPENDING TABLE IT_FINAL
+        FOR ALL ENTRIES IN IT_LIST
+        WHERE BWART IN ('601', '602', '903', '904', '633', '634') AND
+              MATNR EQ IT_LIST-MATNR AND
+              CHARG EQ IT_LIST-CHARG.
+
+      IT_FINAL2[] = IT_FINAL[].
+      DELETE IT_FINAL WHERE SMBLN IS INITIAL.
+      LOOP AT IT_FINAL.
+        DELETE IT_FINAL2 WHERE MBLNR EQ IT_FINAL-SMBLN AND MJAHR EQ IT_FINAL-SJAHR AND ZEILE EQ IT_FINAL-SMBLP.
+      ENDLOOP.
+      DELETE IT_FINAL2 WHERE SMBLN IS NOT INITIAL OR BWART EQ '602' OR BWART EQ '904' OR BWART EQ '634'.
+      APPEND LINES OF IT_FINAL2 TO IT_FINAL3.
+
+      SELECT DISTINCT MBLNR MJAHR ZEILE LINE_ID PARENT_ID MATNR CHARG BWART AUFNR EBELN EBELP SJAHR SMBLN SMBLP
+        FROM MSEG INTO CORRESPONDING FIELDS OF TABLE IT_ISSUE FOR ALL ENTRIES IN IT_LIST
+        WHERE BWART IN ('261', '262', '543', '544', '901', '902') AND
+              MATNR EQ IT_LIST-MATNR AND
+              CHARG EQ IT_LIST-CHARG.
+
+      IT_ISSUE2[] = IT_ISSUE[].
+      DELETE IT_ISSUE WHERE SMBLN IS INITIAL.
+      LOOP AT IT_ISSUE.
+        DELETE IT_ISSUE2 WHERE MBLNR EQ IT_ISSUE-SMBLN AND MJAHR EQ IT_ISSUE-SJAHR AND ZEILE EQ IT_ISSUE-SMBLP.
+      ENDLOOP.
+      DELETE IT_ISSUE2 WHERE SMBLN IS NOT INITIAL OR BWART EQ '262' OR BWART EQ '544' OR BWART EQ '902'.
+
+      IT_ISSUE_PO[] = IT_ISSUE2[].
+      IT_ISSUE_OR[] = IT_ISSUE2[].
+      DELETE IT_ISSUE_PO WHERE AUFNR IS NOT INITIAL.
+      DELETE IT_ISSUE_OR WHERE AUFNR IS INITIAL.
+
+      CLEAR: IT_LIST.
+      REFRESH: IT_LIST.
+
+      IF IT_ISSUE_OR[] IS NOT INITIAL.
+        SELECT DISTINCT AUFNR MILL_OC_AUFNR_U
+          FROM AFPO
+          INTO CORRESPONDING FIELDS OF TABLE IT_ORDER
+          FOR ALL ENTRIES IN IT_ISSUE_OR
+          WHERE AUFNR EQ IT_ISSUE_OR-AUFNR.
+
+        CALL FUNCTION 'SAPGUI_PROGRESS_INDICATOR'
+          EXPORTING
+            PERCENTAGE = 50
+            TEXT       = VTEXT.
+
+        LOOP AT IT_ORDER.
+          CLEAR: IT_ORDER2.
+          IF IT_ORDER-MILL_OC_AUFNR_U IS INITIAL.
+            IT_ORDER2-AUFNR = IT_ORDER-AUFNR.
+          ELSE.
+            IT_ORDER2-AUFNR = IT_ORDER-MILL_OC_AUFNR_U.
+          ENDIF.
+          APPEND IT_ORDER2.
+        ENDLOOP.
+
+        SORT IT_ORDER2.
+        DELETE ADJACENT DUPLICATES FROM IT_ORDER2 COMPARING ALL FIELDS.
+
+        SELECT DISTINCT MBLNR MJAHR ZEILE MATNR CHARG BWART AUFNR SJAHR SMBLN SMBLP
+          FROM MSEG
+          INTO CORRESPONDING FIELDS OF TABLE IT_ORDER3
+          FOR ALL ENTRIES IN IT_ORDER2
+          WHERE AUFNR EQ IT_ORDER2-AUFNR AND
+                BWART IN ('101', '102', '531', '532').
+
+        IT_LIST[] = IT_ORDER3[].
+        DELETE IT_ORDER3 WHERE SMBLN IS INITIAL.
+        LOOP AT IT_ORDER3.
+          DELETE IT_LIST WHERE MBLNR EQ IT_ORDER3-SMBLN AND MJAHR EQ IT_ORDER3-SJAHR AND ZEILE EQ IT_ORDER3-SMBLP.
+        ENDLOOP.
+        DELETE IT_LIST WHERE SMBLN IS NOT INITIAL OR BWART EQ '102'.
+      ENDIF.
+      IF IT_ISSUE_PO[] IS NOT INITIAL.
+        SELECT DISTINCT MBLNR MJAHR ZEILE MATNR CHARG BWART AUFNR SJAHR SMBLN SMBLP
+          FROM MSEG
+          APPENDING TABLE IT_LIST
+          FOR ALL ENTRIES IN IT_ISSUE_PO
+          WHERE MBLNR EQ IT_ISSUE_PO-MBLNR AND
+                MJAHR EQ IT_ISSUE_PO-MJAHR AND
+                LINE_ID EQ IT_ISSUE_PO-PARENT_ID AND
+                BWART EQ '101' AND
+                EBELN EQ IT_ISSUE_PO-EBELN AND
+                EBELP EQ IT_ISSUE_PO-EBELP.
+      ENDIF.
+    ENDIF.
+    SORT IT_LIST BY MATNR CHARG.
+    DELETE ADJACENT DUPLICATES FROM IT_LIST COMPARING MATNR CHARG.
+    DELETE IT_LIST WHERE CHARG IS INITIAL.
+    READ TABLE IT_LIST INDEX 1.
+    IF SY-SUBRC <> 0.
+      EXIT.
+    ENDIF.
+  ENDDO.
+
+  IF IT_FINAL3[] IS NOT INITIAL.
+    SELECT DISTINCT A~MBLNR A~MJAHR A~ZEILE A~MATNR A~CHARG A~KUNNR D~NAME1 A~BUDAT_MKPF
+           A~VBELN_IM A~VBELP_IM B~EXIDV
+      FROM MSEG AS A JOIN VEPO AS C ON A~VBELN_IM EQ C~VBELN AND
+                                       A~VBELP_IM EQ C~POSNR
+                     JOIN VEKP AS B ON B~VENUM EQ C~VENUM
+                     JOIN KNA1 AS D ON A~KUNNR EQ D~KUNNR
+      INTO CORRESPONDING FIELDS OF TABLE IT_DISPLAY
+      FOR ALL ENTRIES IN IT_FINAL3
+      WHERE A~MBLNR EQ IT_FINAL3-MBLNR AND
+            A~MJAHR EQ IT_FINAL3-MJAHR AND
+            A~ZEILE EQ IT_FINAL3-ZEILE.
+
+    LOOP AT IT_DISPLAY.
+      VMATNR = IT_DISPLAY-MATNR.
+      VCHARG = IT_DISPLAY-CHARG.
+      PERFORM GETNOMORROLL.
+      IT_DISPLAY-ATWTB = VARIABEL.
+
+      CALL FUNCTION 'CONVERSION_EXIT_ALPHA_OUTPUT'
+        EXPORTING
+          INPUT  = IT_DISPLAY-EXIDV
+        IMPORTING
+          OUTPUT = IT_DISPLAY-EXIDV.
+
+      CALL FUNCTION 'CONVERSION_EXIT_ALPHA_OUTPUT'
+        EXPORTING
+          INPUT  = IT_DISPLAY-VBELN_IM
+        IMPORTING
+          OUTPUT = IT_DISPLAY-VBELN_IM.
+      MODIFY IT_DISPLAY.
+    ENDLOOP.
+  ENDIF.
+ENDFORM.                      "GET_DETAIL
+
+*&---------------------------------------------------------------------*
+*&      Form  DISPLAY2
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM DISPLAY2.
+  PERFORM BUILD_FIELDCAT.
+  PERFORM COMMENT_BUILD USING GT_LIST_TOP_OF_PAGE[].
+
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      I_CALLBACK_PROGRAM = G_REPID
+      IS_LAYOUT          = GS_LAYOUT
+      IT_FIELDCAT        = GT_FIELDCAT[]
+      IS_PRINT           = Y_PRINT
+      I_SAVE             = G_SAVE
+      IS_VARIANT         = GS_VARIANT
+      IT_EVENTS          = GT_EVENTS[]
+    TABLES
+      T_OUTTAB           = IT_DETAIL
+    EXCEPTIONS
+      PROGRAM_ERROR      = 1
+      OTHERS             = 2.
+  IF SY-SUBRC <> 0.
+    MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+            WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+ENDFORM.                    "DISPLAY2
+
+*&--------------------------------------------------------------------*
+*&      Form  build_fieldcatalog
+*&--------------------------------------------------------------------*
+*       Layout Trace Roll
+*---------------------------------------------------------------------*
+FORM BUILD_FIELDCAT.
+
+  DATA: XFIELDCAT TYPE SLIS_FIELDCAT_ALV,
+        N TYPE I.
+
+  REFRESH GT_FIELDCAT.
+  N = 0.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME     = 'LEVEL'. "DISESUAIKAN DENGAN PROGRAM
+  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+  XFIELDCAT-ROW_POS       = 1.
+  XFIELDCAT-COL_POS       = N.
+  XFIELDCAT-REPTEXT_DDIC  = 'Level'.
+  XFIELDCAT-OUTPUTLEN     = 8.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME     = 'MATNR'. "DISESUAIKAN DENGAN PROGRAM
+  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+  XFIELDCAT-ROW_POS       = 1.
+  XFIELDCAT-COL_POS       = N.
+  XFIELDCAT-REPTEXT_DDIC  = 'Nomor Material'.
+  XFIELDCAT-OUTPUTLEN     = 20.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME     = 'ATWRT'. "DISESUAIKAN DENGAN PROGRAM
+  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+  XFIELDCAT-ROW_POS       = 1.
+  XFIELDCAT-COL_POS       = N.
+  XFIELDCAT-REPTEXT_DDIC  = 'Nomor Roll'.
+  XFIELDCAT-OUTPUTLEN     = 20.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME     = 'CHARG'. "DISESUAIKAN DENGAN PROGRAM
+  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+  XFIELDCAT-ROW_POS       = 1.
+  XFIELDCAT-COL_POS       = N.
+  XFIELDCAT-REPTEXT_DDIC  = 'Nomor Batch'.
+  XFIELDCAT-OUTPUTLEN     = 15.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME     = 'AUFNR'. "DISESUAIKAN DENGAN PROGRAM
+  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+  XFIELDCAT-ROW_POS       = 1.
+  XFIELDCAT-COL_POS       = N.
+  XFIELDCAT-REPTEXT_DDIC  = 'Nomor PO'.
+  XFIELDCAT-OUTPUTLEN     = 15.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME     = 'CPUDT'. "DISESUAIKAN DENGAN PROGRAM
+  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+  XFIELDCAT-ROW_POS       = 1.
+  XFIELDCAT-COL_POS       = N.
+  XFIELDCAT-REPTEXT_DDIC  = 'Tgl. Produksi'.
+  XFIELDCAT-OUTPUTLEN     = 10.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME     = 'CPUTM'. "DISESUAIKAN DENGAN PROGRAM
+  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+  XFIELDCAT-ROW_POS       = 1.
+  XFIELDCAT-COL_POS       = N.
+  XFIELDCAT-REPTEXT_DDIC  = 'Jam Eksekusi'.
+  XFIELDCAT-OUTPUTLEN     = 10.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME     = 'ARBPL'. "DISESUAIKAN DENGAN PROGRAM
+  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+  XFIELDCAT-ROW_POS       = 1.
+  XFIELDCAT-COL_POS       = N.
+  XFIELDCAT-REPTEXT_DDIC  = 'Resource'.
+  XFIELDCAT-OUTPUTLEN     = 10.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME     = 'P_ATWRT'. "DISESUAIKAN DENGAN PROGRAM
+  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+  XFIELDCAT-ROW_POS       = 1.
+  XFIELDCAT-COL_POS       = N.
+  XFIELDCAT-REPTEXT_DDIC  = 'Previous Roll'.
+  XFIELDCAT-OUTPUTLEN     = 80.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+*
+*  N = N + 1.
+*  CLEAR XFIELDCAT.
+*  XFIELDCAT-FIELDNAME     = 'P_CPUDT'. "DISESUAIKAN DENGAN PROGRAM
+*  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+*  XFIELDCAT-ROW_POS       = 1.
+*  XFIELDCAT-COL_POS       = N.
+*  XFIELDCAT-REPTEXT_DDIC  = 'Previous Tgl. Produksi'.
+*  XFIELDCAT-OUTPUTLEN     = 20.
+*  APPEND XFIELDCAT TO GT_FIELDCAT.
+*
+*  N = N + 1.
+*  CLEAR XFIELDCAT.
+*  XFIELDCAT-FIELDNAME     = 'P_CPUTM'. "DISESUAIKAN DENGAN PROGRAM
+*  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+*  XFIELDCAT-ROW_POS       = 1.
+*  XFIELDCAT-COL_POS       = N.
+*  XFIELDCAT-REPTEXT_DDIC  = 'Previous Jam Eksekusi'.
+*  XFIELDCAT-OUTPUTLEN     = 20.
+*  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME     = 'P_CHARG'. "DISESUAIKAN DENGAN PROGRAM
+  XFIELDCAT-TABNAME       = 'IT_DETAIL'."DISESUAIKAN DENGAN TABEL YANG ADA
+  XFIELDCAT-ROW_POS       = 1.
+  XFIELDCAT-COL_POS       = N.
+  XFIELDCAT-REPTEXT_DDIC  = 'Previous Batch'.
+  XFIELDCAT-OUTPUTLEN     = 150.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+
+ENDFORM.                    " BUILD_FIELDCAT
+*&--------------------------------------------------------------------*
+*&      Form  layout_init
+*&--------------------------------------------------------------------*
+*       text
+*---------------------------------------------------------------------*
+*      -->RS_LAYOUT  text
+*---------------------------------------------------------------------*
+FORM LAYOUT_INIT USING RS_LAYOUT TYPE SLIS_LAYOUT_ALV.
+  RS_LAYOUT-DETAIL_POPUP      = 'X'.
+*rs_layout-no_totalline      = 'X'.
+ENDFORM.                    " LAYOUT_INIT
+
+
+*&--------------------------------------------------------------------*
+*&      Form  eventtab_build
+*&--------------------------------------------------------------------*
+*       text
+*---------------------------------------------------------------------*
+*      -->RT_EVENTS  text
+*---------------------------------------------------------------------*
+FORM EVENTTAB_BUILD USING RT_EVENTS TYPE SLIS_T_EVENT.
+  DATA: LS_EVENT TYPE SLIS_ALV_EVENT.
+  CALL FUNCTION 'REUSE_ALV_EVENTS_GET'
+    EXPORTING
+      I_LIST_TYPE = 0
+    IMPORTING
+      ET_EVENTS   = RT_EVENTS.
+  READ TABLE RT_EVENTS WITH KEY NAME = SLIS_EV_TOP_OF_PAGE
+                           INTO LS_EVENT.
+  IF SY-SUBRC = 0.
+    MOVE G_TOP_OF_PAGE TO LS_EVENT-FORM.
+    APPEND LS_EVENT TO RT_EVENTS.
+  ENDIF.
+ENDFORM.                    " eventtab_build
+
+*&--------------------------------------------------------------------*
+*&      Form  top_of_page
+*&--------------------------------------------------------------------*
+*       text
+*---------------------------------------------------------------------*
+FORM TOP_OF_PAGE.
+  CALL FUNCTION 'REUSE_ALV_COMMENTARY_WRITE'
+    EXPORTING
+*     I_LOGO             = 'ENJOYSAP_LOGO' "MEMBERIKAN LOGO PADA REPORT
+      IT_LIST_COMMENTARY = GT_LIST_TOP_OF_PAGE.
+ENDFORM. " top_of_page
+
+*&---------------------------------------------------------------------*
+*&      Form  DISPLAY
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+FORM DISPLAY.
+*tambahan untuk ALV
+  PERFORM BUILD_FIELDCATALOG.
+  PERFORM COMMENT_BUILD USING GT_LIST_TOP_OF_PAGE[].
+
+**call function that construct our ALV Report
+** Function Grid ALV
+
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+      I_CALLBACK_PROGRAM = G_REPID
+      IS_LAYOUT          = GS_LAYOUT
+      IT_FIELDCAT        = GT_FIELDCAT[]
+      IS_PRINT           = Y_PRINT
+      I_SAVE             = G_SAVE
+      IS_VARIANT         = GS_VARIANT
+      IT_EVENTS          = GT_EVENTS[]
+    TABLES
+      T_OUTTAB           = IT_DISPLAY
+    EXCEPTIONS
+      PROGRAM_ERROR      = 1
+      OTHERS             = 2.
+  IF SY-SUBRC <> 0.
+    MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+            WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+  ENDIF.
+
+ENDFORM.                    "DISPLAY
+
+*&---------------------------------------------------------------------*
+*&      Form  build_fieldcatalog
+*&---------------------------------------------------------------------*
+*       Layout Trace Customer
+*----------------------------------------------------------------------*
+FORM BUILD_FIELDCATALOG.
+  DATA: XFIELDCAT TYPE SLIS_FIELDCAT_ALV,
+        N TYPE I.
+
+  REFRESH GT_FIELDCAT.
+  N = 0.
+  N = N + 1.
+
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'ATWTB'.
+  XFIELDCAT-SELTEXT_M = 'Nomor Roll'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 20.
+  XFIELDCAT-FIX_COLUMN = 'X'.
+  XFIELDCAT-EMPHASIZE = 'C110'.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'CHARG'.
+  XFIELDCAT-SELTEXT_M = 'Nomor Batch'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 20.
+  XFIELDCAT-FIX_COLUMN = 'X'.
+  XFIELDCAT-EMPHASIZE = 'C110'.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'VBELN_IM'.
+  XFIELDCAT-SELTEXT_M = 'Nomor ODO'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 20.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'EXIDV'.
+  XFIELDCAT-SELTEXT_M = 'Nomor HU'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 20.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'BUDAT_MKPF'.
+  XFIELDCAT-SELTEXT_M = 'Actual GI Date'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 20.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'KUNNR'.
+  XFIELDCAT-SELTEXT_M = 'Customer'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 20.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+  N = N + 1.
+  CLEAR XFIELDCAT.
+  XFIELDCAT-FIELDNAME = 'NAME1'.
+  XFIELDCAT-SELTEXT_M = 'Customer Desc.'.
+*  xfieldcat-row_pos = 1.
+  XFIELDCAT-COL_POS = N.
+  XFIELDCAT-OUTPUTLEN = 20.
+  APPEND XFIELDCAT TO GT_FIELDCAT.
+
+ENDFORM. "build_fieldcatalog
+
+*&---------------------------------------------------------------------*
+*&      Form  comment_build
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->LT_TOP_OF_PAGE  text
+*----------------------------------------------------------------------*
+FORM COMMENT_BUILD USING LT_TOP_OF_PAGE TYPE SLIS_T_LISTHEADER.
+  DATA: LS_LINE TYPE SLIS_LISTHEADER,
+        VWERKS LIKE MCHA-WERKS,
+        VTITLE(50).
+  "ADD FOR NEW COMPANY
+  CLEAR: VWERKS.
+  SELECT SINGLE WERKS INTO VWERKS FROM MCHA WHERE CHARG EQ V_CHARG.
+    IF VWERKS = '1000' OR VWERKS = '2000'.
+      VTITLE = 'PT. Trias Sentosa Tbk.'.
+    ELSEIF VWERKS = 'TTA2'.
+      VTITLE = 'PT. Trias Toyobo Astria.'.
+    ELSEIF VWERKS = 'TTE'.
+      VTITLE = 'PT. Toyobo Trias Ecosyar.'.
+    ELSEIF VWERKS = 'UNS1' OR VWERKS = 'UNS2'.
+      VTITLE = 'PT. Unggul Niaga Sentosa.'.
+    ENDIF.
+
+  CLEAR LS_LINE.
+  REFRESH LT_TOP_OF_PAGE.
+  LS_LINE-TYP = 'H'.
+  LS_LINE-INFO = VTITLE. "'PT. Trias Sentosa, Tbk.'.  "ADD FOR NEW COMPANY
+  APPEND LS_LINE TO LT_TOP_OF_PAGE.
+  IF R1 EQ 'X'.
+    CLEAR LS_LINE.
+    LS_LINE-TYP = 'H'.
+    LS_LINE-INFO = 'Report Tracing Roll'.
+    APPEND LS_LINE TO LT_TOP_OF_PAGE.
+  ENDIF.
+
+  IF R2 EQ 'X'.
+    CLEAR LS_LINE.
+    LS_LINE-TYP = 'H'.
+    LS_LINE-INFO = 'Report Tracing Customer'.
+    APPEND LS_LINE TO LT_TOP_OF_PAGE.
+    CLEAR LS_LINE.
+    LS_LINE-TYP = 'A'.
+    CONCATENATE 'Original Roll No.' V_ATWRT INTO ORIROLL SEPARATED BY SPACE.
+    LS_LINE-INFO = ORIROLL.
+    APPEND LS_LINE TO LT_TOP_OF_PAGE.
+    CLEAR LS_LINE.
+    LS_LINE-TYP = 'A'.
+    CONCATENATE 'Looping' X 'times' INTO ITERATION SEPARATED BY SPACE.
+    LS_LINE-INFO = ITERATION.
+    APPEND LS_LINE TO LT_TOP_OF_PAGE.
+  ENDIF.
+ENDFORM.                    "comment_build
+*&---------------------------------------------------------------------*
+*&      Form  LEVEL_UP
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM LEVEL_UP .
+  CLEAR : IT_HEADER2, IT_HEADER.
+  REFRESH : IT_HEADER2, IT_HEADER.
+
+  LOOP AT IT_DETAIL.
+
+    IF IT_DETAIL-ATWRT IS INITIAL.
+      VMATNR = IT_DETAIL-MATNR.
+      VCHARG = IT_DETAIL-CHARG.
+
+      PERFORM GETNOMORROLL.
+
+      IT_DETAIL-ATWRT = VARIABEL.
+    ENDIF.
+
+    CLEAR: IT_MSEG, IT_MSEG2.
+    REFRESH: IT_MSEG, IT_MSEG2.
+    SELECT AUFNR MBLNR MJAHR ZEILE CPUDT_MKPF CPUTM_MKPF SMBLN SJAHR SMBLP BWART LIFNR
+      INTO CORRESPONDING FIELDS OF TABLE IT_MSEG
+    FROM MSEG
+    WHERE BWART IN ('101', '102', '531', '532')
+    AND MATNR EQ IT_DETAIL-MATNR
+    AND CHARG EQ IT_DETAIL-CHARG.
+
+    IT_MSEG2[] = IT_MSEG[].
+    DELETE IT_MSEG2 WHERE SMBLN IS INITIAL.
+    LOOP AT IT_MSEG2.
+      DELETE IT_MSEG WHERE MBLNR EQ IT_MSEG2-SMBLN AND MJAHR EQ IT_MSEG2-SJAHR AND ZEILE EQ IT_MSEG2-SMBLP.
+    ENDLOOP.
+    DELETE IT_MSEG WHERE SMBLN IS NOT INITIAL OR BWART EQ '102'.
+    DELETE IT_MSEG WHERE SMBLN IS NOT INITIAL OR BWART EQ '532'.
+
+    SORT IT_MSEG BY CPUDT_MKPF CPUTM_MKPF.
+
+*    IF IT_MSEG[] IS NOT INITIAL.
+
+      READ TABLE IT_MSEG INDEX 1.
+*      IF IT_MSEG-MBLNR IS INITIAL.
+*        DELETE IT_DETAIL.
+*        EXIT.
+*      ENDIF.
+
+      IT_DETAIL-AUFNR = IT_MSEG-AUFNR.
+      IT_DETAIL-MBLNR = IT_MSEG-MBLNR.
+
+      SELECT SINGLE CPUDT CPUTM INTO (IT_DETAIL-CPUDT , IT_DETAIL-CPUTM ) FROM MKPF
+        WHERE MBLNR = IT_DETAIL-MBLNR.
+
+      MODIFY IT_DETAIL.
+
+      SELECT EBELN EBELP
+        APPENDING CORRESPONDING FIELDS OF TABLE IT_HEADER
+        FROM MSEG
+        WHERE MSEG~CHARG = IT_DETAIL-CHARG
+        AND MSEG~BWART EQ '543'.
+
+      "APPEND LINES OF IT_HEADER2 TO IT_HEADER.
+
+      DELETE ADJACENT DUPLICATES FROM IT_HEADER COMPARING ALL FIELDS.
+
+      SELECT AUFNR
+        APPENDING CORRESPONDING FIELDS OF TABLE IT_HEADER
+        FROM AUFM
+        WHERE AUFM~CHARG = IT_DETAIL-CHARG
+        AND AUFM~BWART IN ('261', '901').
+
+      "APPEND LINES OF IT_HEADER2 TO IT_HEADER.
+
+      LOOP AT IT_HEADER ASSIGNING <FS_DETAIL>.
+        IF <FS_DETAIL>-EBELN IS NOT INITIAL. "SUBCONTRACT
+
+          SELECT AUFNR CHARG MATNR MBLNR MJAHR ZEILE CPUDT_MKPF CPUTM_MKPF SMBLN SJAHR SMBLP BWART LIFNR
+            INTO CORRESPONDING FIELDS OF TABLE IT_MSEG
+            FROM MSEG
+            WHERE BWART IN ('101', '102', '531', '532')
+            AND EBELN EQ <FS_DETAIL>-EBELN
+            AND EBELP EQ <FS_DETAIL>-EBELP.
+
+          IT_MSEG2[] = IT_MSEG[].
+          DELETE IT_MSEG2 WHERE SMBLN IS INITIAL.
+
+          LOOP AT IT_MSEG2.
+            DELETE IT_MSEG WHERE MBLNR EQ IT_MSEG2-SMBLN AND MJAHR EQ IT_MSEG2-SJAHR AND ZEILE EQ IT_MSEG2-SMBLP.
+          ENDLOOP.
+
+          DELETE IT_MSEG WHERE SMBLN IS NOT INITIAL OR BWART EQ '102'.
+          DELETE IT_MSEG WHERE SMBLN IS NOT INITIAL OR BWART EQ '532'.
+
+          IF IT_MSEG[] IS NOT INITIAL.
+            LOOP AT IT_MSEG.
+              IT_DATA_HEADER-CHARG = IT_MSEG-CHARG.
+
+              VMATNR = IT_MSEG-MATNR.
+              VCHARG = IT_MSEG-CHARG.
+
+              PERFORM GETNOMORROLL.
+
+              IT_DATA_HEADER-ATWRT = VARIABEL.
+              IT_DATA_HEADER-AUFNR = IT_MSEG-AUFNR.
+              IT_DATA_HEADER-CPUDT = IT_MSEG-CPUDT_MKPF.
+              IT_DATA_HEADER-CPUTM = IT_MSEG-CPUTM_MKPF.
+              IT_DATA_HEADER-AUFNR = 'SUBCONTRACT'.
+              IT_DATA_HEADER-ARBPL =  IT_MSEG-LIFNR.
+              IT_DATA_HEADER-LEVEL = <FS_DETAIL>-LEVEL + 1.
+
+              CLEAR VCOMBINE.
+              SELECT SINGLE AUFNR FROM AFPO
+                INTO VCOMBINE
+                WHERE MILL_OC_AUFNR_U EQ <FS_DETAIL>-AUFNR.
+
+              IF VCOMBINE IS INITIAL.
+                VCOMBINE = <FS_DETAIL>-AUFNR.
+              ENDIF.
+
+              CLEAR VARBPL.
+              SELECT SINGLE CRHD~ARBPL
+                INTO VARBPL
+                FROM CRHD
+                JOIN AFRU ON CRHD~OBJID EQ AFRU~ARBID
+                WHERE CRHD~OBJTY EQ 'A'
+                AND AFRU~AUFNR EQ VCOMBINE
+                AND AFRU~STOKZ EQ ''.
+
+              IF VARBPL IS NOT INITIAL.
+                IT_DATA_HEADER-ARBPL = VARBPL.
+              ENDIF.
+
+              IF <FS_DETAIL>-P_CHARG IS INITIAL.
+                IT_DATA_HEADER-P_CHARG = IT_DETAIL-CHARG.
+                IT_DATA_HEADER-P_ATWRT = IT_DETAIL-ATWRT.
+                IT_DATA_HEADER-P_CPUDT = IT_DETAIL-CPUDT.
+                IT_DATA_HEADER-P_CPUTM = IT_DETAIL-CPUTM.
+              ELSE.
+                IT_DATA_HEADER-P_CHARG = <FS_DETAIL>-P_CHARG.
+                IT_DATA_HEADER-P_ATWRT = <FS_DETAIL>-P_ATWRT.
+                IT_DATA_HEADER-P_CPUDT = <FS_DETAIL>-P_CPUDT.
+                IT_DATA_HEADER-P_CPUTM = <FS_DETAIL>-P_CPUTM.
+              ENDIF.
+
+              APPEND IT_DATA_HEADER.
+
+              SELECT AUFNR
+                 INTO CORRESPONDING FIELDS OF TABLE IT_HEADER2
+                 FROM AUFM
+                 WHERE AUFM~CHARG = IT_MSEG-CHARG
+                 AND AUFM~BWART IN ('261', '901').
+
+               SELECT MBLNR
+                 APPENDING CORRESPONDING FIELDS OF TABLE IT_HEADER2
+                 FROM MSEG
+                 WHERE MSEG~CHARG = IT_DETAIL-CHARG
+                 AND MSEG~BWART EQ '543'.
+
+               LOOP AT IT_HEADER2.
+                 IT_HEADER2-LEVEL = <FS_DETAIL>-LEVEL + 1.
+                 IT_HEADER2-P_CHARG = IT_DATA_HEADER-CHARG.
+                 IT_HEADER2-P_ATWRT = IT_DATA_HEADER-ATWRT.
+                 IT_HEADER2-P_CPUDT = IT_DATA_HEADER-CPUDT.
+                 IT_HEADER2-P_CPUTM = IT_DATA_HEADER-CPUTM.
+                 MODIFY IT_HEADER2.
+               ENDLOOP.
+
+               APPEND LINES OF IT_HEADER2 TO IT_HEADER.
+            ENDLOOP.
+          ENDIF.
+
+        ELSE.
+          CLEAR IAFPO.
+          REFRESH IAFPO.
+          SELECT MILL_OC_AUFNR_U FROM AFPO
+            INTO CORRESPONDING FIELDS OF TABLE IAFPO
+            WHERE AUFNR EQ <FS_DETAIL>-AUFNR.
+
+          LOOP AT IAFPO.
+            CLEAR: IT_MSEG, IT_MSEG2.
+            REFRESH: IT_MSEG, IT_MSEG2.
+
+            IF IAFPO-MILL_OC_AUFNR_U IS INITIAL.
+              IAFPO-MILL_OC_AUFNR_U = <FS_DETAIL>-AUFNR.
+            ENDIF.
+
+            SELECT AUFNR CHARG MATNR MBLNR MJAHR ZEILE CPUDT_MKPF CPUTM_MKPF SMBLN SJAHR SMBLP BWART LIFNR
+              INTO CORRESPONDING FIELDS OF TABLE IT_MSEG
+              FROM MSEG
+              WHERE BWART IN ('101', '102', '531', '532')
+              AND AUFNR EQ IAFPO-MILL_OC_AUFNR_U.
+
+            IT_MSEG2[] = IT_MSEG[].
+            DELETE IT_MSEG2 WHERE SMBLN IS INITIAL.
+            LOOP AT IT_MSEG2.
+              DELETE IT_MSEG WHERE MBLNR EQ IT_MSEG2-SMBLN AND MJAHR EQ IT_MSEG2-SJAHR AND ZEILE EQ IT_MSEG2-SMBLP.
+            ENDLOOP.
+            DELETE IT_MSEG WHERE SMBLN IS NOT INITIAL OR BWART EQ '102'.
+            DELETE IT_MSEG WHERE SMBLN IS NOT INITIAL OR BWART EQ '532'.
+            DELETE IT_MSEG WHERE CHARG IS INITIAL.
+
+            IF IT_MSEG[] IS NOT INITIAL.
+
+              "READ TABLE IT_MSEG INDEX 1.
+              LOOP AT IT_MSEG.
+                IT_DATA_HEADER-CHARG = IT_MSEG-CHARG.
+
+                VMATNR = IT_MSEG-MATNR.
+                VCHARG = IT_MSEG-CHARG.
+
+                PERFORM GETNOMORROLL.
+
+                IT_DATA_HEADER-ATWRT = VARIABEL.
+                IT_DATA_HEADER-MATNR = IT_MSEG-MATNR.
+                IT_DATA_HEADER-AUFNR = IT_MSEG-AUFNR.
+                IT_DATA_HEADER-CPUDT = IT_MSEG-CPUDT_MKPF.
+                IT_DATA_HEADER-CPUTM = IT_MSEG-CPUTM_MKPF.
+                IT_DATA_HEADER-ARBPL =  IT_MSEG-LIFNR.
+                IT_DATA_HEADER-LEVEL = <FS_DETAIL>-LEVEL + 1.
+
+                CLEAR VCOMBINE.
+                SELECT SINGLE AUFNR FROM AFPO
+                  INTO VCOMBINE
+                  WHERE MILL_OC_AUFNR_U EQ <FS_DETAIL>-AUFNR.
+
+                IF VCOMBINE IS INITIAL.
+                  VCOMBINE = <FS_DETAIL>-AUFNR.
+                ENDIF.
+
+                CLEAR VARBPL.
+                SELECT SINGLE CRHD~ARBPL
+                  INTO VARBPL
+                  FROM CRHD
+                  JOIN AFRU ON CRHD~OBJID EQ AFRU~ARBID
+                  WHERE CRHD~OBJTY EQ 'A'
+                  AND AFRU~AUFNR EQ VCOMBINE
+                  AND AFRU~STOKZ EQ ''.
+
+                IF VARBPL IS NOT INITIAL.
+                  IT_DATA_HEADER-ARBPL = VARBPL.
+                ENDIF.
+
+                IF <FS_DETAIL>-P_CHARG IS INITIAL.
+                  IT_DATA_HEADER-P_CHARG = IT_DETAIL-CHARG.
+                  IT_DATA_HEADER-P_ATWRT = IT_DETAIL-ATWRT.
+                  IT_DATA_HEADER-P_CPUDT = IT_DETAIL-CPUDT.
+                  IT_DATA_HEADER-P_CPUTM = IT_DETAIL-CPUTM.
+                ELSE.
+                  IT_DATA_HEADER-P_CHARG = <FS_DETAIL>-P_CHARG.
+                  IT_DATA_HEADER-P_ATWRT = <FS_DETAIL>-P_ATWRT.
+                  IT_DATA_HEADER-P_CPUDT = <FS_DETAIL>-P_CPUDT.
+                  IT_DATA_HEADER-P_CPUTM = <FS_DETAIL>-P_CPUTM.
+                ENDIF.
+
+                APPEND IT_DATA_HEADER.
+
+                SELECT AUFNR
+                   INTO CORRESPONDING FIELDS OF TABLE IT_HEADER2
+                   FROM AUFM
+                   WHERE AUFM~CHARG = IT_MSEG-CHARG
+                   AND AUFM~BWART IN ('261', '901').
+
+                 SELECT MBLNR
+                   APPENDING CORRESPONDING FIELDS OF TABLE IT_HEADER2
+                   FROM MSEG
+                   WHERE MSEG~CHARG = IT_DETAIL-CHARG
+                   AND MSEG~BWART EQ '543'.
+
+                 LOOP AT IT_HEADER2.
+                    IT_HEADER2-LEVEL = <FS_DETAIL>-LEVEL + 1.
+                    IT_HEADER2-P_CHARG = IT_DATA_HEADER-CHARG.
+                    IT_HEADER2-P_ATWRT = IT_DATA_HEADER-ATWRT.
+                    IT_HEADER2-P_CPUDT = IT_DATA_HEADER-CPUDT.
+                    IT_HEADER2-P_CPUTM = IT_DATA_HEADER-CPUTM.
+                    MODIFY IT_HEADER2.
+                 ENDLOOP.
+
+                 APPEND LINES OF IT_HEADER2 TO IT_HEADER.
+
+              ENDLOOP.
+            ENDIF.
+          ENDLOOP.
+
+        ENDIF.
+
+      ENDLOOP.
+
+      DELETE ADJACENT DUPLICATES FROM IT_DATA_HEADER COMPARING ALL FIELDS.
+      SORT IT_DATA_HEADER DESCENDING BY LEVEL.
+      CLEAR : VSORT, VLVL.
+
+      LOOP AT IT_DATA_HEADER.
+        IF VSORT IS INITIAL AND VLVL IS INITIAL.
+          VSORT = 1.
+        ELSEIF VLVL <> IT_DATA_HEADER-LEVEL.
+          VSORT = VSORT + 1.
+        ENDIF.
+        VLVL = IT_DATA_HEADER-LEVEL.
+        IT_DATA_HEADER-LEVEL = VSORT.
+        MODIFY IT_DATA_HEADER.
+
+      ENDLOOP.
+*    ENDIF.
+  ENDLOOP.
+
+
+
+ENDFORM.                    " LEVEL_UP
+*&---------------------------------------------------------------------*
+*&      Form  SBU
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM SBU.
+  DATA: V_STATUS(5).
+  SELECT SINGLE STATUS INTO V_STATUS FROM ZMAP_INDICATOR WHERE INDC EQ 'SBU'.
+  IF V_STATUS IS INITIAL.
+    EXIT.
+  ENDIF.
+
+  DATA: V_VAR TYPE VARIANT.
+  SELECT SINGLE VARIANT INTO V_VAR FROM VARID WHERE REPORT EQ 'ZQMR_TRACEABILITY_SBU' AND VARIANT EQ SY-TCODE.
+
+  IF SY-TCODE EQ 'ZQM015'.
+    SUBMIT ZQMR_TRACEABILITY_SBU VIA SELECTION-SCREEN.
+  ELSEIF V_VAR IS NOT INITIAL.
+    SUBMIT ZQMR_TRACEABILITY_SBU VIA SELECTION-SCREEN USING SELECTION-SET SY-TCODE.
+  ELSE.
+    MESSAGE I065(VO) WITH SY-TCODE.
+  ENDIF.
+ENDFORM.                    " SBU
