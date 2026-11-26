@@ -23,3 +23,6 @@ graphify-out/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Referensi project manager (S/4HANA migration) - baca saja, tidak di-commit
+S4HANA_MIGRATION/
