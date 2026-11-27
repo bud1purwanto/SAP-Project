@@ -240,3 +240,12 @@ CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
   - Source kandidat: `src/ZQMI_COA_TOP_export_candidate.abap` (`380` baris), `outputs/src_snapshot/ZQMI_COA_F01_export_candidate.abap` (`4.602` baris), `outputs/src_snapshot/ZQMI_COA_F02_export_candidate.abap` (`1.106` baris), `src/ZMAP_COA_MIC.abap` (`1.567` baris)
   - Snapshot setelah push ke `sandbox-new`: `outputs/ZQMI_COA_TOP_sandbox-new_after_screen0100_rev.abap`, `outputs/ZQMI_COA_F01_sandbox-new_after_batch_type_alias_fix.abap`, `outputs/ZQMI_COA_F02_sandbox-new_after_screen0100_rev.abap`, `outputs/ZMAP_COA_MIC_sandbox-new_after_mic_desc_len_fix.abap`
   - Verifikasi `RS_SYNTAX_CHECK` pada `ZQMI_COA` & `ZMAP_COA_MIC`: `SYNTAX_RC = 0`.
+
+## Checkpoint 2026-11-27 — Baris header utama `ZQMF_COA_EXPORT` dinamis
+
+- Masalah: field utama yang tidak dicentang di popup Export COA Header (mis. PI Number) tetap mencetak baris kosong berisi `:`, karena `%TEMPLATE1` berisi 5 baris tetap tanpa kondisi.
+- Perubahan (sandbox-new): `%TEMPLATE1` diganti `%TEMPLATE_MAIN_01`..`%TEMPLATE_MAIN_05`, masing-masing 1 baris (kolom 5 cm + 10 cm) dengan kondisi `H_LABELn NE SPACE`, dikloning dari `%TEMPLATE_EXTRA_01`. Isi teks tetap: `&H_LABELn&` dan `: &CUSTOMER/DELIVERY/PRODUCT/QUANTITY/WIDTH(C)&`.
+- Tidak ada perubahan ABAP; `H_LABELn` sudah kosong bila field tidak dicentang (`PREPARE_EXPORT_HEADER`).
+- Bukti render PDF: `outputs/form_main_dynamic_20261127/` (PI off, PO+PI off, semua on).
+- Backup sebelum: `outputs/ZQMF_COA_EXPORT_sandbox-new_20261127.xml`; kandidat: `outputs/ZQMF_COA_EXPORT_main_dynamic_candidate.xml`; aktif sesudah: `outputs/ZQMF_COA_EXPORT_sandbox-new_after_main_dynamic.xml`.
+

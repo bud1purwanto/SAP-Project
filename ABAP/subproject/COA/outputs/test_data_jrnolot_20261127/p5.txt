@@ -1,0 +1,105 @@
+SR 0000354110 -> JR 0000354163
+SR 0000358649 -> JR 0000358680
+SR 0000358654 -> JR 0000354163
+J EYA 086 002        0000354108 JREYAI             26.08.2016 lots          1  res
+         0
+J EYA 086 003        0000354163 JREYAI             29.08.2016 lots          0  res
+         0
+J EYA 086 003        0000354167 JREYAI             29.08.2016 lots          1  res
+         0
+J EYA 086 003 9C 01  0000354111 SREYAI             29.08.2016 lots          0  res
+         0
+J EYA 086 003 9C 01  0000354164 SREYAI             29.08.2016 lots          0  res
+         0
+J EYA 086 003 9C 02  0000358656 SREYAI             28.02.2017 lots          0  res
+         0
+J EYA 086 003 9K 02  0000358654 SREYAI             28.02.2017 lots          0  res
+         0
+J EYA 086 003 9K 02  0000358655 SREYAI             28.02.2017 lots          0  res
+         0
+J EYA 086 003 9K 02  0000358657 SREYAI             28.02.2017 lots          0  res
+         0
+J EYA 086 003 GS 01  0000354110 SREYAI             29.08.2016 lots          0  res
+         0
+J EYA 086 003 GS 01  0000354112 SREYAI             29.08.2016 lots          0  res
+         0
+J EYA 086 003 GS 01  0000354165 SREYAI             29.08.2016 lots          0  res
+         0
+J EYA 086 003 XB 01  0000354109 SREYAI             29.08.2016 lots          0  res
+         0
+J EYA 086 003 XB 01  0000354166 SREYAI             29.08.2016 lots          0  res
+         0
+J EYA 086 003 XB 01  0000354113 SREYAI             29.08.2016 lots          0  res
+         0
+J EYA 086 003 XC 02  0000358658 SREYAI             28.02.2017 lots          0  res
+         0
+Q EYA 027 001        0000358498 JREYAI             10.02.2017 lots          1  res
+         0
+Q EYA 027 002        0000358499 JREYAI             10.02.2017 lots          1  res
+         0
+Q EYA 027 002        0000358515 JREYAI             10.02.2017 lots          1  res
+         0
+Q EYA 027 002 9K 01  0000359544 SREYAI             25.10.2017 lots          0  res
+         0
+Q EYA 027 002 9K 01  0000359545 SREYAI             25.10.2017 lots          0  res
+         0
+Q EYA 027 003        0000358516 JREYAI             10.02.2017 lots          1  res
+         0
+Q EYA 027 004        0000358517 JREYAI             10.02.2017 lots          1  res
+         0
+Q EYA 027 004        0000358648 JREYAI             28.02.2017 lots          0  res
+         0
+Q EYA 027 004        0000358677 JREYAI             03.03.2017 lots          0  res
+         0
+Q EYA 027 004        0000358680 JREYAI             03.03.2017 lots          0  res
+         0
+Q EYA 027 004 9A 01  0000358505 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9A 01  0000358649 SREYAI             28.02.2017 lots          0  res
+         0
+Q EYA 027 004 9A 01  0000358506 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9A 01  0000358650 SREYAI             28.02.2017 lots          0  res
+         0
+Q EYA 027 004 9A 01  0000358507 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9A 01  0000358651 SREYAI             28.02.2017 lots          0  res
+         0
+Q EYA 027 004 9A 01  0000358652 SREYAI             28.02.2017 lots          0  res
+         0
+Q EYA 027 004 9A 01  0000358508 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9A 01  0000358509 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9A 01  0000358653 SREYAI             28.02.2017 lots          0  res
+         0
+Q EYA 027 004 9C 01  0000358510 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9C 01  0000358606 SREYAI             21.02.2017 lots          0  res
+         0
+Q EYA 027 004 9C 01  0000358607 SREYAI             21.02.2017 lots          0  res
+         0
+Q EYA 027 004 9C 01  0000358608 SREYAI             21.02.2017 lots          0  res
+         0
+Q EYA 027 004 9C 01  0000358609 SREYAI             21.02.2017 lots          0  res
+         0
+Q EYA 027 004 9C 01  0000358610 SREYAI             21.02.2017 lots          0  res
+         0
+Q EYA 027 004 9C 01  0000358511 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9C 01  0000358512 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9C 01  0000358513 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9C 01  0000358514 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9K 02  0000358501 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9K 02  0000358503 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9K 02  0000358500 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9K 02  0000358504 SREYAI             10.02.2017 lots          0  res
+         0
+Q EYA 027 004 9K 02  0000358502 SREYAI             10.02.2017 lots          0  res
+         0

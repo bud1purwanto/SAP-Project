@@ -1,0 +1,46 @@
+JR 0000352844
+JR 0000353949
+JR 0000353010
+  SR 0000353052 SRAAAI                         0.000  LIPS          1
+  SR 0000353053 SRAAAI                         0.000  LIPS          1
+  SR 0000353054 SRAAAI                         0.000  LIPS          1
+  SR 0000353055 SRAAAI                         0.000  LIPS          1
+  SR 0000353056 SRAAAI                         0.000  LIPS          1
+  SR 0000353057 SRAAAI                         0.000  LIPS          1
+  SR 0000353058 SRAAAI                         0.000  LIPS          1
+  SR 0000353059 SRAAAI                         0.000  LIPS          1
+  SR 0000353060 SRAAAI                         0.000  LIPS          1
+  SR 0000353061 SRAAAI                         0.000  LIPS          1
+  SR 0000353062 SRAAAI                         0.000  LIPS          1
+  SR 0000353063 SRAAAI                         0.000  LIPS          1
+  SR 0000353064 SRAAAI                         0.000  LIPS          1
+  SR 0000353065 SRAAAI                         0.000  LIPS          1
+  SR 0000353066 SRAAAI                         0.000  LIPS          1
+  SR 0000353067 SRAAAI                         0.000  LIPS          1
+  SR 0000358129 SRAAAI                         0.000  LIPS          0
+JR 0000353073
+  SR 0000358130 SRAAAI                         0.000  LIPS          0
+JR 0000354163
+  SR 0000354110 SREYAI                        45.280  LIPS          0
+  SR 0000354111 SREYAI                         0.000  LIPS          0
+  SR 0000354112 SREYAI                         0.000  LIPS          0
+  SR 0000358654 SREYAI                        18.480  LIPS          0
+  SR 0000358655 SREYAI                        18.480  LIPS          0
+  SR 0000358656 SREYAI                        18.480  LIPS          0
+  SR 0000358657 SREYAI                        18.480  LIPS          0
+JR 0000358648
+JR 0000358677
+JR 0000358680
+  SR 0000358649 SREYAI                        45.280  LIPS          0
+  SR 0000358650 SREYAI                        45.280  LIPS          0
+  SR 0000358651 SREYAI                        45.280  LIPS          0
+  SR 0000358652 SREYAI                        45.280  LIPS          0
+  SR 0000358653 SREYAI                        45.280  LIPS          0
+JR 0000352995
+  SR 0000352989 SRAAAI                         0.000  LIPS          3
+  SR 0000352990 SRAAAI                         0.000  LIPS          2
+  SR 0000352991 SRAAAI                         0.000  LIPS          2
+  SR 0000352992 SRAAAI                         0.000  LIPS          2
+  SR 0000352993 SRAAAI                         0.000  LIPS          2
+  SR 0000352994 SRAAAI                         0.000  LIPS          2
+JR 0000358974

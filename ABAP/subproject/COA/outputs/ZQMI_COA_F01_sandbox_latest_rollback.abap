@@ -1,5 +1,5 @@
 *&---------------------------------------------------------------------*
-*&  Include           ZQMI_CERTIFICATE_F01
+*&  Include           ZQMI_COA_F01
 *&---------------------------------------------------------------------*
 INITIALIZATION.
   MOVE 'Program Information' TO INFO.
@@ -143,10 +143,7 @@ AT SELECTION-SCREEN OUTPUT.
       MODIFY SCREEN.
     ENDIF.
     IF SY-TCODE = 'ZQM003'.
-      IF SCREEN-NAME = 'S_ERDAT-LOW'.
-        SCREEN-REQUIRED = '1'.
-        MODIFY SCREEN.
-      ENDIF.
+      " ZQM003: DO atau Delivery Date wajib salah satu (cek di START-OF-SELECTION)
     ELSE.
       IF SCREEN-NAME = 'P_VBELN-LOW'.
         SCREEN-REQUIRED = '1'.
@@ -157,8 +154,8 @@ AT SELECTION-SCREEN OUTPUT.
 
 START-OF-SELECTION.
   IF SY-TCODE = 'ZQM003'.
-    IF S_ERDAT IS INITIAL.
-      MESSAGE 'Delivery Date WAJIB diisi!' TYPE 'S' DISPLAY LIKE 'E'.
+    IF S_ERDAT[] IS INITIAL AND P_VBELN[] IS INITIAL.
+      MESSAGE 'Isi Nomor ODO atau Delivery Date!' TYPE 'S' DISPLAY LIKE 'E'.
       EXIT.
     ENDIF.
     PERFORM RPT_PRESELECT.
@@ -175,7 +172,7 @@ START-OF-SELECTION.
       MESSAGE 'DO tidak ditemukan atau tidak ada item sesuai filter.' TYPE 'S' DISPLAY LIKE 'E'.
       RETURN.
     ENDIF.
-    SORT IT_DATA BY VBELN MATNR NUMMIC NUM ASCENDING MIC ASCENDING CHK DESCENDING.
+    SORT IT_DATA BY VBELN COA_MAT NUMMIC NUM ASCENDING MIC ASCENDING CHK DESCENDING.
     CALL SCREEN 0100.
   ENDIF.
 
@@ -346,13 +343,21 @@ FORM GET_DATA.
     SORT IT_INOB BY MATNR CHARG.
   ENDIF.
 
+  IF GV_ATINN_ALIAS IS INITIAL.
+    CALL FUNCTION 'CONVERSION_EXIT_ATINN_INPUT'
+      EXPORTING
+        INPUT  = 'ZZALIAS'
+      IMPORTING
+        OUTPUT = GV_ATINN_ALIAS.
+  ENDIF.
   IF IT_INOB[] IS NOT INITIAL.
     SELECT OBJEK ATINN ATWRT ATFLV INTO TABLE IT_AUSP
       FROM AUSP
       FOR ALL ENTRIES IN IT_INOB
       WHERE OBJEK = IT_INOB-OBJEK
         AND ( ATINN = ATINN_ROLL OR ATINN = ATINN_CODE OR
-              ATINN = ATINN_WIDTH OR ATINN = ATINN_LENGTH )
+              ATINN = ATINN_WIDTH OR ATINN = ATINN_LENGTH OR
+              ATINN = GV_ATINN_ALIAS )
         AND KLART = '023'.
     SORT IT_AUSP BY OBJEK ATINN.
   ENDIF.
@@ -362,6 +367,9 @@ FORM GET_DATA.
   " ----------------------------------------------------------------------
   REFRESH GT_LOT_AVG.
   REFRESH GT_AVGKEY.
+  " Alias COA: tentukan jalur per roll (ALIAS / as-is / fallback)
+  REFRESH GT_TTAMIC.
+  PERFORM ALIAS_RESOLVE.
   LOOP AT IT_DATA.
     CLEAR: IT_DATA-NOMSR, IT_DATA-ZZTYPE, IT_DATA-ZZWIDTH,
            IT_DATA-ZZLENGTH.
@@ -393,7 +401,32 @@ FORM GET_DATA.
       L_SUBRC = 4.
     ENDIF.
 
-    IF L_SUBRC EQ 0.
+    " Alias COA: label COA per roll (as-is: COA_MAT = MATNR)
+    CLEAR GS_AROLL.
+    READ TABLE GT_AROLL INTO GS_AROLL
+      WITH TABLE KEY VBELN = IT_DATA-VBELN
+                     POSNR = IT_DATA-POSNR
+                     CHARG = IT_DATA-CHARG.
+    IT_DATA-ALIAS = GS_AROLL-ALIAS.
+    IF GS_AROLL-PATH = 'ALIAS'.
+      IT_DATA-COA_MAT  = GS_AROLL-AMAT.
+      IT_DATA-COA_PATH = 'ALIAS'.
+    ELSE.
+      IT_DATA-COA_MAT  = IT_DATA-MATNR.
+      IT_DATA-COA_PATH = GS_AROLL-PATH.
+      IF IT_DATA-COA_PATH IS INITIAL.
+        IT_DATA-COA_PATH = 'ASIS'.
+      ENDIF.
+    ENDIF.
+
+    IF IT_DATA-COA_PATH = 'ALIAS'.
+      CLEAR LV_KUNNR.
+      SELECT SINGLE KUNAG INTO LV_KUNNR
+        FROM LIKP
+        WHERE VBELN = IT_DATA-VBELN.
+      PERFORM ALIAS_FILL_ZMAP USING IT_DATA-VBELN IT_DATA-COA_MAT
+                                    IT_DATA-MATNR.
+    ELSEIF L_SUBRC EQ 0.
       " Edited by J. Budi (Antigravity) on 28.06.2026
       DATA: IT_ZMAP_GEN LIKE TABLE OF IT_ZMAP WITH HEADER LINE,
             IT_ZMAP_CUS LIKE TABLE OF IT_ZMAP WITH HEADER LINE.
@@ -449,19 +482,29 @@ FORM GET_DATA.
       DELETE ADJACENT DUPLICATES FROM IT_ZMAP COMPARING MIC.
 
       IF IT_ZMAP[] IS INITIAL.
-        MESSAGE 'Material belum dimapping di ZMAP_COA. Harap lengkapi mapping terlebih dahulu!' TYPE 'S' DISPLAY LIKE 'E'.
+        MESSAGE 'Material COA belum dimapping di ZMAP_COA. Silakan hubungi Tim QA.' TYPE 'S' DISPLAY LIKE 'E'.
         STOP.
       ENDIF.
     ENDIF.
     " Edited by J. Budi (Antigravity) on 28.06.2026
     PERFORM GET_TRACED_LOTS.
     PERFORM GET_MIC.
-    LOOP AT IT_ZMAP.
-      CLEAR LS_COA_MAP.
-      LS_COA_MAP-VBELN = IT_DATA-VBELN.
-      MOVE-CORRESPONDING IT_ZMAP TO LS_COA_MAP.
-      APPEND LS_COA_MAP TO LT_COA_MAP.
-    ENDLOOP.
+    IF IT_DATA-COA_PATH = 'ALIAS'.
+      " Mapping material alias: MIC alias, limit & SEQ alias
+      LOOP AT GT_AMAP WHERE VBELN = IT_DATA-VBELN
+                        AND MATNR = IT_DATA-COA_MAT.
+        CLEAR LS_COA_MAP.
+        MOVE-CORRESPONDING GT_AMAP TO LS_COA_MAP.
+        APPEND LS_COA_MAP TO LT_COA_MAP.
+      ENDLOOP.
+    ELSE.
+      LOOP AT IT_ZMAP.
+        CLEAR LS_COA_MAP.
+        LS_COA_MAP-VBELN = IT_DATA-VBELN.
+        MOVE-CORRESPONDING IT_ZMAP TO LS_COA_MAP.
+        APPEND LS_COA_MAP TO LT_COA_MAP.
+      ENDLOOP.
+    ENDIF.
 
     IF IT_DATA-UECHA IS INITIAL.
       IT_DATA-UECHA = IT_DATA-POSNR.
@@ -595,12 +638,38 @@ FORM GET_DATA.
           ENDIF.
         ENDIF.
         CLEAR IT_MIC1-METHOD.
+        " Alias COA: label COA (as-is: COA_MIC = MIC)
+        IT_MIC1-COA_MAT  = IT_LOT-COA_MAT.
+        IT_MIC1-COA_PATH = IT_LOT-COA_PATH.
+        IT_MIC1-COA_MIC  = IT_MIC1-MIC.
+        " Outsource TTA: tampil dengan MIC mapping, baca dengan MIC lot
+        READ TABLE GT_TTAMIC INTO GS_TTAMIC
+          WITH KEY VBELN = IT_LOT-VBELN CHARG = IT_LOT-CHARG
+                   LMIC  = IT_MIC1-MIC.
+        IF SY-SUBRC = 0.
+          IT_MIC1-COA_MIC = GS_TTAMIC-MMIC.
+        ENDIF.
+        IF IT_LOT-COA_PATH = 'ALIAS'.
+          READ TABLE GT_AMIC_B INTO GS_AMIC
+            WITH KEY VBELN = IT_LOT-VBELN
+                     MATNR = IT_LOT-MATNR
+                     BMIC  = IT_MIC1-COA_MIC.
+          IF SY-SUBRC = 0.
+            IT_MIC1-COA_MIC = GS_AMIC-AMIC.
+          ENDIF.
+          READ TABLE GT_AMAP WITH KEY VBELN = IT_LOT-VBELN
+                                      MATNR = IT_LOT-COA_MAT
+                                      MIC   = IT_MIC1-COA_MIC.
+          IF SY-SUBRC = 0.
+            IT_MIC1-METHOD = GT_AMAP-METHOD.
+          ENDIF.
+        ELSE.
         IF LV_KUNNR IS NOT INITIAL.
           SELECT SINGLE METHOD
             INTO IT_MIC1-METHOD
             FROM ZMAP_COA
             WHERE MATNR = IT_LOT-MATNR
-              AND MIC   = IT_MIC1-MIC
+              AND MIC   = IT_MIC1-COA_MIC
               AND KUNNR = LV_KUNNR
               AND DELETION NE 'X'.
         ENDIF.
@@ -609,9 +678,10 @@ FORM GET_DATA.
             INTO IT_MIC1-METHOD
             FROM ZMAP_COA
             WHERE MATNR = IT_LOT-MATNR
-              AND MIC   = IT_MIC1-MIC
+              AND MIC   = IT_MIC1-COA_MIC
               AND KUNNR = ' '
               AND DELETION NE 'X'.
+        ENDIF.
         ENDIF.
         PERFORM MICFMT USING IT_MIC1-MIC IT_LOT-WERKS
                 CHANGING GV_DEC GV_UOM.
@@ -621,6 +691,10 @@ FORM GET_DATA.
         " Simpan hasil final agar ZQM003 memakai nilai yg sama dgn ZQM002.
         MODIFY IT_MIC1.
         MOVE-CORRESPONDING IT_MIC1 TO WA_DATA.
+        " Alias COA: baca dengan MIC batch, tampilkan dengan MIC alias
+        WA_DATA-BATCH_MIC = IT_MIC1-MIC.
+        WA_DATA-MIC       = IT_MIC1-COA_MIC.
+        WA_DATA-ALIAS     = IT_LOT-ALIAS.
         " Format FLTP tolerance directly without packed decimals to avoid ,. issue
         WRITE IT_MIC1-MICMIN TO WA_DATA-MICMIN EXPONENT 0 DECIMALS GV_DEC LEFT-JUSTIFIED.
         WRITE IT_MIC1-MICMAX TO WA_DATA-MICMAX EXPONENT 0 DECIMALS GV_DEC LEFT-JUSTIFIED.
@@ -646,8 +720,8 @@ FORM GET_DATA.
   " Fix: Deduplicate by INSLOT to ensure we average unique sample inspection lots, not duplicate SR batches
   DATA: IT_DATA_UNIQUE LIKE IT_DATA OCCURS 0 WITH HEADER LINE.
   IT_DATA_UNIQUE[] = IT_DATA[].
-  SORT IT_DATA_UNIQUE BY VBELN MATNR MIC INSLOT DESCENDING CHARG ASCENDING.
-  DELETE ADJACENT DUPLICATES FROM IT_DATA_UNIQUE COMPARING VBELN MATNR MIC INSLOT.
+  SORT IT_DATA_UNIQUE BY VBELN COA_MAT MIC INSLOT DESCENDING CHARG ASCENDING.
+  DELETE ADJACENT DUPLICATES FROM IT_DATA_UNIQUE COMPARING VBELN COA_MAT MIC INSLOT.
 
   DATA: IT_DATA_AVG LIKE IT_DATA OCCURS 0 WITH HEADER LINE,
         LV_SUM TYPE QAMR-MITTELWERT,
@@ -657,7 +731,7 @@ FORM GET_DATA.
           WITH UNIQUE KEY TABLE_LINE,
         LV_AVG_KEY TYPE QALS-PRUEFLOS.
 
-  SORT IT_DATA_UNIQUE BY VBELN MATNR MIC INSLOT DESCENDING CHARG ASCENDING.
+  SORT IT_DATA_UNIQUE BY VBELN COA_MAT MIC INSLOT DESCENDING CHARG ASCENDING.
   LOOP AT IT_DATA_UNIQUE.
     IF IT_DATA_AVG IS INITIAL.
       IT_DATA_AVG = IT_DATA_UNIQUE.
@@ -669,16 +743,16 @@ FORM GET_DATA.
         LV_SUM = IT_DATA_UNIQUE-MICMIT.
         LV_COUNT = 1.
         PERFORM GET_AVG_KEY USING IT_DATA_UNIQUE-VBELN
-                IT_DATA_UNIQUE-CHARG IT_DATA_UNIQUE-MIC
+                IT_DATA_UNIQUE-CHARG IT_DATA_UNIQUE-BATCH_MIC
                 IT_DATA_UNIQUE-INSLOT CHANGING LV_AVG_KEY.
         INSERT LV_AVG_KEY INTO TABLE LT_AVG_SEEN.
       ENDIF.
     ELSEIF IT_DATA_AVG-VBELN = IT_DATA_UNIQUE-VBELN AND
-           IT_DATA_AVG-MATNR = IT_DATA_UNIQUE-MATNR AND
+           IT_DATA_AVG-COA_MAT = IT_DATA_UNIQUE-COA_MAT AND
            IT_DATA_AVG-MIC   = IT_DATA_UNIQUE-MIC.
       IF IT_DATA_UNIQUE-CMICMIT <> '0'.
         PERFORM GET_AVG_KEY USING IT_DATA_UNIQUE-VBELN
-                IT_DATA_UNIQUE-CHARG IT_DATA_UNIQUE-MIC
+                IT_DATA_UNIQUE-CHARG IT_DATA_UNIQUE-BATCH_MIC
                 IT_DATA_UNIQUE-INSLOT CHANGING LV_AVG_KEY.
         INSERT LV_AVG_KEY INTO TABLE LT_AVG_SEEN.
         IF SY-SUBRC = 0.
@@ -713,7 +787,7 @@ FORM GET_DATA.
         LV_SUM = IT_DATA_UNIQUE-MICMIT.
         LV_COUNT = 1.
         PERFORM GET_AVG_KEY USING IT_DATA_UNIQUE-VBELN
-                IT_DATA_UNIQUE-CHARG IT_DATA_UNIQUE-MIC
+                IT_DATA_UNIQUE-CHARG IT_DATA_UNIQUE-BATCH_MIC
                 IT_DATA_UNIQUE-INSLOT CHANGING LV_AVG_KEY.
         INSERT LV_AVG_KEY INTO TABLE LT_AVG_SEEN.
       ENDIF.
@@ -754,7 +828,7 @@ FORM GET_DATA.
     CLEAR LS_COA_MAP.
     READ TABLE LT_COA_MAP INTO LS_COA_MAP
       WITH KEY VBELN = IT_DATA-VBELN
-               MATNR = IT_DATA-MATNR
+               MATNR = IT_DATA-COA_MAT
                MIC   = IT_DATA-MIC BINARY SEARCH.
     IF SY-SUBRC EQ 0.
       IT_DATA-CHK = 'X'.
@@ -765,6 +839,9 @@ FORM GET_DATA.
         IT_DATA-NUM = '999'.
       ENDIF.
 
+      " Alias COA (Opsi D): limit dari master data material asli
+      " (ALIAS_APPLY_LIMIT), limit mapping material alias tidak dipakai
+      IF IT_DATA-COA_PATH <> 'ALIAS'.
       " Replace lower limit if custom mapping exists in ZMAP_COA
       IF LS_COA_MAP-LOWER_LIMIT IS NOT INITIAL.
         IT_DATA-MICMIN = LS_COA_MAP-LOWER_LIMIT.
@@ -778,7 +855,17 @@ FORM GET_DATA.
         PERFORM PARSE_LIMIT_TO_RAW USING LS_COA_MAP-UPPER_LIMIT
           CHANGING IT_DATA-RAW_MICMAX.
       ENDIF.
+      ENDIF.
     ENDIF.
+
+    " Alias COA: limit dari master data material asli (Opsi D)
+    IF IT_DATA-COA_PATH = 'ALIAS'.
+      PERFORM ALIAS_APPLY_LIMIT CHANGING IT_DATA.
+    ENDIF.
+
+    " Nilai final sebelum override ZLOG_COA, dipakai ZQM003
+    IT_DATA-QM_CMICMIT = IT_DATA-CMICMIT.
+    CONDENSE IT_DATA-QM_CMICMIT.
 
     " --- BEGIN ZLOG_COA CHECK ---
     DATA: WA_ZLOG TYPE ZLOG_COA,
@@ -822,7 +909,8 @@ FORM GET_DATA.
 
     MODIFY IT_DATA.
   ENDLOOP.
-  SORT IT_DATA BY VBELN MATNR CHK DESCENDING NUMMIC NUM ASCENDING MIC ASCENDING.
+  SORT IT_DATA BY VBELN COA_MAT CHK DESCENDING NUMMIC NUM ASCENDING MIC ASCENDING.
+  PERFORM ALIAS_MESSAGE.
 ENDFORM.                    "get_data
 *&---------------------------------------------------------------------*
 *&      Form  GET_MIC
@@ -839,6 +927,8 @@ FORM GET_MIC .
          LV_MAX TYPE QPMK-TOLERANZOB.
   DATA : LV_MT_STG TYPE C LENGTH 2,
          LV_MT_MK  TYPE QAMV-MERKNR.
+  DATA : LV_QMIC   TYPE QPMK-MKMNR,
+         LV_TTABF  TYPE C LENGTH 1.
 
   CLEAR IT_MIC. REFRESH IT_MIC.
   CLEAR IT_MIC2. REFRESH IT_MIC2.
@@ -951,9 +1041,24 @@ FORM GET_MIC .
       INS = LOT_SR_CONV.
     ENDIF.
 
+    " Outsource TTA: MIC mapping -> MIC lot TTA (base film saja)
+    LV_QMIC = IT_ZMAP-MIC.
+    CLEAR LV_TTABF.
+    IF GV_TTA = 'X'.
+      IF IT_ZMAP-MAPPING CS 'SR Base Film'.
+        LV_TTABF = 'X'.
+        PERFORM TTA_MAP_MIC USING IT_ZMAP-MIC GV_TTA_SRMAT INS
+                            CHANGING LV_QMIC.
+      ELSEIF IT_ZMAP-MAPPING CS 'JR Base Film'.
+        LV_TTABF = 'X'.
+        PERFORM TTA_MAP_MIC USING IT_ZMAP-MIC GV_TTA_JRMAT INS
+                            CHANGING LV_QMIC.
+      ENDIF.
+    ENDIF.
+
     " Multi-level converting (16/10/2026): MIC tidak ada di lot hasil
     " trace 2 tingkat -> cari lot silsilah lebih dalam, stage sama.
-    IF GT_MT_LOT[] IS NOT INITIAL.
+    IF GT_MT_LOT[] IS NOT INITIAL AND LV_TTABF IS INITIAL.
       CLEAR LV_MT_MK.
       IF INS IS NOT INITIAL.
         SELECT SINGLE MERKNR INTO LV_MT_MK FROM QAMV
@@ -983,10 +1088,19 @@ FORM GET_MIC .
         INTO (IT_MIC-MIC,IT_MIC-MICDES,IT_MIC-MICMIN,IT_MIC-MICMAX,IT_MIC-MERKNR,IT_MIC-STELLEN)
         FROM QAMV
         WHERE PRUEFLOS = INS
-          AND VERWMERKM = IT_ZMAP-MIC.
+          AND VERWMERKM = LV_QMIC.
 
       IF SY-SUBRC EQ 0.
         PERFORM COPY.
+        " Outsource TTA: catat MIC lot -> MIC mapping (relabel GET_DATA)
+        IF LV_QMIC <> IT_ZMAP-MIC.
+          CLEAR GS_TTAMIC.
+          GS_TTAMIC-VBELN = IT_DATA-VBELN.
+          GS_TTAMIC-CHARG = IT_DATA-CHARG.
+          GS_TTAMIC-LMIC  = LV_QMIC.
+          GS_TTAMIC-MMIC  = IT_ZMAP-MIC.
+          APPEND GS_TTAMIC TO GT_TTAMIC.
+        ENDIF.
         IF IT_ZMAP-MIC_DESC IS NOT INITIAL.
           IT_MIC-MICDES = IT_ZMAP-MIC_DESC.
         ENDIF.
@@ -1049,7 +1163,16 @@ FORM GET_MIC .
   " Pastikan semua MIC dari ZMAP_COA tetap masuk ke list meskipun tidak ada di Inspection Lot
   SORT IT_MIC2 BY MIC.
   LOOP AT IT_ZMAP.
-    READ TABLE IT_MIC2 WITH KEY MIC = IT_ZMAP-MIC BINARY SEARCH.
+    " Outsource TTA: MIC mapping yang terbaca lewat MIC lot dianggap ada
+    LV_QMIC = IT_ZMAP-MIC.
+    READ TABLE GT_TTAMIC INTO GS_TTAMIC
+      WITH KEY VBELN = IT_DATA-VBELN CHARG = IT_DATA-CHARG
+               MMIC  = IT_ZMAP-MIC.
+    IF SY-SUBRC = 0.
+      LV_QMIC = GS_TTAMIC-LMIC.
+    ENDIF.
+    " Tanpa BINARY SEARCH: APPEND di loop ini merusak urutan IT_MIC2
+    READ TABLE IT_MIC2 WITH KEY MIC = LV_QMIC.
     IF SY-SUBRC <> 0.
       CLEAR IT_MIC.
       PERFORM COPY. " Fix: isi VBELN/POSNR/CHARG/MATNR dst agar match balik di GET_DATA
@@ -1239,7 +1362,7 @@ ENDFORM.                    " DOWNLOAD
 FORM SELALL .
   LOOP AT IT_DATA WHERE CHK NE 'X'.
     IT_DATA-CHK = 'X'.
-    MODIFY IT_DATA TRANSPORTING CHK.
+    MODIFY IT_DATA.
   ENDLOOP.
 ENDFORM.                    " SELALL
 *&---------------------------------------------------------------------*
@@ -1253,7 +1376,7 @@ ENDFORM.                    " SELALL
 FORM DESALL .
   LOOP AT IT_DATA WHERE CHK EQ 'X'.
     IT_DATA-CHK = ''.
-    MODIFY IT_DATA TRANSPORTING CHK.
+    MODIFY IT_DATA.
   ENDLOOP.
 ENDFORM.                    " DESALL
 *&---------------------------------------------------------------------*
@@ -1340,7 +1463,7 @@ ENDFORM.                    " DOWNLOAD_DETAIL
 *&      Form  DOWNLOAD_BATCH_LIST_XLSX
 *&---------------------------------------------------------------------*
 FORM DOWNLOAD_BATCH_LIST_XLSX.
-  DATA: LT_CFG TYPE TABLE OF ZQM_COA_CUST_COL WITH HEADER LINE,
+  DATA: LT_CFG TYPE TABLE OF ZMAP_COA_GRP_COL WITH HEADER LINE,
         LT_OPTIONS TYPE TABLE OF SPOPLI WITH HEADER LINE,
         LV_VALUE TYPE STRING,
         LV_FIELD_NAME TYPE STRING,
@@ -1349,8 +1472,6 @@ FORM DOWNLOAD_BATCH_LIST_XLSX.
         LV_FILENAME_OLE TYPE C LENGTH 255,
         LV_PATH TYPE STRING,
         LV_PATH_MEMORY TYPE C LENGTH 255,
-        LV_KUNNR TYPE KUNNR,
-        LV_LFART TYPE LIKP-LFART,
         LV_VBELN_PAD TYPE LIKP-VBELN,
         LV_COL_COUNT TYPE I,
         LV_COL_WIDTH TYPE P LENGTH 8 DECIMALS 2,
@@ -1392,37 +1513,12 @@ FORM DOWNLOAD_BATCH_LIST_XLSX.
       INPUT  = VBELN
     IMPORTING
       OUTPUT = LV_VBELN_PAD.
-  SELECT SINGLE KUNAG LFART INTO (LV_KUNNR, LV_LFART) FROM LIKP
-    WHERE VBELN = LV_VBELN_PAD.
-  IF LV_KUNNR IS INITIAL.
-    SELECT SINGLE KUNNR INTO LV_KUNNR FROM LIKP
-      WHERE VBELN = LV_VBELN_PAD.
-  ENDIF.
-  SELECT KUNNR FIELD_NAME FIELD_LABEL SEQ_NO COL_SIZE ACTIVE
-    INTO CORRESPONDING FIELDS OF TABLE LT_CFG
-    FROM ZQM_COA_CUST_COL
-    WHERE KUNNR = LV_KUNNR
-      AND ACTIVE = 'X'
-    ORDER BY SEQ_NO ASCENDING.
-  IF LT_CFG[] IS INITIAL.
-    IF LV_LFART = 'ZDLF'.
-      LV_KUNNR = 'DOMESTIC'.
-    ELSEIF LV_LFART = 'ZELF'.
-      LV_KUNNR = 'EXPORT'.
-    ELSE.
-      LV_KUNNR = 'DOMESTIC'.
-    ENDIF.
-    SELECT KUNNR FIELD_NAME FIELD_LABEL SEQ_NO COL_SIZE ACTIVE
-      INTO CORRESPONDING FIELDS OF TABLE LT_CFG
-      FROM ZQM_COA_CUST_COL
-      WHERE KUNNR = LV_KUNNR
-        AND ACTIVE = 'X'
-      ORDER BY SEQ_NO ASCENDING.
-  ENDIF.
+  " Kolom Batch List: customer -> group (ZMAP_COA_GRP_CST) -> kolom
+  PERFORM GET_BATCH_COL_CFG USING LV_VBELN_PAD CHANGING LT_CFG[].
 
   DESCRIBE TABLE LT_CFG LINES LV_COL_COUNT.
   IF LV_COL_COUNT = 0.
-    MESSAGE 'Konfigurasi kolom Batch List tidak ditemukan' TYPE 'I'.
+    MESSAGE 'Kolom Batch List untuk customer ini belum diatur. Silakan hubungi Tim QA.' TYPE 'I'.
     RETURN.
   ENDIF.
 
@@ -1672,13 +1768,19 @@ ENDFORM.                    " DOWNLOAD_BATCH_LIST_XLSX
 FORM SELMAPPING .
   LOOP AT IT_DATA.
     IT_DATA-CHK = ''.
-    READ TABLE IT_ZMAP WITH KEY MIC = IT_DATA-MIC BINARY SEARCH.
+    IF IT_DATA-COA_PATH = 'ALIAS'.
+      READ TABLE GT_AMAP WITH KEY VBELN = IT_DATA-VBELN
+                                  MATNR = IT_DATA-COA_MAT
+                                  MIC   = IT_DATA-MIC.
+    ELSE.
+      READ TABLE IT_ZMAP WITH KEY MIC = IT_DATA-MIC BINARY SEARCH.
+    ENDIF.
     IF SY-SUBRC EQ 0.
       IT_DATA-CHK = 'X'.
     ENDIF.
-    MODIFY IT_DATA TRANSPORTING CHK.
+    MODIFY IT_DATA.
   ENDLOOP.
-  SORT IT_DATA BY VBELN MATNR CHK DESCENDING NUMMIC NUM ASCENDING MIC ASCENDING.
+  SORT IT_DATA BY VBELN COA_MAT CHK DESCENDING NUMMIC NUM ASCENDING MIC ASCENDING.
 ENDFORM.                    " SELMAPPING
 *&---------------------------------------------------------------------*
 *&      Form  F_PRINT
@@ -1698,7 +1800,6 @@ FORM F_PRINT .
         IT_QAMV       TYPE QAMV OCCURS 0 WITH HEADER LINE,
         LV_VALUE10(10) TYPE C,
         QUANTITY      TYPE CHAR12,
-        LV_BATCH_FM   TYPE RS38L_FNAM,
         LV_LFART      TYPE LIKP-LFART,
         LV_FORM_NAME  TYPE TDSFNAME,
         LV_CANCEL     TYPE C,
@@ -1826,7 +1927,7 @@ FORM F_PRINT .
   DELETE ADJACENT DUPLICATES FROM IT_ROLL
     COMPARING ZZNOMORROLL ZZWIDTH ZZLENGTH PVALUE.
 
-  " Prepare dynamic roll columns and orientation based on ZQM_COA_CUST_COL
+  " Prepare dynamic roll columns and orientation based on ZMAP_COA_GRP_COL
   PERFORM PREPARE_DYNAMIC_ROLL_COLUMNS USING VBELN.
 
 * PRODUCT from EXEC prioritizes ZZALIAS over ZZCODE-ATWTB.
@@ -1905,24 +2006,7 @@ FORM F_PRINT .
     EXIT.
   ENDIF.
 
-  CLEAR LV_BATCH_FM.
-  IF LV_LFART <> 'ZELF' AND
-     GV_BATCH_COL_COUNT >= 1 AND
-     GV_BATCH_COL_COUNT <= 7 AND
-     GT_DYN_ROLL[] IS NOT INITIAL.
-    CALL FUNCTION 'SSF_FUNCTION_MODULE_NAME'
-      EXPORTING
-        FORMNAME           = 'ZQMF_COA_BATCH'
-      IMPORTING
-        FM_NAME            = LV_BATCH_FM
-      EXCEPTIONS
-        NO_FORM            = 1
-        NO_FUNCTION_MODULE = 2
-        OTHERS             = 3.
-    IF SY-SUBRC <> 0 OR LV_BATCH_FM IS INITIAL.
-      MESSAGE 'Smartform ZQMF_COA_BATCH belum aktif' TYPE 'E'.
-    ENDIF.
-  ENDIF.
+  " 25/11/2026: Batch List hanya lewat Excel (tombol Batch List); lampiran smartform ZQMF_COA_BATCH tidak dicetak.
 
   CONDENSE NAME1.
   CONDENSE VBELN.
@@ -2034,37 +2118,6 @@ FORM F_PRINT .
     EXIT.
   ENDIF.
 
-  " 2. Cetak Batch List 1-7 kolom dalam print job COA yang sama.
-  IF LV_BATCH_FM IS NOT INITIAL.
-    CALL FUNCTION LV_BATCH_FM
-      EXPORTING
-        CONTROL_PARAMETERS = I_SSFCTRLOP
-        OUTPUT_OPTIONS      = I_SSFCOMPOP
-        USER_SETTINGS       = ' '
-        CUSTOMER            = NAME1
-        DELIVERY            = VBELN
-        PRODUCT             = PRODUCT
-        QUANTITY            = QUANTITY
-        WIDTH               = WIDTH
-        COMPANYTXT          = COMPANYTXT
-        GS_DYN_HDR          = GS_DYN_HDR
-        IV_COL_COUNT        = GV_BATCH_COL_COUNT
-      TABLES
-        IT_QAMV             = IT_QAMV
-        IT_ROLL             = IT_ROLL
-        GT_DYN_ROLL         = GT_DYN_ROLL
-      EXCEPTIONS
-        FORMATTING_ERROR    = 1
-        INTERNAL_ERROR      = 2
-        SEND_ERROR          = 3
-        USER_CANCELED       = 4
-        OTHERS              = 5.
-    IF SY-SUBRC <> 0.
-      CALL FUNCTION 'SSF_CLOSE'.
-      MESSAGE 'Gagal mencetak lampiran Batch List' TYPE 'E'.
-      EXIT.
-    ENDIF.
-  ENDIF.
 
   CALL FUNCTION 'SSF_CLOSE'
     EXCEPTIONS
@@ -2318,6 +2371,8 @@ TYPES: BEGIN OF TY_TRACE_DATA,
          L_JR_BASE_BATCH     TYPE MCH1-CHARG,
          LOT_SR_CONV_SIBLING TYPE QALS-PRUEFLOS,
          LOT_SR_CONV_SIBLING2 TYPE QALS-PRUEFLOS,
+         TTA_SRMAT           TYPE MARA-MATNR,
+         TTA_JRMAT           TYPE MARA-MATNR,
        END OF TY_TRACE_DATA.
 DATA: GT_TRACE_DATA TYPE TABLE OF TY_TRACE_DATA,
       GS_TRACE_DATA TYPE TY_TRACE_DATA.
@@ -2362,6 +2417,12 @@ FORM GET_TRACED_LOTS.
   " Edited by J. Budi (Antigravity) on 29.06.2026 - Inspection Lot Tracing via Sibling SR
   SPLIT IT_DATA-NOMSR AT SPACE INTO V_LINE V_CODE V_MOYE V_SEQ V_DUMMY.
   CONCATENATE V_LINE V_CODE V_MOYE V_SEQ INTO L_MOTHER_ROLL SEPARATED BY SPACE.
+  " Outsource TTA: batch 9* + Z3 -> base film dari lot TTA
+  DATA: LV_TTAMAT TYPE MARA-MATNR,
+        LV_TTABAT TYPE MCH1-CHARG.
+  CLEAR: GV_TTA, GV_TTA_SRMAT, GV_TTA_JRMAT.
+  PERFORM TTA_CHECK USING IT_DATA-MATNR IT_DATA-CHARG IT_DATA-NOMSR
+                    CHANGING GV_TTA.
 
   " 1. SR Converting Lot
   SELECT SINGLE PRUEFLOS INTO LOT_SR_CONV FROM QALS WHERE CHARG = IT_DATA-CHARG AND ART = 'Z04'.
@@ -2397,6 +2458,12 @@ FORM GET_TRACED_LOTS.
       ENDIF.
     ENDIF.
 
+    IF GS_TRACE_DATA-TTA_SRMAT IS NOT INITIAL OR
+       GS_TRACE_DATA-TTA_JRMAT IS NOT INITIAL.
+      GV_TTA = 'X'.
+      GV_TTA_SRMAT = GS_TRACE_DATA-TTA_SRMAT.
+      GV_TTA_JRMAT = GS_TRACE_DATA-TTA_JRMAT.
+    ENDIF.
     RETURN.
   ENDIF.
 
@@ -2496,7 +2563,7 @@ FORM GET_TRACED_LOTS.
   IF L_JR_CONV_BATCH IS NOT INITIAL.
     SELECT SINGLE PRUEFLOS INTO LOT_JR_CONV FROM QALS WHERE CHARG = L_JR_CONV_BATCH AND ( ART = 'Z02' OR ART = 'Z03' ).
     IF LOT_JR_CONV IS INITIAL.
-      PERFORM GET_JR_SIBLING_LOT USING L_JR_CONV_BATCH CHANGING LOT_JR_CONV.
+      PERFORM GET_JR_PREV_LOT USING L_JR_CONV_BATCH CHANGING LOT_JR_CONV.
     ENDIF.
   ENDIF.
 
@@ -2628,10 +2695,38 @@ FORM GET_TRACED_LOTS.
   IF L_JR_BASE_BATCH IS NOT INITIAL AND LOT_JR_BASE IS INITIAL.
     SELECT SINGLE PRUEFLOS INTO LOT_JR_BASE FROM QALS WHERE CHARG = L_JR_BASE_BATCH AND ( ART = 'Z02' OR ART = 'Z03' ).
     IF LOT_JR_BASE IS INITIAL.
-      PERFORM GET_JR_SIBLING_LOT USING L_JR_BASE_BATCH CHANGING LOT_JR_BASE.
+      PERFORM GET_JR_PREV_LOT USING L_JR_BASE_BATCH CHANGING LOT_JR_BASE.
     ENDIF.
   ENDIF.
 
+  " Outsource TTA: roll DO langsung TTA, atau SR Base Film (batch 9*)
+  " di alur converting. Stage converting tetap logika lama.
+  IF GV_TTA = 'X'.
+    PERFORM TTA_TRACE USING IT_DATA-MATNR IT_DATA-CHARG
+                      CHANGING L_SR_BASE_BATCH LOT_SR_BASE
+                               L_JR_BASE_BATCH LOT_JR_BASE
+                               GV_TTA_SRMAT GV_TTA_JRMAT.
+  ELSEIF L_SR_BASE_BATCH IS NOT INITIAL AND
+         L_SR_BASE_BATCH <> IT_DATA-CHARG.
+    CLEAR LV_TTAMAT.
+    LV_TTABAT = L_SR_BASE_BATCH.
+    SELECT SINGLE MATNR INTO LV_TTAMAT FROM MCH1
+      WHERE CHARG = L_SR_BASE_BATCH.
+    IF SY-SUBRC = 0.
+      PERFORM TTA_CHECK USING LV_TTAMAT LV_TTABAT SPACE
+                        CHANGING GV_TTA.
+    ENDIF.
+    IF GV_TTA = 'X'.
+      PERFORM TTA_TRACE USING LV_TTAMAT LV_TTABAT
+                        CHANGING L_SR_BASE_BATCH LOT_SR_BASE
+                                 L_JR_BASE_BATCH LOT_JR_BASE
+                                 GV_TTA_SRMAT GV_TTA_JRMAT.
+    ENDIF.
+  ENDIF.
+  IF GV_TTA = 'X' AND GV_TTA_SRMAT IS INITIAL AND
+     GV_TTA_JRMAT IS INITIAL.
+    CLEAR GV_TTA.
+  ENDIF.
   " Setelah selesai mencari semuanya, simpan ke cache
   GS_TRACE_DATA-MOTHER_ROLL = L_MOTHER_ROLL.
   GS_TRACE_DATA-L_JR_CONV_BATCH = L_JR_CONV_BATCH.
@@ -2640,6 +2735,8 @@ FORM GET_TRACED_LOTS.
   GS_TRACE_DATA-LOT_SR_BASE = LOT_SR_BASE.
   GS_TRACE_DATA-L_JR_BASE_BATCH = L_JR_BASE_BATCH.
   GS_TRACE_DATA-LOT_JR_BASE = LOT_JR_BASE.
+  GS_TRACE_DATA-TTA_SRMAT = GV_TTA_SRMAT.
+  GS_TRACE_DATA-TTA_JRMAT = GV_TTA_JRMAT.
   IF GS_TRACE_DATA-LOT_SR_CONV_SIBLING IS INITIAL AND LOT_SR_CONV IS NOT INITIAL.
     GS_TRACE_DATA-LOT_SR_CONV_SIBLING = LOT_SR_CONV.
   ENDIF.
@@ -2687,6 +2784,341 @@ FORM GET_NEWEST_BATCH USING P_BATCH CHANGING P_NEWEST_BATCH.
     ENDIF.
   ENDDO.
 ENDFORM.                    "GET_NEWEST_BATCH
+
+*&---------------------------------------------------------------------*
+*&      Form  GET_JR_PREV_LOT
+*&---------------------------------------------------------------------*
+* Aturan lot JR (QA/Alfa, 26/11/26), menggantikan GET_JR_SIBLING_LOT
+* (+1..+20) dan fallback per MIC GET_JR_AVG (1 production order):
+* - Dipakai bila lot JR tidak ada ATAU lot ada tapi tanpa hasil
+*   (tidak ada QAMR ANZWERTG > 0).
+* - Cari 20 sequence SEBELUMNYA (roll itu sendiri tidak dihitung),
+*   terdekat duluan. Nomor roll JR: <line> <code> <MMY> <seq>.
+* - Bulan sama dulu (seq-1 .. 001). Sisa jatah dari 1 bulan
+*   sebelumnya, mulai sequence terakhir bulan itu, turun.
+* - Tahun di MMY 1 digit: pilih batch dengan MCH1-ERSDA paling
+*   dekat dengan ERSDA batch JR yang dicari.
+* - Berhenti di roll pertama yang lot Z02/Z03-nya punya hasil.
+*   Tidak ketemu: P_LOT tidak diubah.
+*----------------------------------------------------------------------*
+DATA: BEGIN OF GT_JRPREV OCCURS 0,
+        CHARG TYPE CHARG_D,
+        LOT   TYPE QALS-PRUEFLOS,
+      END OF GT_JRPREV.
+
+FORM GET_JR_PREV_LOT USING P_BATCH TYPE CHARG_D
+                     CHANGING P_LOT TYPE QALS-PRUEFLOS.
+  DATA: LV_HAS TYPE C,
+        LV_ATR TYPE AUSP-ATINN,
+        LV_CUOBJ TYPE MCH1-CUOBJ_BM,
+        LV_REF TYPE MCH1-ERSDA,
+        LV_OBJEK TYPE AUSP-OBJEK,
+        LV_ROLL TYPE AUSP-ATWRT,
+        LV_LINES TYPE I,
+        LV_IX TYPE I,
+        LV_HEAD(50) TYPE C,
+        LV_MY(10) TYPE C,
+        LV_SEQC(10) TYPE C,
+        LV_SEQ TYPE I,
+        LV_MM TYPE I,
+        LV_YY TYPE I,
+        LV_PMY(3) TYPE C,
+        LV_PREF(60) TYPE C,
+        LV_PPREF(60) TYPE C,
+        LV_REST TYPE I,
+        LV_IDX TYPE I,
+        LV_LAST TYPE I,
+        LV_FOUND TYPE QALS-PRUEFLOS,
+        LV_N2(2) TYPE N,
+        LV_N1(1) TYPE N,
+        LV_PAT TYPE AUSP-ATWRT,
+        LV_YEAR(4) TYPE C.
+  DATA: BEGIN OF LT_PART OCCURS 0,
+          P(50) TYPE C,
+        END OF LT_PART.
+  DATA: BEGIN OF LT_AU OCCURS 0,
+          OBJEK TYPE AUSP-OBJEK,
+          ATWRT TYPE AUSP-ATWRT,
+        END OF LT_AU.
+  DATA: BEGIN OF LT_PV OCCURS 0,
+          SEQ TYPE I,
+          ERSDA TYPE MCH1-ERSDA,
+          DIFF TYPE I,
+        END OF LT_PV.
+
+  IF P_BATCH IS INITIAL.
+    RETURN.
+  ENDIF.
+
+  " Lot sendiri sudah punya hasil -> pakai lot sendiri.
+  IF P_LOT IS NOT INITIAL.
+    PERFORM JR_LOT_HAS_RESULT USING P_LOT CHANGING LV_HAS.
+    IF LV_HAS = 'X'.
+      RETURN.
+    ENDIF.
+  ENDIF.
+
+  READ TABLE GT_JRPREV WITH KEY CHARG = P_BATCH.
+  IF SY-SUBRC = 0.
+    IF GT_JRPREV-LOT IS NOT INITIAL.
+      P_LOT = GT_JRPREV-LOT.
+    ENDIF.
+    RETURN.
+  ENDIF.
+
+  LV_ATR = ATINN_ROLL.
+  IF LV_ATR IS INITIAL.
+    SELECT SINGLE ATINN INTO LV_ATR FROM CABN
+      WHERE ATNAM = 'ZZNOMORROLL'.
+  ENDIF.
+
+  CLEAR LV_FOUND.
+  SELECT SINGLE CUOBJ_BM ERSDA INTO (LV_CUOBJ, LV_REF)
+    FROM MCH1 WHERE CHARG = P_BATCH.
+  IF SY-SUBRC = 0 AND LV_CUOBJ IS NOT INITIAL
+     AND LV_ATR IS NOT INITIAL.
+    LV_OBJEK = LV_CUOBJ.
+    SELECT SINGLE ATWRT INTO LV_ROLL FROM AUSP
+      WHERE OBJEK = LV_OBJEK AND ATINN = LV_ATR
+        AND KLART = '023' AND MAFID = 'O'.
+  ENDIF.
+
+  IF LV_ROLL IS NOT INITIAL.
+    " Pecah: <head...> <MMY> <seq>
+    SPLIT LV_ROLL AT SPACE INTO TABLE LT_PART.
+    DELETE LT_PART WHERE P IS INITIAL.
+    DESCRIBE TABLE LT_PART LINES LV_LINES.
+    IF LV_LINES >= 3.
+      READ TABLE LT_PART INDEX LV_LINES.
+      LV_SEQC = LT_PART-P.
+      LV_IX = LV_LINES - 1.
+      READ TABLE LT_PART INDEX LV_IX.
+      LV_MY = LT_PART-P.
+      CLEAR LV_HEAD.
+      LOOP AT LT_PART FROM 1 TO LV_IX.
+        IF SY-TABIX = LV_IX.
+          EXIT.
+        ENDIF.
+        IF LV_HEAD IS INITIAL.
+          LV_HEAD = LT_PART-P.
+        ELSE.
+          CONCATENATE LV_HEAD LT_PART-P INTO LV_HEAD
+            SEPARATED BY SPACE.
+        ENDIF.
+      ENDLOOP.
+
+      IF LV_SEQC CO '0123456789 ' AND LV_SEQC IS NOT INITIAL
+         AND STRLEN( LV_MY ) = 3 AND LV_MY CO '0123456789 '.
+        LV_SEQ = LV_SEQC.
+        LV_MM = LV_MY(2).
+        LV_YY = LV_MY+2(1).
+        CONCATENATE LV_HEAD LV_MY INTO LV_PREF SEPARATED BY SPACE.
+        LV_REST = 20.
+
+        " 1) Bulan yang sama: seq-1 turun sampai 001.
+        LV_IDX = LV_SEQ - 1.
+        WHILE LV_IDX >= 1 AND LV_REST > 0 AND LV_FOUND IS INITIAL.
+          PERFORM JR_PREV_CHECK USING LV_PREF LV_IDX LV_REF LV_ATR
+                                CHANGING LV_FOUND.
+          LV_IDX = LV_IDX - 1.
+          LV_REST = LV_REST - 1.
+        ENDWHILE.
+
+        " 2) Sisa jatah: 1 bulan sebelumnya, dari sequence terakhir.
+        IF LV_FOUND IS INITIAL AND LV_REST > 0
+           AND LV_MM >= 1 AND LV_MM <= 12.
+          LV_MM = LV_MM - 1.
+          IF LV_MM = 0.
+            LV_MM = 12.
+            LV_YY = LV_YY - 1.
+            IF LV_YY < 0.
+              LV_YY = 9.
+            ENDIF.
+          ENDIF.
+          LV_N2 = LV_MM.
+          LV_N1 = LV_YY.
+          CONCATENATE LV_N2 LV_N1 INTO LV_PMY.
+          CONCATENATE LV_HEAD LV_PMY INTO LV_PPREF
+            SEPARATED BY SPACE.
+          CONCATENATE LV_PPREF '___' INTO LV_PAT
+            SEPARATED BY SPACE.
+
+          REFRESH LT_AU.
+          SELECT OBJEK ATWRT INTO TABLE LT_AU FROM AUSP
+            WHERE ATINN = LV_ATR
+              AND KLART = '023'
+              AND MAFID = 'O'
+              AND ATWRT LIKE LV_PAT.
+
+          " Sequence terakhir: hanya batch dengan tahun terdekat.
+          REFRESH LT_PV.
+          LOOP AT LT_AU.
+            CLEAR: LT_PV, LV_SEQC.
+            SPLIT LT_AU-ATWRT AT SPACE INTO TABLE LT_PART.
+            DELETE LT_PART WHERE P IS INITIAL.
+            DESCRIBE TABLE LT_PART LINES LV_LINES.
+            READ TABLE LT_PART INDEX LV_LINES.
+            LV_SEQC = LT_PART-P.
+            IF LV_SEQC CN '0123456789 ' OR LV_SEQC IS INITIAL.
+              CONTINUE.
+            ENDIF.
+            LT_PV-SEQ = LV_SEQC.
+            LV_CUOBJ = LT_AU-OBJEK.
+            SELECT SINGLE ERSDA INTO LT_PV-ERSDA FROM MCH1
+              WHERE CUOBJ_BM = LV_CUOBJ.
+            IF SY-SUBRC <> 0.
+              CONTINUE.
+            ENDIF.
+            LT_PV-DIFF = ABS( LT_PV-ERSDA - LV_REF ).
+            APPEND LT_PV.
+          ENDLOOP.
+
+          IF LT_PV[] IS NOT INITIAL.
+            SORT LT_PV BY DIFF ASCENDING.
+            READ TABLE LT_PV INDEX 1.
+            LV_YEAR = LT_PV-ERSDA(4).
+            LV_LAST = 0.
+            LOOP AT LT_PV.
+              IF LT_PV-ERSDA(4) = LV_YEAR AND LT_PV-SEQ > LV_LAST.
+                LV_LAST = LT_PV-SEQ.
+              ENDIF.
+            ENDLOOP.
+
+            LV_IDX = LV_LAST.
+            WHILE LV_IDX >= 1 AND LV_REST > 0
+              AND LV_FOUND IS INITIAL.
+              PERFORM JR_PREV_CHECK USING LV_PPREF LV_IDX LV_REF
+                                          LV_ATR
+                                    CHANGING LV_FOUND.
+              LV_IDX = LV_IDX - 1.
+              LV_REST = LV_REST - 1.
+            ENDWHILE.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+  CLEAR GT_JRPREV.
+  GT_JRPREV-CHARG = P_BATCH.
+  GT_JRPREV-LOT = LV_FOUND.
+  APPEND GT_JRPREV.
+
+  IF LV_FOUND IS NOT INITIAL.
+    P_LOT = LV_FOUND.
+  ENDIF.
+ENDFORM.                    "GET_JR_PREV_LOT
+
+*&---------------------------------------------------------------------*
+*&      Form  JR_PREV_CHECK
+*&---------------------------------------------------------------------*
+* Satu kandidat roll <P_PREF> <P_IDX 3 digit>. Roll yang sama bisa
+* punya >1 batch: tahun = batch ERSDA terdekat ke P_REF, lalu semua
+* batch tahun itu dicek (terbaru dulu); ambil lot Z02/Z03 terbaru
+* yang punya hasil.
+*----------------------------------------------------------------------*
+FORM JR_PREV_CHECK USING P_PREF P_IDX TYPE I P_REF TYPE MCH1-ERSDA
+                         P_ATR TYPE AUSP-ATINN
+                   CHANGING P_FOUND TYPE QALS-PRUEFLOS.
+  DATA: LV_S(3) TYPE N,
+        LV_ROLL TYPE AUSP-ATWRT,
+        LV_CUOBJ TYPE MCH1-CUOBJ_BM,
+        LV_DIFF TYPE I,
+        LV_BEST TYPE I,
+        LV_YEAR(4) TYPE C,
+        LV_HAS TYPE C.
+  DATA: BEGIN OF LT_OB OCCURS 0,
+          OBJEK TYPE AUSP-OBJEK,
+        END OF LT_OB.
+  DATA: BEGIN OF LT_MC OCCURS 0,
+          CHARG TYPE MCH1-CHARG,
+          ERSDA TYPE MCH1-ERSDA,
+        END OF LT_MC.
+  DATA: BEGIN OF LT_ALL OCCURS 0,
+          CHARG TYPE MCH1-CHARG,
+          ERSDA TYPE MCH1-ERSDA,
+          YEAR(4) TYPE C,
+        END OF LT_ALL.
+  DATA: BEGIN OF LT_QL OCCURS 0,
+          PRUEFLOS TYPE QALS-PRUEFLOS,
+        END OF LT_QL.
+
+  CLEAR P_FOUND.
+  IF P_IDX < 1 OR P_IDX > 999.
+    RETURN.
+  ENDIF.
+  LV_S = P_IDX.
+  CONCATENATE P_PREF LV_S INTO LV_ROLL SEPARATED BY SPACE.
+
+  SELECT OBJEK INTO TABLE LT_OB FROM AUSP
+    WHERE ATINN = P_ATR
+      AND ATWRT = LV_ROLL
+      AND KLART = '023'
+      AND MAFID = 'O'.
+  IF LT_OB[] IS INITIAL.
+    RETURN.
+  ENDIF.
+
+  REFRESH LT_ALL.
+  LV_BEST = -1.
+  LOOP AT LT_OB.
+    LV_CUOBJ = LT_OB-OBJEK.
+    REFRESH LT_MC.
+    SELECT CHARG ERSDA INTO TABLE LT_MC FROM MCH1
+      WHERE CUOBJ_BM = LV_CUOBJ.
+    LOOP AT LT_MC.
+      LT_ALL-CHARG = LT_MC-CHARG.
+      LT_ALL-ERSDA = LT_MC-ERSDA.
+      LT_ALL-YEAR = LT_MC-ERSDA(4).
+      APPEND LT_ALL.
+      LV_DIFF = ABS( LT_MC-ERSDA - P_REF ).
+      IF LV_BEST < 0 OR LV_DIFF < LV_BEST.
+        LV_BEST = LV_DIFF.
+        LV_YEAR = LT_MC-ERSDA(4).
+      ENDIF.
+    ENDLOOP.
+  ENDLOOP.
+  IF LT_ALL[] IS INITIAL.
+    RETURN.
+  ENDIF.
+
+  SORT LT_ALL BY CHARG DESCENDING.
+  LOOP AT LT_ALL WHERE YEAR = LV_YEAR.
+    REFRESH LT_QL.
+    SELECT PRUEFLOS INTO TABLE LT_QL FROM QALS
+      WHERE CHARG = LT_ALL-CHARG
+        AND ( ART = 'Z02' OR ART = 'Z03' ).
+    SORT LT_QL BY PRUEFLOS DESCENDING.
+    LOOP AT LT_QL.
+      PERFORM JR_LOT_HAS_RESULT USING LT_QL-PRUEFLOS
+                                CHANGING LV_HAS.
+      IF LV_HAS = 'X'.
+        P_FOUND = LT_QL-PRUEFLOS.
+        EXIT.
+      ENDIF.
+    ENDLOOP.
+    IF P_FOUND IS NOT INITIAL.
+      EXIT.
+    ENDIF.
+  ENDLOOP.
+ENDFORM.                    "JR_PREV_CHECK
+
+*&---------------------------------------------------------------------*
+*&      Form  JR_LOT_HAS_RESULT
+*&---------------------------------------------------------------------*
+FORM JR_LOT_HAS_RESULT USING P_LOT TYPE QALS-PRUEFLOS
+                       CHANGING P_HAS TYPE C.
+  DATA: LV_CNT TYPE I.
+  CLEAR P_HAS.
+  IF P_LOT IS INITIAL.
+    RETURN.
+  ENDIF.
+  SELECT COUNT( * ) INTO LV_CNT FROM QAMR
+    WHERE PRUEFLOS = P_LOT AND ANZWERTG > 0.
+  IF LV_CNT > 0.
+    P_HAS = 'X'.
+  ENDIF.
+ENDFORM.                    "JR_LOT_HAS_RESULT
 
 *&---------------------------------------------------------------------*
 *&      Form  GET_JR_SIBLING_LOT
@@ -3051,68 +3483,33 @@ FORM GET_JR_AVG USING P_VBELN P_INSLOT P_MIC
         ENDIF.
       ENDIF.
 
-      " 2) Fallback: INSLOT kosong (inspeksi JR direkam di
-      "    roll representatif lain dlm 1 production order
-      "    yg sama). Rata2 lot JR non-empty se-order.
-* FIX 08/08/26 (aturan functional COA):
-*  Roll JR tak diinspeksi -> ambil sibling
-*  SEQUENCE LEBIH KECIL (lebih lama) TERDEKAT,
-*  prefix sama, SE-PRODUCTION-ORDER, yg bernilai.
-*  Kosong bila tak ada.
+      " 2) Lot JR sendiri tanpa hasil (26/11/26, QA/Alfa): nilai
+      "    dari lot GET_JR_PREV_LOT (20 sequence sebelumnya, lintas
+      "    1 bulan, fokus lot). Lot tampil, kunci rata-rata dan
+      "    ZLOG_COA tetap lot sendiri. Menggantikan fallback per MIC
+      "    1 production order (FIX 08/08/26).
       IF P_CNT = 0 AND L_ICHARG IS NOT INITIAL.
-        DATA: LV_ATR TYPE AUSP-ATINN.
-        DATA: LV_PF TYPE STRING, LV_PF2 TYPE STRING.
-        DATA: LV_SQ TYPE I, LV_SQ2 TYPE I.
-        DATA: LV_BEST TYPE I.
-        DATA: LV_LOT TYPE QALS-PRUEFLOS.
-        DATA: LV_MK2 TYPE QAMV-MERKNR.
-        DATA: LV_MW2 TYPE QAMR-MITTELWERT.
-        DATA: LV_AZ2 TYPE QAMR-ANZWERTG.
-        CLEAR LV_ATR.
-        SELECT SINGLE ATINN INTO LV_ATR FROM CABN
-          WHERE ATNAM = 'ZZNOMORROLL'.
-        PERFORM SPLIT_ROLL USING L_ICHARG LV_ATR
-          CHANGING LV_PF LV_SQ.
-        IF LV_SQ > 0 AND LV_ATR IS NOT INITIAL.
-          CLEAR L_AUFNR.
-          SELECT SINGLE AUFNR INTO L_AUFNR FROM MSEG
-         WHERE CHARG = L_ICHARG AND BWART = '101'.
-          IF L_AUFNR IS NOT INITIAL.
-            REFRESH LT_BCH.
-            SELECT CHARG INTO TABLE LT_BCH FROM MSEG
-          WHERE AUFNR = L_AUFNR AND BWART = '101'.
-            SORT LT_BCH BY CHARG.
-            DELETE ADJACENT DUPLICATES FROM LT_BCH.
-            LV_BEST = 0.
-            LOOP AT LT_BCH.
-              PERFORM SPLIT_ROLL USING LT_BCH-CHARG
-                  LV_ATR CHANGING LV_PF2 LV_SQ2.
-              IF LV_PF2 <> LV_PF. CONTINUE. ENDIF.
-              IF LV_SQ2 >= LV_SQ. CONTINUE. ENDIF.
-              IF LV_SQ2 <= LV_BEST. CONTINUE. ENDIF.
-              CLEAR LV_LOT.
-              SELECT SINGLE PRUEFLOS INTO LV_LOT
-                FROM QALS
-                WHERE CHARG = LT_BCH-CHARG
-          AND ( ART = 'Z02' OR ART = 'Z03' ).
-              IF LV_LOT IS INITIAL. CONTINUE. ENDIF.
-              CLEAR LV_MK2.
-              SELECT SINGLE MERKNR INTO LV_MK2
-                FROM QAMV
-                WHERE PRUEFLOS = LV_LOT
-                  AND VERWMERKM = P_MIC.
-              IF LV_MK2 IS INITIAL. CONTINUE. ENDIF.
-              CLEAR: LV_MW2, LV_AZ2.
-              SELECT SINGLE MITTELWERT ANZWERTG
-                INTO (LV_MW2, LV_AZ2) FROM QAMR
-                WHERE PRUEFLOS = LV_LOT
-                  AND MERKNR = LV_MK2.
-              IF LV_AZ2 > 0.
-                LV_BEST = LV_SQ2.
-                P_VAL = LV_MW2.
-                P_CNT = 1.
-              ENDIF.
-            ENDLOOP.
+        DATA: LV_PLOT TYPE QALS-PRUEFLOS,
+              LV_PCH TYPE CHARG_D,
+              LV_MK2 TYPE QAMV-MERKNR,
+              LV_MW2 TYPE QAMR-MITTELWERT,
+              LV_AZ2 TYPE QAMR-ANZWERTG.
+        LV_PLOT = P_INSLOT.
+        LV_PCH = L_ICHARG.
+        PERFORM GET_JR_PREV_LOT USING LV_PCH CHANGING LV_PLOT.
+        IF LV_PLOT <> P_INSLOT.
+          CLEAR LV_MK2.
+          SELECT SINGLE MERKNR INTO LV_MK2 FROM QAMV
+            WHERE PRUEFLOS = LV_PLOT AND VERWMERKM = P_MIC.
+          IF LV_MK2 IS NOT INITIAL.
+            CLEAR: LV_MW2, LV_AZ2.
+            SELECT SINGLE MITTELWERT ANZWERTG
+              INTO (LV_MW2, LV_AZ2) FROM QAMR
+              WHERE PRUEFLOS = LV_PLOT AND MERKNR = LV_MK2.
+            IF LV_AZ2 > 0.
+              P_VAL = LV_MW2.
+              P_CNT = 1.
+            ENDIF.
           ENDIF.
         ENDIF.
       ENDIF.
@@ -3328,10 +3725,8 @@ ENDFORM.                    "MICFMT
 *&      Form  PREPARE_DYNAMIC_ROLL_COLUMNS
 *&---------------------------------------------------------------------*
 FORM PREPARE_DYNAMIC_ROLL_COLUMNS USING IV_VBELN TYPE LIPS-VBELN.
-  DATA: LT_CFG TYPE TABLE OF ZQM_COA_CUST_COL WITH HEADER LINE,
+  DATA: LT_CFG TYPE TABLE OF ZMAP_COA_GRP_COL WITH HEADER LINE,
         LS_ROLL_LINE TYPE ZQM_COA_DYN_ROLL,
-        LV_KUNNR TYPE KUNNR,
-        LV_LFART TYPE LIKP-LFART,
         LV_CNT TYPE I,
         LV_SEQ_NUM TYPE NUMC2,
         LV_SLOT TYPE I,
@@ -3351,37 +3746,13 @@ FORM PREPARE_DYNAMIC_ROLL_COLUMNS USING IV_VBELN TYPE LIPS-VBELN.
     IMPORTING
       OUTPUT = LV_VBELN_PAD.
 
-  SELECT SINGLE KUNAG LFART INTO (LV_KUNNR, LV_LFART) FROM LIKP
-    WHERE VBELN = LV_VBELN_PAD.
-  IF LV_KUNNR IS INITIAL.
-    SELECT SINGLE KUNNR INTO LV_KUNNR FROM LIKP WHERE VBELN = LV_VBELN_PAD.
-  ENDIF.
-  " 2. Baca Konfigurasi Kolom dari ZQM_COA_CUST_COL
-  SELECT * FROM ZQM_COA_CUST_COL
-    INTO TABLE LT_CFG
-    WHERE KUNNR = LV_KUNNR
-      AND ACTIVE = 'X'
-    ORDER BY SEQ_NO ASCENDING.
-
-  IF LT_CFG[] IS INITIAL.
-    IF LV_LFART = 'ZDLF'.
-      LV_KUNNR = 'DOMESTIC'.
-    ELSEIF LV_LFART = 'ZELF'.
-      LV_KUNNR = 'EXPORT'.
-    ELSE.
-      LV_KUNNR = 'DOMESTIC'.
-    ENDIF.
-    SELECT * FROM ZQM_COA_CUST_COL
-      INTO TABLE LT_CFG
-      WHERE KUNNR = LV_KUNNR
-        AND ACTIVE = 'X'
-      ORDER BY SEQ_NO ASCENDING.
-  ENDIF.
+  " 2. Kolom Batch List: customer -> group (ZMAP_COA_GRP_CST) -> kolom
+  PERFORM GET_BATCH_COL_CFG USING LV_VBELN_PAD CHANGING LT_CFG[].
 
   " Jumlah kolom mapping dipakai SmartForm Batch List hingga 14 kolom.
   DESCRIBE TABLE LT_CFG LINES LV_CNT.
   IF LV_CNT > 14.
-    MESSAGE 'Konfigurasi kolom COA maksimum 14 kolom' TYPE 'E'.
+    MESSAGE 'Kolom Batch List lebih dari 14. Silakan hubungi Tim QA.' TYPE 'E'.
   ENDIF.
   GV_BATCH_COL_COUNT = LV_CNT.
 
@@ -3621,7 +3992,7 @@ FORM GET_COA_COL_VALUE USING P_FIELD_NAME TYPE ANY
         P_RAW_VAL = QUANT.
       ENDIF.
 
-    WHEN 'JOINT'.
+    WHEN 'JOINT' OR 'NUMBER_OF_JOINT'.
       LV_JNT_CNT = 0.
       IF GV_ATINN_SPLICE1 IS NOT INITIAL.
         READ TABLE GT_CHAR_CACHE INTO GS_CHAR_CACHE
@@ -3647,7 +4018,11 @@ FORM GET_COA_COL_VALUE USING P_FIELD_NAME TYPE ANY
           ADD 1 TO LV_JNT_CNT.
         ENDIF.
       ENDIF.
-      IF LV_JNT_CNT > 0.
+      IF LV_FLD = 'NUMBER_OF_JOINT'.
+        " Jumlah joint (splice 1-3 yang terisi), mis. 0 / 1 / 2 / 3
+        WRITE LV_JNT_CNT TO P_RAW_VAL LEFT-JUSTIFIED.
+        CONDENSE P_RAW_VAL.
+      ELSEIF LV_JNT_CNT > 0.
         P_RAW_VAL = 'JN'.
       ELSE.
         P_RAW_VAL = '-'.
@@ -4802,7 +5177,7 @@ FORM GET_MT_LOTS.
     SELECT SINGLE PRUEFLOS INTO LV_LOT FROM QALS
       WHERE CHARG = LV_JR AND ( ART = 'Z02' OR ART = 'Z03' ).
     IF LV_LOT IS INITIAL.
-      PERFORM GET_JR_SIBLING_LOT USING LV_JR CHANGING LV_LOT.
+      PERFORM GET_JR_PREV_LOT USING LV_JR CHANGING LV_LOT.
     ENDIF.
     IF LV_LOT IS NOT INITIAL.
       CLEAR GS_MT_LOT.
@@ -4850,3 +5225,1069 @@ FORM GET_AVG_KEY USING P_VBELN P_CHARG P_MIC P_INSLOT
     P_KEY = GS_AVGKEY-KEYLOT.
   ENDIF.
 ENDFORM.                    "GET_AVG_KEY
+*&---------------------------------------------------------------------*
+*&      Form  GET_BATCH_COL_CFG
+*&  Kolom Batch List untuk 1 DO:
+*&  1. Customer DO (LIKP-KUNAG, fallback LIKP-KUNNR)
+*&  2. Group customer dari ZMAP_COA_GRP_CST
+*&  3. Kolom aktif group dari ZMAP_COA_GRP_COL urut SEQ_NO
+*&  4. Tanpa group / group tanpa kolom aktif -> group default:
+*&     DO ZELF = EXP-G, selain itu = DOM-G
+*&---------------------------------------------------------------------*
+FORM GET_BATCH_COL_CFG USING    PV_VBELN TYPE LIKP-VBELN
+                       CHANGING PT_CFG   TYPE STANDARD TABLE.
+  DATA: LV_KUNNR TYPE KUNNR,
+        LV_LFART TYPE LIKP-LFART,
+        LV_GRP   TYPE ZMAP_COA_GRP_CST-COA_GRP.
+
+  REFRESH PT_CFG.
+  SELECT SINGLE KUNAG LFART INTO (LV_KUNNR, LV_LFART) FROM LIKP
+    WHERE VBELN = PV_VBELN.
+  IF LV_KUNNR IS INITIAL.
+    SELECT SINGLE KUNNR INTO LV_KUNNR FROM LIKP
+      WHERE VBELN = PV_VBELN.
+  ENDIF.
+
+  IF LV_KUNNR IS NOT INITIAL.
+    SELECT SINGLE COA_GRP INTO LV_GRP FROM ZMAP_COA_GRP_CST
+      WHERE KUNNR = LV_KUNNR.
+  ENDIF.
+  IF LV_GRP IS NOT INITIAL.
+    SELECT * FROM ZMAP_COA_GRP_COL
+      INTO TABLE PT_CFG
+      WHERE COA_GRP = LV_GRP
+        AND ACTIVE  = 'X'
+      ORDER BY SEQ_NO ASCENDING.
+  ENDIF.
+
+  IF PT_CFG IS INITIAL.
+    IF LV_LFART = 'ZELF'.
+      LV_GRP = 'EXP-G'.
+    ELSE.
+      LV_GRP = 'DOM-G'.
+    ENDIF.
+    SELECT * FROM ZMAP_COA_GRP_COL
+      INTO TABLE PT_CFG
+      WHERE COA_GRP = LV_GRP
+        AND ACTIVE  = 'X'
+      ORDER BY SEQ_NO ASCENDING.
+  ENDIF.
+ENDFORM.                    "GET_BATCH_COL_CFG
+*&---------------------------------------------------------------------*
+*&      Form  ALIAS_RESOLVE
+*&---------------------------------------------------------------------*
+*       Alias COA (ZZALIAS): tentukan jalur tiap roll. Roll beralias
+*       dikelompokkan per VBELN + material alias. Jalur alias hanya
+*       dipakai kalau seluruh tipe produksi dalam kelompok lolos;
+*       selain itu roll dicetak as-is per MATNR (fallback).
+*----------------------------------------------------------------------*
+FORM ALIAS_RESOLVE.
+  TYPES: BEGIN OF TY_AMX,
+           VBELN TYPE LIPS-VBELN,
+           MATNR TYPE MARA-MATNR,
+           AMAT  TYPE MARA-MATNR,
+           NOAL  TYPE C,
+         END OF TY_AMX.
+  DATA: LT_AMX   TYPE STANDARD TABLE OF TY_AMX,
+        LT_MIXG  TYPE STANDARD TABLE OF TY_AMX,
+        LS_AMX   TYPE TY_AMX,
+        LS_AMX2  TYPE TY_AMX,
+        LV_ALIAS TYPE AUSP-ATWRT,
+        LV_AMAT  TYPE MARA-MATNR,
+        LV_KUNNR TYPE KUNNR,
+        LV_STAT  TYPE C LENGTH 7,
+        LV_CNT   TYPE I.
+
+  REFRESH: GT_AROLL, GT_AGRP, GT_AMAP, GT_AMIC, GT_AMIC_B, GT_ALOG.
+
+  " 1) Per roll: ZZALIAS -> material alias
+  LOOP AT IT_DATA.
+    CLEAR: GS_AROLL, LV_ALIAS, LV_AMAT.
+    GS_AROLL-VBELN = IT_DATA-VBELN.
+    GS_AROLL-POSNR = IT_DATA-POSNR.
+    GS_AROLL-CHARG = IT_DATA-CHARG.
+    GS_AROLL-MATNR = IT_DATA-MATNR.
+    READ TABLE IT_INOB WITH KEY MATNR = IT_DATA-MATNR
+                                CHARG = IT_DATA-CHARG BINARY SEARCH.
+    IF SY-SUBRC = 0 AND GV_ATINN_ALIAS IS NOT INITIAL.
+      READ TABLE IT_AUSP WITH KEY OBJEK = IT_INOB-OBJEK
+                                  ATINN = GV_ATINN_ALIAS BINARY SEARCH.
+      IF SY-SUBRC = 0.
+        LV_ALIAS = IT_AUSP-ATWRT.
+      ENDIF.
+    ENDIF.
+    GS_AROLL-ALIAS = LV_ALIAS.
+    IF LV_ALIAS IS INITIAL.
+      GS_AROLL-PATH = 'NOALIAS'.
+    ELSE.
+      PERFORM ALIAS_CONVERT USING LV_ALIAS IT_DATA-MATNR
+                            CHANGING LV_AMAT.
+      IF LV_AMAT IS INITIAL.
+        GS_AROLL-PATH = 'NOCONV'.
+      ELSE.
+        GS_AROLL-AMAT = LV_AMAT.
+        GS_AROLL-PATH = 'ALIAS'.
+      ENDIF.
+    ENDIF.
+    INSERT GS_AROLL INTO TABLE GT_AROLL.
+  ENDLOOP.
+
+  " 2) MIXED: dalam 1 DO, 1 MATNR punya roll dengan material alias
+  "    berbeda, atau campur roll beralias dengan roll tanpa alias /
+  "    NOCONV. Semua roll MATNR itu dicetak per tipe produksi.
+  LOOP AT GT_AROLL INTO GS_AROLL.
+    CLEAR LS_AMX.
+    LS_AMX-VBELN = GS_AROLL-VBELN.
+    LS_AMX-MATNR = GS_AROLL-MATNR.
+    IF GS_AROLL-PATH = 'ALIAS'.
+      LS_AMX-AMAT = GS_AROLL-AMAT.
+    ELSE.
+      LS_AMX-NOAL = 'X'.
+    ENDIF.
+    APPEND LS_AMX TO LT_AMX.
+  ENDLOOP.
+  SORT LT_AMX BY VBELN MATNR AMAT NOAL.
+  DELETE ADJACENT DUPLICATES FROM LT_AMX COMPARING ALL FIELDS.
+  LOOP AT LT_AMX INTO LS_AMX WHERE AMAT IS NOT INITIAL.
+    CLEAR LV_CNT.
+    LOOP AT LT_AMX INTO LS_AMX2 WHERE VBELN = LS_AMX-VBELN
+                                  AND MATNR = LS_AMX-MATNR.
+      LV_CNT = LV_CNT + 1.
+    ENDLOOP.
+    IF LV_CNT > 1.
+      APPEND LS_AMX TO LT_MIXG.
+    ENDIF.
+  ENDLOOP.
+  LOOP AT LT_MIXG INTO LS_AMX.
+    LOOP AT GT_AROLL INTO GS_AROLL WHERE VBELN = LS_AMX-VBELN
+                                     AND MATNR = LS_AMX-MATNR.
+      GS_AROLL-PATH = 'MIXED'.
+      MODIFY GT_AROLL FROM GS_AROLL TRANSPORTING PATH.
+    ENDLOOP.
+  ENDLOOP.
+
+  " 3) Per kelompok VBELN + material alias
+  LOOP AT GT_AROLL INTO GS_AROLL WHERE PATH = 'ALIAS'.
+    READ TABLE GT_AGRP TRANSPORTING NO FIELDS
+      WITH TABLE KEY VBELN = GS_AROLL-VBELN AMAT = GS_AROLL-AMAT.
+    CHECK SY-SUBRC <> 0.
+    CLEAR: GS_AGRP, LV_STAT.
+    GS_AGRP-VBELN = GS_AROLL-VBELN.
+    GS_AGRP-AMAT  = GS_AROLL-AMAT.
+    GS_AGRP-ALIAS = GS_AROLL-ALIAS.
+    READ TABLE LT_MIXG TRANSPORTING NO FIELDS
+      WITH KEY VBELN = GS_AROLL-VBELN AMAT = GS_AROLL-AMAT.
+    IF SY-SUBRC = 0.
+      LV_STAT = 'MIXED'.
+    ENDIF.
+    IF LV_STAT IS INITIAL.
+      CLEAR LV_KUNNR.
+      SELECT SINGLE KUNAG INTO LV_KUNNR FROM LIKP
+        WHERE VBELN = GS_AROLL-VBELN.
+      PERFORM ALIAS_READ_MAP USING GS_AGRP-VBELN GS_AGRP-AMAT LV_KUNNR
+                             CHANGING LV_STAT.
+    ENDIF.
+    IF LV_STAT IS INITIAL.
+      PERFORM ALIAS_TRANSLATE_GROUP USING GS_AGRP-VBELN GS_AGRP-AMAT
+                                    CHANGING LV_STAT GS_AGRP-NMAT.
+    ENDIF.
+    IF LV_STAT IS INITIAL.
+      GS_AGRP-STATUS = 'ALIAS'.
+    ELSE.
+      GS_AGRP-STATUS = LV_STAT.
+    ENDIF.
+    INSERT GS_AGRP INTO TABLE GT_AGRP.
+  ENDLOOP.
+
+  " 4) Status kelompok berlaku untuk semua roll kelompok itu
+  LOOP AT GT_AROLL INTO GS_AROLL WHERE PATH = 'ALIAS'.
+    READ TABLE GT_AGRP INTO GS_AGRP
+      WITH TABLE KEY VBELN = GS_AROLL-VBELN AMAT = GS_AROLL-AMAT.
+    IF SY-SUBRC = 0 AND GS_AGRP-STATUS <> 'ALIAS'.
+      GS_AROLL-PATH = GS_AGRP-STATUS.
+      MODIFY GT_AROLL FROM GS_AROLL TRANSPORTING PATH.
+    ENDIF.
+  ENDLOOP.
+
+  " 5) Buang data kelompok fallback, index balik untuk relabel MIC
+  LOOP AT GT_AGRP INTO GS_AGRP WHERE STATUS <> 'ALIAS'.
+    DELETE GT_AMIC WHERE VBELN = GS_AGRP-VBELN AND AMAT = GS_AGRP-AMAT.
+    DELETE GT_AMAP WHERE VBELN = GS_AGRP-VBELN
+                     AND MATNR = GS_AGRP-AMAT.
+  ENDLOOP.
+  GT_AMIC_B[] = GT_AMIC[].
+ENDFORM.                    " ALIAS_RESOLVE
+*&---------------------------------------------------------------------*
+*&      Form  ALIAS_CONVERT
+*&---------------------------------------------------------------------*
+*       Alias -> material alias (1 alias = 1 material alias).
+*       a) ZZCODE: teks nilai (CAWNT-ATWTB) = alias -> kode 3 huruf,
+*          material = MATNR(2) + kode + karakter terakhir MATNR.
+*       b) Cadangan MAKT: awalan teks material batch + alias.
+*----------------------------------------------------------------------*
+FORM ALIAS_CONVERT USING    P_ALIAS TYPE AUSP-ATWRT
+                            P_MATNR TYPE MARA-MATNR
+                   CHANGING P_AMAT  TYPE MARA-MATNR.
+  DATA: LS_CV    TYPE TY_ACONV,
+        LV_PFX   TYPE C LENGTH 2,
+        LV_LAST  TYPE C LENGTH 1,
+        LV_LEN   TYPE I,
+        LV_ATZHL TYPE CAWN-ATZHL,
+        LV_CODE  TYPE CAWN-ATWRT,
+        LV_CMAT  TYPE MARA-MATNR,
+        LV_MAKTX TYPE MAKT-MAKTX,
+        LV_MAKTG TYPE MAKT-MAKTG,
+        LV_LK    TYPE MAKT-MATNR,
+        LV_T1    TYPE STRING,
+        LV_T2    TYPE STRING,
+        LV_S1    TYPE STRING.
+
+  CLEAR P_AMAT.
+  LV_LEN = STRLEN( P_MATNR ) - 1.
+  IF LV_LEN < 2.
+    RETURN.
+  ENDIF.
+  LV_PFX  = P_MATNR(2).
+  LV_LAST = P_MATNR+LV_LEN(1).
+  READ TABLE GT_ACONV INTO LS_CV
+    WITH TABLE KEY ALIAS = P_ALIAS PFX = LV_PFX LAST = LV_LAST.
+  IF SY-SUBRC = 0.
+    P_AMAT = LS_CV-AMAT.
+    RETURN.
+  ENDIF.
+
+  SELECT SINGLE ATZHL INTO LV_ATZHL FROM CAWNT
+    WHERE ATINN = ATINN_CODE
+      AND ATWTB = P_ALIAS.
+  IF SY-SUBRC = 0.
+    SELECT SINGLE ATWRT INTO LV_CODE FROM CAWN
+      WHERE ATINN = ATINN_CODE
+        AND ATZHL = LV_ATZHL.
+    IF LV_CODE IS NOT INITIAL.
+      CONCATENATE LV_PFX LV_CODE LV_LAST INTO LV_CMAT.
+      SELECT SINGLE MATNR INTO P_AMAT FROM MARA
+        WHERE MATNR = LV_CMAT.
+      IF SY-SUBRC <> 0.
+        CLEAR P_AMAT.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+  IF P_AMAT IS INITIAL.
+    SELECT SINGLE MAKTX INTO LV_MAKTX FROM MAKT
+      WHERE MATNR = P_MATNR AND SPRAS = 'E'.
+    LV_T1 = LV_MAKTX.
+    CLEAR LV_T2.
+    FIND REGEX '^(.*\s)\S+\s*$' IN LV_T1 SUBMATCHES LV_T2.
+    IF LV_T2 IS NOT INITIAL.
+      LV_S1 = P_ALIAS.
+      CONDENSE LV_S1.
+      CONCATENATE LV_T2 LV_S1 INTO LV_T2 RESPECTING BLANKS.
+      TRANSLATE LV_T2 TO UPPER CASE.
+      LV_MAKTG = LV_T2.
+      CONCATENATE LV_PFX '%' INTO LV_LK.
+      SELECT SINGLE MATNR INTO P_AMAT FROM MAKT
+        WHERE MAKTG = LV_MAKTG
+          AND SPRAS = 'E'
+          AND MATNR LIKE LV_LK.
+      IF SY-SUBRC <> 0.
+        CLEAR P_AMAT.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+  CLEAR LS_CV.
+  LS_CV-ALIAS = P_ALIAS.
+  LS_CV-PFX   = LV_PFX.
+  LS_CV-LAST  = LV_LAST.
+  LS_CV-AMAT  = P_AMAT.
+  INSERT LS_CV INTO TABLE GT_ACONV.
+ENDFORM.                    " ALIAS_CONVERT
+*&---------------------------------------------------------------------*
+*&      Form  ALIAS_READ_MAP
+*&---------------------------------------------------------------------*
+*       Mapping material alias (umum + override customer, aturan merge
+*       sama dengan mapping as-is). Hasil ke GT_AMAP per VBELN + AMAT.
+*----------------------------------------------------------------------*
+FORM ALIAS_READ_MAP USING    P_VBELN TYPE LIPS-VBELN
+                             P_AMAT  TYPE MARA-MATNR
+                             P_KUNNR TYPE KUNNR
+                    CHANGING P_STAT.
+  DATA: LT_GEN LIKE IT_ZMAP OCCURS 0 WITH HEADER LINE,
+        LT_CUS LIKE IT_ZMAP OCCURS 0 WITH HEADER LINE,
+        LV_IX  TYPE SY-TABIX.
+
+  SELECT MATNR MIC KUNNR METHOD MAPPING UOM MIC_DESC
+         LOWER_LIMIT UPPER_LIMIT SEQ_NO
+    INTO CORRESPONDING FIELDS OF TABLE LT_GEN
+    FROM ZMAP_COA
+    WHERE MATNR    = P_AMAT
+      AND KUNNR    = ' '
+      AND DELETION NE 'X'.
+  IF P_KUNNR IS NOT INITIAL.
+    SELECT MATNR MIC KUNNR METHOD MAPPING UOM MIC_DESC
+           LOWER_LIMIT UPPER_LIMIT SEQ_NO
+      INTO CORRESPONDING FIELDS OF TABLE LT_CUS
+      FROM ZMAP_COA
+      WHERE MATNR    = P_AMAT
+        AND KUNNR    = P_KUNNR
+        AND DELETION NE 'X'.
+  ENDIF.
+  SORT LT_GEN BY MIC ASCENDING.
+  LOOP AT LT_CUS.
+    READ TABLE LT_GEN WITH KEY MIC = LT_CUS-MIC BINARY SEARCH.
+    IF SY-SUBRC = 0.
+      LV_IX = SY-TABIX.
+      LT_GEN-METHOD   = LT_CUS-METHOD.
+      LT_GEN-KUNNR    = LT_CUS-KUNNR.
+      LT_GEN-MAPPING  = LT_CUS-MAPPING.
+      LT_GEN-UOM      = LT_CUS-UOM.
+      LT_GEN-MIC_DESC = LT_CUS-MIC_DESC.
+      IF LT_CUS-LOWER_LIMIT IS NOT INITIAL.
+        LT_GEN-LOWER_LIMIT = LT_CUS-LOWER_LIMIT.
+      ENDIF.
+      IF LT_CUS-UPPER_LIMIT IS NOT INITIAL.
+        LT_GEN-UPPER_LIMIT = LT_CUS-UPPER_LIMIT.
+      ENDIF.
+      IF LT_CUS-SEQ_NO IS NOT INITIAL.
+        LT_GEN-SEQ_NO = LT_CUS-SEQ_NO.
+      ENDIF.
+      MODIFY LT_GEN INDEX LV_IX.
+    ELSE.
+      APPEND LT_CUS TO LT_GEN.
+      SORT LT_GEN BY MIC ASCENDING.
+    ENDIF.
+  ENDLOOP.
+  SORT LT_GEN BY MIC ASCENDING.
+  DELETE ADJACENT DUPLICATES FROM LT_GEN COMPARING MIC.
+
+  IF LT_GEN[] IS INITIAL.
+    P_STAT = 'NOMAP'.
+    RETURN.
+  ENDIF.
+  LOOP AT LT_GEN.
+    CLEAR GT_AMAP.
+    MOVE-CORRESPONDING LT_GEN TO GT_AMAP.
+    GT_AMAP-VBELN = P_VBELN.
+    GT_AMAP-MATNR = P_AMAT.
+    " Deskripsi COA = deskripsi MIC alias (bukan teks MIC batch)
+    IF GT_AMAP-MIC_DESC IS INITIAL.
+      SELECT SINGLE KURZTEXT INTO GT_AMAP-MIC_DESC FROM QPMT
+        WHERE MKMNR = GT_AMAP-MIC AND SPRACHE = 'E'.
+    ENDIF.
+    APPEND GT_AMAP.
+  ENDLOOP.
+ENDFORM.                    " ALIAS_READ_MAP
+*&---------------------------------------------------------------------*
+*&      Form  ALIAS_LOAD_PLAN
+*&---------------------------------------------------------------------*
+*       Kamus MIC inspection plan material + JR pasangannya (cache)
+*----------------------------------------------------------------------*
+FORM ALIAS_LOAD_PLAN USING P_MATNR TYPE MARA-MATNR.
+  TYPES: BEGIN OF TY_PM,
+           MIC  TYPE PLMK-VERWMERKM,
+           DESC TYPE PLMK-KURZTEXT,
+         END OF TY_PM.
+  DATA: LT_PM TYPE STANDARD TABLE OF TY_PM,
+        LS_PM TYPE TY_PM,
+        LS_PL TYPE TY_APLAN,
+        LV_JR TYPE MARA-MATNR.
+
+  READ TABLE GT_APLAN_DONE TRANSPORTING NO FIELDS
+    WITH TABLE KEY TABLE_LINE = P_MATNR.
+  IF SY-SUBRC = 0.
+    RETURN.
+  ENDIF.
+  INSERT P_MATNR INTO TABLE GT_APLAN_DONE.
+  LV_JR = P_MATNR.
+  LV_JR(2) = 'JR'.
+  SELECT DISTINCT PLMK~VERWMERKM PLMK~KURZTEXT
+    INTO TABLE LT_PM
+    FROM MAPL INNER JOIN PLMK
+      ON PLMK~PLNTY = MAPL~PLNTY AND PLMK~PLNNR = MAPL~PLNNR
+    WHERE ( MAPL~MATNR = P_MATNR OR MAPL~MATNR = LV_JR )
+      AND MAPL~PLNTY = 'Q'
+      AND MAPL~LOEKZ = ' '
+      AND PLMK~LOEKZ = ' '.
+  LOOP AT LT_PM INTO LS_PM WHERE MIC IS NOT INITIAL.
+    CLEAR LS_PL.
+    LS_PL-MATNR = P_MATNR.
+    LS_PL-MIC   = LS_PM-MIC.
+    LS_PL-DESC  = LS_PM-DESC.
+    INSERT LS_PL INTO TABLE GT_APLAN.
+  ENDLOOP.
+ENDFORM.                    " ALIAS_LOAD_PLAN
+*&---------------------------------------------------------------------*
+*&      Form  ALIAS_NORM_DESC
+*&---------------------------------------------------------------------*
+*       Deskripsi MIC tanpa spasi, huruf besar (untuk banding teks)
+*----------------------------------------------------------------------*
+FORM ALIAS_NORM_DESC USING    P_MATNR TYPE MARA-MATNR
+                              P_MIC   TYPE QPMK-MKMNR
+                     CHANGING P_TXT   TYPE STRING.
+  DATA: LS_PL  TYPE TY_APLAN,
+        LV_TXT TYPE QPMT-KURZTEXT.
+
+  CLEAR P_TXT.
+  READ TABLE GT_APLAN INTO LS_PL
+    WITH TABLE KEY MATNR = P_MATNR MIC = P_MIC.
+  IF SY-SUBRC = 0.
+    LV_TXT = LS_PL-DESC.
+  ENDIF.
+  IF LV_TXT IS INITIAL.
+    SELECT SINGLE KURZTEXT INTO LV_TXT FROM QPMT
+      WHERE MKMNR = P_MIC AND SPRACHE = 'E'.
+  ENDIF.
+  P_TXT = LV_TXT.
+  CONDENSE P_TXT NO-GAPS.
+  TRANSLATE P_TXT TO UPPER CASE.
+ENDFORM.                    " ALIAS_NORM_DESC
+*&---------------------------------------------------------------------*
+*&      Form  ALIAS_TRANSLATE_GROUP
+*&---------------------------------------------------------------------*
+*       MIC mapping alias -> MIC batch per tipe produksi (plan):
+*       EXACT -> RULE -> SUFFIX -> DESC (level S/P/A sama) -> NONE.
+*       Satu NONE (atau 2 MIC alias ke MIC batch yang sama) = seluruh
+*       kelompok fallback.
+*----------------------------------------------------------------------*
+FORM ALIAS_TRANSLATE_GROUP USING    P_VBELN TYPE LIPS-VBELN
+                                    P_AMAT  TYPE MARA-MATNR
+                           CHANGING P_STAT
+                                    P_NMAT  TYPE I.
+  DATA: LT_MAT  TYPE STANDARD TABLE OF MARA-MATNR,
+        LV_MAT  TYPE MARA-MATNR,
+        LS_AR   TYPE TY_AROLL,
+        LS_PL   TYPE TY_APLAN,
+        LS_DUP  TYPE TY_AMIC,
+        LV_AMIC TYPE QPMK-MKMNR,
+        LV_NEW  TYPE QPMK-MKMNR,
+        LV_HOW  TYPE C LENGTH 6,
+        LV_HIT  TYPE I,
+        LV_ADSC TYPE STRING,
+        LV_BDSC TYPE STRING,
+        LV_LOG  TYPE STRING.
+
+  LOOP AT GT_AROLL INTO LS_AR WHERE VBELN = P_VBELN
+                                AND AMAT  = P_AMAT
+                                AND PATH  = 'ALIAS'.
+    APPEND LS_AR-MATNR TO LT_MAT.
+  ENDLOOP.
+  SORT LT_MAT.
+  DELETE ADJACENT DUPLICATES FROM LT_MAT.
+  DESCRIBE TABLE LT_MAT LINES P_NMAT.
+  PERFORM ALIAS_LOAD_PLAN USING P_AMAT.
+
+  LOOP AT LT_MAT INTO LV_MAT.
+    PERFORM ALIAS_LOAD_PLAN USING LV_MAT.
+    LOOP AT GT_AMAP WHERE VBELN = P_VBELN AND MATNR = P_AMAT.
+      CLEAR: LV_NEW, LV_HOW, LV_HIT, GS_AMIC.
+      LV_AMIC = GT_AMAP-MIC.
+      READ TABLE GT_APLAN INTO LS_PL
+        WITH TABLE KEY MATNR = LV_MAT MIC = LV_AMIC.
+      IF SY-SUBRC = 0.
+        LV_NEW = LV_AMIC.
+        LV_HOW = 'EXACT'.
+      ELSEIF STRLEN( LV_AMIC ) = 8.
+        CONCATENATE LV_AMIC(1) LV_MAT+2(3) LV_AMIC+4(4) INTO LV_NEW.
+        READ TABLE GT_APLAN INTO LS_PL
+          WITH TABLE KEY MATNR = LV_MAT MIC = LV_NEW.
+        IF SY-SUBRC = 0.
+          LV_HOW = 'RULE'.
+        ELSE.
+          CLEAR LV_NEW.
+          LOOP AT GT_APLAN INTO LS_PL WHERE MATNR = LV_MAT.
+            IF STRLEN( LS_PL-MIC ) = 8 AND
+               LS_PL-MIC(1) = LV_AMIC(1) AND
+               LS_PL-MIC+4(4) = LV_AMIC+4(4).
+              LV_HIT = LV_HIT + 1.
+              LV_NEW = LS_PL-MIC.
+            ENDIF.
+          ENDLOOP.
+          IF LV_HIT = 1.
+            LV_HOW = 'SUFFIX'.
+          ELSE.
+            CLEAR LV_NEW.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+      IF LV_NEW IS INITIAL.
+        PERFORM ALIAS_NORM_DESC USING P_AMAT LV_AMIC CHANGING LV_ADSC.
+        CLEAR LV_HIT.
+        LOOP AT GT_APLAN INTO LS_PL WHERE MATNR = LV_MAT.
+          CHECK LS_PL-MIC(1) = LV_AMIC(1).
+          LV_BDSC = LS_PL-DESC.
+          CONDENSE LV_BDSC NO-GAPS.
+          TRANSLATE LV_BDSC TO UPPER CASE.
+          IF LV_ADSC IS NOT INITIAL AND LV_ADSC = LV_BDSC.
+            LV_HIT = LV_HIT + 1.
+            LV_NEW = LS_PL-MIC.
+          ENDIF.
+        ENDLOOP.
+        IF LV_HIT = 1.
+          LV_HOW = 'DESC'.
+        ELSE.
+          CLEAR LV_NEW.
+        ENDIF.
+      ENDIF.
+
+      GS_AMIC-VBELN = P_VBELN.
+      GS_AMIC-AMAT  = P_AMAT.
+      GS_AMIC-MATNR = LV_MAT.
+      GS_AMIC-AMIC  = LV_AMIC.
+      GS_AMIC-BMIC  = LV_NEW.
+      GS_AMIC-HOW   = LV_HOW.
+      IF LV_NEW IS INITIAL.
+        GS_AMIC-HOW = 'NONE'.
+        P_STAT = 'NONE'.
+        CONCATENATE P_VBELN P_AMAT LV_MAT LV_AMIC 'NONE'
+          INTO LV_LOG SEPARATED BY '|'.
+        APPEND LV_LOG TO GT_ALOG.
+      ELSE.
+        LOOP AT GT_AMIC INTO LS_DUP WHERE VBELN = P_VBELN
+                                      AND AMAT  = P_AMAT
+                                      AND MATNR = LV_MAT
+                                      AND BMIC  = LV_NEW.
+          P_STAT = 'NONE'.
+          CONCATENATE P_VBELN P_AMAT LV_MAT LV_AMIC LV_NEW 'DUPLIKAT'
+            INTO LV_LOG SEPARATED BY '|'.
+          APPEND LV_LOG TO GT_ALOG.
+          EXIT.
+        ENDLOOP.
+        IF LV_HOW = 'RULE' OR LV_HOW = 'SUFFIX'.
+          PERFORM ALIAS_NORM_DESC USING P_AMAT LV_AMIC CHANGING LV_ADSC.
+          PERFORM ALIAS_NORM_DESC USING LV_MAT LV_NEW CHANGING LV_BDSC.
+          IF LV_ADSC IS NOT INITIAL AND LV_BDSC IS NOT INITIAL
+             AND LV_ADSC <> LV_BDSC.
+            GS_AMIC-CHK = 'X'.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+      INSERT GS_AMIC INTO TABLE GT_AMIC.
+    ENDLOOP.
+  ENDLOOP.
+ENDFORM.                    " ALIAS_TRANSLATE_GROUP
+*&---------------------------------------------------------------------*
+*&      Form  ALIAS_FILL_ZMAP
+*&---------------------------------------------------------------------*
+*       IT_ZMAP untuk roll jalur alias: baris mapping material alias
+*       dengan MIC sudah diterjemahkan ke MIC batch, supaya
+*       GET_TRACED_LOTS / GET_MIC membaca lot dengan MIC batch.
+*----------------------------------------------------------------------*
+FORM ALIAS_FILL_ZMAP USING P_VBELN TYPE LIPS-VBELN
+                           P_AMAT  TYPE MARA-MATNR
+                           P_MATNR TYPE MARA-MATNR.
+  CLEAR IT_ZMAP.
+  REFRESH IT_ZMAP.
+  LOOP AT GT_AMIC INTO GS_AMIC WHERE VBELN = P_VBELN
+                                 AND AMAT  = P_AMAT
+                                 AND MATNR = P_MATNR.
+    READ TABLE GT_AMAP WITH KEY VBELN = P_VBELN
+                                MATNR = P_AMAT
+                                MIC   = GS_AMIC-AMIC.
+    CHECK SY-SUBRC = 0.
+    CLEAR IT_ZMAP.
+    MOVE-CORRESPONDING GT_AMAP TO IT_ZMAP.
+    IT_ZMAP-MATNR = P_MATNR.
+    IT_ZMAP-MIC   = GS_AMIC-BMIC.
+    APPEND IT_ZMAP.
+  ENDLOOP.
+  SORT IT_ZMAP BY MIC ASCENDING.
+ENDFORM.                    " ALIAS_FILL_ZMAP
+*&---------------------------------------------------------------------*
+*&      Form  ALIAS_APPLY_LIMIT
+*&---------------------------------------------------------------------*
+*       Opsi D (keputusan QA 17.11.2026): upper/lower dari master
+*       data material asli roll wakil, sama dengan cetak as-is:
+*       ZMAP_COA material asli (umum, ditimpa customer bila diisi)
+*       untuk MIC asli batch; sisi kosong = spec lot (QAMV),
+*       tanpa lot = spec master MIC asli (QPMK).
+*       Dalam 1 alias spec material asli pasti sama (info QA).
+*----------------------------------------------------------------------*
+FORM ALIAS_APPLY_LIMIT CHANGING PS_DATA LIKE IT_DATA.
+  DATA: LV_KUN  TYPE LIKP-KUNAG,
+        LV_LOW  TYPE ZMAP_COA-LOWER_LIMIT,
+        LV_UPP  TYPE ZMAP_COA-UPPER_LIMIT,
+        LV_CLOW TYPE ZMAP_COA-LOWER_LIMIT,
+        LV_CUPP TYPE ZMAP_COA-UPPER_LIMIT.
+  DATA: LV_MIN TYPE QPMK-TOLERANZUN,
+        LV_MAX TYPE QPMK-TOLERANZOB,
+        LV_DEC TYPE I,
+        LV_UOM TYPE C LENGTH 30.
+  CHECK PS_DATA-COA_PATH = 'ALIAS'.
+  CHECK PS_DATA-BATCH_MIC IS NOT INITIAL.
+  CLEAR: LV_KUN, LV_LOW, LV_UPP, LV_CLOW, LV_CUPP.
+  " Tanpa lot: spec dasar dari master MIC asli (QPMK), seperti as-is
+  IF PS_DATA-INSLOT IS INITIAL.
+    CLEAR: LV_MIN, LV_MAX.
+    SELECT SINGLE TOLERANZUN TOLERANZOB INTO (LV_MIN, LV_MAX)
+      FROM QPMK
+      WHERE MKMNR = PS_DATA-BATCH_MIC
+        AND WERKS = PS_DATA-WERKS.
+    IF SY-SUBRC <> 0.
+      SELECT SINGLE TOLERANZUN TOLERANZOB INTO (LV_MIN, LV_MAX)
+        FROM QPMK
+        WHERE MKMNR = PS_DATA-BATCH_MIC.
+    ENDIF.
+    IF SY-SUBRC = 0.
+      PERFORM MICFMT USING PS_DATA-BATCH_MIC PS_DATA-WERKS
+              CHANGING LV_DEC LV_UOM.
+      WRITE LV_MIN TO PS_DATA-MICMIN EXPONENT 0
+        DECIMALS LV_DEC LEFT-JUSTIFIED.
+      WRITE LV_MAX TO PS_DATA-MICMAX EXPONENT 0
+        DECIMALS LV_DEC LEFT-JUSTIFIED.
+      PS_DATA-RAW_MICMIN = LV_MIN.
+      PS_DATA-RAW_MICMAX = LV_MAX.
+    ENDIF.
+  ENDIF.
+  SELECT SINGLE LOWER_LIMIT UPPER_LIMIT INTO (LV_LOW, LV_UPP)
+    FROM ZMAP_COA
+    WHERE MATNR    = PS_DATA-MATNR
+      AND MIC      = PS_DATA-BATCH_MIC
+      AND KUNNR    = ' '
+      AND DELETION NE 'X'.
+  SELECT SINGLE KUNAG INTO LV_KUN FROM LIKP
+    WHERE VBELN = PS_DATA-VBELN.
+  IF LV_KUN IS NOT INITIAL.
+    SELECT SINGLE LOWER_LIMIT UPPER_LIMIT INTO (LV_CLOW, LV_CUPP)
+      FROM ZMAP_COA
+      WHERE MATNR    = PS_DATA-MATNR
+        AND MIC      = PS_DATA-BATCH_MIC
+        AND KUNNR    = LV_KUN
+        AND DELETION NE 'X'.
+    IF SY-SUBRC = 0.
+      IF LV_CLOW IS NOT INITIAL.
+        LV_LOW = LV_CLOW.
+      ENDIF.
+      IF LV_CUPP IS NOT INITIAL.
+        LV_UPP = LV_CUPP.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+  IF LV_LOW IS NOT INITIAL.
+    PS_DATA-MICMIN = LV_LOW.
+    PERFORM PARSE_LIMIT_TO_RAW USING LV_LOW
+      CHANGING PS_DATA-RAW_MICMIN.
+  ENDIF.
+  IF LV_UPP IS NOT INITIAL.
+    PS_DATA-MICMAX = LV_UPP.
+    PERFORM PARSE_LIMIT_TO_RAW USING LV_UPP
+      CHANGING PS_DATA-RAW_MICMAX.
+  ENDIF.
+ENDFORM.                    " ALIAS_APPLY_LIMIT
+*&---------------------------------------------------------------------*
+*&      Form  ALIAS_MESSAGE
+*&---------------------------------------------------------------------*
+*       Info jalur alias setelah GET_DATA
+*----------------------------------------------------------------------*
+FORM ALIAS_MESSAGE.
+  DATA: LV_MSG TYPE STRING,
+        LV_TXT TYPE STRING,
+        LV_NC  TYPE C LENGTH 10,
+        LV_N   TYPE I.
+
+  LOOP AT GT_AGRP INTO GS_AGRP.
+    LV_N = LV_N + 1.
+    CHECK LV_N = 1.
+    IF GS_AGRP-STATUS = 'ALIAS'.
+      WRITE GS_AGRP-NMAT TO LV_NC LEFT-JUSTIFIED.
+      CONCATENATE 'COA gabungan alias' GS_AGRP-ALIAS
+                  GS_AGRP-AMAT LV_NC 'tipe produksi'
+        INTO LV_MSG SEPARATED BY SPACE.
+    ELSE.
+      CONCATENATE 'Alias' GS_AGRP-ALIAS 'dicetak per tipe produksi:'
+                  GS_AGRP-STATUS
+        INTO LV_MSG SEPARATED BY SPACE.
+    ENDIF.
+  ENDLOOP.
+  IF LV_N = 0.
+    LOOP AT GT_AROLL INTO GS_AROLL WHERE PATH = 'NOCONV'
+                                     OR PATH = 'MIXED'.
+      CONCATENATE 'Alias' GS_AROLL-ALIAS 'dicetak per tipe produksi:'
+                  GS_AROLL-PATH
+        INTO LV_MSG SEPARATED BY SPACE.
+      LV_N = 1.
+      EXIT.
+    ENDLOOP.
+  ELSEIF LV_N > 1.
+    LV_N = LV_N - 1.
+    WRITE LV_N TO LV_NC LEFT-JUSTIFIED.
+    CONCATENATE '(+' LV_NC 'kelompok alias lain)' INTO LV_TXT.
+    CONCATENATE LV_MSG LV_TXT INTO LV_MSG SEPARATED BY SPACE.
+  ENDIF.
+  IF LV_MSG IS NOT INITIAL.
+    MESSAGE LV_MSG TYPE 'S'.
+  ENDIF.
+ENDFORM.                    " ALIAS_MESSAGE
+*&---------------------------------------------------------------------*
+*&      Form  TTA_CHECK
+*&---------------------------------------------------------------------*
+*       Roll outsource TTA: batch berawalan 9 DAN Z3 (token pertama
+*       ZZNOMORROLL atau ZZPRODLINE). Keputusan QA 17.11.2026.
+*----------------------------------------------------------------------*
+FORM TTA_CHECK USING    P_MATNR P_CHARG P_NOMSR
+               CHANGING P_TTA.
+  DATA: LV_T1  TYPE STRING,
+        LV_T2  TYPE STRING,
+        LV_NM  TYPE STRING,
+        LV_OBJ TYPE INOB-OBJEK,
+        LV_CU  TYPE INOB-CUOBJ,
+        LV_OB2 TYPE AUSP-OBJEK,
+        LV_PL  TYPE AUSP-ATWRT,
+        LV_RL  TYPE AUSP-ATWRT.
+  CLEAR P_TTA.
+  CHECK P_CHARG IS NOT INITIAL.
+  CHECK P_CHARG(1) = '9'.
+  LV_NM = P_NOMSR.
+  IF GV_ATINN_PLINE IS INITIAL.
+    CALL FUNCTION 'CONVERSION_EXIT_ATINN_INPUT'
+      EXPORTING
+        INPUT  = 'ZZPRODLINE'
+      IMPORTING
+        OUTPUT = GV_ATINN_PLINE.
+  ENDIF.
+  LV_OBJ = P_MATNR.
+  LV_OBJ+18 = P_CHARG.
+  SELECT SINGLE CUOBJ INTO LV_CU FROM INOB
+    WHERE KLART = '023'
+      AND OBTAB = 'MCH1'
+      AND OBJEK = LV_OBJ.
+  CHECK SY-SUBRC = 0.
+  LV_OB2 = LV_CU.
+  IF LV_NM IS INITIAL.
+    SELECT SINGLE ATWRT INTO LV_RL FROM AUSP
+      WHERE OBJEK = LV_OB2
+        AND ATINN = ATINN_ROLL
+        AND KLART = '023'.
+    LV_NM = LV_RL.
+  ENDIF.
+  SPLIT LV_NM AT SPACE INTO LV_T1 LV_T2.
+  IF LV_T1 = 'Z3'.
+    P_TTA = 'X'.
+    RETURN.
+  ENDIF.
+  SELECT SINGLE ATWRT INTO LV_PL FROM AUSP
+    WHERE OBJEK = LV_OB2
+      AND ATINN = GV_ATINN_PLINE
+      AND KLART = '023'.
+  IF LV_PL = 'Z3'.
+    P_TTA = 'X'.
+  ENDIF.
+ENDFORM.                    " TTA_CHECK
+*&---------------------------------------------------------------------*
+*&      Form  TTA_TRACE
+*&---------------------------------------------------------------------*
+*       Sama dengan ZEQM015 (ZQMR_TRACEABILITY_TR_TTE UPDATEDATA):
+*       - GR 101 sah: pasangan batal dibuang, ambil yang paling awal
+*       - order gabungan lewat AFPO-MILL_OC_AUFNR_U, komponen AUFM 261
+*       - batch SR: MCH1-LICHA -> MSEG 601 (antar plant)
+*       - GR tanpa order (SUBCONTRACT): MSEG 543 di dokumen GR itu
+*       Batch hasil = SR TTA (lot Z04 = SR Base Film, boleh kosong),
+*       lalu naik ke JR material I (lot Z02/Z03 = JR Base Film).
+*       Tidak ketemu -> lot base film tidak diubah.
+*----------------------------------------------------------------------*
+FORM TTA_TRACE USING    P_MATNR P_CHARG
+               CHANGING P_SRB P_SRLOT P_JRB P_JRLOT
+                        P_SRMAT P_JRMAT.
+  TYPES: BEGIN OF LTY_CMP,
+           MATNR TYPE AUFM-MATNR,
+           CHARG TYPE AUFM-CHARG,
+         END OF LTY_CMP.
+  DATA: LT_CMP TYPE STANDARD TABLE OF LTY_CMP,
+        LS_CMP TYPE LTY_CMP,
+        LV_AUF TYPE MSEG-AUFNR,
+        LV_MBL TYPE MSEG-MBLNR,
+        LV_DT  TYPE MKPF-CPUDT,
+        LV_CMB TYPE AFPO-AUFNR,
+        LV_TB  TYPE MSEG-CHARG,
+        LV_TM  TYPE MSEG-MATNR,
+        LV_B   TYPE MSEG-CHARG,
+        LV_BM  TYPE MSEG-MATNR,
+        LV_JM  TYPE MSEG-MATNR,
+        LV_JC  TYPE MSEG-CHARG,
+        LV_LOT TYPE QALS-PRUEFLOS,
+        LV_L   TYPE I.
+* Roll sendiri: vendor batch (601) / subcontract (543)
+  PERFORM TTA_SRC USING P_MATNR P_CHARG CHANGING LV_TM LV_TB.
+  IF LV_TB IS INITIAL.
+*   Roll -> order -> komponen 261 -> vendor batch / subcontract
+    PERFORM TTA_GR101 USING P_MATNR P_CHARG
+                      CHANGING LV_AUF LV_MBL LV_DT.
+    CHECK LV_AUF IS NOT INITIAL.
+    PERFORM TTA_COMBINE USING LV_AUF CHANGING LV_CMB.
+    SELECT MATNR CHARG INTO TABLE LT_CMP FROM AUFM
+      WHERE AUFNR = LV_CMB
+        AND BWART = '261'.
+    SORT LT_CMP BY MATNR CHARG.
+    DELETE ADJACENT DUPLICATES FROM LT_CMP COMPARING MATNR CHARG.
+    LOOP AT LT_CMP INTO LS_CMP WHERE CHARG IS NOT INITIAL.
+      PERFORM TTA_SRC USING LS_CMP-MATNR LS_CMP-CHARG
+                      CHANGING LV_TM LV_TB.
+      IF LV_TB IS NOT INITIAL.
+        EXIT.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.
+  CHECK LV_TB IS NOT INITIAL.
+* SR TTA = SR Base Film
+  P_SRB   = LV_TB.
+  P_SRMAT = LV_TM.
+  CLEAR: P_SRLOT, P_JRB, P_JRLOT, P_JRMAT.
+  SELECT SINGLE PRUEFLOS INTO LV_LOT FROM QALS
+    WHERE CHARG = LV_TB
+      AND ART   = 'Z04'.
+  P_SRLOT = LV_LOT.
+* JR TTA material I = JR Base Film
+  LV_B  = LV_TB.
+  LV_BM = LV_TM.
+  DO 5 TIMES.
+    CLEAR: LV_AUF, LV_JM, LV_JC, LV_CMB.
+    PERFORM TTA_GR101 USING LV_BM LV_B
+                      CHANGING LV_AUF LV_MBL LV_DT.
+    IF LV_AUF IS INITIAL.
+*     SR hasil slitting: 531 di order JR
+      SELECT SINGLE AUFNR INTO LV_AUF FROM MSEG
+        WHERE MATNR = LV_BM
+          AND CHARG = LV_B
+          AND BWART = '531'
+          AND AUFNR <> SPACE
+          AND SMBLN = SPACE.
+    ENDIF.
+    IF LV_AUF IS INITIAL.
+      EXIT.
+    ENDIF.
+    PERFORM TTA_COMBINE USING LV_AUF CHANGING LV_CMB.
+    SELECT MATNR CHARG INTO (LV_JM, LV_JC) FROM AUFM
+      UP TO 1 ROWS
+      WHERE AUFNR = LV_CMB
+        AND BWART = '261'
+        AND MATNR LIKE 'JR%'.
+    ENDSELECT.
+    IF LV_JC IS INITIAL.
+      EXIT.
+    ENDIF.
+    LV_L = STRLEN( LV_JM ) - 1.
+    IF LV_L >= 0 AND LV_JM+LV_L(1) = 'I'.
+      P_JRB   = LV_JC.
+      P_JRMAT = LV_JM.
+      EXIT.
+    ENDIF.
+    LV_B  = LV_JC.
+    LV_BM = LV_JM.
+  ENDDO.
+  IF P_JRB IS NOT INITIAL.
+    CLEAR LV_LOT.
+    SELECT SINGLE PRUEFLOS INTO LV_LOT FROM QALS
+      WHERE CHARG = P_JRB
+        AND ( ART = 'Z02' OR ART = 'Z03' ).
+    IF LV_LOT IS INITIAL.
+      LV_TB = P_JRB.
+      PERFORM GET_JR_PREV_LOT USING LV_TB CHANGING LV_LOT.
+    ENDIF.
+    P_JRLOT = LV_LOT.
+  ENDIF.
+ENDFORM.                    " TTA_TRACE
+*&---------------------------------------------------------------------*
+*&      Form  TTA_SRC
+*&---------------------------------------------------------------------*
+*       Batch asal satu level di atas (ZEQM015 IT_PREBATCH):
+*       1. material SR: MCH1-LICHA -> MSEG 601 dengan CHARG = LICHA
+*       2. GR 101 tanpa order (SUBCONTRACT): MSEG 543 di dokumen GR
+*       Ambil yang pertama ketemu (urutan 601, lalu 543).
+*----------------------------------------------------------------------*
+FORM TTA_SRC USING    P_MATNR P_CHARG
+             CHANGING P_TM P_TB.
+  DATA: LV_LI  TYPE MCH1-LICHA,
+        LV_MAT TYPE MARA-MATNR,
+        LV_AUF TYPE MSEG-AUFNR,
+        LV_MBL TYPE MSEG-MBLNR,
+        LV_DT  TYPE MKPF-CPUDT.
+  CLEAR: P_TM, P_TB.
+  LV_MAT = P_MATNR.
+  IF LV_MAT(2) = 'SR'.
+    SELECT SINGLE LICHA INTO LV_LI FROM MCH1
+      WHERE MATNR = P_MATNR
+        AND CHARG = P_CHARG.
+    IF LV_LI IS NOT INITIAL.
+      SELECT SINGLE MATNR CHARG INTO (P_TM, P_TB) FROM MSEG
+        WHERE CHARG = LV_LI
+          AND BWART = '601'.
+    ENDIF.
+    IF P_TB IS NOT INITIAL.
+      RETURN.
+    ENDIF.
+  ENDIF.
+  PERFORM TTA_GR101 USING P_MATNR P_CHARG
+                    CHANGING LV_AUF LV_MBL LV_DT.
+  IF LV_AUF IS INITIAL AND LV_DT IS NOT INITIAL.
+    SELECT SINGLE MATNR CHARG INTO (P_TM, P_TB) FROM MSEG
+      WHERE MBLNR = LV_MBL
+        AND BWART = '543'.
+  ENDIF.
+ENDFORM.                    " TTA_SRC
+*&---------------------------------------------------------------------*
+*&      Form  TTA_GR101
+*&---------------------------------------------------------------------*
+*       GR 101 sah seperti ZEQM015: 101/102 batch, buang pasangan yang
+*       dibatalkan, urut tanggal-jam entri, ambil yang pertama.
+*----------------------------------------------------------------------*
+FORM TTA_GR101 USING    P_MATNR P_CHARG
+               CHANGING P_AUF P_MBL P_DT.
+  TYPES: BEGIN OF LTY_GR,
+           AUFNR TYPE MSEG-AUFNR,
+           MBLNR TYPE MSEG-MBLNR,
+           MJAHR TYPE MSEG-MJAHR,
+           ZEILE TYPE MSEG-ZEILE,
+           CPUDT TYPE MSEG-CPUDT_MKPF,
+           CPUTM TYPE MSEG-CPUTM_MKPF,
+           SMBLN TYPE MSEG-SMBLN,
+           SJAHR TYPE MSEG-SJAHR,
+           SMBLP TYPE MSEG-SMBLP,
+           BWART TYPE MSEG-BWART,
+         END OF LTY_GR.
+  DATA: LT_GR TYPE STANDARD TABLE OF LTY_GR,
+        LT_RV TYPE STANDARD TABLE OF LTY_GR,
+        LS_GR TYPE LTY_GR.
+  CLEAR: P_AUF, P_MBL, P_DT.
+  SELECT AUFNR MBLNR MJAHR ZEILE CPUDT_MKPF CPUTM_MKPF
+         SMBLN SJAHR SMBLP BWART
+    INTO TABLE LT_GR FROM MSEG
+    WHERE BWART IN ('101','102')
+      AND MATNR = P_MATNR
+      AND CHARG = P_CHARG.
+  LT_RV = LT_GR.
+  DELETE LT_RV WHERE SMBLN IS INITIAL.
+  LOOP AT LT_RV INTO LS_GR.
+    DELETE LT_GR WHERE MBLNR = LS_GR-SMBLN
+                   AND MJAHR = LS_GR-SJAHR
+                   AND ZEILE = LS_GR-SMBLP.
+  ENDLOOP.
+  DELETE LT_GR WHERE SMBLN IS NOT INITIAL OR BWART = '102'.
+  SORT LT_GR BY CPUDT CPUTM.
+  READ TABLE LT_GR INTO LS_GR INDEX 1.
+  CHECK SY-SUBRC = 0.
+  P_AUF = LS_GR-AUFNR.
+  P_MBL = LS_GR-MBLNR.
+  SELECT SINGLE CPUDT INTO P_DT FROM MKPF
+    WHERE MBLNR = P_MBL.
+ENDFORM.                    " TTA_GR101
+*&---------------------------------------------------------------------*
+*&      Form  TTA_COMBINE
+*&---------------------------------------------------------------------*
+*       Order gabungan (MILL_OC), seperti VCOMBINE di ZEQM015.
+*----------------------------------------------------------------------*
+FORM TTA_COMBINE USING    P_AUF
+                 CHANGING P_CMB.
+  CLEAR P_CMB.
+  SELECT SINGLE AUFNR INTO P_CMB FROM AFPO
+    WHERE MILL_OC_AUFNR_U = P_AUF.
+  IF P_CMB IS INITIAL.
+    P_CMB = P_AUF.
+  ENDIF.
+ENDFORM.                    " TTA_COMBINE
+*&---------------------------------------------------------------------*
+*&      Form  TTA_MAP_MIC
+*&---------------------------------------------------------------------*
+*       MIC mapping -> MIC lot TTA, urutan sama dengan alias:
+*       EXACT -> RULE -> SUFFIX -> DESC (level S/P/A sama). Kandidat =
+*       inspection plan material TTA + MIC lot. Hasil harus ada di lot;
+*       tidak ketemu -> P_QMIC = MIC mapping (value 0 seperti sekarang).
+*----------------------------------------------------------------------*
+FORM TTA_MAP_MIC USING    P_MIC
+                          P_MATNR
+                          P_LOT
+                 CHANGING P_QMIC.
+  TYPES: BEGIN OF TY_CND,
+           MIC  TYPE QPMK-MKMNR,
+           DESC TYPE QPMT-KURZTEXT,
+         END OF TY_CND.
+  DATA: LT_CND TYPE STANDARD TABLE OF TY_CND,
+        LS_CND TYPE TY_CND,
+        LS_PL  TYPE TY_APLAN,
+        LV_MAT TYPE MARA-MATNR,
+        LV_MIC TYPE QPMK-MKMNR,
+        LV_NEW TYPE QPMK-MKMNR,
+        LV_HIT TYPE I,
+        LV_MK  TYPE QAMV-MERKNR,
+        LV_DSC TYPE QPMT-KURZTEXT,
+        LV_ADS TYPE STRING,
+        LV_BDS TYPE STRING.
+  P_QMIC = P_MIC.
+  CHECK P_MATNR IS NOT INITIAL.
+  CHECK P_LOT IS NOT INITIAL.
+  LV_MIC = P_MIC.
+  LV_MAT = P_MATNR.
+  SELECT SINGLE MERKNR INTO LV_MK FROM QAMV
+    WHERE PRUEFLOS  = P_LOT
+      AND VERWMERKM = LV_MIC.
+  CHECK SY-SUBRC <> 0.
+  PERFORM ALIAS_LOAD_PLAN USING LV_MAT.
+  LOOP AT GT_APLAN INTO LS_PL WHERE MATNR = LV_MAT.
+    LS_CND-MIC  = LS_PL-MIC.
+    LS_CND-DESC = LS_PL-DESC.
+    APPEND LS_CND TO LT_CND.
+  ENDLOOP.
+  SELECT VERWMERKM KURZTEXT APPENDING TABLE LT_CND
+    FROM QAMV
+    WHERE PRUEFLOS = P_LOT.
+  SORT LT_CND BY MIC.
+  DELETE ADJACENT DUPLICATES FROM LT_CND COMPARING MIC.
+  CLEAR LV_NEW.
+* EXACT / RULE
+  IF STRLEN( LV_MIC ) = 8.
+    CONCATENATE LV_MIC(1) LV_MAT+2(3) LV_MIC+4(4) INTO LV_NEW.
+    READ TABLE LT_CND TRANSPORTING NO FIELDS
+      WITH KEY MIC = LV_NEW BINARY SEARCH.
+    IF SY-SUBRC <> 0.
+      CLEAR LV_NEW.
+    ENDIF.
+  ENDIF.
+* SUFFIX
+  IF LV_NEW IS INITIAL AND STRLEN( LV_MIC ) = 8.
+    CLEAR LV_HIT.
+    LOOP AT LT_CND INTO LS_CND.
+      CHECK STRLEN( LS_CND-MIC ) = 8.
+      IF LS_CND-MIC(1) = LV_MIC(1) AND LS_CND-MIC+4(4) = LV_MIC+4(4).
+        LV_HIT = LV_HIT + 1.
+        LV_NEW = LS_CND-MIC.
+      ENDIF.
+    ENDLOOP.
+    IF LV_HIT <> 1.
+      CLEAR LV_NEW.
+    ENDIF.
+  ENDIF.
+* DESC (level S/P/A sama)
+  IF LV_NEW IS INITIAL.
+    CLEAR LV_DSC.
+    SELECT SINGLE KURZTEXT INTO LV_DSC FROM QPMT
+      WHERE MKMNR = LV_MIC
+        AND SPRACHE = 'E'.
+    LV_ADS = LV_DSC.
+    CONDENSE LV_ADS NO-GAPS.
+    TRANSLATE LV_ADS TO UPPER CASE.
+    CLEAR LV_HIT.
+    IF LV_ADS IS NOT INITIAL.
+      LOOP AT LT_CND INTO LS_CND.
+        CHECK LS_CND-MIC(1) = LV_MIC(1).
+        LV_BDS = LS_CND-DESC.
+        CONDENSE LV_BDS NO-GAPS.
+        TRANSLATE LV_BDS TO UPPER CASE.
+        IF LV_BDS = LV_ADS.
+          LV_HIT = LV_HIT + 1.
+          LV_NEW = LS_CND-MIC.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+    IF LV_HIT <> 1.
+      CLEAR LV_NEW.
+    ENDIF.
+  ENDIF.
+* hasil harus ada di lot
+  IF LV_NEW IS NOT INITIAL.
+    SELECT SINGLE MERKNR INTO LV_MK FROM QAMV
+      WHERE PRUEFLOS  = P_LOT
+        AND VERWMERKM = LV_NEW.
+    IF SY-SUBRC = 0.
+      P_QMIC = LV_NEW.
+    ENDIF.
+  ENDIF.
+ENDFORM.                    " TTA_MAP_MIC

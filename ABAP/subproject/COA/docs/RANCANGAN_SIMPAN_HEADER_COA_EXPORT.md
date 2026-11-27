@@ -6,7 +6,7 @@
 | Subproject | COA (`ZQMI_COA` / TCode `ZQM002`) |
 | Objek Terkait | `ZQMI_COA_TOP`, `ZQMI_COA_F01` (`FORM PREPARE_EXPORT_HEADER`), `SELECTION-SCREEN 9000`, Smart Form `ZQMF_COA_EXPORT` |
 | Cakupan | **Per Customer (`KUNNR`)** — shared lintas user QA |
-| Status | Draft Rancangan (Menunggu Persetujuan Baginda) |
+| Status | Diputuskan Opsi 2 `INDX(ZC)`, Sold-To, hanya centangan (27 Nov). Terpasang di sandbox `TRS`, syntax RC=0; uji GUI TC-01..06 LOLOS 27 Nov (`outputs/gui_test_exphdr_20261127/`) |
 
 ---
 
@@ -115,7 +115,7 @@ Jika ingin tanpa objek DDIC baru (hanya ubah program `ZQMI_COA`):
 - **Area (`RELID`)**: `ZC`
 - **Key (`SRTFD`)**: `'COAEXP_' && LV_KUNNR` (17 karakter, muat di `INDX-SRTFD` 22 karakter)
 - **Header Audit**: `LS_INDX-USERA = SY-UNAME`, `LS_INDX-AEDAT = SY-DATUM`, `LS_INDX-PGMID = SY-REPID`
-- **Proteksi Struktur**: Gunakan `IGNORING STRUCTURE BOUNDARIES` saat `IMPORT`
+- **Proteksi Struktur**: `IMPORT ... ACCEPTING PADDING` dalam `TRY/CATCH CX_SY_IMPORT_FORMAT_ERROR CX_SY_IMPORT_MISMATCH_ERROR` (gagal = default)
 - **Catatan Risiko**: Tidak bisa dilihat/diedit isinya di `SE16N`, dan perlu dipastikan tidak terkena job pembersihan `INDX` dari Basis.
 
 ---
@@ -187,5 +187,6 @@ Modularisasi menjadi 2 sub-form kecil agar `PREPARE_EXPORT_HEADER` tetap bersih 
 
 ## 8. Keputusan yang Dibutuhkan Sebelum Implementasi
 
-- [ ] Konfirmasi pilihan penyimpanan: **Opsi 1 (`ZMAP_COA_EXP_HDR`)** atau **Opsi 2 (`INDX`)**.
+- [x] Opsi 2 (`INDX(ZC)`), tanpa tabel Z baru. Key Sold-To (`LIKP-KUNAG`, fallback `KUNNR`), hanya centangan (27 Nov).
+- [x] Tambahan implementasi: lock `ENQUEUE_ESINDX` saat simpan; `IMPORT` dibungkus `TRY/CATCH` + `ACCEPTING PADDING` (field baru ditambah di akhir struktur `TY_EXP_HDR_FLAGS`).
 - [ ] Konfirmasi target server implementasi & pengujian awal (mis. Sandbox `TRS` atau DEV AIX `TRD`).

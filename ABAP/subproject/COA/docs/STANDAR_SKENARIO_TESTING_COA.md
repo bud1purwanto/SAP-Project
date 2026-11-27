@@ -42,6 +42,8 @@ Setiap pembaruan kode ABAP COA **wajib** dibandingkan dengan **semua** skenario 
 | **AL-VALUE2** | Alias 2 material (SRAABI + SRAAAI), value asli | `0085006284` | SRAABI, SRAAAI | §0.6.2 | ✅ 9/9 = rata-rata manual QAMR |
 | **TTA-OUTSOURCE** | Outsource TTA (batch 9* + Z3): base film dari lot TTA lewat vendor batch | `0085006285` | SRCBUX | §0.6.2 | ✅ 10/10 = lot JR TTA, SR Base Film 0 |
 | **TTA-CONVERTING** | SRCBUX TTA (9*, Z3) sebagai SR Base Film, jadi input JR converting, lalu SR converting, lalu DO | `0085006286` | SREYAI | §0.6.2 | ✅ 10/10 = lot JR TTA `040000015885` (patch converting; sandbox-new dan DEV 18 Nov, terverifikasi) |
+| **JR-NOLOT** | JR tanpa lot inspeksi sama sekali → ambil lot sequence sebelumnya (bulan sama) | `0085003759` (data lama DEV, 2016) | SRAAAI | §0.6.2 + `outputs/test_data_jrnolot_20261127/MT_jrnolot_existing.txt` | ✅ JR `5 AAA 076 002` (batch `0000353010`, tanpa lot) → lot `040000009481` (`5 AAA 076 001`), 10/10 = QAMR. Program lama: semua 0 |
+| **JR-NOLOT-1MIC** | JR tanpa lot → lot sebelumnya hanya punya hasil 1 MIC di luar mapping | `0085003757` (data lama DEV, 2016) | SRAAAI | §0.6.2 + `outputs/test_data_jrnolot_20261127/MT_jrnolot_existing.txt` | ✅ JR `5 AAA 066 010` (batch `0000352995`) → lot `040000009460` (`5 AAA 066 002`, hasil hanya PAAATH00). Pencarian berhenti di lot ini, nilai COA tetap 0 |
 
 > Tabel ini dipetakan lewat batch: sheet `ML-QM01`/`ML-QM02` di Excel memakai batch BF `0000406862`–`0000406919`, sesuai dengan DO 76/77 (SR `0000406885`). Sheet `ML-QM03` memakai batch `0000406686`–`0000406852`, yaitu silsilah DO 78. Di Excel sendiri tidak tertulis nomor DO-nya.
 >
@@ -171,6 +173,11 @@ Catatan ML-QM04 (perlu dikonfirmasi):
 | 2026-11-17 | Data uji AL-VALUE1 (DO 6282) dan AL-VALUE2 (DO 6284); regresi lengkap 19 DO `outputs/MT_20261117_regresi_all.txt` | 15 DO skenario + DO 6280/6281 **identik** dengan DEV terverifikasi 16 Nov; ZQM002 + EXEC identik dengan program asli sebelum semua perubahan. DO 6282/6284 = rata-rata manual 9/9 |
 | 2026-11-26 | Lot JR dari 20 sequence sebelumnya lintas 1 bulan (`GET_JR_PREV_LOT`, sandbox-new; DEV belum), `docs/RANCANGAN_JR_20_SEQ_SEBELUMNYA_20261126.md`, `outputs/MT_20261126_jrprev_new.txt` | 19 DO 0 selisih vs program asli `MT_20261126_jrprev_orig.txt`. **BERUBAH disengaja:** DO 6270 (JR `4 AAB 086 003` ambil `4 AAB 076 009`, Thickness 22.40 → 20.99, 11 MIC) dan DO 6279 (JR `V EC7 116 001/002` ambil `V EC7 106 001`, PEC7FDCD 0.540 → 0.470). Acuan baru berlaku setelah deploy DEV |
 | 2026-11-26 | **User deploy `GET_JR_PREV_LOT` ke DEV AIX** (F01 6293, identik patch); program DEV apa adanya 21 DO `outputs/MT_20261126_dev_after_jrprev.txt` | = harness patch (0 selisih). Acuan aktif baru: DO 6270 dan 6279 memakai nilai lintas bulan; 19 DO lain sama dengan acuan sebelumnya |
+| 2026-11-27 | Data uji JR tanpa lot sama sekali: DO lama DEV `0085003759` dan `0085003757` (tidak ada data baru dibuat, read-only). Output `outputs/test_data_jrnolot_20261127/MT_jrnolot_existing.txt` (program DEV) dan `MT_jrnolot_existing_orig.txt` (program sebelum patch) | DO 3759: lama 0 semua → baru = lot `040000009481` (10 MIC). DO 3757: lot `040000009460` terpilih, nilai tetap 0. 21 DO skenario tidak tersentuh. Lintas bulan untuk JR tanpa lot: tidak ada data di DEV |
+| 2026-11-27 | Tambalan beda dekade di `GET_JR_PREV_LOT`/`JR_PREV_CHECK`: batch roll dengan selisih ERSDA > 5 tahun dari JR dilewati (sandbox-new, DEV belum). `outputs/MT_20261127_jrprev_decade.txt` | 23 DO **SAMA** dengan acuan aktif. Tidak ada perubahan acuan |
+| 2026-11-27 | **User deploy tambalan beda dekade ke DEV AIX** (F01 6303, identik patch); program DEV apa adanya 23 DO `outputs/MT_20261127_dev_after_decade.txt` | 23 DO **SAMA** dengan acuan aktif dan harness. File ini jadi acuan raw aktif untuk 23 DO |
+| 2026-11-27 | **User deploy ke DEV AIX: header COA Export per customer (INDX), header Batch List (screen 9001), versi MIC jalur cadangan (`GET_MIC_VER`/`READ_MIC_MASTER`/`GET_MIC_TEXT`), Smart Form `ZQMF_COA_EXPORT` baris utama dinamis** (TOP 548, F01 6777; F02/ALV/main = sandbox). Program DEV apa adanya 23 DO `outputs/MT_20261127_dev_after_micver.txt` + kolom lengkap (deskripsi, method, limit, UOM, desimal) `outputs/MT_20261127_dev_after_micver_full.txt` | Data `IT_DATA` 23 DO (247 baris) **SAMA** dengan acuan aktif `MT_20261127_dev_after_decade.txt`. Kolom lengkap vs live 18 Nov (21 DO, 225 baris): 212 sama, 13 beda semuanya perubahan disengaja yang sudah tercatat (DO 6270 11 MIC dan 6279 PEC7FDCD dari lot JR lintas bulan 26 Nov; DO 6286 PEYASTNT lot 040000015885 karena mapping ZMAP_COA diubah TRST-AISYAH 24 Nov, lihat §0.6.1). Tidak ada beda deskripsi/method/limit akibat versi MIC. Acuan tetap |
+| 2026-11-27 | **User rollback versi MIC jalur cadangan di sandbox + DEV** (TOP 538 / F01 6661 = `src/exp_hdr_bl_sbx`, header export & Batch List tetap). Program DEV apa adanya 23 DO `outputs/MT_20261127_dev_after_rollback_micver.txt` + kolom lengkap `outputs/MT_20261127_dev_after_rollback_micver_full.txt` | `IT_DATA` 23 DO (247 baris) **SAMA** dengan acuan aktif `MT_20261127_dev_after_decade.txt`; kolom lengkap **SAMA** dengan run sebelum rollback. Vs tabel §0.6.2 (227 MIC): 218 sama, 9 beda yang sudah diketahui: DO 6282/6284 limit TSTD/ELMD/SHTD/G400 = nilai Opsi D (catatan di bawah tabel AL-VALUE, kolom tabel masih versi alias_v2); DO 6286 PEYASTNT 47 (lot 040000015885, limit 44–50) karena mapping ZMAP_COA PEYASTNT = JR Base Film (TRST-AISYAH 24 Nov). Tabel §0.6.2 dan log §0.6.1 diperbarui 27 Nov: kini 227/227 MIC sama. Tanpa error. Acuan tetap |
 
 
 ### 0.6 Data acuan per skenario (before alias, 16 Nov 2026) — **acuan compare utama**
@@ -201,6 +208,7 @@ Arti kolom:
 | 17.11.2026 | Claude (TRSTDEV) | ZMAP_COA SRCBUX baru (10 MIC PCAD*), SO 7209, DO 6285 | Data uji TTA, lihat `docs/DATA_UJI_TTA_DEV_20261117.md` | Tidak ada (19 DO identik) |
 | 17.11.2026 | Claude (TRSTDEV) | ZZALIAS 5 roll, SO 7207/7208, DO 6282/6284 (DO 6283 dibuat lalu dihapus) | Data uji AL-VALUE1/AL-VALUE2, lihat `docs/DATA_UJI_ALIAS_DEV_20261113.md` | Tidak ada (19 DO identik, §0.5) |
 | 18.11.2026 | Claude (TRSTDEV) | Order JR conv 100000073548 (ZP04), SR conv A29000009001 (PPA2) + 100000073549 (ZCA2), batch JREYAI 0000407417, SREYAI 0000407419/0000407420, GI 4900436266/4900436267, GR 5000077820/5000077822, ZMAP_COA SREYAI (10 MIC), SO 7210, DO 6286 | Data uji TTA-CONVERTING, lihat `docs/DATA_UJI_TTA_DEV_20261117.md`. Order liar 100000073547 sudah diberi flag hapus | Tidak ada (20 DO lain identik) |
+| 24.11.2026 | TRST-AISYAH | ZMAP_COA SREYAI (umum) MIC PEYASTNT | MAPPING diubah menjadi `JR Base Film` (AEDAT 24.11.2026). Ditemukan 27 Nov lewat regresi DEV | TTA-CONVERTING DO 6286: PEYASTNT 0 → **47** (lot JR TTA `040000015885`, PSEFSTNT), limit 0–0 → 44–50. Bukan perubahan program (program sebelum aturan JR 26 Nov sudah memberi 47) |
 
 #### 0.6.2 Nilai dan limit per skenario
 
@@ -521,13 +529,13 @@ Roll 0000361723 / 0000361460 / 0000361563 → lot JR 040000000189 / 040000000635
 |:-:|:--|:--|--:|--:|--:|--:|--:|--:|:-:|:-:|:--|
 | 1 | PAACTH00 | PAABTH00 | 19.9788 | 19.8890 | 20.2908 | **20.05** | 19.40 | 20.60 | = | = | |
 | 2 | PAACTSMD | PAABTSMD | 13.81 | 12.85 | 14.06 | **13.57** | 11.00 | 18.00 | = | = | |
-| 3 | PAACTSTD | PAABTSTD | 31.77 | 31.50 | 34.25 | **32.51** | 26.00 | 34.00 | = | = | Limit + method mapping customer |
-| 4 | PAACELMD | PAABELMD | 188.26 | 170.08 | 178.04 | **179** | 140.00 | 230.00 | = | = | Limit mapping |
+| 3 | PAACTSTD | PAABTSTD | 31.77 | 31.50 | 34.25 | **32.51** | 22.00 | 35.00 | = | = | Method mapping customer; limit master SRAABI (Opsi D) |
+| 4 | PAACELMD | PAABELMD | 188.26 | 170.08 | 178.04 | **179** | 120 | 240 | = | = | Limit master SRAABI (Opsi D) |
 | 5 | PAACELTD | PAABELTD | 46.66 | 41.57 | 42.31 | **44** | 30 | 90 | = | = | |
 | 6 | PAACSHMD | PAABSHMD | 3.8933 | 4.2900 | 3.3800 | **3.85** | 3.00 | 5.00 | = | = | |
-| 7 | PAACSHTD | PAABSHTD | 1.0267 | 1.6133 | 1.2567 | **1.30** | 0.00 | 2.00 | = | = | Upper mapping |
+| 7 | PAACSHTD | PAABSHTD | 1.0267 | 1.6133 | 1.2567 | **1.30** | 0.00 | 3.00 | = | = | Limit master SRAABI (Opsi D) |
 | 8 | PAACHZ00 | PAABHZ00 | 1.6787 | 2.0627 | 1.3880 | **1.71** | 1.00 | 2.00 | = | = | |
-| 9 | PAACG400 | PAABG400 | 95.9667 | 94.2667 | 96.3444 | **96** | 92.00 | 100 | = | = | Lower mapping |
+| 9 | PAACG400 | PAABG400 | 95.9667 | 94.2667 | 96.3444 | **96** | 90 | 100 | = | = | Limit master SRAABI (Opsi D) |
 
 #### Data uji AL-VALUE2: DO `0085006284` (SRAABI + SRAAAI, alias PLE-22 → SRAACI), customer 1141000514
 
@@ -537,15 +545,15 @@ SRAABI roll 0000401403 → lot JR 040000006594; SRAAAI roll 0000362398 (PLE-18) 
 |:-:|:--|--:|--:|--:|--:|--:|:-:|:-:|:--|
 | 1 | PAACTH00 | PAABTH00 19.9100 | PAAATH00 18.1031 | **19.01** | 17.46 | 18.54 | = | = | **Out limit**: limit dari spec lot wakil SRAAAI (18 µm) |
 | 2 | PAACTSMD | 14.0600 | 12.9989 | **13.53** | 11.00 | 18.00 | = | = | |
-| 3 | PAACTSTD | 34.2500 | 32.5311 | **33.39** | 26.00 | 34.00 | = | = | Mapping customer |
-| 4 | PAACELMD | 178.04 | 180.5333 | **179** | 140.00 | 230.00 | = | = | |
+| 3 | PAACTSTD | 34.2500 | 32.5311 | **33.39** | 22.00 | 35.00 | = | = | Method mapping customer; limit master wakil SRAAAI (Opsi D) |
+| 4 | PAACELMD | 178.04 | 180.5333 | **179** | 120 | 240 | = | = | Limit master (Opsi D) |
 | 5 | PAACELTD | 42.31 | 43.7778 | **43** | 30 | 90 | = | = | |
 | 6 | PAACSHMD | 3.7567 | 3.7600 | **3.76** | 3.00 | 5.00 | = | = | |
-| 7 | PAACSHTD | 2.5533 | 2.6800 | **2.62** | 0.00 | 2.00 | = | = | **Out limit**: data asli > upper mapping 2.00 |
+| 7 | PAACSHTD | 2.5533 | 2.6800 | **2.62** | 0.00 | 3.00 | = | = | Limit master (Opsi D); tidak lagi out limit (dulu upper mapping 2.00) |
 | 8 | PAACHZ00 | 1.4340 | 1.3120 | **1.37** | 1.00 | 2.00 | = | = | |
-| 9 | PAACG400 | 96.70 | 96.6667 | **97** | 92.00 | 100 | = | = | |
+| 9 | PAACG400 | 96.70 | 96.6667 | **97** | 90 | 100 | = | = | Limit master (Opsi D) |
 
-Kolom Lower/Upper di tabel AL-VALUE1/2 di atas = versi alias_v2 (limit mapping alias). **Sejak Opsi D (sandbox 17 Nov 2026)** limit = master data material asli roll wakil: DO 6282 TSTD 22.00–35.00, ELMD 120–240, SHTD 0.00–3.00, G400 90–100 (lainnya sama); DO 6284 sama tetapi TH00 17.46–18.54 (wakil SRAAAI) dan SHTD 2.62 tidak lagi out limit; DO 6280 dari QPMK SRABDI (TSTD 28.00–35.00, ELMD 150–220, SHTD 0.50–1.50, G400 90–99). Rincian `docs/IMPLEMENTASI_ALIAS_HARNESS_20261116.md` §13. Menurut QA, material dalam 1 alias pasti punya spec sama; DO 6280/6284 sengaja memakai material dengan spec berbeda.
+Kolom Lower/Upper di tabel AL-VALUE1/2 di atas **sudah versi Opsi D** (diperbarui 27 Nov 2026 dari regresi DEV `outputs/MT_20261127_dev_after_rollback_micver_full.txt`; versi alias_v2 sebelumnya: TSTD 26.00–34.00, ELMD 140.00–230.00, SHTD upper 2.00, G400 lower 92.00). **Sejak Opsi D (sandbox 17 Nov 2026)** limit = master data material asli roll wakil: DO 6282 TSTD 22.00–35.00, ELMD 120–240, SHTD 0.00–3.00, G400 90–100 (lainnya sama); DO 6284 sama tetapi TH00 17.46–18.54 (wakil SRAAAI) dan SHTD 2.62 tidak lagi out limit; DO 6280 dari QPMK SRABDI (TSTD 28.00–35.00, ELMD 150–220, SHTD 0.50–1.50, G400 90–99). Rincian `docs/IMPLEMENTASI_ALIAS_HARNESS_20261116.md` §13. Menurut QA, material dalam 1 alias pasti punya spec sama; DO 6280/6284 sengaja memakai material dengan spec berbeda.
 
 #### AL-VALUE1/2 tanpa alias (DEV AIX setelah rollback 17 Nov 2026)
 
@@ -595,13 +603,35 @@ Rantai: SRCBUX TTA `9000377412`–`414` (9*, Z3) dikonsumsi order JR conv `10000
 | 7 | PEYASHTD | 0.30 | **0.30** | 0.00 | 0.50 | = | = | ZQM002 limit tampil 0\|1 |
 | 8 | PEYAHZ00 | 2.00 | **2.00** | 1.50 | 2.50 | = | = | ZQM002 limit tampil 2\|3 |
 | 9 | PEYAG400 | 128 | **128** | 120 | 140 | = | = | |
-| 10 | PEYASTNT | 0 | **0** | 0 | 0 | = | = | Lot Z04 SR converting kosong, value 0 |
+| 10 | PEYASTNT | 47 | **47** | 44 | 50 | belum dicek | belum dicek | Sejak 24.11.2026 mapping ZMAP_COA = JR Base Film (TRST-AISYAH): nilai dari lot JR TTA `040000015885` (PSEFSTNT 47). Sebelumnya 0 (lot Z04 SR conv kosong), lihat §0.6.1 |
 
 Catatan:
-- ZQM002 = EXEC = ZQM003 untuk value (10/10). Header EXEC KEZ-11.
+- ZQM002 = EXEC = ZQM003 untuk value (10/10) per 18 Nov. PEYASTNT setelah perubahan mapping 24 Nov (47) baru dicek di ZQM002 (harness), ZQM003/EXEC belum. Header EXEC KEZ-11.
 - Limit ZQM002 enam baris (PEYATH00, PEYATSMD, PEYATSTD, PEYASHMD, PEYASHTD, PEYAHZ00) tampil bulat, sedangkan ZQM003/EXEC tampil desimal. Penyebabnya MIC PEYA* tidak ada di QPMK DEV, sehingga desimal MIC (STELLEN) 0. Bukan bug program. DO lama memakai MIC yang ada di QPMK (STELLEN 2) dan tetap desimal.
 - Sebelum patch converting: lot dan value base film salah/0 (`outputs/test_data_tta_20261118/MT_do6286_baseline.txt`); sesudah patch: `MT_do6286_tta.txt`.
 - Hasil inspeksi lot JR conv `040000021140` dan lot Z04 SR conv sengaja belum diisi.
+
+#### Data uji JR-NOLOT: DO `0085003759` (SRAAAI, 5 roll), customer 1141000033, mapping umum
+
+Data lama DEV (Juli 2016), tidak ada data baru dibuat. Roll SR `0000353057`–`0000353061` berasal dari JR `5 AAA 076 002` (batch `0000353010`) yang **tidak punya lot Z02/Z03 sama sekali**. Program mencari ke sequence sebelumnya: `5 AAA 076 001` (batch `0000352999`) punya lot Z02 `040000009481` dengan hasil. Header EXEC PLE-18, width 950. Acuan raw: `outputs/test_data_jrnolot_20261127/MT_jrnolot_existing.txt` (27 Nov 2026, program DEV apa adanya).
+
+| SEQ | MIC COA | Deskripsi | Lower | Upper | Lot | Nilai QAMR | **Nilai print ZQM002** | EXEC | ZQM003 | Program lama |
+|:-:|:--|:--|--:|--:|:--|--:|--:|:-:|:-:|--:|
+| 1 | PAAAELMD | Elongation MD | 120 | 240 | `040000009481` | 139 | **139** | = | = | 0 |
+| 2 | PAAAELTD | Elongation TD | 30 | 90 | `040000009481` | 40 | **40** | = | = | 0 |
+| 3 | PAAAFDNT | COF Untreated Side Dyn | 0.300 | 0.500 | `040000009481` | 0.400 | **0.400** | = | = | 0.000 |
+| 4 | PAAAFDTR | COF Treated Side Dyn | 0.300 | 0.600 | `040000009481` | 0.400 | **0.400** | = | = | 0.000 |
+| 5 | PAAAG400 | Gloss 45° | 90 | 100 | `040000009481` | 99 | **99** | = | = | 0 |
+| 6 | PAAAHZ00 | Haze | 1.00 | 2.00 | `040000009481` | 1.00 | **1.00** | = | = | 0.00 |
+| 7 | PAAASHMD | Shrinkage MD | 3.00 | 5.00 | `040000009481` | 4.00 | **4.00** | = | = | 0.00 |
+| 8 | PAAASHTD | Shrinkage TD | 0.00 | 3.00 | `040000009481` | 4.00 | **4.00** | = | = | 0.00 (out limit, data) |
+| 9 | PAAATSMD | Tensile Strength MD | 11.00 | 18.00 | `040000009481` | 12.00 | **12.00** | = | = | 0.00 |
+| 10 | PAAATSTD | Tensile Strength TD | 22.00 | 35.00 | `040000009481` | 23.00 | **23.00** | = | = | 0.00 |
+| 11 | SAAASTTR | Surface Tension Treated Side | 38 | 42 | `050000010863` (SR) | 55 | **55** | = | = | 55 (out limit, data) |
+
+#### Data uji JR-NOLOT-1MIC: DO `0085003757` (SRAAAI, 6 roll), customer 1141000033, mapping umum
+
+Data lama DEV (Juni 2016). Roll SR `0000352989`–`0000352994` dari JR `5 AAA 066 010` (batch `0000352995`, tanpa lot). Pencarian berhenti di `5 AAA 066 002` (batch `0000352921`), lot Z02 `040000009460`, karena lot itu punya hasil, tetapi hasilnya hanya PAAATH00 (tidak ada di mapping). Hasil: lot JR tampil `040000009460`, **semua 11 MIC = 0** (SAAASTTR 0, lot SR kosong). Program lama: semua 0, lot kosong. EXEC header PLE-18, width 1,250. ZQM002 = EXEC = ZQM003.
 
 #### 0.6.3 ZQM003 vs ZQM002: bug nilai unik dan perbaikannya (16 Nov 2026)
 

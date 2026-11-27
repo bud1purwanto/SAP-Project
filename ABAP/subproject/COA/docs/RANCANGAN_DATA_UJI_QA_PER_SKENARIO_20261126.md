@@ -337,3 +337,19 @@ Dijalankan atas perintah user ("selesai, saya ingin banyak data"). Per DO: `BAPI
 Tidak diubah (rantai tidak bisa dilacak atau tidak ada roll saudara bebas): 0085051555, 562, 570, 572, 578, 579, 583 (1–2 roll). DO 0085051544–047 tanpa item ZB.
 
 Catatan: roll 3885659 tetap ganda di DO 0085051573 dan 0085051582 (tidak diubah). Roll tambahan SRAABI banyak berasal dari JR tanpa QAMR (nilai dari lot saudara). DO 0085051564 SRIA5I: kg lama 135,12 karena roll 67,56 kg. Rollback: hapus item ZB 9000xx tambahan di VL02N dan kembalikan qty SO ke angka lama di tabel.
+
+---
+
+## 12. DO export baru di QA (27 Nov 2026)
+
+Permintaan Aisyah (QA): data UAT harus ada customer export. Dibuat 4 SO ZEOR (VTWEG 02, VKBUR 0002, tanpa sales group) + 4 DO ZELF, tiap DO dengan item ZB per roll, tanpa PGI. SO dibuat lewat `BAPI_SALESORDER_CREATEFROMDAT2` dengan `EXTENSIONIN` BAPE_VBAP (ZDATE = tanggal hari ini, ZLINE = 1, wajib: validasi "Tanggal dan Line produksi harus diisi"), DO lewat `BAPI_OUTB_DELIVERY_CREATE_SLS`, roll lewat `BAPI_OUTB_DELIVERY_CHANGE`. Program dan log: `outputs/qa_prep_20261126/so_E*.abap`, `do_E*.abap`, `sp_E*.abap`, `.log`.
+
+| DO | SO | Customer (negara) | Material | Roll | Sumber roll |
+|:--|:--|:--|:--|:-:|:--|
+| 0085051584 | 15873 | 1141100081 UPM Raflatac (CN) | SRACBI | 12 | JR 3885625 (QAMR) 818–823 + JR 3885611 812–817 |
+| 0085051585 | 15874 | 1141100239 Huhtamaki (VN) | SRACBI | 12 | JR 3885608 (QAMR) 794–799 + JR 3885610 806–811 |
+| 0085051586 | 15875 | 1141100236 Amcor Phetchaburi (TH) | SRAABI | 18 | JR 3885627/628 roll 713–730 |
+| 0085051587 | 15876 | 1141100516 KT&G (TR) | SRACBI | 12 | JR 3885631/632 roll 830–841 |
+
+Export lama: DO 0085051551 (customer 1800000002, negara US, SRAABI 18 roll) dan 0085051583 (SRCBUX 1 roll) sebenarnya sudah export.
+Belum dicek: apakah keempat customer masuk daftar grup EXP-01 (28 KUNNR). Rollback: hapus DO (VL02N) lalu SO (VA02 reject/hapus).

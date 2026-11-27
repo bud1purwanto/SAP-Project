@@ -335,7 +335,7 @@ MODULE USER_COMMAND_0100 INPUT.
             SORT IT_DETAIL BY NUMMIC NUM ASCENDING MIC ASCENDING.
             CALL SCREEN 0200.
           ELSE.
-            MESSAGE 'Value mic tidak dapat qualitatif dan quantitatif!' TYPE 'I'.
+            MESSAGE 'Nilai MIC tercampur kualitatif dan kuantitatif. Silakan hubungi Tim QA.' TYPE 'I'.
           ENDIF.
         ENDIF.
       ENDIF.
@@ -762,6 +762,30 @@ MODULE TDETAIL_GET_LINES OUTPUT.
   G_TDETAIL_LINES = SY-LOOPC.
 ENDMODULE.                    "TDETAIL_GET_LINES OUTPUT
 
+*&---------------------------------------------------------------------*
+*&      Module  TDETAIL_SET_ICON  OUTPUT
+*&---------------------------------------------------------------------*
+* 26/11/2026: kolom Out Limit tampil ikon merah bila value di luar
+* Lower/Upper Limit (RANGE_FLAG = 'X').
+MODULE TDETAIL_SET_ICON OUTPUT.
+  CLEAR IT_DETAIL-OUT_ICON.
+  IF IT_DETAIL-RANGE_FLAG = 'X'.
+    IT_DETAIL-OUT_ICON = ICON_LED_RED.
+  ENDIF.
+ENDMODULE.                    "TDETAIL_SET_ICON OUTPUT
+
+*&---------------------------------------------------------------------*
+*&      Module  TCERTI_SET_ICON  OUTPUT
+*&---------------------------------------------------------------------*
+* 26/11/2026: kolom Out Limit screen 0100 tampil ikon merah bila value
+* di luar Lower/Upper Limit (RANGE_FLAG = 'X').
+MODULE TCERTI_SET_ICON OUTPUT.
+  CLEAR IT_DATA-OUT_ICON.
+  IF IT_DATA-RANGE_FLAG = 'X'.
+    IT_DATA-OUT_ICON = ICON_LED_RED.
+  ENDIF.
+ENDMODULE.                    "TCERTI_SET_ICON OUTPUT
+
 *&SPWIZARD: INPUT MODULE FOR TC 'TDETAIL'. DO NOT CHANGE THIS LINE!
 *&SPWIZARD: PROCESS USER COMMAND
 MODULE TDETAIL_USER_COMMAND INPUT.
@@ -792,13 +816,15 @@ MODULE TDETAIL_USER_COMMAND INPUT.
           CHANGING IT_DETAIL-RANGE_FLAG.
         MODIFY IT_DETAIL TRANSPORTING RANGE_FLAG.
       ENDLOOP.
-      LOOP AT IT_DETAIL WHERE CMICMIT EQ '-' OR CMICMIT IS INITIAL OR CMICMIT EQ '00000000' OR CMICMIT EQ '0' OR CMICMIT EQ '0.00' OR CMICMIT EQ '0.000'.
+      " Fix 19/11/2026: baris yang tidak dicentang (tidak dicetak) tidak ikut dicek
+      LOOP AT IT_DETAIL WHERE CHK EQ 'X' AND ( CMICMIT EQ '-' OR CMICMIT IS INITIAL OR CMICMIT EQ '00000000'
+                              OR CMICMIT EQ '0' OR CMICMIT EQ '0.00' OR CMICMIT EQ '0.000' ).
         LV_EMPTY_FOUND = 'X'.
         EXIT.
       ENDLOOP.
 
       IF LV_EMPTY_FOUND IS INITIAL.
-        LOOP AT IT_DETAIL WHERE TYPE EQ 'X'.
+        LOOP AT IT_DETAIL WHERE CHK EQ 'X' AND TYPE EQ 'X'.
           IF IT_DETAIL-MICMIN IS INITIAL AND IT_DETAIL-MICMAX IS INITIAL.
             CONTINUE.
           ENDIF.
@@ -820,9 +846,9 @@ MODULE TDETAIL_USER_COMMAND INPUT.
       ENDIF.
 
       IF LV_EMPTY_FOUND = 'X'.
-        MESSAGE 'Ada data MIC yang belum di-record (kosong), tidak bisa cetak COA!' TYPE 'I' DISPLAY LIKE 'E'.
+        MESSAGE 'Ada hasil MIC yang belum di-record, COA tidak bisa dicetak. Silakan hubungi Tim QA.' TYPE 'I' DISPLAY LIKE 'E'.
       ELSEIF LV_RANGE_FOUND = 'X'.
-        MESSAGE 'Ada value MIC yang keluar dari Lower/Upper Limit. Ubah value & Save (kembali ke layar sebelumnya) sebelum Print!' TYPE 'I' DISPLAY LIKE 'E'.
+        MESSAGE 'Ada value MIC di luar Lower/Upper Limit. Ubah value & Save sebelum Print, atau hubungi Tim QA.' TYPE 'I' DISPLAY LIKE 'E'.
       ELSE.
         PERFORM F_PRINT.
       ENDIF.
